@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Julian Crowe — Videographer &amp; Photographer</title>
+  <style>
+    :root {
+      --red: #e10600;
+      --red-deep: #b00500;
+      --ink: #0a0a0a;
+      --cream: #e8e6df;
+      --muted: #5c5c5c;
+      --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: #111; color: #fff; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative; min-height: 100vh;
+      background: #1a1a1a center/cover no-repeat;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.35) 100%),
+        url("hero.jpg");
+      display: flex; flex-direction: column;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 2rem; font-size: 0.8rem; font-weight: 650;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .nav-left, .nav-right { display: flex; gap: 1.75rem; }
+    .nav a:hover { color: var(--red); }
+    .timecode {
+      font-variant-numeric: tabular-nums; letter-spacing: 0.08em;
+      border: 1px solid rgba(255,255,255,0.35); padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+    }
+    @media (max-width: 700px) {
+      .nav-left a:not(:first-child), .nav-right a:first-child { display: none; }
+      .nav { padding: 1rem 1.25rem; }
+    }
+
+    .hero-body {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 2rem 2rem 6rem; position: relative;
+    }
+    .intro {
+      max-width: 16rem; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.06em; line-height: 1.55; text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .intro .hl { color: var(--red); }
+    .name {
+      font-size: clamp(3rem, 12vw, 7.5rem); font-weight: 800;
+      line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase;
+    }
+    .name .red { color: var(--red); }
+    .name .white { color: #fff; }
+
+    .hero-foot {
+      position: absolute; left: 2rem; right: 2rem; bottom: 2rem;
+      display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
+    }
+    .pip {
+      width: 140px; aspect-ratio: 1; border: 1px solid rgba(255,255,255,0.4);
+      background: #222 center/cover;
+      background-image: linear-gradient(145deg, #333, #111);
+      position: relative;
+    }
+    .pip::after {
+      content: "▶"; position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: 1.25rem; color: #fff; background: rgba(0,0,0,0.25);
+    }
+    .drag-hint {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; text-align: center; opacity: 0.85;
+    }
+    .expertise {
+      text-align: right; font-size: 0.72rem; font-weight: 650;
+      letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.8;
+    }
+    .expertise .label { color: var(--red); margin-bottom: 0.35rem; display: block; }
+    .expertise a { display: block; opacity: 0.75; }
+    .expertise a:hover { opacity: 1; color: var(--red); }
+    @media (max-width: 700px) {
+      .hero-foot { position: static; padding: 0 0 1.5rem; }
+      .expertise { text-align: left; }
+    }
+
+    /* —— Services red —— */
+    .services {
+      background: var(--red); color: #0a0a0a; padding: 4.5rem 0 0;
+    }
+    .services-head {
+      display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+      gap: 1rem; padding: 0 2rem 1.25rem; border-bottom: 2px solid rgba(0,0,0,0.2);
+      margin: 0 2rem;
+    }
+    .services-head h2 {
+      font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800;
+      letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.95;
+    }
+    .services-head a {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    }
+    .services-head a:hover { opacity: 0.7; }
+    .services-intro {
+      padding: 1.25rem 2rem 2rem; max-width: 42rem;
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; line-height: 1.55; color: rgba(0,0,0,0.75);
+    }
+    .service-row {
+      display: grid; grid-template-columns: 1.2fr 0.9fr; min-height: 380px;
+      border-top: 2px solid rgba(0,0,0,0.15);
+    }
+    @media (max-width: 800px) {
+      .service-row { grid-template-columns: 1fr; }
+      .services-head, .services-intro { margin-inline: 0; padding-inline: 1.25rem; }
+    }
+    .service-media {
+      background: #1a1a1a center/cover; min-height: 280px;
+      position: relative;
+    }
+    .service-media.m1 {
+      background:
+        linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.5)),
+        linear-gradient(135deg, #2a2a2a, #0a0a0a);
+    }
+    .service-media.m1::after {
+      content: "01:25:00"; position: absolute; bottom: 1rem; left: 1rem;
+      font-size: 0.7rem; letter-spacing: 0.1em; color: #fff; opacity: 0.7;
+      font-family: ui-monospace, monospace;
+    }
+    /* timeline bars decoration */
+    .timeline-deco {
+      position: absolute; left: 8%; right: 8%; top: 40%; height: 48px;
+      display: flex; gap: 3px; align-items: stretch; opacity: 0.85;
+    }
+    .timeline-deco i {
+      flex: 1; border-radius: 2px;
+      background: linear-gradient(180deg, #c084fc, #7c3aed 40%, #22d3ee 70%, #f97316);
+    }
+    .timeline-deco i:nth-child(odd) { background: linear-gradient(180deg, #22d3ee, #3b82f6, #a855f7); }
+    .service-media.m2 {
+      background:
+        linear-gradient(160deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4)),
+        linear-gradient(135deg, #4a5568, #1a202c);
+    }
+    .service-copy {
+      padding: 2.5rem 2rem; display: flex; flex-direction: column; justify-content: center;
+      border-left: 3px solid rgba(0,0,0,0.25);
+    }
+    .service-copy .num {
+      font-size: 0.85rem; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 0.5rem;
+    }
+    .service-copy h3 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.03em; text-transform: uppercase; line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .service-copy p {
+      font-size: 0.8rem; font-weight: 650; letter-spacing: 0.04em;
+      text-transform: uppercase; line-height: 1.5; max-width: 28em;
+      margin-bottom: 1.25rem; color: rgba(0,0,0,0.8);
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tags span {
+      padding: 0.35rem 0.65rem; border: 1.5px solid rgba(0,0,0,0.35);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+    }
+    .service-list {
+      padding: 0 2rem 3rem;
+    }
+    .service-item {
+      display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: baseline;
+      padding: 1.5rem 0; border-top: 2px solid rgba(0,0,0,0.2);
+    }
+    .service-item h3 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800;
+      letter-spacing: -0.03em; text-transform: uppercase;
+    }
+    .service-item .num { font-weight: 800; font-size: 0.9rem; opacity: 0.7; }
+
+    /* —— Work / reel —— */
+    .work {
+      background: #0a0a0a; padding: 0; min-height: 70vh;
+      display: grid; place-items: center; position: relative;
+      background-image:
+        radial-gradient(ellipse at 50% 40%, rgba(225,6,0,0.15), transparent 50%),
+        linear-gradient(180deg, #111, #0a0a0a);
+    }
+    .work-frame {
+      text-align: center; padding: 4rem 1.5rem;
+    }
+    .work-frame h2 {
+      font-size: clamp(1.75rem, 4vw, 3rem); font-weight: 800;
+      letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .work-frame p {
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      opacity: 0.7; margin-bottom: 2rem;
+    }
+    .work-stats {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem 2.5rem;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .work-stats strong { display: block; font-size: 1.5rem; color: var(--red); margin-bottom: 0.2rem; letter-spacing: -0.02em; }
+
+    /* —— Reviews —— */
+    .reviews {
+      background: var(--cream); color: var(--ink); padding: 4.5rem 2rem 5rem;
+    }
+    .reviews-head {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline;
+      gap: 1rem; margin-bottom: 0.75rem;
+    }
+    .reviews-head h2 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800;
+      letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.95;
+    }
+    .reviews-head a {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; color: var(--red);
+    }
+    .reviews-line {
+      height: 2px; background: var(--ink); margin-bottom: 1.25rem;
+    }
+    .reviews-intro {
+      font-size: 0.78rem; font-weight: 650; letter-spacing: 0.05em;
+      text-transform: uppercase; max-width: 40rem; color: var(--muted);
+      margin-bottom: 2.5rem; line-height: 1.55;
+    }
+    .review-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;
+    }
+    .review {
+      background: #fff; padding: 1.5rem; border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    }
+    .review .photo {
+      width: 100%; aspect-ratio: 1; margin-bottom: 1rem;
+      background: linear-gradient(145deg, #ccc, #888);
+    }
+    .review .photo.p1 { background: linear-gradient(145deg, #d4d4d4, #737373); }
+    .review .photo.p2 { background: linear-gradient(160deg, #a3a3a3, #404040); }
+    .review .photo.p3 { background: linear-gradient(145deg, #e5e5e5, #525252); }
+    .stars { color: var(--red); letter-spacing: 0.15em; font-size: 0.85rem; margin-bottom: 0.75rem; }
+    .review blockquote {
+      font-size: 0.88rem; font-weight: 650; letter-spacing: 0.02em;
+      line-height: 1.55; margin-bottom: 1.25rem; text-transform: uppercase;
+    }
+    .review .who { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; }
+    .review .role { font-size: 0.7rem; color: var(--muted); font-weight: 650; letter-spacing: 0.06em; margin-top: 0.2rem; }
+
+    /* —— Contact —— */
+    .contact {
+      background: var(--ink); padding: 5rem 2rem; text-align: center;
+    }
+    .contact h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+      letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .contact p { opacity: 0.7; margin-bottom: 1.75rem; max-width: 28em; margin-inline: auto; }
+    .contact a.cta {
+      display: inline-block; padding: 1rem 1.75rem; background: var(--red);
+      color: #fff; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .contact a.cta:hover { background: var(--red-deep); }
+
+    footer {
+      padding: 1.75rem 2rem; border-top: 1px solid #222;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      font-size: 0.75rem; font-weight: 650; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" id="top">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+      </div>
+      <div class="timecode" id="clock">00:00:00 PM</div>
+      <div class="nav-right">
+        <a href="#reviews">Blog</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <div class="hero-body">
+      <p class="intro">
+        As a <span class="hl">videographer</span> and photographer, I focus on capturing moments that
+        <span class="hl">narrate</span> engaging stories.
+      </p>
+      <h1 class="name"><span class="red">Julian</span> <span class="white">Crowe</span></h1>
+
+      <div class="hero-foot">
+        <div class="pip" role="img" aria-label="Showreel thumbnail"></div>
+        <p class="drag-hint">Drag to explore.<br />Dare to experience motion.</p>
+        <div class="expertise">
+          <span class="label">Expertise</span>
+          <a href="#services">Brand films</a>
+          <a href="#services">Documentaries</a>
+          <a href="#services">Music videos</a>
+          <a href="#services">Event coverage</a>
+          <a href="#services">Wedding films</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="services" id="services">
+      <div class="services-head">
+        <h2>My Services</h2>
+        <a href="#contact">More →</a>
+      </div>
+      <p class="services-intro">
+        Professional videography services focused on creating cinematic visuals that inspire emotion,
+        strengthen connections, and leave a lasting impression through every frame.
+      </p>
+
+      <div class="service-row">
+        <div class="service-media m1">
+          <div class="timeline-deco" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+        <div class="service-copy">
+          <div class="num">01.</div>
+          <h3>Cinematic<br />Videography</h3>
+          <p>High-quality cinematic videos that tell your story with emotion, visuals, and purpose.</p>
+          <div class="tags">
+            <span>Portrait</span><span>Headshot</span><span>Lifestyle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-media m2" role="img" aria-label="Conference venue"></div>
+        <div class="service-copy">
+          <div class="num">02.</div>
+          <h3>Event<br />Coverage</h3>
+          <p>Capturing memorable moments, conferences, and live experiences with dynamic cinematic flair.</p>
+          <div class="tags">
+            <span>Conference</span><span>Festival</span><span>Lifestyle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-list">
+        <div class="service-item">
+          <h3>03. Commercial &amp; Branding</h3>
+          <span class="num">Brand films · Campaigns</span>
+        </div>
+        <div class="service-item">
+          <h3>04. Creative &amp; Music Videos</h3>
+          <span class="num">Narrative · Performance</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="work-frame">
+        <h2>Showreel · Live Cut</h2>
+        <p>High energy production with captivating rhythm and lights</p>
+        <div class="work-stats">
+          <div><strong>430+</strong> All projects</div>
+          <div><strong>23</strong> Brand films</div>
+          <div><strong>63</strong> Commercials</div>
+          <div><strong>105</strong> Music videos</div>
+          <div><strong>36</strong> Event coverage</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews" id="reviews">
+      <div class="reviews-head">
+        <h2>Client Reviews</h2>
+        <a href="#contact">More →</a>
+      </div>
+      <div class="reviews-line"></div>
+      <p class="reviews-intro">
+        Professional videography services focused on creating cinematic visuals that inspire emotion,
+        strengthen connections, and leave a lasting impression through every frame.
+      </p>
+      <div class="review-grid">
+        <article class="review">
+          <div class="photo p1" role="img" aria-label=""></div>
+          <div class="stars">★★★★★</div>
+          <blockquote>
+            “From script to final cut, the attention to emotional detail was inspiring. The audience was moved to tears. Truly artistic directorial direction.”
+          </blockquote>
+          <div class="who">Ava Chen</div>
+          <div class="role">Creative short · Lumen Cinema</div>
+        </article>
+        <article class="review">
+          <div class="photo p2" role="img" aria-label=""></div>
+          <div class="stars">★★★★★</div>
+          <blockquote>
+            “An incredible visual experience. The lighting and editing brought our music to life in ways we never imagined. Pure cinematic genius.”
+          </blockquote>
+          <div class="who">Marcus Vance</div>
+          <div class="role">Music video · Velvet Records</div>
+        </article>
+        <article class="review">
+          <div class="photo p3" role="img" aria-label=""></div>
+          <div class="stars">★★★★☆</div>
+          <blockquote>
+            “Working with Julian elevated our brand film. Uncompromising craft and visual brilliance from first shot to delivery.”
+          </blockquote>
+          <div class="who">Sophia Reyes</div>
+          <div class="role">Corporate · Northline Co</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <h2>Let’s make something unforgettable</h2>
+      <p>Available for brand films, music videos, documentaries, and live events worldwide.</p>
+      <a class="cta" href="mailto:hello@juliancrowe.studio">Start a project →</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>Julian Crowe</span>
+    <span>Videographer &amp; photographer · Sample template</span>
+    <span>© 2026</span>
+  </footer>
+
+  <script>
+    (function () {
+      const el = document.getElementById("clock");
+      function tick() {
+        const d = new Date();
+        let h = d.getHours();
+        const m = String(d.getMinutes()).padStart(2, "0");
+        const s = String(d.getSeconds()).padStart(2, "0");
+        const ap = h >= 12 ? "PM" : "AM";
+        h = h % 12 || 12;
+        el.textContent =
+          String(h).padStart(2, "0") + ":" + m + ":" + s + " " + ap;
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>

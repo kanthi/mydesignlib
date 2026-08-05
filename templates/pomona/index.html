@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomona — Partner in the upside</title>
+  <style>
+    :root {
+      --blue: #1a6fd4;
+      --blue-deep: #0d4fa3;
+      --ink: #0c0c0c;
+      --cream: #f3efe6;
+      --muted: #5c5c5c;
+      --line: rgba(255,255,255,0.2);
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); color: #fff; background: #0a3d8f;
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.7rem 1.15rem; border-radius: 6px; font-weight: 650;
+      font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+      border: none; cursor: pointer;
+    }
+    .btn-dark { background: #0c0c0c; color: #fff; }
+    .btn-dark:hover { background: #222; }
+    .btn-outline {
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    /* Fixed chrome */
+    .chrome {
+      position: fixed; inset: 0 0 auto 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 1.25rem 1.5rem; pointer-events: none;
+    }
+    .chrome a, .chrome button { pointer-events: auto; }
+    .mark {
+      width: 28px; height: 36px; color: #fff;
+      font-size: 1.6rem; line-height: 1; font-weight: 300;
+    }
+    .side-nav {
+      position: fixed; left: 1.25rem; top: 50%; transform: translateY(-50%);
+      z-index: 40; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .side-nav a {
+      width: 28px; height: 28px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: grid; place-items: center; font-size: 0.75rem;
+      background: rgba(0,0,0,0.15); backdrop-filter: blur(8px);
+    }
+    .side-nav a:hover { background: rgba(255,255,255,0.15); }
+    .chapters {
+      position: fixed; right: 1.25rem; top: 50%; transform: translateY(-50%);
+      z-index: 40; display: flex; flex-direction: column; gap: 0.5rem;
+      font-size: 0.72rem; text-align: right; max-width: 100px;
+    }
+    .chapters a {
+      color: rgba(255,255,255,0.55); padding: 0.25rem 0;
+    }
+    .chapters a:hover, .chapters a.active { color: #fff; }
+    .chapters strong { display: block; font-size: 0.65rem; letter-spacing: 0.06em; opacity: 0.7; }
+    @media (max-width: 900px) {
+      .side-nav, .chapters { display: none; }
+    }
+
+    /* Panels */
+    .panel {
+      min-height: 100vh; position: relative;
+      display: flex; align-items: center;
+      padding: 5rem 2rem;
+    }
+    .panel-inner {
+      width: min(1100px, 100%); margin-inline: auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 800px) {
+      .panel-inner { grid-template-columns: 1fr; }
+      .panel { min-height: auto; padding: 4rem 1.25rem; }
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      background: var(--blue) center/cover no-repeat;
+      background-image:
+        linear-gradient(90deg, rgba(13, 79, 163, 0.75) 0%, rgba(26, 111, 212, 0.25) 55%, transparent 80%),
+        url("hero.jpg");
+      display: flex; align-items: center;
+      padding: 6rem 2rem 4rem;
+    }
+    .hero-copy { max-width: 28rem; position: relative; z-index: 1; }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2.4rem, 5.5vw, 3.75rem); line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .hero .lead {
+      font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 1.75rem;
+      max-width: 22em;
+    }
+    .hero .detail {
+      margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.92rem; color: rgba(255,255,255,0.8); max-width: 28em;
+    }
+    .tag {
+      display: inline-block; padding: 0.25rem 0.55rem; border-radius: 4px;
+      background: rgba(255,255,255,0.12); font-size: 0.68rem;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+
+    .pillars {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 700px) { .pillars { grid-template-columns: 1fr; } }
+    .pillar {
+      background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; padding: 1.15rem 1.2rem; backdrop-filter: blur(8px);
+    }
+    .pillar h3 {
+      font-family: var(--serif); font-weight: 400; font-size: 1.25rem; margin-bottom: 0.35rem;
+    }
+    .pillar p { font-size: 0.88rem; color: rgba(255,255,255,0.75); }
+
+    /* Cream panel */
+    .panel.cream {
+      background: var(--cream); color: var(--ink);
+    }
+    .panel.cream .muted { color: var(--muted); }
+    .panel h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .panel .body { font-size: 1.05rem; color: inherit; opacity: 0.9; max-width: 32em; }
+    .art {
+      aspect-ratio: 1; border-radius: 8px; background: #e8e0d0 center/cover;
+      border: 1px solid rgba(0,0,0,0.08);
+      min-height: 280px;
+    }
+    .art.blueprint {
+      background:
+        linear-gradient(135deg, #e8e0d0, #d4c4a8),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.04) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.04) 20px);
+      display: grid; place-items: center; position: relative;
+    }
+    .art.blueprint::after {
+      content: "◎"; font-size: 4rem; color: #b8860b; opacity: 0.7;
+    }
+
+    /* Blue work panels */
+    .panel.blue {
+      background: var(--blue);
+      background-image:
+        radial-gradient(ellipse 40% 30% at 20% 30%, rgba(255,255,255,0.12), transparent),
+        radial-gradient(ellipse 35% 25% at 80% 70%, rgba(255,255,255,0.1), transparent);
+    }
+    .panel.blue .grid-label {
+      position: absolute; left: 4rem; top: 50%; writing-mode: vertical-rl;
+      transform: rotate(180deg); font-size: 0.7rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+    }
+    @media (max-width: 900px) { .panel.blue .grid-label { display: none; } }
+
+    .halftone {
+      width: 100%; aspect-ratio: 4/3; border-radius: 8px;
+      background:
+        radial-gradient(circle at 40% 40%, rgba(255,255,255,0.35) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 60% 60%, rgba(255,255,255,0.2) 0 1px, transparent 1.5px),
+        var(--blue-deep);
+      background-size: 6px 6px, 8px 8px, auto;
+      position: relative; overflow: hidden;
+    }
+    .halftone::after {
+      content: ""; position: absolute;
+      width: 55%; height: 40%; left: 20%; top: 25%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.45), transparent 70%);
+      filter: contrast(1.2);
+    }
+
+    /* Full bleed photo-ish */
+    .panel.photo {
+      background: #1a2e1a center/cover;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 50%, transparent),
+        linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.4)),
+        radial-gradient(ellipse at 30% 40%, #3d5c3a, #1a2e1a 70%);
+      min-height: 70vh;
+    }
+    .panel.photo h2 { max-width: 10ch; }
+
+    /* Terms dark */
+    .panel.dark {
+      background: #0c0c0c; color: #f2f2f0;
+    }
+    .stat-xl {
+      font-family: var(--serif); font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 400; line-height: 0.9; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* FAQ */
+    .faq-list { max-width: 40rem; }
+    details {
+      border-bottom: 1px solid rgba(255,255,255,0.15); padding: 1.15rem 0;
+    }
+    .panel.cream details { border-color: rgba(0,0,0,0.1); }
+    summary {
+      cursor: pointer; font-weight: 600; font-size: 1.05rem;
+      list-style: none; display: flex; justify-content: space-between; gap: 1rem;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; opacity: 0.5; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    details p { margin-top: 0.75rem; opacity: 0.8; font-size: 0.95rem; }
+
+    /* Apply */
+    .apply {
+      min-height: 80vh; background: var(--blue);
+      background-image:
+        radial-gradient(ellipse 50% 40% at 70% 40%, rgba(255,255,255,0.15), transparent),
+        linear-gradient(180deg, var(--blue), var(--blue-deep));
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 1.5rem;
+    }
+    .apply h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem;
+    }
+    .apply p { max-width: 28em; margin: 0 auto 1.75rem; color: rgba(255,255,255,0.85); }
+    .apply form {
+      display: grid; gap: 0.75rem; max-width: 400px; margin: 0 auto; text-align: left;
+    }
+    .apply input, .apply textarea {
+      width: 100%; padding: 0.85rem 1rem; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.2);
+      color: #fff; font: inherit;
+    }
+    .apply input::placeholder, .apply textarea::placeholder { color: rgba(255,255,255,0.45); }
+
+    footer {
+      padding: 2rem 1.5rem; background: #0a2d6b;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      font-size: 0.85rem; color: rgba(255,255,255,0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="chrome">
+    <a href="#top" class="mark" aria-label="Pomona home">◐</a>
+    <a class="btn btn-dark" href="#apply">Apply →</a>
+  </div>
+
+  <nav class="side-nav" aria-label="Quick">
+    <a href="#top" title="Top">↑</a>
+    <a href="#model" title="Model">1</a>
+    <a href="#work" title="Work">2</a>
+    <a href="#terms" title="Terms">3</a>
+    <a href="#questions" title="FAQ">4</a>
+  </nav>
+
+  <nav class="chapters" aria-label="Chapters">
+    <a href="#model"><strong>Ch. 1</strong> The Model</a>
+    <a href="#work"><strong>Ch. 2</strong> The Work</a>
+    <a href="#terms"><strong>Ch. 3</strong> The Terms</a>
+    <a href="#questions"><strong>Ch. 4</strong> Questions</a>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Pomona makes you appear.</h1>
+        <p class="lead">Not an agency on the clock, a partner in the upside.</p>
+        <a class="btn btn-dark" href="#apply">Request partnership →</a>
+        <div class="detail">
+          <span class="tag">At your service</span>
+          <p style="margin-top:0.5rem">We build custom software, rank it where customers search, and take our pay as a share of the revenue it earns. No retainers, no hours: if you don’t grow, we don’t get paid.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar">
+            <h3>We build it.</h3>
+            <p>Tailored software, built to be found.</p>
+          </div>
+          <div class="pillar">
+            <h3>We rank it.</h3>
+            <p>Search and links that put you in front of buyers.</p>
+          </div>
+          <div class="pillar">
+            <h3>We share in what it earns.</h3>
+            <p>No hours billed — we co-own the outcome.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel cream" id="model">
+      <div class="panel-inner">
+        <div class="art blueprint" role="img" aria-label="Architectural plan illustration"></div>
+        <div>
+          <h2>No fees. A share of the upside.</h2>
+          <p class="body muted">You pay nothing to start: no retainer, no project fee, no hours on a clock. We carry the cost of strategy, development, content and links.</p>
+          <p class="tag" style="margin-top:1.25rem;background:rgba(0,0,0,0.06);color:var(--muted)">Full disclosure</p>
+          <p class="body muted" style="margin-top:0.65rem;font-size:0.95rem">Our pay is an agreed share of the revenue the work creates, measured against your baseline and visible to both sides. You keep everything we build: the software, the content, the rankings. And we take on a few partners at a time — because when we are paid on the outcome, yes has to be earned.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel photo">
+      <div style="width:min(1100px,100%);margin-inline:auto">
+        <h2>We build it.</h2>
+        <p class="tag" style="margin-top:1rem">Custom software</p>
+        <p class="body" style="margin-top:0.5rem;max-width:28em;color:rgba(255,255,255,0.85)">Tailored software built to be found — storefronts, marketplaces, booking systems, the machinery a modern company sells through.</p>
+      </div>
+    </section>
+
+    <section class="panel blue" id="work">
+      <span class="grid-label">The work</span>
+      <div class="panel-inner">
+        <div class="halftone" aria-hidden="true"></div>
+        <div>
+          <p class="tag">Search engine optimization</p>
+          <h2 style="font-family:var(--serif);font-weight:400;font-size:clamp(1.75rem,3vw,2.5rem);margin:0.75rem 0 1rem;line-height:1.2">Everything it takes to be found, under one roof.</h2>
+          <p class="body" style="opacity:0.9">Search and software are one discipline at Pomona. The product is built to rank from its first commit, and the SEO is done by the people who wrote the code.</p>
+          <p class="tag" style="margin-top:2rem">Search engine optimization</p>
+          <h3 style="font-family:var(--serif);font-weight:400;font-size:1.5rem;margin:0.5rem 0 0.65rem">Search and software are one discipline.</h3>
+          <p class="body" style="opacity:0.85;font-size:0.95rem">Architecture, speed and structure decide rankings before the first word of copy is written. Ours ships fast, renders clean, and gives search engines a site they can read without excuses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel dark" id="terms">
+      <div class="panel-inner" style="grid-template-columns:0.8fr 1.2fr">
+        <div>
+          <div class="stat-xl">Few</div>
+          <p style="opacity:0.6;font-size:0.9rem">partners at a time</p>
+        </div>
+        <div>
+          <h2>We say no more often than yes.</h2>
+          <p class="body" style="opacity:0.85">Our partners sell real products and services, have revenue to grow, and compete in markets where customers search: e-commerce, SaaS, marketplaces, service companies.</p>
+          <p class="tag" style="margin-top:1.25rem">Full disclosure</p>
+          <p class="body" style="margin-top:0.5rem;opacity:0.75;font-size:0.95rem">If that’s you, the terms above are the whole pitch. If you’re pre-revenue, want to rent developers by the hour, or need results by Friday, we’re the wrong partner — and we’ll tell you so in the first call.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel cream" id="questions">
+      <div style="width:min(720px,100%);margin-inline:auto">
+        <h2 style="margin-bottom:1.5rem">Questions before we partner</h2>
+        <div class="faq-list">
+          <details>
+            <summary>What does it cost to work with Pomona?</summary>
+            <p>Nothing upfront and nothing hourly. We fund strategy, software, content and link building. Our payment is an agreed percentage of new revenue that work generates. If revenue doesn’t grow, you owe us nothing.</p>
+          </details>
+          <details>
+            <summary>What share of revenue do you take?</summary>
+            <p>Agreed per partnership before we start. It depends on how much building the opportunity needs. It applies only to growth above your existing baseline — never to revenue you already had.</p>
+          </details>
+          <details>
+            <summary>Why revenue share instead of fees?</summary>
+            <p>Hourly billing pays for effort, not results. We removed the retainer, so the only way we get paid is to grow your revenue.</p>
+          </details>
+          <details>
+            <summary>How do you measure revenue created?</summary>
+            <p>Before we begin, we agree on a baseline and attribution: analytics, order data or bookings. Both sides see the same dashboard.</p>
+          </details>
+          <details>
+            <summary>How long before it pays off?</summary>
+            <p>Software and technical fixes land in weeks; rankings and revenue typically move within months. The model means the waiting costs you nothing — we’re financing the ramp.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="apply" id="apply">
+      <div>
+        <h2>The application</h2>
+        <p>Tell us what you sell and where you want to grow. Every application is read. When the model fits, we answer within a week.</p>
+        <form onsubmit="event.preventDefault();alert('Application received (demo).');">
+          <input type="text" name="company" placeholder="Company" required />
+          <input type="email" name="email" placeholder="Work email" required />
+          <textarea name="story" rows="4" placeholder="What you sell and where you want to grow" required></textarea>
+          <button class="btn btn-dark" type="submit" style="justify-content:center">Send the application →</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Pomona · Partner in the upside · Sample template</span>
+    <a href="mailto:hello@pomona.studio">hello@pomona.studio</a>
+    <span>© 2026 Pomona</span>
+  </footer>
+</body>
+</html>

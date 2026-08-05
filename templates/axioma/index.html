@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axioma — Your agents figure it out once</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --orange: #f97316;
+      --orange-deep: #ea580c;
+      --line: #e8e8e8;
+      --soft: #f7f7f7;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: #fff; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.2rem; border-radius: 10px; font-weight: 600; font-size: 0.92rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-orange:hover { background: var(--orange-deep); }
+    .btn-ghost { background: #fff; border-color: var(--line); color: var(--ink); }
+    .btn-ghost:hover { border-color: #ccc; }
+
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-art { min-height: 320px; order: -1; }
+    }
+    .hero-copy {
+      padding: 1.5rem 2.5rem 3rem; display: flex; flex-direction: column;
+      background: linear-gradient(90deg, #fff 70%, rgba(255,255,255,0.92));
+    }
+    header {
+      display: flex; align-items: center; gap: 1.25rem; margin-bottom: auto; padding-top: 0.5rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.35rem; font-weight: 800; font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+    .logo i {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--orange); display: block;
+    }
+    .nav-links {
+      display: flex; gap: 1.25rem; margin-left: 0.5rem;
+      font-size: 0.8rem; font-weight: 650; letter-spacing: 0.08em; color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { margin-left: auto; }
+    @media (max-width: 700px) { .nav-links { display: none; } }
+
+    .hero-main { padding: 3rem 0 2rem; max-width: 32rem; }
+    .badge {
+      display: inline-block; padding: 0.35rem 0.75rem; border-radius: 999px;
+      background: var(--soft); border: 1px solid var(--line); font-size: 0.8rem;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.85rem); font-weight: 700;
+      letter-spacing: -0.035em; line-height: 1.12; margin-bottom: 1.1rem;
+    }
+    .hero .lead { color: var(--muted); font-size: 1.02rem; margin-bottom: 1.75rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+
+    .hero-art {
+      position: relative; background: #fafafa center/cover no-repeat;
+      background-image: url("hero.jpg");
+      overflow: hidden;
+    }
+    .hero-art::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, transparent 30%);
+      pointer-events: none;
+    }
+    /* vertical light streaks */
+    .streaks {
+      position: absolute; inset: 0; display: flex; pointer-events: none;
+    }
+    .streaks i {
+      flex: 1; border-right: 1px solid rgba(255,255,255,0.25);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08));
+    }
+
+    section { padding: 4.5rem 2rem; }
+    .wrap { width: min(1000px, 100%); margin-inline: auto; }
+    .label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.025em;
+      margin-bottom: 0.5rem; font-weight: 700;
+    }
+    .sub { color: var(--muted); max-width: 36em; margin-bottom: 2rem; }
+
+    .stack-section {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 800px) { .stack-section { grid-template-columns: 1fr; } }
+    .stack {
+      display: flex; flex-direction: column; gap: 0.65rem; max-width: 280px; margin: 0 auto;
+      perspective: 800px;
+    }
+    .layer {
+      height: 56px; border-radius: 12px; border: 1px solid #e5e5e5;
+      background: #f4f4f5; display: flex; align-items: center; justify-content: center;
+      font-weight: 650; font-size: 0.9rem; color: #52525b;
+      box-shadow: 0 8px 0 #e4e4e7, 0 16px 32px rgba(0,0,0,0.06);
+      transform: rotateX(12deg);
+    }
+    .layer.hot {
+      background: linear-gradient(135deg, #fdba74, #fb923c);
+      color: #7c2d12; border-color: #f97316;
+      box-shadow: 0 8px 0 #ea580c, 0 16px 40px rgba(249,115,22,0.25);
+    }
+    .layer:nth-child(1) { width: 92%; margin-left: 4%; }
+    .layer:nth-child(2) { width: 100%; }
+    .layer:nth-child(3) { width: 96%; margin-left: 2%; }
+    .layer:nth-child(4) { width: 100%; }
+    .layer:nth-child(5) { width: 94%; margin-left: 3%; }
+
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    }
+    .card {
+      border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem; background: #fff;
+    }
+    .card h3 { margin-bottom: 0.35rem; font-size: 1.05rem; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .cta {
+      text-align: center; background: var(--soft); border-radius: 18px;
+      padding: 3rem 1.5rem; border: 1px solid var(--line);
+    }
+    .cta h2 { font-size: 1.65rem; margin-bottom: 0.5rem; }
+    .cta p { color: var(--muted); margin-bottom: 1.25rem; }
+
+    footer {
+      padding: 2rem; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-copy">
+      <header>
+        <a href="#" class="logo">AXIOMA<i></i></a>
+        <nav class="nav-links">
+          <a href="#adapter">Adapter</a>
+          <a href="#flows">Flows</a>
+          <a href="#catalog">Catalog</a>
+          <a href="#hub">Hub</a>
+        </nav>
+        <a class="btn btn-orange nav-cta" href="#cta">Log in ↗</a>
+      </header>
+      <div class="hero-main">
+        <p class="badge">Trusted by 500+ global teams</p>
+        <h1>Your Agents Figure It Out Once. After That, It Just Runs.</h1>
+        <p class="lead">
+          <strong>Solidify</strong> is a CLI that watches your agent work, crystallizes the pattern into deterministic code, and ships it — no LLM at runtime, no token costs, no drift. Your team’s forty scripts become one system.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-ghost" href="#cta">Request a Demo</a>
+          <a class="btn btn-orange" href="#cta">Book a Demo ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-art" role="img" aria-label="Abstract orange floral visual">
+      <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <main>
+    <section id="adapter">
+      <div class="wrap stack-section">
+        <div>
+          <p class="label">How it works</p>
+          <h2 class="title">Adapt → Interact → Trace → Crystallize → Share</h2>
+          <p class="sub">Capture agent behavior once, then run the distilled path everywhere your systems already live.</p>
+          <ul style="list-style:none;padding:0;color:var(--muted)">
+            <li style="padding:0.35rem 0">✓ No model calls in production paths</li>
+            <li style="padding:0.35rem 0">✓ Full traceability from prompt to code</li>
+            <li style="padding:0.35rem 0">✓ Share solid flows across teams</li>
+          </ul>
+        </div>
+        <div class="stack" aria-hidden="true">
+          <div class="layer">Adapt</div>
+          <div class="layer hot">Interact</div>
+          <div class="layer">Trace</div>
+          <div class="layer">Crystallize</div>
+          <div class="layer">Share</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flows" style="background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="wrap">
+        <p class="label">Flows</p>
+        <h2 class="title">From agent chaos to one system</h2>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Watch</h3>
+            <p>Solidify observes successful agent runs and captures the decision graph.</p>
+          </article>
+          <article class="card">
+            <h3>Crystallize</h3>
+            <p>Patterns become typed, testable code with zero runtime model dependency.</p>
+          </article>
+          <article class="card">
+            <h3>Ship</h3>
+            <p>Deploy as CLI steps, webhooks, or services your platform already trusts.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalog">
+      <div class="wrap">
+        <p class="label">Catalog &amp; hub</p>
+        <h2 class="title">One library for every solid flow</h2>
+        <p class="sub">Versioned, searchable, and permissioned — so teams stop pasting scripts in chat.</p>
+        <div class="grid-3">
+          <article class="card"><h3>Adapter</h3><p>Connect tools and endpoints your agents already call.</p></article>
+          <article class="card"><h3>Hub</h3><p>Govern who can publish, promote, and run crystallized flows.</p></article>
+          <article class="card"><h3>Catalog</h3><p>Discover proven paths across ops, support, and engineering.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="hub">
+      <div class="wrap">
+        <div class="cta" id="cta">
+          <h2>Turn forty scripts into one system</h2>
+          <p>Book a demo — see crystallization on your own agent traces.</p>
+          <a class="btn btn-orange" href="#">Book a Demo ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span class="logo">AXIOMA<i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-left:4px"></i></span>
+    <span>Agent crystallization · Sample template</span>
+    <span>© 2026 Axioma</span>
+  </footer>
+</body>
+</html>

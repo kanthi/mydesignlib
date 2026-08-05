@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sovren Systems — Emerging systems of the future</title>
+  <meta
+    name="description"
+    content="Web3 & AI engineering studio. Sample powered by free GSAP, Three.js, and Lenis."
+  />
+  <!--
+    Inspired by GSAP Site of the Day (Web3 studio) stack.
+    Free/open libraries used:
+    - GSAP 3 (core) — https://github.com/greensock/GSAP
+    - Three.js — WebGL ambient field
+    - Lenis — smooth scroll
+    SplitText is GSAP Club-only; we use a free line-split + GSAP instead.
+    Respects prefers-reduced-motion.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #070708;
+      --panel: #121316;
+      --ink: #eef0f4;
+      --muted: #8b919c;
+      --line: #2a2c32;
+      --red: #e23d3d;
+      --green: #3dd68c;
+      --font: Inter, system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    body {
+      font-family: var(--font);
+      background: #000;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    .shell {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+      overflow: clip;
+      position: relative;
+    }
+
+    /* Preloader */
+    .preloader {
+      position: fixed; inset: 0; z-index: 100;
+      background: #000;
+      display: grid; place-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s;
+    }
+    .preloader.is-done {
+      opacity: 0; visibility: hidden; pointer-events: none;
+    }
+    .preloader p {
+      font-family: var(--mono); font-size: 0.85rem; color: var(--muted);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .preloader .bar {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 0.85rem 1.25rem;
+      background: rgba(7,7,8,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .brand {
+      font-family: var(--mono); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      line-height: 1.3;
+    }
+    .brand small { display: block; color: var(--muted); font-size: 0.65rem; }
+    .hud {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 4px;
+      padding: 0.35rem 0.65rem;
+    }
+    .chip .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+    .chip.is-off .dot { background: #555; box-shadow: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600;
+      padding: 0.55rem 0.9rem;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: 0.15s ease;
+    }
+    .btn-red {
+      background: var(--red); color: #fff;
+    }
+    .btn-red:hover { filter: brightness(1.08); }
+    .btn-ghost {
+      background: transparent; color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn-ghost:hover { border-color: #555; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: min(92vh, 860px);
+      padding: 2rem 1.5rem 3rem;
+      overflow: hidden;
+    }
+    #field {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero-meta {
+      position: relative; z-index: 2;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--muted); letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4rem;
+    }
+    .hero-copy {
+      position: relative; z-index: 2;
+      max-width: 18ch;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+      text-transform: uppercase;
+    }
+    .hero-copy h1 .line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero-copy h1 .line span {
+      display: block;
+    }
+    .hero-foot {
+      position: absolute; z-index: 2;
+      left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--muted); letter-spacing: 0.08em;
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .label {
+      font-family: var(--mono); font-size: 0.7rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600; letter-spacing: -0.035em; line-height: 1.05;
+      text-transform: uppercase; margin-bottom: 1.25rem;
+      max-width: 12ch;
+    }
+    .title .line { display: block; overflow: hidden; }
+    .title .line span { display: block; }
+    .lead {
+      color: var(--muted); max-width: 38em; font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 700px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+    .svc {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.35rem;
+    }
+    .svc h3 {
+      font-size: 1.1rem; font-weight: 650; margin-bottom: 0.85rem;
+      letter-spacing: -0.02em;
+    }
+    .svc ul {
+      list-style: none; padding: 0;
+      display: grid; gap: 0.4rem;
+    }
+    .svc li {
+      font-size: 0.9rem; color: var(--muted);
+      padding-left: 1rem; position: relative;
+    }
+    .svc li::before {
+      content: "+"; position: absolute; left: 0; color: var(--red);
+      font-family: var(--mono); font-size: 0.75rem;
+    }
+
+    .process {
+      display: grid; gap: 0.85rem;
+    }
+    .step {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 1rem; align-items: start;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.25rem 1.35rem;
+    }
+    .step .num {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--muted);
+    }
+    .step h3 {
+      font-size: 1.15rem; font-weight: 650; margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    .step p { color: var(--muted); font-size: 0.92rem; max-width: 40em; }
+
+    .partners {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+    }
+    @media (max-width: 640px) {
+      .partners { grid-template-columns: 1fr; }
+    }
+    .partner {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.1rem;
+      background: #0c0c0e;
+      min-height: 110px;
+    }
+    .partner .meta {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--muted); letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 0.65rem;
+    }
+    .partner strong {
+      font-size: 1.05rem; font-weight: 650;
+    }
+
+    .contact {
+      background: #0a0a0c;
+    }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 2rem;
+    }
+    @media (max-width: 720px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    form {
+      display: grid; gap: 0.85rem;
+    }
+    label {
+      display: grid; gap: 0.35rem;
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+    }
+    input, textarea {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: #fff;
+      padding: 0.75rem 0.9rem;
+      font: inherit;
+      outline: none;
+    }
+    input:focus, textarea:focus { border-color: #555; }
+    textarea { min-height: 110px; resize: vertical; }
+
+    footer {
+      padding: 1.25rem 1.5rem 1.75rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--muted); letter-spacing: 0.06em;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .lib-note {
+      margin: 0 1.5rem 1.25rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px dashed var(--line);
+      border-radius: 6px;
+      font-size: 0.78rem; color: #777;
+    }
+    .lib-note code {
+      font-family: var(--mono); font-size: 0.72rem;
+      background: #151518; padding: 0.1rem 0.3rem; border-radius: 3px;
+    }
+
+    .reveal { will-change: transform, opacity; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .preloader { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preloader" id="preloader" role="status" aria-label="Loading">
+    <p>Please stand by</p>
+    <div class="bar"><span id="loadPct">0</span> · Loading</div>
+  </div>
+
+  <div class="shell">
+    <header class="topbar">
+      <a href="#top" class="brand">
+        Sovren
+        <small>Systems</small>
+      </a>
+      <div class="hud">
+        <button type="button" class="chip is-off" id="soundBtn" aria-pressed="false">
+          <span class="dot" aria-hidden="true"></span>
+          Ambient · Sound off
+        </button>
+        <span class="chip" id="clock">00:00 UTC</span>
+        <a class="btn btn-ghost" href="#work">Menu</a>
+        <a class="btn btn-red" href="#contact">+ Connect</a>
+      </div>
+    </header>
+
+    <section class="hero" id="top">
+      <canvas id="field" aria-hidden="true"></canvas>
+      <div class="hero-meta">
+        <span>Web3 studio · self-sovereign systems</span>
+        <span>Berlin, DE · Founded 2022</span>
+      </div>
+      <div class="hero-copy">
+        <h1 class="split-lines" data-split>
+          Emerging systems of the future
+        </h1>
+      </div>
+      <div class="hero-foot">
+        <span>Scroll to explore</span>
+        <span>01 · Intro</span>
+      </div>
+    </section>
+
+    <section id="about">
+      <p class="label">Manifesto</p>
+      <h2 class="title split-lines" data-split>Sovren Systems</h2>
+      <p class="lead reveal">
+        The internet was meant to be decentralized — and it should stay this way.
+        We shape governance and financial systems that empower network economies
+        and protect users’ agency.
+      </p>
+    </section>
+
+    <section id="work">
+      <p class="label">Services · 02</p>
+      <h2 class="title split-lines" data-split>What we build</h2>
+      <div class="services-grid">
+        <article class="svc reveal">
+          <h3>Technics</h3>
+          <ul>
+            <li>Smart contracts</li>
+            <li>User interfaces</li>
+            <li>Interoperability solutions</li>
+            <li>AI agent tooling</li>
+            <li>AI agent workflows</li>
+          </ul>
+        </article>
+        <article class="svc reveal">
+          <h3>Consultancy</h3>
+          <ul>
+            <li>Tokenomics</li>
+            <li>Governance systems</li>
+            <li>Treasury management</li>
+            <li>Liquidity strategies</li>
+            <li>Protocol architecture</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="process">
+      <p class="label">Process · 03</p>
+      <h2 class="title split-lines" data-split>How we work</h2>
+      <div class="process">
+        <article class="step reveal">
+          <span class="num">01</span>
+          <div>
+            <h3>Listen</h3>
+            <p>We begin by mapping goals, constraints, and trust assumptions until the right architecture emerges.</p>
+          </div>
+          <span class="num">→</span>
+        </article>
+        <article class="step reveal">
+          <span class="num">02</span>
+          <div>
+            <h3>Build</h3>
+            <p>Minimal surface area, production-grade engineering — nothing on-chain that has not earned its place.</p>
+          </div>
+          <span class="num">→</span>
+        </article>
+        <article class="step reveal">
+          <span class="num">03</span>
+          <div>
+            <h3>Sustain</h3>
+            <p>We stay with the system — auditing, maintaining, and evolving it as the network around it changes.</p>
+          </div>
+          <span class="num">→</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="network">
+      <p class="label">Network of trust · 04</p>
+      <h2 class="title split-lines" data-split>Partners</h2>
+      <p class="lead reveal">
+        We empower emerging organizations with decentralized infrastructure for a
+        borderless, permissionless society.
+      </p>
+      <div class="partners">
+        <article class="partner reveal">
+          <div class="meta">01 / 05 · Customer</div>
+          <strong>Northline Protocol</strong>
+        </article>
+        <article class="partner reveal">
+          <div class="meta">02 / 05 · Customer</div>
+          <strong>Fieldkit DAO</strong>
+        </article>
+        <article class="partner reveal">
+          <div class="meta">03 / 05 · Customer</div>
+          <strong>Vaultlane</strong>
+        </article>
+        <article class="partner reveal">
+          <div class="meta">04 / 05 · Customer</div>
+          <strong>Orbitdesk</strong>
+        </article>
+        <article class="partner reveal">
+          <div class="meta">05 / 05 · Customer</div>
+          <strong>Signalform</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-grid">
+        <div>
+          <p class="label">Contact</p>
+          <h2 class="title split-lines" data-split>Get in touch</h2>
+          <p class="lead reveal">A few sentences is enough — we’ll take it from there.</p>
+        </div>
+        <form class="reveal" action="#" method="get" onsubmit="event.preventDefault(); alert('Message queued — sample form only.'); this.reset();">
+          <label>Alias
+            <input type="text" name="alias" placeholder="Your alias" required />
+          </label>
+          <label>Email
+            <input type="email" name="email" placeholder="you@domain.com" required />
+          </label>
+          <label>Message
+            <textarea name="message" placeholder="Tell us what you’re building"></textarea>
+          </label>
+          <button class="btn btn-red" type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <p class="lib-note">
+      Motion stack (free/open CDN):
+      <a href="https://github.com/greensock/GSAP" target="_blank" rel="noopener"><code>gsap</code></a>,
+      <a href="https://github.com/mrdoob/three.js" target="_blank" rel="noopener"><code>three.js</code></a>,
+      <a href="https://github.com/darkroomengineering/lenis" target="_blank" rel="noopener"><code>lenis</code></a>.
+      Reduced motion is respected. Fictional studio sample — not affiliated with the original SOTD site.
+    </p>
+
+    <footer>
+      <span>Sovren Systems · Sample template</span>
+      <a href="mailto:hello@sovren.example">hello@sovren.example</a>
+      <span>© 2026</span>
+    </footer>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.mjs"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="module">
+    import * as THREE from "three";
+    import Lenis from "lenis";
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const preloader = document.getElementById("preloader");
+    const loadPct = document.getElementById("loadPct");
+
+    // Clock
+    function tickClock() {
+      const el = document.getElementById("clock");
+      if (!el) return;
+      const s = new Date().toISOString().slice(11, 16);
+      el.textContent = s + " UTC";
+    }
+    tickClock();
+    setInterval(tickClock, 30000);
+
+    // Ambient tone (Web Audio — no asset)
+    let audioCtx = null;
+    let osc = null;
+    let gain = null;
+    let soundOn = false;
+    const soundBtn = document.getElementById("soundBtn");
+    soundBtn?.addEventListener("click", () => {
+      soundOn = !soundOn;
+      soundBtn.classList.toggle("is-off", !soundOn);
+      soundBtn.setAttribute("aria-pressed", String(soundOn));
+      soundBtn.innerHTML =
+        '<span class="dot" aria-hidden="true"></span> Ambient · Sound ' +
+        (soundOn ? "on" : "off");
+      if (soundOn) startTone();
+      else stopTone();
+    });
+    function startTone() {
+      if (reduce) return;
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        osc = audioCtx.createOscillator();
+        gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 55;
+        gain.gain.value = 0.012;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+      } catch (_) {}
+    }
+    function stopTone() {
+      try {
+        osc?.stop();
+        osc = null;
+      } catch (_) {}
+    }
+
+    // Free line split (no GSAP SplitText club plugin)
+    function splitLines(el) {
+      const text = el.textContent.trim().replace(/\s+/g, " ");
+      const words = text.split(" ");
+      el.textContent = "";
+      // group into ~rough lines by word count
+      const perLine = el.classList.contains("title") ? 2 : 3;
+      for (let i = 0; i < words.length; i += perLine) {
+        const lineWords = words.slice(i, i + perLine).join(" ");
+        const line = document.createElement("span");
+        line.className = "line";
+        const inner = document.createElement("span");
+        inner.textContent = lineWords;
+        line.appendChild(inner);
+        el.appendChild(line);
+      }
+    }
+    document.querySelectorAll("[data-split]").forEach(splitLines);
+
+    // Preloader
+    let pct = 0;
+    const boot = setInterval(() => {
+      pct = Math.min(100, pct + (reduce ? 50 : 7 + Math.random() * 10));
+      loadPct.textContent = String(Math.floor(pct));
+      if (pct >= 100) {
+        clearInterval(boot);
+        if (reduce) {
+          preloader.classList.add("is-done");
+          initPage();
+        } else {
+          gsap.to(preloader, {
+            opacity: 0,
+            duration: 0.55,
+            ease: "power2.inOut",
+            onComplete: () => {
+              preloader.classList.add("is-done");
+              initPage();
+            },
+          });
+        }
+      }
+    }, reduce ? 16 : 80);
+
+    function initPage() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Lenis + ScrollTrigger
+      let lenis = null;
+      if (!reduce) {
+        lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      // Hero line reveal
+      if (!reduce) {
+        gsap.from(".hero-copy h1 .line span", {
+          yPercent: 110,
+          duration: 1.05,
+          stagger: 0.1,
+          ease: "power3.out",
+          delay: 0.05,
+        });
+      }
+
+      // Scroll reveals
+      if (!reduce) {
+        gsap.utils.toArray(".reveal").forEach((el) => {
+          gsap.from(el, {
+            opacity: 0,
+            y: 36,
+            duration: 0.85,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+            },
+          });
+        });
+        gsap.utils.toArray("h2.split-lines").forEach((el) => {
+          gsap.from(el.querySelectorAll(".line span"), {
+            yPercent: 110,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+            },
+          });
+        });
+      }
+
+      // Three.js field
+      initField(reduce);
+    }
+
+    function initField(reduceMotion) {
+      const canvas = document.getElementById("field");
+      const hero = canvas.parentElement;
+      if (!canvas || reduceMotion) {
+        if (canvas) canvas.style.display = "none";
+        return;
+      }
+      try {
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+        });
+        renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+        renderer.setClearColor(0x000000, 0);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+        camera.position.set(0, 4, 10);
+        camera.lookAt(0, 0, 0);
+
+        // Grid of boxes (abstract city / forest of systems)
+        const group = new THREE.Group();
+        scene.add(group);
+        const geo = new THREE.BoxGeometry(0.35, 1, 0.35);
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0x2a2e38,
+          wireframe: false,
+        });
+        const edgeMat = new THREE.LineBasicMaterial({ color: 0x5a6270 });
+        for (let x = -10; x <= 10; x++) {
+          for (let z = -8; z <= 6; z++) {
+            if (Math.random() > 0.55) continue;
+            const h = 0.3 + Math.random() * 2.2;
+            const m = mat.clone();
+            m.color = new THREE.Color().setHSL(0.6, 0.05, 0.12 + Math.random() * 0.12);
+            const mesh = new THREE.Mesh(geo, m);
+            mesh.scale.y = h;
+            mesh.position.set(x * 0.55, h / 2 - 1.2, z * 0.55);
+            group.add(mesh);
+          }
+        }
+
+        // Soft particles
+        const pCount = 400;
+        const positions = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 16;
+          positions[i * 3 + 1] = Math.random() * 6;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
+        }
+        const pGeo = new THREE.BufferGeometry();
+        pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+        const pMat = new THREE.PointsMaterial({
+          color: 0xa8aebc,
+          size: 0.03,
+          transparent: true,
+          opacity: 0.55,
+        });
+        const points = new THREE.Points(pGeo, pMat);
+        scene.add(points);
+
+        function resize() {
+          const w = hero.clientWidth;
+          const h = hero.clientHeight;
+          camera.aspect = w / Math.max(h, 1);
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h, false);
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        let mx = 0, my = 0;
+        hero.addEventListener("pointermove", (e) => {
+          const r = hero.getBoundingClientRect();
+          mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+          my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        });
+
+        const clock = new THREE.Clock();
+        function frame() {
+          const t = clock.getElapsedTime();
+          group.rotation.y = t * 0.04 + mx * 0.08;
+          group.position.x = mx * 0.3;
+          group.position.z = my * 0.2;
+          points.rotation.y = t * 0.02;
+          camera.position.x = mx * 0.5;
+          camera.position.y = 4 - my * 0.4;
+          camera.lookAt(0, 0.5, 0);
+          renderer.render(scene, camera);
+          requestAnimationFrame(frame);
+        }
+        frame();
+      } catch (err) {
+        console.warn("WebGL field unavailable", err);
+        canvas.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

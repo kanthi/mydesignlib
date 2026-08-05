@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auron — AI, Data &amp; Engineering into business advantage</title>
+  <meta
+    name="description"
+    content="Global technology consulting template. Glass-orb hero powered by open-source Three.js."
+  />
+  <!--
+    Original reference was built in Framer (proprietary).
+    Free/open substitutes used here:
+    - three.js (MIT) — animated glass orbs in the hero panel
+      https://github.com/mrdoob/three.js
+    - Inter via Google Fonts (OFL)
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #f3f6f9;
+      --panel: #eef2f6;
+      --ink: #1a2332;
+      --muted: #5c6b7a;
+      --line: #d8e0e8;
+      --teal: #0f3d4c;
+      --teal-mid: #164a5c;
+      --blue: #2b5a8a;
+      --font: Inter, system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #c5cdd6;
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    .frame {
+      width: min(1180px, 100% - 1.5rem);
+      margin: 1rem auto 2.5rem;
+      background: var(--bg);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(20, 30, 50, 0.28);
+    }
+
+    /* —— Nav —— */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 0.85rem 1.25rem;
+      background: #f7fafc;
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-weight: 700; letter-spacing: -0.03em; font-size: 1.05rem;
+    }
+    .logo-mark {
+      width: 28px; height: 28px;
+      display: grid; place-items: center;
+    }
+    .logo-mark svg { width: 22px; height: 22px; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 0.35rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.2rem;
+    }
+    .nav-links a,
+    .nav-links .nav-item {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      border-radius: 6px;
+      border: 0; background: transparent;
+      position: relative;
+    }
+    .nav-links a:hover,
+    .nav-item:hover { color: var(--ink); background: var(--panel); }
+    .nav-item .chev { font-size: 0.65rem; opacity: 0.7; }
+    .menu-btn {
+      display: none; border: 1px solid var(--line); background: #fff;
+      border-radius: 8px; padding: 0.45rem 0.7rem; font-size: 0.85rem;
+    }
+    @media (max-width: 820px) {
+      .nav-links { display: none; width: 100%; flex-direction: column; }
+      .nav.open .nav-links { display: flex; }
+      .menu-btn { display: block; margin-left: auto; }
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.65rem 1.05rem; border-radius: 8px;
+      font-size: 0.86rem; font-weight: 600;
+      border: 1px solid transparent; transition: 0.15s ease;
+    }
+    .btn-teal {
+      background: var(--teal); color: #fff;
+    }
+    .btn-teal:hover { background: var(--teal-mid); }
+    .btn-ghost {
+      background: #fff; color: var(--ink); border-color: var(--line);
+    }
+    .btn-ghost:hover { border-color: #b0bcc8; }
+    .btn-icon {
+      width: 2.4rem; height: 2.4rem; padding: 0;
+      border-radius: 8px;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: min(78vh, 640px);
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    .hero-left {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      background: var(--bg);
+      border-right: 1px solid var(--line);
+    }
+    .partner {
+      padding: 1.75rem 1.75rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      max-width: 42em;
+    }
+    .partner .star {
+      display: inline-block;
+      color: var(--blue);
+      margin-right: 0.35rem;
+    }
+    .hero-copy {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem 1.75rem 2.25rem;
+      gap: 1rem;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.78rem; font-weight: 600; color: var(--muted);
+    }
+    .eyebrow::before {
+      content: "";
+      width: 14px; height: 10px;
+      background:
+        linear-gradient(90deg, var(--teal), var(--teal)) 0 0 / 3px 100% no-repeat,
+        linear-gradient(90deg, var(--teal), var(--teal)) 5.5px 0 / 3px 100% no-repeat,
+        linear-gradient(90deg, var(--teal), var(--teal)) 11px 0 / 3px 100% no-repeat;
+      opacity: 0.75;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2rem, 4.2vw, 2.85rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.12;
+      color: #1e2936;
+      max-width: 14ch;
+    }
+    .hero-copy h1 em {
+      font-style: normal;
+      color: #3d6f9c;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.55rem;
+      margin-top: 0.35rem;
+    }
+
+    .hero-right {
+      position: relative;
+      background: #000;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .hero-right canvas {
+      display: block; width: 100% !important; height: 100% !important;
+    }
+    .hero-fallback {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .hero-right.is-fallback .hero-fallback { opacity: 1; }
+    .hero-right.is-fallback canvas { opacity: 0; }
+
+    /* —— Content sections —— */
+    section {
+      padding: 3.75rem 1.75rem;
+      border-top: 1px solid var(--line);
+      background: #f7fafc;
+    }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.6rem;
+    }
+    .title {
+      font-size: clamp(1.55rem, 3vw, 2.1rem);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 0.75rem; max-width: 18ch;
+    }
+    .lead {
+      color: var(--muted); max-width: 40em; margin-bottom: 1.75rem;
+    }
+
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
+    }
+    @media (max-width: 760px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #fff; border: 1px solid var(--line);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .card h3 {
+      font-size: 1.02rem; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .card p { font-size: 0.9rem; color: var(--muted); }
+    .card .num {
+      font-size: 0.72rem; font-weight: 700; color: var(--blue);
+      letter-spacing: 0.08em; margin-bottom: 0.55rem;
+    }
+
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
+    }
+    @media (max-width: 720px) {
+      .split { grid-template-columns: 1fr; }
+    }
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    }
+    .stat {
+      background: #fff; border: 1px solid var(--line);
+      border-radius: 12px; padding: 1.1rem;
+    }
+    .stat strong {
+      display: block; font-size: 1.65rem; letter-spacing: -0.03em;
+      margin-bottom: 0.15rem;
+    }
+    .stat span { font-size: 0.82rem; color: var(--muted); }
+
+    .cta-band {
+      background: var(--teal); color: #fff;
+      text-align: center; padding: 3rem 1.5rem;
+      border-top: 0;
+    }
+    .cta-band h2 {
+      font-size: 1.65rem; font-weight: 700; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .cta-band p { opacity: 0.85; margin-bottom: 1.15rem; }
+    .cta-band .btn-ghost {
+      background: #fff; color: var(--teal); border-color: transparent;
+    }
+
+    footer {
+      padding: 1.25rem 1.75rem 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-size: 0.75rem; color: var(--muted);
+      background: #f7fafc; border-top: 1px solid var(--line);
+    }
+    footer a:hover { color: var(--ink); }
+
+    .lib-note {
+      margin: 0 1.75rem 1.5rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      font-size: 0.78rem; color: var(--muted);
+      background: #fff;
+    }
+    .lib-note code {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      background: var(--panel);
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="nav" id="nav">
+      <a href="#top" class="logo">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2 L4 7 L4 17 L12 22 L20 17 L20 7 Z" stroke="#0f3d4c" stroke-width="1.6"/>
+            <path d="M12 7 L8 9.5 V14.5 L12 17 L16 14.5 V9.5 Z" fill="#0f3d4c"/>
+          </svg>
+        </span>
+        Auron
+      </a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+      <nav class="nav-links">
+        <a href="#services"><span>01</span> What We Do ▾</a>
+        <a href="#about"><span>02</span> Who We Are ▾</a>
+        <a href="#resources"><span>03</span> Resources</a>
+        <a href="#career"><span>04</span> Career</a>
+      </nav>
+      <a class="btn btn-teal" href="#contact">Contact Us →</a>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <div class="partner">
+          <span class="star" aria-hidden="true">✦</span>
+          We partner with enterprise and public-sector leaders to modernize critical systems,
+          accelerate digital transformation and solve complex technology challenges with confidence.
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Global Technology Consulting &amp; Digital Engineering</p>
+          <h1>Turning AI, Data &amp; <em>Engineering</em> into Business Advantage.</h1>
+          <div class="hero-actions">
+            <a class="btn btn-ghost" href="#contact">Talk to Expert</a>
+            <a class="btn btn-teal btn-icon" href="#contact" aria-label="Talk to expert">→</a>
+            <a class="btn btn-ghost" href="#services">Explore Our Work</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right" id="orbStage">
+        <img class="hero-fallback" src="hero-orb.jpg" alt="" />
+        <canvas id="orbCanvas" aria-hidden="true"></canvas>
+      </div>
+    </section>
+
+    <section id="services">
+      <p class="label">01 · What we do</p>
+      <h2 class="title">Capabilities that move the needle</h2>
+      <p class="lead">
+        From strategy through delivery — Auron helps teams ship reliable systems where AI,
+        data platforms, and engineering discipline meet.
+      </p>
+      <div class="grid-3">
+        <article class="card">
+          <div class="num">01</div>
+          <h3>AI &amp; intelligent products</h3>
+          <p>Model strategy, applied ML, and human-centered interfaces for high-stakes workflows.</p>
+        </article>
+        <article class="card">
+          <div class="num">02</div>
+          <h3>Data platforms</h3>
+          <p>Modern pipelines, governance, and analytics that executives can trust.</p>
+        </article>
+        <article class="card">
+          <div class="num">03</div>
+          <h3>Digital engineering</h3>
+          <p>Cloud, platforms, and product engineering with security and scale built in.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="split">
+        <div>
+          <p class="label">02 · Who we are</p>
+          <h2 class="title">A consulting bench built for complexity</h2>
+          <p class="lead" style="margin-bottom:0">
+            Practitioners who have shipped inside regulated industries — calm under load,
+            allergic to slideware without delivery.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>18+</strong><span>Years average partner tenure</span></div>
+          <div class="stat"><strong>40</strong><span>Active enterprise programs</span></div>
+          <div class="stat"><strong>12</strong><span>Markets served</span></div>
+          <div class="stat"><strong>98%</strong><span>Client retention</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <p class="label">03 · Resources</p>
+      <h2 class="title">Notes from the field</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Modernizing legacy cores</h3>
+          <p>Patterns for incremental platform replacement without freezing the business.</p>
+        </article>
+        <article class="card">
+          <h3>AI that survives audit</h3>
+          <p>Evaluation, monitoring, and documentation habits that regulators accept.</p>
+        </article>
+        <article class="card">
+          <h3>Public-sector playbooks</h3>
+          <p>Procurement-aware delivery for multi-year transformation programs.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="career">
+      <p class="label">04 · Career</p>
+      <h2 class="title">Build systems that matter</h2>
+      <p class="lead">
+        We’re hiring engineers, designers, and engagement leads who enjoy hard problems
+        and clear writing.
+      </p>
+      <a class="btn btn-teal" href="mailto:careers@auron.example">View open roles →</a>
+    </section>
+
+    <section class="cta-band" id="contact">
+      <h2>Ready to talk?</h2>
+      <p>Tell us about the systems you’re modernizing.</p>
+      <a class="btn btn-ghost" href="mailto:hello@auron.example">Contact Us →</a>
+    </section>
+
+    <p class="lib-note">
+      Hero glass orbs animated with
+      <a href="https://github.com/mrdoob/three.js" target="_blank" rel="noopener"><code>three.js</code></a>
+      (MIT). The reference design was authored in Framer (closed); Three.js is the free/open
+      substitute for the 3D motion panel.
+    </p>
+
+    <footer>
+      <span>Auron · Sample template</span>
+      <a href="mailto:hello@auron.example">hello@auron.example</a>
+      <span>© 2026</span>
+    </footer>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+
+    const stage = document.getElementById("orbStage");
+    const canvas = document.getElementById("orbCanvas");
+
+    document.getElementById("menuBtn").addEventListener("click", () => {
+      document.getElementById("nav").classList.toggle("open");
+    });
+
+    function failToImage() {
+      stage.classList.add("is-fallback");
+    }
+
+    try {
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance",
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setClearColor(0x000000, 1);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+      camera.position.set(0, 0.15, 5.2);
+
+      const amb = new THREE.AmbientLight(0x1a2a44, 0.55);
+      scene.add(amb);
+      const key = new THREE.DirectionalLight(0xffffff, 1.35);
+      key.position.set(3, 2, 4);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0x88ccff, 0.9);
+      rim.position.set(-4, 1, -2);
+      scene.add(rim);
+      const fill = new THREE.PointLight(0xff66aa, 0.55, 12);
+      fill.position.set(-1.5, -1, 2);
+      scene.add(fill);
+      const fill2 = new THREE.PointLight(0x66aaff, 0.7, 12);
+      fill2.position.set(2, 1.5, 1);
+      scene.add(fill2);
+
+      // Environment-ish gradient via large dark sphere
+      const envGeo = new THREE.SphereGeometry(20, 32, 32);
+      const envMat = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide });
+      scene.add(new THREE.Mesh(envGeo, envMat));
+
+      function makeOrb(radius, color, metalness, roughness) {
+        const geo = new THREE.SphereGeometry(radius, 64, 64);
+        const mat = new THREE.MeshPhysicalMaterial({
+          color,
+          metalness,
+          roughness,
+          clearcoat: 1,
+          clearcoatRoughness: 0.12,
+          reflectivity: 1,
+          transmission: 0.08,
+          thickness: 0.6,
+          ior: 1.4,
+          envMapIntensity: 1,
+        });
+        return new THREE.Mesh(geo, mat);
+      }
+
+      const orbA = makeOrb(1.15, 0x0a2a6e, 0.85, 0.18);
+      orbA.position.set(-0.55, 0.35, 0);
+      const orbB = makeOrb(1.05, 0x0c1f55, 0.9, 0.14);
+      orbB.position.set(0.75, -0.45, -0.35);
+
+      // Thin iridescent shell
+      const shell = new THREE.Mesh(
+        new THREE.SphereGeometry(1.18, 64, 64),
+        new THREE.MeshPhysicalMaterial({
+          color: 0x2244aa,
+          metalness: 0.2,
+          roughness: 0.05,
+          transmission: 0.85,
+          thickness: 0.35,
+          transparent: true,
+          opacity: 0.35,
+          side: THREE.DoubleSide,
+        })
+      );
+      shell.position.copy(orbA.position);
+
+      scene.add(orbA, orbB, shell);
+
+      // Soft ground glow
+      const glow = new THREE.Mesh(
+        new THREE.PlaneGeometry(8, 8),
+        new THREE.MeshBasicMaterial({
+          color: 0x0a1840,
+          transparent: true,
+          opacity: 0.35,
+        })
+      );
+      glow.rotation.x = -Math.PI / 2;
+      glow.position.y = -1.6;
+      scene.add(glow);
+
+      function resize() {
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        camera.aspect = w / Math.max(h, 1);
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      let mx = 0, my = 0;
+      stage.addEventListener("pointermove", (ev) => {
+        const r = stage.getBoundingClientRect();
+        mx = ((ev.clientX - r.left) / r.width) * 2 - 1;
+        my = ((ev.clientY - r.top) / r.height) * 2 - 1;
+      });
+
+      const clock = new THREE.Clock();
+      function tick() {
+        const t = clock.getElapsedTime();
+        orbA.position.x = -0.55 + Math.sin(t * 0.35) * 0.08;
+        orbA.position.y = 0.35 + Math.cos(t * 0.42) * 0.06;
+        orbB.position.x = 0.75 + Math.cos(t * 0.3) * 0.07;
+        orbB.position.y = -0.45 + Math.sin(t * 0.38) * 0.07;
+        orbA.rotation.y = t * 0.15;
+        orbB.rotation.y = -t * 0.12;
+        shell.position.copy(orbA.position);
+        shell.rotation.y = t * 0.2;
+
+        camera.position.x = mx * 0.25;
+        camera.position.y = 0.15 - my * 0.15;
+        camera.lookAt(0, 0, 0);
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      tick();
+    } catch (err) {
+      console.warn("Three.js hero failed, using static image.", err);
+      failToImage();
+    }
+  </script>
+</body>
+</html>

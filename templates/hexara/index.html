@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hexara — Sovereign AI infrastructure, deployed in two weeks</title>
+  <meta
+    name="description"
+    content="Bespoke AI systems trained on your company data. Fictional product sample with animated isometric hero."
+  />
+  <!--
+    Conversion-focused hero pattern (isometric stack animation).
+    Free: Inter (OFL), pure CSS 3D + optional GSAP for scroll (CDN).
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #1a1c1a;
+      --panel: #141614;
+      --ink: #f2f3f1;
+      --muted: #8b918a;
+      --line: #2c302c;
+      --mint: #c5d9c8;
+      --mint-deep: #9bb89f;
+      --font: Inter, system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #0e100e;
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    .shell {
+      width: min(1120px, 100% - 1.25rem);
+      margin: 1rem auto 2rem;
+      background: var(--bg);
+      border-radius: 14px;
+      border: 1px solid #252825;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+
+    /* —— Nav —— */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 1rem 1.35rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-weight: 700; letter-spacing: -0.03em; font-size: 1.02rem;
+    }
+    .logo-mark {
+      width: 26px; height: 26px;
+      display: grid; place-items: center;
+    }
+    .logo-mark svg { width: 22px; height: 22px; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 1.15rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-actions { display: flex; gap: 0.45rem; }
+    .menu-btn {
+      display: none; background: transparent; border: 1px solid var(--line);
+      color: #fff; border-radius: 8px; padding: 0.4rem 0.65rem;
+    }
+    @media (max-width: 820px) {
+      .nav-links { display: none; width: 100%; flex-direction: column; gap: 0.55rem; }
+      .nav.open .nav-links { display: flex; }
+      .menu-btn { display: block; margin-left: auto; }
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.65rem 1.1rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 650;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      border: 1px solid transparent; transition: 0.15s ease;
+    }
+    .btn-ghost {
+      background: transparent; color: var(--ink);
+      border-color: #3a3f3a;
+    }
+    .btn-ghost:hover { border-color: #5a615a; }
+    .btn-white {
+      background: #fff; color: #111;
+    }
+    .btn-white:hover { background: #e8e8e8; }
+
+    /* —— Hero —— */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      min-height: min(78vh, 640px);
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 2.5rem 1.75rem 2rem;
+      border-right: 1px solid var(--line);
+      gap: 2rem;
+    }
+    @media (max-width: 860px) {
+      .hero-left { border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+    .hero-left h1 {
+      font-size: clamp(1.85rem, 3.8vw, 2.65rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      max-width: 14ch;
+    }
+    .hero-bottom p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 32em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-right {
+      position: relative;
+      background:
+        radial-gradient(ellipse 70% 60% at 55% 45%, rgba(197, 217, 200, 0.06), transparent 60%),
+        var(--panel);
+      overflow: hidden;
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem 1.5rem;
+    }
+    .blueprint {
+      position: absolute; inset: 0;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(197,217,200,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(197,217,200,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 20%, transparent 75%);
+      pointer-events: none;
+    }
+    .hex-pattern {
+      position: absolute; inset: 8% 5%;
+      opacity: 0.2;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 1 L58 15 V41 L30 55 L2 41 V15 Z' fill='none' stroke='%23c5d9c8' stroke-width='0.6'/%3E%3C/svg%3E");
+      background-size: 60px 52px;
+      pointer-events: none;
+    }
+
+    /* Isometric scene */
+    .iso-scene {
+      position: relative;
+      width: min(420px, 92%);
+      height: 360px;
+      perspective: 900px;
+    }
+    .iso-world {
+      position: absolute;
+      left: 50%; top: 42%;
+      width: 200px; height: 200px;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(58deg) rotateZ(-45deg);
+    }
+
+    .stack {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 120px; height: 120px;
+      margin: -60px 0 0 -60px;
+      transform-style: preserve-3d;
+      animation: stackBuild 4.5s ease-in-out infinite;
+    }
+    @keyframes stackBuild {
+      0%, 12% { transform: translateZ(0) scale(0.92); opacity: 0.85; }
+      28%, 72% { transform: translateZ(40px) scale(1); opacity: 1; }
+      88%, 100% { transform: translateZ(0) scale(0.92); opacity: 0.85; }
+    }
+
+    .cube {
+      position: absolute; inset: 0;
+      transform-style: preserve-3d;
+    }
+    .face {
+      position: absolute;
+      border: 1px solid rgba(197, 217, 200, 0.45);
+      background: rgba(30, 34, 30, 0.92);
+    }
+    .face.top {
+      width: 120px; height: 120px;
+      transform: rotateX(90deg) translateZ(60px);
+      background: linear-gradient(135deg, #d5e6d7 0%, #a8c4ab 100%);
+      border-color: rgba(255,255,255,0.35);
+      display: grid; place-items: center;
+      color: #1a2a1c;
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-align: center; padding: 0.5rem;
+    }
+    .face.top::before {
+      content: "";
+      position: absolute; inset: 18%;
+      background:
+        repeating-linear-gradient(90deg, #1a2a1c 0 2px, transparent 2px 10px),
+        repeating-linear-gradient(#1a2a1c 0 2px, transparent 2px 10px);
+      opacity: 0.35;
+    }
+    .face.front {
+      width: 120px; height: 70px;
+      transform: translateZ(60px) translateY(25px);
+      background:
+        repeating-linear-gradient(90deg, transparent 0 6px, rgba(197,217,200,0.15) 6px 7px),
+        rgba(22, 26, 22, 0.95);
+    }
+    .face.side {
+      width: 120px; height: 70px;
+      transform: rotateY(90deg) translateZ(60px) translateY(25px);
+      background: rgba(18, 22, 18, 0.95);
+    }
+    .face.base {
+      width: 140px; height: 140px;
+      left: -10px; top: -10px;
+      transform: rotateX(90deg) translateZ(-20px);
+      background: transparent;
+      border-color: rgba(197, 217, 200, 0.25);
+    }
+
+    .layer {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 100px; height: 100px;
+      margin: -50px 0 0 -50px;
+      transform-style: preserve-3d;
+      opacity: 0;
+      animation: layerIn 4.5s ease-in-out infinite;
+    }
+    .layer .plate {
+      width: 100%; height: 100%;
+      border: 1px solid rgba(197, 217, 200, 0.4);
+      background: rgba(40, 48, 42, 0.85);
+      transform: rotateX(90deg);
+      display: grid; place-items: center;
+      font-size: 0.55rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--mint);
+      text-align: center; padding: 0.35rem;
+    }
+    .layer.l1 { animation-delay: 0.35s; }
+    .layer.l2 { animation-delay: 0.7s; }
+    .layer.l3 { animation-delay: 1.05s; }
+    @keyframes layerIn {
+      0%, 15% { opacity: 0; transform: translateZ(90px) scale(0.7); }
+      30% { opacity: 1; transform: translateZ(90px) scale(1); }
+      45% { opacity: 1; transform: translateZ(110px) scale(1); }
+      60%, 100% { opacity: 0; transform: translateZ(140px) scale(0.85); }
+    }
+    .layer.l1 { --z: 95px; }
+    .layer.l1 { animation-name: layerIn1; }
+    .layer.l2 { animation-name: layerIn2; }
+    .layer.l3 { animation-name: layerIn3; }
+    @keyframes layerIn1 {
+      0%, 18% { opacity: 0; transform: translateZ(100px) scale(0.75); }
+      32%, 55% { opacity: 1; transform: translateZ(115px) scale(1); }
+      70%, 100% { opacity: 0; transform: translateZ(150px) scale(0.8); }
+    }
+    @keyframes layerIn2 {
+      0%, 28% { opacity: 0; transform: translateZ(120px) scale(0.75); }
+      42%, 58% { opacity: 1; transform: translateZ(135px) scale(1); }
+      72%, 100% { opacity: 0; transform: translateZ(170px) scale(0.8); }
+    }
+    @keyframes layerIn3 {
+      0%, 38% { opacity: 0; transform: translateZ(140px) scale(0.75); }
+      52%, 62% { opacity: 1; transform: translateZ(155px) scale(1); }
+      78%, 100% { opacity: 0; transform: translateZ(190px) scale(0.8); }
+    }
+
+    .modules {
+      position: absolute;
+      left: 50%; bottom: 8%;
+      transform: translateX(-50%);
+      display: flex; gap: 0.55rem;
+      width: min(100%, 400px);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .mod {
+      width: 78px;
+      padding: 0.55rem 0.35rem 0.45rem;
+      border: 1px solid rgba(197, 217, 200, 0.28);
+      background: rgba(20, 24, 20, 0.9);
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.55rem; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--muted);
+      transform: perspective(400px) rotateX(12deg);
+      animation: modIn 4.5s ease-in-out infinite;
+      opacity: 0.35;
+    }
+    .mod .ico {
+      display: block; font-size: 0.85rem; margin-bottom: 0.25rem;
+      color: var(--mint-deep);
+    }
+    .mod:nth-child(1) { animation-delay: 0.2s; }
+    .mod:nth-child(2) { animation-delay: 0.35s; }
+    .mod:nth-child(3) { animation-delay: 0.5s; }
+    .mod:nth-child(4) { animation-delay: 0.65s; }
+    @keyframes modIn {
+      0%, 20% { opacity: 0.25; transform: perspective(400px) rotateX(12deg) translateY(8px); }
+      40%, 70% { opacity: 1; transform: perspective(400px) rotateX(12deg) translateY(0); }
+      90%, 100% { opacity: 0.25; transform: perspective(400px) rotateX(12deg) translateY(8px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stack, .layer, .mod { animation: none !important; opacity: 1 !important; transform: none !important; }
+      .stack { transform: translateZ(20px); }
+      .layer.l1 { opacity: 0.9; transform: translateZ(100px); }
+      .layer.l2, .layer.l3 { display: none; }
+      .mod { transform: perspective(400px) rotateX(12deg); }
+    }
+
+    /* Sections */
+    section { padding: 3.75rem 1.5rem; border-top: 1px solid var(--line); }
+    .label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mint-deep); margin-bottom: 0.65rem;
+    }
+    .title {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 0.75rem; max-width: 18ch;
+    }
+    .lead { color: var(--muted); max-width: 38em; margin-bottom: 1.5rem; }
+
+    .grid-4 {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+    }
+    @media (max-width: 800px) {
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1.15rem;
+      background: #161816;
+    }
+    .card h3 {
+      font-size: 0.95rem; font-weight: 650; margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+    .card p { font-size: 0.86rem; color: var(--muted); }
+
+    .cta {
+      text-align: center;
+      background: #121412;
+    }
+    .cta h2 {
+      font-size: 1.55rem; font-weight: 600; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .cta p { color: var(--muted); margin-bottom: 1.15rem; }
+
+    footer {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-size: 0.72rem; color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    footer a:hover { color: #fff; }
+
+    .lib-note {
+      margin: 0 1.5rem 1.25rem;
+      padding: 0.7rem 0.85rem;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      font-size: 0.76rem; color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="nav" id="nav">
+      <a href="#top" class="logo">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="3" stroke="#c5d9c8" stroke-width="1.5"/>
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M5 19l2.5-2.5" stroke="#c5d9c8" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Hexara
+      </a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+      <nav class="nav-links">
+        <a href="#agents">Agents</a>
+        <a href="#specs">Specifications</a>
+        <a href="#private">Private by design</a>
+        <a href="#docs">Docs</a>
+        <a href="#labs">Labs</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="#contact">Sign in</a>
+        <a class="btn btn-white" href="#contact">Login</a>
+      </div>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <h1>Sovereign AI infrastructure, deployed in two weeks.</h1>
+        <div class="hero-bottom">
+          <p>
+            Bespoke AI systems trained on your company data — private, efficient,
+            and built without million-dollar transformation overhead.
+          </p>
+          <a class="btn btn-white" href="#contact">Build with Hexara</a>
+        </div>
+      </div>
+
+      <div class="hero-right" aria-hidden="true">
+        <div class="blueprint"></div>
+        <div class="hex-pattern"></div>
+        <div class="iso-scene">
+          <div class="iso-world">
+            <div class="stack">
+              <div class="cube">
+                <div class="face base"></div>
+                <div class="face front"></div>
+                <div class="face side"></div>
+                <div class="face top">Private by design</div>
+              </div>
+              <div class="layer l1"><div class="plate">Custom agents</div></div>
+              <div class="layer l2"><div class="plate">Sovereign core</div></div>
+              <div class="layer l3"><div class="plate">Precision outputs</div></div>
+            </div>
+          </div>
+          <div class="modules">
+            <div class="mod"><span class="ico">▣</span>Systems</div>
+            <div class="mod"><span class="ico">◎</span>Knowledge</div>
+            <div class="mod"><span class="ico">▤</span>Playbooks</div>
+            <div class="mod"><span class="ico">◈</span>Controlled access</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="agents">
+      <p class="label">Agents</p>
+      <h2 class="title">Operators that live inside your perimeter</h2>
+      <p class="lead">
+        Deploy agents that reason over your systems of record — without shipping data
+        to a public model endpoint.
+      </p>
+      <div class="grid-4">
+        <article class="card">
+          <h3>Custom agents</h3>
+          <p>Task-specific copilots trained on your policies and playbooks.</p>
+        </article>
+        <article class="card">
+          <h3>Sovereign core</h3>
+          <p>Models and retrieval that stay on infrastructure you control.</p>
+        </article>
+        <article class="card">
+          <h3>Precision outputs</h3>
+          <p>Structured answers with citations and approval gates.</p>
+        </article>
+        <article class="card">
+          <h3>Human oversight</h3>
+          <p>Escalation paths and audit trails for every high-stakes action.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="specs">
+      <p class="label">Specifications</p>
+      <h2 class="title">The stack under the cube</h2>
+      <div class="grid-4">
+        <article class="card">
+          <h3>Systems</h3>
+          <p>Connectors to CRM, ERP, data warehouses, and internal APIs.</p>
+        </article>
+        <article class="card">
+          <h3>Knowledge</h3>
+          <p>Governed corpora with retention, redaction, and versioning.</p>
+        </article>
+        <article class="card">
+          <h3>Playbooks</h3>
+          <p>Encoded workflows that turn policy into repeatable agent behavior.</p>
+        </article>
+        <article class="card">
+          <h3>Controlled access</h3>
+          <p>SSO, SCIM, least privilege, and environment isolation by default.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="private">
+      <p class="label">Private by design</p>
+      <h2 class="title">Your data never trains the public web</h2>
+      <p class="lead">
+        Hexara deploys into your VPC or dedicated tenancy. Training, inference, and logs
+        stay inside the boundary you define.
+      </p>
+    </section>
+
+    <section id="docs">
+      <p class="label">Docs &amp; Labs</p>
+      <h2 class="title">Ship in two weeks, not two years</h2>
+      <p class="lead">
+        Reference architectures, evaluation harnesses, and lab sandboxes so your team
+        can prove value before a full rollout.
+      </p>
+      <a class="btn btn-ghost" href="#contact" id="labs">Explore labs →</a>
+    </section>
+
+    <section class="cta" id="contact">
+      <h2>Ready to deploy sovereign AI?</h2>
+      <p>Tell us about your data boundary and the jobs to be done.</p>
+      <a class="btn btn-white" href="mailto:hello@hexara.example">Build with Hexara</a>
+    </section>
+
+    <p class="lib-note">
+      Hero stack animation is pure CSS 3D (no proprietary runtime). Reduced motion disables loops.
+      Fictional product sample.
+    </p>
+
+    <footer>
+      <span>Hexara · Sample template</span>
+      <a href="mailto:hello@hexara.example">hello@hexara.example</a>
+      <span>© 2026</span>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("menuBtn").addEventListener("click", function () {
+      document.getElementById("nav").classList.toggle("open");
+    });
+  </script>
+</body>
+</html>

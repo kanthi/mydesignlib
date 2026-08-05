@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wayfar — Intelligent Travel AI</title>
+  <style>
+    :root {
+      --ink: #0c1929;
+      --muted: rgba(255,255,255,0.78);
+      --white: #ffffff;
+      --blue: #3b82f6;
+      --blue-dark: #2563eb;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: Georgia, "Times New Roman", "Palatino Linotype", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: #0a1628; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(1120px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.85rem 1.4rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      border: none; cursor: pointer;
+    }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-blue:hover { background: var(--blue-dark); }
+    .btn-ghost-light {
+      background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.25);
+    }
+    .btn-dark { background: var(--ink); color: #fff; }
+
+    /* Hero with full-bleed image */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; flex-direction: column;
+      color: #fff; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url("preview.jpg") center / cover no-repeat;
+    }
+    .hero-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(10,22,40,0.25), rgba(10,22,40,0.75) 70%),
+        linear-gradient(to bottom, rgba(10,22,40,0.45), rgba(10,22,40,0.2) 40%, rgba(10,22,40,0.85));
+    }
+    .hero-dots {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.35;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.45) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+    .hero-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
+
+    header { padding: 1.25rem 0; }
+    .nav { display: flex; align-items: center; gap: 1.5rem; }
+    .logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
+    .nav-links {
+      display: flex; gap: 1.5rem; margin-left: 2rem;
+      font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.85);
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
+    .lang {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.9rem; color: rgba(255,255,255,0.85); background: none; border: none;
+      cursor: pointer; font: inherit;
+    }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .lang { display: none; }
+    }
+
+    .hero-content {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 3rem 0 5rem;
+    }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2.4rem, 6vw, 3.8rem); line-height: 1.2;
+      letter-spacing: -0.01em; max-width: 16ch; margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: italic; color: #7dd3fc;
+    }
+    .hero .lead {
+      color: var(--muted); font-size: 1.08rem; max-width: 34em; margin: 0 auto 2rem;
+    }
+
+    /* Content on light panels */
+    .panel { background: #f8fafc; color: var(--ink); }
+    section { padding: 4.5rem 0; }
+    .label {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: clamp(1.7rem, 3vw, 2.25rem); letter-spacing: -0.025em;
+      margin-bottom: 0.6rem; line-height: 1.2;
+    }
+    .title.serif { font-family: var(--serif); font-weight: 400; }
+    .sub { color: #64748b; max-width: 36em; margin-bottom: 2rem; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(15,23,42,0.04);
+    }
+    .card .icon {
+      width: 44px; height: 44px; border-radius: 12px; background: #eff6ff;
+      display: grid; place-items: center; margin-bottom: 1rem; font-size: 1.2rem;
+    }
+    .card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .card p { color: #64748b; font-size: 0.92rem; }
+
+    .dest-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .dest {
+      border-radius: 14px; overflow: hidden; position: relative; min-height: 200px;
+      display: flex; align-items: flex-end; padding: 1.1rem; color: #fff;
+      background-size: cover; background-position: center;
+    }
+    .dest::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,22,40,0.85), transparent 60%);
+    }
+    .dest span { position: relative; z-index: 1; font-weight: 600; }
+    .dest small { position: relative; z-index: 1; display: block; opacity: 0.8; font-size: 0.8rem; font-weight: 400; }
+    .d1 { background: linear-gradient(145deg, #0ea5e9, #0369a1); }
+    .d2 { background: linear-gradient(145deg, #14b8a6, #0f766e); }
+    .d3 { background: linear-gradient(145deg, #8b5cf6, #5b21b6); }
+    .d4 { background: linear-gradient(145deg, #f59e0b, #b45309); }
+
+    .how-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+      counter-reset: s;
+    }
+    .how {
+      counter-increment: s; padding: 1.5rem; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 14px;
+    }
+    .how::before {
+      content: counter(s); display: grid; place-items: center;
+      width: 32px; height: 32px; border-radius: 50%; background: #eff6ff; color: var(--blue);
+      font-weight: 700; font-size: 0.9rem; margin-bottom: 0.85rem;
+    }
+    .how h3 { margin-bottom: 0.35rem; font-size: 1.05rem; }
+    .how p { color: #64748b; font-size: 0.92rem; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+    .price-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.75rem;
+    }
+    .price-card.featured { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+    .price { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; margin: 0.6rem 0; }
+    .price span { font-size: 1rem; color: #64748b; font-weight: 500; }
+    .price-card ul { list-style: none; padding: 0; margin: 1rem 0 1.5rem; color: #64748b; font-size: 0.92rem; }
+    .price-card li { padding: 0.35rem 0; }
+    .price-card li::before { content: "✓ "; color: var(--blue); font-weight: 700; }
+
+    .cta-dark {
+      background: linear-gradient(160deg, #0c1929, #1e3a5f); color: #fff;
+      border-radius: 20px; padding: 3rem 1.5rem; text-align: center;
+    }
+    .cta-dark h2 { font-family: var(--serif); font-weight: 400; font-size: 2rem; margin-bottom: 0.6rem; }
+    .cta-dark p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
+
+    footer {
+      background: #060e18; color: #94a3b8; padding: 3rem 0 2rem; font-size: 0.9rem;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 2rem; }
+    @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    footer h4 { color: #e2e8f0; font-size: 0.85rem; margin-bottom: 0.75rem; }
+    footer ul { list-style: none; padding: 0; }
+    footer li { margin-bottom: 0.4rem; }
+    footer a:hover { color: #fff; }
+    .footer-bottom {
+      margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid #1e293b;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="hero-bg" role="img" aria-label="Lone figure on a green hillside under a deep blue sky"></div>
+    <div class="hero-dots" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <header>
+        <div class="wrap nav">
+          <a href="#" class="logo">Wayfar</a>
+          <nav class="nav-links">
+            <a href="#explore">Explore</a>
+            <a href="#ai">AI Planner</a>
+            <a href="#destinations">Destinations</a>
+            <a href="#pricing">Pricing</a>
+          </nav>
+          <div class="nav-right">
+            <button type="button" class="lang" aria-label="Language">🌐 EN ▾</button>
+            <a class="btn btn-ghost-light" href="#cta">Start Planning</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="wrap hero-content">
+        <h1>Discover Better Places <em>With Intelligent Travel AI</em></h1>
+        <p class="lead">Wayfar helps you discover hidden destinations, create smart itineraries, and enjoy stress-free travel powered by AI.</p>
+        <a class="btn btn-blue" href="#cta">Start Planning →</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="panel">
+    <section id="ai">
+      <div class="wrap">
+        <p class="label">AI Planner</p>
+        <h2 class="title serif">Itineraries that feel handcrafted</h2>
+        <p class="sub">Tell Wayfar your pace, budget, and interests. The planner builds day-by-day routes, bookings shortlists, and backup options when weather shifts.</p>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">🧭</div>
+            <h3>Smart discovery</h3>
+            <p>Surface lesser-known stays and trails matched to your style — not just the top ten lists.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📅</div>
+            <h3>Day-by-day plans</h3>
+            <p>Balanced schedules with travel time, meals, and rest built in so days don’t feel rushed.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🌤</div>
+            <h3>Live adjustments</h3>
+            <p>Rain at the coast? The AI reshuffles outdoor plans and suggests indoor alternatives nearby.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="destinations" style="background:#fff;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0">
+      <div class="wrap">
+        <p class="label">Destinations</p>
+        <h2 class="title serif">Where travelers are heading</h2>
+        <p class="sub">Curated regions popular with Wayfar planners this season.</p>
+        <div class="dest-grid">
+          <div class="dest d1"><div><span>Faroe Islands</span><small>Cliffs &amp; quiet villages</small></div></div>
+          <div class="dest d2"><div><span>Kyushu, Japan</span><small>Hot springs &amp; trails</small></div></div>
+          <div class="dest d3"><div><span>Azores</span><small>Volcanic lakes</small></div></div>
+          <div class="dest d4"><div><span>Patagonia</span><small>Wind &amp; wide skies</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="explore">
+      <div class="wrap">
+        <p class="label">How it works</p>
+        <h2 class="title serif">Plan in four calm steps</h2>
+        <div class="how-steps" style="margin-top:2rem">
+          <article class="how">
+            <h3>Share your vibe</h3>
+            <p>Trip length, budget range, travel companions, and must-haves or deal-breakers.</p>
+          </article>
+          <article class="how">
+            <h3>Review routes</h3>
+            <p>Compare 2–3 AI-generated itineraries with maps, costs, and pace scores.</p>
+          </article>
+          <article class="how">
+            <h3>Lock bookings</h3>
+            <p>Save stays and activities to your trip board; export or book via partners.</p>
+          </article>
+          <article class="how">
+            <h3>Travel with backup</h3>
+            <p>Offline day cards and one-tap replan if flights or weather change.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" style="background:#fff;border-top:1px solid #e2e8f0">
+      <div class="wrap">
+        <p class="label">Pricing</p>
+        <h2 class="title serif">Plans for every kind of trip</h2>
+        <p class="sub">Start free for weekend getaways. Upgrade for multi-city and group travel.</p>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <h3>Explorer</h3>
+            <p class="price">$0 <span>/ mo</span></p>
+            <ul>
+              <li>3 AI itineraries / month</li>
+              <li>Basic destination search</li>
+              <li>Mobile day cards</li>
+            </ul>
+            <a class="btn btn-dark" href="#cta" style="width:100%;background:#e2e8f0;color:var(--ink)">Start free</a>
+          </div>
+          <div class="price-card featured">
+            <h3>Voyager</h3>
+            <p class="price">$19 <span>/ mo</span></p>
+            <ul>
+              <li>Unlimited itineraries</li>
+              <li>Weather-aware replan</li>
+              <li>Group trip boards</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn-blue" href="#cta" style="width:100%">Start Planning</a>
+          </div>
+          <div class="price-card">
+            <h3>Expedition</h3>
+            <p class="price">$49 <span>/ mo</span></p>
+            <ul>
+              <li>Concierge review</li>
+              <li>Multi-destination logistics</li>
+              <li>Team &amp; client workspaces</li>
+            </ul>
+            <a class="btn btn-dark" href="#cta" style="width:100%;background:#e2e8f0;color:var(--ink)">Contact us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="wrap">
+        <div class="cta-dark">
+          <h2>Your next place is waiting</h2>
+          <p>Create a free plan in minutes — no credit card required.</p>
+          <a class="btn btn-blue" href="#">Start Planning →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="logo" style="color:#fff;margin-bottom:0.6rem">Wayfar</div>
+          <p>Wayfar AI for discovery, itineraries, and calm travel.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#ai">AI Planner</a></li>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help center</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wayfar · Sample template.</span>
+        <span>hello@wayfar.travel</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

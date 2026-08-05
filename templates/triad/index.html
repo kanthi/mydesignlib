@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triad Studio — AI-powered creative for modern brands</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #64748b;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--ink); background: #0a0a0a; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.8rem 1.35rem; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-white { background: #fff; color: #0f172a; }
+    .btn-white:hover { background: #f1f5f9; }
+    .btn-glass {
+      background: rgba(255,255,255,0.12); color: #fff;
+      border-color: rgba(255,255,255,0.35); backdrop-filter: blur(10px);
+    }
+    .btn-glass:hover { background: rgba(255,255,255,0.2); }
+    .btn-dark { background: #0f172a; color: #fff; }
+    .play {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
+      display: grid; place-items: center; color: #fff; font-size: 0.9rem;
+      backdrop-filter: blur(8px);
+    }
+
+    /* Shared chapter nav */
+    .topnav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.35rem 2rem; color: #fff;
+    }
+    .brand {
+      font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .brand.num { font-weight: 500; opacity: 0.9; letter-spacing: 0.04em; }
+    .nav-links {
+      margin-left: auto; display: flex; gap: 1.5rem;
+      font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.88);
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      margin-left: 0.5rem; padding: 0.55rem 1.15rem; border-radius: 999px;
+      background: rgba(255,255,255,0.95); color: #0f172a; font-weight: 600; font-size: 0.88rem;
+    }
+    .nav-cta.glass {
+      background: rgba(255,255,255,0.15); color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .topnav { padding: 1rem 1.25rem; }
+    }
+
+    .chapter {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      background: #111 center/cover no-repeat;
+      color: #fff;
+    }
+    .chapter-body {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; padding: 6rem 2rem 4rem;
+      width: min(1100px, 100%); margin-inline: auto;
+    }
+
+    /* Ch 1 — Content infrastructure */
+    .ch-content {
+      background-image:
+        linear-gradient(180deg, rgba(15,23,42,0.15) 0%, rgba(15,23,42,0.25) 50%, rgba(15,23,42,0.45) 100%),
+        url("hero-content.jpg");
+    }
+    .ch-content .chapter-body { text-align: center; align-items: center; }
+    .ch-content h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem); font-weight: 500;
+      letter-spacing: -0.03em; line-height: 1.12; max-width: 16ch;
+      margin-bottom: 1.15rem; text-shadow: 0 2px 30px rgba(0,0,0,0.2);
+    }
+    .ch-content .lead {
+      color: rgba(255,255,255,0.88); max-width: 32em; margin: 0 auto 1.75rem;
+      font-size: 1.08rem;
+    }
+    .actions {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; align-items: center;
+    }
+
+    /* Ch 2 — Creative production */
+    .ch-production {
+      background-image:
+        linear-gradient(105deg, rgba(15, 40, 50, 0.35) 0%, transparent 50%),
+        url("hero-production.jpg");
+    }
+    .ch-production .chapter-body {
+      justify-content: center; max-width: 1100px;
+    }
+    .ch-production h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 600;
+      letter-spacing: -0.03em; line-height: 1.12; max-width: 14ch;
+      margin-bottom: 1.1rem;
+    }
+    .ch-production .lead {
+      color: rgba(255,255,255,0.9); max-width: 30em; margin-bottom: 1.75rem;
+      font-size: 1.05rem;
+    }
+    .float-card {
+      position: absolute; right: 8%; bottom: 12%;
+      max-width: 260px; padding: 1.15rem 1.25rem;
+      border-radius: 16px; background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35); backdrop-filter: blur(14px);
+      font-size: 0.95rem; color: rgba(255,255,255,0.95);
+    }
+    .float-card strong { display: block; margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .float-card hr {
+      border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 0.65rem 0;
+    }
+    @media (max-width: 800px) {
+      .float-card { position: static; margin-top: 2rem; max-width: none; }
+    }
+
+    /* Ch 3 — Video */
+    .ch-video {
+      background-image:
+        linear-gradient(180deg, rgba(30, 27, 75, 0.2) 0%, rgba(30, 27, 75, 0.15) 40%, rgba(30, 27, 75, 0.35) 100%),
+        url("hero-video.jpg");
+    }
+    .ch-video .chapter-body {
+      text-align: center; align-items: center; position: relative;
+    }
+    .ch-video h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 500;
+      letter-spacing: -0.025em; line-height: 1.15; max-width: 16ch;
+      margin-bottom: 1.1rem;
+    }
+    .ch-video .lead {
+      color: rgba(255,255,255,0.88); max-width: 34em; margin: 0 auto 1.75rem;
+    }
+    .play-xl {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5);
+      display: grid; place-items: center; font-size: 1.25rem; color: #fff;
+      margin: 2rem auto 0; backdrop-filter: blur(12px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+
+    /* Light content sections */
+    .light {
+      background: #fff; color: var(--ink); padding: 5rem 1.5rem;
+    }
+    .wrap { width: min(1000px, 100%); margin-inline: auto; }
+    .label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #7c3aed; margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.025em;
+      margin-bottom: 0.6rem; font-weight: 650;
+    }
+    .sub { color: var(--muted); max-width: 36em; margin-bottom: 2rem; }
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.15rem;
+    }
+    .card {
+      border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.4rem; background: #fff;
+    }
+    .card h3 { margin-bottom: 0.4rem; font-size: 1.05rem; }
+    .card p { color: var(--muted); font-size: 0.92rem; }
+
+    .cta-dark {
+      background: #0f172a; color: #fff; text-align: center;
+      padding: 4rem 1.5rem; border-radius: 20px;
+    }
+    .cta-dark h2 { font-size: 1.85rem; margin-bottom: 0.5rem; font-weight: 600; }
+    .cta-dark p { color: #94a3b8; margin-bottom: 1.35rem; }
+
+    footer {
+      background: #0a0a0a; color: #71717a; padding: 2rem 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      font-size: 0.88rem;
+    }
+    footer .brand { color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Chapter 1: Content infrastructure -->
+  <section class="chapter ch-content" id="home">
+    <header class="topnav">
+      <a href="#" class="brand">Triad</a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+      </nav>
+      <a class="nav-cta" href="#contact">Contact Us</a>
+    </header>
+    <div class="chapter-body">
+      <h1>AI-Powered Content Infrastructure for Brands.</h1>
+      <p class="lead">Content pipelines for ads, motion design, product storytelling, and social media campaigns.</p>
+      <div class="actions">
+        <a class="btn btn-white" href="#contact">Book a Call →</a>
+        <a class="btn btn-glass" href="#video">▶ Watch Video</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chapter 2: Creative production -->
+  <section class="chapter ch-production" id="services">
+    <header class="topnav">
+      <a href="#" class="brand">Triad</a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+      </nav>
+      <a class="nav-cta" href="#contact">Contact Us</a>
+    </header>
+    <div class="chapter-body">
+      <h1>Creative Production, Reengineered with AI</h1>
+      <p class="lead">Produce studio-quality videos, motion graphics, and branded content through automated creative workflows and rapid iteration.</p>
+      <div class="actions" style="justify-content:flex-start">
+        <a class="btn btn-white" href="#contact">Book a Call →</a>
+        <a class="play" href="#video" aria-label="Play">▶</a>
+      </div>
+      <aside class="float-card">
+        <strong>From concept to delivery,</strong>
+        <hr />
+        we streamline video production through AI-powered systems.
+      </aside>
+    </div>
+  </section>
+
+  <!-- Chapter 3: Video production -->
+  <section class="chapter ch-video" id="video">
+    <header class="topnav">
+      <a href="#" class="brand">✦ Triad Studio</a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+      </nav>
+      <a class="nav-cta glass" href="#contact">Contact Us</a>
+    </header>
+    <div class="chapter-body">
+      <h1>AI-Powered Video Production for Modern Brands</h1>
+      <p class="lead">We create ads, product videos, motion graphics, and UGC content at a fraction of traditional cost and turnaround time.</p>
+      <a class="btn btn-glass" href="#contact">Book a Call →</a>
+      <a class="play-xl" href="#contact" aria-label="Watch showreel">▶</a>
+    </div>
+  </section>
+
+  <section class="light" id="about">
+    <div class="wrap">
+      <p class="label">About Triad</p>
+      <h2 class="title">Three systems. One creative engine.</h2>
+      <p class="sub">Triad Studio helps brands ship content infrastructure, production workflows, and video at the speed of their campaigns — without sacrificing craft.</p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Content infrastructure</h3>
+          <p>Pipelines that feed ads, social, and product storytelling from a single source of truth.</p>
+        </article>
+        <article class="card">
+          <h3>Production systems</h3>
+          <p>AI-assisted iteration from concept boards to delivery-ready masters.</p>
+        </article>
+        <article class="card">
+          <h3>Video at scale</h3>
+          <p>Ads, product films, motion, and UGC variants without starting from zero every time.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="light" id="works" style="padding-top:0">
+    <div class="wrap">
+      <p class="label">Works</p>
+      <h2 class="title">Selected outcomes</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Launch film system</h3>
+          <p>Hero + 12 cutdowns for a DTC launch in under two weeks.</p>
+        </article>
+        <article class="card">
+          <h3>Always-on social kit</h3>
+          <p>Modular templates that keep weekly output consistent across markets.</p>
+        </article>
+        <article class="card">
+          <h3>Product story stack</h3>
+          <p>3D, live action, and motion unified under one brand system.</p>
+        </article>
+      </div>
+      <div style="margin-top:3rem">
+        <div class="cta-dark" id="contact">
+          <h2>Let’s build your next content system</h2>
+          <p>Book a call — we’ll map pipelines, production, and video to your roadmap.</p>
+          <a class="btn btn-white" href="mailto:hello@triad.studio">Book a Call →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="brand">Triad Studio</span>
+    <span>AI creative production · Sample template</span>
+    <span>© 2026 Triad</span>
+  </footer>
+</body>
+</html>

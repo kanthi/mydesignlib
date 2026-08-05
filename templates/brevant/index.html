@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brevant — Brand, design &amp; digital craft</title>
+  <style>
+    :root {
+      --bg: #e8e6e1;
+      --ink: #1c1c1c;
+      --muted: #6a6a6a;
+      --dark: #2a2a2a;
+      --card: #d4d2cd;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, 100% - 2rem); margin-inline: auto; }
+
+    /* Top hero with DNA */
+    .top {
+      min-height: 72vh; position: relative; overflow: hidden;
+      background: #e4e2dd;
+      display: flex; flex-direction: column;
+    }
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem; position: relative; z-index: 2;
+    }
+    .curated {
+      font-size: 0.95rem; font-weight: 500; letter-spacing: -0.01em; color: var(--muted);
+    }
+    .pill-nav {
+      display: flex; align-items: center; gap: 0.15rem;
+      background: #1a1a1a; color: #f5f5f5; border-radius: 999px;
+      padding: 0.35rem 0.4rem 0.35rem 0.85rem; font-size: 0.85rem;
+    }
+    .pill-nav .brand { font-weight: 700; margin-right: 0.5rem; letter-spacing: -0.02em; }
+    .pill-nav a {
+      padding: 0.4rem 0.7rem; border-radius: 999px; color: #c4c4c4; font-weight: 500;
+    }
+    .pill-nav a:hover { color: #fff; }
+    .mail {
+      font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem;
+    }
+    @media (max-width: 800px) {
+      .mail { display: none; }
+      .pill-nav a:not(.brand) { display: none; }
+    }
+
+    .helix {
+      flex: 1; position: relative; min-height: 360px;
+    }
+    .helix svg {
+      position: absolute; width: 120%; max-width: none; height: 100%;
+      left: -10%; top: 0; opacity: 0.85;
+    }
+    .helix-label {
+      position: absolute; right: 2rem; bottom: 2rem;
+      font-size: 0.95rem; color: var(--muted); font-weight: 500;
+    }
+
+    /* Case study band */
+    .case {
+      position: relative; min-height: 85vh;
+      background:
+        linear-gradient(90deg, rgba(20,20,20,0.45) 0%, transparent 45%),
+        linear-gradient(180deg, transparent 50%, rgba(20,20,20,0.35)),
+        linear-gradient(115deg, #0e7490 0%, #155e75 25%, #b45309 55%, #9a3412 80%, #7c2d12 100%);
+      color: #fff; display: flex; flex-direction: column;
+    }
+    .case-top {
+      display: flex; justify-content: space-between; padding: 1.25rem 1.5rem;
+      font-size: 0.9rem; opacity: 0.9;
+    }
+    .case-body {
+      flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem 1.5rem 5.5rem; max-width: 520px;
+    }
+    .case-body h2 {
+      font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 500;
+      letter-spacing: 0.04em; margin-bottom: 0.65rem;
+    }
+    .case-body p { font-size: 0.95rem; color: rgba(255,255,255,0.85); margin-bottom: 1rem; max-width: 28em; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tags span {
+      padding: 0.35rem 0.7rem; border-radius: 8px;
+      background: rgba(255,255,255,0.18); backdrop-filter: blur(8px);
+      font-size: 0.78rem; font-weight: 500;
+    }
+    .case-dock {
+      position: absolute; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(20,20,20,0.85); backdrop-filter: blur(12px);
+      border-radius: 999px; padding: 0.45rem 0.75rem 0.45rem 0.55rem;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .case-dock .mark {
+      width: 28px; height: 28px; border-radius: 8px; background: #fff; color: #111;
+      display: grid; place-items: center; font-size: 0.75rem; font-weight: 800;
+    }
+    .case-dock .icons { display: flex; gap: 0.35rem; margin-left: 0.35rem; }
+    .case-dock .icons i {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #333; display: block;
+    }
+    .case-dock .icons i:nth-child(1) { background: #22c55e; }
+    .case-dock .icons i:nth-child(2) { background: #3b82f6; }
+    .case-dock .icons i:nth-child(3) { background: #eab308; }
+    .case-dock .icons i:nth-child(4) { background: #ec4899; }
+    .case-dock .icons i:nth-child(5) { background: #a855f7; }
+
+    /* Offering */
+    .offering {
+      background: #b8b6b1; padding: 4.5rem 1.5rem 5rem;
+    }
+    .offering h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.15;
+      letter-spacing: -0.02em; max-width: 16ch; margin-bottom: 1.5rem; color: #1a1a1a;
+    }
+    .offering .link {
+      font-size: 1.35rem; font-weight: 500; border-bottom: 2px solid var(--ink);
+      padding-bottom: 0.15rem; display: inline-block;
+    }
+    .offering .link:hover { opacity: 0.7; }
+
+    .services {
+      background: #f0eeea; padding: 4rem 0;
+    }
+    .services h3 {
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .svc-list {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;
+    }
+    .svc {
+      padding: 1.5rem; background: #fff; border-radius: 12px;
+    }
+    .svc h4 { font-size: 1.1rem; margin-bottom: 0.4rem; font-weight: 600; }
+    .svc p { color: var(--muted); font-size: 0.92rem; }
+
+    .cta {
+      background: var(--ink); color: #f5f5f5; padding: 4rem 1.5rem; text-align: center;
+    }
+    .cta h2 {
+      font-family: var(--serif); font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.4rem);
+      margin-bottom: 1rem;
+    }
+    .cta a {
+      display: inline-flex; padding: 0.75rem 1.35rem; border-radius: 999px;
+      background: #fff; color: #111; font-weight: 600; margin-top: 0.5rem;
+    }
+
+    footer {
+      background: #1a1a1a; color: #888; padding: 2rem 1.5rem; font-size: 0.88rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+    }
+    footer strong { color: #eee; }
+  </style>
+</head>
+<body>
+  <section class="top">
+    <div class="top-bar">
+      <span class="curated">Curated</span>
+      <nav class="pill-nav" aria-label="Primary">
+        <span class="brand">Brevant</span>
+        <a href="#work">Work</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#technology">Technology</a>
+        <a href="#agency">Agency</a>
+        <a href="#contact">Contact</a>
+        <a href="#" aria-label="More">⋯</a>
+      </nav>
+      <a class="mail" href="mailto:hello@brevant.studio">✉ hello@brevant.studio</a>
+    </div>
+    <div class="helix" aria-hidden="true">
+      <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.15  0 0 0 0 0.15  0 0 0 0.55 0"/>
+          </filter>
+        </defs>
+        <!-- double helix ribbons -->
+        <path d="M80 320 C 160 80, 240 80, 320 200 S 480 320, 560 120 S 720 40, 900 -20"
+          fill="none" stroke="#2a2a2a" stroke-width="42" stroke-linecap="round" opacity="0.55" filter="url(#grain)"/>
+        <path d="M60 80 C 140 300, 220 300, 300 180 S 460 60, 540 240 S 700 360, 880 420"
+          fill="none" stroke="#1f1f1f" stroke-width="38" stroke-linecap="round" opacity="0.5" filter="url(#grain)"/>
+        <!-- rungs -->
+        <g stroke="#333" stroke-width="3" opacity="0.35">
+          <line x1="200" y1="140" x2="200" y2="240"/>
+          <line x1="280" y1="120" x2="280" y2="260"/>
+          <line x1="360" y1="160" x2="360" y2="220"/>
+          <line x1="440" y1="140" x2="440" y2="250"/>
+          <line x1="520" y1="150" x2="520" y2="230"/>
+          <line x1="600" y1="130" x2="600" y2="260"/>
+        </g>
+      </svg>
+      <span class="helix-label" id="technology">Technology</span>
+    </div>
+  </section>
+
+  <section class="case" id="work">
+    <div class="case-top">
+      <span>Curated</span>
+      <span>Technology</span>
+    </div>
+    <div class="case-body">
+      <h2>NORTHLINE</h2>
+      <p>A new brand and digital experience for a multi-campus leadership institute.</p>
+      <div class="tags">
+        <span>Brand strategy</span>
+        <span>Design system</span>
+        <span>Headless CMS</span>
+        <span>UI design</span>
+        <span>UX strategy</span>
+        <span>Visual identity</span>
+        <span>Website strategy</span>
+      </div>
+    </div>
+    <div class="case-dock" aria-hidden="true">
+      <span class="mark">N</span>
+      <span>NORTHLINE</span>
+      <span class="icons"><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+  </section>
+
+  <section class="offering" id="agency">
+    <div class="wrap">
+      <h2>We start with brand, and craft digital solutions where design, technology and commercial thinking work as one.</h2>
+      <a class="link" href="#capabilities">Our offering →</a>
+    </div>
+  </section>
+
+  <section class="services" id="capabilities">
+    <div class="wrap">
+      <h3>Capabilities</h3>
+      <div class="svc-list">
+        <article class="svc">
+          <h4>Brand</h4>
+          <p>Positioning, identity systems, and narratives that hold up across every channel.</p>
+        </article>
+        <article class="svc">
+          <h4>Product &amp; web</h4>
+          <p>Interfaces and sites that feel inevitable — strategy through polished UI.</p>
+        </article>
+        <article class="svc">
+          <h4>Technology</h4>
+          <p>Modern stacks, headless CMS, and performance without the drama.</p>
+        </article>
+        <article class="svc">
+          <h4>Commercial</h4>
+          <p>Conversion, content models, and measurement built into the craft.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <h2>Let’s build something considered.</h2>
+    <p style="color:#aaa;margin-bottom:0.5rem">Projects start with a short conversation.</p>
+    <a href="mailto:hello@brevant.studio">Start a project</a>
+  </section>
+
+  <footer>
+    <strong>Brevant</strong>
+    <span>Design, technology &amp; commercial craft · Sample template</span>
+    <span>© 2026 Brevant</span>
+  </footer>
+</body>
+</html>

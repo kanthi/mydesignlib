@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal collection of website templates." />
+  <title>Templates</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="logo" aria-label="Home">
+        <span class="logo-mark" aria-hidden="true">◈</span>
+        <span class="logo-text">Templates</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Primary">
+        <a href="#collection">Collection</a>
+        <a href="#notes">Notes</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <span class="icon-sun" aria-hidden="true">☀</span>
+          <span class="icon-moon" aria-hidden="true">☾</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="hero-eyebrow">Personal library</p>
+        <h1 class="hero-title">Website templates</h1>
+        <p class="hero-lead">
+          A private collection of static site templates I keep for reuse.
+          Filter by type or tag, open a preview, or grab the folder under
+          <code>templates/</code>.
+        </p>
+        <div class="hero-meta" id="hero-stats" aria-live="polite">
+          <span><strong id="stat-count">—</strong> templates</span>
+          <span class="meta-dot" aria-hidden="true">·</span>
+          <span><strong id="stat-tags">—</strong> tags</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="templates-section" id="collection">
+      <div class="container">
+        <div class="section-head">
+          <h2>Collection</h2>
+          <p>Search and filter the library. Sample entries are placeholders until real templates are added.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <label class="visually-hidden" for="search">Search</label>
+            <input
+              type="search"
+              id="search"
+              class="search-input"
+              placeholder="Search name, tag, or description…"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Categories">
+            <!-- filled by JS -->
+          </div>
+
+          <div class="toolbar-meta">
+            <span id="result-count" class="result-count"></span>
+            <label class="sort-label">
+              <span class="visually-hidden">Sort by</span>
+              <select id="sort" class="sort-select">
+                <option value="featured">Pinned first</option>
+                <option value="newest">Newest</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="tag-filter" id="tag-filter" hidden>
+          <div class="tag-filter-bar">
+            <span class="tag-filter-label">Tags</span>
+            <div class="tag-cloud" id="tag-cloud" role="group" aria-label="Filter by tag"></div>
+            <button type="button" class="tag-more" id="tag-more" hidden aria-expanded="false">
+              More
+            </button>
+            <button type="button" class="tag-clear" id="tag-clear" hidden>
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <div class="template-grid" id="template-grid" role="list">
+          <!-- cards injected by app.js -->
+        </div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <p>Nothing matches these filters.</p>
+          <button type="button" class="btn btn-ghost" id="clear-filters">Clear filters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes-section" id="notes">
+      <div class="container">
+        <div class="section-head">
+          <h2>Notes</h2>
+          <p>How this repo is organized.</p>
+        </div>
+        <div class="notes-grid">
+          <article class="note-card">
+            <h3>Layout</h3>
+            <p>
+              The root app is this index. Each template is a self-contained folder under
+              <code>templates/</code> with its own <code>index.html</code>.
+            </p>
+          </article>
+          <article class="note-card">
+            <h3>Catalog</h3>
+            <p>
+              Metadata lives in <code>data/templates.json</code> — name, description,
+              tags, category, thumbnail path, and folder path.
+            </p>
+          </article>
+          <article class="note-card">
+            <h3>Hosting</h3>
+            <p>
+              Pure static files. Serve locally with any static server, or deploy the
+              repo root on GitHub Pages.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">Templates</p>
+      <p class="footer-note">Personal collection · static HTML</p>
+    </div>
+  </footer>
+
+  <div class="modal" id="detail-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel">
+      <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+      <div class="modal-preview" id="modal-preview"></div>
+      <div class="modal-body">
+        <p class="modal-category" id="modal-category"></p>
+        <h2 id="modal-title"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-tags" id="modal-tags"></div>
+        <div class="modal-actions">
+          <a class="btn btn-primary" id="modal-preview-btn" target="_blank" rel="noopener">Open preview</a>
+          <a class="btn btn-ghost" id="modal-source-btn" target="_blank" rel="noopener">Open folder</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syntora — Future guided by humans and machine intelligence</title>
+  <meta
+    name="description"
+    content="AI systems designed around human insight. Fictional product sample with original 3D hero art."
+  />
+  <!--
+    Free/open: Inter (Google Fonts / OFL), pure CSS motion.
+    Hero visual is original AI-generated (hand + orb). Logo strip uses fictional names only.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #050505;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --line: #222;
+      --orange: #ff4d2e;
+      --orange-soft: #ff6a4a;
+      --card: rgba(22, 22, 24, 0.72);
+      --font: Inter, system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #0a0a0a;
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    img { max-width: 100%; display: block; }
+
+    .shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+
+    /* —— Nav pill —— */
+    .nav-wrap {
+      position: absolute; top: 1.1rem; left: 0; right: 0; z-index: 20;
+      display: flex; justify-content: center; padding: 0 1rem;
+    }
+    .nav {
+      display: flex; align-items: center; gap: 0.35rem;
+      flex-wrap: wrap; justify-content: center;
+      background: rgba(28, 28, 30, 0.92);
+      border: 1px solid #2a2a2e;
+      border-radius: 999px;
+      padding: 0.35rem 0.4rem 0.35rem 0.65rem;
+      backdrop-filter: blur(12px);
+      max-width: 100%;
+    }
+    .logo {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-weight: 700; font-size: 0.92rem; letter-spacing: -0.02em;
+      padding: 0.35rem 0.55rem 0.35rem 0.25rem;
+      margin-right: 0.25rem;
+    }
+    .logo-mark {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ff8a70, var(--orange));
+      box-shadow: 0 0 12px rgba(255, 77, 46, 0.55);
+    }
+    .nav a, .nav .ghost {
+      padding: 0.45rem 0.7rem;
+      font-size: 0.8rem; font-weight: 500; color: #bdbdbd;
+      border-radius: 999px; border: 0; background: transparent;
+    }
+    .nav a:hover { color: #fff; }
+    .nav .join {
+      margin-left: 0.15rem;
+      background: #fff; color: #111;
+      font-weight: 650; padding: 0.5rem 0.95rem;
+    }
+    .nav .join:hover { background: #eee; }
+    .menu-btn {
+      display: none; background: transparent; border: 0; color: #fff;
+      font-size: 1.1rem; padding: 0.4rem 0.6rem;
+    }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .nav.open .nav-links {
+        display: flex; width: 100%; flex-basis: 100%;
+        flex-direction: column; padding: 0.35rem 0.25rem 0.5rem;
+      }
+      .menu-btn { display: block; }
+      .nav { border-radius: 18px; }
+    }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative;
+      min-height: min(92vh, 820px);
+      padding: 5.5rem 1.5rem 2rem;
+      overflow: hidden;
+      background: #000;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      min-height: calc(min(92vh, 820px) - 7.5rem);
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .hero-copy {
+      position: relative; z-index: 3;
+      max-width: 34rem;
+      padding-bottom: 1rem;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.35rem, 5.2vw, 3.65rem);
+      font-weight: 650;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.1rem;
+    }
+    .hero-copy p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 30em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.75rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.9rem; font-weight: 650;
+      border: 1px solid transparent;
+      transition: 0.15s ease;
+    }
+    .btn-orange {
+      background: var(--orange); color: #fff;
+      box-shadow: 0 10px 30px rgba(255, 77, 46, 0.35);
+    }
+    .btn-orange:hover { background: var(--orange-soft); }
+    .btn-white {
+      background: #f2f2f2; color: #111;
+    }
+    .btn-white:hover { background: #fff; }
+    .btn-ghost {
+      background: transparent; color: #fff; border-color: #333;
+    }
+    .btn-ghost:hover { border-color: #555; }
+
+    .hero-visual {
+      position: relative;
+      min-height: 380px;
+      display: grid; place-items: center;
+    }
+    .hero-visual img {
+      width: min(100%, 560px);
+      height: auto;
+      filter: drop-shadow(0 30px 60px rgba(255, 60, 30, 0.25));
+      animation: floatOrb 6s ease-in-out infinite;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Floating UI cards */
+    .float-card {
+      position: absolute;
+      z-index: 4;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      animation: cardIn 0.8s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    .chat-card {
+      top: 12%;
+      left: 4%;
+      max-width: 240px;
+      padding: 0.7rem 0.85rem;
+      font-size: 0.78rem;
+      color: #ddd;
+      display: flex; gap: 0.55rem; align-items: flex-start;
+      animation-delay: 0.25s;
+    }
+    .chat-card .dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+      margin-top: 0.2rem;
+      background: var(--orange);
+      box-shadow: 0 0 10px rgba(255, 77, 46, 0.7);
+    }
+    .compliance {
+      right: 2%;
+      bottom: 18%;
+      width: min(220px, 70%);
+      padding: 0.9rem 1rem;
+      animation-delay: 0.45s;
+    }
+    .compliance h4 {
+      font-size: 0.78rem; font-weight: 650;
+      margin-bottom: 0.75rem; color: #e8e8e8;
+    }
+    .compliance dl {
+      display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+    }
+    .compliance dt { color: #888; }
+    .compliance dd { text-align: right; color: #ddd; }
+    .compliance .ok { color: #3dd68c; font-weight: 650; }
+
+    @media (max-width: 900px) {
+      .chat-card { top: 0; left: 0; }
+      .compliance { right: 0; bottom: 8%; }
+    }
+
+    /* Logo marquee */
+    .logos {
+      position: relative; z-index: 2;
+      padding: 0.5rem 0 1.5rem;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .logos-track {
+      display: flex; gap: 2.5rem;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+      opacity: 0.55;
+    }
+    .logos-track span {
+      font-size: 0.85rem; font-weight: 650;
+      letter-spacing: 0.04em;
+      color: #bbb;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* Sections */
+    section { padding: 4.25rem 1.5rem; border-top: 1px solid #141414; }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.65rem;
+    }
+    .title {
+      font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+      font-weight: 650; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 0.75rem; max-width: 16ch;
+    }
+    .lead { color: var(--muted); max-width: 38em; margin-bottom: 1.75rem; }
+
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
+    }
+    @media (max-width: 760px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #0e0e10;
+      border: 1px solid #1c1c1f;
+      border-radius: 16px;
+      padding: 1.35rem;
+    }
+    .card h3 {
+      font-size: 1.02rem; font-weight: 650; margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+    .card p { font-size: 0.9rem; color: var(--muted); }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(ellipse 50% 80% at 50% 100%, rgba(255,77,46,0.12), transparent 60%),
+        #050505;
+    }
+    .cta h2 {
+      font-size: 1.75rem; font-weight: 650; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .cta p { color: var(--muted); margin-bottom: 1.25rem; }
+
+    footer {
+      padding: 1.35rem 1.5rem 1.75rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-size: 0.75rem; color: var(--muted);
+      border-top: 1px solid #141414;
+    }
+    footer a:hover { color: #fff; }
+
+    .lib-note {
+      margin: 0 1.5rem 1.25rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px dashed #2a2a2a;
+      border-radius: 8px;
+      font-size: 0.78rem; color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="nav-wrap">
+      <header class="nav" id="nav">
+        <a href="#top" class="logo">
+          <span class="logo-mark" aria-hidden="true"></span>
+          Syntora
+        </a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+        <nav class="nav-links">
+          <a href="#platform">Platform</a>
+          <a href="#product">Product</a>
+          <a href="#lab">Lab</a>
+          <a href="#features">Features</a>
+          <a href="#research">Research</a>
+        </nav>
+        <a class="ghost" href="#cta">Sign in</a>
+        <a class="join" href="#cta">Join Syntora</a>
+      </header>
+    </div>
+
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Future guided by Humans and machine intelligence.</h1>
+          <p>
+            AI-powered systems designed around human insight, delivering smarter
+            decisions and real-world impact.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-orange" href="#cta">Get started</a>
+            <a class="btn btn-white" href="#features">Learn more</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="float-card chat-card">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Hi, I am Syn — your AI-powered smart assistant. How can I help?</span>
+          </div>
+          <img src="hero-visual.jpg" alt="Hand holding a glowing intelligence orb" />
+          <aside class="float-card compliance" aria-label="Compliance check example">
+            <h4>Compliance Check</h4>
+            <dl>
+              <dt>Rule</dt><dd>CA State #49502</dd>
+              <dt>Timestamp</dt><dd>November 25, 2025</dd>
+              <dt>Status</dt><dd class="ok">Confirmed</dd>
+            </dl>
+          </aside>
+        </div>
+      </div>
+
+      <div class="logos" aria-label="Teams building with Syntora">
+        <div class="logos-track">
+          <span>Northline</span><span>Fieldkit</span><span>Paperstack</span>
+          <span>Vaultlane</span><span>Signalform</span><span>Orbitdesk</span>
+          <span>Northline</span><span>Fieldkit</span><span>Paperstack</span>
+          <span>Vaultlane</span><span>Signalform</span><span>Orbitdesk</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="platform">
+      <p class="label">Platform</p>
+      <h2 class="title">Human insight, machine scale</h2>
+      <p class="lead">
+        Syntora pairs operators with intelligent systems — so judgment stays human
+        while routine work accelerates.
+      </p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Decision copilots</h3>
+          <p>Context-aware assistants that surface the right policy, data, and next step.</p>
+        </article>
+        <article class="card">
+          <h3>Compliance by default</h3>
+          <p>Checks, audit trails, and confirmations embedded in every critical flow.</p>
+        </article>
+        <article class="card">
+          <h3>Real-world impact</h3>
+          <p>Built for teams who ship in regulated, high-stakes environments.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="product">
+      <p class="label">Product</p>
+      <h2 class="title">One surface for insight and action</h2>
+      <p class="lead">From research notes to confirmed outcomes — without tool sprawl.</p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Workspace</h3>
+          <p>Unified inbox for signals, tasks, and AI recommendations.</p>
+        </article>
+        <article class="card">
+          <h3>Rules engine</h3>
+          <p>Encode policy once; enforce it everywhere with full lineage.</p>
+        </article>
+        <article class="card">
+          <h3>Integrations</h3>
+          <p>Connect your systems of record without brittle glue code.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lab">
+      <p class="label">Lab</p>
+      <h2 class="title">Where models meet operators</h2>
+      <p class="lead">
+        Our research lab prototypes evaluation harnesses, human-in-the-loop patterns,
+        and safer automation for complex work.
+      </p>
+    </section>
+
+    <section id="features">
+      <p class="label">Features</p>
+      <h2 class="title">Designed for trust</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Explainable steps</h3>
+          <p>Every recommendation comes with sources and confidence you can inspect.</p>
+        </article>
+        <article class="card">
+          <h3>Role-aware access</h3>
+          <p>Least-privilege by default with clear separation of duties.</p>
+        </article>
+        <article class="card">
+          <h3>Live observability</h3>
+          <p>Latency, drift, and override rates in one operational view.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="research">
+      <p class="label">Research</p>
+      <h2 class="title">Notes from the field</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Human–AI handoffs</h3>
+          <p>Patterns that keep experts in control under time pressure.</p>
+        </article>
+        <article class="card">
+          <h3>Policy as product</h3>
+          <p>Turning regulation into testable product behavior.</p>
+        </article>
+        <article class="card">
+          <h3>Evaluation that sticks</h3>
+          <p>Offline metrics that actually predict on-call performance.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <h2>Join Syntora</h2>
+      <p>Start with a pilot. Keep humans in the loop.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="btn btn-orange" href="mailto:hello@syntora.example">Get started</a>
+        <a class="btn btn-ghost" href="mailto:hello@syntora.example?subject=Demo">Talk to us</a>
+      </div>
+    </section>
+
+    <p class="lib-note">
+      Sample template. Hero art is original AI-generated imagery. Logo strip uses fictional
+      names only. Type: Inter (OFL). Motion: CSS.
+    </p>
+
+    <footer>
+      <span>Syntora · Sample template</span>
+      <a href="mailto:hello@syntora.example">hello@syntora.example</a>
+      <span>© 2026</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      document.getElementById("menuBtn").addEventListener("click", function () {
+        nav.classList.toggle("open");
+      });
+    })();
+  </script>
+</body>
+</html>

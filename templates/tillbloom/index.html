@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tillbloom — Seamless transactions, happier customers</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --green: #65a30d;
+      --green-deep: #3f6212;
+      --green-btn: #84cc16;
+      --line: #e2e8f0;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1080px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.75rem 1.25rem; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-green { background: var(--green-btn); color: #14532d; }
+    .btn-green:hover { filter: brightness(0.96); }
+    .btn-ghost {
+      background: #fff; border-color: var(--line); color: var(--ink);
+    }
+    .btn-ghost:hover { border-color: #94a3b8; }
+
+    /* Card shell like screenshot */
+    .page {
+      width: min(1120px, 100% - 1.5rem); margin: 1.25rem auto 2.5rem;
+      background: #fff; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+    }
+
+    header { padding: 1.15rem 1.75rem 0; }
+    .nav { display: flex; align-items: center; gap: 1.5rem; }
+    .logo {
+      display: flex; align-items: center; gap: 0.45rem; font-weight: 700; font-size: 1.05rem;
+    }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, #84cc16, #4d7c0f);
+      display: grid; place-items: center; color: #fff; font-size: 0.85rem;
+    }
+    .nav-links {
+      display: flex; gap: 1.35rem; margin-left: auto;
+      font-size: 0.92rem; font-weight: 500; color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { margin-left: 0.5rem; }
+    @media (max-width: 800px) { .nav-links { display: none; } }
+
+    .hero {
+      text-align: center; padding: 3.5rem 1.5rem 0; position: relative;
+    }
+    .badge {
+      display: inline-block; padding: 0.35rem 0.85rem; border-radius: 999px;
+      background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--green-deep);
+      font-size: 0.8rem; font-weight: 600; margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15;
+      letter-spacing: -0.025em; max-width: 14ch; margin: 0 auto 1rem;
+    }
+    .hero h1 em { font-style: italic; }
+    .hero .lead {
+      color: var(--muted); max-width: 36em; margin: 0 auto 1.5rem; font-size: 1.02rem;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; justify-content: center; margin-bottom: 2rem;
+    }
+    .trusted {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #94a3b8; margin-bottom: 0.85rem;
+    }
+    .logo-row {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem 2rem;
+      font-weight: 700; font-size: 0.95rem; color: #94a3b8; margin-bottom: 1.5rem;
+    }
+
+    /* Hills illustration */
+    .hills {
+      position: relative; height: 280px; margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .hills svg { width: 100%; height: 100%; display: block; }
+    @media (max-width: 600px) { .hills { height: 200px; } }
+
+    section { padding: 3.5rem 1.75rem; }
+    .label {
+      text-align: center; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+    .title {
+      text-align: center; font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .sub {
+      text-align: center; color: var(--muted); max-width: 34em; margin: 0 auto 2rem;
+    }
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    }
+    .card {
+      background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem;
+    }
+    .card .ico {
+      width: 40px; height: 40px; border-radius: 10px; background: #ecfccb;
+      color: var(--green-deep); display: grid; place-items: center; margin-bottom: 0.85rem;
+    }
+    .card h3 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .pricing {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;
+    }
+    .price-card {
+      border: 1px solid var(--line); border-radius: 16px; padding: 1.75rem; background: #fff;
+    }
+    .price-card.feat { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+    .price { font-size: 2rem; font-weight: 700; margin: 0.5rem 0; letter-spacing: -0.03em; }
+    .price span { font-size: 0.95rem; color: var(--muted); font-weight: 500; }
+    .price-card ul { list-style: none; padding: 0; margin: 1rem 0 1.25rem; color: var(--muted); font-size: 0.9rem; }
+    .price-card li { padding: 0.3rem 0; }
+    .price-card li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+
+    .cta {
+      text-align: center; background: linear-gradient(180deg, #ecfccb, #f7fee7);
+      border: 1px solid #d9f99d; border-radius: 18px; padding: 2.75rem 1.5rem;
+    }
+    .cta h2 { font-size: 1.65rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .cta p { color: var(--muted); margin-bottom: 1.25rem; }
+
+    footer {
+      padding: 2rem 1.75rem; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="nav">
+        <a href="#" class="logo"><span class="logo-mark">✿</span> Tillbloom</a>
+        <nav class="nav-links">
+          <a href="#products">Products</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#resources">Resources</a>
+          <a href="#enterprise">Enterprise</a>
+          <a href="#cta">Login</a>
+        </nav>
+        <a class="btn btn-green nav-cta" href="#cta">Grow With Us →</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="badge">New · POS for everyone →</p>
+        <h1>Seamless Transactions, <em>Happier Customers</em></h1>
+        <p class="lead">Our user-friendly POS system ensures a smooth checkout process, leaving your customers satisfied and boosting your brand’s reputation. Ready to take customer service to the next level?</p>
+        <div class="hero-actions">
+          <a class="btn btn-green" href="#cta">Join Us Today →</a>
+          <a class="btn btn-ghost" href="#how">▶ How it Works</a>
+        </div>
+        <p class="trusted">Trusted by customers at</p>
+        <div class="logo-row">
+          <span>◈ Northline</span>
+          <span>○ Architect</span>
+          <span>◆ Calibre</span>
+          <span>▣ Harbor</span>
+        </div>
+        <div class="hills" aria-hidden="true">
+          <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#f0fdf4"/>
+              </linearGradient>
+              <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#bef264"/>
+                <stop offset="100%" stop-color="#65a30d"/>
+              </linearGradient>
+              <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#a3e635"/>
+                <stop offset="100%" stop-color="#4d7c0f"/>
+              </linearGradient>
+            </defs>
+            <rect width="1200" height="320" fill="url(#sky)"/>
+            <!-- far hills -->
+            <path d="M0 200 Q150 140 300 180 T600 160 T900 190 T1200 150 L1200 320 L0 320 Z" fill="#86efac" opacity="0.7"/>
+            <path d="M0 230 Q200 170 400 210 T800 180 T1200 220 L1200 320 L0 320 Z" fill="url(#h1)"/>
+            <path d="M0 260 Q250 200 500 250 T1000 230 T1200 270 L1200 320 L0 320 Z" fill="url(#h2)"/>
+            <!-- trees / bushes -->
+            <ellipse cx="180" cy="195" rx="40" ry="28" fill="#3f6212" opacity="0.85"/>
+            <ellipse cx="220" cy="200" rx="35" ry="24" fill="#4d7c0f"/>
+            <ellipse cx="520" cy="185" rx="50" ry="32" fill="#3f6212" opacity="0.8"/>
+            <ellipse cx="560" cy="190" rx="40" ry="26" fill="#4d7c0f"/>
+            <!-- flowers -->
+            <g fill="#facc15">
+              <circle cx="80" cy="250" r="10"/><circle cx="100" cy="240" r="12"/><circle cx="70" cy="230" r="9"/>
+              <circle cx="1100" cy="245" r="11"/><circle cx="1070" cy="230" r="13"/><circle cx="1120" cy="220" r="9"/>
+              <circle cx="1050" cy="260" r="10"/><circle cx="150" cy="270" r="8"/>
+            </g>
+            <g fill="#fde047" opacity="0.9">
+              <circle cx="90" cy="255" r="4"/><circle cx="1085" cy="248" r="4"/>
+            </g>
+            <!-- grass blades -->
+            <g stroke="#3f6212" stroke-width="2" fill="none" opacity="0.6">
+              <path d="M40 300 Q45 270 50 300"/><path d="M55 310 Q60 275 65 310"/>
+              <path d="M1150 305 Q1155 270 1160 305"/><path d="M1170 310 Q1175 280 1180 310"/>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section id="products">
+        <p class="label">Products</p>
+        <h2 class="title">Everything you need at the counter</h2>
+        <p class="sub">Checkout, inventory, and customer loyalty — designed to feel as friendly as your storefront.</p>
+        <div class="grid-3">
+          <article class="card">
+            <div class="ico">▣</div>
+            <h3>Point of sale</h3>
+            <p>Fast checkout on tablet or desktop with offline mode for busy floors.</p>
+          </article>
+          <article class="card">
+            <div class="ico">◎</div>
+            <h3>Inventory</h3>
+            <p>Live stock counts, low-stock alerts, and multi-location sync.</p>
+          </article>
+          <article class="card">
+            <div class="ico">♡</div>
+            <h3>Loyalty</h3>
+            <p>Simple rewards that keep regulars coming back without another app login.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="how" style="background:var(--bg);border-radius:16px;margin:0 1.25rem">
+        <p class="label">How it works</p>
+        <h2 class="title">Up and selling in a day</h2>
+        <p class="sub">No lengthy onboarding. Import products, connect payments, train the team.</p>
+        <div class="grid-3">
+          <article class="card" style="background:#fff">
+            <h3>1. Set up</h3>
+            <p>Add catalog, taxes, and staff PINs in guided steps.</p>
+          </article>
+          <article class="card" style="background:#fff">
+            <h3>2. Connect</h3>
+            <p>Link card readers and your bank in a few clicks.</p>
+          </article>
+          <article class="card" style="background:#fff">
+            <h3>3. Sell</h3>
+            <p>Open the till — reports roll in automatically at close.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <p class="label">Pricing</p>
+        <h2 class="title">Plans that grow with you</h2>
+        <p class="sub">Transparent monthly pricing. Cancel anytime.</p>
+        <div class="pricing">
+          <div class="price-card">
+            <h3>Starter</h3>
+            <p class="price">$29 <span>/ mo</span></p>
+            <ul>
+              <li>1 register</li>
+              <li>Basic inventory</li>
+              <li>Email support</li>
+            </ul>
+            <a class="btn btn-ghost" href="#cta" style="width:100%">Join Us Today</a>
+          </div>
+          <div class="price-card feat">
+            <h3>Growth</h3>
+            <p class="price">$79 <span>/ mo</span></p>
+            <ul>
+              <li>Unlimited registers</li>
+              <li>Loyalty &amp; gifts</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn-green" href="#cta" style="width:100%">Grow With Us →</a>
+          </div>
+          <div class="price-card" id="enterprise">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <ul>
+              <li>Multi-brand</li>
+              <li>API access</li>
+              <li>Dedicated success</li>
+            </ul>
+            <a class="btn btn-ghost" href="#cta" style="width:100%">Talk to sales</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources">
+        <div class="cta" id="cta">
+          <h2>Ready for happier checkouts?</h2>
+          <p>Start free for 14 days — no hardware lock-in.</p>
+          <a class="btn btn-green" href="#">Join Us Today →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="logo"><span class="logo-mark">✿</span> Tillbloom</span>
+      <span>POS for modern retailers · Sample template</span>
+      <span>© 2026 Tillbloom</span>
+    </footer>
+  </div>
+</body>
+</html>

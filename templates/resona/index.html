@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resona — Hear every detail. Feel every beat.</title>
+  <meta
+    name="description"
+    content="Premium headphones for audiophiles and creators. Fictional product sample with liquid motion hero."
+  />
+  <!--
+    Product hero: liquid animated outer frame + dark stage,
+    cinematic portrait, split headline. Free: Inter + Instrument Serif, CSS motion.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --ink: #f4f4f5;
+      --muted: #a1a1aa;
+      --stage: #050505;
+      --card: #0c0c0e;
+      --line: #222226;
+      --font: Inter, system-ui, -apple-system, sans-serif;
+      --serif: "Instrument Serif", Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #1a0a08;
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    img { display: block; max-width: 100%; }
+
+    /* Liquid outer frame */
+    .frame {
+      min-height: 100vh;
+      padding: 1.25rem;
+      background: url("liquid-bg.jpg") center / cover no-repeat;
+      animation: liquidShift 18s ease-in-out infinite alternate;
+      display: flex; align-items: stretch; justify-content: center;
+    }
+    @keyframes liquidShift {
+      0% { background-position: 30% 40%; filter: hue-rotate(0deg) saturate(1.05); }
+      50% { background-position: 70% 55%; filter: hue-rotate(8deg) saturate(1.15); }
+      100% { background-position: 45% 65%; filter: hue-rotate(-6deg) saturate(1.1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .frame { animation: none; }
+    }
+
+    .stage {
+      width: min(1100px, 100%);
+      background: var(--stage);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.45);
+      display: flex; flex-direction: column;
+    }
+
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 1.15rem 1.5rem;
+      position: relative; z-index: 5;
+    }
+    .logo {
+      font-weight: 700; letter-spacing: 0.12em;
+      font-size: 0.95rem; text-transform: uppercase;
+    }
+    .logo span { opacity: 0.55; font-size: 0.7rem; vertical-align: super; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 1.35rem;
+      font-size: 0.88rem; font-weight: 500; color: var(--muted);
+    }
+    .nav-links a:hover { color: #fff; }
+    .menu-btn {
+      display: none; background: transparent; border: 1px solid #333;
+      color: #fff; border-radius: 999px; padding: 0.45rem 0.8rem;
+    }
+    @media (max-width: 760px) {
+      .nav-links { display: none; width: 100%; flex-direction: column; gap: 0.55rem; }
+      .nav.open .nav-links { display: flex; }
+      .menu-btn { display: block; margin-left: auto; }
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.7rem 1.2rem; border-radius: 999px;
+      font-size: 0.88rem; font-weight: 650;
+      border: 1px solid transparent; transition: 0.15s ease;
+    }
+    .btn-white {
+      background: #fff; color: #0a0a0a;
+    }
+    .btn-white:hover { background: #e8e8e8; }
+    .btn-ghost {
+      background: transparent; color: #fff; border-color: #333;
+    }
+    .btn-ghost:hover { border-color: #555; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: min(78vh, 640px);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .hero-photo {
+      position: absolute; inset: 0;
+      background: #000 center 20% / cover no-repeat;
+    }
+    .hero-photo::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.45) 100%),
+        linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.55) 100%);
+    }
+    .hero-glow {
+      position: absolute; inset: auto 0 0 0; height: 45%;
+      background: linear-gradient(180deg, transparent, rgba(0, 140, 255, 0.25));
+      pointer-events: none;
+      animation: glowPulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { opacity: 0.55; }
+      to { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-glow { animation: none; }
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      width: 100%;
+      padding: 2rem 1.75rem 3rem;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: end;
+      min-height: min(70vh, 560px);
+    }
+    @media (max-width: 800px) {
+      .hero-content { grid-template-columns: 1fr; align-items: end; }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+    }
+    .hero h1 em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hero-side {
+      text-align: right;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.95rem;
+      max-width: 22em;
+      justify-self: end;
+      line-height: 1.55;
+    }
+    @media (max-width: 800px) {
+      .hero-side { text-align: left; justify-self: start; }
+    }
+
+    /* Sections */
+    section {
+      padding: 4rem 1.75rem;
+      background: var(--stage);
+      border-top: 1px solid var(--line);
+    }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #7dd3fc; margin-bottom: 0.65rem;
+    }
+    .title {
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .lead {
+      color: var(--muted); max-width: 36em; margin-bottom: 1.75rem;
+    }
+    .center { text-align: center; }
+    .center .lead { margin-left: auto; margin-right: auto; }
+
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
+    }
+    @media (max-width: 720px) {
+      .feat-grid { grid-template-columns: 1fr; }
+    }
+    .feat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.35rem;
+    }
+    .feat h3 {
+      font-size: 1.05rem; font-weight: 650; margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+    .feat p { font-size: 0.9rem; color: var(--muted); }
+
+    .gallery {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem;
+    }
+    @media (max-width: 720px) {
+      .gallery { grid-template-columns: 1fr; }
+    }
+    .gallery figure {
+      border-radius: 18px; overflow: hidden;
+      background: #111;
+      border: 1px solid var(--line);
+    }
+    .gallery img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      min-height: 280px;
+    }
+    .gallery figcaption {
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem; color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .quotes {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 640px) {
+      .quotes { grid-template-columns: 1fr; }
+    }
+    .quote {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.35rem;
+    }
+    .quote p {
+      font-size: 1.05rem; margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .quote cite {
+      font-style: normal; font-size: 0.82rem; color: var(--muted);
+    }
+
+    .price-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      max-width: 760px; margin: 0 auto;
+    }
+    @media (max-width: 600px) {
+      .price-grid { grid-template-columns: 1fr; }
+    }
+    .price {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.5rem;
+      text-align: left;
+    }
+    .price.featured {
+      border-color: rgba(125, 211, 252, 0.35);
+      box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.1);
+    }
+    .price .name {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .price .amt {
+      font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
+      margin-bottom: 0.85rem;
+    }
+    .price ul {
+      list-style: none; padding: 0; margin: 0 0 1.25rem;
+      display: grid; gap: 0.4rem;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .price li::before { content: "· "; color: #7dd3fc; }
+
+    .cta {
+      text-align: center;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,100,200,0.15), transparent 55%),
+        #050505;
+    }
+    .cta h2 {
+      font-size: 1.75rem; font-weight: 600; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .cta p { color: var(--muted); margin-bottom: 1.25rem; }
+
+    footer {
+      padding: 1.25rem 1.75rem 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-size: 0.75rem; color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: #050505;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="stage">
+      <header class="nav" id="nav">
+        <a href="#top" class="logo">Resona<span>©</span></a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">Menu</button>
+        <nav class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#pricing">Pricing</a>
+        </nav>
+        <a class="btn btn-white" href="#shop">Shop now</a>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-photo" style="background-image:url('hero-portrait.jpg')" role="img" aria-label="Listener wearing Resona headphones"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-content">
+          <h1>Hear Every Detail<br />Feel Every <em>Beat.</em></h1>
+          <p class="hero-side">
+            Explore Resona’s premium headphone line-up — specially crafted for audiophiles,
+            creators, and everyday listeners.
+          </p>
+        </div>
+      </section>
+
+      <section id="features">
+        <p class="label">Features</p>
+        <h2 class="title">Tuned for the long listen</h2>
+        <p class="lead">Studio clarity without the fatigue — drivers, cushions, and ANC in balance.</p>
+        <div class="feat-grid">
+          <article class="feat">
+            <h3>40mm precision drivers</h3>
+            <p>Wide soundstage and tight bass that stays controlled at any volume.</p>
+          </article>
+          <article class="feat">
+            <h3>Adaptive silence</h3>
+            <p>Hybrid ANC that tracks your environment without crushing the mix.</p>
+          </article>
+          <article class="feat">
+            <h3>40-hour charge</h3>
+            <p>All-day sessions with fast charge when the encore runs long.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="gallery">
+        <p class="label">Gallery</p>
+        <h2 class="title">Form that disappears</h2>
+        <div class="gallery">
+          <figure>
+            <img src="hero-portrait.jpg" alt="Resona on ear" />
+            <figcaption>Resona Pro · Midnight Blue</figcaption>
+          </figure>
+          <figure>
+            <img src="product.jpg" alt="Resona headphones product shot" />
+            <figcaption>Matte shell · Memory foam</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="testimonials">
+        <p class="label">Testimonials</p>
+        <h2 class="title">From the booth to the commute</h2>
+        <div class="quotes">
+          <blockquote class="quote">
+            <p>“I mix on them, then forget I’m wearing them on the train. That’s the point.”</p>
+            <cite>— Maya R., producer</cite>
+          </blockquote>
+          <blockquote class="quote">
+            <p>“Detail without harshness. My daily driver for focus and playlists.”</p>
+            <cite>— Jordan K., designer</cite>
+          </blockquote>
+        </div>
+      </section>
+
+      <section id="pricing" class="center">
+        <p class="label">Pricing</p>
+        <h2 class="title">Choose your Resona</h2>
+        <div class="price-grid">
+          <article class="price">
+            <div class="name">Resona Air</div>
+            <div class="amt">$249</div>
+            <ul>
+              <li>Lightweight build</li>
+              <li>30-hour battery</li>
+              <li>Transparency mode</li>
+            </ul>
+            <a class="btn btn-ghost" href="#shop">Shop Air</a>
+          </article>
+          <article class="price featured">
+            <div class="name">Resona Pro</div>
+            <div class="amt">$349</div>
+            <ul>
+              <li>Adaptive ANC</li>
+              <li>40-hour battery</li>
+              <li>Spatial audio</li>
+              <li>Premium case</li>
+            </ul>
+            <a class="btn btn-white" href="#shop">Shop Pro</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta" id="shop">
+        <h2>Feel the beat</h2>
+        <p>Free shipping · 30-day returns · 2-year warranty</p>
+        <a class="btn btn-white" href="mailto:hello@resona.example">Shop now</a>
+      </section>
+
+      <footer>
+        <span>Resona · Sample template</span>
+        <a href="mailto:hello@resona.example">hello@resona.example</a>
+        <span>© 2026</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("menuBtn").addEventListener("click", function () {
+      document.getElementById("nav").classList.toggle("open");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numora Collective — Financial clarity for companies in motion</title>
+  <style>
+    :root {
+      --ink: #0f2744;
+      --ink-soft: #3d5a80;
+      --muted: #5c6b7a;
+      --yellow: #e8f06a;
+      --line: #e2e8f0;
+      --soft: #eef2f7;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: #fff; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1100px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0;
+      border-radius: 4px; overflow: hidden; font-weight: 650; font-size: 0.8rem;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .btn span {
+      padding: 0.85rem 1.15rem; background: #fff; color: var(--ink);
+    }
+    .btn i {
+      display: grid; place-items: center; padding: 0 0.9rem;
+      background: var(--yellow); color: var(--ink); font-style: normal; font-size: 1.1rem;
+    }
+    .btn:hover span { background: #f8fafc; }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 92vh; color: #fff;
+      display: flex; flex-direction: column;
+      background:
+        linear-gradient(105deg, rgba(15, 40, 70, 0.75) 0%, rgba(15, 40, 70, 0.35) 50%, rgba(15, 40, 70, 0.55) 100%),
+        linear-gradient(160deg, #1e3a5f 0%, #0c4a6e 40%, #164e63 100%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 40%, transparent 0%, transparent 30%, rgba(0,0,0,0.15) 100%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    /* abstract office suggestion via shapes */
+    .hero-scene {
+      position: absolute; inset: 0; opacity: 0.35; pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0 18%, rgba(255,255,255,0.08) 18% 19%, transparent 19% 38%, rgba(255,255,255,0.06) 38% 39%, transparent 39%),
+        linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.25));
+    }
+    .hero-scene .window-grid {
+      position: absolute; right: 8%; top: 12%; width: 42%; height: 55%;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; opacity: 0.4;
+    }
+    .hero-scene .window-grid i {
+      background: rgba(186, 230, 253, 0.25); border: 1px solid rgba(255,255,255,0.15);
+    }
+    .hero-scene .figure {
+      position: absolute; right: 28%; bottom: 18%; width: 80px; height: 160px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.35) 20%, rgba(0,0,0,0.5));
+      border-radius: 40px 40px 8px 8px; filter: blur(1px);
+    }
+
+    .hero-inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+    header { padding: 1.25rem 0; }
+    .nav {
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.45rem; font-weight: 700; font-size: 1rem;
+    }
+    .logo-mark {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: conic-gradient(from 90deg, #fff, #94a3b8, #fff);
+      display: grid; place-items: center;
+    }
+    .logo-mark::after {
+      content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--ink);
+    }
+    .nav-links {
+      margin-left: auto; display: flex; gap: 1.75rem;
+      font-size: 0.78rem; font-weight: 650; letter-spacing: 0.1em;
+    }
+    .nav-links a { color: rgba(255,255,255,0.75); position: relative; padding-bottom: 0.35rem; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a.active::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--yellow);
+    }
+    @media (max-width: 700px) { .nav-links { display: none; } }
+
+    .hero-content {
+      flex: 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem;
+      align-items: end; padding: 4rem 0 5rem;
+    }
+    @media (max-width: 800px) {
+      .hero-content { grid-template-columns: 1fr; padding: 3rem 0 4rem; }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 500;
+      letter-spacing: -0.03em; line-height: 1.12; max-width: 12ch;
+    }
+    .hero-side p {
+      color: rgba(255,255,255,0.85); font-size: 0.98rem; margin-bottom: 1.25rem; max-width: 32em;
+    }
+
+    /* Yellow accent strip */
+    .accent-line {
+      height: 6px; background: var(--yellow);
+    }
+
+    section { padding: 4.5rem 0; }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+    .title {
+      font-size: clamp(1.75rem, 3vw, 2.35rem); font-weight: 600;
+      letter-spacing: -0.025em; line-height: 1.2; color: var(--ink); margin-bottom: 1rem;
+    }
+    .sub { color: var(--muted); max-width: 34em; margin-bottom: 1.5rem; }
+
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
+    }
+    @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
+
+    .services-card {
+      background: var(--soft); border-radius: 4px; padding: 0; overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .services-card .head {
+      padding: 0.75rem 1.25rem; background: #dce4ef;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--ink-soft);
+    }
+    .services-card ol { list-style: none; padding: 0.5rem 0; margin: 0; }
+    .services-card li {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 0.95rem 1.25rem; border-bottom: 1px solid #e2e8f0;
+      font-weight: 500; color: #1e4a8c; font-size: 0.98rem;
+    }
+    .services-card li:last-child { border-bottom: none; }
+    .services-card .n {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: var(--yellow); color: var(--ink);
+      display: grid; place-items: center; font-size: 0.8rem; font-weight: 700;
+    }
+
+    .about-band {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 0;
+      background: #f8fafc;
+    }
+    @media (max-width: 800px) { .about-band { grid-template-columns: 1fr; } }
+    .about-photo {
+      min-height: 320px; position: relative;
+      background:
+        linear-gradient(160deg, #94a3b8, #64748b 40%, #334155);
+    }
+    .about-photo .badge {
+      position: absolute; top: 1.25rem; left: 1.25rem;
+      background: #1e3a8a; color: #fff; padding: 0.85rem 1rem;
+    }
+    .about-photo .badge strong {
+      display: block; font-size: 1.75rem; letter-spacing: -0.02em;
+    }
+    .about-photo .badge span { font-size: 0.8rem; opacity: 0.9; }
+    .about-photo .corner {
+      position: absolute; top: 0; left: 0; width: 28px; height: 28px;
+      background: var(--yellow);
+    }
+    .about-copy {
+      padding: 3rem 2.5rem; display: flex; flex-direction: column; justify-content: center;
+    }
+    .about-copy h2 {
+      font-size: clamp(1.6rem, 2.5vw, 2rem); letter-spacing: -0.02em;
+      margin-bottom: 0.75rem; color: var(--ink);
+    }
+
+    .values {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;
+    }
+    .value {
+      padding: 1.5rem; border: 1px solid var(--line); border-radius: 4px;
+    }
+    .value h3 { font-size: 1.05rem; margin-bottom: 0.4rem; color: var(--ink); }
+    .value p { color: var(--muted); font-size: 0.92rem; }
+
+    .cta {
+      background: var(--ink); color: #fff; padding: 4rem 1.5rem; text-align: center;
+    }
+    .cta h2 { font-size: 1.85rem; margin-bottom: 0.5rem; font-weight: 500; }
+    .cta p { color: #94a3b8; margin-bottom: 1.5rem; }
+    .cta .btn span { background: #fff; }
+    .cta .btn i { background: var(--yellow); }
+
+    footer {
+      padding: 2rem 0; border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      color: var(--muted); font-size: 0.88rem;
+    }
+    footer .logo { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-scene" aria-hidden="true">
+      <div class="window-grid">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="figure"></div>
+    </div>
+    <div class="hero-inner wrap">
+      <header>
+        <div class="nav">
+          <a href="#" class="logo"><span class="logo-mark"></span> Numora Collective</a>
+          <nav class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+      </header>
+      <div class="hero-content" id="home">
+        <h1>Financial clarity for companies in motion.</h1>
+        <div class="hero-side">
+          <p>Growth brings complexity. Reports multiply. Systems drift. Numora Collective works inside growing businesses to organize financial systems, understand performance, and turn numbers into decisions leaders can act on.</p>
+          <a class="btn" href="#services"><span>Explore our capabilities</span><i>→</i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="accent-line" aria-hidden="true"></div>
+
+  <section>
+    <div class="wrap split">
+      <div>
+        <p class="label">Capabilities</p>
+        <h2 class="title">Financial structure that supports growth.</h2>
+        <p class="sub">Most financial consulting stays high-level. Recommendations are made, but the day-to-day realities of the business often remain untouched. We work side-by-side to understand how your business actually runs, so financial strategy reflects both where things stand and where you are headed.</p>
+        <a class="btn" href="#services" style="border:1px solid var(--line)"><span>Explore our capabilities</span><i>→</i></a>
+      </div>
+      <div class="services-card" id="services">
+        <div class="head">Services include</div>
+        <ol>
+          <li><span class="n">1</span> Financial Organization &amp; Reporting</li>
+          <li><span class="n">2</span> Forecasting &amp; Scenario Modeling</li>
+          <li><span class="n">3</span> Cash &amp; Working Capital Management</li>
+          <li><span class="n">4</span> Strategic Planning &amp; Scale Support</li>
+          <li><span class="n">5</span> Investor &amp; PE Reporting</li>
+          <li><span class="n">6</span> Financial Systems &amp; Cloud Integration</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0" id="about">
+    <div class="about-band">
+      <div class="about-photo">
+        <div class="corner" aria-hidden="true"></div>
+        <div class="badge">
+          <strong>17+</strong>
+          <span>Years Experience</span>
+        </div>
+      </div>
+      <div class="about-copy">
+        <p class="label">About Numora Collective</p>
+        <h2>Spreadsheets don’t run the show. People do.</h2>
+        <p class="sub" style="margin-bottom:0">We embed with operators and finance leads to build reporting, forecasts, and systems that match how decisions are actually made — not how a textbook says they should be.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="label">How we work</p>
+      <h2 class="title" style="margin-bottom:1.75rem">Clarity without the theater</h2>
+      <div class="values">
+        <article class="value">
+          <h3>Inside the business</h3>
+          <p>We sit with your data, tools, and weekly rhythms — not remote slide decks alone.</p>
+        </article>
+        <article class="value">
+          <h3>Decision-ready numbers</h3>
+          <p>Reports leaders can use in the room. Fewer tabs. Clearer ownership.</p>
+        </article>
+        <article class="value">
+          <h3>Built to last</h3>
+          <p>Systems and models your team can run after we step back.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <h2>Ready for financial clarity?</h2>
+    <p>Tell us about your stage, systems, and the decisions that need better numbers.</p>
+    <a class="btn" href="mailto:hello@numora.collective"><span>Get in touch</span><i>→</i></a>
+  </section>
+
+  <footer class="wrap">
+    <a href="#" class="logo"><span class="logo-mark" style="background:var(--ink)"></span> Numora Collective</a>
+    <span>Financial clarity for companies in motion · Sample template</span>
+    <span>© 2026 Numora</span>
+  </footer>
+</body>
+</html>

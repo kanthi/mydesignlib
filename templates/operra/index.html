@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operra — Streamline People Operations</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #111113;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --soft: #f4f5f7;
+      --accent: #111113;
+      --orange: #f97316;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: var(--bg); line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1100px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.7rem 1.2rem; border-radius: 10px; font-weight: 600; font-size: 0.92rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-dark { background: var(--ink); color: #fff; }
+    .btn-dark:hover { background: #2a2a2e; }
+    .btn-ghost { background: transparent; border-color: var(--line); }
+    .btn-ghost:hover { border-color: #9ca3af; }
+    .btn-orange { background: var(--orange); color: #fff; }
+
+    header { border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; height: 68px; gap: 1.5rem; }
+    .logo { display: flex; align-items: center; gap: 0.45rem; font-weight: 700; letter-spacing: 0.02em; }
+    .logo-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: conic-gradient(from 180deg, #111, #666, #111);
+      display: grid; place-items: center;
+    }
+    .logo-icon::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
+    .nav-links { display: flex; gap: 1.4rem; margin-left: 1.5rem; color: var(--muted); font-size: 0.92rem; font-weight: 500; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 0.65rem; }
+    @media (max-width: 800px) { .nav-links { display: none; } }
+
+    .hero { padding: 4.5rem 0 3rem; text-align: center; }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem); line-height: 1.1;
+      letter-spacing: -0.035em; max-width: 14ch; margin: 0 auto 1rem; font-weight: 650;
+    }
+    .hero .lead { color: var(--muted); max-width: 34em; margin: 0 auto 1.75rem; font-size: 1.05rem; }
+    .hero-actions { margin-bottom: 2.5rem; }
+
+    .prompt-card {
+      max-width: 520px; margin: 0 auto; text-align: left;
+      background: var(--bg); border: 1px solid var(--line); border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(17,17,19,0.08); padding: 1rem 1.1rem 1rem;
+      background-image: radial-gradient(circle at 1px 1px, #e5e7eb 1px, transparent 0);
+      background-size: 12px 12px;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.85rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.35rem 0.65rem; border-radius: 999px; background: #fff;
+      border: 1px solid var(--line); font-size: 0.82rem; font-weight: 500;
+    }
+    .chip button { border: none; background: none; cursor: pointer; color: var(--muted); padding: 0; font-size: 0.9rem; }
+    .prompt-input {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.9rem 1rem;
+      color: var(--muted); font-size: 0.95rem; margin-bottom: 0.75rem;
+    }
+    .prompt-bar { display: flex; align-items: center; gap: 0.5rem; }
+    .prompt-bar .tool {
+      width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line);
+      background: #fff; display: grid; place-items: center; font-size: 0.85rem; color: var(--muted);
+    }
+    .prompt-bar .send {
+      margin-left: auto; width: 36px; height: 36px; border-radius: 50%;
+      background: var(--ink); color: #fff; border: none; cursor: pointer; font-size: 0.9rem;
+    }
+
+    .logos-band {
+      background: #171717; color: #a3a3a3; padding: 1.75rem 0; text-align: center;
+    }
+    .logos-band p { font-size: 0.9rem; margin-bottom: 1rem; color: #d4d4d4; }
+    .logos {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem 2rem;
+      font-size: 0.88rem; font-weight: 600; letter-spacing: 0.01em;
+    }
+    .logos span { opacity: 0.75; }
+
+    section { padding: 4.5rem 0; }
+    .label { font-size: 0.85rem; font-weight: 600; color: var(--orange); margin-bottom: 0.5rem; }
+    .title { font-size: clamp(1.7rem, 3vw, 2.2rem); letter-spacing: -0.025em; margin-bottom: 0.6rem; line-height: 1.2; }
+    .sub { color: var(--muted); max-width: 36em; margin-bottom: 2rem; }
+
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+    }
+    @media (max-width: 640px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat {
+      background: var(--soft); border-radius: 14px; padding: 1.35rem 1.4rem;
+      border: 1px solid transparent;
+    }
+    .feat:hover { border-color: var(--line); background: #fff; }
+    .feat .fi {
+      width: 36px; height: 36px; border-radius: 10px; background: #fff;
+      border: 1px solid var(--line); display: grid; place-items: center;
+      margin-bottom: 0.85rem; font-size: 1rem;
+    }
+    .feat h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+    .feat p { color: var(--muted); font-size: 0.9rem; }
+
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem;
+    }
+    .panel h4 { font-size: 0.95rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; }
+    .panel-item {
+      display: flex; gap: 0.75rem; padding: 0.75rem; background: #fff;
+      border: 1px solid var(--line); border-radius: 10px; margin-bottom: 0.55rem;
+      font-size: 0.9rem;
+    }
+    .panel-item .num {
+      width: 22px; height: 22px; border-radius: 6px; background: var(--soft);
+      display: grid; place-items: center; font-size: 0.75rem; color: var(--muted); flex-shrink: 0;
+    }
+    .panel-item small { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      padding: 0.55rem 0; border-bottom: 1px solid var(--line);
+      display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.95rem;
+    }
+    .checklist li::before { content: "✓"; color: var(--orange); font-weight: 700; }
+
+    .why { background: var(--soft); }
+    .why-inner { max-width: 640px; }
+
+    footer { border-top: 1px solid var(--line); padding: 3rem 0 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 2rem; }
+    @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    footer h4 { font-size: 0.85rem; margin-bottom: 0.75rem; }
+    footer ul { list-style: none; padding: 0; color: var(--muted); font-size: 0.9rem; }
+    footer li { margin-bottom: 0.4rem; }
+    footer a:hover { color: var(--ink); }
+    .footer-bottom {
+      margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+      color: var(--muted); font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo"><span class="logo-icon" aria-hidden="true"></span> OPERRA</a>
+      <nav class="nav-links">
+        <a href="#product">Product</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#blog">Blog</a>
+        <a href="#company">Company</a>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-ghost" href="#">Log In</a>
+        <a class="btn btn-dark" href="#cta">Join waitlist</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Streamline People Operations Automatically</h1>
+        <p class="lead">Automate HR from hire to high performance. Manage employee records, attendance, time off, contracts, payroll prep, and performance in one powerful platform.</p>
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="#cta">↗ Join waitlist</a>
+        </div>
+        <div class="prompt-card" aria-hidden="true">
+          <div class="chips">
+            <span class="chip">Invoices <button type="button">×</button></span>
+            <span class="chip">Transactions <button type="button">×</button></span>
+            <span class="chip">Cash Flow <button type="button">×</button></span>
+          </div>
+          <div class="prompt-input">Review transactions, cash flow, invoices and more</div>
+          <div class="prompt-bar">
+            <span class="tool">+</span>
+            <span class="tool">✦</span>
+            <span class="tool">···</span>
+            <button class="send" type="button" aria-label="Send">↑</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="logos-band">
+      <div class="wrap">
+        <p>Trusted by the world’s biggest brands</p>
+        <div class="logos">
+          <span>IntelliSpark</span>
+          <span>NeuroLink</span>
+          <span>DataStack</span>
+          <span>Graphizo</span>
+          <span>Overlay</span>
+          <span>Brightly</span>
+          <span>Cutlab</span>
+          <span>StratoLink</span>
+          <span>LucenAI</span>
+          <span>Blazen</span>
+        </div>
+      </div>
+    </div>
+
+    <section id="product">
+      <div class="wrap">
+        <p class="label">Platform</p>
+        <h2 class="title">Automate every step, from hire to payroll</h2>
+        <p class="sub">Attendance, contracts, and payroll preparation stay in sync — so your team focuses on people, not admin.</p>
+        <div class="feat-grid">
+          <article class="feat">
+            <div class="fi">⏱</div>
+            <h3>Time &amp; Attendance</h3>
+            <p>Automate time tracking with built-in regional rules. Check-ins, shifts, and attendance flow into payroll without manual work.</p>
+          </article>
+          <article class="feat">
+            <div class="fi">🏖</div>
+            <h3>Leave Management</h3>
+            <p>Manage leave requests in chat with region-specific policies. Balances, accruals, and payroll stay perfectly in sync.</p>
+          </article>
+          <article class="feat">
+            <div class="fi">💵</div>
+            <h3>Payroll Preparation</h3>
+            <p>Hours, leave balances, and variable pay are calculated automatically and prepared for payroll — export-ready every cycle.</p>
+          </article>
+          <article class="feat">
+            <div class="fi">🔐</div>
+            <h3>Role-Based Access Control</h3>
+            <p>Secure sensitive data with role-based access, field-level permissions, and a detailed activity log.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="solutions" style="background:#fafafa;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="wrap split">
+        <div>
+          <p class="label">Onboarding</p>
+          <h2 class="title">Create smooth onboarding experiences for every new hire</h2>
+          <p class="sub">Region-specific templates, e-signatures, and welcome workflows — without the spreadsheet chaos.</p>
+          <ul class="checklist">
+            <li>Generate employment contracts by region</li>
+            <li>Request electronic signatures from hire and manager</li>
+            <li>Send a personalized welcome message in team chat</li>
+            <li>Create onboarding workflows with buddy assignment</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h4>Onboarding plan <span style="color:var(--muted);font-weight:500;font-size:0.8rem">↑</span></h4>
+          <div class="panel-item"><span class="num">1</span><div>Generate Employment Contracts<small>Region-specific templates · Pre-filled</small></div></div>
+          <div class="panel-item"><span class="num">2</span><div>Request Electronic Signatures<small>Signature request sent to new hire and manager</small></div></div>
+          <div class="panel-item"><span class="num">3</span><div>Send a Personalized Welcome Message<small>Day-one welcome in team chat</small></div></div>
+          <div class="panel-item"><span class="num">4</span><div>Create Onboarding Workflows<small>Buddy assigned · Accounts ready</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="performance">
+      <div class="wrap split">
+        <div>
+          <p class="label">Performance Management</p>
+          <h2 class="title">Continuous performance. No annual surprises.</h2>
+          <p class="sub">Performance reviews powered by real-time data, not assumptions. Goals, feedback, and calibration stay connected to day-to-day work.</p>
+          <div class="feat-grid" style="grid-template-columns:1fr 1fr">
+            <article class="feat" style="background:#fff;border:1px solid var(--line)">
+              <h3 style="font-size:0.95rem">Automate Structure &amp; Scheduling</h3>
+              <p>Review cycles that run on schedule without admin chase.</p>
+            </article>
+            <article class="feat" style="background:#fff;border:1px solid var(--line)">
+              <h3 style="font-size:0.95rem">Connect Data from Anywhere</h3>
+              <p>Pull signals from tools your team already uses.</p>
+            </article>
+            <article class="feat" style="background:#fff;border:1px solid var(--line);grid-column:1/-1">
+              <h3 style="font-size:0.95rem">AI-Powered Reviews</h3>
+              <p>Draft summaries and highlight themes so managers start with insight, not a blank page.</p>
+            </article>
+          </div>
+        </div>
+        <div class="panel">
+          <h4>Integrations <span style="color:var(--muted);font-weight:500;font-size:0.8rem">Works where your team works</span></h4>
+          <div class="panel-item"><span class="num">⌘</span><div>Team chat<small>Leave, welcome messages, and nudges</small></div></div>
+          <div class="panel-item"><span class="num">⬚</span><div>HRIS sync<small>Employee records stay consistent</small></div></div>
+          <div class="panel-item"><span class="num">▦</span><div>Payroll export<small>Export-ready every cycle</small></div></div>
+          <div class="panel-item"><span class="num">◎</span><div>Calendar<small>Review and 1:1 scheduling</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="why" id="company">
+      <div class="wrap why-inner">
+        <p class="label">Why us</p>
+        <h2 class="title">Build exceptional teams. Leave the complexity behind.</h2>
+        <p class="sub">As your team grows, operational complexity increases faster than your resources. Operra automates day-to-day people operations so you spend less time on admin and more time building a high-performing company.</p>
+        <a class="btn btn-dark" href="#cta">Join waitlist</a>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <p class="label">Pricing</p>
+        <h2 class="title">Transparent pricing as you scale</h2>
+        <p class="sub">Per-employee pricing with no annual surprises. Cancel anytime during early access.</p>
+        <div class="feat-grid">
+          <article class="feat" style="background:#fff;border-color:var(--line)">
+            <h3>Growth</h3>
+            <p style="font-size:2rem;font-weight:700;color:var(--ink);margin:0.5rem 0">$8 <span style="font-size:1rem;font-weight:500;color:var(--muted)">/ employee / mo</span></p>
+            <p>Core HR, attendance, leave, and onboarding for teams up to 150 people.</p>
+            <a class="btn btn-ghost" href="#cta" style="margin-top:1rem">Join waitlist</a>
+          </article>
+          <article class="feat" style="background:#111;color:#fff;border-color:#111">
+            <h3 style="color:#fff">Scale</h3>
+            <p style="font-size:2rem;font-weight:700;margin:0.5rem 0">Custom</p>
+            <p style="color:#a3a3a3">SSO, advanced RBAC, dedicated success, and custom workflows for larger orgs.</p>
+            <a class="btn btn-orange" href="#cta" style="margin-top:1rem">Talk to sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="wrap" style="text-align:center;padding:1rem 0 2rem">
+        <h2 class="title">Ready to automate people ops?</h2>
+        <p class="sub" style="margin-inline:auto">Get early access to Operra. We’ll reach out when your seat is ready.</p>
+        <form onsubmit="event.preventDefault();alert('Thanks — you’re on the waitlist (demo).');" style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;max-width:420px;margin:0 auto">
+          <input type="email" required placeholder="work@company.com" aria-label="Work email" style="flex:1;min-width:200px;padding:0.75rem 1rem;border:1px solid var(--line);border-radius:10px;font:inherit" />
+          <button class="btn btn-dark" type="submit">Join waitlist</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="blog" style="border-top:1px solid var(--line);padding-top:3rem">
+      <div class="wrap">
+        <p class="label">From the blog</p>
+        <h2 class="title" style="margin-bottom:1.5rem">Notes on modern people ops</h2>
+        <div class="feat-grid">
+          <article class="feat" style="background:#fff;border-color:var(--line)">
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.4rem">Playbooks · 6 min</p>
+            <h3>How remote-first teams run leave without email</h3>
+            <p>A practical setup for chat-native time off and accrual rules.</p>
+          </article>
+          <article class="feat" style="background:#fff;border-color:var(--line)">
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.4rem">Compliance · 8 min</p>
+            <h3>Region-aware contracts without the legal maze</h3>
+            <p>Templates, e-sign, and audit trails for multi-country hires.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="logo" style="margin-bottom:0.75rem"><span class="logo-icon"></span> OPERRA</div>
+          <p style="color:var(--muted);font-size:0.9rem">People operations, automated from hire to payroll.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#product">Platform</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#company">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Operra. Sample template.</span>
+        <span>hello@operra.io</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

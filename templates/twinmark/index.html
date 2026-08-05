@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twinmark — Brand-first experiences that convert</title>
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --yellow: #eef58a;
+      --line: #e8e4dc;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+    /* subtle column grid */
+    .grid-bg {
+      background-image: linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: calc(100% / 12) 100%;
+    }
+
+    .promo {
+      text-align: center; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.55rem; background: var(--yellow); color: #3a3a2a;
+    }
+
+    header { padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
+    .nav { display: flex; align-items: center; gap: 1.5rem; }
+    .logo {
+      font-family: var(--serif); font-style: italic; font-size: 1.55rem;
+      color: var(--blue); font-weight: 500; letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 1.1rem; margin-left: 1rem;
+      font-size: 0.78rem; font-weight: 650; letter-spacing: 0.06em; color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { margin-left: auto; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.7rem 1.25rem; border-radius: 999px; font-weight: 650; font-size: 0.85rem;
+      border: none; cursor: pointer;
+    }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-blue:hover { filter: brightness(1.05); }
+    .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+    @media (max-width: 900px) { .nav-links { display: none; } }
+
+    .hero {
+      display: grid; grid-template-columns: 1.1fr 0.7fr 1fr; gap: 1.5rem;
+      align-items: center; padding: 3.5rem 0 2.5rem; position: relative;
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: left; }
+      .hero-mark { order: -1; justify-self: start; }
+    }
+    .hero h1 {
+      font-size: clamp(1.85rem, 3.5vw, 2.55rem); font-weight: 500;
+      letter-spacing: -0.03em; line-height: 1.2; max-width: 14ch;
+    }
+    .hero h1 .hl {
+      background: linear-gradient(180deg, transparent 55%, var(--yellow) 55%);
+    }
+    .hero-mark {
+      width: 140px; height: 160px; justify-self: center;
+      background: var(--blue); border-radius: 999px;
+      clip-path: path("M 70 0 C 110 0 140 30 140 55 C 140 75 110 85 70 95 C 30 85 0 75 0 55 C 0 30 30 0 70 0 M 70 65 C 110 75 140 90 140 115 C 140 140 110 160 70 160 C 30 160 0 140 0 115 C 0 90 30 75 70 65 Z");
+      /* fallback simple pill stack */
+      clip-path: none;
+      display: flex; flex-direction: column; gap: 0.35rem; background: transparent;
+    }
+    .hero-mark span {
+      display: block; height: 72px; border-radius: 999px; background: var(--blue);
+    }
+    .hero-aside {
+      font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em;
+      line-height: 1.3; max-width: 14ch; justify-self: end; text-align: right;
+    }
+    @media (max-width: 900px) {
+      .hero-aside { text-align: left; justify-self: start; }
+    }
+    .badge-partner {
+      display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1.5rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; color: var(--muted);
+    }
+    .badge-partner .box {
+      width: 28px; height: 28px; border-radius: 6px; background: var(--ink); color: #fff;
+      display: grid; place-items: center; font-size: 0.85rem;
+    }
+    .works-card {
+      position: absolute; top: 1.5rem; right: 0;
+      padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 12px;
+      background: #fff; font-size: 0.8rem; box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+    .works-card small { display: block; color: var(--muted); font-size: 0.7rem; margin-bottom: 0.25rem; }
+    @media (max-width: 900px) { .works-card { position: static; margin-bottom: 1rem; width: fit-content; } }
+
+    .launches { padding: 1rem 0 2.5rem; }
+    .launches-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+    }
+    .launches-head .dot { color: var(--blue); }
+    .launches-head a { color: var(--muted); font-weight: 600; }
+    .project-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+    }
+    @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+    .project { }
+    .project-img {
+      aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; margin-bottom: 0.85rem;
+      background: #ddd center/cover no-repeat;
+    }
+    .project-img.p1 {
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.1), transparent),
+        linear-gradient(135deg, #7dd3fc 0%, #38bdf8 40%, #0ea5e9 100%);
+      position: relative;
+    }
+    .project-img.p1::after {
+      content: "✦"; position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: 3rem; color: rgba(255,255,255,0.5);
+    }
+    .project-img.p2 {
+      background: linear-gradient(145deg, #f9a8d4, #fb7185 50%, #f43f5e);
+      position: relative;
+    }
+    .project-img.p2::after {
+      content: "◆"; position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: 3rem; color: rgba(255,255,255,0.45);
+    }
+    .project-meta {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem 1.25rem;
+    }
+    .project-meta h3 { font-size: 1.15rem; font-weight: 600; margin-right: auto; }
+    .stat {
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .stat strong {
+      display: block; font-size: 0.95rem; color: #a16207; font-weight: 650;
+    }
+    .dots { display: flex; gap: 0.35rem; margin-top: 1.25rem; }
+    .dots i {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block;
+    }
+    .dots i.on { background: var(--ink); }
+
+    .metrics {
+      background: var(--yellow); padding: 2.75rem 0; margin: 0.5rem 0 0;
+    }
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; text-align: center;
+    }
+    @media (max-width: 700px) { .metrics-grid { grid-template-columns: 1fr 1fr; } }
+    .metrics strong {
+      display: block; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 650;
+      letter-spacing: -0.03em; margin-bottom: 0.35rem;
+    }
+    .metrics span { font-size: 0.88rem; color: #4a4a30; max-width: 14ch; display: inline-block; }
+
+    .about {
+      padding: 4rem 0 3rem; max-width: 48rem;
+    }
+    .about p {
+      font-family: var(--serif); font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+      line-height: 1.45; letter-spacing: -0.015em; margin-bottom: 1.5rem;
+    }
+    .about .hl { background: linear-gradient(180deg, transparent 60%, var(--yellow) 60%); }
+    .about-foot {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+      justify-content: space-between;
+    }
+    .avatars { display: flex; }
+    .avatars span {
+      width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--bg);
+      margin-left: -8px; background: linear-gradient(135deg, #93c5fd, #3b82f6);
+    }
+    .avatars span:first-child { margin-left: 0; }
+    .avatars span:nth-child(2) { background: linear-gradient(135deg, #fcd34d, #f59e0b); }
+    .avatars span:nth-child(3) { background: linear-gradient(135deg, #f9a8d4, #ec4899); }
+    .avatars span:nth-child(4) { background: linear-gradient(135deg, #86efac, #22c55e); }
+    .avatars span:nth-child(5) { background: linear-gradient(135deg, #c4b5fd, #8b5cf6); }
+    .meet { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
+
+    .services { padding: 2rem 0 4rem; }
+    .services h2 {
+      font-size: 1.5rem; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .svc-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    }
+    .svc {
+      padding: 1.35rem; border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    .svc h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .svc p { color: var(--muted); font-size: 0.9rem; }
+
+    .cta-band {
+      text-align: center; padding: 3rem 1.5rem; background: #fff;
+      border: 1px solid var(--line); border-radius: 16px; margin-bottom: 3rem;
+    }
+    .cta-band h2 { font-size: 1.75rem; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .cta-band p { color: var(--muted); margin-bottom: 1.25rem; }
+
+    footer {
+      border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); font-size: 0.88rem;
+    }
+    .footer-inner {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center;
+    }
+  </style>
+</head>
+<body class="grid-bg">
+  <p class="promo">Are we even ecom experts without a promo bar?</p>
+
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo">twinmark</a>
+      <nav class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+        <a href="#approach">Approach</a>
+        <a href="#team">Team</a>
+        <a href="#shop">Shop</a>
+      </nav>
+      <a class="btn btn-blue nav-cta" href="#contact">Work with us</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div class="works-card">
+        <small>✦ In the works:</small>
+        <strong>regimenlab</strong>
+      </div>
+      <div>
+        <h1>We design and develop <span class="hl">brand-first experiences</span> built to convert visitors into revenue.</h1>
+        <p class="badge-partner"><span class="box" aria-hidden="true">▣</span> Platform Plus Partner</p>
+      </div>
+      <div class="hero-mark" aria-hidden="true"><span></span><span></span></div>
+      <p class="hero-aside">Conversion optimized doesn’t mean design comes second.</p>
+    </section>
+
+    <section class="wrap launches" id="projects">
+      <div class="launches-head">
+        <span><span class="dot">●</span> Recent launches</span>
+        <a href="#projects">View all projects</a>
+      </div>
+      <div class="project-grid">
+        <article class="project">
+          <div class="project-img p1" role="img" aria-label="Good Harbor project visual"></div>
+          <div class="project-meta">
+            <h3>Good Harbor</h3>
+            <div class="stat"><strong>↑ 31%</strong> Conversion rate</div>
+            <div class="stat"><strong>↑ 45%</strong> Time on site</div>
+          </div>
+        </article>
+        <article class="project">
+          <div class="project-img p2" role="img" aria-label="Lumen Jar project visual"></div>
+          <div class="project-meta">
+            <h3>Lumen Jar</h3>
+            <div class="stat"><strong>↑ 25%</strong> Conversion rate</div>
+            <div class="stat"><strong>↑ 76%</strong> Total orders</div>
+          </div>
+        </article>
+      </div>
+      <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+    </section>
+
+    <section class="metrics" id="approach">
+      <div class="wrap metrics-grid">
+        <div><strong>100%</strong><span>built on referrals and relationships</span></div>
+        <div><strong>4</strong><span>weeks average ROI for 8-figure stores</span></div>
+        <div><strong>90%</strong><span>of projects approved in 2 rounds</span></div>
+        <div><strong>10+</strong><span>years building high-growth storefronts</span></div>
+      </div>
+    </section>
+
+    <section class="wrap about" id="team">
+      <p>
+        <span class="hl">Twinmark</span> builds exceptional storefronts and the brands behind them.
+        We combine senior talent and an efficient process to deliver work that’s considered,
+        cohesive, and built to convert. In a world noisier than ever, trust is built or lost
+        in just 0.05 seconds. Great design is how you earn it.
+      </p>
+      <div class="about-foot">
+        <div class="avatars" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <a class="meet" href="#contact">Meet the team</a>
+      </div>
+    </section>
+
+    <section class="wrap services" id="services">
+      <h2>What we deliver</h2>
+      <div class="svc-grid">
+        <article class="svc">
+          <h3>Brand systems</h3>
+          <p>Identity, voice, and visual language that scale across every product page.</p>
+        </article>
+        <article class="svc">
+          <h3>Conversion design</h3>
+          <p>UX and UI tuned for clarity, speed, and revenue — not just awards.</p>
+        </article>
+        <article class="svc">
+          <h3>Storefront builds</h3>
+          <p>Headless or platform-native builds with clean handoff and training.</p>
+        </article>
+        <article class="svc" id="shop">
+          <h3>Retainers</h3>
+          <p>Ongoing design, CRO tests, and seasonal campaigns for growing brands.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="contact">
+      <div class="cta-band">
+        <h2>Ready for a storefront that earns trust?</h2>
+        <p>Tell us about your brand, timeline, and goals.</p>
+        <a class="btn btn-blue" href="mailto:hello@twinmark.studio">Work with us</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span class="logo" style="font-size:1.2rem">twinmark</span>
+      <span>Brand-first commerce design · Sample template</span>
+      <span>© 2026 Twinmark</span>
+    </div>
+  </footer>
+</body>
+</html>

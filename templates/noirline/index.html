@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noirline® — Design that drives growth</title>
+  <meta
+    name="description"
+    content="Monochrome design studio template. Brands, products, and experiences built for results. Fictional sample."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --ink: #111;
+      --muted: #6b6b6b;
+      --line: #e6e6e6;
+      --soft: #f4f4f4;
+      --white: #fff;
+      --gray-1: #1a1a1a;
+      --gray-2: #2a2a2a;
+      --gray-3: #4a4a4a;
+      --gray-4: #8a8a8a;
+      --font: Inter, system-ui, -apple-system, sans-serif;
+      --serif: "Instrument Serif", Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; }
+    img { display: block; max-width: 100%; }
+
+    /* —— Nav —— */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+      color: #fff;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      color: var(--ink);
+      box-shadow: 0 1px 0 var(--line);
+    }
+    .logo {
+      font-weight: 700; font-size: 1.2rem; letter-spacing: -0.04em;
+    }
+    .logo span {
+      font-size: 0.55em; vertical-align: super; font-weight: 600;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0.15rem;
+    }
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 500;
+      padding: 0.45rem 0.85rem; border-radius: 999px;
+      opacity: 0.9;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav .btn-book {
+      margin-left: 0.5rem;
+      background: #fff; color: #000;
+      padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .nav.scrolled .btn-book {
+      background: var(--black); color: #fff;
+    }
+    .menu-toggle {
+      display: none; color: inherit;
+      font-size: 1.35rem; padding: 0.35rem;
+    }
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .nav.open .nav-links {
+        display: flex; flex-direction: column;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: #0a0a0a; color: #fff;
+        padding: 1rem; gap: 0.25rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      .nav.scrolled.open .nav-links {
+        background: #fff; color: var(--ink);
+      }
+      .menu-toggle { display: block; }
+      .nav .btn-book { display: none; }
+      .nav.open .btn-book {
+        display: inline-flex; margin: 0.5rem 0 0; width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: #000;
+      color: #fff;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: #111 center / cover no-repeat;
+    }
+    .hero-bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 35%, rgba(0,0,0,0.75) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.35) 0%, transparent 50%);
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      padding: 2rem 1.75rem 3.5rem;
+      max-width: 1200px; width: 100%; margin: 0 auto;
+      display: grid; grid-template-columns: 1.4fr 1fr;
+      gap: 2rem; align-items: end;
+    }
+    @media (max-width: 800px) {
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+    .hero h1 {
+      font-size: clamp(1.85rem, 4.2vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      max-width: 16ch;
+    }
+    .hero-meta {
+      display: flex; flex-direction: column; gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .hero-side {
+      font-size: 0.8rem; color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+    }
+    .hero-side strong {
+      display: block; color: #fff; font-weight: 600; margin-bottom: 0.25rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.25rem; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      transition: 0.15s ease;
+    }
+    .btn-white {
+      background: #fff; color: #000;
+    }
+    .btn-white:hover { background: #eaeaea; }
+    .btn-dark {
+      background: var(--black); color: #fff;
+    }
+    .btn-dark:hover { background: #222; }
+    .btn-outline {
+      border: 1px solid var(--line); background: transparent;
+    }
+    .btn-outline:hover { border-color: #999; }
+
+    /* —— Sections —— */
+    section { padding: 5rem 1.75rem; }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .label {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .label::before {
+      content: "";
+      width: 8px; height: 8px;
+      background: var(--black);
+      border-radius: 2px;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      max-width: 22ch;
+      margin-bottom: 1.5rem;
+    }
+    .section-title .muted { color: var(--gray-4); }
+    .lead {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 42rem; line-height: 1.6;
+    }
+
+    /* —— About / partnership —— */
+    .about {
+      background: var(--white);
+    }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2.5rem; align-items: center;
+      margin-top: 2rem;
+    }
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+    .about-photo {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      background: #111 center / cover no-repeat;
+    }
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+    @media (max-width: 520px) {
+      .stats { grid-template-columns: 1fr; gap: 1rem; }
+    }
+    .stat strong {
+      display: block;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 600; letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat span {
+      font-size: 0.85rem; color: var(--muted);
+    }
+
+    /* —— Logos —— */
+    .logos {
+      display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem;
+      align-items: center; justify-content: space-between;
+      padding: 2rem 0 0;
+      opacity: 0.55;
+    }
+    .logos span {
+      font-weight: 700; font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .logos svg { width: 22px; height: 22px; }
+
+    /* —— Why / Design Partner —— */
+    .partner {
+      background: var(--soft);
+    }
+    .partner-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid var(--line);
+      max-width: 28rem;
+    }
+    .partner-card h3 {
+      font-size: 1.35rem; font-weight: 650;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .partner-card ul {
+      list-style: none; display: grid; gap: 0.75rem;
+    }
+    .partner-card li {
+      display: flex; gap: 0.65rem;
+      font-size: 0.92rem; color: var(--gray-3);
+      line-height: 1.45;
+    }
+    .partner-card li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px; height: 8px; margin-top: 0.4rem;
+      background: var(--black); border-radius: 2px;
+    }
+    .partner-layout {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem; align-items: start; margin-top: 1.5rem;
+    }
+    @media (max-width: 800px) {
+      .partner-layout { grid-template-columns: 1fr; }
+    }
+    .partner-visual {
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #111 center / cover no-repeat;
+    }
+
+    /* —— Services —— */
+    .services { background: #000; color: #fff; }
+    .services .label { color: rgba(255,255,255,0.5); }
+    .services .label::before { background: #fff; }
+    .services .section-title { color: #fff; max-width: none; }
+    .svc-list {
+      margin-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .svc-item {
+      display: grid; grid-template-columns: 3rem 1fr auto;
+      gap: 1rem; align-items: center;
+      padding: 1.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      transition: padding 0.2s;
+    }
+    .svc-item:hover { padding-left: 0.5rem; }
+    .svc-num {
+      font-size: 0.8rem; font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      font-variant-numeric: tabular-nums;
+    }
+    .svc-item h3 {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 600; letter-spacing: -0.02em;
+    }
+    .svc-item p {
+      grid-column: 2 / -1;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 40rem;
+      margin-top: -0.35rem;
+    }
+    .svc-arrow {
+      color: rgba(255,255,255,0.35);
+      font-size: 1.1rem;
+    }
+
+    /* —— Process —— */
+    .process { background: var(--white); }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 900px) {
+      .process-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .process-grid { grid-template-columns: 1fr; }
+    }
+    .step {
+      background: var(--soft);
+      border-radius: 10px;
+      padding: 1.5rem 1.25rem;
+      min-height: 200px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+    }
+    .step:nth-child(1) { background: #e8e8e8; }
+    .step:nth-child(2) { background: #d0d0d0; }
+    .step:nth-child(3) { background: #b0b0b0; color: #111; }
+    .step:nth-child(4) { background: #2a2a2a; color: #fff; border-color: #2a2a2a; }
+    .step .num {
+      font-size: 1.5rem; font-weight: 600;
+      letter-spacing: -0.03em; opacity: 0.5;
+    }
+    .step h3 {
+      font-size: 1rem; font-weight: 650;
+      letter-spacing: -0.02em; line-height: 1.3;
+      margin-top: 2rem;
+    }
+    .step p {
+      font-size: 0.82rem; opacity: 0.75;
+      margin-top: 0.45rem; line-height: 1.45;
+    }
+
+    /* —— Projects —— */
+    .projects { background: var(--soft); }
+    .projects-head {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: end;
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .proj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 700px) {
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+    .proj {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #222 center / cover no-repeat;
+      color: #fff;
+    }
+    .proj::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(transparent 45%, rgba(0,0,0,0.7));
+      transition: background 0.25s;
+    }
+    .proj:hover::after {
+      background: linear-gradient(transparent 30%, rgba(0,0,0,0.8));
+    }
+    .proj-meta {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      z-index: 2; padding: 1.25rem;
+      display: flex; justify-content: space-between; align-items: end;
+    }
+    .proj-meta h3 {
+      font-size: 1.1rem; font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+    .proj-meta span {
+      font-size: 0.78rem; opacity: 0.75;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* —— Case detail strip —— */
+    .case {
+      background: var(--white);
+      padding: 5rem 1.75rem;
+    }
+    .case-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2.5rem; align-items: start;
+    }
+    @media (max-width: 800px) {
+      .case-inner { grid-template-columns: 1fr; }
+    }
+    .case h2 {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 600; letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .case .tagline {
+      font-size: 1.05rem; color: var(--muted);
+      margin-bottom: 1.5rem; max-width: 28ch;
+    }
+    .case-hero-img {
+      border-radius: 8px; overflow: hidden;
+      aspect-ratio: 16/10;
+      background: #222 center / cover no-repeat;
+      margin-bottom: 1.5rem;
+    }
+    .case-meta {
+      display: grid; gap: 0.65rem;
+      font-size: 0.88rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+    .case-meta div {
+      display: grid; grid-template-columns: 7rem 1fr;
+      gap: 0.5rem;
+    }
+    .case-meta dt { color: var(--muted); }
+    .case-meta dd { font-weight: 500; }
+    .case-copy h3 {
+      font-size: 1.05rem; font-weight: 650;
+      margin: 1.5rem 0 0.5rem;
+    }
+    .case-copy h3:first-child { margin-top: 0; }
+    .case-copy p {
+      font-size: 0.92rem; color: var(--muted); line-height: 1.6;
+    }
+    .case-side-imgs {
+      display: grid; gap: 0.75rem;
+    }
+    .case-side-imgs .img {
+      border-radius: 8px; overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #222 center / cover no-repeat;
+    }
+
+    /* —— Pricing —— */
+    .pricing { background: var(--soft); }
+    .price-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+    @media (max-width: 800px) {
+      .price-grid { grid-template-columns: 1fr; }
+    }
+    .price {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.75rem 1.5rem;
+      display: flex; flex-direction: column;
+    }
+    .price.featured {
+      background: var(--black); color: #fff;
+      border-color: var(--black);
+    }
+    .price .name {
+      font-size: 0.78rem; font-weight: 650;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      opacity: 0.55; margin-bottom: 0.75rem;
+    }
+    .price h3 {
+      font-size: 1.35rem; font-weight: 650;
+      letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .price .amount {
+      font-size: 2rem; font-weight: 600;
+      letter-spacing: -0.04em; margin: 0.75rem 0 1rem;
+    }
+    .price .amount small {
+      font-size: 0.85rem; font-weight: 500; opacity: 0.6;
+    }
+    .price ul {
+      list-style: none; display: grid; gap: 0.55rem;
+      font-size: 0.88rem; color: var(--muted);
+      margin-bottom: 1.5rem; flex: 1;
+    }
+    .price.featured ul { color: rgba(255,255,255,0.7); }
+    .price li::before {
+      content: "– ";
+    }
+    .price .btn { width: 100%; margin-top: auto; }
+    .price.featured .btn-dark {
+      background: #fff; color: #000;
+    }
+    .price.featured .btn-dark:hover { background: #eaeaea; }
+
+    /* —— CTA / Footer —— */
+    .footer {
+      background: #000; color: #fff;
+      padding: 4.5rem 1.75rem 0;
+    }
+    .footer-top {
+      max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 2rem; padding-bottom: 3.5rem;
+    }
+    @media (max-width: 700px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+    .footer-cta {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400; letter-spacing: -0.03em;
+      line-height: 1.25;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-cta a {
+      display: block;
+      color: #fff; font-weight: 500;
+      margin-top: 0.35rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+      width: fit-content;
+    }
+    .footer-cta a:hover { border-color: rgba(255,255,255,0.4); }
+    .footer-col h4 {
+      font-size: 0.8rem; font-weight: 600;
+      margin-bottom: 1rem; color: rgba(255,255,255,0.9);
+    }
+    .footer-col a {
+      display: block;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      padding: 0.3rem 0;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1120px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 1.25rem 0;
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+    }
+    .footer-wordmark {
+      max-width: 1120px; margin: 0 auto;
+      padding: 2rem 0 0.5rem;
+      overflow: hidden;
+    }
+    .footer-wordmark span {
+      display: block;
+      font-size: clamp(4rem, 18vw, 12rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 0.85;
+      background: linear-gradient(180deg, #4a4a4a 0%, #1a1a1a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      user-select: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <a href="#top" class="logo">Noirline<span>®</span></a>
+    <button class="menu-toggle" id="menuBtn" type="button" aria-label="Menu">☰</button>
+    <nav class="nav-links">
+      <a href="#top">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a class="btn-book" href="#contact">Book a Call</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-bg" style="background-image:url('hero.jpg')"></div>
+    <div class="hero-inner">
+      <h1>We design brands, products and experiences that drive growth and results.</h1>
+      <div class="hero-meta">
+        <div class="hero-side">
+          <strong>Results in 1–2 weeks</strong>
+          Design that drives revenue.<br />Built for scale from day one.
+        </div>
+        <a class="btn btn-white" href="#projects">Start a Project</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <p class="label">About us</p>
+      <h2 class="section-title">
+        Every partnership starts with
+        <span class="muted">clarity and ends with work that compounds in value.</span>
+      </h2>
+      <div class="about-grid">
+        <div>
+          <p class="lead">
+            Noirline is a design partner for teams who need monochrome precision —
+            branding, product UX, and web systems shipped with restraint and speed.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <strong>100+</strong>
+              <span>Client partnerships</span>
+            </div>
+            <div class="stat">
+              <strong>45+</strong>
+              <span>Industries served</span>
+            </div>
+            <div class="stat">
+              <strong>70+</strong>
+              <span>Products launched</span>
+            </div>
+          </div>
+          <div class="logos" aria-label="Sample client marks">
+            <span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4zm16 0a8 8 0 0 1-8 8v-4a4 4 0 0 0 4-4h4z"/></svg>
+              Northmark
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5L19 22l-7-4.5L5 22l2.5-8.5L2 9h7z"/></svg>
+              Voltara
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+              Loom &amp; Co
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+              Fieldline
+            </span>
+          </div>
+        </div>
+        <div class="about-photo" style="background-image:url('process.jpg')" role="img" aria-label="Studio process photograph"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="partner" id="partner">
+    <div class="wrap">
+      <p class="label">Why choose us</p>
+      <h2 class="section-title">Fast turnaround without cutting corners.</h2>
+      <div class="partner-layout">
+        <div class="partner-card">
+          <h3>Design Partner</h3>
+          <ul>
+            <li>Flexible capacity when your team is stretched thin</li>
+            <li>We handle overflow work so you never miss a deadline</li>
+            <li>Consistent quality across every deliverable</li>
+          </ul>
+        </div>
+        <div class="partner-visual" style="background-image:url('project-4.jpg')" role="img" aria-label="Product detail"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <p class="label">Capabilities</p>
+      <h2 class="section-title">What we ship</h2>
+      <div class="svc-list">
+        <a class="svc-item" href="#contact">
+          <span class="svc-num">01</span>
+          <h3>Brand strategy &amp; identity</h3>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+          <p>Positioning, messaging, visual systems, and guidelines that stay consistent at scale.</p>
+        </a>
+        <a class="svc-item" href="#contact">
+          <span class="svc-num">02</span>
+          <h3>Product &amp; UX design</h3>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+          <p>Flows, prototypes, and interfaces that convert without clutter.</p>
+        </a>
+        <a class="svc-item" href="#contact">
+          <span class="svc-num">03</span>
+          <h3>Web design &amp; development</h3>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+          <p>Marketing sites and product surfaces built for performance and polish.</p>
+        </a>
+        <a class="svc-item" href="#contact">
+          <span class="svc-num">04</span>
+          <h3>Design systems &amp; guidelines</h3>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+          <p>Tokens, components, and docs so teams ship in sync.</p>
+        </a>
+        <a class="svc-item" href="#contact">
+          <span class="svc-num">05</span>
+          <h3>Design partner retainers</h3>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+          <p>Ongoing capacity for startups and product orgs that need a reliable studio bench.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="wrap">
+      <p class="label">The process</p>
+      <h2 class="section-title">How we work</h2>
+      <div class="process-grid">
+        <article class="step">
+          <span class="num">.01</span>
+          <div>
+            <h3>Discovery &amp; Strategy</h3>
+            <p>Project kick-off, goals, audience, and success metrics.</p>
+          </div>
+        </article>
+        <article class="step">
+          <span class="num">.02</span>
+          <div>
+            <h3>Concept &amp; Wireframing</h3>
+            <p>Structure, hierarchy, and direction before polish.</p>
+          </div>
+        </article>
+        <article class="step">
+          <span class="num">.03</span>
+          <div>
+            <h3>High-Fidelity Design</h3>
+            <p>Visual refinement across every critical surface.</p>
+          </div>
+        </article>
+        <article class="step">
+          <span class="num">.04</span>
+          <div>
+            <h3>Delivery &amp; Handoff</h3>
+            <p>Launch support, assets, and a clean system handoff.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="wrap">
+      <div class="projects-head">
+        <div>
+          <p class="label">Selected work</p>
+          <h2 class="section-title" style="margin:0">Projects</h2>
+        </div>
+        <a class="btn btn-dark" href="#contact">Start a Project</a>
+      </div>
+      <div class="proj-grid">
+        <a class="proj" href="#case" style="background-image:url('project-1.jpg')">
+          <div class="proj-meta">
+            <h3>Stride House</h3>
+            <span>01 — Athletic lifestyle</span>
+          </div>
+        </a>
+        <a class="proj" href="#case" style="background-image:url('project-2.jpg')">
+          <div class="proj-meta">
+            <h3>Meridian</h3>
+            <span>02 — Fragrance &amp; product</span>
+          </div>
+        </a>
+        <a class="proj" href="#case" style="background-image:url('project-3.jpg')">
+          <div class="proj-meta">
+            <h3>Horizon Atelier</h3>
+            <span>03 — Fashion editorial</span>
+          </div>
+        </a>
+        <a class="proj" href="#case" style="background-image:url('project-4.jpg')">
+          <div class="proj-meta">
+            <h3>Forma Lab</h3>
+            <span>04 — Product system</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case" id="case">
+    <div class="case-inner">
+      <div>
+        <p class="label">Case study</p>
+        <h2>Stride House</h2>
+        <p class="tagline">
+          A bold editorial rebrand for a modern athletic lifestyle label pushing into premium retail.
+        </p>
+        <div class="case-hero-img" style="background-image:url('project-1.jpg')"></div>
+        <dl class="case-meta">
+          <div>
+            <dt>Category</dt>
+            <dd>Brand strategy &amp; digital</dd>
+          </div>
+          <div>
+            <dt>Client</dt>
+            <dd>Stride House (fictional)</dd>
+          </div>
+          <div>
+            <dt>Duration</dt>
+            <dd>4 weeks</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="case-copy">
+        <h3>Overview</h3>
+        <p>
+          Stride House had loyal foot traffic but no digital presence worth speaking of.
+          Expanding into premium retail required a system that felt confident without losing warmth.
+        </p>
+        <h3>Challenges</h3>
+        <p>
+          Reposition without alienating existing customers. Move past clip-art graphics and
+          inconsistent packaging. Rebuild a site that could host products, stories, and campaigns
+          from one design language.
+        </p>
+        <h3>Conclusion</h3>
+        <p>
+          We delivered a full brand system — refined palette, editorial photography direction,
+          and a flexible web foundation. Sample outcome: first premium retail partnership within
+          the launch window and a clear lift in online interest.
+        </p>
+        <div class="case-side-imgs" style="margin-top:1.5rem">
+          <div class="img" style="background-image:url('project-2.jpg')"></div>
+          <div class="img" style="background-image:url('project-3.jpg')"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <p class="label">Pricing</p>
+      <h2 class="section-title">Pricing &amp; packages</h2>
+      <p class="lead">Choose the model that fits your stage. Every option includes strategic direction and focused execution.</p>
+      <div class="price-grid">
+        <article class="price">
+          <p class="name">Sprint</p>
+          <h3>Brand or site sprint</h3>
+          <p class="amount">$4.5k <small>/ project</small></p>
+          <ul>
+            <li>1–2 week focused delivery</li>
+            <li>Single core surface or brand pass</li>
+            <li>2 revision rounds</li>
+            <li>Figma handoff</li>
+          </ul>
+          <a class="btn btn-outline" href="#contact">Book Sprint</a>
+        </article>
+        <article class="price featured">
+          <p class="name">Partner</p>
+          <h3>Design partner</h3>
+          <p class="amount">$8k <small>/ month</small></p>
+          <ul>
+            <li>Ongoing capacity reserve</li>
+            <li>Brand + product + web mix</li>
+            <li>Weekly sync &amp; async support</li>
+            <li>Priority turnaround</li>
+          </ul>
+          <a class="btn btn-dark" href="#contact">Book Partner</a>
+        </article>
+        <article class="price">
+          <p class="name">System</p>
+          <h3>Full system build</h3>
+          <p class="amount">$14k <small>/ project</small></p>
+          <ul>
+            <li>Identity + site + design system</li>
+            <li>4–6 week engagement</li>
+            <li>Component library</li>
+            <li>Launch support</li>
+          </ul>
+          <a class="btn btn-outline" href="#contact">Book System</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="footer-top">
+      <div class="footer-cta">
+        Let's work together
+        <a href="mailto:hello@noirline.example">hello@noirline.example</a>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#top">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#case">Case study</a>
+        <a href="mailto:hello@noirline.example">Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Noirline. Sample template.</span>
+      <span>Terms</span>
+      <span>Privacy</span>
+    </div>
+    <div class="footer-wordmark" aria-hidden="true">
+      <span>Noirline</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      var btn = document.getElementById("menuBtn");
+      function onScroll() {
+        nav.classList.toggle("scrolled", window.scrollY > 40);
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      btn.addEventListener("click", function () {
+        nav.classList.toggle("open");
+      });
+      nav.querySelectorAll(".nav-links a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          nav.classList.remove("open");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

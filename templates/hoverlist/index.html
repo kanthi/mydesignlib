@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoverlist — A tiny floating todo list for macOS</title>
+  <style>
+    :root {
+      --bg: #a8b8c4;
+      --ink: #1e2a32;
+      --ink-soft: rgba(30, 42, 50, 0.72);
+      --window: rgba(248, 250, 252, 0.92);
+      --window-border: rgba(255, 255, 255, 0.55);
+      --row-hover: rgba(30, 42, 50, 0.06);
+      --row-active: rgba(30, 42, 50, 0.1);
+      --chip-bg: rgba(255, 255, 255, 0.35);
+      --chip-border: rgba(255, 255, 255, 0.45);
+      --btn-bg: #1a2330;
+      --btn-ink: #f5f7fa;
+      --shadow: 0 20px 50px rgba(20, 30, 40, 0.18), 0 2px 8px rgba(20, 30, 40, 0.08);
+      --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+      --font-ui: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      --font-body: var(--font-display);
+    }
+
+    /* Theme variants applied on <html data-theme> */
+    html[data-theme="sand"] {
+      --bg: #c4b8a8;
+      --ink: #2c241c;
+      --ink-soft: rgba(44, 36, 28, 0.72);
+      --window: rgba(250, 246, 240, 0.94);
+      --row-hover: rgba(44, 36, 28, 0.06);
+      --row-active: rgba(44, 36, 28, 0.1);
+      --chip-bg: rgba(255, 252, 246, 0.4);
+      --btn-bg: #2a221a;
+    }
+    html[data-theme="moss"] {
+      --bg: #6b7f5a;
+      --ink: #f2f5ee;
+      --ink-soft: rgba(242, 245, 238, 0.78);
+      --window: rgba(232, 238, 224, 0.88);
+      --window-border: rgba(255, 255, 255, 0.25);
+      --row-hover: rgba(30, 40, 24, 0.08);
+      --row-active: rgba(30, 40, 24, 0.12);
+      --chip-bg: rgba(255, 255, 255, 0.22);
+      --chip-border: rgba(255, 255, 255, 0.28);
+      --btn-bg: #1a2414;
+      --btn-ink: #f2f5ee;
+      --shadow: 0 20px 50px rgba(10, 20, 8, 0.28);
+    }
+    html[data-theme="forest"] {
+      --bg: #1e3d2f;
+      --ink: #eef6f0;
+      --ink-soft: rgba(238, 246, 240, 0.75);
+      --window: rgba(22, 32, 28, 0.92);
+      --window-border: rgba(255, 255, 255, 0.08);
+      --row-hover: rgba(255, 255, 255, 0.06);
+      --row-active: rgba(255, 255, 255, 0.1);
+      --chip-bg: rgba(255, 255, 255, 0.1);
+      --chip-border: rgba(255, 255, 255, 0.12);
+      --btn-bg: #0f1814;
+      --btn-ink: #eef6f0;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    }
+    html[data-theme="dusk"] {
+      --bg: #3d4458;
+      --ink: #eef0f6;
+      --ink-soft: rgba(238, 240, 246, 0.75);
+      --window: rgba(32, 36, 48, 0.94);
+      --window-border: rgba(255, 255, 255, 0.08);
+      --row-hover: rgba(255, 255, 255, 0.06);
+      --row-active: rgba(255, 255, 255, 0.1);
+      --chip-bg: rgba(255, 255, 255, 0.1);
+      --chip-border: rgba(255, 255, 255, 0.12);
+      --btn-bg: #161820;
+      --btn-ink: #eef0f6;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+    html[data-theme="rose"] {
+      --bg: #c9a8a8;
+      --ink: #2a1c1c;
+      --ink-soft: rgba(42, 28, 28, 0.72);
+      --window: rgba(252, 244, 244, 0.94);
+      --row-hover: rgba(42, 28, 28, 0.06);
+      --row-active: rgba(42, 28, 28, 0.1);
+      --chip-bg: rgba(255, 255, 255, 0.4);
+      --btn-bg: #2a1818;
+    }
+
+    html[data-font="serif"] { --font-body: var(--font-display); }
+    html[data-font="sans"] { --font-body: var(--font-ui); }
+    html[data-font="mono"] { --font-body: var(--font-mono); }
+
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.55s ease, color 0.35s ease;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    /* Header */
+    .top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .brand-check {
+      width: 34px; height: 34px; border-radius: 10px;
+      border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
+      background: color-mix(in srgb, var(--window) 70%, transparent);
+      color: var(--ink);
+      display: grid; place-items: center;
+      font-size: 1rem;
+      backdrop-filter: blur(8px);
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .support {
+      justify-self: end;
+      color: var(--ink-soft);
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .support:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Center stage */
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0 1.5rem;
+      position: relative;
+    }
+    h1 {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: clamp(2rem, 4.8vw, 3rem);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      text-align: center;
+      max-width: 14ch;
+      margin-bottom: 2.25rem;
+      transition: font-family 0.25s ease;
+    }
+
+    .demo-area {
+      position: relative;
+      width: min(420px, 100%);
+      min-height: 220px;
+      margin-bottom: 2rem;
+    }
+
+    /* Feature chip */
+    .features {
+      position: absolute;
+      left: -4.5rem;
+      top: 4.25rem;
+      z-index: 1;
+      list-style: none;
+      padding: 1rem 1.15rem;
+      border-radius: 14px;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      transform: rotate(-2deg);
+      transition: background 0.4s ease, border-color 0.4s ease, color 0.35s ease;
+    }
+    .features li {
+      display: flex; align-items: center; gap: 0.55rem;
+      padding: 0.35rem 0;
+      white-space: nowrap;
+    }
+    .features .ico { opacity: 0.75; width: 1.1em; text-align: center; font-size: 0.95em; }
+    @media (max-width: 640px) {
+      .features {
+        position: static;
+        transform: none;
+        margin: 0 auto 1rem;
+        width: fit-content;
+      }
+      .demo-area { min-height: auto; }
+    }
+
+    /* macOS window */
+    .window {
+      position: relative;
+      z-index: 2;
+      background: var(--window);
+      border: 1px solid var(--window-border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px) saturate(1.2);
+      overflow: hidden;
+      transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+      font-family: var(--font-ui);
+    }
+    .titlebar {
+      display: flex; align-items: center; gap: 0.55rem;
+      padding: 0.7rem 0.85rem 0.55rem;
+      user-select: none;
+    }
+    .traffic { display: flex; gap: 0.4rem; }
+    .traffic span {
+      width: 11px; height: 11px; border-radius: 50%;
+      display: block;
+    }
+    .traffic .r { background: #ff5f57; }
+    .traffic .y { background: #febc2e; }
+    .traffic .g { background: #28c840; }
+    .titlebar-actions {
+      margin-left: auto; display: flex; gap: 0.55rem; color: var(--ink-soft); font-size: 0.9rem;
+    }
+    .titlebar-actions button {
+      background: none; border: none; color: inherit; cursor: pointer;
+      padding: 0.15rem; border-radius: 4px; line-height: 1;
+      font-size: 0.95rem;
+    }
+    .titlebar-actions button:hover { color: var(--ink); background: var(--row-hover); }
+
+    .todo-list { list-style: none; padding: 0 0.55rem 0.65rem; min-height: 168px; }
+    .todo-item {
+      display: grid;
+      grid-template-columns: 22px 1fr auto;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.55rem;
+      border-radius: 8px;
+      transition: background 0.15s ease, opacity 0.35s ease, transform 0.35s ease, max-height 0.35s ease;
+      max-height: 48px;
+    }
+    .todo-item:hover { background: var(--row-hover); }
+    .todo-item:focus-within { background: var(--row-active); }
+    .todo-item.done .todo-text {
+      text-decoration: line-through;
+      opacity: 0.45;
+    }
+    .todo-item.removing {
+      opacity: 0;
+      transform: translateX(12px);
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    .check {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
+      background: transparent;
+      cursor: pointer;
+      display: grid; place-items: center;
+      padding: 0;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .check:hover { border-color: var(--ink); }
+    .todo-item.done .check {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+    .todo-item.done .check::after {
+      content: "✓";
+      color: var(--bg);
+      font-size: 0.65rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .todo-text {
+      border: none;
+      background: transparent;
+      font: inherit;
+      font-size: 0.92rem;
+      color: var(--ink);
+      width: 100%;
+      outline: none;
+      padding: 0.15rem 0;
+    }
+    .todo-text::placeholder { color: color-mix(in srgb, var(--ink) 35%, transparent); }
+    .del {
+      opacity: 0;
+      border: none; background: none;
+      color: var(--ink-soft);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0.15rem 0.25rem;
+      border-radius: 4px;
+      transition: opacity 0.15s;
+    }
+    .todo-item:hover .del,
+    .todo-item:focus-within .del { opacity: 1; }
+    .del:hover { color: var(--ink); background: var(--row-hover); }
+
+    /* Bottom controls */
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 0.55rem;
+      justify-content: center; align-items: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      min-height: 44px;
+      padding: 0 1.2rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-ink);
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease, background 0.35s ease;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-icon {
+      width: 44px; padding: 0;
+      font-size: 1rem;
+    }
+    .btn-font { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; min-width: 48px; }
+
+    .foot {
+      text-align: center;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding-top: 0.5rem;
+    }
+
+    /* Theme picker popover */
+    .theme-pop {
+      position: fixed;
+      z-index: 50;
+      display: none;
+      gap: 0.45rem;
+      padding: 0.55rem;
+      border-radius: 999px;
+      background: var(--window);
+      border: 1px solid var(--window-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+    .theme-pop.open { display: flex; }
+    .swatch {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    }
+    .swatch:hover { transform: scale(1.08); }
+    .swatch[data-t="slate"] { background: #a8b8c4; }
+    .swatch[data-t="sand"] { background: #c4b8a8; }
+    .swatch[data-t="moss"] { background: #6b7f5a; }
+    .swatch[data-t="forest"] { background: #1e3d2f; }
+    .swatch[data-t="dusk"] { background: #3d4458; }
+    .swatch[data-t="rose"] { background: #c9a8a8; }
+
+    .hint {
+      position: absolute;
+      bottom: -1.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .demo-area:hover .hint { opacity: 0.8; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <span class="brand-check" aria-hidden="true">✓</span>
+      <a class="logo" href="#">Hoverlist</a>
+      <a class="support" href="mailto:hello@example.com">Support</a>
+    </header>
+
+    <main class="stage">
+      <h1 id="headline">A tiny floating todo list for macOS</h1>
+
+      <div class="demo-area">
+        <ul class="features" aria-label="Product highlights">
+          <li><span class="ico" aria-hidden="true">✎</span> Customizable</li>
+          <li><span class="ico" aria-hidden="true">⌘</span> Keyboard-first</li>
+          <li><span class="ico" aria-hidden="true">◇</span> Lightweight</li>
+        </ul>
+
+        <div class="window" role="region" aria-label="Interactive todo demo">
+          <div class="titlebar">
+            <div class="traffic" aria-hidden="true">
+              <span class="r"></span><span class="y"></span><span class="g"></span>
+            </div>
+            <div class="titlebar-actions">
+              <button type="button" title="Sort" aria-label="Sort">☰</button>
+              <button type="button" id="clear-done" title="Clear completed" aria-label="Clear completed">🗑</button>
+              <button type="button" title="Settings" aria-label="Settings">⚙</button>
+            </div>
+          </div>
+          <ul class="todo-list" id="todo-list"></ul>
+        </div>
+        <p class="hint">Type, check off, or press Enter for a new row</p>
+      </div>
+
+      <div class="controls">
+        <a class="btn" href="https://hoverlist.com/" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true"></span> Download
+        </a>
+        <button type="button" class="btn btn-icon" id="theme-btn" title="Change theme" aria-label="Change theme" aria-expanded="false">○</button>
+        <button type="button" class="btn btn-font" id="font-btn" title="Change font" aria-label="Change font">Aa</button>
+      </div>
+    </main>
+
+    <p class="foot">Inspired by Hoverlist · Sample interactive template</p>
+  </div>
+
+  <div class="theme-pop" id="theme-pop" role="listbox" aria-label="Themes">
+    <button type="button" class="swatch" data-t="slate" title="Slate" role="option"></button>
+    <button type="button" class="swatch" data-t="sand" title="Sand" role="option"></button>
+    <button type="button" class="swatch" data-t="moss" title="Moss" role="option"></button>
+    <button type="button" class="swatch" data-t="forest" title="Forest" role="option"></button>
+    <button type="button" class="swatch" data-t="dusk" title="Dusk" role="option"></button>
+    <button type="button" class="swatch" data-t="rose" title="Rose" role="option"></button>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const THEMES = ["slate", "sand", "moss", "forest", "dusk", "rose"];
+      const FONTS = ["serif", "sans", "mono"];
+      const SEED = [
+        { text: "Change the theme", done: false },
+        { text: "Change the font", done: false },
+        { text: "Download Hoverlist", done: false },
+        { text: "", done: false },
+        { text: "", done: false },
+      ];
+
+      const listEl = document.getElementById("todo-list");
+      const themeBtn = document.getElementById("theme-btn");
+      const fontBtn = document.getElementById("font-btn");
+      const themePop = document.getElementById("theme-pop");
+      const clearDone = document.getElementById("clear-done");
+
+      let todos = SEED.map((t, i) => ({ id: i + 1, ...t }));
+      let nextId = todos.length + 1;
+      let themeIndex = 0;
+      let fontIndex = 0;
+
+      function render() {
+        listEl.innerHTML = todos
+          .map(
+            (t) => `
+          <li class="todo-item${t.done ? " done" : ""}" data-id="${t.id}">
+            <button type="button" class="check" aria-label="${t.done ? "Mark incomplete" : "Mark complete"}"></button>
+            <input class="todo-text" type="text" value="${escapeAttr(t.text)}" placeholder="" spellcheck="false" />
+            <button type="button" class="del" aria-label="Delete">×</button>
+          </li>`
+          )
+          .join("");
+      }
+
+      function escapeAttr(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      }
+
+      function ensureEmptyRow() {
+        const hasEmpty = todos.some((t) => !t.text.trim() && !t.done);
+        if (!hasEmpty) {
+          todos.push({ id: nextId++, text: "", done: false });
+          render();
+        }
+      }
+
+      listEl.addEventListener("click", (e) => {
+        const item = e.target.closest(".todo-item");
+        if (!item) return;
+        const id = Number(item.dataset.id);
+        const todo = todos.find((t) => t.id === id);
+        if (!todo) return;
+
+        if (e.target.closest(".check")) {
+          todo.done = !todo.done;
+          item.classList.toggle("done", todo.done);
+          if (todo.done && todo.text.trim()) {
+            // soft celebrate: brief scale
+            item.animate(
+              [{ transform: "scale(1)" }, { transform: "scale(0.98)" }, { transform: "scale(1)" }],
+              { duration: 220, easing: "ease-out" }
+            );
+          }
+          return;
+        }
+
+        if (e.target.closest(".del")) {
+          item.classList.add("removing");
+          setTimeout(() => {
+            todos = todos.filter((t) => t.id !== id);
+            ensureEmptyRow();
+            render();
+          }, 280);
+        }
+      });
+
+      listEl.addEventListener("input", (e) => {
+        if (!e.target.classList.contains("todo-text")) return;
+        const item = e.target.closest(".todo-item");
+        const id = Number(item.dataset.id);
+        const todo = todos.find((t) => t.id === id);
+        if (todo) todo.text = e.target.value;
+      });
+
+      listEl.addEventListener("keydown", (e) => {
+        if (!e.target.classList.contains("todo-text")) return;
+        const item = e.target.closest(".todo-item");
+        const id = Number(item.dataset.id);
+        const idx = todos.findIndex((t) => t.id === id);
+
+        if (e.key === "Enter") {
+          e.preventDefault();
+          todos.splice(idx + 1, 0, { id: nextId++, text: "", done: false });
+          render();
+          const inputs = listEl.querySelectorAll(".todo-text");
+          inputs[idx + 1]?.focus();
+        }
+
+        if (e.key === "Backspace" && !e.target.value && todos.length > 1) {
+          e.preventDefault();
+          todos = todos.filter((t) => t.id !== id);
+          render();
+          const inputs = listEl.querySelectorAll(".todo-text");
+          const focusIdx = Math.max(0, idx - 1);
+          inputs[focusIdx]?.focus();
+        }
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          listEl.querySelectorAll(".todo-text")[idx + 1]?.focus();
+        }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          listEl.querySelectorAll(".todo-text")[idx - 1]?.focus();
+        }
+      });
+
+      clearDone.addEventListener("click", () => {
+        const items = [...listEl.querySelectorAll(".todo-item.done")];
+        items.forEach((el) => el.classList.add("removing"));
+        setTimeout(() => {
+          todos = todos.filter((t) => !t.done);
+          ensureEmptyRow();
+          render();
+        }, 280);
+      });
+
+      function applyTheme(name) {
+        if (name === "slate") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", name);
+        themeIndex = Math.max(0, THEMES.indexOf(name));
+      }
+
+      function applyFont(name) {
+        document.documentElement.setAttribute("data-font", name);
+        fontIndex = Math.max(0, FONTS.indexOf(name));
+      }
+
+      themeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = !themePop.classList.contains("open");
+        themePop.classList.toggle("open", open);
+        themeBtn.setAttribute("aria-expanded", String(open));
+        if (open) {
+          const rect = themeBtn.getBoundingClientRect();
+          themePop.style.left = `${rect.left + rect.width / 2 - themePop.offsetWidth / 2}px`;
+          themePop.style.top = `${rect.top - 52}px`;
+          // fix position after display
+          requestAnimationFrame(() => {
+            const r = themeBtn.getBoundingClientRect();
+            const pw = themePop.offsetWidth;
+            themePop.style.left = `${Math.max(8, r.left + r.width / 2 - pw / 2)}px`;
+            themePop.style.top = `${r.top - themePop.offsetHeight - 10}px`;
+          });
+        }
+      });
+
+      themePop.addEventListener("click", (e) => {
+        const sw = e.target.closest(".swatch");
+        if (!sw) return;
+        applyTheme(sw.dataset.t);
+        themePop.classList.remove("open");
+        themeBtn.setAttribute("aria-expanded", "false");
+      });
+
+      document.addEventListener("click", () => {
+        themePop.classList.remove("open");
+        themeBtn.setAttribute("aria-expanded", "false");
+      });
+
+      // Also cycle theme with double-click on icon for fun
+      themeBtn.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+        themeIndex = (themeIndex + 1) % THEMES.length;
+        applyTheme(THEMES[themeIndex]);
+      });
+
+      fontBtn.addEventListener("click", () => {
+        fontIndex = (fontIndex + 1) % FONTS.length;
+        applyFont(FONTS[fontIndex]);
+      });
+
+      // Keyboard: T theme, F font (when not typing)
+      document.addEventListener("keydown", (e) => {
+        if (e.target.matches("input, textarea")) return;
+        if (e.key === "t" || e.key === "T") {
+          themeIndex = (themeIndex + 1) % THEMES.length;
+          applyTheme(THEMES[themeIndex]);
+        }
+        if (e.key === "f" || e.key === "F") {
+          fontIndex = (fontIndex + 1) % FONTS.length;
+          applyFont(FONTS[fontIndex]);
+        }
+      });
+
+      applyTheme("slate");
+      applyFont("serif");
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ashlar Studio — Digital experiences that move people</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --ink: #f4f4f5;
+      --muted: #8b8b93;
+      --line: #1c1c1f;
+      --card: #111113;
+      --lavender: #b8b4f0;
+      --lavender-deep: #9b96e8;
+      --star: #ff6b8a;
+      --white: #ffffff;
+      --soft: #f6f6f8;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: #0a0a0c;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; }
+
+    .shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.45);
+    }
+
+    /* —— Nav —— */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(10px);
+    }
+    .logo {
+      font-weight: 750; font-size: 1.05rem; letter-spacing: -0.03em;
+    }
+    .logo span { font-weight: 500; color: var(--muted); margin-left: 0.25rem; }
+    .nav-links {
+      display: flex; gap: 1.35rem;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .menu-btn {
+      display: none; background: none; border: 0; color: var(--ink);
+      font-size: 1.25rem; cursor: pointer;
+    }
+    @media (max-width: 760px) {
+      .nav-links { display: none; width: 100%; flex-direction: column; gap: 0.75rem; }
+      .nav.open .nav-links { display: flex; }
+      .menu-btn { display: block; margin-left: auto; }
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.1rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+      border: 1px solid transparent; cursor: pointer; transition: 0.15s ease;
+    }
+    .btn-lavender { background: var(--lavender); color: #14121f; }
+    .btn-lavender:hover { background: var(--lavender-deep); }
+    .btn-ghost {
+      background: transparent; border-color: #2a2a30; color: var(--ink);
+    }
+    .btn-ghost:hover { border-color: #555; }
+    .btn-white {
+      background: var(--white); color: #111; border-radius: 999px;
+    }
+    .btn-white:hover { background: #e8e8ec; }
+    .btn-dark {
+      background: #111; color: #fff; border-radius: 999px;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      padding: 3.5rem 1.5rem 2rem;
+      min-height: 70vh;
+      display: flex; flex-direction: column; justify-content: space-between;
+      gap: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      font-weight: 650; letter-spacing: -0.035em; line-height: 1.08;
+      max-width: 12ch;
+    }
+    .hero h1 .star {
+      color: var(--star); font-size: 0.7em; vertical-align: super;
+      margin-left: 0.1em;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.5rem;
+    }
+    .hero-side {
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 100%; gap: 2rem; padding-top: 0.35rem;
+    }
+    .hq {
+      text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.45;
+    }
+    @media (max-width: 800px) {
+      .hq { text-align: left; }
+    }
+    .hq strong { display: block; color: var(--ink); font-weight: 650; }
+    .hero-note {
+      text-align: right; font-size: 0.88rem; color: var(--muted);
+      max-width: 18em; margin-left: auto; line-height: 1.5;
+    }
+    @media (max-width: 800px) {
+      .hero-note { text-align: left; margin-left: 0; }
+    }
+
+    .work-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin: 0 -0.15rem;
+    }
+    @media (max-width: 700px) {
+      .work-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+    .work-card {
+      position: relative; border-radius: 10px; overflow: hidden;
+      background: var(--card); aspect-ratio: 5/4;
+      border: 1px solid var(--line);
+    }
+    .work-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .work-card:hover img { transform: scale(1.05); }
+    .work-card span {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+
+    /* —— Sections —— */
+    section { padding: 4rem 1.5rem; }
+    .label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+
+    .highlights {
+      border-top: 1px solid var(--line);
+    }
+    .highlights h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;
+      max-width: 16ch; margin-bottom: 1.25rem;
+    }
+    .hl-layout {
+      display: grid; grid-template-columns: 1fr 1.15fr; gap: 2rem; align-items: center;
+      margin-top: 2rem;
+    }
+    @media (max-width: 760px) {
+      .hl-layout { grid-template-columns: 1fr; }
+    }
+    .project-list { display: grid; gap: 0; }
+    .project-list button {
+      display: flex; align-items: baseline; gap: 0.85rem;
+      width: 100%; text-align: left;
+      padding: 1rem 0; border: 0; border-bottom: 1px solid var(--line);
+      background: none; color: var(--muted); cursor: pointer;
+      font-size: 1.15rem; font-weight: 550; letter-spacing: -0.02em;
+      transition: color 0.15s;
+    }
+    .project-list button .num {
+      font-size: 0.75rem; font-weight: 700; color: var(--muted); min-width: 1.5rem;
+    }
+    .project-list button.active,
+    .project-list button:hover { color: var(--ink); }
+    .project-list button.active .num { color: var(--lavender); }
+    .hl-preview {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--line); background: var(--card);
+      position: relative; min-height: 280px;
+    }
+    .hl-preview img {
+      width: 100%; height: 320px; object-fit: cover;
+    }
+    .hl-preview .view {
+      position: absolute; top: 0.75rem; left: 0.75rem;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      background: rgba(0,0,0,0.55); padding: 0.35rem 0.6rem; border-radius: 999px;
+    }
+
+    /* Stats */
+    .stats {
+      background: var(--white); color: #111;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+    .stats strong {
+      display: block; font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stats span {
+      font-size: 0.85rem; color: #555; font-weight: 550;
+    }
+
+    /* Foundation */
+    .foundation {
+      background: var(--soft); color: #111;
+      text-align: center;
+    }
+    .foundation-top {
+      display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .pill-card {
+      background: var(--lavender); color: #14121f;
+      border-radius: 16px; padding: 1.25rem 1.35rem;
+      min-width: 180px; text-align: left;
+      font-weight: 650; font-size: 1rem; line-height: 1.3;
+    }
+    .star-card {
+      width: 96px; height: 96px; border-radius: 16px;
+      background: #0a0a0a; display: grid; place-items: center;
+      font-size: 2rem; color: var(--star);
+    }
+    .social-row {
+      display: flex; gap: 0.4rem; margin-top: 0.85rem;
+    }
+    .social-row a {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(0,0,0,0.12); display: grid; place-items: center;
+      font-size: 0.7rem; font-weight: 700;
+    }
+    .foundation h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+      font-weight: 650; letter-spacing: -0.03em; margin-bottom: 0.75rem;
+    }
+    .foundation > p {
+      max-width: 36em; margin: 0 auto 2rem; color: #555; font-size: 0.98rem;
+    }
+    .pillars {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
+      text-align: left; max-width: 860px; margin: 0 auto;
+    }
+    @media (max-width: 700px) {
+      .pillars { grid-template-columns: 1fr; }
+    }
+    .pillar {
+      background: #fff; border-radius: 14px; padding: 1.25rem;
+      border: 1px solid #e6e6ea;
+    }
+    .pillar h3 {
+      font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .pillar p { font-size: 0.88rem; color: #666; }
+
+    /* Reviews */
+    .reviews {
+      border-top: 1px solid var(--line);
+      text-align: center;
+      position: relative;
+    }
+    .reviews::before {
+      content: "";
+      position: absolute; inset: 12% 8%;
+      border: 1px solid var(--line); border-radius: 4px;
+      pointer-events: none;
+    }
+    .reviews h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 600; letter-spacing: -0.03em;
+      margin: 0.5rem 0 1.5rem; position: relative;
+    }
+    .reviews h2 em {
+      font-style: normal; color: var(--lavender);
+    }
+    .quote-mark {
+      font-size: 2.5rem; color: var(--muted); line-height: 1; margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .quote {
+      max-width: 34em; margin: 0 auto 2rem;
+      font-size: 1.02rem; color: #c8c8d0; position: relative;
+    }
+    .reviewers {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.65rem;
+      position: relative;
+    }
+    .reviewer {
+      display: flex; align-items: center; gap: 0.65rem;
+      background: #141416; border: 1px solid var(--line);
+      border-radius: 999px; padding: 0.4rem 0.9rem 0.4rem 0.4rem;
+      cursor: pointer; transition: border-color 0.15s;
+      color: var(--muted); text-align: left;
+    }
+    .reviewer.active, .reviewer:hover {
+      border-color: #3a3a42; color: var(--ink);
+    }
+    .reviewer .av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #444, #222);
+      display: grid; place-items: center;
+      font-size: 0.7rem; font-weight: 700; color: #fff;
+    }
+    .reviewer strong { display: block; font-size: 0.82rem; font-weight: 650; }
+    .reviewer small { font-size: 0.7rem; color: var(--muted); }
+
+    /* FAQ */
+    .faq {
+      background: var(--white); color: #111;
+      display: grid; grid-template-columns: 0.9fr 1.2fr; gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .faq { grid-template-columns: 1fr; }
+    }
+    .faq h2 {
+      font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+      font-weight: 650; letter-spacing: -0.03em; margin-bottom: 1rem;
+    }
+    .faq-list { border-top: 1px solid #e6e6ea; }
+    .faq-item { border-bottom: 1px solid #e6e6ea; }
+    .faq-item button {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem; padding: 1.1rem 0; background: none; border: 0;
+      text-align: left; font-size: 0.98rem; font-weight: 600; cursor: pointer; color: #111;
+    }
+    .faq-item button .icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #eceaf8; color: #4a45a0;
+      display: grid; place-items: center; flex-shrink: 0;
+      font-size: 0.85rem; transition: transform 0.2s;
+    }
+    .faq-item.open button .icon { transform: rotate(180deg); }
+    .faq-item .ans {
+      display: none; padding: 0 0 1.1rem;
+      color: #666; font-size: 0.92rem; max-width: 40em;
+    }
+    .faq-item.open .ans { display: block; }
+
+    /* Blog */
+    .blog {
+      background: var(--white); color: #111;
+      border-top: 1px solid #ececf0;
+    }
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+    }
+    @media (max-width: 700px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+    .blog-card {
+      padding: 1.25rem; border-radius: 12px; border: 1px solid #ebebef;
+      background: #fafafa;
+    }
+    .blog-card time {
+      font-size: 0.72rem; color: #888; font-weight: 600;
+    }
+    .blog-card h3 {
+      font-size: 1.05rem; font-weight: 650; letter-spacing: -0.02em;
+      margin: 0.55rem 0 0.65rem; line-height: 1.3;
+    }
+    .blog-card span {
+      font-size: 0.78rem; color: #777;
+    }
+
+    /* Footer */
+    footer {
+      background: #080808; border-top: 1px solid var(--line);
+      padding: 3rem 1.5rem 1.5rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr auto;
+      gap: 2rem; margin-bottom: 2.5rem;
+    }
+    @media (max-width: 800px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    footer .logo { margin-bottom: 1rem; }
+    .footer-contact {
+      font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+    }
+    .footer-contact a:hover { color: var(--ink); }
+    .footer-col h4 {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.85rem;
+    }
+    .footer-col a {
+      display: block; font-size: 0.88rem; color: #c8c8d0;
+      padding: 0.25rem 0;
+    }
+    .footer-col a:hover { color: #fff; }
+    .newsletter h3 {
+      font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em;
+      margin: 0.5rem 0 0.35rem;
+    }
+    .newsletter p {
+      font-size: 0.88rem; color: var(--muted); margin-bottom: 1rem;
+    }
+    .newsletter form {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      max-width: 420px;
+    }
+    .newsletter input {
+      flex: 1; min-width: 180px;
+      background: #141416; border: 1px solid #2a2a30; color: #fff;
+      border-radius: 999px; padding: 0.7rem 1rem; outline: none;
+    }
+    .newsletter input:focus { border-color: #555; }
+    .footer-bar {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      padding-top: 1.25rem; border-top: 1px solid var(--line);
+      font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="nav" id="nav">
+      <a href="#top" class="logo">Ashlar<span>Studio</span></a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#works">Works</a>
+        <a href="#blog">Blog</a>
+        <a href="#faq">Pricing</a>
+      </nav>
+      <a class="btn btn-white" href="#contact">Work with us ↗</a>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div>
+          <h1>We craft digital experiences that move people<span class="star" aria-hidden="true">✦</span></h1>
+          <div class="hero-actions">
+            <a class="btn btn-lavender" href="#contact">Work with us ↗</a>
+            <a class="btn btn-ghost" href="#works">See our work</a>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="hq">
+            <strong>Studio HQ</strong>
+            Based in Toronto
+          </div>
+          <p class="hero-note">Design isn’t just how it looks — it’s how it connects.</p>
+        </div>
+      </div>
+
+      <div class="work-strip" id="works">
+        <a class="work-card" href="#case">
+          <img src="work-paint.jpg" alt="Canvas program mural project" />
+          <span>Canvas program ↗</span>
+        </a>
+        <a class="work-card" href="#case">
+          <img src="work-store.jpg" alt="Harbor storefront project" />
+          <span>Harbor store ↗</span>
+        </a>
+        <a class="work-card" href="#case">
+          <img src="work-camera.jpg" alt="Lens summit campaign" />
+          <span>Lens summit ’26 ↗</span>
+        </a>
+        <a class="work-card" href="#case">
+          <img src="work-portrait.jpg" alt="Ink branding campaign" />
+          <span>Ink branding ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="highlights" id="case">
+      <p class="label">Selected work</p>
+      <h2>Our work highlights a proven track record of delivering impactful results</h2>
+      <a class="btn btn-lavender" href="#contact">Work with us ↗</a>
+
+      <div class="hl-layout">
+        <div class="project-list" id="projectList" role="tablist">
+          <button type="button" class="active" data-img="work-paint.jpg" data-i="0">
+            <span class="num">01</span> Slice Atelier
+          </button>
+          <button type="button" data-img="work-store.jpg" data-i="1">
+            <span class="num">02</span> Creative startup
+          </button>
+          <button type="button" data-img="work-portrait.jpg" data-i="2">
+            <span class="num">03</span> UX revamp
+          </button>
+        </div>
+        <figure class="hl-preview">
+          <span class="view">View ↗</span>
+          <img id="caseImg" src="work-paint.jpg" alt="Selected case study" />
+        </figure>
+      </div>
+    </section>
+
+    <div class="stats" aria-label="Studio metrics">
+      <div>
+        <strong>470+</strong>
+        <span>Clients served</span>
+      </div>
+      <div>
+        <strong>12 yrs</strong>
+        <span>Crafting brands</span>
+      </div>
+      <div>
+        <strong>98%</strong>
+        <span>Return partners</span>
+      </div>
+    </div>
+
+    <section class="foundation" id="about">
+      <div class="foundation-top">
+        <div class="pill-card">
+          Let’s build something great together
+          <div class="social-row">
+            <a href="#contact" aria-label="Social">f</a>
+            <a href="#contact" aria-label="Social">✕</a>
+            <a href="#contact" aria-label="Social">in</a>
+            <a href="#contact" aria-label="Social">▶</a>
+          </div>
+        </div>
+        <div class="star-card" aria-hidden="true">✦</div>
+      </div>
+      <h2>Our foundation for lasting creative impact</h2>
+      <p>
+        At Ashlar Studio, success is built on three guiding takes. These pillars ensure
+        that each design collaboration delivers real value and meaningful results.
+      </p>
+      <div class="pillars">
+        <article class="pillar">
+          <h3>Strategy with purpose</h3>
+          <p>We start with clarity — audience, offer, and the story only you can tell.</p>
+        </article>
+        <article class="pillar">
+          <h3>Craft that lands</h3>
+          <p>Interfaces, identities, and motion systems built to feel inevitable.</p>
+        </article>
+        <article class="pillar">
+          <h3>Partnership, not handoff</h3>
+          <p>We ship with you — workshops, reviews, and long-term brand care.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="reviews">
+      <p class="label">— Client review</p>
+      <h2>Trusted by founders,<br /><em>backed by results</em></h2>
+      <div class="quote-mark">”</div>
+      <p class="quote" id="quoteText">
+        Concept to delivery, Ashlar Studio impressed us with their seamless process and exceptional talent. They understood our goals, anticipated our needs, and produced work that perfectly aligned with our brand.
+      </p>
+      <div class="reviewers" id="reviewers">
+        <button type="button" class="reviewer active" data-q="0">
+          <span class="av">SP</span>
+          <span><strong>Simon Poole</strong><small>CEO &amp; Founder</small></span>
+        </button>
+        <button type="button" class="reviewer" data-q="1">
+          <span class="av">ND</span>
+          <span><strong>Nahla Diaz</strong><small>CEO &amp; Founder</small></span>
+        </button>
+        <button type="button" class="reviewer" data-q="2">
+          <span class="av">LH</span>
+          <span><strong>Lilly Hart</strong><small>CEO &amp; Founder</small></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div>
+        <h2>Frequently asked questions</h2>
+        <a class="btn btn-lavender" href="#contact">Work with us ↗</a>
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item open">
+          <button type="button">
+            What services does Ashlar Studio offer?
+            <span class="icon">⌃</span>
+          </button>
+          <div class="ans">
+            We provide end-to-end creative solutions including brand identity, UI/UX design,
+            web development, and visual storytelling tailored to elevate your brand.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button type="button">
+            How long does a typical project take?
+            <span class="icon">⌃</span>
+          </button>
+          <div class="ans">
+            Most brand and site engagements run 6–12 weeks depending on scope, research depth,
+            and how many product surfaces we design together.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button type="button">
+            Do you work with international clients?
+            <span class="icon">⌃</span>
+          </button>
+          <div class="ans">
+            Yes. We’re based in Toronto and partner with teams across North America, Europe,
+            and remote-first companies worldwide.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button type="button">
+            How do engagements start?
+            <span class="icon">⌃</span>
+          </button>
+          <div class="ans">
+            A short discovery call, a scoped proposal, then a kickoff workshop. We share a
+            clear timeline, milestones, and communication rhythm before any work begins.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="blog" id="blog">
+      <p class="label" style="color:#888">From the journal</p>
+      <div class="blog-grid">
+        <article class="blog-card">
+          <time>July 20, 2026</time>
+          <h3>Creativity meets strategy to shape impactful brands.</h3>
+          <span>3 minute read</span>
+        </article>
+        <article class="blog-card">
+          <time>July 20, 2026</time>
+          <h3>Designing brands that connect, inspire, and deliver.</h3>
+          <span>3 minute read</span>
+        </article>
+        <article class="blog-card">
+          <time>July 20, 2026</time>
+          <h3>Building bold brand identities that stand out in the crowd.</h3>
+          <span>3 minute read</span>
+        </article>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="footer-grid">
+        <div>
+          <div class="logo">Ashlar<span>Studio</span></div>
+          <div class="footer-contact">
+            Hello<br />
+            <a href="mailto:hello@ashlar.studio">hello@ashlar.studio</a><br />
+            ashlar.studio
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Works</h4>
+          <a href="#about">About</a>
+          <a href="#works">Work</a>
+          <a href="#case">Work single</a>
+          <a href="#blog">Blog</a>
+          <a href="#faq">Careers</a>
+        </div>
+        <div class="footer-col">
+          <h4>Utility pages</h4>
+          <a href="#faq">Pricing</a>
+          <a href="#contact">Contact</a>
+          <a href="#blog">Change log</a>
+          <a href="#contact">License</a>
+        </div>
+        <div>
+          <a class="btn btn-white" href="mailto:hello@ashlar.studio">Work with us ↗</a>
+        </div>
+      </div>
+
+      <div class="newsletter">
+        <h3>Stay inspired — join now</h3>
+        <p>Get design insights, branding tips, and exclusive notes from the studio.</p>
+        <form action="#" method="get" onsubmit="event.preventDefault(); this.reset(); alert('Thanks — you are on the list.');">
+          <input type="email" name="email" placeholder="Email address" required aria-label="Email address" />
+          <button class="btn btn-ghost" type="submit" style="border-color:#333">Subscribe</button>
+        </form>
+      </div>
+
+      <div class="footer-bar">
+        <span>Ashlar Studio · Sample template</span>
+        <span>© 2026</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      document.getElementById("menuBtn").addEventListener("click", function () {
+        nav.classList.toggle("open");
+      });
+
+      var caseImg = document.getElementById("caseImg");
+      document.querySelectorAll("#projectList button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll("#projectList button").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          caseImg.src = btn.getAttribute("data-img");
+        });
+      });
+
+      var quotes = [
+        "Concept to delivery, Ashlar Studio impressed us with their seamless process and exceptional talent. They understood our goals, anticipated our needs, and produced work that perfectly aligned with our brand.",
+        "They turned a messy brief into a sharp identity system in weeks. Our product launch finally looked as strong as the idea behind it.",
+        "Calm, rigorous, and genuinely collaborative. Ashlar feels like an extension of our team — not a vendor we chase for files."
+      ];
+      var quoteText = document.getElementById("quoteText");
+      document.querySelectorAll("#reviewers .reviewer").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll("#reviewers .reviewer").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          quoteText.textContent = quotes[Number(btn.getAttribute("data-q"))];
+        });
+      });
+
+      document.querySelectorAll("#faqList .faq-item").forEach(function (item) {
+        item.querySelector("button").addEventListener("click", function () {
+          var open = item.classList.contains("open");
+          document.querySelectorAll("#faqList .faq-item").forEach(function (i) {
+            i.classList.remove("open");
+          });
+          if (!open) item.classList.add("open");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

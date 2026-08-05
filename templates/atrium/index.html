@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atrium — Modern Design Studio</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #3d2b22;
+      --ink-soft: #5c4033;
+      --muted: #8a7568;
+      --line: #e8dfd6;
+      --accent: #c2703e;
+      --accent-dark: #a85a2e;
+      --soft: #faf6f2;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: var(--bg); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(1120px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+      padding: 0.85rem 1.4rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-outline { background: transparent; border-color: var(--line); color: var(--ink); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    header { padding: 1.1rem 0; }
+    .nav { display: flex; align-items: center; gap: 1.5rem; }
+    .logo {
+      font-family: var(--serif); font-size: 1.55rem; font-weight: 500;
+      color: var(--accent); letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex; gap: 1.75rem; margin-left: auto; color: var(--ink-soft);
+      font-size: 0.95rem; font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { margin-left: 0.5rem; }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .nav { justify-content: space-between; }
+      .nav-cta { margin-left: auto; }
+    }
+
+    .hero { padding: 3rem 0 2rem; text-align: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 1rem; border: 1px solid var(--line); border-radius: 999px;
+      font-size: 0.75rem; font-weight: 650; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem;
+    }
+    .badge .heart { color: var(--accent); }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem); line-height: 1.15;
+      letter-spacing: -0.02em; max-width: 14ch; margin: 0 auto 1.1rem; color: var(--ink);
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--accent); font-weight: 500;
+    }
+    .hero .lead {
+      color: var(--muted); font-size: 1.1rem; max-width: 32em; margin: 0 auto 1.75rem;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 3rem;
+    }
+    .hero-art {
+      max-width: 900px; margin: 0 auto;
+      border-radius: 4px; overflow: hidden;
+    }
+    .hero-art img { width: 100%; height: auto; }
+
+    section { padding: 4.5rem 0; }
+    .section-head { text-align: center; max-width: 36em; margin: 0 auto 2.5rem; }
+    .section-head h2 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -0.02em; margin-bottom: 0.6rem;
+    }
+    .section-head p { color: var(--muted); }
+
+    .services {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;
+    }
+    .service {
+      background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 1.75rem;
+    }
+    .service .num {
+      font-family: var(--serif); font-size: 1.5rem; color: var(--accent); margin-bottom: 0.75rem;
+    }
+    .service h3 { font-size: 1.1rem; margin-bottom: 0.45rem; }
+    .service p { color: var(--muted); font-size: 0.95rem; }
+
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;
+    }
+    @media (max-width: 700px) { .projects-grid { grid-template-columns: 1fr; } }
+    .project {
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;
+    }
+    .project-thumb {
+      aspect-ratio: 16 / 11; background: var(--soft);
+      display: grid; place-items: center; color: var(--muted);
+      font-family: var(--serif); font-size: 1.1rem;
+    }
+    .project-thumb.t1 { background: linear-gradient(145deg, #e8dfd6, #f5ebe3); }
+    .project-thumb.t2 { background: linear-gradient(145deg, #d4c4b0, #ebe3d9); }
+    .project-thumb.t3 { background: linear-gradient(145deg, #c4b5a5, #e8dfd6); }
+    .project-thumb.t4 { background: linear-gradient(145deg, #b8a090, #e0d5c8); }
+    .project-body { padding: 1.15rem 1.25rem 1.35rem; }
+    .project-body h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .project-body p { color: var(--muted); font-size: 0.9rem; }
+
+    .about-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 800px) { .about-split { grid-template-columns: 1fr; } }
+    .about-copy h2 {
+      font-family: var(--serif); font-weight: 500; font-size: 2rem;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .about-copy p { color: var(--muted); margin-bottom: 1rem; }
+    .stats-row { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem; }
+    .stats-row strong { display: block; font-size: 1.75rem; color: var(--accent); letter-spacing: -0.02em; }
+    .stats-row span { font-size: 0.85rem; color: var(--muted); }
+
+    .process { background: var(--soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+      counter-reset: step;
+    }
+    .step {
+      counter-increment: step;
+      padding: 1.5rem; background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    }
+    .step::before {
+      content: "0" counter(step);
+      display: block; font-family: var(--serif); color: var(--accent);
+      font-size: 1.25rem; margin-bottom: 0.75rem;
+    }
+    .step h3 { margin-bottom: 0.4rem; font-size: 1.05rem; }
+    .step p { color: var(--muted); font-size: 0.92rem; }
+
+    .testimonials { }
+    .quote-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .quote {
+      border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; background: #fff;
+    }
+    .quote p { font-family: var(--serif); font-size: 1.1rem; line-height: 1.45; margin-bottom: 1rem; }
+    .quote cite { font-style: normal; font-size: 0.9rem; color: var(--muted); }
+
+    .cta {
+      text-align: center; padding: 4rem 1.5rem; background: var(--ink); color: #faf6f2;
+      border-radius: 16px;
+    }
+    .cta h2 {
+      font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin-bottom: 0.6rem;
+    }
+    .cta p { color: #c4b5a5; margin-bottom: 1.5rem; max-width: 30em; margin-inline: auto; }
+    .cta .btn-primary { background: var(--accent); }
+
+    footer { padding: 3rem 0 2rem; border-top: 1px solid var(--line); margin-top: 4rem; }
+    .footer-inner {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem;
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .footer-nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    .footer-nav a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo">Atrium</a>
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+        <a href="#interiors">Interiors</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-primary nav-cta" href="#contact">Book Consultation</a>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="wrap">
+        <p class="badge"><span class="heart" aria-hidden="true">♥</span> Modern Design Studio</p>
+        <h1>Designing Spaces That Inspire <em>Modern Living</em></h1>
+        <p class="lead">Atrium creates timeless spaces blending comfort and modern living — architecture and interiors crafted with intention.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Book Consultation →</a>
+          <a class="btn btn-outline" href="#projects">See Our Work →</a>
+        </div>
+        <div class="hero-art">
+          <img src="preview.jpg" alt="Architectural concept drawing of a modern glass residence with floor plan" width="1120" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Services</h2>
+          <p>From first sketch to finished space — full-service design for homes and boutique commercial projects.</p>
+        </div>
+        <div class="services">
+          <article class="service">
+            <div class="num">01</div>
+            <h3>Architectural Design</h3>
+            <p>Concept development, spatial planning, and detailed drawings for new builds and renovations.</p>
+          </article>
+          <article class="service">
+            <div class="num">02</div>
+            <h3>Interior Architecture</h3>
+            <p>Material palettes, lighting, and built-ins that balance beauty with everyday function.</p>
+          </article>
+          <article class="service">
+            <div class="num">03</div>
+            <h3>Project Oversight</h3>
+            <p>Coordination with builders and craftspeople so the vision holds from site to handover.</p>
+          </article>
+          <article class="service">
+            <div class="num">04</div>
+            <h3>Consultation</h3>
+            <p>Focused sessions for layout, façade, or finish decisions when you need expert guidance.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" style="background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Selected projects</h2>
+          <p>Residential and studio work across coast, city, and countryside.</p>
+        </div>
+        <div class="projects-grid">
+          <article class="project">
+            <div class="project-thumb t1">Hillside Residence</div>
+            <div class="project-body">
+              <h3>Cliff House, Big Sur</h3>
+              <p>Glass pavilion home · 4,200 sq ft · 2024</p>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-thumb t2">Urban Loft</div>
+            <div class="project-body">
+              <h3>Warehouse Loft, Brooklyn</h3>
+              <p>Adaptive reuse · interiors · 2023</p>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-thumb t3">Courtyard Villa</div>
+            <div class="project-body">
+              <h3>Courtyard Villa, Austin</h3>
+              <p>New build · landscape · 2025</p>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-thumb t4">Studio Annex</div>
+            <div class="project-body">
+              <h3>Artist Studio, Portland</h3>
+              <p>Accessory dwelling · light-led plan · 2024</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="interiors">
+      <div class="wrap about-split">
+        <div class="about-copy">
+          <h2>Interiors that feel lived-in from day one</h2>
+          <p>We design rooms for real routines — morning light, quiet corners, and materials that age with grace.</p>
+          <p>Every project starts with how you move through a day. Furniture plans, textiles, and joinery follow from that rhythm, not the other way around.</p>
+          <div class="stats-row">
+            <div><strong>120+</strong><span>Projects completed</span></div>
+            <div><strong>14</strong><span>Years of practice</span></div>
+            <div><strong>18</strong><span>Design awards</span></div>
+          </div>
+        </div>
+        <div class="hero-art" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--soft);min-height:280px;display:grid;place-items:center;color:var(--muted);font-family:var(--serif)">
+          Material studies · oak · linen · stone
+        </div>
+      </div>
+    </section>
+
+    <section class="process">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>How we work</h2>
+          <p>A clear process so you always know what’s next.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <h3>Discover</h3>
+            <p>Site visit, brief, and lifestyle mapping to define constraints and ambitions.</p>
+          </article>
+          <article class="step">
+            <h3>Concept</h3>
+            <p>Mood, massing, and plan options. We refine until the direction feels inevitable.</p>
+          </article>
+          <article class="step">
+            <h3>Detail</h3>
+            <p>Drawings, specifications, and finish schedules ready for construction.</p>
+          </article>
+          <article class="step">
+            <h3>Deliver</h3>
+            <p>Site support and styling so the finished space matches the vision.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Client notes</h2>
+        </div>
+        <div class="quote-grid">
+          <blockquote class="quote">
+            <p>“Atrium turned a difficult hillside lot into a home that feels both dramatic and calm. Every decision had a reason.”</p>
+            <cite>— Elena M., Cliff House</cite>
+          </blockquote>
+          <blockquote class="quote">
+            <p>“They listened more than they pitched. The loft is beautiful, but more importantly it works for how we actually live.”</p>
+            <cite>— James &amp; Priya K.</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="cta">
+          <h2>Let’s design your next space</h2>
+          <p>Book a consultation to discuss site, timeline, and scope. We take on a limited number of projects each year.</p>
+          <a class="btn btn-primary" href="mailto:studio@atrium.design">Book Consultation →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div>
+        <div class="logo" style="margin-bottom:0.35rem">Atrium</div>
+        <p>Modern design studio · Sample template.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+        <a href="#interiors">Interiors</a>
+        <a href="mailto:studio@atrium.design">studio@atrium.design</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

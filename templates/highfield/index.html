@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highfield — Ecommerce infrastructure for high-volume brands</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #64748b;
+      --blue: #2563eb;
+      --line: #e2e8f0;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); color: var(--ink); background: #fff; line-height: 1.55; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1100px, 100% - 2rem); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.8rem 1.3rem; font-weight: 650; font-size: 0.92rem;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-dark { background: #0f172a; color: #fff; }
+    .btn-dark .arrow {
+      background: #84cc16; color: #14532d; padding: 0.35rem 0.5rem; margin: -0.35rem -0.55rem -0.35rem 0.35rem;
+    }
+    .btn-outline { background: #fff; border-color: #cbd5e1; color: var(--ink); }
+    .btn-outline:hover { border-color: #94a3b8; }
+
+    .hero {
+      position: relative; min-height: 100vh; display: flex; flex-direction: column;
+      background: #f8fafc center bottom / cover no-repeat;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.55) 42%, rgba(255,255,255,0.15) 65%, transparent 80%),
+        url("hero.jpg");
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40'%3E%3Ctext x='0' y='14' font-family='monospace' font-size='10' fill='%2394a3b8'%3E01X0%3C/text%3E%3Ctext x='40' y='30' font-family='monospace' font-size='10' fill='%23cbd5e1'%3E1A0B%3C/text%3E%3C/svg%3E");
+    }
+
+    header {
+      position: relative; z-index: 2; padding: 1.25rem 0;
+    }
+    .nav {
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem;
+    }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: linear-gradient(135deg, #22d3ee, #3b82f6 50%, #84cc16);
+      display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 0.85rem;
+    }
+    .nav-links {
+      display: flex; gap: 1.5rem; margin-left: auto;
+      font-size: 0.95rem; font-weight: 500; color: #334155;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-more {
+      margin-left: 1rem; font-size: 0.9rem; font-weight: 600; color: #475569;
+    }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+    }
+
+    .hero-body {
+      position: relative; z-index: 2; flex: 1;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 3rem 1rem 2rem;
+    }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 1.15;
+      letter-spacing: -0.025em; max-width: 16ch; margin-bottom: 1.15rem;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--blue); display: block;
+    }
+    .hero .lead {
+      color: var(--muted); max-width: 36em; margin: 0 auto 1.75rem; font-size: 1.05rem;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 3rem;
+    }
+
+    .nodes {
+      position: relative; width: min(520px, 100%); margin: auto 0 2rem;
+      min-height: 280px;
+    }
+    .node-core {
+      position: absolute; left: 50%; top: 20%; transform: translateX(-50%);
+      width: 100px; height: 100px; border-radius: 16px;
+      background: linear-gradient(180deg, #fff, #e0f2fe);
+      border: 2px solid #93c5fd;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.15);
+      display: grid; place-items: center; z-index: 2;
+    }
+    .node-core .logo-mark { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 10px; }
+    .node {
+      position: absolute; padding: 0.55rem 0.9rem; border-radius: 10px;
+      background: rgba(255,255,255,0.92); border: 1px solid #bfdbfe;
+      font-size: 0.85rem; font-weight: 600; color: #1e3a5f;
+      box-shadow: 0 8px 20px rgba(15,23,42,0.08); white-space: nowrap;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .node .i {
+      width: 22px; height: 22px; border-radius: 6px; background: #eff6ff;
+      display: grid; place-items: center; font-size: 0.75rem; color: var(--blue);
+    }
+    .node.n1 { left: 0; top: 48%; }
+    .node.n2 { right: 0; top: 48%; }
+    .node.n3 { left: 5%; bottom: 8%; }
+    .node.n4 { right: 5%; bottom: 8%; }
+    .node.n5 { left: 50%; bottom: 0; transform: translateX(-50%); }
+    .lines {
+      position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+    }
+
+    section { padding: 4.5rem 0; }
+    .label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: clamp(1.6rem, 3vw, 2.15rem); letter-spacing: -0.02em;
+      margin-bottom: 0.55rem; font-weight: 700;
+    }
+    .sub { color: var(--muted); max-width: 36em; margin-bottom: 2rem; }
+    .grid-3 {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.15rem;
+    }
+    .card {
+      border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; background: #fff;
+    }
+    .card h3 { margin-bottom: 0.4rem; font-size: 1.05rem; }
+    .card p { color: var(--muted); font-size: 0.92rem; }
+
+    .band { background: #f8fafc; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .cta {
+      text-align: center; background: var(--ink); color: #fff;
+      border-radius: 18px; padding: 3rem 1.5rem;
+    }
+    .cta h2 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .cta p { color: #94a3b8; margin-bottom: 1.25rem; }
+    .cta .btn-dark { background: #fff; color: var(--ink); }
+
+    footer {
+      padding: 2.5rem 0; color: var(--muted); font-size: 0.9rem;
+    }
+    .footer-inner {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <header>
+      <div class="wrap nav">
+        <a href="#" class="logo"><span class="logo-mark">H</span> Highfield</a>
+        <nav class="nav-links">
+          <a href="#about">About</a>
+          <a href="#careers">Careers</a>
+          <a href="#blog">Blog</a>
+          <a href="#products">Products</a>
+          <a href="#resources">Resources</a>
+        </nav>
+        <a class="nav-more" href="#products">Discover more →</a>
+      </div>
+    </header>
+
+    <div class="hero-body wrap">
+      <h1>Ecommerce Infrastructure Built for <em>High-Volume Brands</em></h1>
+      <p class="lead">Helping ecommerce teams scale across marketplaces and custom storefronts without operational chaos.</p>
+      <div class="hero-actions">
+        <a class="btn btn-dark" href="#cta">Start Selling <span class="arrow">→</span></a>
+        <a class="btn btn-outline" href="#products">Know More</a>
+      </div>
+
+      <div class="nodes" aria-hidden="true">
+        <svg class="lines" viewBox="0 0 400 280" preserveAspectRatio="none">
+          <path d="M200 120 L60 160 M200 120 L340 160 M200 120 L80 240 M200 120 L320 240 M200 120 L200 250"
+            stroke="#93c5fd" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="node-core"><span class="logo-mark">H</span></div>
+        <div class="node n1"><span class="i">▣</span> Product Discovery</div>
+        <div class="node n2"><span class="i">◎</span> Customer Insights</div>
+        <div class="node n3"><span class="i">▤</span> Inventory Forecasting</div>
+        <div class="node n4"><span class="i">$</span> Dynamic Pricing</div>
+        <div class="node n5"><span class="i">★</span> Smart Recommendations</div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="products">
+      <div class="wrap">
+        <p class="label">Products</p>
+        <h2 class="title">One stack for catalog, demand, and margin</h2>
+        <p class="sub">Highfield connects the systems high-volume brands already run — so growth doesn’t multiply chaos.</p>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Product discovery</h3>
+            <p>Surface winning SKUs and bundles with signals from every channel in one graph.</p>
+          </article>
+          <article class="card">
+            <h3>Inventory forecasting</h3>
+            <p>Predict stockouts and overbuy before they hit the P&amp;L.</p>
+          </article>
+          <article class="card">
+            <h3>Dynamic pricing</h3>
+            <p>Rules and models that protect margin while staying competitive.</p>
+          </article>
+          <article class="card">
+            <h3>Customer insights</h3>
+            <p>Unify profiles across storefronts without a second data warehouse project.</p>
+          </article>
+          <article class="card">
+            <h3>Smart recommendations</h3>
+            <p>On-site and post-purchase suggestions tuned to real attach rates.</p>
+          </article>
+          <article class="card">
+            <h3>Ops control plane</h3>
+            <p>One place for exceptions, SLAs, and marketplace health.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="about">
+      <div class="wrap">
+        <p class="label">About</p>
+        <h2 class="title">Built for brands that already ship at scale</h2>
+        <p class="sub">Whether you run a flagship storefront, marketplaces, or both — Highfield keeps inventory, pricing, and demand models aligned so teams stop firefighting and start planning.</p>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Marketplace native</h3>
+            <p>Connect major channels without rewriting your catalog every quarter.</p>
+          </article>
+          <article class="card">
+            <h3>Storefront ready</h3>
+            <p>Works with custom stacks and modern commerce platforms.</p>
+          </article>
+          <article class="card">
+            <h3>Finance friendly</h3>
+            <p>Export-ready views for merchandising, ops, and leadership.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="wrap">
+        <p class="label">Resources</p>
+        <h2 class="title">Guides for high-volume operators</h2>
+        <div class="grid-3">
+          <article class="card"><h3>Forecasting playbook</h3><p>How top teams set safety stock without freezing cash.</p></article>
+          <article class="card"><h3>Pricing experiments</h3><p>A calm framework for testing without tanking conversion.</p></article>
+          <article class="card" id="blog"><h3>From the blog</h3><p>Notes on multi-channel inventory and recommendation systems.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="careers">
+      <div class="wrap">
+        <div class="cta" id="cta">
+          <h2>Ready to scale without the chaos?</h2>
+          <p>Start selling with Highfield — or talk to us about enterprise rollout.</p>
+          <a class="btn btn-dark" href="#">Start Selling →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span class="logo"><span class="logo-mark">H</span> Highfield</span>
+      <span>Ecommerce infrastructure · Sample template</span>
+      <span>© 2026 Highfield</span>
+    </div>
+  </footer>
+</body>
+</html>
