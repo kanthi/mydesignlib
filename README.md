@@ -4,6 +4,8 @@ Personal design library — websites, brands, logos, and systems — with a stat
 
 No build step. No frameworks. Suitable for local use or GitHub Pages.
 
+**Not for search discovery.** Root `robots.txt` disallows all crawlers; every page ships `noindex, nofollow` meta. The site is still reachable by URL (GitHub Pages has no auth) — share links only with people you trust.
+
 All brands and copy are **fictional sample names** for portfolio use. Designs are inspired by public references (X posts, case studies, etc.) and fully rebranded.
 
 ## Structure

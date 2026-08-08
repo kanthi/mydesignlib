@@ -63,6 +63,15 @@ Copy generated files from the session `images/` folder into `templates/<id>/`.
 
 Single-page (unless multi-page is clearly required). Self-contained: relative asset paths, embedded or linked free fonts/libs.
 
+**Required in `<head>` (no search indexing):**
+
+```html
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+```
+
+Do not add SEO discovery markup (sitemap, canonical to a public marketing domain, Open Graph for indexing). Keep root `robots.txt` as `Disallow: /`.
+
 Match the reference’s **structure and craft**, not its trademarks:
 
 - Section order and hierarchy
@@ -150,9 +159,10 @@ Ship at that level of finish: not a thin hero-only stub.
 
 ## Checklist (done = all true)
 
-- [ ] `templates/<id>/index.html` complete and on-brand (fictional)
+- [ ] `library/websites/<id>/index.html` complete and on-brand (fictional)
+- [ ] `noindex` / `nofollow` robots meta present in `<head>`
 - [ ] `preview.jpg` present
-- [ ] Entry in `data/templates.json`
+- [ ] Entry in `data/catalog.json`
 - [ ] Brand audit clean
 - [ ] HTTP 200 for page + assets
 - [ ] Brief summary for the user
