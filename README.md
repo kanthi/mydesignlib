@@ -72,9 +72,19 @@ Open `http://localhost:8080`.
 
 ## GitHub Pages
 
-Deploy branch root (`main` / `/`). Relative paths work under project Pages URLs.
+**Live:** [https://www.kanthi.in/mydesignlib/](https://www.kanthi.in/mydesignlib/)
 
-Repo rename (optional): this product is **mydesignlib** — rename the GitHub repository when ready.
+Also available via GitHub’s host (redirects to the custom domain):
+[https://kanthi.github.io/mydesignlib/](https://kanthi.github.io/mydesignlib/)
+
+| Setting | Value |
+|---------|--------|
+| Source | `main` branch, site root (`/`) |
+| Build | None — pure static HTML/CSS/JS |
+| Catalog | `data/catalog.json` |
+| Templates | `library/websites/<id>/` |
+
+Every push to `main` republishes automatically. No Actions workflow required for the static deploy.
 
 ## Hard rules (short)
 
