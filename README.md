@@ -79,12 +79,12 @@ Also available via GitHub’s host (redirects to the custom domain):
 
 | Setting | Value |
 |---------|--------|
-| Source | `main` branch, site root (`/`) |
+| Source | GitHub Actions (`.github/workflows/pages.yml`) |
 | Build | None — pure static HTML/CSS/JS |
 | Catalog | `data/catalog.json` |
 | Templates | `library/websites/<id>/` |
 
-Every push to `main` republishes automatically. No Actions workflow required for the static deploy.
+Every push to `main` runs **Deploy GitHub Pages** and republishes automatically. Manual runs: Actions → workflow → Run workflow.
 
 ## Hard rules (short)
 
