@@ -7,6 +7,7 @@ For agents, the canonical procedures are:
 | File | Role |
 |------|------|
 | [`AGENTS.md`](../AGENTS.md) | Always-on project rules |
+| [`OPERATIONS.md`](OPERATIONS.md) | Hosting, Pages, privacy, GA, deploy |
 | [`.grok/skills/ship-template/SKILL.md`](../.grok/skills/ship-template/SKILL.md) | Step-by-step ship procedure (also `/ship-template`) |
 
 ## Quick start (human or agent)
@@ -32,8 +33,10 @@ Reference (X / video / site)
 1. **Fictional brands only** — no real logos, client identities, or original product names.
 2. **Original assets** — AI-generated or code-built UI; no scrapes of client work.
 3. **Vanilla static** — `library/websites/<id>/` self-contained; GitHub Pages friendly.
-4. **Register** — every item in `data/catalog.json` with a `type`.
-5. **Audit + verify** before calling a deliverable finished.
+4. **Noindex + GA** — every HTML page: robots noindex meta + gtag `G-Z97ZD3EVSF` (see OPERATIONS).
+5. **Register** — every item in `data/catalog.json` with a `type`.
+6. **Audit + verify** before calling a deliverable finished.
+7. **Push `main`** when the user wants it live — Pages deploys automatically.
 
 ## Folder contract
 

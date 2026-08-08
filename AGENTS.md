@@ -2,19 +2,24 @@
 
 Personal static design library: website templates, brand systems, logos, and UI specimens — derived from design references (X posts, videos, images, Framer/Webflow/Figma case studies) and fully rebranded.
 
+**Ops runbook (hosting, Pages, privacy, GA, deploy):** [`docs/OPERATIONS.md`](docs/OPERATIONS.md) — read it for any live-site or deploy work.
+
+Former repo name: **mytemplate** (same product).
+
 ## Product rules (always)
 
 1. **Fictional rebrands only.** Never ship real brand names, logos, trademarks, client identities, or lookalike lockups from the reference. Invent a new brand (e.g. Nelta → Nordwerk, Solén → Noirline, Bohemian Research → Respondra, wawa → Ovara, River House → Claybank).
 2. **Original assets only.** Use AI-generated images (`image_gen` / `image_edit`) or pure CSS/SVG/HTML UI mockups. Do not scrape client work, stock with visible watermarks, or copy proprietary media from the reference.
-3. **Vanilla static for GitHub Pages.** One self-contained folder per item under `library/<type>/<id>/` (e.g. `library/websites/<id>/index.html` + assets). No React/Vite/Next unless a free open stack is explicitly justified (rare). Prefer free libraries when the original used proprietary tools (Framer → GSAP/CSS/Three.js/Lenis as needed).
+3. **Vanilla static for GitHub Pages.** One self-contained folder per item under `library/<type>/<id>/` (e.g. `library/websites/<id>/index.html` + assets). No React/Vite/Next unless a free open stack is explicitly justified (rare). Prefer free libraries when the original used proprietary tools (Framer → GSAP/CSS/Three.js/Lenis as needed). Relative paths only (site is served under `/mydesignlib/`).
 4. **No search indexing.** Site is personal / private-by-convention. Keep root `robots.txt` as `Disallow: /`. Every HTML page (showcase + library items) must include:
    `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />`
    (and the matching `googlebot` meta). Do not add a sitemap or SEO markup meant for discovery.
-4b. **Google Analytics.** Every HTML page must include the site gtag (`G-Z97ZD3EVSF`) in `<head>` (same snippet as root `index.html`).
-5. **Register every item** in `data/catalog.json` with `id`, `type`, `name`, `description`, `tags`, `category`, `thumbnail`, `path`, `featured`, `date` (optional: `projectId`, `related`, `meta`).
-6. **Brand audit before done.** Grep the new folder for original brand, designer handles, Framer/Webflow marketplace URLs, real client names, and competitor logos. Must be clean.
-7. **HTTP verify.** Serve with `python3 -m http.server 8080` from repo root; confirm `200` for `index.html`, `preview.jpg`, and key assets.
-8. **One complete deliverable per reference URL** unless the user asks otherwise. Finish registration + audit + verify in the same turn when possible.
+5. **Google Analytics.** Every HTML page must include the site gtag (`G-Z97ZD3EVSF`) in `<head>` (same snippet as root `index.html`). Full required head block is in `docs/OPERATIONS.md`.
+6. **Register every item** in `data/catalog.json` with `id`, `type`, `name`, `description`, `tags`, `category`, `thumbnail`, `path`, `featured`, `date` (optional: `projectId`, `related`, `meta`).
+7. **Brand audit before done.** Grep the new folder for original brand, designer handles, Framer/Webflow marketplace URLs, real client names, and competitor logos. Must be clean.
+8. **HTTP verify.** Serve with `python3 -m http.server 8080` from repo root; confirm `200` for `index.html`, `preview.jpg`, and key assets.
+9. **One complete deliverable per reference URL** unless the user asks otherwise. Finish registration + audit + verify in the same turn when possible.
+10. **Ship to live when asked.** Site-facing changes: commit, push `main` (Pages redeploys via Actions). See `docs/OPERATIONS.md`.
 
 ## Library layout
 
@@ -29,6 +34,17 @@ library/
 - **type** in catalog: `website` | `brand` | `logo` | `system`
 - Cross-link related work with optional `projectId` / `related[]`
 - Showcase app at repo root reads `data/catalog.json`
+
+## Hosting (summary)
+
+| | |
+|---|---|
+| Live | https://www.kanthi.in/mydesignlib/ |
+| Deploy | Push `main` → `.github/workflows/pages.yml` (Node 24 actions) |
+| Privacy | `robots.txt` + noindex on all HTML |
+| Analytics | `G-Z97ZD3EVSF` on all HTML |
+
+Details, smoke checks, and “do not regress” list: **`docs/OPERATIONS.md`**.
 
 ## Stack defaults
 
@@ -52,12 +68,16 @@ Use an existing category from `data/catalog.json` when possible:
 
 ## Do not
 
-- Commit real personal data or live API keys.
+- Commit real personal data or live API keys (GA measurement ID in HTML is intentional).
 - Mention these agent rules in user-facing template copy.
 - Leave items unregistered or with broken asset paths.
+- Re-enable GitHub’s managed branch Pages deploy (Node 20 warning) without cause.
+- Remove noindex / robots Disallow “for SEO”.
 
 ## Full procedure
 
 When the user pastes a design URL or asks to ship a **website** template from a reference, follow the **ship-template** skill:
 
 `.grok/skills/ship-template/SKILL.md`
+
+Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.

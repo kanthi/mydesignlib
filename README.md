@@ -12,9 +12,12 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 
 ```
 .
-├── AGENTS.md                      # Project rules for agents
-├── docs/TEMPLATE_WORKFLOW.md      # Human-readable pipeline
+├── AGENTS.md                      # Project rules for agents (always)
+├── docs/OPERATIONS.md             # Hosting, Pages, privacy, GA, deploy
+├── docs/TEMPLATE_WORKFLOW.md      # Human-readable template pipeline
 ├── .grok/skills/ship-template/    # /ship-template skill
+├── .github/workflows/pages.yml    # GitHub Pages deploy (Node 24)
+├── robots.txt                     # Disallow all crawlers
 ├── index.html                     # Showcase (mydesignlib)
 ├── css/styles.css
 ├── js/app.js
@@ -30,12 +33,21 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 
 Each library folder is self-contained (`index.html` / assets + `preview.jpg` as needed).
 
+## Workflows (for future tasks)
+
+| Goal | Follow |
+|------|--------|
+| Hosting, Pages, no-crawl, Analytics, deploy smoke checks | **[docs/OPERATIONS.md](docs/OPERATIONS.md)** |
+| Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** + `/ship-template` |
+| Agent hard rules | **[AGENTS.md](AGENTS.md)** |
+
 ## Adding a website template
 
 **Full pipeline** (research → rebrand → assets → build → register → audit → verify):
 
 - Read **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)**
 - Agents: root **[AGENTS.md](AGENTS.md)** + skill **`.grok/skills/ship-template`** (`/ship-template`)
+- Every page must include **noindex** + **GA** (`G-Z97ZD3EVSF`) — see OPERATIONS
 
 Minimal manual steps:
 
@@ -96,3 +108,6 @@ Every push to `main` runs **Deploy GitHub Pages** and republishes automatically.
 | AI / code assets only | No scraped client photography |
 | Vanilla static | GitHub Pages, no build |
 | Always register + HTTP-check | Catalog stays truthful |
+| Noindex + robots Disallow | Personal library; not for SERPs |
+| GA on every HTML page | `G-Z97ZD3EVSF` |
+
