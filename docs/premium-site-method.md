@@ -63,7 +63,7 @@ Fill brackets; paste as **one** message:
 | **Audience** | This site is for [freelance photographers charging $2K+ per shoot]. |
 | **The 1 action** | Every page pushes toward [booking a call]. One CTA, repeated. |
 | **References** | Use ref-1…ref-3 as the quality bar. |
-| **Stack** | (Original post: Astro + Tailwind → Cloudflare Pages.) **This repo:** vanilla HTML/CSS/JS, self-contained `templates/<id>/`, GitHub Pages. |
+| **Stack** | (Original post: Astro + Tailwind → Cloudflare Pages.) **This repo:** vanilla HTML/CSS/JS, self-contained `library/websites/<id>/`, GitHub Pages. |
 | **Ban list** | Banned: purple gradients, emoji as icons, Inter as the display font, generic stock-photo placeholders, centered-everything layouts. |
 
 Expect **~70%** on first pass. Nobody ships version 1 as final.
@@ -88,7 +88,7 @@ Then **mobile check**:
 
 Original: `git` → GitHub → Cloudflare Pages (`npm run build`, `dist`), custom domain.
 
-**This repo:** register in `data/templates.json`, brand-audit, `python3 -m http.server 8080`, HTTP 200 on page + assets. Catalog is the “ship.”
+**This repo:** register in `data/catalog.json`, brand-audit, `python3 -m http.server 8080`, HTTP 200 on page + assets. Catalog is the “ship.”
 
 ## Realistic progression (from post)
 
@@ -111,7 +111,7 @@ Ship a **solid** site, not a perfect one. First version has rough edges (mobile,
 | Astro + Tailwind + Cloudflare | Vanilla static folder; free libs only when needed (GSAP/Lenis/Three) |
 | Claude Code skills path | `.grok/skills/premium-site/` |
 | Brand-new client site | Fictional rebrand only (`AGENTS.md`); original assets |
-| One mega redesign | Prefer **versioned folders**: keep `templates/<id>/`, ship polish as `templates/<id>-v1/` (or `-v2`) so A/B comparison stays honest |
+| One mega redesign | Prefer **versioned folders**: keep `library/websites/<id>/`, ship polish as `library/websites/<id>-v1/` (or `-v2`) so A/B comparison stays honest |
 | Ban list | Enforce in skill + build prompt; also ban real trademarks / scraped media |
 | Ship | `ship-template` checklist after polish |
 
@@ -179,9 +179,9 @@ Prefer fewer, larger section paddings over dense equal cards.
 
 When applying this method to an **existing** catalog template:
 
-1. **Do not overwrite** `templates/<id>/`  
-2. Copy assets into `templates/<id>-v1/` (then `-v2` if needed)  
-3. Register a new `data/templates.json` entry (`id`: `<id>-v1`, name e.g. `Atrium V1`)  
+1. **Do not overwrite** `library/websites/<id>/`  
+2. Copy assets into `library/websites/<id>-v1/` (then `-v2` if needed)  
+3. Register a new `data/catalog.json` entry (`id`: `<id>-v1`, name e.g. `Atrium V1`)  
 4. Description should note “premium-site polish of &lt;id&gt;” so the catalog comparison is clear  
 
 ## Checklist
@@ -222,6 +222,6 @@ design-system-first → anti-slop-frontend → ship-template | premium-site buil
 
 ## Test case in this repo
 
-- Original: `templates/atrium/`  
-- Polished: `templates/atrium-v1/`  
+- Original: `library/websites/atrium/`  
+- Polished: `library/websites/atrium-v1/`  
 - Built with skill: `/premium-site` (2026-08-05)

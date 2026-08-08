@@ -1,6 +1,6 @@
-# Template workflow
+# Library workflow (websites)
 
-How new templates are researched, rebranded, built, and registered in this repo.
+How new **website** templates are researched, rebranded, built, and registered in mydesignlib.
 
 For agents, the canonical procedures are:
 
@@ -22,7 +22,7 @@ Reference (X / video / site)
     → research + frames
     → fictional rebrand + free stack
     → AI assets + HTML/CSS page
-    → data/templates.json
+    → data/catalog.json (type: website)
     → brand audit + HTTP 200
     → done
 ```
@@ -31,17 +31,25 @@ Reference (X / video / site)
 
 1. **Fictional brands only** — no real logos, client identities, or original product names.
 2. **Original assets** — AI-generated or code-built UI; no scrapes of client work.
-3. **Vanilla static** — `templates/<id>/` self-contained; GitHub Pages friendly.
-4. **Register** — every template in `data/templates.json`.
-5. **Audit + verify** before calling a template finished.
+3. **Vanilla static** — `library/websites/<id>/` self-contained; GitHub Pages friendly.
+4. **Register** — every item in `data/catalog.json` with a `type`.
+5. **Audit + verify** before calling a deliverable finished.
 
 ## Folder contract
 
 ```
-templates/<id>/
+library/websites/<id>/
   index.html      # required
   preview.jpg     # required (catalog thumbnail)
   *.jpg|*.svg…    # optional section assets
+```
+
+Other types (same idea):
+
+```
+library/brands/<id>/
+library/logos/<id>/
+library/systems/<id>/
 ```
 
 ## Catalog entry shape
@@ -49,18 +57,22 @@ templates/<id>/
 ```json
 {
   "id": "example",
+  "type": "website",
   "name": "Example",
   "description": "One-line visual summary.",
   "tags": ["saas", "minimal"],
   "category": "SaaS",
-  "thumbnail": "templates/example/preview.jpg",
-  "path": "templates/example/",
+  "thumbnail": "library/websites/example/preview.jpg",
+  "path": "library/websites/example/",
+  "projectId": "example",
+  "related": [],
   "featured": true,
   "date": "2026-08-04"
 }
 ```
 
-Categories live in the `categories` array at the top of `data/templates.json`.
+Categories (industry) live in the `categories` array at the top of `data/catalog.json`.
+Types: `website` · `brand` · `logo` · `system`.
 
 ## Local server
 
@@ -68,10 +80,11 @@ Categories live in the `categories` array at the top of `data/templates.json`.
 python3 -m http.server 8080
 ```
 
-Open `http://127.0.0.1:8080/` for the index, or `/templates/<id>/` for a single template.
+Open `http://127.0.0.1:8080/` for the index, or `/library/websites/<id>/` for a single site.
 
 ## Index app notes
 
+- Primary filter: **type** tabs (All / Websites / Brands / Logos / Systems).
 - Tag filter UI: top **8** tags shown, then expand (`TAG_PREVIEW` in `js/app.js`).
 - Cards show **2** tags (`CARD_TAGS`).
 - Sort: featured first, then newest `date`.

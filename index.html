@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Personal collection of website templates." />
-  <title>Templates</title>
+  <meta name="description" content="mydesignlib — personal design library of websites, brands, logos, and systems." />
+  <title>mydesignlib</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>" />
 </head>
@@ -13,13 +13,13 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a href="./" class="logo" aria-label="Home">
+      <a href="./" class="logo" aria-label="mydesignlib home">
         <span class="logo-mark" aria-hidden="true">◈</span>
-        <span class="logo-text">Templates</span>
+        <span class="logo-text">mydesignlib</span>
       </a>
 
       <nav class="header-nav" aria-label="Primary">
-        <a href="#collection">Collection</a>
+        <a href="#library">Library</a>
         <a href="#notes">Notes</a>
       </nav>
 
@@ -35,26 +35,34 @@
   <main id="main">
     <section class="hero">
       <div class="container hero-inner">
-        <p class="hero-eyebrow">Personal library</p>
-        <h1 class="hero-title">Website templates</h1>
+        <p class="hero-eyebrow">Personal design library</p>
+        <h1 class="hero-title">Websites, brands &amp; marks</h1>
         <p class="hero-lead">
-          A private collection of static site templates I keep for reuse.
-          Filter by type or tag, open a preview, or grab the folder under
-          <code>templates/</code>.
+          A single collection of static design work — website templates, brand systems,
+          logos, and UI specimens. Filter by type, industry, or tag; open a preview from
+          <code>library/</code>.
         </p>
         <div class="hero-meta" id="hero-stats" aria-live="polite">
-          <span><strong id="stat-count">—</strong> templates</span>
+          <span><strong id="stat-websites">—</strong> websites</span>
           <span class="meta-dot" aria-hidden="true">·</span>
-          <span><strong id="stat-tags">—</strong> tags</span>
+          <span><strong id="stat-brands">—</strong> brands</span>
+          <span class="meta-dot" aria-hidden="true">·</span>
+          <span><strong id="stat-logos">—</strong> logos</span>
+          <span class="meta-dot" aria-hidden="true">·</span>
+          <span><strong id="stat-systems">—</strong> systems</span>
         </div>
       </div>
     </section>
 
-    <section class="templates-section" id="collection">
+    <section class="templates-section" id="library">
       <div class="container">
         <div class="section-head">
-          <h2>Collection</h2>
-          <p>Search and filter the library. Sample entries are placeholders until real templates are added.</p>
+          <h2>Library</h2>
+          <p>Browse by type, then refine with industry, tags, or search.</p>
+        </div>
+
+        <div class="type-tabs" id="type-tabs" role="tablist" aria-label="Asset type">
+          <!-- filled by JS -->
         </div>
 
         <div class="toolbar">
@@ -69,7 +77,7 @@
             />
           </div>
 
-          <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Categories">
+          <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Industries">
             <!-- filled by JS -->
           </div>
 
@@ -104,7 +112,7 @@
         </div>
 
         <div class="empty-state" id="empty-state" hidden>
-          <p>Nothing matches these filters.</p>
+          <p id="empty-message">Nothing matches these filters.</p>
           <button type="button" class="btn btn-ghost" id="clear-filters">Clear filters</button>
         </div>
       </div>
@@ -114,21 +122,22 @@
       <div class="container">
         <div class="section-head">
           <h2>Notes</h2>
-          <p>How this repo is organized.</p>
+          <p>How this library is organized.</p>
         </div>
         <div class="notes-grid">
           <article class="note-card">
             <h3>Layout</h3>
             <p>
-              The root app is this index. Each template is a self-contained folder under
-              <code>templates/</code> with its own <code>index.html</code>.
+              The root app is this index. Craft lives under
+              <code>library/websites</code>, <code>brands</code>, <code>logos</code>, and
+              <code>systems</code> — each item is a self-contained folder.
             </p>
           </article>
           <article class="note-card">
             <h3>Catalog</h3>
             <p>
-              Metadata lives in <code>data/templates.json</code> — name, description,
-              tags, category, thumbnail path, and folder path.
+              Metadata lives in <code>data/catalog.json</code> — type, name, description,
+              tags, industry, thumbnail, and folder path.
             </p>
           </article>
           <article class="note-card">
@@ -145,8 +154,8 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p class="footer-brand">Templates</p>
-      <p class="footer-note">Personal collection · static HTML</p>
+      <p class="footer-brand">mydesignlib</p>
+      <p class="footer-note">Personal design library · static HTML</p>
     </div>
   </footer>
 
@@ -160,6 +169,7 @@
         <h2 id="modal-title"></h2>
         <p class="modal-desc" id="modal-desc"></p>
         <div class="modal-tags" id="modal-tags"></div>
+        <div class="modal-related" id="modal-related" hidden></div>
         <div class="modal-actions">
           <a class="btn btn-primary" id="modal-preview-btn" target="_blank" rel="noopener">Open preview</a>
           <a class="btn btn-ghost" id="modal-source-btn" target="_blank" rel="noopener">Open folder</a>

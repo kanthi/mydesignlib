@@ -1,6 +1,6 @@
 /**
- * Personal template collection — vanilla JS
- * Loads data/templates.json; filters, search, sort, detail modal.
+ * mydesignlib — personal design library
+ * Loads data/catalog.json; type / industry / tag filters, search, sort, detail modal.
  */
 
 (() => {
@@ -9,8 +9,19 @@
   const TAG_PREVIEW = 8;
   const CARD_TAGS = 2;
 
+  const TYPE_LABELS = {
+    all: "All",
+    website: "Websites",
+    brand: "Brands",
+    logo: "Logos",
+    system: "Systems",
+  };
+
+  const TYPE_ORDER = ["all", "website", "brand", "logo", "system"];
+
   const state = {
     catalog: null,
+    type: "all",
     category: "All",
     activeTags: new Set(),
     query: "",
@@ -21,7 +32,9 @@
   const els = {
     grid: document.getElementById("template-grid"),
     empty: document.getElementById("empty-state"),
+    emptyMessage: document.getElementById("empty-message"),
     resultCount: document.getElementById("result-count"),
+    typeTabs: document.getElementById("type-tabs"),
     categoryTabs: document.getElementById("category-tabs"),
     tagFilter: document.getElementById("tag-filter"),
     tagCloud: document.getElementById("tag-cloud"),
@@ -30,8 +43,10 @@
     search: document.getElementById("search"),
     sort: document.getElementById("sort"),
     clearFilters: document.getElementById("clear-filters"),
-    statCount: document.getElementById("stat-count"),
-    statTags: document.getElementById("stat-tags"),
+    statWebsites: document.getElementById("stat-websites"),
+    statBrands: document.getElementById("stat-brands"),
+    statLogos: document.getElementById("stat-logos"),
+    statSystems: document.getElementById("stat-systems"),
     themeToggle: document.getElementById("theme-toggle"),
     modal: document.getElementById("detail-modal"),
     modalPreview: document.getElementById("modal-preview"),
@@ -39,6 +54,7 @@
     modalTitle: document.getElementById("modal-title"),
     modalDesc: document.getElementById("modal-desc"),
     modalTags: document.getElementById("modal-tags"),
+    modalRelated: document.getElementById("modal-related"),
     modalPreviewBtn: document.getElementById("modal-preview-btn"),
     modalSourceBtn: document.getElementById("modal-source-btn"),
   };
@@ -71,10 +87,14 @@
 
   /* ---------- Data ---------- */
 
+  function getItems() {
+    return state.catalog?.items || [];
+  }
+
   async function loadCatalog() {
     showSkeletons(3);
     try {
-      const res = await fetch("data/templates.json", { cache: "no-cache" });
+      const res = await fetch("data/catalog.json", { cache: "no-cache" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.catalog = await res.json();
       renderAll();
@@ -82,7 +102,7 @@
       console.error(err);
       els.grid.innerHTML = `
         <div class="empty-state" style="grid-column: 1 / -1">
-          <p>Could not load <code>data/templates.json</code>.</p>
+          <p>Could not load <code>data/catalog.json</code>.</p>
           <p style="font-size:0.9rem">If you opened this as a file:// URL, serve the folder with a local static server instead.</p>
         </div>`;
     }
@@ -97,9 +117,12 @@
   /* ---------- Filtering ---------- */
 
   function getFiltered() {
-    if (!state.catalog) return [];
-    let list = [...state.catalog.templates];
+    let list = [...getItems()];
     const q = state.query.trim().toLowerCase();
+
+    if (state.type !== "all") {
+      list = list.filter((t) => (t.type || "website") === state.type);
+    }
 
     if (state.category !== "All") {
       list = list.filter((t) => t.category === state.category);
@@ -107,13 +130,19 @@
 
     if (state.activeTags.size > 0) {
       list = list.filter((t) =>
-        [...state.activeTags].every((tag) => t.tags.includes(tag))
+        [...state.activeTags].every((tag) => (t.tags || []).includes(tag))
       );
     }
 
     if (q) {
       list = list.filter((t) => {
-        const hay = [t.name, t.description, t.category, ...(t.tags || [])]
+        const hay = [
+          t.name,
+          t.description,
+          t.category,
+          t.type,
+          ...(t.tags || []),
+        ]
           .join(" ")
           .toLowerCase();
         return hay.includes(q);
@@ -127,7 +156,6 @@
       if (state.sort === "newest") {
         return (b.date || "").localeCompare(a.date || "");
       }
-      // featured first, then newest
       const fa = a.featured ? 1 : 0;
       const fb = b.featured ? 1 : 0;
       if (fb !== fa) return fb - fa;
@@ -137,9 +165,21 @@
     return list;
   }
 
+  function countByType() {
+    const counts = { website: 0, brand: 0, logo: 0, system: 0 };
+    getItems().forEach((t) => {
+      const type = t.type || "website";
+      if (counts[type] !== undefined) counts[type] += 1;
+    });
+    return counts;
+  }
+
   function tagFrequency() {
     const counts = new Map();
-    state.catalog?.templates.forEach((t) => {
+    const base = getItems().filter(
+      (t) => state.type === "all" || (t.type || "website") === state.type
+    );
+    base.forEach((t) => {
       (t.tags || []).forEach((tag) => {
         counts.set(tag, (counts.get(tag) || 0) + 1);
       });
@@ -147,7 +187,6 @@
     return counts;
   }
 
-  /** Tags sorted by frequency (desc), then name. */
   function allTags() {
     const counts = tagFrequency();
     return [...counts.keys()].sort((a, b) => {
@@ -160,7 +199,6 @@
     if (state.tagsExpanded || all.length <= TAG_PREVIEW) return all;
     const top = all.slice(0, TAG_PREVIEW);
     const set = new Set(top);
-    // Keep any active filters visible even if outside top N
     state.activeTags.forEach((tag) => {
       if (!set.has(tag) && all.includes(tag)) {
         top.push(tag);
@@ -170,19 +208,55 @@
     return top;
   }
 
+  function typeLabel(type) {
+    return TYPE_LABELS[type] || type || "Item";
+  }
+
+  function typeSingular(type) {
+    const map = {
+      website: "website",
+      brand: "brand",
+      logo: "logo",
+      system: "system",
+    };
+    return map[type] || "item";
+  }
+
   /* ---------- Render ---------- */
 
   function renderAll() {
     renderStats();
+    renderTypeTabs();
     renderCategories();
     renderTagCloud();
     renderGrid();
   }
 
   function renderStats() {
-    const templates = state.catalog?.templates || [];
-    els.statCount.textContent = String(templates.length);
-    els.statTags.textContent = String(allTags().length);
+    const counts = countByType();
+    if (els.statWebsites) els.statWebsites.textContent = String(counts.website);
+    if (els.statBrands) els.statBrands.textContent = String(counts.brand);
+    if (els.statLogos) els.statLogos.textContent = String(counts.logo);
+    if (els.statSystems) els.statSystems.textContent = String(counts.system);
+  }
+
+  function renderTypeTabs() {
+    if (!els.typeTabs) return;
+    const counts = countByType();
+    const total = getItems().length;
+
+    els.typeTabs.innerHTML = TYPE_ORDER.map((key) => {
+      const label = TYPE_LABELS[key];
+      const count = key === "all" ? total : counts[key] || 0;
+      return `
+      <button
+        type="button"
+        class="type-tab"
+        role="tab"
+        aria-selected="${key === state.type}"
+        data-type="${escapeAttr(key)}"
+      >${escapeHtml(label)} <span class="type-count">${count}</span></button>`;
+    }).join("");
   }
 
   function renderCategories() {
@@ -247,14 +321,35 @@
 
   function renderGrid() {
     const list = getFiltered();
-    els.resultCount.textContent =
-      list.length === 1
-        ? "1 template"
-        : `${list.length} templates`;
+    const n = list.length;
+    const typeWord =
+      state.type === "all"
+        ? n === 1
+          ? "item"
+          : "items"
+        : n === 1
+          ? typeSingular(state.type)
+          : typeLabel(state.type).toLowerCase();
+
+    els.resultCount.textContent = `${n} ${typeWord}`;
+
+    // Grid density: logos get denser min columns via class
+    els.grid.classList.toggle("grid-logos", state.type === "logo");
+    els.grid.classList.toggle("grid-brands", state.type === "brand");
 
     if (!list.length) {
       els.grid.innerHTML = "";
       els.empty.hidden = false;
+      if (els.emptyMessage) {
+        const hasItemsOfType =
+          state.type === "all" ||
+          getItems().some((t) => (t.type || "website") === state.type);
+        if (!hasItemsOfType) {
+          els.emptyMessage.textContent = `No ${typeLabel(state.type).toLowerCase()} yet. Add one under library/${state.type}s/ and register it in data/catalog.json.`;
+        } else {
+          els.emptyMessage.textContent = "Nothing matches these filters.";
+        }
+      }
       return;
     }
 
@@ -262,7 +357,20 @@
     els.grid.innerHTML = list.map(cardHtml).join("");
   }
 
+  function colorStripHtml(colors) {
+    if (!Array.isArray(colors) || !colors.length) return "";
+    const swatches = colors
+      .slice(0, 6)
+      .map(
+        (c) =>
+          `<span class="color-swatch" style="background:${escapeAttr(c)}" title="${escapeAttr(c)}"></span>`
+      )
+      .join("");
+    return `<div class="card-color-strip" aria-hidden="true">${swatches}</div>`;
+  }
+
   function cardHtml(t) {
+    const type = t.type || "website";
     const all = t.tags || [];
     const shown = all.slice(0, CARD_TAGS);
     const extra = all.length - shown.length;
@@ -272,9 +380,17 @@
         .join("") +
       (extra > 0 ? `<span class="card-tag-more">+${extra}</span>` : "");
 
+    const metaLine =
+      type === "website"
+        ? escapeHtml(t.category || "Website")
+        : `${escapeHtml(typeLabel(type))}${t.category ? ` · ${escapeHtml(t.category)}` : ""}`;
+
+    const colors = t.meta?.colors;
+    const strip = type === "brand" ? colorStripHtml(colors) : "";
+
     return `
       <article
-        class="card"
+        class="card card-type-${escapeAttr(type)}"
         role="listitem"
         tabindex="0"
         data-id="${escapeAttr(t.id)}"
@@ -286,17 +402,19 @@
               ? `<span class="card-badge">Pinned</span>`
               : ""
           }
+          <span class="card-type-badge">${escapeHtml(typeSingular(type))}</span>
           <img
             src="${escapeAttr(t.thumbnail)}"
             alt=""
             loading="lazy"
             width="640"
             height="400"
-            onerror="this.src='data:image/svg+xml,${encodeURIComponent(fallbackThumb(t.name))}'"
+            onerror="this.src='data:image/svg+xml,${encodeURIComponent(fallbackThumb(t.name, type))}'"
           />
+          ${strip}
         </div>
         <div class="card-body">
-          <p class="card-category">${escapeHtml(t.category || "Template")}</p>
+          <p class="card-category">${metaLine}</p>
           <h3 class="card-title">${escapeHtml(t.name)}</h3>
           <p class="card-desc">${escapeHtml(t.description || "")}</p>
           ${tags ? `<div class="card-tags">${tags}</div>` : ""}
@@ -319,9 +437,11 @@
       </article>`;
   }
 
-  function fallbackThumb(name) {
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
-      <rect fill="#eef0f6" width="640" height="400"/>
+  function fallbackThumb(name, type) {
+    const h = type === "logo" ? 480 : 400;
+    const w = type === "logo" ? 480 : 640;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      <rect fill="#eef0f6" width="${w}" height="${h}"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
         font-family="system-ui,sans-serif" font-size="22" fill="#5c6378">${escapeHtml(name)}</text>
     </svg>`;
@@ -330,20 +450,70 @@
   /* ---------- Modal ---------- */
 
   function openModal(id) {
-    const t = state.catalog?.templates.find((x) => x.id === id);
+    const t = getItems().find((x) => x.id === id);
     if (!t) return;
 
-    els.modalCategory.textContent = t.category || "Template";
+    const type = t.type || "website";
+    const catBits = [typeLabel(type)];
+    if (t.category) catBits.push(t.category);
+    els.modalCategory.textContent = catBits.join(" · ");
     els.modalTitle.textContent = t.name;
     els.modalDesc.textContent = t.description || "";
     els.modalTags.innerHTML = (t.tags || [])
       .map((tag) => `<span class="card-tag">${escapeHtml(tag)}</span>`)
       .join("");
+
+    const colors = t.meta?.colors;
+    const strip =
+      type === "brand" && colors?.length
+        ? `<div class="modal-color-strip">${colorStripHtml(colors)}</div>`
+        : "";
+
+    els.modalPreview.className = `modal-preview modal-preview-${type}`;
     els.modalPreview.innerHTML = `
       <img src="${escapeAttr(t.thumbnail)}" alt="" width="640" height="360"
-        onerror="this.style.display='none'" />`;
+        onerror="this.style.display='none'" />
+      ${strip}`;
+
     els.modalPreviewBtn.href = t.path;
     els.modalSourceBtn.href = t.path;
+
+    // Related items via projectId or related[]
+    if (els.modalRelated) {
+      const relatedIds = new Set(t.related || []);
+      if (t.projectId) {
+        getItems().forEach((other) => {
+          if (other.id !== t.id && other.projectId === t.projectId) {
+            relatedIds.add(other.id);
+          }
+        });
+      }
+      const related = [...relatedIds]
+        .map((rid) => getItems().find((x) => x.id === rid))
+        .filter(Boolean);
+
+      if (related.length) {
+        els.modalRelated.hidden = false;
+        els.modalRelated.innerHTML = `
+          <p class="modal-related-label">Related</p>
+          <ul class="modal-related-list">
+            ${related
+              .map(
+                (r) => `
+              <li>
+                <button type="button" class="modal-related-link" data-related-id="${escapeAttr(r.id)}">
+                  <span class="modal-related-type">${escapeHtml(typeSingular(r.type || "website"))}</span>
+                  ${escapeHtml(r.name)}
+                </button>
+              </li>`
+              )
+              .join("")}
+          </ul>`;
+      } else {
+        els.modalRelated.hidden = true;
+        els.modalRelated.innerHTML = "";
+      }
+    }
 
     els.modal.hidden = false;
     document.body.classList.add("modal-open");
@@ -358,6 +528,20 @@
   /* ---------- Events ---------- */
 
   function bindEvents() {
+    els.typeTabs?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-type]");
+      if (!btn) return;
+      state.type = btn.dataset.type;
+      // Drop tags that no longer exist in the active type pool
+      const valid = new Set(allTags());
+      state.activeTags.forEach((tag) => {
+        if (!valid.has(tag)) state.activeTags.delete(tag);
+      });
+      renderTypeTabs();
+      renderTagCloud();
+      renderGrid();
+    });
+
     els.categoryTabs.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-category]");
       if (!btn) return;
@@ -402,11 +586,13 @@
     });
 
     els.clearFilters?.addEventListener("click", () => {
+      state.type = "all";
       state.category = "All";
       state.activeTags.clear();
       state.tagsExpanded = false;
       state.query = "";
       els.search.value = "";
+      renderTypeTabs();
       renderCategories();
       renderTagCloud();
       renderGrid();
@@ -432,7 +618,14 @@
     });
 
     els.modal.addEventListener("click", (e) => {
-      if (e.target.closest("[data-close-modal]")) closeModal();
+      if (e.target.closest("[data-close-modal]")) {
+        closeModal();
+        return;
+      }
+      const related = e.target.closest("[data-related-id]");
+      if (related) {
+        openModal(related.dataset.relatedId);
+      }
     });
 
     document.addEventListener("keydown", (e) => {

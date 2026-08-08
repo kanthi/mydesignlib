@@ -1,5 +1,5 @@
 /* =========================================================
-   Personal template collection — static showcase
+   mydesignlib — personal design library showcase
    ========================================================= */
 
 :root {
@@ -322,6 +322,65 @@ code {
   padding: 0.5rem 0 3.5rem;
 }
 
+/* ----- Type tabs (primary filter) ----- */
+
+.type-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.type-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.type-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.type-tab[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] .type-tab[aria-selected="true"] {
+  color: #121416;
+}
+
+.type-count {
+  font-size: 0.75rem;
+  font-weight: 650;
+  opacity: 0.75;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.type-tab[aria-selected="true"] .type-count {
+  background: color-mix(in srgb, #fff 22%, transparent);
+}
+
+[data-theme="dark"] .type-tab[aria-selected="true"] .type-count {
+  background: color-mix(in srgb, #000 18%, transparent);
+}
+
 /* ----- Toolbar ----- */
 
 .toolbar {
@@ -531,6 +590,14 @@ code {
   gap: 1.15rem;
 }
 
+.template-grid.grid-logos {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.template-grid.grid-brands {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
 .card {
   position: relative;
   display: flex;
@@ -563,6 +630,30 @@ code {
   overflow: hidden;
 }
 
+.card-type-logo .card-thumb {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background:
+    linear-gradient(135deg, var(--bg-muted) 0%, color-mix(in srgb, var(--bg-elevated) 70%, var(--bg-muted)) 100%);
+}
+
+.card-type-logo .card-thumb img {
+  object-fit: contain;
+  max-height: 72%;
+  width: auto;
+  max-width: 72%;
+}
+
+.card-type-brand .card-thumb {
+  aspect-ratio: 4 / 3;
+}
+
+.card-type-system .card-thumb {
+  aspect-ratio: 16 / 11;
+}
+
 .card-thumb img {
   width: 100%;
   height: 100%;
@@ -574,10 +665,15 @@ code {
   transform: scale(1.03);
 }
 
+.card-type-logo:hover .card-thumb img {
+  transform: scale(1.05);
+}
+
 .card-badge {
   position: absolute;
   top: 0.65rem;
   left: 0.65rem;
+  z-index: 2;
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
   font-size: 0.68rem;
@@ -590,6 +686,38 @@ code {
 
 [data-theme="dark"] .card-badge {
   color: #121416;
+}
+
+.card-type-badge {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 2;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+}
+
+.card-color-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  height: 8px;
+  z-index: 1;
+}
+
+.color-swatch {
+  flex: 1;
+  min-width: 0;
 }
 
 .card-body {
@@ -799,15 +927,106 @@ code {
 }
 
 .modal-preview {
+  position: relative;
   aspect-ratio: 16 / 9;
   background: var(--bg-muted);
   overflow: hidden;
+}
+
+.modal-preview-logo {
+  aspect-ratio: 1 / 1;
+  max-height: 320px;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.modal-preview-logo img {
+  object-fit: contain;
+  max-height: 70%;
+  width: auto;
+  max-width: 70%;
+}
+
+.modal-preview-brand {
+  aspect-ratio: 4 / 3;
 }
 
 .modal-preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.modal-color-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-color-strip .card-color-strip {
+  position: static;
+  height: 10px;
+}
+
+.modal-related {
+  margin: 0 0 1.1rem;
+  padding: 0.85rem 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.modal-related-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.modal-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.modal-related-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 550;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.modal-related-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-related-type {
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  background: var(--bg-muted);
 }
 
 .modal-body {

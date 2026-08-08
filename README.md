@@ -1,6 +1,6 @@
-# Templates
+# mydesignlib
 
-Personal collection of static website templates, with a small index app at the repo root.
+Personal design library — websites, brands, logos, and systems — with a static index app at the repo root.
 
 No build step. No frameworks. Suitable for local use or GitHub Pages.
 
@@ -10,21 +10,25 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 
 ```
 .
-├── AGENTS.md                 # Project rules for agents
-├── docs/TEMPLATE_WORKFLOW.md # Human-readable pipeline
-├── .grok/skills/ship-template/  # /ship-template skill
-├── index.html
+├── AGENTS.md                      # Project rules for agents
+├── docs/TEMPLATE_WORKFLOW.md      # Human-readable pipeline
+├── .grok/skills/ship-template/    # /ship-template skill
+├── index.html                     # Showcase (mydesignlib)
 ├── css/styles.css
 ├── js/app.js
-├── data/templates.json       # Catalog (source of truth)
-└── templates/<id>/           # Self-contained pages
-    ├── index.html
-    └── preview.jpg
+├── data/catalog.json              # Catalog (source of truth)
+└── library/
+    ├── websites/<id>/             # Self-contained site templates
+    │   ├── index.html
+    │   └── preview.jpg
+    ├── brands/<id>/               # Brand systems (future)
+    ├── logos/<id>/                # Standalone marks (future)
+    └── systems/<id>/              # UI / token specimens (future)
 ```
 
-Each template folder is self-contained (`index.html` + `preview.jpg` + optional assets).
+Each library folder is self-contained (`index.html` / assets + `preview.jpg` as needed).
 
-## Adding a template
+## Adding a website template
 
 **Full pipeline** (research → rebrand → assets → build → register → audit → verify):
 
@@ -33,9 +37,30 @@ Each template folder is self-contained (`index.html` + `preview.jpg` + optional 
 
 Minimal manual steps:
 
-1. Create `templates/<id>/` with `index.html` and `preview.jpg`.
-2. Register it in `data/templates.json`.
+1. Create `library/websites/<id>/` with `index.html` and `preview.jpg`.
+2. Register it in `data/catalog.json` with `"type": "website"`.
 3. Brand-audit (no real brand names) and open via local server.
+
+## Catalog item shape
+
+```json
+{
+  "id": "example",
+  "type": "website",
+  "name": "Example",
+  "description": "Short summary of the design.",
+  "tags": ["saas", "dark"],
+  "category": "SaaS",
+  "thumbnail": "library/websites/example/preview.jpg",
+  "path": "library/websites/example/",
+  "projectId": "example",
+  "related": [],
+  "featured": true,
+  "date": "2026-08-08"
+}
+```
+
+`type` is one of: `website` · `brand` · `logo` · `system`.
 
 ## Local preview
 
@@ -48,6 +73,8 @@ Open `http://localhost:8080`.
 ## GitHub Pages
 
 Deploy branch root (`main` / `/`). Relative paths work under project Pages URLs.
+
+Repo rename (optional): this product is **mydesignlib** — rename the GitHub repository when ready.
 
 ## Hard rules (short)
 

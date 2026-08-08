@@ -168,9 +168,9 @@ Many “8 Claude prompts for free premium website” clones (e.g. @AiWithIqra, @
 
 When testing a method on an existing catalog site:
 
-- Keep `templates/<id>/`  
-- Ship `templates/<id>-v1/` (then `-v2`)  
-- Register separately in `data/templates.json`  
+- Keep `library/websites/<id>/`  
+- Ship `library/websites/<id>-v1/` (then `-v2`)  
+- Register separately in `data/catalog.json`  
 
 Test case: `atrium` → `atrium-v1` (2026-08-05).
 
