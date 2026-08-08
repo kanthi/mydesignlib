@@ -63,11 +63,19 @@ Copy generated files from the session `images/` folder into `templates/<id>/`.
 
 Single-page (unless multi-page is clearly required). Self-contained: relative asset paths, embedded or linked free fonts/libs.
 
-**Required in `<head>` (no search indexing):**
+**Required in `<head>` (no search indexing + analytics):**
 
 ```html
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
 <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
 ```
 
 Do not add SEO discovery markup (sitemap, canonical to a public marketing domain, Open Graph for indexing). Keep root `robots.txt` as `Disallow: /`.
