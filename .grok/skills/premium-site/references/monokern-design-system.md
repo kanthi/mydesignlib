@@ -25,6 +25,7 @@ Example portfolio claim: mason-harrison(.vercel.app)
 
 Without Claude Design product:
 
-1. Write `DESIGN.md` or CSS `:root` tokens in the template folder **before** large layout work  
-2. Or run `/design-system-first` to produce tokens + short DESIGN.md snippet  
+1. Write `DESIGN.md` or CSS `:root` tokens in the library folder **before** large layout work  
+2. Or run `/design-system-first` to produce tokens + DESIGN.md (semantic roles, components, responsive behaviour — not adjectives alone)  
+3. **Read** that DESIGN.md again before writing HTML; filename alone does not load context (see `design-system-first/references/method-design-md-7-ai-mistakes.md` or `docs/method-design-md-for-ai.md`) 
 3. Only then run build / polish skills  

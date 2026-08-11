@@ -80,4 +80,8 @@ When the user pastes a design URL or asks to ship a **website** template from a 
 
 `.grok/skills/ship-template/SKILL.md`
 
+Cold start / design system before HTML: **`/design-system-first`**.  
+DESIGN.md quality (avoid mood-board specs): **`docs/method-design-md-for-ai.md`**.  
+Skills map + filename scheme: **`docs/SKILLS.md`**.
+
 Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.

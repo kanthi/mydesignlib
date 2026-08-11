@@ -39,9 +39,12 @@ direction
 ## This repo route
 
 ```
-design-system-first
+design-system-first   # semantic DESIGN.md + tokens; read file before build
   → anti-slop-frontend (check)
   → ship-template | premium-site build
   → premium-site polish (type → space → motion → mobile)
   → brand audit + HTTP verify
 ```
+
+DESIGN.md quality (mood board vs executable spec):  
+`.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md` · `docs/method-design-md-for-ai.md`

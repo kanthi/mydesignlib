@@ -13,9 +13,14 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 ```
 .
 ├── AGENTS.md                      # Project rules for agents (always)
-├── docs/OPERATIONS.md             # Hosting, Pages, privacy, GA, deploy
-├── docs/TEMPLATE_WORKFLOW.md      # Human-readable template pipeline
-├── .grok/skills/ship-template/    # /ship-template skill
+├── docs/
+│   ├── SKILLS.md                  # Skills map + filename naming scheme
+│   ├── OPERATIONS.md              # Hosting, Pages, privacy, GA, deploy
+│   ├── TEMPLATE_WORKFLOW.md       # Human-readable template pipeline
+│   ├── method-design-md-for-ai.md # DESIGN.md that agents can execute
+│   ├── premium-site-method.md     # Premium polish method
+│   └── ai-website-methods-corpus.md
+├── .grok/skills/                  # Agent skills (/ship-template, …)
 ├── .github/workflows/pages.yml    # GitHub Pages deploy (Node 24)
 ├── robots.txt                     # Disallow all crawlers
 ├── index.html                     # Showcase (mydesignlib)
@@ -25,10 +30,11 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 └── library/
     ├── websites/<id>/             # Self-contained site templates
     │   ├── index.html
-    │   └── preview.jpg
-    ├── brands/<id>/               # Brand systems (future)
-    ├── logos/<id>/                # Standalone marks (future)
-    └── systems/<id>/              # UI / token specimens (future)
+    │   ├── preview.jpg
+    │   └── DESIGN.md              # optional per-item design system
+    ├── brands/<id>/
+    ├── logos/<id>/
+    └── systems/<id>/
 ```
 
 Each library folder is self-contained (`index.html` / assets + `preview.jpg` as needed).
@@ -39,7 +45,26 @@ Each library folder is self-contained (`index.html` / assets + `preview.jpg` as 
 |------|--------|
 | Hosting, Pages, no-crawl, Analytics, deploy smoke checks | **[docs/OPERATIONS.md](docs/OPERATIONS.md)** |
 | Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** + `/ship-template` |
+| Skills map + how files are named | **[docs/SKILLS.md](docs/SKILLS.md)** |
+| DESIGN.md for AI (avoid mood-board specs) | **[docs/method-design-md-for-ai.md](docs/method-design-md-for-ai.md)** + `/design-system-first` |
+| Premium / anti-AI-slop polish | `/premium-site` · `/anti-slop-frontend` · [docs/premium-site-method.md](docs/premium-site-method.md) |
 | Agent hard rules | **[AGENTS.md](AGENTS.md)** |
+
+### Doc & skill filename scheme (short)
+
+Names should reveal role without opening the file:
+
+| Pattern | Role |
+|---------|------|
+| `docs/method-<topic>.md` | Reusable method / checklist |
+| `docs/SKILLS.md` | Skills index (not `skillme.md`) |
+| `docs/OPERATIONS.md` | Hosting / deploy ops |
+| `.grok/skills/<name>/SKILL.md` | Agent skill entry (Grok convention) |
+| `…/references/method-<topic>.md` | Method notes inside a skill |
+| `…/references/src-<author>-<topic>.md` | Single-source distillation (new files) |
+| `library/.../DESIGN.md` | **That item’s** design system (not a method doc) |
+
+Full table: **[docs/SKILLS.md](docs/SKILLS.md)**.
 
 ## Adding a website template
 

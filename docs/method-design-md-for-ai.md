@@ -1,0 +1,84 @@
+# Method: DESIGN.md for AI agents
+
+**Filename scheme:** `method-<topic>.md` — human-readable build methods (see [SKILLS.md](./SKILLS.md)).
+
+**Agent skill:** [`/design-system-first`](../.grok/skills/design-system-first/SKILL.md)  
+**Full source notes:** [`.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`](../.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md)
+
+**Source article (captured 2026-08-08):**  
+https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd
+
+---
+
+## Why this exists
+
+Writing a `DESIGN.md` and pointing an agent at it often yields only a small improvement: correct brand colour, still generic layout. The file is usually a **mood board** or a **raw token dump**, not something an agent can execute.
+
+**Rule:** DESIGN.md must encode *decisions an agent would otherwise guess wrong* — then it must be **read before UI work** (filename alone does not load context).
+
+---
+
+## 7 mistakes (checklist)
+
+| # | Mistake | Fix |
+|---|---------|-----|
+| 1 | Mood board (“clean, modern, premium”) | Overview = emotion + *Create this feeling through:* token-backed rules |
+| 2 | Raw values (`blue`, `gray-900`) | **Semantic** names (`action-primary`, `text-secondary`) + usage bullets |
+| 3 | Foundations only | Document **components** (buttons, nav, cards, inputs): anatomy, variants, bans |
+| 4 | Breakpoints without behaviour | Layout **logic** per band (columns, margins, what stacks/hides) |
+| 5 | No motion / icons / content | Short sections for duration, icon set, tone of voice |
+| 6 | Too long or contradictory | Prefer ≤ ~200 lines; rules over essays; one conflict priority |
+| 7 | File never loaded into the agent | Explicitly **read** `library/.../DESIGN.md` before HTML/CSS |
+
+**Overview quality test:** *Could two designers interpret this rule completely differently?* If yes → add concrete decisions.
+
+---
+
+## Where files live in this repo
+
+| Path | Role |
+|------|------|
+| `library/<type>/<id>/DESIGN.md` | Per-item design system (marketing or product) |
+| CSS `:root` in `index.html` | Implementable tokens (must match DESIGN.md) |
+| This doc | Human checklist + method |
+| `/design-system-first` skill | Agent procedure + full template |
+
+---
+
+## Compact DESIGN.md (marketing site)
+
+Use the template in the skill. Minimum sections:
+
+1. **Overview** — audience, CTA, emotion → observable rules  
+2. **Colors** — semantic roles + usage  
+3. **Typography / space / shape**  
+4. **Layout and responsiveness** — compact / medium / expanded behaviour  
+5. **Components** — buttons, nav, primary content block  
+6. **Motion · iconography · content · ban list · a11y**
+
+Alias marketing names (`paper` / `ink` / `accent`) only if usage rules are written next to them.
+
+---
+
+## Load into the agent (mistake 7)
+
+| Tool | Pattern |
+|------|---------|
+| Grok (this repo) | Read `library/.../DESIGN.md` before writing UI; `/design-system-first` first on cold starts |
+| Claude Code | `@DESIGN.md` from project instructions; check `/context` |
+| Cursor | Project rules or explicit attach |
+
+Optional lint (schema-friendly files):
+
+```bash
+npx @google/design.md lint library/websites/<id>/DESIGN.md
+```
+
+---
+
+## Related
+
+- Skills map + naming scheme: [SKILLS.md](./SKILLS.md)  
+- Methods corpus: [ai-website-methods-corpus.md](./ai-website-methods-corpus.md)  
+- Ship pipeline: [TEMPLATE_WORKFLOW.md](./TEMPLATE_WORKFLOW.md)  
+- Polish pipeline: [premium-site-method.md](./premium-site-method.md)  

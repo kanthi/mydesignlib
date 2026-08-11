@@ -83,6 +83,13 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **Skill:** `design-system-first`  
 - **Notes:** `references/monokern-design-system.md`
 
+### 6b. UX Planet — 7 DESIGN.md mistakes (actionable specs for AI)
+
+- **URL:** https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd  
+- **Method:** DESIGN.md fails when it is a mood board, raw hex dump, foundations-only, missing responsive *behaviour*, silent on motion/icons/content, too long/contradictory, or **never loaded** into agent context. Fix with semantic tokens, component rules, layout logic by breakpoint, short rules (~200 lines), and explicit read/attach before UI work. Optional: `npx @google/design.md lint`.  
+- **Skill:** `design-system-first` (required sections + 7-mistake table)  
+- **Notes:** `docs/method-design-md-for-ai.md` · `.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`
+
 ### 7. Sam AI — goal-first brief (10-minute website)
 
 - **URL:** https://x.com/AIandTechh87/status/2038117959214788640  
@@ -147,6 +154,7 @@ Many “8 Claude prompts for free premium website” clones (e.g. @AiWithIqra, @
 | Full polish pipeline + versioned upgrades | `/premium-site` |
 | Kill AI-slop aesthetics at code time | `/anti-slop-frontend` |
 | Tokens / DS before HTML | `/design-system-first` |
+| Fix weak DESIGN.md (generic AI UI) | `/design-system-first` + `docs/method-design-md-for-ai.md` |
 | From design URL → catalog template | `/ship-template` |
 | Human-readable overview | `docs/premium-site-method.md` + this corpus |
 

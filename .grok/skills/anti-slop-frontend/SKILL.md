@@ -29,7 +29,7 @@ Respect `AGENTS.md` (fictional brands, original assets, vanilla static for catal
 | New page about to be coded | Run **Phase 0–2** before writing HTML |
 | Existing page looks AI-generated | Run **AI Look audit** → fix violations only, prefer versioned `<id>-v1` |
 | User wants “Awwwards-level” one-shot | Use **Award prompt mode** then `premium-site` polish |
-| After design-system-first | Verify tokens don’t reintroduce slop defaults |
+| After design-system-first | Verify tokens don’t reintroduce slop defaults; confirm DESIGN.md was **read** and uses semantic roles (not mood-board only) |
 
 ## Phase 0 — Context, concept, commitment
 

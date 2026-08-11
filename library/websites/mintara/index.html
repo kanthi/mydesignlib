@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mintara — Grow online business with modern finance</title>
+  <meta
+    name="description"
+    content="Fictional fintech landing sample. Soft purple hero, floating activity cards, bento social proof, pricing, dashboard UI chrome, lime accents."
+  />
+  <!--
+    Stack: vanilla HTML/CSS/JS, GSAP + ScrollTrigger (free), Google Fonts Outfit.
+    UI chrome (charts, pricing, dashboards) built in HTML — not baked into photos.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #e8e4dc;
+      --shell: #f4f1ff;
+      --shell-deep: #ebe6ff;
+      --card: #ffffff;
+      --ink: #12121a;
+      --muted: #6b6b7a;
+      --line: rgba(18, 18, 26, 0.08);
+      --purple: #6d4aff;
+      --purple-deep: #5a38f0;
+      --purple-soft: #ece6ff;
+      --lime: #d8f56a;
+      --lime-ink: #2a3a0a;
+      --pink-stage: #f5cfc8;
+      --dark: #0c0c12;
+      --dark-2: #16161f;
+      --radius: 22px;
+      --radius-sm: 14px;
+      --shadow: 0 16px 40px rgba(40, 30, 80, 0.08);
+      --shadow-lg: 0 30px 70px rgba(40, 30, 80, 0.12);
+      --font: Outfit, system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .page {
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+      min-height: 100vh;
+    }
+    .shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      background: linear-gradient(180deg, var(--shell) 0%, #fff 42%, #fff 100%);
+      border-radius: 28px;
+      box-shadow: var(--shadow-lg);
+      overflow: clip;
+    }
+
+    /* —— Nav —— */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(244, 241, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: conic-gradient(from 210deg, #6d4aff, #b49bff, #d8f56a, #6d4aff);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.12);
+    }
+    .brand-mark span {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #3a3a48;
+    }
+    .nav-links a { opacity: 0.78; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links .caret::after {
+      content: "";
+      display: inline-block;
+      width: 0; height: 0;
+      margin-left: 0.3rem;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid currentColor;
+      opacity: 0.5;
+      vertical-align: middle;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: transform 0.2s var(--ease), box-shadow 0.2s, background 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(109, 74, 255, 0.28);
+    }
+    .btn-primary:hover { background: var(--purple-deep); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid rgba(18, 18, 26, 0.14);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.7); }
+    .btn-white {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+    .btn-outline-light {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.35);
+    }
+    .menu-toggle {
+      display: none;
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(40,30,80,0.08);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .menu-toggle span {
+      width: 16px; height: 1.5px;
+      background: var(--ink);
+      border-radius: 2px;
+    }
+
+    /* —— Shared —— */
+    section { padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem); }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--lime-ink);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .chip.dark {
+      background: rgba(216, 245, 106, 0.18);
+      color: var(--lime);
+    }
+    .h1 {
+      font-size: clamp(2.35rem, 5.5vw, 3.55rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+    .h2 {
+      font-size: clamp(1.75rem, 3.8vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+    .lead {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 42ch;
+      margin-top: 1rem;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 2rem;
+      align-items: center;
+      padding-top: 1.25rem;
+      padding-bottom: 1.5rem;
+    }
+    .hero-copy .chip { margin-bottom: 1rem; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1.5rem;
+    }
+    .hero-visual {
+      position: relative;
+      min-height: 360px;
+    }
+    .hero-photo {
+      width: 100%;
+      max-width: 380px;
+      margin-left: auto;
+      aspect-ratio: 1;
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--pink-stage);
+      box-shadow: var(--shadow);
+    }
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* Floating UI cards */
+    .float-card {
+      position: absolute;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(40, 30, 80, 0.14);
+      padding: 0.85rem 1rem;
+      z-index: 2;
+    }
+    .float-activity {
+      top: 8%;
+      right: 0;
+      width: min(220px, 58%);
+      animation: floatY 5.5s ease-in-out infinite;
+    }
+    .float-activity .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 0.55rem;
+    }
+    .float-activity .top select,
+    .float-activity .top span.sel {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 500;
+      background: #f3f2f8;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+    }
+    .spark {
+      width: 100%;
+      height: 64px;
+      display: block;
+    }
+    .float-balance {
+      left: 0;
+      bottom: 18%;
+      width: min(168px, 48%);
+      animation: floatY 6.2s ease-in-out infinite reverse;
+    }
+    .float-balance .label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .float-balance .amt {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0.15rem 0 0.55rem;
+    }
+    .mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 36px;
+    }
+    .mini-bars i {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(180deg, #9b84ff, var(--purple));
+      display: block;
+    }
+    .float-avatar {
+      left: 12%;
+      top: 42%;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      padding: 0;
+      overflow: hidden;
+      animation: floatY 4.8s ease-in-out infinite 0.4s;
+    }
+    .float-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* —— Bento —— */
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 1rem;
+    }
+    .bento-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 1.15rem 1.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .bento-card.photo {
+      padding: 0;
+      overflow: hidden;
+      min-height: 180px;
+    }
+    .bento-card.photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 180px;
+    }
+    .stars {
+      color: #f5b400;
+      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+      margin-bottom: 0.45rem;
+    }
+    .rating-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .rating-num small {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: 0.25rem;
+    }
+    .bento-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 0.55rem;
+    }
+    .trust-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .trust-row .star {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #00b67a;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 0.7rem;
+    }
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.85rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--purple);
+    }
+
+    .experts {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
+      background: linear-gradient(160deg, #f7f5ff, #fff);
+    }
+    .experts h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
+    }
+    .hash {
+      align-self: flex-end;
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: var(--purple-soft);
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .feature-list li {
+      list-style: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .feature-list .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-top: 0.35rem;
+      flex: 0 0 auto;
+    }
+    .dot.o { background: #ff8a4c; }
+    .dot.p { background: var(--purple); }
+    .dot.g { background: #3ecf8e; }
+
+    .network-card {
+      background: linear-gradient(160deg, #fff, #f3f0ff);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      min-height: 180px;
+    }
+    .network-card p {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+      max-width: 18ch;
+      margin: 0;
+    }
+    .network-svg { width: 120px; height: 70px; }
+
+    /* —— About / SEO —— */
+    .about {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: end;
+      background: #fff;
+    }
+    .about-scores {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+      align-items: center;
+    }
+    .score {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.85rem;
+    }
+    .score strong {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .score .stars { margin: 0; font-size: 0.75rem; }
+    .about-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 28ch;
+    }
+    .video-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      box-shadow: var(--shadow);
+      background: #ddd;
+    }
+    .video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(18, 18, 26, 0.18);
+    }
+    .play span {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      transition: transform 0.2s var(--ease);
+    }
+    .play:hover span { transform: scale(1.06); }
+    .play svg { width: 22px; height: 22px; margin-left: 3px; fill: var(--purple); }
+
+    /* —— Dark essentials —— */
+    .essentials {
+      background: var(--dark);
+      color: #f2f2f6;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 2rem;
+      align-items: center;
+      border-radius: 0;
+      margin: 0;
+    }
+    .essentials .lead { color: rgba(242, 242, 246, 0.62); }
+    .essentials .hero-actions { margin-top: 1.35rem; }
+    .check-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      margin-top: 1.25rem;
+      font-size: 0.86rem;
+      color: rgba(242, 242, 246, 0.7);
+    }
+    .check-list span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .check-list i {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: rgba(216, 245, 106, 0.2);
+      color: var(--lime);
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      font-size: 0.65rem;
+    }
+
+    .dash {
+      position: relative;
+      background: #1a1a24;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    .dash-tag {
+      position: absolute;
+      top: 12%;
+      left: -8px;
+      transform: rotate(-12deg);
+      background: var(--lime);
+      color: var(--lime-ink);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      z-index: 3;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    }
+    .dash-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+    }
+    .dash-head strong { color: #fff; font-size: 0.9rem; }
+    .dash-chart {
+      background: #12121a;
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .dash-chart svg { width: 100%; height: 110px; display: block; }
+    .dash-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+    }
+    .metric {
+      background: #12121a;
+      border-radius: 12px;
+      padding: 0.7rem;
+    }
+    .metric .k {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.25rem;
+    }
+    .metric .v {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .metric .up { color: #3ecf8e; font-size: 0.72rem; font-weight: 600; }
+
+    /* —— Pricing —— */
+    .pricing {
+      background: #fff;
+      text-align: center;
+    }
+    .pricing .chip { margin-bottom: 0.85rem; }
+    .pricing .h2 { max-width: 18ch; margin-inline: auto; }
+    .billing-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.35rem auto 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .billing-toggle .active { color: var(--ink); }
+    .toggle {
+      width: 48px; height: 28px;
+      border-radius: 999px;
+      background: var(--purple);
+      position: relative;
+      padding: 3px;
+    }
+    .toggle i {
+      display: block;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.25s var(--ease);
+      transform: translateX(20px);
+    }
+    .toggle.is-monthly i { transform: translateX(0); }
+    .save {
+      font-size: 0.72rem;
+      background: var(--lime);
+      color: var(--lime-ink);
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      text-align: left;
+    }
+    .price-card {
+      background: #f7f6fb;
+      border-radius: 20px;
+      padding: 1.5rem 1.35rem;
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .price-card.featured {
+      background: var(--purple);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 24px 50px rgba(109, 74, 255, 0.35);
+      transform: translateY(-6px);
+    }
+    .price-card .plan {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .price-card .price {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .price-card .price span {
+      font-size: 0.95rem;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+    .price-card .desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin: 0.65rem 0 1.1rem;
+      min-height: 2.6em;
+    }
+    .price-card.featured .desc { color: rgba(255,255,255,0.72); }
+    .price-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.35rem;
+      flex: 1;
+    }
+    .price-card li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .price-card li::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--purple);
+      flex: 0 0 auto;
+    }
+    .price-card.featured li::before { background: var(--lime); }
+    .price-card .btn {
+      width: 100%;
+    }
+    .price-card.featured .btn-primary {
+      background: #fff;
+      color: var(--purple);
+      box-shadow: none;
+    }
+    .price-card:not(.featured) .btn-primary {
+      background: transparent;
+      color: var(--purple);
+      border: 1.5px solid rgba(109, 74, 255, 0.35);
+      box-shadow: none;
+    }
+
+    /* —— Platform CTA —— */
+    .platform {
+      margin: 0 1.5rem 1.5rem;
+      border-radius: 24px;
+      background: linear-gradient(120deg, #6d4aff 0%, #7b5cff 45%, #5a38f0 100%);
+      color: #fff;
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .platform .chip { margin-bottom: 0.85rem; }
+    .platform .h2 { max-width: 16ch; }
+    .platform .lead {
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 1.25rem;
+    }
+    .platform-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      position: relative;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+    .stat-card .n {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .stat-card .l {
+      font-size: 0.78rem;
+      opacity: 0.75;
+      margin-top: 0.15rem;
+    }
+    .stat-card.wide { grid-column: 1 / -1; }
+    .ring {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: 5px solid rgba(255,255,255,0.2);
+      border-top-color: var(--lime);
+      float: right;
+    }
+
+    /* —— Trusted —— */
+    .trusted {
+      background: var(--dark);
+      color: #fff;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .trusted .h2 { max-width: 14ch; }
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    .logo-cell {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.9rem 0.75rem;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.72);
+      letter-spacing: -0.01em;
+    }
+    .logo-cell i {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      margin-right: 0.35rem;
+      vertical-align: middle;
+      background: var(--purple);
+    }
+    .logo-cell:nth-child(2) i { background: var(--lime); }
+    .logo-cell:nth-child(3) i { background: #ff8a4c; }
+    .logo-cell:nth-child(4) i { background: #3ecf8e; }
+    .logo-cell:nth-child(5) i { background: #5b9dff; }
+    .logo-cell:nth-child(6) i { background: #ff5e9a; }
+
+    /* —— Footer —— */
+    .footer {
+      background: #fff;
+      padding: 1.5rem 2rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    /* —— Responsive —— */
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .nav.is-open .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        right: 1rem;
+        background: #fff;
+        padding: 1rem 1.2rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        gap: 0.85rem;
+      }
+      .menu-toggle { display: flex; }
+      .hero,
+      .about,
+      .essentials,
+      .platform,
+      .trusted {
+        grid-template-columns: 1fr;
+      }
+      .bento { grid-template-columns: 1fr 1fr; }
+      .price-grid { grid-template-columns: 1fr; max-width: 360px; margin-inline: auto; }
+      .price-card.featured { transform: none; }
+      .hero-photo { margin-inline: auto; }
+      .float-activity { right: 4%; }
+      .float-balance { left: 4%; }
+    }
+    @media (max-width: 640px) {
+      .bento { grid-template-columns: 1fr; }
+      .platform-stats { grid-template-columns: 1fr 1fr; }
+      .logo-grid { grid-template-columns: 1fr 1fr; }
+      .dash-metrics { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .float-card { animation: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <header class="nav" id="nav">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          Mintara
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#product" class="caret">Product</a>
+          <a href="#about" class="caret">Solutions</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#trusted" class="caret">Help</a>
+        </nav>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <a class="btn btn-primary" href="#cta">Get Started Now</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="hero-copy reveal">
+          <span class="chip">#Welcome to Mintara</span>
+          <h1 class="h1">Grow Online Business With Mintara Finance</h1>
+          <p class="lead">
+            Payments, balances, and growth insights in one calm workspace —
+            built for founders who want clarity without the bank friction.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#cta">Get Started Free</a>
+            <a class="btn btn-ghost" href="#about">Book a Demo</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="hero-photo">
+            <img src="hero.jpg" alt="Founder celebrating growth" width="760" height="760" />
+          </div>
+
+          <div class="float-card float-activity" aria-hidden="true">
+            <div class="top">
+              <span>Activity</span>
+              <span class="sel">This Week ▾</span>
+            </div>
+            <svg class="spark" viewBox="0 0 200 64" fill="none">
+              <defs>
+                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6d4aff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#6d4aff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 48 C20 46, 30 20, 50 28 C70 36, 80 12, 100 18 C120 24, 130 40, 150 22 C170 8, 180 16, 200 10 L200 64 L0 64 Z" fill="url(#sparkFill)"/>
+              <path d="M0 48 C20 46, 30 20, 50 28 C70 36, 80 12, 100 18 C120 24, 130 40, 150 22 C170 8, 180 16, 200 10" stroke="#6d4aff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="150" cy="22" r="4.5" fill="#6d4aff" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <div class="float-card float-balance" aria-hidden="true">
+            <div class="label">Net inflow</div>
+            <div class="amt">$25,215</div>
+            <div class="mini-bars">
+              <i style="height:40%"></i>
+              <i style="height:62%"></i>
+              <i style="height:48%"></i>
+              <i style="height:78%"></i>
+              <i style="height:55%"></i>
+              <i style="height:90%"></i>
+              <i style="height:70%"></i>
+            </div>
+          </div>
+
+          <div class="float-card float-avatar" aria-hidden="true">
+            <img src="team-card.jpg" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <!-- BENTO SOCIAL / FEATURES -->
+      <section class="bento" id="product">
+        <article class="bento-card reveal">
+          <div class="stars" aria-label="5 stars">★★★★★</div>
+          <div class="rating-num">4.8 <small>Market Rating</small></div>
+          <p>Teams switch to Mintara for cleaner cashflow views and faster payouts across channels.</p>
+          <div class="trust-row"><span class="star">★</span> Trustfield</div>
+          <a class="link-arrow" href="#trusted">See all reviews →</a>
+        </article>
+
+        <article class="bento-card photo reveal">
+          <img src="team-card.jpg" alt="Team collaborating on growth plans" />
+        </article>
+
+        <article class="bento-card experts reveal">
+          <h3>Finance partners who ship</h3>
+          <p style="color:var(--muted);font-size:0.88rem;margin:0.5rem 0 0">Experienced operators, not generic chatbots — real support when money moves.</p>
+          <span class="hash" aria-hidden="true">#</span>
+        </article>
+
+        <article class="bento-card reveal">
+          <ul class="feature-list">
+            <li><span class="dot o"></span> Mobile app access &amp; instant alerts</li>
+            <li><span class="dot p"></span> Payout rails built for online sellers</li>
+            <li><span class="dot g"></span> Strong security &amp; audit trails</li>
+          </ul>
+        </article>
+
+        <article class="bento-card network-card reveal" style="grid-column: span 2;">
+          <svg class="network-svg" viewBox="0 0 140 80" aria-hidden="true">
+            <circle cx="28" cy="40" r="10" fill="#ece6ff" stroke="#6d4aff" stroke-width="2"/>
+            <circle cx="70" cy="22" r="10" fill="#ece6ff" stroke="#6d4aff" stroke-width="2"/>
+            <circle cx="70" cy="58" r="10" fill="#ece6ff" stroke="#6d4aff" stroke-width="2"/>
+            <circle cx="112" cy="40" r="10" fill="#6d4aff"/>
+            <path d="M38 40H60M80 28l24 8M80 52l24-8M70 32v16" stroke="#c4b5ff" stroke-width="2"/>
+            <circle cx="112" cy="40" r="4" fill="#d8f56a"/>
+          </svg>
+          <p>Build wealth with 100,000+ operators worldwide</p>
+        </article>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="about" id="about">
+        <div class="reveal">
+          <span class="chip">#About Us</span>
+          <h2 class="h2" style="margin-top:0.85rem">Higher ranking cashflow with powerful insights</h2>
+          <p class="lead">
+            Mintara pairs banking rails with growth analytics — so your next campaign and your next payout live in the same view.
+          </p>
+          <div class="about-scores">
+            <div class="score">
+              <strong style="color:#4285f4">Mapscore</strong>
+              <span class="stars">★★★★★ 4.8</span>
+            </div>
+            <div class="score">
+              <strong style="color:#00b67a">Trustfield</strong>
+              <span class="stars">★★★★★ 4.8</span>
+            </div>
+            <p class="about-note">Rated by founders running multi-channel stores and subscription products.</p>
+          </div>
+        </div>
+        <div class="video-card reveal">
+          <img src="meeting.jpg" alt="Mintara team workshop" />
+          <button class="play" type="button" aria-label="Play product film">
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ESSENTIALS DARK -->
+      <section class="essentials" id="dashboard">
+        <div class="reveal">
+          <span class="chip dark">#Ready templates</span>
+          <h2 class="h2" style="margin-top:0.9rem">Essentials to power your money stack</h2>
+          <p class="lead">
+            Getting started is frictionless. Wire payouts, automate books, and watch health metrics stay honest — whether you sell once or a thousand times a day.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#cta">Get Started Now</a>
+            <a class="btn btn-outline-light" href="#pricing">Learn More</a>
+          </div>
+          <div class="check-list">
+            <span><i>✓</i> Flexible payouts</span>
+            <span><i>✓</i> Constant updates</span>
+            <span><i>✓</i> Audit-ready exports</span>
+          </div>
+        </div>
+
+        <div class="dash reveal" aria-hidden="true">
+          <span class="dash-tag">Live balance</span>
+          <div class="dash-head">
+            <strong>Overview</strong>
+            <span>Last 30 days</span>
+          </div>
+          <div class="dash-chart">
+            <svg viewBox="0 0 360 110" fill="none">
+              <defs>
+                <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6d4aff" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#6d4aff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 80 C40 75, 50 40, 90 48 C130 56, 140 20, 180 30 C220 40, 240 70, 280 45 C310 28, 330 35, 360 22 L360 110 L0 110 Z" fill="url(#area)"/>
+              <path d="M0 80 C40 75, 50 40, 90 48 C130 56, 140 20, 180 30 C220 40, 240 70, 280 45 C310 28, 330 35, 360 22" stroke="#9b84ff" stroke-width="2.5"/>
+              <circle cx="280" cy="45" r="5" fill="#d8f56a" stroke="#0c0c12" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="dash-metrics">
+            <div class="metric">
+              <div class="k">Volume</div>
+              <div class="v">$482k</div>
+              <div class="up">↑ 12.4%</div>
+            </div>
+            <div class="metric">
+              <div class="k">Payouts</div>
+              <div class="v">1,024</div>
+              <div class="up">↑ 8.1%</div>
+            </div>
+            <div class="metric">
+              <div class="k">Health</div>
+              <div class="v">98%</div>
+              <div class="up">Stable</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="pricing" id="pricing">
+        <div class="reveal">
+          <span class="chip">#Flexible Pricing</span>
+          <h2 class="h2">Flexible plans, unmatched value for your business</h2>
+          <div class="billing-toggle">
+            <span id="labelMonthly">Monthly billing</span>
+            <button class="toggle" id="billingToggle" type="button" aria-label="Toggle annual billing" aria-pressed="true">
+              <i></i>
+            </button>
+            <span id="labelAnnual" class="active">Annual billing</span>
+            <span class="save">25% OFF</span>
+          </div>
+        </div>
+
+        <div class="price-grid">
+          <article class="price-card reveal">
+            <div class="plan">Starter</div>
+            <div class="price" data-month="39" data-year="30">$<span class="num">30</span> <span>/Month</span></div>
+            <p class="desc">For individuals and small teams trying out an unlimited period.</p>
+            <ul>
+              <li>Sell on your terms</li>
+              <li>Robust integrations</li>
+              <li>Marketing tools</li>
+              <li>Live streaming support</li>
+            </ul>
+            <a class="btn btn-primary" href="#cta">Get Started Now</a>
+          </article>
+
+          <article class="price-card featured reveal">
+            <div class="plan">Growth</div>
+            <div class="price" data-month="99" data-year="80">$<span class="num">80</span> <span>/Month</span></div>
+            <p class="desc">For operators scaling multi-channel revenue with smarter controls.</p>
+            <ul>
+              <li>Sell on your terms</li>
+              <li>Automations</li>
+              <li>Priority rails</li>
+              <li>Live streaming support</li>
+            </ul>
+            <a class="btn btn-primary" href="#cta">Get Started Now</a>
+          </article>
+
+          <article class="price-card reveal">
+            <div class="plan">Scale</div>
+            <div class="price" data-month="149" data-year="120">$<span class="num">120</span> <span>/Month</span></div>
+            <p class="desc">For teams needing advanced ledgers, roles, and settlement windows.</p>
+            <ul>
+              <li>Sell on your terms</li>
+              <li>Automations</li>
+              <li>Marketing tools</li>
+              <li>Live streaming support</li>
+            </ul>
+            <a class="btn btn-primary" href="#cta">Get Started Now</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- PLATFORM CTA -->
+      <section class="platform" id="cta">
+        <div class="reveal">
+          <span class="chip dark">#Customer Testimonials</span>
+          <h2 class="h2" style="margin-top:0.75rem">A single, powerful, easy-to-use platform</h2>
+          <p class="lead">
+            Dive into data-driven finance. Start today and watch your online business thrive with Mintara.
+          </p>
+          <a class="btn btn-white" href="mailto:hello@mintara.example">Get Started Now →</a>
+        </div>
+        <div class="platform-stats reveal" aria-hidden="true">
+          <div class="stat-card">
+            <div class="n">1,024</div>
+            <div class="l">Daily settlements</div>
+          </div>
+          <div class="stat-card">
+            <div class="n">256k</div>
+            <div class="l">Active wallets</div>
+          </div>
+          <div class="stat-card wide">
+            <div class="ring" aria-hidden="true"></div>
+            <div class="n">98%</div>
+            <div class="l">Uptime this quarter</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRUSTED -->
+      <section class="trusted" id="trusted">
+        <div class="reveal">
+          <span class="chip dark">#Customer Testimonials</span>
+          <h2 class="h2" style="margin-top:0.85rem">We are trusted across industries</h2>
+        </div>
+        <div class="logo-grid reveal" aria-label="Fictional partner logos">
+          <div class="logo-cell"><i></i>Northfold</div>
+          <div class="logo-cell"><i></i>Quarry</div>
+          <div class="logo-cell"><i></i>Helio</div>
+          <div class="logo-cell"><i></i>Basalt</div>
+          <div class="logo-cell"><i></i>Orbit&amp;Co</div>
+          <div class="logo-cell"><i></i>Fieldline</div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Mintara · Sample template</span>
+        <span>hello@mintara.example</span>
+        <span>© 2026 Fictional fintech brand</span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const nav = document.getElementById("nav");
+      document.getElementById("menuToggle").addEventListener("click", () => {
+        nav.classList.toggle("is-open");
+      });
+      nav.querySelectorAll(".nav-links a").forEach((a) => {
+        a.addEventListener("click", () => nav.classList.remove("is-open"));
+      });
+
+      /* Billing toggle */
+      const toggle = document.getElementById("billingToggle");
+      const labelM = document.getElementById("labelMonthly");
+      const labelA = document.getElementById("labelAnnual");
+      let annual = true;
+      function applyBilling() {
+        document.querySelectorAll(".price-card .price").forEach((el) => {
+          const val = annual ? el.dataset.year : el.dataset.month;
+          el.querySelector(".num").textContent = val;
+        });
+        toggle.classList.toggle("is-monthly", !annual);
+        toggle.setAttribute("aria-pressed", annual ? "true" : "false");
+        labelM.classList.toggle("active", !annual);
+        labelA.classList.toggle("active", annual);
+      }
+      toggle.addEventListener("click", () => {
+        annual = !annual;
+        applyBilling();
+      });
+      applyBilling();
+
+      /* Reveals */
+      if (reduce || typeof gsap === "undefined") {
+        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.utils.toArray(".reveal").forEach((el, i) => {
+        gsap.to(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 88%",
+            once: true,
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          delay: Math.min(i % 4, 3) * 0.05,
+          ease: "power3.out",
+          onStart() {
+            el.classList.add("is-in");
+          },
+        });
+      });
+
+      /* Hero floats subtle entrance */
+      gsap.from(".float-card", {
+        y: 24,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.12,
+        delay: 0.25,
+        ease: "power3.out",
+      });
+
+      /* Price cards */
+      gsap.from(".price-card", {
+        scrollTrigger: { trigger: ".price-grid", start: "top 80%" },
+        y: 36,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
+    })();
+  </script>
+</body>
+</html>

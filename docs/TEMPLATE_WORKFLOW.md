@@ -8,7 +8,10 @@ For agents, the canonical procedures are:
 |------|------|
 | [`AGENTS.md`](../AGENTS.md) | Always-on project rules |
 | [`OPERATIONS.md`](OPERATIONS.md) | Hosting, Pages, privacy, GA, deploy |
+| [`SKILLS.md`](SKILLS.md) | Skills map + filename naming scheme |
+| [`method-design-md-for-ai.md`](method-design-md-for-ai.md) | Write DESIGN.md agents can execute |
 | [`.grok/skills/ship-template/SKILL.md`](../.grok/skills/ship-template/SKILL.md) | Step-by-step ship procedure (also `/ship-template`) |
+| [`.grok/skills/design-system-first/SKILL.md`](../.grok/skills/design-system-first/SKILL.md) | Tokens + DESIGN.md before HTML (`/design-system-first`) |
 
 ## Quick start (human or agent)
 
@@ -22,12 +25,14 @@ For agents, the canonical procedures are:
 Reference (X / video / site)
     → research + frames
     → fictional rebrand + free stack
+    → design-system-first (DESIGN.md + tokens) when cold
     → AI assets + HTML/CSS page
     → data/catalog.json (type: website)
     → brand audit + HTTP 200
     → done
 ```
 
+Cold start / weak UI: write an executable **DESIGN.md** first — see [method-design-md-for-ai.md](method-design-md-for-ai.md) (not adjectives alone).
 ### Hard rules
 
 1. **Fictional brands only** — no real logos, client identities, or original product names.
