@@ -19,6 +19,12 @@
 
   const TYPE_ORDER = ["all", "website", "brand", "logo", "system"];
 
+  const DEVICES = {
+    mobile: { label: "Mobile", width: 390, hint: "≈ iPhone" },
+    tablet: { label: "Tablet", width: 768, hint: "≈ iPad portrait" },
+    desktop: { label: "Desktop", width: 1280, hint: "wide layout" },
+  };
+
   const state = {
     catalog: null,
     type: "all",
@@ -27,6 +33,10 @@
     query: "",
     sort: "featured",
     tagsExpanded: false,
+    device: "desktop",
+    previewPath: "",
+    previewName: "",
+    modalItemId: "",
   };
 
   const els = {
@@ -57,6 +67,13 @@
     modalRelated: document.getElementById("modal-related"),
     modalPreviewBtn: document.getElementById("modal-preview-btn"),
     modalSourceBtn: document.getElementById("modal-source-btn"),
+    devicePreview: document.getElementById("device-preview"),
+    deviceTitle: document.getElementById("device-preview-title"),
+    deviceSize: document.getElementById("device-preview-size"),
+    deviceFrame: document.getElementById("device-frame"),
+    deviceIframe: document.getElementById("device-iframe"),
+    deviceOpenTab: document.getElementById("device-open-tab"),
+    deviceClose: document.getElementById("device-preview-close"),
   };
 
   /* ---------- Theme ---------- */
@@ -421,14 +438,16 @@
           <div class="card-footer">
             <span class="result-count">${escapeHtml(t.date || "")}</span>
             <div class="card-actions">
-              <a
-                class="btn btn-sm btn-ghost"
-                href="${escapeAttr(t.path)}"
-                target="_blank"
-                rel="noopener"
+              <button
+                type="button"
+                class="btn btn-sm btn-primary"
                 data-stop
-              >Preview</a>
-              <button type="button" class="btn btn-sm btn-primary" data-details data-id="${escapeAttr(t.id)}">
+                data-device-preview
+                data-device="desktop"
+                data-id="${escapeAttr(t.id)}"
+                title="Live preview · mobile / tablet / desktop"
+              >Live preview</button>
+              <button type="button" class="btn btn-sm btn-ghost" data-details data-id="${escapeAttr(t.id)}">
                 Details
               </button>
             </div>
@@ -471,12 +490,24 @@
 
     els.modalPreview.className = `modal-preview modal-preview-${type}`;
     els.modalPreview.innerHTML = `
-      <img src="${escapeAttr(t.thumbnail)}" alt="" width="640" height="360"
-        onerror="this.style.display='none'" />
+      <button type="button" class="modal-preview-hit" data-open-device="desktop" data-id="${escapeAttr(t.id)}" title="Open live preview">
+        <img src="${escapeAttr(t.thumbnail)}" alt="" width="640" height="360"
+          onerror="this.style.display='none'" />
+        <span class="modal-preview-cta">Open live preview</span>
+      </button>
       ${strip}`;
 
-    els.modalPreviewBtn.href = t.path;
-    els.modalSourceBtn.href = t.path;
+    state.modalItemId = t.id;
+    if (els.modalPreviewBtn) {
+      els.modalPreviewBtn.dataset.id = t.id;
+    }
+    if (els.modalSourceBtn) {
+      els.modalSourceBtn.href = t.path;
+    }
+    // Mark modal device buttons with current item
+    els.modal?.querySelectorAll("[data-open-device]").forEach((btn) => {
+      btn.dataset.id = t.id;
+    });
 
     // Related items via projectId or related[]
     if (els.modalRelated) {
@@ -523,6 +554,92 @@
   function closeModal() {
     els.modal.hidden = true;
     document.body.classList.remove("modal-open");
+  }
+
+  /* ---------- Device preview ---------- */
+
+  function resolvePreviewUrl(path) {
+    if (!path) return "";
+    try {
+      return new URL(path, window.location.href).href;
+    } catch {
+      return path;
+    }
+  }
+
+  function openDevicePreview(id, device) {
+    const t = getItems().find((x) => x.id === id);
+    if (!t) {
+      console.warn("[mydesignlib] preview item not found:", id);
+      return;
+    }
+    if (!els.devicePreview || !els.deviceIframe) {
+      console.warn("[mydesignlib] device preview elements missing");
+      return;
+    }
+
+    const url = resolvePreviewUrl(t.path);
+    if (!url) {
+      console.warn("[mydesignlib] invalid path for", id, t.path);
+      return;
+    }
+
+    state.previewPath = t.path;
+    state.previewName = t.name;
+    state.device = device && DEVICES[device] ? device : "desktop";
+
+    if (els.deviceTitle) els.deviceTitle.textContent = t.name;
+    if (els.deviceOpenTab) els.deviceOpenTab.href = t.path;
+
+    const frameUrl = document.getElementById("device-frame-url");
+    if (frameUrl) frameUrl.textContent = t.path;
+
+    // Always set src so reopening works after about:blank
+    els.deviceIframe.src = url;
+
+    applyDevice(state.device);
+
+    els.devicePreview.hidden = false;
+    els.devicePreview.classList.add("is-open");
+    els.devicePreview.setAttribute("aria-hidden", "false");
+    document.body.classList.add("device-preview-open");
+    // Prefer focusing the active device control so the switcher is obvious
+    els.devicePreview
+      .querySelector(`.device-btn[data-device="${state.device}"]`)
+      ?.focus();
+  }
+
+  function closeDevicePreview() {
+    if (!els.devicePreview) return;
+    els.devicePreview.hidden = true;
+    els.devicePreview.classList.remove("is-open");
+    els.devicePreview.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("device-preview-open");
+    if (els.deviceIframe) {
+      els.deviceIframe.src = "about:blank";
+    }
+    state.previewPath = "";
+  }
+
+  function applyDevice(device) {
+    if (!DEVICES[device]) device = "desktop";
+    state.device = device;
+    const conf = DEVICES[device];
+
+    if (els.deviceFrame) {
+      els.deviceFrame.dataset.device = device;
+    }
+
+    const switcher = document.getElementById("device-switch");
+    switcher?.querySelectorAll(".device-btn[data-device]").forEach((btn) => {
+      const on = btn.dataset.device === device;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.classList.toggle("is-active", on);
+    });
+
+    if (els.deviceSize) {
+      els.deviceSize.textContent = `${conf.label} · ${conf.width}px wide · ${conf.hint}`;
+    }
   }
 
   /* ---------- Events ---------- */
@@ -599,6 +716,16 @@
     });
 
     els.grid.addEventListener("click", (e) => {
+      const devicePreviewBtn = e.target.closest("[data-device-preview]");
+      if (devicePreviewBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDevicePreview(
+          devicePreviewBtn.dataset.id,
+          devicePreviewBtn.dataset.device || "desktop"
+        );
+        return;
+      }
       if (e.target.closest("[data-stop]")) return;
       const details = e.target.closest("[data-details]");
       if (details) {
@@ -625,11 +752,35 @@
       const related = e.target.closest("[data-related-id]");
       if (related) {
         openModal(related.dataset.relatedId);
+        return;
+      }
+      const openDevice = e.target.closest("[data-open-device]");
+      if (openDevice) {
+        e.preventDefault();
+        const id = openDevice.dataset.id || state.modalItemId;
+        const device = openDevice.dataset.openDevice || "desktop";
+        if (id) openDevicePreview(id, device);
+      }
+    });
+
+    els.devicePreview?.addEventListener("click", (e) => {
+      if (e.target.closest("[data-close-device]")) {
+        closeDevicePreview();
+        return;
+      }
+      const deviceBtn = e.target.closest("#device-switch .device-btn[data-device]");
+      if (deviceBtn) {
+        applyDevice(deviceBtn.dataset.device);
       }
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !els.modal.hidden) closeModal();
+      if (e.key !== "Escape") return;
+      if (els.devicePreview && !els.devicePreview.hidden) {
+        closeDevicePreview();
+        return;
+      }
+      if (!els.modal.hidden) closeModal();
     });
   }
 

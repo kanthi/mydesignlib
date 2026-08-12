@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Z97ZD3EVSF');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Critelo — Brand direction</title>
+  <meta name="description" content="Fictional AI design-critique brand system. Blue-coral contour fields, geometric mark, palette, cards, process strip." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --coral-50: #fff1ec; --coral-100: #ffd8cc; --coral-200: #ffb8a0; --coral-300: #ff9b7a;
+      --coral-400: #ff7a59; --coral-500: #f05a3a; --coral-700: #b33a22; --coral-900: #3d1a12;
+      --blue-50: #eaf2ff; --blue-100: #cfe0ff; --blue-200: #9fc2ff; --blue-300: #6fa4ff;
+      --blue-400: #3d8bff; --blue-500: #2563eb; --blue-700: #1e40af; --blue-900: #0b1f4a;
+      --paper: #ffffff; --paper-soft: #f7f8fa; --ink: #0f1419; --muted: #6b7280;
+      --slate-200: #e5e7eb; --slate-400: #9ca3af; --slate-600: #4b5563; --slate-800: #1f2937;
+      --font: "Plus Jakarta Sans", system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1); --dur: 220ms;
+      --wrap: min(1100px, 100% - 2rem); --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); color: var(--ink); background: #e8eaef;
+      -webkit-font-smoothing: antialiased; line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--blue-400); outline-offset: 3px; }
+
+    .page { width: var(--wrap); margin: 1.5rem auto 3rem; }
+    .site-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; gap: 1rem;
+    }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em;
+    }
+    .nav-brand .mark { width: 26px; height: 26px; color: var(--blue-400); }
+    .nav-meta { font-size: 0.82rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
+
+    /* Board grid — 2×3 like reference */
+    .board {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      grid-template-rows: auto auto auto;
+      gap: 0.85rem;
+    }
+    .panel {
+      background: var(--paper);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(15, 20, 25, 0.04), 0 12px 32px rgba(15, 20, 25, 0.06);
+    }
+
+    /* Cell 1 — hero lockup on texture */
+    .hero-field {
+      position: relative; min-height: 280px;
+      display: grid; place-items: center;
+      background: var(--blue-400) center/cover no-repeat;
+    }
+    .hero-field::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 55% 45%, rgba(255, 122, 89, 0.55), transparent 55%),
+        radial-gradient(ellipse at 30% 70%, rgba(61, 139, 255, 0.3), transparent 50%);
+      mix-blend-mode: soft-light; pointer-events: none;
+    }
+    .hero-field .texture {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.92;
+    }
+    .hero-lockup {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 0.65rem;
+      color: #fff; font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 20px rgba(11, 31, 74, 0.25);
+    }
+    .hero-lockup .mark { width: 40px; height: 40px; color: #fff; }
+
+    /* Cell 2 — dual social cards */
+    .social-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+      padding: 1.15rem; min-height: 280px; align-content: center;
+    }
+    .social-card {
+      border-radius: 12px; padding: 1.1rem 1rem 1rem;
+      min-height: 220px; display: flex; flex-direction: column;
+      position: relative; overflow: hidden; color: #fff;
+    }
+    .social-card .bg {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .social-card .veil {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(37, 99, 235, 0.82), rgba(255, 122, 89, 0.55));
+    }
+    .social-card .inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+    .social-card h3 {
+      font-size: 1.05rem; font-weight: 800; letter-spacing: -0.025em;
+      line-height: 1.2; margin-bottom: 0.5rem; text-wrap: balance;
+    }
+    .social-card p {
+      font-size: 0.72rem; line-height: 1.45; opacity: 0.9; color: rgba(255,255,255,0.92);
+    }
+    .social-card .mark-lg {
+      width: 48px; height: 48px; margin: 0.75rem auto;
+      color: rgba(255,255,255,0.95);
+    }
+    .social-card .foot {
+      margin-top: auto; display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .social-card .foot .mark { width: 16px; height: 16px; }
+
+    /* Cell 3 — color system */
+    .colors { padding: 1.15rem 1.15rem 1.25rem; }
+    .colors h2, .cards-block h2, .process-block h2, .simple-logo h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem;
+    }
+    .ramps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55rem; }
+    .ramp { display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; min-height: 200px; }
+    .sw { flex: 1; min-height: 22px; }
+    .ramp-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); text-align: center;
+      padding: 0.45rem 0 0; background: transparent;
+    }
+
+    /* Cell 4 — business cards */
+    .cards-block { padding: 1.15rem; display: flex; flex-direction: column; }
+    .bc-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; flex: 1;
+      align-content: center;
+    }
+    .bc {
+      border-radius: 10px; min-height: 120px; padding: 0.85rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .bc-blue { background: var(--blue-400); color: #fff; }
+    .bc-dark { background: var(--slate-800); color: #fff; }
+    .bc .watermark {
+      position: absolute; right: -0.2rem; bottom: -0.4rem;
+      font-size: 2.4rem; font-weight: 800; opacity: 0.08; letter-spacing: -0.04em;
+      pointer-events: none;
+    }
+    .bc-top { display: flex; align-items: center; gap: 0.4rem; font-weight: 800; font-size: 0.85rem; }
+    .bc-top .mark { width: 18px; height: 18px; }
+    .bc-frame {
+      width: 52px; height: 52px; border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px; display: grid; place-items: center; margin: 0.35rem auto;
+    }
+    .bc-frame .mark { width: 28px; height: 28px; opacity: 0.9; }
+    .bc-meta { font-size: 0.65rem; line-height: 1.4; opacity: 0.85; }
+    .bc-meta strong { display: block; font-size: 0.72rem; opacity: 1; margin-bottom: 0.15rem; }
+
+    /* Cell 5 — process web card */
+    .process-block { padding: 0; min-height: 220px; }
+    .process-card {
+      position: relative; min-height: 240px; padding: 1.5rem 1.35rem 1.25rem;
+      color: #fff; display: flex; flex-direction: column;
+    }
+    .process-card .texture {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .process-card .veil {
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, rgba(37, 99, 235, 0.88), rgba(255, 122, 89, 0.55));
+    }
+    .process-card .inner { position: relative; z-index: 1; }
+    .process-card h3 {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem); font-weight: 800;
+      letter-spacing: -0.03em; max-width: 18ch; margin-bottom: 0.5rem; text-wrap: balance;
+    }
+    .process-card .desc {
+      font-size: 0.8rem; max-width: 42ch; opacity: 0.92; margin-bottom: 1.25rem; line-height: 1.5;
+    }
+    .steps {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.15rem;
+      margin-bottom: 1.25rem;
+    }
+    .step {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      background: rgba(255,255,255,0.95); color: var(--ink);
+      font-size: 0.72rem; font-weight: 700;
+    }
+    .step-line {
+      width: 18px; height: 2px; background: rgba(255,255,255,0.45); border-radius: 2px;
+    }
+    .process-foot {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      align-items: flex-end; margin-top: auto;
+    }
+    .process-foot p { font-size: 0.75rem; max-width: 36ch; opacity: 0.9; }
+    .process-foot .lock {
+      display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 800; font-size: 0.9rem;
+    }
+    .process-foot .mark { width: 18px; height: 18px; }
+
+    /* Cell 6 — simple logo */
+    .simple-logo {
+      min-height: 220px; display: grid; place-items: center; padding: 1.5rem;
+    }
+    .simple-logo .lock {
+      display: flex; align-items: center; gap: 0.55rem;
+      color: var(--blue-400); font-weight: 800; font-size: 1.65rem; letter-spacing: -0.03em;
+    }
+    .simple-logo .mark { width: 36px; height: 36px; }
+
+    /* Expanded system below board */
+    .system { margin-top: 1.75rem; display: grid; gap: 0.85rem; }
+    .system .panel { padding: 1.35rem 1.4rem 1.5rem; }
+    .label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .title {
+      font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.45rem;
+    }
+    .sub { color: var(--muted); max-width: 48ch; margin-bottom: 1.15rem; font-size: 0.95rem; }
+    .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .type-card {
+      border: 1px solid var(--slate-200); border-radius: 12px; padding: 1.15rem;
+      background: var(--paper-soft);
+    }
+    .type-card h3 { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem; }
+    .type-card .spec { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .type-card p { font-size: 0.88rem; color: var(--muted); }
+    .voice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .voice article {
+      border-radius: 12px; padding: 1.1rem; background: linear-gradient(145deg, var(--blue-400), #5b9fff);
+      color: #fff;
+    }
+    .voice h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.35rem; }
+    .voice p { font-size: 0.85rem; opacity: 0.92; }
+    .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .rule {
+      border: 1px solid var(--slate-200); border-radius: 12px; padding: 1.15rem; background: #fff;
+    }
+    .rule h3 { font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .rule ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: 0.9rem; }
+    .rule li { margin-bottom: 0.3rem; }
+
+    footer {
+      margin-top: 1.5rem; padding-top: 1.15rem; border-top: 1px solid #d5d8de;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-brand { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 800; color: var(--ink); }
+    .footer-brand .mark { width: 18px; height: 18px; color: var(--blue-400); }
+
+    @media (max-width: 900px) {
+      .board { grid-template-columns: 1fr; }
+      .social-pair { grid-template-columns: 1fr; }
+      .ramps { grid-template-columns: 1fr 1fr; }
+      .bc-grid, .type-row, .voice, .rules { grid-template-columns: 1fr; }
+      .hero-field { min-height: 220px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <!-- Original Critelo mark: rounded frame + critique chevron -->
+      <symbol id="critelo-mark" viewBox="0 0 48 48">
+        <rect x="6" y="6" width="36" height="36" rx="8" fill="none" stroke="currentColor" stroke-width="3.2"/>
+        <path fill="currentColor" d="M16 28.5 24 15l8 13.5h-5.2L24 22.2 21.2 28.5H16z"/>
+        <path fill="currentColor" d="M18 31h12v3.2H18z" opacity="0.9"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="page">
+    <header class="site-header">
+      <a class="nav-brand" href="#top" id="top">
+        <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+        Critelo
+      </a>
+      <span class="nav-meta">BRAND DIRECTION · 2026</span>
+    </header>
+
+    <div class="board" aria-label="Critelo brand direction board">
+      <!-- 1 Hero -->
+      <div class="panel hero-field">
+        <img class="texture" src="texture.jpg" alt="" />
+        <div class="hero-lockup">
+          <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+          Critelo
+        </div>
+      </div>
+
+      <!-- 2 Social -->
+      <div class="panel social-pair">
+        <article class="social-card">
+          <img class="bg" src="texture.jpg" alt="" />
+          <div class="veil"></div>
+          <div class="inner">
+            <h3>AI made everyone faster.</h3>
+            <p>Generation is cheap. Judgment is rare. Critelo reviews composition, hierarchy, type, and brand fit — not vibes.</p>
+            <svg class="mark-lg" aria-hidden="true"><use href="#critelo-mark"/></svg>
+            <div class="foot">
+              <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+              Critelo makes everyone better.
+            </div>
+          </div>
+        </article>
+        <article class="social-card">
+          <img class="bg" src="banner.jpg" alt="" />
+          <div class="veil" style="background:linear-gradient(160deg,rgba(255,122,89,.75),rgba(37,99,235,.7))"></div>
+          <div class="inner">
+            <h3>Your client says, “Make it pop.”</h3>
+            <p>Critelo says why it doesn’t — with structured notes on contrast, spacing, and intent.</p>
+            <div class="foot" style="margin-top:auto">
+              <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+              Critelo
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- 3 Colors -->
+      <div class="panel colors">
+        <h2>Color system</h2>
+        <div class="ramps">
+          <div>
+            <div class="ramp" aria-label="Coral ramp">
+              <div class="sw" style="background:#fff1ec"></div>
+              <div class="sw" style="background:#ffd8cc"></div>
+              <div class="sw" style="background:#ffb8a0"></div>
+              <div class="sw" style="background:#ff9b7a"></div>
+              <div class="sw" style="background:#ff7a59"></div>
+              <div class="sw" style="background:#f05a3a"></div>
+              <div class="sw" style="background:#b33a22"></div>
+              <div class="sw" style="background:#3d1a12"></div>
+            </div>
+            <p class="ramp-label">Coral</p>
+          </div>
+          <div>
+            <div class="ramp" aria-label="Paper ramp">
+              <div class="sw" style="background:#ffffff"></div>
+              <div class="sw" style="background:#f7f8fa"></div>
+              <div class="sw" style="background:#eef0f3"></div>
+              <div class="sw" style="background:#e5e7eb"></div>
+              <div class="sw" style="background:#d1d5db"></div>
+              <div class="sw" style="background:#9ca3af"></div>
+              <div class="sw" style="background:#6b7280"></div>
+              <div class="sw" style="background:#374151"></div>
+            </div>
+            <p class="ramp-label">Paper</p>
+          </div>
+          <div>
+            <div class="ramp" aria-label="Blue ramp">
+              <div class="sw" style="background:#eaf2ff"></div>
+              <div class="sw" style="background:#cfe0ff"></div>
+              <div class="sw" style="background:#9fc2ff"></div>
+              <div class="sw" style="background:#6fa4ff"></div>
+              <div class="sw" style="background:#3d8bff"></div>
+              <div class="sw" style="background:#2563eb"></div>
+              <div class="sw" style="background:#1e40af"></div>
+              <div class="sw" style="background:#0b1f4a"></div>
+            </div>
+            <p class="ramp-label">Signal</p>
+          </div>
+          <div>
+            <div class="ramp" aria-label="Ink ramp">
+              <div class="sw" style="background:#f3f4f6"></div>
+              <div class="sw" style="background:#d1d5db"></div>
+              <div class="sw" style="background:#9ca3af"></div>
+              <div class="sw" style="background:#6b7280"></div>
+              <div class="sw" style="background:#4b5563"></div>
+              <div class="sw" style="background:#1f2937"></div>
+              <div class="sw" style="background:#111827"></div>
+              <div class="sw" style="background:#0f1419"></div>
+            </div>
+            <p class="ramp-label">Ink</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Business cards -->
+      <div class="panel cards-block">
+        <h2>Stationery</h2>
+        <div class="bc-grid">
+          <div class="bc bc-blue">
+            <div class="bc-top"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg> Critelo</div>
+            <p class="bc-meta"><strong>Amara Sol</strong>Founder &amp; Design Director<br/>+1 (415) 555-0142<br/>amara@critelo.example</p>
+            <span class="watermark">Critelo</span>
+          </div>
+          <div class="bc bc-dark">
+            <div class="bc-top" style="justify-content:space-between;width:100%">
+              <span style="font-size:0.68rem;opacity:0.7">critelo.example</span>
+            </div>
+            <div class="bc-frame"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg></div>
+            <div class="bc-top" style="justify-content:flex-end"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg> Critelo</div>
+            <span class="watermark">Critelo</span>
+          </div>
+          <div class="bc bc-dark">
+            <p class="bc-meta"><strong>Jules Merin</strong>Creative &amp; Critique Lead<br/>jules@critelo.example</p>
+            <div class="bc-top"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg> Critelo</div>
+            <span class="watermark">Critelo</span>
+          </div>
+          <div class="bc bc-blue">
+            <div class="bc-frame" style="margin:auto"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg></div>
+            <div class="bc-top" style="justify-content:flex-end"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg> Critelo</div>
+            <span class="watermark">Critelo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 Process -->
+      <div class="panel process-block">
+        <div class="process-card">
+          <img class="texture" src="banner.jpg" alt="" />
+          <div class="veil"></div>
+          <div class="inner" style="display:flex;flex-direction:column;min-height:220px">
+            <h3>First personalised AI critic for designers</h3>
+            <p class="desc">
+              Built exclusively for creatives. Critelo reviews logos, sites, identity systems, and posters
+              with structured feedback grounded in design principles — tailored to your goals.
+            </p>
+            <div class="steps" aria-label="Product process">
+              <span class="step">Upload</span><span class="step-line" aria-hidden="true"></span>
+              <span class="step">Analyze</span><span class="step-line" aria-hidden="true"></span>
+              <span class="step">Improve</span><span class="step-line" aria-hidden="true"></span>
+              <span class="step">Repeat</span>
+            </div>
+            <div class="process-foot">
+              <p>Go beyond “looks good.” Get notes on hierarchy, contrast, consistency, accessibility, and brand impact.</p>
+              <div class="lock"><svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg> Critelo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 Simple logo -->
+      <div class="panel simple-logo">
+        <div class="lock">
+          <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+          Critelo
+        </div>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="panel">
+        <p class="label">Positioning</p>
+        <h2 class="title">Critique, not compliments</h2>
+        <p class="sub">
+          Critelo is a fictional AI for designers who want structured feedback — not generic praise.
+          Upload a logo, website, brand system, or poster; get principles-backed notes that make the work better.
+        </p>
+        <div class="voice">
+          <article>
+            <h3>Honest</h3>
+            <p>Name the problem. Point to the principle. Suggest a next move.</p>
+          </article>
+          <article>
+            <h3>Specific</h3>
+            <p>Hierarchy, type, color, spacing, brand fit — never “make it pop.”</p>
+          </article>
+          <article>
+            <h3>Warm signal</h3>
+            <p>Blue for clarity, coral for energy — serious without being cold.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="label">Typography</p>
+        <h2 class="title">One family, clear roles</h2>
+        <div class="type-row">
+          <div class="type-card">
+            <h3>Display / wordmark</h3>
+            <p class="spec">Critelo</p>
+            <p>Plus Jakarta Sans 800 · tracking −0.03em · logo &amp; headlines</p>
+          </div>
+          <div class="type-card">
+            <h3>Body</h3>
+            <p class="spec" style="font-size:1.1rem;font-weight:500;letter-spacing:0">Judgment is the craft.</p>
+            <p>Plus Jakarta Sans 400–600 · UI, cards, long copy</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="label">Usage</p>
+        <h2 class="title">Do and don’t</h2>
+        <div class="rules">
+          <div class="rule">
+            <h3>Do</h3>
+            <ul>
+              <li>Use white mark on blue/coral contour fields</li>
+              <li>Use blue mark on paper backgrounds</li>
+              <li>Keep clear space ≥ half the mark height</li>
+              <li>Run process as Upload → Analyze → Improve → Repeat</li>
+            </ul>
+          </div>
+          <div class="rule">
+            <h3>Don’t</h3>
+            <ul>
+              <li>Recolor the mark in gradients or multicolor</li>
+              <li>Use Inter or purple mesh as the brand default</li>
+              <li>Ship vague feedback language (“looks premium”)</li>
+              <li>Copy real product names or client logos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-brand">
+        <svg class="mark" aria-hidden="true"><use href="#critelo-mark"/></svg>
+        Critelo
+      </div>
+      <p>Fictional brand system · Sample template · brand@critelo.example</p>
+    </footer>
+  </div>
+</body>
+</html>

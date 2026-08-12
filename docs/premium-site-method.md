@@ -3,9 +3,9 @@
 Primary source: [Romario (@bateshkaaa) — X post 2079218516150862086](https://x.com/bateshkaaa/status/2079218516150862086)  
 Captured for this repo: 2026-08-05  
 
-**Skills:** `.grok/skills/premium-site/` · `anti-slop-frontend/` · `design-system-first/`  
+**Skills:** `.grok/skills/premium-site/` · `anti-slop-frontend/` · `design-system-first/` · `interface-craft/`  
 **Full X corpus:** [`docs/ai-website-methods-corpus.md`](./ai-website-methods-corpus.md)  
-Companion research: Anthropic [`frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design), community [`ui-ux-pro-max`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+Companion research: Anthropic [`frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design) (distilled in-repo), craft audit [`make-interfaces-feel-better`](https://github.com/jakubkrehel/make-interfaces-feel-better) → `/interface-craft`. Do not default to ui-ux-pro-max industry packs (template risk).
 
 ## Thesis
 
@@ -88,7 +88,7 @@ Then **mobile check**:
 
 Original: `git` → GitHub → Cloudflare Pages (`npm run build`, `dist`), custom domain.
 
-**This repo:** register in `data/catalog.json`, brand-audit, `python3 -m http.server 8080`, HTTP 200 on page + assets. Catalog is the “ship.”
+**This repo:** register in `data/catalog.json`, brand-audit, HTTP 200 via **Caddy** local portal (`~/.config/mydesignlib-portal/serve.sh --url` — do not start `python3 -m http.server`). Catalog is the “ship.”
 
 ## Realistic progression (from post)
 
@@ -211,12 +211,17 @@ See **`docs/ai-website-methods-corpus.md`** for the full index. Highlights folde
 | @AIandTechh87 | Goal-first brief (what site **does**) then refs and plan | `premium-site` Part 3 |
 | @bateshkaaa (Yashica) | Skills + inspiration + micro-interactions + hierarchy | `premium-site` + `anti-slop-frontend` |
 | @the_cyw | scroll-world skill for heavy motion landings | optional inspiration only |
+| Anthropic frontend-design | Plan + uniqueness + subject thesis + copy craft | `design-system-first` · `anti-slop-frontend` |
+| UX Planet DESIGN.md tips | Exact values, token refs, states, lint/diff | `design-system-first` |
+| make-interfaces-feel-better | Micro craft audit | `interface-craft` |
+| Elaya landing-page-design | Conversion intake / page spine (strategy only) | `ship-template` §0 |
 
 ### Recommended agent order
 
 ```
 design-system-first → anti-slop-frontend → ship-template | premium-site build
   → premium-site polish (type → space → motion → mobile → trust)
+  → interface-craft (quick or full)
   → brand audit + HTTP verify
 ```
 

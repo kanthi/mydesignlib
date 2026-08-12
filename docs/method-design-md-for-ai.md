@@ -5,8 +5,11 @@
 **Agent skill:** [`/design-system-first`](../.grok/skills/design-system-first/SKILL.md)  
 **Full source notes:** [`.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`](../.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md)
 
-**Source article (captured 2026-08-08):**  
-https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd
+**Source articles:**  
+- Mistakes (captured 2026-08-08): https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd  
+- Tips (captured 2026-08-12): https://freedium-mirror.cfd/uxplanet.org/7-design-md-tips-for-better-more-consistent-ai-generated-ui-b01736d07748  
+
+Skill refs: `method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md`
 
 ---
 
@@ -15,6 +18,8 @@ https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-gener
 Writing a `DESIGN.md` and pointing an agent at it often yields only a small improvement: correct brand colour, still generic layout. The file is usually a **mood board** or a **raw token dump**, not something an agent can execute.
 
 **Rule:** DESIGN.md must encode *decisions an agent would otherwise guess wrong* — then it must be **read before UI work** (filename alone does not load context).
+
+Pair: **mistakes** = quality audit · **tips** = how to construct (exact values, token refs, states, lint/diff).
 
 ---
 
@@ -31,6 +36,22 @@ Writing a `DESIGN.md` and pointing an agent at it often yields only a small impr
 | 7 | File never loaded into the agent | Explicitly **read** `library/.../DESIGN.md` before HTML/CSS |
 
 **Overview quality test:** *Could two designers interpret this rule completely differently?* If yes → add concrete decisions.
+
+---
+
+## 7 tips (construction)
+
+| # | Tip | Practice |
+|---|-----|----------|
+| 1 | Exact values for scales | Spacing, radii, type roles with size/weight/leading |
+| 2 | Markdown body = intent | Why/when to use each token |
+| 3 | Token refs in components | Components point at named tokens, not duplicated hex |
+| 4 | Interaction states | Hover / focus / disabled for interactive chrome |
+| 5 | Concrete do/don’t | Operational constraints with token names |
+| 6 | Lint when schema-friendly | `npx @google/design.md lint …` |
+| 7 | Diff / version when evolving | `-v1` folders + optional design.md diff |
+
+**Runtime SoT in this repo:** CSS `:root` in `index.html`. Optional YAML only if linting.
 
 ---
 
@@ -68,10 +89,11 @@ Alias marketing names (`paper` / `ink` / `accent`) only if usage rules are writt
 | Claude Code | `@DESIGN.md` from project instructions; check `/context` |
 | Cursor | Project rules or explicit attach |
 
-Optional lint (schema-friendly files):
+Optional lint / diff (schema-friendly files):
 
 ```bash
 npx @google/design.md lint library/websites/<id>/DESIGN.md
+npx @google/design.md diff library/websites/<id>/DESIGN.md library/websites/<id>-v1/DESIGN.md
 ```
 
 ---
@@ -82,3 +104,5 @@ npx @google/design.md lint library/websites/<id>/DESIGN.md
 - Methods corpus: [ai-website-methods-corpus.md](./ai-website-methods-corpus.md)  
 - Ship pipeline: [TEMPLATE_WORKFLOW.md](./TEMPLATE_WORKFLOW.md)  
 - Polish pipeline: [premium-site-method.md](./premium-site-method.md)  
+- Micro craft after polish: `/interface-craft`  
+

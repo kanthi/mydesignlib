@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fieldnote | Slow Travel</title>
+  
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --surface-page: #f7f4ef;
+      --surface-section: #f0ece4;
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6860;
+      --border-default: rgba(26,26,24,0.12);
+      --action-primary: #2d4a3e;
+      --accent-slate: #4a5568;
+      --accent-warm: #c4a882;
+      
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-body);
+      background-color: var(--surface-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+    
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); font-weight: 600; line-height: 1.1; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    
+    /* Mobile Menu Toggle */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-menu-btn svg { width: 20px; height: 20px; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 1rem 1.25rem; }
+      .mobile-menu-btn { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(26, 26, 24, 0.95);
+        backdrop-filter: blur(16px);
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1.25rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border-default);
+      }
+      .nav-links.active { display: flex; }
+      
+      .hero { padding: 4rem 1.25rem 3rem; }
+      .hero h1 { font-size: clamp(2.4rem, 8vw, 4.5rem); white-space: normal; }
+      .hero p { font-size: clamp(1rem, 3.5vw, 1.2rem); margin-bottom: 1.5rem; }
+      
+      .container { padding: 0 1.25rem; }
+      .section-padding { padding: 4rem 0; }
+      .manifesto { grid-template-columns: 1fr; gap: 2rem; }
+      .manifesto-content h2 { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: 1rem; }
+      .pull-quote { font-size: clamp(1.3rem, 4.5vw, 1.8rem); margin: 1.5rem 0; }
+      
+      .regions-band { padding: 3rem 0; }
+      .regions-scroll { padding: 0 1.25rem; }
+      
+      .feature-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .journal-strip { grid-template-columns: 1fr; gap: 2rem; }
+      
+      .pricing-band { padding: 4rem 0; }
+      .pricing-band h2 { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: 2rem; }
+      .pricing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      
+      .cta-band { padding: 4rem 0; }
+      .cta-band h2 { font-size: clamp(2.2rem, 7vw, 3.5rem); margin-bottom: 1.5rem; }
+      .cta-form { flex-direction: column; max-width: 100%; gap: 0.75rem; }
+      .cta-form input, .cta-form button { width: 100%; padding: 1rem; }
+      
+      footer { padding: 3rem 1.25rem 2rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-bottom: 2.5rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-logo">Fieldnote</div>
+    <button class="mobile-menu-btn" id="fieldnoteMenuBtn" aria-label="Toggle Navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="nav-links" id="fieldnoteNavLinks">
+      <a href="#">Guides</a>
+      <a href="#">Regions</a>
+      <a href="#">About</a>
+      <a href="#">Journal</a>
+      <a href="#" class="nav-cta" style="display:inline-block; margin-top: 0.5rem;">Explore guides</a>
+    </div>
+    <a href="#" class="nav-cta" style="display:none;">Explore guides</a>
+  </nav>
+
+  <header class="hero">
+    <img src="hero.jpg" alt="Mountain pass at dusk" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Travel slower.<br>See more.</h1>
+      <p>Curated slow travel experiences and editorial guides for independent travelers who want depth over tourist checklists.</p>
+      <a href="#" class="nav-cta" style="display:inline-block; font-size:1rem; padding: 0.75rem 1.5rem;">Explore our guides</a>
+    </div>
+  </header>
+
+  <section class="section-padding container">
+    <div class="guides-strip">
+      <article class="guide-card">
+        <img src="guide-1.jpg" alt="Coastal cliffside path" />
+        <span class="tag">Azores</span>
+        <h3>The Wild Coast</h3>
+        <p>A ten-day slow journey along volcanic cliffs and hidden coves, mapping out forgotten trails.</p>
+      </article>
+      <article class="guide-card">
+        <img src="guide-2.jpg" alt="Mountain village alleyway" />
+        <span class="tag">Alps</span>
+        <h3>High Altitude Villages</h3>
+        <p>Navigating the remote stone hamlets of the southern peaks, where time moves differently.</p>
+      </article>
+      <article class="guide-card">
+        <img src="hero.jpg" alt="Mountain pass" />
+        <span class="tag">Balkans</span>
+        <h3>The Forgotten Passes</h3>
+        <p>Driving the winding roads of a region untouched by mass tourism, rich in history and silence.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-padding container">
+    <div class="manifesto">
+      <img src="about.jpg" alt="Rocky gorge with small figure" class="manifesto-img" />
+      <div class="manifesto-content">
+        <h2>The Fieldnote way</h2>
+        <p>We believe travel is not about checking off lists, but about the depth of connection with a place. Our guides are crafted slowly, by writers and photographers who spend months on the ground, finding the quiet corners.</p>
+        <div class="pull-quote">"To rush through a landscape is to erase it. We choose to linger."</div>
+        <p>Every itinerary is designed to give you space—to walk further, sit longer, and converse with the locals who shape the region's soul.</p>
+        <a href="#" class="nav-cta" style="display:inline-block; background: var(--text-primary); margin-top: 1rem;">Read our manifesto</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="regions-band">
+    <h3>Where will you go?</h3>
+    <div class="regions-scroll">
+      <a href="#" class="region-pill">Alps</a>
+      <a href="#" class="region-pill">Balkans</a>
+      <a href="#" class="region-pill">Patagonia</a>
+      <a href="#" class="region-pill">Morocco</a>
+      <a href="#" class="region-pill">Georgian Caucasus</a>
+      <a href="#" class="region-pill">Okinawa</a>
+      <a href="#" class="region-pill">Scottish Highlands</a>
+      <a href="#" class="region-pill">Azores</a>
+    </div>
+  </section>
+
+  <section class="section-padding container">
+    <div style="margin-bottom: 4rem;">
+      <h2 style="font-size: 3rem;">What's in a guide</h2>
+    </div>
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-num">01</div>
+        <h4>Route narrative</h4>
+        <p>Rich editorial descriptions of the journey, told like a story to give you context before you arrive.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">02</div>
+        <h4>Local contacts</h4>
+        <p>Direct lines to trusted guides, artisans, and small hoteliers who form the backbone of the region.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">03</div>
+        <h4>Seasonal timing</h4>
+        <p>Nuanced advice on the shifting seasons, micro-climates, and the exact weeks to visit for the best light.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">04</div>
+        <h4>Offline maps</h4>
+        <p>Beautifully rendered topographical maps you can download, ensuring you're never lost when off grid.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding container">
+    <div class="journal-strip">
+      <div class="journal-post">
+        <span class="date">October 12, 2026</span>
+        <h3>The Last Tea Houses of Kyoto</h3>
+        <p>Finding stillness in the ancient capital by seeking out the establishments that still refuse modern conveniences.</p>
+        <a href="#" class="read-link">Read entry</a>
+      </div>
+      <div class="journal-post">
+        <span class="date">September 28, 2026</span>
+        <h3>Packing for the Patagonian Wind</h3>
+        <p>A practical, minimalist approach to layering when the weather changes four times in a single afternoon.</p>
+        <a href="#" class="read-link">Read entry</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials container" style="border: none;">
+    <div style="border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); padding: 6rem 0;">
+      <div class="test-quote">"Fieldnote completely changed how I experience new places. I felt less like a tourist and more like a quiet observer of a beautiful reality."</div>
+      <div class="test-attr">— Elena M. · Travels in the Balkans</div>
+    </div>
+  </section>
+
+  <section class="pricing-band">
+    <div class="container">
+      <h2>One subscription. Every guide.</h2>
+      <div class="pricing-grid">
+        <div class="tier">
+          <h4>Day Pass</h4>
+          <div class="price">$9</div>
+          <p style="opacity: 0.8; margin-bottom: 2rem;">24 hours of full access to download what you need before a trip.</p>
+          <a href="#" style="border-bottom: 1px solid; padding-bottom: 2px;">Purchase</a>
+        </div>
+        <div class="tier tier-highlight">
+          <h4>Annual</h4>
+          <div class="price">$79</div>
+          <p style="opacity: 0.8; margin-bottom: 2rem;">Unlimited access to all current and future guides, plus the journal archive.</p>
+          <a href="#" style="border-bottom: 1px solid; padding-bottom: 2px;">Subscribe</a>
+        </div>
+        <div class="tier">
+          <h4>Gift</h4>
+          <div class="price">$89</div>
+          <p style="opacity: 0.8; margin-bottom: 2rem;">One year of access for a fellow traveler, delivered on a date of your choice.</p>
+          <a href="#" style="border-bottom: 1px solid; padding-bottom: 2px;">Buy as gift</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band container">
+    <h2>Your next journey starts here.</h2>
+    <form class="cta-form" onsubmit="event.preventDefault();">
+      <input type="email" placeholder="Email address" required />
+      <button type="submit">Explore</button>
+    </form>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Fieldnote</div>
+        <p style="opacity: 0.7; max-width: 300px;">Travel slower. See more.<br>Curated guides for the independent mind.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="#">All Guides</a></li>
+          <li><a href="#">Regions</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Membership</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">hello@fieldnote.example</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Fieldnote</span>
+      <span>Sample template</span>
+    </div>
+  </footer>
+
+  <script>
+    const fieldnoteMenuBtn = document.getElementById('fieldnoteMenuBtn');
+    const fieldnoteNavLinks = document.getElementById('fieldnoteNavLinks');
+    if (fieldnoteMenuBtn && fieldnoteNavLinks) {
+      fieldnoteMenuBtn.addEventListener('click', () => {
+        fieldnoteNavLinks.classList.toggle('active');
+      });
+      fieldnoteNavLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          fieldnoteNavLinks.classList.remove('active');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

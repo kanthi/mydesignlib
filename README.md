@@ -46,8 +46,11 @@ Each library folder is self-contained (`index.html` / assets + `preview.jpg` as 
 | Hosting, Pages, no-crawl, Analytics, deploy smoke checks | **[docs/OPERATIONS.md](docs/OPERATIONS.md)** |
 | Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** + `/ship-template` |
 | Skills map + how files are named | **[docs/SKILLS.md](docs/SKILLS.md)** |
-| DESIGN.md for AI (avoid mood-board specs) | **[docs/method-design-md-for-ai.md](docs/method-design-md-for-ai.md)** + `/design-system-first` |
+| DESIGN.md for AI (mistakes + tips) | **[docs/method-design-md-for-ai.md](docs/method-design-md-for-ai.md)** + `/design-system-first` |
 | Premium / anti-AI-slop polish | `/premium-site` · `/anti-slop-frontend` · [docs/premium-site-method.md](docs/premium-site-method.md) |
+| Clean SaaS / whitespace / product-as-proof | `/clean-interface` |
+| Micro craft (feel / radii / hit areas) | `/interface-craft` |
+| X methods corpus | [docs/ai-website-methods-corpus.md](docs/ai-website-methods-corpus.md) |
 | Agent hard rules | **[AGENTS.md](AGENTS.md)** |
 
 ### Doc & skill filename scheme (short)
@@ -103,18 +106,24 @@ Minimal manual steps:
 
 ## Local preview
 
+This machine serves the repo with **Caddy** (no need to run `python3 -m http.server`).
+
 ```bash
-python3 -m http.server 8080
+# Print base URL (LAN host + stable port)
+~/.config/mydesignlib-portal/serve.sh --url
+
+# Start if not already running
+~/.config/mydesignlib-portal/serve.sh --bg
 ```
 
-Open `http://localhost:8080`.
+Open the printed URL (e.g. `http://192.168.68.200:33215/`). Item paths: `/library/websites/<id>/`. See `docs/OPERATIONS.md` § Local preview.
 
 ## GitHub Pages
 
-**Live:** [https://www.kanthi.in/mydesignlib/](https://www.kanthi.in/mydesignlib/)
+**Status:** paused — GitHub Pages and the deploy workflow are **off** so Actions does not fail while the site is unpublished. See `docs/OPERATIONS.md` § “Pages paused” to turn them back on.
 
-Also available via GitHub’s host (redirects to the custom domain):
-[https://kanthi.github.io/mydesignlib/](https://kanthi.github.io/mydesignlib/)
+**Intended live URL:** [https://www.kanthi.in/mydesignlib/](https://www.kanthi.in/mydesignlib/)  
+Alternate (when live): [https://kanthi.github.io/mydesignlib/](https://kanthi.github.io/mydesignlib/)
 
 | Setting | Value |
 |---------|--------|
@@ -123,7 +132,7 @@ Also available via GitHub’s host (redirects to the custom domain):
 | Catalog | `data/catalog.json` |
 | Templates | `library/websites/<id>/` |
 
-Every push to `main` runs **Deploy GitHub Pages** and republishes automatically. Manual runs: Actions → workflow → Run workflow.
+When Pages is active again, every push to `main` runs **Deploy GitHub Pages**. Manual runs: Actions → workflow → Run workflow.
 
 ## Hard rules (short)
 

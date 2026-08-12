@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumenport — Brand identity system</title>
+  <meta name="description" content="Fictional trade-logistics brand system. Deep ocean blues, signal gold, geometric L-route mark, applications and type." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy-deep: #014a73;
+      --navy: #165672;
+      --ocean: #2b6377;
+      --steel: #3c7382;
+      --gold: #d89a00;
+      --gold-bright: #f3b200;
+      --ink: #0a1e2c;
+      --paper: #f4f7f9;
+      --muted: #5a7380;
+      --white: #ffffff;
+      --font: "Plus Jakarta Sans", system-ui, sans-serif;
+      --display: "Space Grotesk", system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 220ms;
+      --wrap: min(1120px, 100% - 2rem);
+      --section-y: clamp(3.25rem, 6vw, 4.75rem);
+      --radius: 4px;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .wrap { width: var(--wrap); margin-inline: auto; }
+
+    /* —— Logo mark (reusable SVG via mask / inline) —— */
+    .mark {
+      display: block;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
+
+    /* —— Nav —— */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--steel) 22%, transparent);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-height: 64px;
+      padding: 0.65rem 0;
+    }
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.03em;
+      color: var(--navy-deep);
+    }
+    .nav-brand .mark { width: 28px; height: 28px; color: var(--gold); }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+      margin-left: 1.5rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--navy-deep); }
+    .nav-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius);
+      font-weight: 650;
+      font-size: 0.88rem;
+      transition: transform var(--dur) var(--ease), background var(--dur), color var(--dur);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--navy-deep);
+      color: var(--gold-bright);
+    }
+    .btn-primary:hover { background: var(--navy); }
+    .btn-ghost {
+      border: 1px solid color-mix(in srgb, var(--steel) 40%, transparent);
+      color: var(--navy-deep);
+    }
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--steel) 35%, transparent);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .menu-toggle span {
+      width: 16px;
+      height: 1.5px;
+      background: var(--navy-deep);
+      transition: transform var(--dur) var(--ease), opacity var(--dur);
+    }
+    .nav.is-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.is-open .menu-toggle span:nth-child(2) { opacity: 0; }
+    .nav.is-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* —— Hero —— */
+    .hero {
+      background: var(--navy-deep);
+      color: var(--white);
+      padding: clamp(3.5rem, 8vw, 5.5rem) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -40% 40%;
+      height: 80%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--gold) 22%, transparent), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      margin-bottom: 0.85rem;
+    }
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    .hero h1 span { color: var(--gold-bright); }
+    .hero .lead {
+      color: color-mix(in srgb, var(--white) 78%, transparent);
+      max-width: 36ch;
+      font-size: 1.05rem;
+      margin-bottom: 1.75rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .hero .btn-primary {
+      background: var(--gold-bright);
+      color: var(--navy-deep);
+    }
+    .hero .btn-ghost {
+      border-color: color-mix(in srgb, var(--white) 35%, transparent);
+      color: var(--white);
+    }
+    .hero-card {
+      background: color-mix(in srgb, var(--navy) 70%, #000);
+      border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: grid;
+      place-items: center;
+      min-height: 260px;
+    }
+    .hero-card .lockup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--gold-bright);
+    }
+    .hero-card .mark { width: 72px; height: 72px; }
+    .hero-card .word {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* —— Board (reference structure) —— */
+    .board-section { padding: var(--section-y) 0; }
+    .section-head {
+      margin-bottom: 1.75rem;
+    }
+    .section-head h2 {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      letter-spacing: -0.03em;
+      color: var(--navy-deep);
+    }
+    .section-head p {
+      color: var(--muted);
+      max-width: 48ch;
+      margin-top: 0.4rem;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 0.85rem;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(1, 74, 115, 0.12);
+    }
+    .cell {
+      position: relative;
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .cell-navy { background: var(--navy-deep); color: var(--gold-bright); }
+    .cell-gold { background: var(--gold-bright); color: var(--navy-deep); }
+    .cell-photo {
+      background: var(--gold-bright);
+      min-height: 260px;
+    }
+    .cell-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .cell-photo .overlay-mark {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .cell-photo .overlay-mark .mark {
+      width: min(38%, 120px);
+      height: auto;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.2));
+    }
+    .lockup-h {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .lockup-h .mark { width: 56px; height: 56px; }
+    .lockup-h .word {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      letter-spacing: 0.06em;
+    }
+    .construct {
+      width: min(70%, 200px);
+      aspect-ratio: 1;
+      color: var(--navy-deep);
+    }
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.75rem 0.45rem;
+      font-size: 0.62rem;
+      font-weight: 650;
+      font-family: var(--display);
+      letter-spacing: 0.02em;
+      color: var(--white);
+      min-width: 0;
+    }
+    .swatch span {
+      display: block;
+      opacity: 0.9;
+      word-break: break-all;
+    }
+    .swatch.light { color: var(--ink); }
+    .tags-cell {
+      background: var(--gold-bright);
+      min-height: 260px;
+    }
+    .tags-stack {
+      position: relative;
+      width: min(72%, 260px);
+      aspect-ratio: 1.05;
+    }
+    .tags-stack img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .tag-card {
+      position: absolute;
+      width: 46%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 28px rgba(1, 40, 60, 0.2);
+    }
+    .tag-card .mark { width: 42%; }
+    .tag-a {
+      background: var(--steel);
+      color: var(--gold-bright);
+      left: 8%;
+      top: 18%;
+      transform: rotate(-8deg);
+    }
+    .tag-b {
+      background: var(--navy);
+      color: var(--gold-bright);
+      right: 6%;
+      bottom: 14%;
+      transform: rotate(10deg);
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      padding: 0.65rem;
+    }
+    .tag-b .pattern {
+      width: 100%;
+      flex: 1;
+      border-radius: 6px;
+      background-image: radial-gradient(circle, var(--gold-bright) 1.2px, transparent 1.4px);
+      background-size: 10px 10px;
+      opacity: 0.85;
+    }
+    .tag-b .word {
+      font-family: var(--display);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    /* —— System sections —— */
+    section.system { padding: var(--section-y) 0; }
+    section.system.alt { background: var(--white); border-block: 1px solid color-mix(in srgb, var(--steel) 18%, transparent); }
+    .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.45rem;
+    }
+    .title {
+      font-family: var(--display);
+      font-size: clamp(1.55rem, 3vw, 2rem);
+      letter-spacing: -0.03em;
+      color: var(--navy-deep);
+      margin-bottom: 0.5rem;
+    }
+    .sub { color: var(--muted); max-width: 48ch; margin-bottom: 1.75rem; }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .type-card {
+      background: var(--white);
+      border: 1px solid color-mix(in srgb, var(--steel) 20%, transparent);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .type-card h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+    .type-card .specimen {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--navy-deep);
+      margin-bottom: 0.65rem;
+    }
+    .type-card.body .specimen {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 1.15rem;
+      letter-spacing: 0;
+      line-height: 1.5;
+    }
+    .type-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .color-rows {
+      display: grid;
+      gap: 0.65rem;
+    }
+    .color-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      background: var(--white);
+      border: 1px solid color-mix(in srgb, var(--steel) 18%, transparent);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .color-chip {
+      height: 64px;
+    }
+    .color-row strong {
+      font-family: var(--display);
+      font-size: 0.95rem;
+      color: var(--navy-deep);
+    }
+    .color-row code {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      padding-right: 1rem;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .rule {
+      border-radius: 12px;
+      padding: 1.35rem;
+      border: 1px solid color-mix(in srgb, var(--steel) 20%, transparent);
+      background: var(--white);
+    }
+    .rule h3 {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      margin-bottom: 0.65rem;
+      color: var(--navy-deep);
+    }
+    .rule ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .rule li { margin-bottom: 0.35rem; }
+    .rule.do { border-color: color-mix(in srgb, var(--ocean) 40%, transparent); }
+    .rule.dont { border-color: color-mix(in srgb, #b45309 35%, transparent); }
+
+    .voice {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .voice article {
+      background: var(--navy-deep);
+      color: var(--white);
+      border-radius: 12px;
+      padding: 1.35rem;
+    }
+    .voice h3 {
+      font-family: var(--display);
+      color: var(--gold-bright);
+      font-size: 1rem;
+      margin-bottom: 0.45rem;
+    }
+    .voice p { color: color-mix(in srgb, var(--white) 78%, transparent); font-size: 0.92rem; }
+
+    .pattern-band {
+      background: var(--navy);
+      border-radius: 14px;
+      padding: 2rem;
+      color: var(--gold-bright);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .pattern-swatch {
+      height: 160px;
+      border-radius: 10px;
+      background-color: var(--ocean);
+      background-image: radial-gradient(circle, var(--gold-bright) 1.4px, transparent 1.6px);
+      background-size: 14px 14px;
+    }
+    .pattern-band h3 {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+    }
+    .pattern-band p { color: color-mix(in srgb, var(--white) 75%, transparent); max-width: 36ch; }
+
+    footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid color-mix(in srgb, var(--steel) 22%, transparent);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--display);
+      font-weight: 700;
+      color: var(--navy-deep);
+    }
+    .footer-brand .mark { width: 22px; height: 22px; color: var(--gold); }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .board { grid-template-columns: 1fr; }
+      .type-grid, .rules, .voice, .pattern-band { grid-template-columns: 1fr; }
+      .color-row { grid-template-columns: 88px 1fr; }
+      .color-row code { grid-column: 2; padding: 0 1rem 0.75rem; }
+      .nav-panel {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--paper);
+        border-bottom: 1px solid color-mix(in srgb, var(--steel) 22%, transparent);
+        padding: 0.75rem 1rem 1rem;
+        flex-direction: column;
+        gap: 0.35rem;
+        box-shadow: 0 16px 32px rgba(1, 74, 115, 0.1);
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links {
+        flex-direction: column;
+        margin: 0;
+        gap: 0.15rem;
+      }
+      .nav-links a {
+        display: block;
+        padding: 0.75rem 0.5rem;
+        color: var(--navy-deep);
+        border-radius: 6px;
+      }
+      .nav-links a:hover { background: color-mix(in srgb, var(--steel) 12%, transparent); }
+      .menu-toggle { display: flex; }
+      .site-header .wrap { position: relative; }
+      .nav-actions .btn-ghost { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .menu-toggle span { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Inline SVG defs for mark (original L-route) -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <symbol id="lumen-mark" viewBox="0 0 64 64">
+        <!-- Original L-route beacon: bold L path + square signal node -->
+        <path fill="currentColor" d="M16 10h15v33h19v13H16V10z" />
+        <rect x="40" y="10" width="14" height="14" rx="2" fill="currentColor" />
+        <path fill="currentColor" opacity="0.28" d="M31 28h9v15h-9z" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="mark" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+          Lumenport
+        </a>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#board">Board</a>
+            <a href="#mark">Mark</a>
+            <a href="#color">Color</a>
+            <a href="#type">Type</a>
+            <a href="#voice">Voice</a>
+            <a href="#rules">Rules</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#applications">Applications</a>
+          <a class="btn btn-primary" href="mailto:brand@lumenport.example">Brand kit</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Brand identity system · 2026</p>
+          <h1>Trade clarity, <span>signaled.</span></h1>
+          <p class="lead">
+            Lumenport is a fictional import and logistics brand. Deep ocean blues and signal gold
+            mark routes, ports, and the handoff between systems — built as a complete visual identity specimen.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#board">View identity board</a>
+            <a class="btn btn-ghost" href="#color">Color system</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Primary lockup on navy">
+          <div class="lockup">
+            <svg class="mark" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+            <div class="word">LUMENPORT</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2×3 board mirroring reference structure -->
+    <section class="board-section" id="board">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Identity board</h2>
+          <p>Primary lockup, construction, applications, palette — the working face of Lumenport.</p>
+        </div>
+        <div class="board" aria-label="Brand identity board">
+          <div class="cell cell-navy">
+            <div class="lockup-h">
+              <svg class="mark" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+              <span class="word">LUMENPORT</span>
+            </div>
+          </div>
+          <div class="cell cell-gold">
+            <svg class="construct" viewBox="0 0 120 120" aria-label="Mark construction">
+              <!-- Construction guides -->
+              <g stroke="currentColor" stroke-width="0.6" opacity="0.28" fill="none">
+                <line x1="20" y1="0" x2="20" y2="120" />
+                <line x1="40" y1="0" x2="40" y2="120" />
+                <line x1="60" y1="0" x2="60" y2="120" />
+                <line x1="80" y1="0" x2="80" y2="120" />
+                <line x1="100" y1="0" x2="100" y2="120" />
+                <line x1="0" y1="20" x2="120" y2="20" />
+                <line x1="0" y1="40" x2="120" y2="40" />
+                <line x1="0" y1="60" x2="120" y2="60" />
+                <line x1="0" y1="80" x2="120" y2="80" />
+                <line x1="0" y1="100" x2="120" y2="100" />
+              </g>
+              <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter">
+                <path d="M34 28v58h22l28 16" />
+                <path d="M56 70l28 16V36" opacity="0.55" stroke-width="2" />
+              </g>
+              <rect x="82" y="24" width="16" height="16" fill="currentColor" />
+              <circle cx="34" cy="28" r="2.2" fill="currentColor" />
+              <circle cx="56" cy="86" r="2.2" fill="currentColor" />
+              <circle cx="90" cy="32" r="2.2" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="cell cell-photo" aria-label="Tote application">
+            <img src="tote.jpg" alt="Navy tote bag on gold background" />
+            <div class="overlay-mark">
+              <svg class="mark" style="color: var(--gold-bright)" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+            </div>
+          </div>
+          <div class="cell" style="padding:0;min-height:220px">
+            <div class="palette" role="list" aria-label="Brand colors">
+              <div class="swatch" style="background:#014A73" role="listitem"><span>#014A73</span></div>
+              <div class="swatch" style="background:#165672" role="listitem"><span>#165672</span></div>
+              <div class="swatch" style="background:#2B6377" role="listitem"><span>#2B6377</span></div>
+              <div class="swatch" style="background:#3C7382" role="listitem"><span>#3C7382</span></div>
+              <div class="swatch light" style="background:#D89A00" role="listitem"><span>#D89A00</span></div>
+              <div class="swatch light" style="background:#F3B200" role="listitem"><span>#F3B200</span></div>
+            </div>
+          </div>
+          <div class="cell cell-photo" aria-label="Digital application">
+            <img src="tablet.jpg" alt="Hands holding a tablet with blue screen" />
+            <div class="overlay-mark" style="align-content:center">
+              <div style="display:flex;align-items:center;gap:0.55rem;color:var(--gold-bright);transform:translateY(8%)">
+                <svg class="mark" style="width:36px;height:36px" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+                <span style="font-family:var(--display);font-weight:700;letter-spacing:0.08em;font-size:0.85rem">LUMENPORT</span>
+              </div>
+            </div>
+          </div>
+          <div class="cell tags-cell" aria-label="Hang tag applications">
+            <div class="tags-stack">
+              <div class="tag-card tag-a">
+                <svg class="mark" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+              </div>
+              <div class="tag-card tag-b">
+                <div class="pattern" aria-hidden="true"></div>
+                <div class="word">LUMENPORT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="mark">
+      <div class="wrap">
+        <p class="label">Mark</p>
+        <h2 class="title">L-route beacon</h2>
+        <p class="sub">
+          The mark is an original geometric path: a solid L-stem, a route leg, and a square node —
+          reading as port, path, and signal. Clear space equals half the mark height on every side.
+        </p>
+        <div class="type-grid">
+          <div class="type-card" style="background:var(--navy-deep);color:var(--gold-bright);border:0;min-height:200px;display:grid;place-items:center">
+            <svg class="mark" style="width:88px;height:88px" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+          </div>
+          <div class="type-card" style="background:var(--gold-bright);color:var(--navy-deep);border:0;min-height:200px;display:grid;place-items:center">
+            <svg class="mark" style="width:88px;height:88px" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system alt" id="color">
+      <div class="wrap">
+        <p class="label">Color</p>
+        <h2 class="title">Ocean depth, signal gold</h2>
+        <p class="sub">Four blues for structure and depth. Two golds for action and light. Never invert gold fields with low-contrast navy text at small sizes.</p>
+        <div class="color-rows">
+          <div class="color-row">
+            <div class="color-chip" style="background:#014A73"></div>
+            <strong>Navy deep · primary field</strong>
+            <code>#014A73</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#165672"></div>
+            <strong>Navy · surfaces</strong>
+            <code>#165672</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#2B6377"></div>
+            <strong>Ocean · mid UI</strong>
+            <code>#2B6377</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#3C7382"></div>
+            <strong>Steel · secondary</strong>
+            <code>#3C7382</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#D89A00"></div>
+            <strong>Gold · mark on navy</strong>
+            <code>#D89A00</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#F3B200"></div>
+            <strong>Gold bright · fields</strong>
+            <code>#F3B200</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="type">
+      <div class="wrap">
+        <p class="label">Typography</p>
+        <h2 class="title">Geometric display, human body</h2>
+        <p class="sub">Space Grotesk carries the wordmark and titles. Plus Jakarta Sans handles long-form and UI.</p>
+        <div class="type-grid">
+          <div class="type-card">
+            <h3>Display · Space Grotesk</h3>
+            <p class="specimen">Lumenport routes trade.</p>
+            <p class="type-meta">600–700 · tracking −0.02em · titles &amp; lockups</p>
+          </div>
+          <div class="type-card body">
+            <h3>Body · Plus Jakarta Sans</h3>
+            <p class="specimen">Clear documentation for handoffs, bay schedules, and partner portals — written for operators, not slogans.</p>
+            <p class="type-meta">400–600 · 1.55 line-height · product &amp; long copy</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system alt" id="applications">
+      <div class="wrap">
+        <p class="label">Applications</p>
+        <h2 class="title">Soft goods, screens, tags</h2>
+        <p class="sub">Same mark language across physical and digital touchpoints — gold on navy, navy on gold.</p>
+        <div class="board" style="box-shadow:none;gap:1rem">
+          <div class="cell cell-photo" style="border-radius:12px;min-height:280px">
+            <img src="tote.jpg" alt="Lumenport tote mockup base" />
+            <div class="overlay-mark">
+              <svg class="mark" style="color:var(--gold-bright);width:min(34%,110px)" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+            </div>
+          </div>
+          <div class="cell cell-photo" style="border-radius:12px;min-height:280px">
+            <img src="tablet.jpg" alt="Tablet mockup base" />
+            <div class="overlay-mark">
+              <div style="display:flex;align-items:center;gap:0.5rem;color:var(--gold-bright)">
+                <svg class="mark" style="width:40px;height:40px" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+                <span style="font-family:var(--display);font-weight:700;letter-spacing:0.08em;font-size:0.9rem">LUMENPORT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="voice">
+      <div class="wrap">
+        <p class="label">Voice</p>
+        <h2 class="title">How Lumenport speaks</h2>
+        <p class="sub">Operators first. Short sentences. Numbers over adjectives.</p>
+        <div class="voice">
+          <article>
+            <h3>Clear</h3>
+            <p>State the bay, the ETA, the handoff. Skip “seamless” and “next-gen.”</p>
+          </article>
+          <article>
+            <h3>Steady</h3>
+            <p>Confidence without hype. We move freight and data — not vibes.</p>
+          </article>
+          <article>
+            <h3>Signal</h3>
+            <p>One primary action per surface. Gold is the call — never decoration alone.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system alt" id="pattern">
+      <div class="wrap">
+        <div class="pattern-band">
+          <div>
+            <h3>Pattern language</h3>
+            <p>
+              Staggered node grid derived from the mark’s square terminal. Use on tags,
+              packing inserts, and empty states — gold nodes on ocean or navy only.
+            </p>
+          </div>
+          <div class="pattern-swatch" role="img" aria-label="Node pattern sample"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="rules">
+      <div class="wrap">
+        <p class="label">Usage</p>
+        <h2 class="title">Do and don’t</h2>
+        <div class="rules">
+          <div class="rule do">
+            <h3>Do</h3>
+            <ul>
+              <li>Use gold mark on navy-deep or navy fields</li>
+              <li>Keep clear space ≥ 0.5× mark height</li>
+              <li>Pair Space Grotesk titles with Jakarta body</li>
+              <li>One primary gold action per major view</li>
+              <li>Scale mark proportionally — never stretch</li>
+            </ul>
+          </div>
+          <div class="rule dont">
+            <h3>Don’t</h3>
+            <ul>
+              <li>Recolor the mark in gradients or multicolor fills</li>
+              <li>Place gold mark on gold-bright fields</li>
+              <li>Use Inter, purple, or emoji as brand marks</li>
+              <li>Outline the filled mark with thin strokes</li>
+              <li>Reference real logistics trademarks or client marks</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <svg class="mark" aria-hidden="true"><use href="#lumen-mark"></use></svg>
+        Lumenport
+      </div>
+      <p>Fictional brand system · Sample template · brand@lumenport.example</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      var toggle = document.getElementById("menuToggle");
+      if (!nav || !toggle) return;
+      function setOpen(open) {
+        nav.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      }
+      toggle.addEventListener("click", function () {
+        setOpen(!nav.classList.contains("is-open"));
+      });
+      nav.querySelectorAll(".nav-panel a").forEach(function (a) {
+        a.addEventListener("click", function () { setOpen(false); });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") setOpen(false);
+      });
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 900) setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

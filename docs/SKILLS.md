@@ -12,17 +12,21 @@ Slash: `/<skill-name>` · on disk: `.grok/skills/<skill-name>/SKILL.md`
 | Skill | Slash | When to use |
 |-------|-------|-------------|
 | [ship-template](../.grok/skills/ship-template/SKILL.md) | `/ship-template` | Design URL / reference → fictional rebrand → catalog item |
-| [design-system-first](../.grok/skills/design-system-first/SKILL.md) | `/design-system-first` | Tokens + DESIGN.md **before** HTML |
-| [anti-slop-frontend](../.grok/skills/anti-slop-frontend/SKILL.md) | `/anti-slop-frontend` | Kill generic AI aesthetics / ban list |
+| [design-system-first](../.grok/skills/design-system-first/SKILL.md) | `/design-system-first` | Tokens + DESIGN.md **before** HTML (plan gate + tips) |
+| [anti-slop-frontend](../.grok/skills/anti-slop-frontend/SKILL.md) | `/anti-slop-frontend` | Kill generic AI aesthetics / ban list / copy craft |
 | [premium-site](../.grok/skills/premium-site/SKILL.md) | `/premium-site` | Multi-pass “$10K” polish or cold premium build |
+| [interface-craft](../.grok/skills/interface-craft/SKILL.md) | `/interface-craft` | Micro feel audit after macro polish |
+| [clean-interface](../.grok/skills/clean-interface/SKILL.md) | `/clean-interface` | Calm SaaS / whitespace / product-as-proof |
 
 ### Default route (do not stack every skill)
 
 ```
 design-system-first
   → anti-slop-frontend (check)
+  → clean-interface          # when direction is soft clean SaaS
   → ship-template | premium-site build
   → premium-site polish (type → space → motion → mobile)
+  → interface-craft (quick or full)
   → brand audit + HTTP verify
 ```
 
@@ -37,7 +41,7 @@ Hosting / deploy: [`OPERATIONS.md`](./OPERATIONS.md).
 |------|------------|
 | [TEMPLATE_WORKFLOW.md](./TEMPLATE_WORKFLOW.md) | Human ship pipeline for website templates |
 | [premium-site-method.md](./premium-site-method.md) | Human premium polish method |
-| [method-design-md-for-ai.md](./method-design-md-for-ai.md) | DESIGN.md that agents can execute (7 mistakes) |
+| [method-design-md-for-ai.md](./method-design-md-for-ai.md) | DESIGN.md that agents can execute (7 mistakes + 7 tips) |
 | [ai-website-methods-corpus.md](./ai-website-methods-corpus.md) | Index of X/community methods folded into skills |
 | [OPERATIONS.md](./OPERATIONS.md) | Pages, privacy, GA, deploy smoke checks |
 | **SKILLS.md** (this file) | Skills map + **filename naming scheme** |
@@ -94,10 +98,12 @@ See **[method-design-md-for-ai.md](./method-design-md-for-ai.md)**.
 
 1. Not a mood board — emotion → observable rules  
 2. Semantic tokens + usage  
-3. Components, not foundations only  
+3. Components, not foundations only (with token refs + states)  
 4. Responsive *behaviour*  
 5. Motion / icons / content  
 6. Short, non-contradictory  
 7. **Read** the file before writing UI  
 
-Agent: `/design-system-first`
+Tips: exact scales · intent prose · token refs · states · concrete do/don’t · lint · version/diff  
+
+Agent: `/design-system-first` · craft after polish: `/interface-craft`

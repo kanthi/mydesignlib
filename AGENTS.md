@@ -17,9 +17,9 @@ Former repo name: **mytemplate** (same product).
 5. **Google Analytics.** Every HTML page must include the site gtag (`G-Z97ZD3EVSF`) in `<head>` (same snippet as root `index.html`). Full required head block is in `docs/OPERATIONS.md`.
 6. **Register every item** in `data/catalog.json` with `id`, `type`, `name`, `description`, `tags`, `category`, `thumbnail`, `path`, `featured`, `date` (optional: `projectId`, `related`, `meta`).
 7. **Brand audit before done.** Grep the new folder for original brand, designer handles, Framer/Webflow marketplace URLs, real client names, and competitor logos. Must be clean.
-8. **HTTP verify.** Serve with `python3 -m http.server 8080` from repo root; confirm `200` for `index.html`, `preview.jpg`, and key assets.
+8. **HTTP verify.** Local site is already served by **Caddy** (do **not** start `python3 -m http.server`). Resolve base URL with `~/.config/mydesignlib-portal/serve.sh --url`, then confirm `200` for `index.html`, `preview.jpg`, and key assets. Details: `docs/OPERATIONS.md` § Local preview.
 9. **One complete deliverable per reference URL** unless the user asks otherwise. Finish registration + audit + verify in the same turn when possible.
-10. **Ship to live when asked.** Site-facing changes: commit, push `main` (Pages redeploys via Actions). See `docs/OPERATIONS.md`.
+10. **Ship to live when asked.** Site-facing changes: commit, push `main`. Pages is currently **paused** (workflow disabled); re-enable per `docs/OPERATIONS.md` § “Pages paused” before expecting a live deploy.
 
 ## Library layout
 
@@ -39,8 +39,8 @@ library/
 
 | | |
 |---|---|
-| Live | https://www.kanthi.in/mydesignlib/ |
-| Deploy | Push `main` → `.github/workflows/pages.yml` (Node 24 actions) |
+| Live | https://www.kanthi.in/mydesignlib/ (**paused** — Pages off; see `docs/OPERATIONS.md`) |
+| Deploy | Push `main` → `.github/workflows/pages.yml` (disabled while Pages paused) |
 | Privacy | `robots.txt` + noindex on all HTML |
 | Analytics | `G-Z97ZD3EVSF` on all HTML |
 
@@ -81,7 +81,13 @@ When the user pastes a design URL or asks to ship a **website** template from a 
 `.grok/skills/ship-template/SKILL.md`
 
 Cold start / design system before HTML: **`/design-system-first`**.  
-DESIGN.md quality (avoid mood-board specs): **`docs/method-design-md-for-ai.md`**.  
-Skills map + filename scheme: **`docs/SKILLS.md`**.
+DESIGN.md quality (mistakes + tips): **`docs/method-design-md-for-ai.md`**.  
+Kill AI-slop aesthetics: **`/anti-slop-frontend`**.  
+Clean SaaS / whitespace / product-as-proof: **`/clean-interface`**.  
+Macro polish: **`/premium-site`**. Micro feel after polish: **`/interface-craft`**.  
+Skills map + filename scheme: **`docs/SKILLS.md`**.  
+Methods corpus (X sources): **`docs/ai-website-methods-corpus.md`**.
+
+Default route: design-system-first → anti-slop → (clean-interface if soft SaaS) → ship/premium build → polish → interface-craft → audit.
 
 Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.

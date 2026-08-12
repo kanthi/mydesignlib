@@ -15,10 +15,11 @@ Synthesized from:
 
 - [@cloudxdev modern-frontend-design skill](https://x.com/cloudxdev/status/1993449864756437414)  
 - [@cloudxdev award landing prompt](https://x.com/cloudxdev/status/2002526815022190985)  
-- Anthropic frontend-design principles + community AI-look consensus  
-- Full notes: `../premium-site/references/cloudxdev-*.md`, `docs/ai-website-methods-corpus.md`
+- [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) + [blog](https://claude.com/blog/improving-frontend-design-through-skills) — subject thesis, copy craft, new default clusters  
+- Community AI-look consensus  
+- Full notes: `../premium-site/references/cloudxdev-*.md`, `../design-system-first/references/src-anthropic-frontend-design.md`, `docs/ai-website-methods-corpus.md`
 
-**Core rule:** models regress to the mean of training data (safe SaaS template). Push them to the **edge of a single committed aesthetic** with hard bans.
+**Core rule:** models regress to the mean of training data (safe SaaS template). Push them to the **edge of a single committed aesthetic** with hard bans — grounded in **subject vernacular**, not generic “premium.”
 
 Respect `AGENTS.md` (fictional brands, original assets, vanilla static for catalog templates).
 
@@ -36,7 +37,7 @@ Respect `AGENTS.md` (fictional brands, original assets, vanilla static for catal
 Before any CSS, state briefly:
 
 1. **Context** — who, problem, emotion  
-2. **Concept** — one metaphor / subject vernacular (materials, tools, industry)  
+2. **Concept** — one metaphor / **subject vernacular** (materials, tools, instruments, industry textures — Anthropic)  
 3. **Commitment** — **ONE** primary aesthetic (optional hybrid of 2 max)
 
 ### Aesthetic menu (pick one)
@@ -60,6 +61,17 @@ If fintech dark mode → one accent, not rainbow gradients.
 - Generic blob shapes / cliché stock energy  
 - “Modern, clean, simple, premium” as the only design direction  
 - Bounce / elastic / multi-second looped hero noise without purpose  
+- “Make it look like [real brand]” (Stripe/Apple/Linear) — violates fictional rebrand; steal *craft principles*, not identity  
+
+### Also avoid “new premium defaults” when the brief is free
+
+These are legitimate when requested; they are **not** free substitutes for thinking:
+
+1. Warm cream (~`#F4F1EA`) + high-contrast serif + terracotta accent (every “editorial” page)  
+2. Near-black + single acid-green or vermilion accent only  
+3. Pure broadsheet: hairline rules, zero radius, dense newspaper columns  
+
+Vary type and palette across catalog items — don’t converge on one “safe alternative” (e.g. always Space Grotesk).
 
 ## Phase 2 — Tokens before markup
 
@@ -90,10 +102,21 @@ Typography pairings (examples, not defaults):
 
 ## Phase 3 — Layout & hero
 
-- Hero is a **thesis**, not a badge row  
+- Hero is a **thesis** from the subject’s world (headline, image, demo, or interactive moment) — not a badge row + dual CTAs  
 - Prefer asymmetric grids, overlapping media/copy, or strong single-column editorial — not always centered-everything  
 - Numbered steps only when order is real information  
 - One **signature** device; keep the rest quiet  
+- **Chanel rule:** before ship, remove one decorative accessory that doesn’t serve the brief  
+
+## Phase 3b — Copy as design material
+
+Words are design, not filler (Anthropic frontend-design):
+
+- Active voice; buttons = verb + outcome (`Start free trial`, not `Submit` / `Learn more`)  
+- Specific over clever; name what users control, not system internals  
+- Empty / error / success states give **direction** (what happened + next step) — no “Oops!”  
+- No lorem; no Acme/Nexus placeholder brands; no AI clichés (*seamless, unleash, elevate, next-gen*)  
+- Fictional brand only (`AGENTS.md`)  
 
 ## Phase 4 — Motion (restrained)
 
@@ -115,32 +138,35 @@ Stack: vanilla HTML/CSS/JS, templates/<id>/
 Before code outline: aesthetic, fonts, hex palette, hero hook, one interactive idea
 ```
 
-Then build complete page. Follow with `/premium-site` polish passes (type → space → motion → mobile).
+Then build complete page. Follow with `/premium-site` polish (type → space → motion → mobile), then optional `/interface-craft`.
 
 ## AI Look audit (existing page)
 
 Grep / visual check:
 
 ```bash
-rg -i 'Inter|Roboto|#6366F1|#667eea|purple|gradient.*667|emoji|❤️|♥' templates/<id>/ || true
+rg -i 'Inter|Roboto|#6366F1|#667eea|purple|gradient.*667|emoji|❤️|♥' library/websites/<id>/ || true
 ```
 
 Fix hits. Prefer shipping as `<id>-v1` if the original is already cataloged.
 
 ## Quality checklist (ship gate)
 
-- [ ] One clear aesthetic commitment (named)  
-- [ ] Ban list clean  
+- [ ] One clear aesthetic commitment (named) + subject vernacular  
+- [ ] Ban list clean (including real-brand lookalike prompts)  
+- [ ] Not an uncritical “new premium default” cluster  
 - [ ] Display font is intentional  
 - [ ] Accent color used sparingly  
-- [ ] Hero is memorable / not template-centered-only  
+- [ ] Hero is a thesis / not template-centered-only  
+- [ ] Copy is specific (no lorem / AI clichés)  
 - [ ] Motion restrained + reduced-motion  
 - [ ] Focus states exist  
-- [ ] Realistic copy (no lorem)  
 - [ ] Fictional brand / original assets (`AGENTS.md`)  
+- [ ] Chanel: one extra decoration removed if noise  
 
 ## Do not
 
 - Call this skill **and** five other design skills in one turn (see skill-routing)  
-- Replace `premium-site` multi-pass polish with one “make it beautiful”  
+- Replace `premium-site` multi-pass polish or `interface-craft` micro-audit with one “make it beautiful”  
 - Introduce React/Vite for a single marketing page in this repo  
+- Paste real company DESIGN.md packs as the brand for a library item  

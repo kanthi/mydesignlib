@@ -27,6 +27,38 @@ Library items live under `library/<type>/<id>/`.
 | Workflow name | **Deploy GitHub Pages** |
 | Trigger | Push to `main`, or Actions → Run workflow |
 
+### Pages paused (intentional)
+
+As of 2026-08-12, **GitHub Pages is off** on this repo (`has_pages: false`) and the **Deploy GitHub Pages** workflow is **disabled** so pushes to `main` do not fail with:
+
+`get pages site failed. Verify that the repo has pages enabled`
+
+The workflow file remains in the repo ready to use. Live URL will 404 until Pages is turned back on.
+
+**Re-enable when you want the site live again:**
+
+1. Enable Pages with Actions as the source (UI: Settings → Pages → Source: **GitHub Actions**), or:
+
+   ```bash
+   gh api -X POST repos/kanthi/mydesignlib/pages \
+     -f build_type=workflow \
+     -f 'source[branch]=main' \
+     -f 'source[path]=/'
+   ```
+
+2. Re-add the custom domain if needed (`www.kanthi.in` / DNS already pointed).
+
+3. Enable and run the workflow:
+
+   ```bash
+   gh workflow enable "Deploy GitHub Pages"
+   gh workflow run "Deploy GitHub Pages"
+   ```
+
+4. Smoke-check the live URLs below.
+
+Do **not** re-enable the workflow while Pages is still off — `configure-pages` will 404 again.
+
 ### Why a custom workflow (not GitHub’s managed one)
 
 GitHub’s auto `pages-build-deployment` workflow pins older actions (`checkout@v4`, `upload-artifact@v4`) and emits **Node.js 20 deprecation** warnings. Owners cannot edit that managed workflow.
@@ -127,9 +159,36 @@ rg -L 'name="robots"' -g '*.html' library index.html || true
 | Register | `data/catalog.json` (`type`: website \| brand \| logo \| system) |
 | Folder | `library/<type>/<id>/` with `index.html` + `preview.jpg` as needed |
 | Brand audit | No real brands, designer handles, marketplace URLs |
-| Local verify | `python3 -m http.server 8080` → HTTP 200 on page + assets |
+| Local verify | **Caddy portal** (already running) — see § Local preview; do **not** start `python3 -m http.server` |
 
-Polish skills (when asked): `premium-site`, `anti-slop-frontend`, `design-system-first`.
+Polish skills (when asked): `premium-site`, `anti-slop-frontend`, `design-system-first`, `interface-craft`.
+
+## Local preview (Caddy — preferred)
+
+This machine hosts the repo via **Caddy**, not a one-off Python server.
+
+| | |
+|---|---|
+| Config (not in git) | `~/.config/mydesignlib-portal/Caddyfile` |
+| Port file | `~/.config/mydesignlib-portal/port` |
+| Helper | `~/.config/mydesignlib-portal/serve.sh` |
+| Root | Repo root (`index.html`, `library/`, …) |
+
+```bash
+# Base URL (e.g. http://192.168.68.200:33215/)
+~/.config/mydesignlib-portal/serve.sh --url
+
+# Ensure Caddy is up (if needed)
+~/.config/mydesignlib-portal/serve.sh --bg
+
+# Smoke check
+BASE="$(~/.config/mydesignlib-portal/serve.sh --url | tr -d '[:space:]')"
+curl -s -o /dev/null -w '%{http_code}\n' "$BASE"
+curl -s -o /dev/null -w '%{http_code}\n' "${BASE}library/websites/<id>/"
+curl -s -o /dev/null -w '%{http_code}\n' "${BASE}library/websites/<id>/preview.jpg"
+```
+
+**Agents:** use the Caddy base URL for all local HTTP verify. Do **not** spawn `python3 -m http.server` (port conflicts, wrong host, unnecessary process).
 
 ## Agent finish protocol
 
@@ -137,8 +196,8 @@ When work changes the **published site** (templates, catalog, showcase, robots, 
 
 1. Keep AGENTS / skills / this runbook accurate if rules changed.
 2. **Commit** with a clear message (user often asks; when they say “commit and push”, do both).
-3. **Push `main`** so Pages redeploys.
-4. Optionally smoke-check the live URL after the Actions run succeeds.
+3. **Push `main`** — when Pages is active, that redeploys; while [Pages is paused](#pages-paused-intentional), push only shares git history (no live deploy).
+4. Optionally smoke-check the live URL after the Actions run succeeds (skip while Pages is off).
 
 When work is **local-only** or the user has not asked to ship: do not push without confirmation.
 
@@ -153,8 +212,8 @@ When work is **local-only** or the user has not asked to ship: do not push witho
 ## Quick reference
 
 ```
-Live:     https://www.kanthi.in/mydesignlib/
-Deploy:   push main → .github/workflows/pages.yml
+Live:     https://www.kanthi.in/mydesignlib/  (paused — Pages off; see § Pages paused)
+Deploy:   push main → .github/workflows/pages.yml  (workflow disabled while Pages off)
 Catalog:  data/catalog.json
 Library:  library/websites|brands|logos|systems/<id>/
 Privacy:  robots.txt + noindex on every HTML page

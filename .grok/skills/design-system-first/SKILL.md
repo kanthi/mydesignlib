@@ -4,9 +4,10 @@ description: >
   Establish taste and a concrete design system (semantic tokens, type, palette, radii,
   elevation, components, responsive behaviour, motion/icons/content) before writing page
   HTML. Use when the user says design system first, taste-first, tokens before code,
-  DESIGN.md, design.md mistakes, extract design system from references, Claude Design
-  handoff, stop AI template look at the source, or /design-system-first. Run before
-  ship-template or premium-site builds; complements anti-slop-frontend.
+  DESIGN.md, design.md mistakes, design.md tips, extract design system from references,
+  Claude Design handoff, uniqueness plan, stop AI template look at the source, or
+  /design-system-first. Run before ship-template or premium-site builds; complements
+  anti-slop-frontend and interface-craft.
 ---
 
 # Design system first (taste before code)
@@ -16,10 +17,13 @@ Synthesized from:
 - [@PrajwalTomar_ taste-first / DS → template → skill → one-shot](https://x.com/PrajwalTomar_/status/2082081647252685163)  
 - [@monokern design system extract → export to code](https://x.com/monokern/status/2083610099549954330)  
 - [@alexisfchpro real-world design system .md before prompt](https://x.com/alexisfchpro/status/2081404948403683792)  
-- **DESIGN.md anti-mistakes** (UX Planet / Google Labs framing): [article mirror](https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd) → full notes in `references/method-design-md-7-ai-mistakes.md` · human doc [`docs/method-design-md-for-ai.md`](../../../docs/method-design-md-for-ai.md)  
+- **Anthropic frontend-design** (plan → uniqueness critique → build): [skill](https://github.com/anthropics/skills/tree/main/skills/frontend-design) · [blog](https://claude.com/blog/improving-frontend-design-through-skills) → `references/src-anthropic-frontend-design.md`  
+- **DESIGN.md anti-mistakes** (UX Planet): [mirror](https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd) → `references/method-design-md-7-ai-mistakes.md`  
+- **DESIGN.md tips** (values, refs, states, lint/diff): [mirror](https://freedium-mirror.cfd/uxplanet.org/7-design-md-tips-for-better-more-consistent-ai-generated-ui-b01736d07748) → `references/method-design-md-7-ai-tips.md`  
+- Human doc: [`docs/method-design-md-for-ai.md`](../../../docs/method-design-md-for-ai.md)  
 - Notes: `../premium-site/references/prajwal-taste-first.md`, `monokern-design-system.md`
 
-**Core rule:** “Make it premium” fails. **Taste is input**, not a hope. A DESIGN.md only improves AI UI if it is **actionable** (semantic roles, components, responsive *behaviour*, short rules) and **actually loaded** before code — not a mood board of adjectives.
+**Core rule:** “Make it premium” fails. **Taste is input**, not a hope. A DESIGN.md only improves AI UI if it is **actionable** (semantic roles, exact scales, components with token refs + states, responsive *behaviour*, short rules) and **actually loaded** before code — not a mood board of adjectives.
 
 ## When to use
 
@@ -29,7 +33,7 @@ Synthesized from:
 | Versioned polish of existing template | Re-derive system from subject; don’t only tweak CSS ad hoc |
 | User pasted 1–3 reference images/URLs | Extract system; **do not copy layouts/brands** |
 | Agent about to freehand a landing | Interrupt: run this skill first |
-| “We have a DESIGN.md but UI still looks generic” | Audit against **7 mistakes** below; rewrite weak sections |
+| “We have a DESIGN.md but UI still looks generic” | Audit against **7 mistakes** + **7 tips** below; rewrite weak sections |
 
 ## Pipeline
 
@@ -46,6 +50,23 @@ Prompt constraint (always):
 > Match typography scale, spacing rhythm, and motion of references. **Do not copy layouts or trademarks.**
 
 Adjectives alone (“premium”, “clean”, “modern”) are **invalid** as sole direction.
+
+### Step 1b — Design plan gate (before DESIGN.md / code)
+
+From Anthropic frontend-design — **write a short plan**, then critique it:
+
+1. **Subject** · **audience** · **single job** of the page  
+2. **4–6 named colors** (hex) with roles  
+3. **Display + body** (+ utility if needed) faces  
+4. **Layout concept** (one sentence; optional ASCII wireframe)  
+5. **Signature element** — the one memorable device  
+6. **Uniqueness check:** *Would this plan work unchanged for another startup or a generic SaaS?* If yes → revise the weak axis (type, palette, signature, or structure). State what you changed and why.  
+7. **Default-cluster check** (only when the brief leaves freedom free — OK if the brief asks for them):  
+   - Warm cream + serif + terracotta  
+   - Near-black + acid green / vermilion only  
+   - Pure broadsheet hairlines + zero radius + dense columns  
+
+Do not start HTML until the plan passes the uniqueness check. Then encode it as DESIGN.md + `:root`.
 
 ### Step 2 — Write DESIGN.md that agents can execute
 
@@ -67,6 +88,20 @@ Also emit matching CSS `:root` tokens in `index.html` (or shared CSS).
 | 7 | **File not loaded** | Before any UI HTML/CSS: **read** DESIGN.md; do not assume filename magic |
 
 **Overview test:** *Could two designers interpret this rule completely differently?* If yes → add decisions.
+
+#### 7 DESIGN.md tips (build for consistency)
+
+| # | Tip | Practice here |
+|---|-----|----------------|
+| 1 | **Exact values** for scales | Spacing steps, radii, type roles with size/weight/leading — not “slightly rounded” |
+| 2 | **Markdown = intent** | YAML/values answer *what*; prose answers *why/when* |
+| 3 | **Token refs in components** | “Primary = `action-primary` + `radius-pill`” — don’t duplicate raw hex |
+| 4 | **Interaction states** | Hover / focus / disabled (or pressed) for buttons & nav |
+| 5 | **Concrete do/don’t** | Operational bans with token names |
+| 6 | **Lint** when schema-friendly | `npx @google/design.md lint …` |
+| 7 | **Diff / version** when system evolves | `library/.../<id>-v1` · optional design.md diff |
+
+**Runtime SoT:** CSS `:root` in `index.html` is implementable truth; DESIGN.md is agent-readable roles + usage. Optional YAML frontmatter only if you need the Google CLI.
 
 #### Required template (marketing site — compact)
 
@@ -119,17 +154,18 @@ Also emit matching CSS `:root` tokens in `index.html` (or shared CSS).
 - radius philosophy (sharp editorial vs pills only on CTAs)
 - shadow: none | one soft elevation — not on every card
 
-## Components (by frequency — be precise here)
+## Components (by frequency — be precise here; reference tokens by name)
 ### Buttons
-- Primary: one per view; size; radius token; no dual primaries
+- Primary: one per view; bg `{action-primary}`; radius `{radius-pill|radius}`; type `{label}`
+- States: hover / focus / disabled (or pressed) — don’t leave idle-only
 - Secondary: border/ghost; never for destructive confirm
 - Destructive (if any): status-danger; verb label (“Delete …”), not “Confirm”
 ### Nav
-- Desktop vs compact; active/hover; logo + primary CTA placement
+- Desktop vs compact; active/hover/focus; logo + primary CTA placement
 ### Cards / feature blocks
 - Anatomy; max density; media ratio; when *not* to use 3 equal cards
 ### Inputs / forms (if present)
-- height, label position, error text pattern
+- height, label position, error text pattern; focus + error states
 
 ## Motion
 - Purpose: state change, not decoration
@@ -198,12 +234,14 @@ Creating DESIGN.md **does not** load it into the agent. Before building or editi
 3. Run **anti-slop-frontend** checklist against the system  
 4. Build with **ship-template** (from URL) or **premium-site** Part 3  
 5. Polish with **premium-site** Part 4 (type → space → motion → mobile) **without renaming tokens** unless fixing a bug  
-6. Report conflicts between DESIGN.md and production CSS  
+6. Optional craft: **interface-craft** (micro feel) after macro polish  
+7. Report conflicts between DESIGN.md and production CSS  
 
 Optional validation (schema-friendly files):
 
 ```bash
 npx @google/design.md lint library/websites/<id>/DESIGN.md
+npx @google/design.md diff library/websites/<id>/DESIGN.md library/websites/<id>-v1/DESIGN.md
 ```
 
 Wire project memory when using Claude Code:
@@ -237,17 +275,18 @@ Never overwrite a shipped catalog folder when experimenting.
 
 ## Done checklist
 
+- [ ] Plan gate passed uniqueness + default-cluster checks  
 - [ ] Overview: emotion + *create this feeling through* rules (not adjectives alone)  
 - [ ] Audience + single CTA  
 - [ ] One aesthetic name + signature element  
 - [ ] Semantic colors (4–8) + usage bullets  
-- [ ] Display/body fonts chosen (not system display)  
-- [ ] Type + space + motion tokens  
+- [ ] Type **roles** (size/weight/leading), not family alone  
+- [ ] Spacing scale vocabulary + motion tokens  
 - [ ] Layout behaviour for compact / medium / expanded  
-- [ ] Components: at least buttons + nav + primary content block  
-- [ ] Iconography + content tone (even if short)  
+- [ ] Components with **token refs** + interaction states  
+- [ ] Concrete do/don’t + iconography + content tone  
 - [ ] Ban list + a11y basics  
 - [ ] DESIGN.md ≤ ~200 lines or progressive disclosure for deep tables  
 - [ ] Tokens ready to paste into `index.html`  
 - [ ] Build step will **read** DESIGN.md before markup  
-- [ ] Next skill identified (ship-template or premium-site build)  
+- [ ] Next skill identified (ship-template or premium-site build → optional interface-craft)  

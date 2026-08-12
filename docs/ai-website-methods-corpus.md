@@ -1,8 +1,8 @@
 # AI website design & build methods — corpus
 
-Captured: **2026-08-05**  
+Captured: **2026-08-05** · Extended: **2026-08-12**  
 Seed post: [@bateshkaaa — agencies vs Claude, constraint pipeline](https://x.com/bateshkaaa/status/2079218516150862086)  
-Repo skills: `premium-site` · `anti-slop-frontend` · `design-system-first` · `ship-template`
+Repo skills: `premium-site` · `anti-slop-frontend` · `design-system-first` · `ship-template` · `interface-craft` · `clean-interface`
 
 This file indexes **similar X posts** about designing/building websites with AI coding agents (Claude Code, Cursor, etc.) so methods can be reused without re-researching the feed.
 
@@ -90,6 +90,49 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **Skill:** `design-system-first` (required sections + 7-mistake table)  
 - **Notes:** `docs/method-design-md-for-ai.md` · `.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`
 
+### 6c. UX Planet — 7 DESIGN.md tips (construction for consistency)
+
+- **URL:** https://freedium-mirror.cfd/uxplanet.org/7-design-md-tips-for-better-more-consistent-ai-generated-ui-b01736d07748  
+- **Method:** Exact values in token layer; Markdown = intent; token refs in components; explicit interaction states; concrete do/don’t; lint; diff when evolving. Best DESIGN.md = values + refs + rationale + hard constraints.  
+- **Skill:** `design-system-first`  
+- **Notes:** `references/method-design-md-7-ai-tips.md` · `docs/method-design-md-for-ai.md`
+
+### 6d. Anthropic official frontend-design skill
+
+- **URLs:** https://github.com/anthropics/skills/tree/main/skills/frontend-design · https://claude.com/blog/improving-frontend-design-through-skills · amplified on X (e.g. @mikeyk, community)  
+- **Method:** Plan (subject, tokens, layout, signature) → uniqueness critique → build; hero as thesis; type carries personality; copy as design material; avoid new AI-default clusters (cream+terracotta, acid-dark, broadsheet). Skills load domain context on demand.  
+- **Skill:** `design-system-first` (plan gate) · `anti-slop-frontend` (bans + copy)  
+- **Notes:** `references/src-anthropic-frontend-design.md`  
+- **Skip for this repo:** web-artifacts-builder / React+shadcn path (vanilla static only)
+
+### 6e. make-interfaces-feel-better (craft micro-audit)
+
+- **URL / repo:** https://github.com/jakubkrehel/make-interfaces-feel-better · discussed on X as UI craft / “feel better” skill  
+- **Method:** Concentric radii, optical alignment, hit areas, icon stroke, tabular-nums, motion restraint; quick/full review with severity tables.  
+- **Skill:** **`interface-craft`** (new)  
+- **Notes:** `.grok/skills/interface-craft/references/src-make-interfaces-feel-better.md`
+
+### 6f. Elaya landing-page-design (strategy half)
+
+- **URL:** https://x.com/elayadesigns/status/2082361627282940409 · https://github.com/elayadesign/ai-design-skills  
+- **Method:** Intake (one offer / audience / CTA), conversion structure, copy formulas, section order.  
+- **Skill:** `ship-template` §0 optional intake  
+- **Skip:** Part B visual monoculture (Geist-only, no gradients, mandatory tagline-reveal) — would homogenize the catalog
+
+### 6g. @jp AI-first landing workflow + design review loop
+
+- **URL:** https://x.com/jp/status/2061572962634121478  
+- **Method:** Interview → plan → prototype → design review skill → iterate; taste as moat.  
+- **Maps to:** multi-pass premium-site + interface-craft as the review step
+
+### 6h. UXRishi — clean SaaS landing (whitespace + product proof)
+
+- **URL:** https://x.com/UXRishi/status/2087364187643420869  
+- **Method:** Paper field, quiet nav, centered thesis, dual CTA, soft ambient glow *behind* product only, floating benefit chips, monochrome trust logos. Structure only — rebrand fully.  
+- **Skill:** **`clean-interface`**  
+- **Example ship:** `library/websites/quietly/`  
+- **Notes:** `.grok/skills/clean-interface/references/src-uxrishi-clean-saas.md`
+
 ### 7. Sam AI — goal-first brief (10-minute website)
 
 - **URL:** https://x.com/AIandTechh87/status/2038117959214788640  
@@ -135,7 +178,10 @@ This file indexes **similar X posts** about designing/building websites with AI 
 | @PrakashS720 / reposts | frontend-design skill hype | Aesthetic direction **first** (brutalist / editorial / luxury…), then code |
 | @NapierHolland | https://x.com/NapierHolland/status/2082042646290178243 | “Clean professional” is now table stakes; new bar = storytelling + human care signals |
 | @rammcodes | https://x.com/rammcodes/status/2082505017014227401 | Agentic UI skill packs (type/color/layout/a11y) — load **right** skill, not all |
-| @heynavtoor | https://x.com/heynavtoor/status/2034434718175997989 | ui-ux-pro-max: industry rules, palettes, font pairings, landing patterns |
+| @heynavtoor | https://x.com/heynavtoor/status/2034434718175997989 | ui-ux-pro-max: industry rules, palettes, font pairings, landing patterns — **optional starting point only**; can become a new template look |
+| @RodmanAi / company DESIGN.md packs | various | Structure of real-brand DESIGN.md catalogs — **study structure only**; never paste Apple/Linear systems into library items |
+| @Voxyz_ai | https://x.com/Voxyz_ai/status/2087178102505926740 | Refero style → design plan → uniqueness check → DESIGN.md → implement — aligns with design-system-first plan gate |
+| Multi-expert critique posts | e.g. @Bha74142Shivani | CD / CRO / type / trust lenses — optional premium-site role lenses |
 | @techxmanoj | https://x.com/techxmanoj/status/2032081359309820313 | Clone **conversion structure** of winning advertorials (DR beats), rebrand carefully — **not** for this showcase repo’s fiction policy without heavy rebrand |
 | @SuperDesignDev | https://x.com/SuperDesignDev/status/2077959240195751998 | One skill line difference: hierarchy + committed palette + empty/error states |
 
@@ -153,22 +199,27 @@ Many “8 Claude prompts for free premium website” clones (e.g. @AiWithIqra, @
 |------|-------------|
 | Full polish pipeline + versioned upgrades | `/premium-site` |
 | Kill AI-slop aesthetics at code time | `/anti-slop-frontend` |
-| Tokens / DS before HTML | `/design-system-first` |
+| Tokens / DS before HTML + plan uniqueness | `/design-system-first` |
 | Fix weak DESIGN.md (generic AI UI) | `/design-system-first` + `docs/method-design-md-for-ai.md` |
+| Micro “feel” after macro polish | `/interface-craft` |
+| Clean SaaS / whitespace / product-as-proof | `/clean-interface` |
 | From design URL → catalog template | `/ship-template` |
+| Conversion intake when ref is weak | `ship-template` §0 |
 | Human-readable overview | `docs/premium-site-method.md` + this corpus |
 
 ### Recommended agent order (skill routing)
 
 ```
-1. design-system-first   → tokens, type, palette, signature (or inherit from brief)
-2. anti-slop-frontend    → ban list + aesthetic commitment check
-3. ship-template OR premium-site Part 3  → build structure
-4. premium-site Part 4   → type-only → space-only → motion-only → mobile
-5. ship-template audit   → register, brand audit, HTTP 200
+1. design-system-first   → plan gate + tokens + DESIGN.md (or inherit from brief)
+2. anti-slop-frontend    → ban list + aesthetic commitment + copy craft
+3. clean-interface       → when soft clean SaaS / privacy product (optional)
+4. ship-template OR premium-site Part 3  → build structure
+5. premium-site Part 4   → type → space → motion → mobile (+ optional role lenses)
+6. interface-craft       → concentric radii, hit areas, icons, states (quick|full)
+7. ship-template audit   → register, brand audit, HTTP 200
 ```
 
-**Do not** load every design skill at once (typakon4).
+**Do not** load every design skill at once (typakon4). Do not vendor full third-party skill repos as submodules.
 
 ---
 

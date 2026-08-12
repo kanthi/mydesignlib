@@ -12,12 +12,13 @@ For agents, the canonical procedures are:
 | [`method-design-md-for-ai.md`](method-design-md-for-ai.md) | Write DESIGN.md agents can execute |
 | [`.grok/skills/ship-template/SKILL.md`](../.grok/skills/ship-template/SKILL.md) | Step-by-step ship procedure (also `/ship-template`) |
 | [`.grok/skills/design-system-first/SKILL.md`](../.grok/skills/design-system-first/SKILL.md) | Tokens + DESIGN.md before HTML (`/design-system-first`) |
+| [`.grok/skills/interface-craft/SKILL.md`](../.grok/skills/interface-craft/SKILL.md) | Micro feel audit after polish (`/interface-craft`) |
 
 ## Quick start (human or agent)
 
 1. Drop a design reference (X URL, screenshot, case study).
 2. Run the **ship-template** flow (or ask Grok to implement it).
-3. Preview: `python3 -m http.server 8080` → `http://127.0.0.1:8080/`.
+3. Preview via **Caddy** (already configured): `~/.config/mydesignlib-portal/serve.sh --url`.
 
 ## Pipeline (summary)
 
@@ -25,8 +26,10 @@ For agents, the canonical procedures are:
 Reference (X / video / site)
     → research + frames
     → fictional rebrand + free stack
-    → design-system-first (DESIGN.md + tokens) when cold
+    → design-system-first (plan + DESIGN.md + tokens) when cold
+    → anti-slop check
     → AI assets + HTML/CSS page
+    → premium-site polish (optional) → interface-craft (optional)
     → data/catalog.json (type: website)
     → brand audit + HTTP 200
     → done
@@ -41,7 +44,7 @@ Cold start / weak UI: write an executable **DESIGN.md** first — see [method-de
 4. **Noindex + GA** — every HTML page: robots noindex meta + gtag `G-Z97ZD3EVSF` (see OPERATIONS).
 5. **Register** — every item in `data/catalog.json` with a `type`.
 6. **Audit + verify** before calling a deliverable finished.
-7. **Push `main`** when the user wants it live — Pages deploys automatically.
+7. **Push `main`** when the user wants it live — Pages deploys when the workflow is enabled (see OPERATIONS § Pages paused if off).
 
 ## Folder contract
 
@@ -82,13 +85,16 @@ library/systems/<id>/
 Categories (industry) live in the `categories` array at the top of `data/catalog.json`.
 Types: `website` · `brand` · `logo` · `system`.
 
-## Local server
+## Local server (Caddy)
+
+Do **not** start `python3 -m http.server`. Use the machine Caddy portal:
 
 ```bash
-python3 -m http.server 8080
+~/.config/mydesignlib-portal/serve.sh --url   # base URL
+~/.config/mydesignlib-portal/serve.sh --bg    # if not already running
 ```
 
-Open `http://127.0.0.1:8080/` for the index, or `/library/websites/<id>/` for a single site.
+Open the printed base URL for the showcase index, or `/library/websites/<id>/` for a single site.
 
 ## Index app notes
 

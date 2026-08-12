@@ -15,7 +15,7 @@
     gtag('js', new Date());
     gtag('config', 'G-Z97ZD3EVSF');
   </script>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=device-preview-2" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>" />
 </head>
 <body>
@@ -49,8 +49,8 @@
         <h1 class="hero-title">Websites, brands &amp; marks</h1>
         <p class="hero-lead">
           A single collection of static design work — website templates, brand systems,
-          logos, and UI specimens. Filter by type, industry, or tag; open a preview from
-          <code>library/</code>.
+          logos, and UI specimens. Filter by type, industry, or tag; open a live preview
+          at mobile, tablet, or desktop width.
         </p>
         <div class="hero-meta" id="hero-stats" aria-live="polite">
           <span><strong id="stat-websites">—</strong> websites</span>
@@ -180,14 +180,91 @@
         <p class="modal-desc" id="modal-desc"></p>
         <div class="modal-tags" id="modal-tags"></div>
         <div class="modal-related" id="modal-related" hidden></div>
+
+        <div class="modal-device-block">
+          <p class="modal-device-label">Live preview</p>
+          <div class="device-switch device-switch-light" role="group" aria-label="Preview on device">
+            <button type="button" class="device-btn" data-open-device="mobile" title="Mobile · 390px">
+              Mobile
+            </button>
+            <button type="button" class="device-btn" data-open-device="tablet" title="Tablet · 768px">
+              Tablet
+            </button>
+            <button type="button" class="device-btn" data-open-device="desktop" title="Desktop · 1280px">
+              Desktop
+            </button>
+          </div>
+          <p class="modal-device-hint">Opens the live site in a resizable device frame</p>
+        </div>
+
         <div class="modal-actions">
-          <a class="btn btn-primary" id="modal-preview-btn" target="_blank" rel="noopener">Open preview</a>
-          <a class="btn btn-ghost" id="modal-source-btn" target="_blank" rel="noopener">Open folder</a>
+          <button type="button" class="btn btn-primary" id="modal-preview-btn" data-open-device="desktop">
+            Open live preview
+          </button>
+          <a class="btn btn-ghost" id="modal-source-btn" target="_blank" rel="noopener">Open full tab</a>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="js/app.js" defer></script>
+  <!-- Live device preview (mobile / tablet / desktop) -->
+  <div
+    class="device-preview"
+    id="device-preview"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="device-preview-title"
+  >
+    <div class="device-preview-bar">
+      <div class="device-preview-meta">
+        <p class="device-preview-title" id="device-preview-title">Preview</p>
+        <p class="device-preview-size" id="device-preview-size" aria-live="polite"></p>
+      </div>
+
+      <div class="device-switch" id="device-switch" role="toolbar" aria-label="Device size">
+        <button type="button" class="device-btn" data-device="mobile" aria-pressed="false" title="Mobile · 390px">
+          <span class="device-ico" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          </span>
+          Mobile
+        </button>
+        <button type="button" class="device-btn" data-device="tablet" aria-pressed="false" title="Tablet · 768px">
+          <span class="device-ico" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M10 18h4"/></svg>
+          </span>
+          Tablet
+        </button>
+        <button type="button" class="device-btn" data-device="desktop" aria-pressed="true" title="Desktop · 1280px">
+          <span class="device-ico" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+          </span>
+          Desktop
+        </button>
+      </div>
+
+      <div class="device-preview-actions">
+        <a class="btn btn-sm btn-ghost" id="device-open-tab" target="_blank" rel="noopener">Open tab</a>
+        <button type="button" class="btn btn-sm btn-primary" id="device-preview-close" data-close-device aria-label="Close preview">Close</button>
+      </div>
+    </div>
+
+    <div class="device-preview-stage" id="device-preview-stage">
+      <div class="device-frame" id="device-frame" data-device="desktop">
+        <div class="device-frame-chrome" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <span class="device-frame-url" id="device-frame-url"></span>
+        </div>
+        <iframe
+          id="device-iframe"
+          class="device-iframe"
+          title="Site preview"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=device-preview-2" defer></script>
 </body>
 </html>

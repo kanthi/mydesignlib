@@ -3,14 +3,48 @@ name: ship-template
 description: >
   End-to-end workflow to turn a design reference (X post, video, image, Framer/Webflow/case study)
   into a fictional-rebrand vanilla HTML/CSS/JS template in this repo, register it in
-  data/templates.json, brand-audit, and HTTP-verify. Use when the user pastes an X/Twitter URL,
+  data/catalog.json, brand-audit, and HTTP-verify. Use when the user pastes an X/Twitter URL,
   design screenshot, Framer link, or says ship template, new template, implement this design,
-  rebrand this site, or /ship-template.
+  rebrand this site, or /ship-template. Prefer design-system-first on cold starts; optional
+  conversion intake when the brief is weak.
 ---
 
 # Ship template from design reference
 
 Implement **one complete template per reference** unless asked otherwise. Follow project rules in root `AGENTS.md`.
+
+**Route:** design-system-first (cold) → anti-slop check → build → premium-site polish (optional) → interface-craft (optional) → register + audit + verify.
+
+## 0. Optional conversion intake (when reference is weak / goal is conversion)
+
+From [Elaya landing-page-design](https://github.com/elayadesign/ai-design-skills) Part A — strategy only. Skip if the reference already defines structure.
+
+Gather or assume (state assumptions in one line):
+
+| Field | Prompt |
+|-------|--------|
+| **One action** | Primary CTA (trial, demo, book, waitlist) |
+| **Offer** | Exactly what they get |
+| **Audience** | ICP + problem |
+| **Objections** | Top 1–3 reasons they don’t convert |
+| **Proof** | Metrics, testimonials, process (fictional OK) |
+| **Risk reversal** | Trial / cancel anytime / guarantee (fictional OK) |
+
+**Page spine** (marketing defaults — adapt to the reference; don’t force if art-direction rebrand needs different order):
+
+1. Hero — outcome hook, subhead, **one** primary CTA, one proof signal, visual  
+2. Problem → solution  
+3. Benefits / differentiators (not three equal AI cards unless the ref uses that)  
+4. How it works / process (number only if sequence is real)  
+5. Social proof / case  
+6. FAQ or objection handling (if conversion-heavy)  
+7. Final CTA (same verb as hero) + footer  
+
+**Copy rules:** benefit-first; specific numbers over “streamline”; CTAs = verb + outcome; no lorem; fictional brands only.
+
+**Repo SEO override:** always **noindex** + root `robots.txt` Disallow — never “optimize for discovery SEO” on library items.
+
+Cold start without a strong visual system → run `/design-system-first` (plan gate + DESIGN.md) before HTML.
 
 ## 1. Research the reference
 
@@ -40,14 +74,14 @@ Capture:
 Name checklist:
 
 ```bash
-rg -i '<candidate>' data/templates.json templates/ || echo "name free"
+rg -i '<candidate>' data/catalog.json library/ || echo "name free"
 ```
 
 Prefer short, memorable, non-colliding names. Dual wordmarks (e.g. Clay / Bank) are fine when the identity needs them.
 
 ## 3. Assets
 
-Create `templates/<id>/`.
+Create `library/websites/<id>/` (or `library/<type>/<id>/` for non-website items).
 
 Generate with `image_gen` (see **imagine** skill):
 
@@ -57,7 +91,7 @@ Generate with `image_gen` (see **imagine** skill):
 
 Prefer **HTML/CSS for UI chrome** (dashboards, pricing cards, stats, file lists) so text stays accurate. Use images for photography, texture, and abstract art.
 
-Copy generated files from the session `images/` folder into `templates/<id>/`.
+Copy generated files from the session `images/` folder into `library/websites/<id>/`.
 
 ## 4. Build `index.html`
 
@@ -90,30 +124,31 @@ Match the reference’s **structure and craft**, not its trademarks:
 
 Footer may say `Sample template` and use `@brand.example` contact.
 
-## 5. Register in `data/templates.json`
+## 5. Register in `data/catalog.json`
 
 Append (do not reorder the whole file casually):
 
 ```json
 {
   "id": "<id>",
+  "type": "website",
   "name": "<Display Name>",
   "description": "Short punchy summary — key visual beats.",
   "tags": ["tag1", "tag2", "tag3"],
   "category": "<ExistingCategory>",
-  "thumbnail": "templates/<id>/preview.jpg",
-  "path": "templates/<id>/",
+  "thumbnail": "library/websites/<id>/preview.jpg",
+  "path": "library/websites/<id>/",
   "featured": true,
   "date": "YYYY-MM-DD"
 }
 ```
 
-Use today’s date. Pick tags that help filtering (e.g. `saas`, `agency`, `monochrome`, `healthcare`). Category must already exist in the catalog `categories` array (or add carefully if a new vertical is intentional).
+Use today’s date. Pick tags that help filtering (e.g. `saas`, `agency`, `monochrome`, `healthcare`). Category must already exist in the catalog (or add carefully if a new vertical is intentional).
 
 ## 6. Brand audit
 
 ```bash
-rg -i 'ORIGINAL_BRAND|designerhandle|framer\.com|webflow\.io|realclient' templates/<id>/ || echo "brand audit: clean"
+rg -i 'ORIGINAL_BRAND|designerhandle|framer\.com|webflow\.io|realclient' library/websites/<id>/ || echo "brand audit: clean"
 ```
 
 Also scan for:
@@ -124,26 +159,33 @@ Also scan for:
 
 Fix any hits before calling done.
 
-## 7. HTTP verify
+## 7. Optional polish before finish
+
+- `/premium-site` Part 4 — type → space → motion → mobile  
+- `/interface-craft` — micro feel (radii, hit areas, icons, states)  
+
+## 8. HTTP verify
+
+Local site is served by **Caddy** (machine portal). Do **not** start `python3 -m http.server`.
 
 ```bash
-# from repo root — start server if needed
-python3 -m http.server 8080 &
-curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8080/templates/<id>/
-curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8080/templates/<id>/preview.jpg
-python3 -c "import json; d=json.load(open('data/templates.json')); print(len(d['templates']), d['templates'][-1]['id'])"
+BASE="$(~/.config/mydesignlib-portal/serve.sh --url | tr -d '[:space:]')"
+# if Caddy is down: ~/.config/mydesignlib-portal/serve.sh --bg
+curl -s -o /dev/null -w '%{http_code}\n' "${BASE}library/websites/<id>/"
+curl -s -o /dev/null -w '%{http_code}\n' "${BASE}library/websites/<id>/preview.jpg"
+python3 -c "import json; d=json.load(open('data/catalog.json')); print(len(d.get('items', d.get('templates', []))))"
 ```
 
-All critical paths must return **200**. JSON must parse; last entry should be the new id.
+All critical paths must return **200**. JSON must parse; new id present. See `docs/OPERATIONS.md` § Local preview.
 
-## 8. User summary
+## 9. User summary
 
 Keep it short:
 
 - **Brand** (original → fictional)
 - **What shipped** (section list)
-- **Catalog number** / category
-- **Preview URL** `http://127.0.0.1:8080/templates/<id>/`
+- **Catalog** / category
+- **Preview URL** — Caddy base from `serve.sh --url` + `library/websites/<id>/`
 
 ## Free library policy
 

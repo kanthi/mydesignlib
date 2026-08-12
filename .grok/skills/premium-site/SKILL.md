@@ -16,7 +16,7 @@ description: >
 
 Master index: `docs/ai-website-methods-corpus.md`  
 Primary: [@bateshkaaa constraint pipeline](https://x.com/bateshkaaa/status/2079218516150862086)  
-Also absorbed: Prajwal taste-first · CloudAI-X anti-slop · monokern DS handoff · 7-step framework · skill routing · Sam AI goal-first brief  
+Also absorbed: Prajwal taste-first · CloudAI-X anti-slop · monokern DS handoff · 7-step framework · skill routing · Sam AI goal-first brief · Anthropic frontend plan gate · multi-expert role lenses · interface-craft micro pass  
 
 Reference pack: `references/*.md`
 
@@ -27,9 +27,11 @@ Always respect root `AGENTS.md` (fictional rebrand, original assets, vanilla sta
 ## Skill routing (do not stack everything)
 
 ```
-design-system-first     → tokens / DESIGN (if cold start)
-anti-slop-frontend      → ban list + aesthetic commitment check
-premium-site Part 3–5   → build + polish + ship   OR  ship-template then Part 4
+design-system-first     → tokens / DESIGN + uniqueness plan (if cold start)
+anti-slop-frontend      → ban list + aesthetic commitment + copy craft
+premium-site Part 3–4   → build + polish   OR  ship-template then Part 4
+interface-craft         → micro feel audit (optional but recommended)
+premium-site Part 5     → ship (catalog, audit, HTTP)
 ```
 
 Calling every design skill at once averages contradictions ([skill-routing](references/skill-routing.md)).
@@ -47,7 +49,7 @@ Calling every design skill at once averages contradictions ([skill-routing](refe
 
 **Never overwrite** a shipped template when testing polish.
 
-1. Copy `templates/<id>/` → `templates/<id>-v1/`  
+1. Copy `library/websites/<id>/` → `library/websites/<id>-v1/`  
 2. Apply pipeline to **v1** only  
 3. Register (`id`: `<id>-v1`, name: `<Name> V1`)  
 4. Description: premium-site polish of `<id>`  
@@ -78,7 +80,7 @@ If no tokens exist, produce them first (`/design-system-first`). Otherwise inter
 
 #### Repo stack
 
-- `templates/<id>/index.html` + assets  
+- `library/websites/<id>/index.html` + assets  
 - Google Fonts / OFL  
 - CSS first; GSAP/Lenis only if motion-heavy  
 - `prefers-reduced-motion` when animating  
@@ -99,7 +101,7 @@ Adjectives fail. Screenshots / subject vernacular work.
 Audience: This site is for [specific buyer + context].
 The 1 action: Every section pushes toward [one CTA]. One primary CTA, repeated.
 References: [paths or aesthetic plan]. Do not copy layouts.
-Stack: Vanilla HTML/CSS/JS in templates/<id>/, static. No CMS.
+Stack: Vanilla HTML/CSS/JS in library/websites/<id>/, static. No CMS.
 Ban list: purple gradients, emoji icons, Inter/system as display, generic stock placeholders, centered-everything, real trademarks, scraped media.
 ```
 
@@ -136,13 +138,31 @@ Remove amateur credibility gaps: vague claims, broken contact, emoji icons, plac
 
 If user attaches a screenshot of a problem: fix that region only.
 
+### Optional — Role lenses (multi-expert critique)
+
+When stuck or aiming higher, run **one lens per pass** (do not average all at once):
+
+| Lens | Ask |
+|------|-----|
+| Typography | Hierarchy, pairing, measure, tracking — type only |
+| Breathing room | Section rhythm, cramped clusters — space only |
+| Motion purpose | What motion *explains* vs decorates |
+| Trust authenticity | Fake metrics, real-brand logos, vague claims |
+| Reference gap | What craft from refs is still missing (not layouts) |
+
+Maps to `references/seven-step-framework.md`.
+
+### Pass 6 — Craft (or run `/interface-craft`)
+
+Micro feel after macro polish: concentric radii, hit areas, icon weight, tabular-nums, press/focus states, no `transition: all`. Prefer the dedicated skill for structured quick/full review.
+
 ## Part 5 — Ship
 
 1. `preview.jpg` present  
-2. `data/templates.json` entry  
+2. `data/catalog.json` entry (`library/websites/<id>/` paths)  
 3. Brand audit  
 4. HTTP 200 on page + preview  
-5. Summary: audience, CTA, type/space/motion deltas, old vs v1 URLs when versioning  
+5. Summary: audience, CTA, type/space/motion/craft deltas, old vs v1 URLs when versioning  
 
 ## Design tokens (inject early)
 
@@ -193,6 +213,7 @@ If user attaches a screenshot of a problem: fix that region only.
 - [ ] Generous section rhythm  
 - [ ] Subtle motion + reduced-motion  
 - [ ] Trust sweep clean  
+- [ ] Craft pass or `/interface-craft` considered  
 - [ ] 375px usable  
 - [ ] Versioned path if upgrade  
 - [ ] Registered + audited + HTTP 200  

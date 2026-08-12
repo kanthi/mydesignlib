@@ -39,12 +39,20 @@ direction
 ## This repo route
 
 ```
-design-system-first   # semantic DESIGN.md + tokens; read file before build
-  → anti-slop-frontend (check)
+design-system-first   # plan gate + semantic DESIGN.md + tokens; read before build
+  → anti-slop-frontend (check + copy craft)
+  → clean-interface (when soft clean SaaS / product-as-proof)
   → ship-template | premium-site build
-  → premium-site polish (type → space → motion → mobile)
+  → premium-site polish (type → space → motion → mobile + optional role lenses)
+  → interface-craft (micro feel: radii, hit areas, icons, states)
   → brand audit + HTTP verify
 ```
 
-DESIGN.md quality (mood board vs executable spec):  
-`.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md` · `docs/method-design-md-for-ai.md`
+**Do not** load Anthropic frontend-design + ui-ux-pro-max + taste-skill + impeccable + anti-slop all at once — they are already distilled here.
+
+DESIGN.md quality:  
+- Mistakes: `design-system-first/references/method-design-md-7-ai-mistakes.md`  
+- Tips: `design-system-first/references/method-design-md-7-ai-tips.md`  
+- Human: `docs/method-design-md-for-ai.md`  
+
+Craft micro-audit: `.grok/skills/interface-craft/SKILL.md`
