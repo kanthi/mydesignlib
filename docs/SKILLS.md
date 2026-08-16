@@ -106,5 +106,6 @@ See **[method-design-md-for-ai.md](./method-design-md-for-ai.md)**.
 7. **Read** the file before writing UI  
 
 Tips: exact scales · intent prose · token refs · states · concrete do/don’t · lint · version/diff  
+Best practices: tokens as decisions · value → intent → boundaries · components compose tokens (not idle-only)  
 
 Agent: `/design-system-first` · craft after polish: `/interface-craft`

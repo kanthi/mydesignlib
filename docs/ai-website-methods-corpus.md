@@ -1,6 +1,6 @@
 # AI website design & build methods — corpus
 
-Captured: **2026-08-05** · Extended: **2026-08-12**  
+Captured: **2026-08-05** · Extended: **2026-08-16**  
 Seed post: [@bateshkaaa — agencies vs Claude, constraint pipeline](https://x.com/bateshkaaa/status/2079218516150862086)  
 Repo skills: `premium-site` · `anti-slop-frontend` · `design-system-first` · `ship-template` · `interface-craft` · `clean-interface`
 
@@ -96,6 +96,14 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **Method:** Exact values in token layer; Markdown = intent; token refs in components; explicit interaction states; concrete do/don’t; lint; diff when evolving. Best DESIGN.md = values + refs + rationale + hard constraints.  
 - **Skill:** `design-system-first`  
 - **Notes:** `references/method-design-md-7-ai-tips.md` · `docs/method-design-md-for-ai.md`
+
+### 6c2. UX Planet — DESIGN.md best practices (value → intent → constraints)
+
+- **URL:** https://freedium-mirror.cfd/uxplanet.org/design-md-best-practices-c00325e8b23a  
+- **Author:** Nick Babich (UX Planet, 17 Jun 2026) — third DESIGN.md piece after mistakes + tips  
+- **Method:** DESIGN.md tells the product’s visual story in three layers: (1) tokens are **role decisions** not swatch variables — audit unused/duplicate/misused; (2) each decision is raw value → intent → reasoning → **when/when-not**; (3) components **compose** those tokens and must specify default, hover, active, disabled, loading, focus — not idle-only. YAML = name + atomic tokens; Markdown = Brand & Style + token rules + components. Skip the article’s Inter + Deep Indigo demo.  
+- **Skill:** `design-system-first` (3 writing rules)  
+- **Notes:** `.grok/skills/design-system-first/references/method-design-md-best-practices.md` · `docs/method-design-md-for-ai.md`
 
 ### 6d. Anthropic official frontend-design skill
 

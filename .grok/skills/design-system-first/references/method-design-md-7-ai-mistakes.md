@@ -270,3 +270,8 @@ For a **single marketing page** in this library, a compact form is enough (see s
 - Breakpoints as bare numbers with no layout change  
 - DESIGN.md written but never opened mid-build  
 - 1,000-line dump of repeated principles  
+
+## Related
+
+- Tips (construction): `method-design-md-7-ai-tips.md`  
+- Best practices (3 writing rules): `method-design-md-best-practices.md`  

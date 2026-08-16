@@ -55,4 +55,5 @@ Marketing compact form may omit multi-theme tables; keep components + do/don’t
 ## Related
 
 - Mistakes checklist: `method-design-md-7-ai-mistakes.md`  
+- Best practices (3 writing rules): `method-design-md-best-practices.md`  
 - Anthropic plan gate: `src-anthropic-frontend-design.md`  

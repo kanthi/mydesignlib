@@ -3,13 +3,14 @@
 **Filename scheme:** `method-<topic>.md` — human-readable build methods (see [SKILLS.md](./SKILLS.md)).
 
 **Agent skill:** [`/design-system-first`](../.grok/skills/design-system-first/SKILL.md)  
-**Full source notes:** [`.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`](../.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md)
+**Full source notes:** [`.grok/skills/design-system-first/references/`](../.grok/skills/design-system-first/references/) (`method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md` · `method-design-md-best-practices.md`)
 
 **Source articles:**  
 - Mistakes (captured 2026-08-08): https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd  
 - Tips (captured 2026-08-12): https://freedium-mirror.cfd/uxplanet.org/7-design-md-tips-for-better-more-consistent-ai-generated-ui-b01736d07748  
+- Best practices (captured 2026-08-16): https://freedium-mirror.cfd/uxplanet.org/design-md-best-practices-c00325e8b23a  
 
-Skill refs: `method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md`
+Skill refs: `method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md` · `method-design-md-best-practices.md`
 
 ---
 
@@ -19,7 +20,7 @@ Writing a `DESIGN.md` and pointing an agent at it often yields only a small impr
 
 **Rule:** DESIGN.md must encode *decisions an agent would otherwise guess wrong* — then it must be **read before UI work** (filename alone does not load context).
 
-Pair: **mistakes** = quality audit · **tips** = how to construct (exact values, token refs, states, lint/diff).
+Pair: **mistakes** = quality audit · **tips** = how to construct (exact values, token refs, states, lint/diff) · **best practices** = write each token as a decision (value → intent → reasoning → boundaries) and assemble components from those decisions.
 
 ---
 
@@ -46,12 +47,28 @@ Pair: **mistakes** = quality audit · **tips** = how to construct (exact values,
 | 1 | Exact values for scales | Spacing, radii, type roles with size/weight/leading |
 | 2 | Markdown body = intent | Why/when to use each token |
 | 3 | Token refs in components | Components point at named tokens, not duplicated hex |
-| 4 | Interaction states | Hover / focus / disabled for interactive chrome |
+| 4 | Interaction states | Hover / focus / disabled for interactive chrome; active / loading when the UI has them |
 | 5 | Concrete do/don’t | Operational constraints with token names |
 | 6 | Lint when schema-friendly | `npx @google/design.md lint …` |
 | 7 | Diff / version when evolving | `-v1` folders + optional design.md diff |
 
 **Runtime SoT in this repo:** CSS `:root` in `index.html`. Optional YAML only if linting.
+
+---
+
+## 3 writing rules (best practices)
+
+Nick Babich / UX Planet synthesis (Jun 2026). Use while *authoring* each token and component — not as a substitute for the two checklists above.
+
+| # | Rule | Practice |
+|---|------|----------|
+| 1 | Tokens are **decisions**, not variables | Role names (`action-primary`, `surface-page`, `text-muted`, `radius-card`). Audit and delete unused, duplicate, and misused tokens. Agents assume meaning from the name — never `blue` / `gray-1`. |
+| 2 | Decisions need **reasoning + boundaries** | Chain: raw value → intent (role) → why/how → **when / when not**. The “do not use for large backgrounds / decoration” clause is what stops accent flood. |
+| 3 | Components **compose** tokens | No re-copied hex. Default + hover + focus + disabled; add active / loading when the UI has those states. |
+
+> DESIGN.md should tell a story of the product: Brand & Style → token rules → components.
+
+Do **not** adopt the article’s demo system (Inter + Deep Indigo / “Roxy Tech Modernism”).
 
 ---
 

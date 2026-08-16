@@ -4,7 +4,7 @@ description: >
   Establish taste and a concrete design system (semantic tokens, type, palette, radii,
   elevation, components, responsive behaviour, motion/icons/content) before writing page
   HTML. Use when the user says design system first, taste-first, tokens before code,
-  DESIGN.md, design.md mistakes, design.md tips, extract design system from references,
+  DESIGN.md, design.md mistakes, design.md tips, design.md best practices, extract design system from references,
   Claude Design handoff, uniqueness plan, stop AI template look at the source, or
   /design-system-first. Run before ship-template or premium-site builds; complements
   anti-slop-frontend and interface-craft.
@@ -20,6 +20,7 @@ Synthesized from:
 - **Anthropic frontend-design** (plan → uniqueness critique → build): [skill](https://github.com/anthropics/skills/tree/main/skills/frontend-design) · [blog](https://claude.com/blog/improving-frontend-design-through-skills) → `references/src-anthropic-frontend-design.md`  
 - **DESIGN.md anti-mistakes** (UX Planet): [mirror](https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd) → `references/method-design-md-7-ai-mistakes.md`  
 - **DESIGN.md tips** (values, refs, states, lint/diff): [mirror](https://freedium-mirror.cfd/uxplanet.org/7-design-md-tips-for-better-more-consistent-ai-generated-ui-b01736d07748) → `references/method-design-md-7-ai-tips.md`  
+- **DESIGN.md best practices** (tokens as decisions; value → intent → constraints; components from tokens): [mirror](https://freedium-mirror.cfd/uxplanet.org/design-md-best-practices-c00325e8b23a) → `references/method-design-md-best-practices.md`  
 - Human doc: [`docs/method-design-md-for-ai.md`](../../../docs/method-design-md-for-ai.md)  
 - Notes: `../premium-site/references/prajwal-taste-first.md`, `monokern-design-system.md`
 
@@ -33,7 +34,7 @@ Synthesized from:
 | Versioned polish of existing template | Re-derive system from subject; don’t only tweak CSS ad hoc |
 | User pasted 1–3 reference images/URLs | Extract system; **do not copy layouts/brands** |
 | Agent about to freehand a landing | Interrupt: run this skill first |
-| “We have a DESIGN.md but UI still looks generic” | Audit against **7 mistakes** + **7 tips** below; rewrite weak sections |
+| “We have a DESIGN.md but UI still looks generic” | Audit against **7 mistakes** + **7 tips** + **3 writing rules** below; rewrite weak sections |
 
 ## Pipeline
 
@@ -103,6 +104,16 @@ Also emit matching CSS `:root` tokens in `index.html` (or shared CSS).
 
 **Runtime SoT:** CSS `:root` in `index.html` is implementable truth; DESIGN.md is agent-readable roles + usage. Optional YAML frontmatter only if you need the Google CLI.
 
+#### 3 writing rules (author each token / component)
+
+From UX Planet *DESIGN.md Best Practices* — write the story: Brand & Style → token rules → components. Do not copy the article’s Inter + indigo demo.
+
+| # | Rule | Practice here |
+|---|------|----------------|
+| 1 | **Tokens are decisions** | Role names only. Audit and delete unused, duplicate, and misused tokens. Agents read meaning from the name. |
+| 2 | **Value → intent → reasoning → boundaries** | Every important token needs *when* and *when not* (e.g. accent never as a full-bleed background). |
+| 3 | **Components compose tokens** | Reference token names, don’t re-copy hex. States: default / hover / focus / disabled; add active / loading when the UI has them. |
+
 #### Required template (marketing site — compact)
 
 ```markdown
@@ -157,7 +168,7 @@ Also emit matching CSS `:root` tokens in `index.html` (or shared CSS).
 ## Components (by frequency — be precise here; reference tokens by name)
 ### Buttons
 - Primary: one per view; bg `{action-primary}`; radius `{radius-pill|radius}`; type `{label}`
-- States: hover / focus / disabled (or pressed) — don’t leave idle-only
+- States: default / hover / focus / disabled (or pressed); add active / loading if the UI has them — don’t leave idle-only
 - Secondary: border/ghost; never for destructive confirm
 - Destructive (if any): status-danger; verb label (“Delete …”), not “Confirm”
 ### Nav
@@ -279,7 +290,7 @@ Never overwrite a shipped catalog folder when experimenting.
 - [ ] Overview: emotion + *create this feeling through* rules (not adjectives alone)  
 - [ ] Audience + single CTA  
 - [ ] One aesthetic name + signature element  
-- [ ] Semantic colors (4–8) + usage bullets  
+- [ ] Semantic colors (4–8) + usage **and** when-not boundaries; dead/dupe tokens cut  
 - [ ] Type **roles** (size/weight/leading), not family alone  
 - [ ] Spacing scale vocabulary + motion tokens  
 - [ ] Layout behaviour for compact / medium / expanded  
