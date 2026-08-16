@@ -130,8 +130,7 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **URL:** https://x.com/UXRishi/status/2087364187643420869  
 - **Method:** Paper field, quiet nav, centered thesis, dual CTA, soft ambient glow *behind* product only, floating benefit chips, monochrome trust logos. Structure only — rebrand fully.  
 - **Skill:** **`clean-interface`**  
-- **Example ship:** `library/websites/quietly/`  
-- **Notes:** `.grok/skills/clean-interface/references/src-uxrishi-clean-saas.md`
+- **Notes:** `.grok/skills/clean-interface/references/src-uxrishi-clean-saas.md`. Former example ship Quietly was culled as AI-default clean SaaS — see `docs/removed-ai-slop-templates.md`.
 
 ### 7. Sam AI — goal-first brief (10-minute website)
 

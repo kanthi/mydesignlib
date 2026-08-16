@@ -200,10 +200,11 @@ Do not introduce a bundler or npm app for a single landing page.
 
 ## Quality bar (recent examples)
 
-- **Respondra** — conversion lessons in the reference (hero outcome, proof up top, single CTA, form next to logos)
 - **Noirline** — monochrome agency completeness (process, work, case, pricing, wordmark footer)
-- **Ovara** — ultra-clean healthcare OS; widgets as HTML not baked text in images
 - **Claybank** — identity system (palette, dual wordmark, pattern device) as well as marketing sections
+- **Claret** — editorial commerce with a committed red system, not a generic product grid
+
+Do **not** cite culled AI-slop items (Respondra, Ovara, Nordwerk, Quietly, Fieldnote, Brevant v1/v2, …) as the bar — see `docs/removed-ai-slop-templates.md`.
 
 Ship at that level of finish: not a thin hero-only stub.
 

@@ -44,6 +44,7 @@ Hosting / deploy: [`OPERATIONS.md`](./OPERATIONS.md).
 | [method-design-md-for-ai.md](./method-design-md-for-ai.md) | DESIGN.md that agents can execute (7 mistakes + 7 tips) |
 | [ai-website-methods-corpus.md](./ai-website-methods-corpus.md) | Index of X/community methods folded into skills |
 | [OPERATIONS.md](./OPERATIONS.md) | Pages, privacy, GA, deploy smoke checks |
+| [removed-ai-slop-templates.md](./removed-ai-slop-templates.md) | Culled items + why they failed the taste bar |
 | **SKILLS.md** (this file) | Skills map + **filename naming scheme** |
 
 ---

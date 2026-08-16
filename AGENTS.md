@@ -8,7 +8,7 @@ Former repo name: **mytemplate** (same product).
 
 ## Product rules (always)
 
-1. **Fictional rebrands only.** Never ship real brand names, logos, trademarks, client identities, or lookalike lockups from the reference. Invent a new brand (e.g. Nelta → Nordwerk, Solén → Noirline, Bohemian Research → Respondra, wawa → Ovara, River House → Claybank).
+1. **Fictional rebrands only.** Never ship real brand names, logos, trademarks, client identities, or lookalike lockups from the reference. Invent a new brand (e.g. Solén → Noirline, River House → Claybank).
 2. **Original assets only.** Use AI-generated images (`image_gen` / `image_edit`) or pure CSS/SVG/HTML UI mockups. Do not scrape client work, stock with visible watermarks, or copy proprietary media from the reference.
 3. **Vanilla static for GitHub Pages.** One self-contained folder per item under `library/<type>/<id>/` (e.g. `library/websites/<id>/index.html` + assets). No React/Vite/Next unless a free open stack is explicitly justified (rare). Prefer free libraries when the original used proprietary tools (Framer → GSAP/CSS/Three.js/Lenis as needed). Relative paths only (site is served under `/mydesignlib/`).
 4. **No search indexing.** Site is personal / private-by-convention. Keep root `robots.txt` as `Disallow: /`. Every HTML page (showcase + library items) must include:
@@ -62,7 +62,7 @@ Use an existing category from `data/catalog.json` when possible:
 
 ## Naming
 
-- Folder `id`: lowercase kebab or single word (`noirline`, `claybank`, `respondra`).
+- Folder `id`: lowercase kebab or single word (`noirline`, `claybank`, `claret`).
 - Display `name`: title case brand.
 - Check `data/catalog.json` and `library/` for collisions before committing a name.
 

@@ -140,4 +140,4 @@ Uniqueness check: if the plan is only “white + purple + 3 cards,” revise (di
 - `/anti-slop-frontend` — ban list  
 - `/premium-site` — type/space polish passes  
 - `/interface-craft` — micro feel  
-- Example ship: `library/websites/quietly/`  
+- Former example ship Quietly was culled (clean-SaaS AI default) — `docs/removed-ai-slop-templates.md`

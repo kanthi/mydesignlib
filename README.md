@@ -19,7 +19,8 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 │   ├── TEMPLATE_WORKFLOW.md       # Human-readable template pipeline
 │   ├── method-design-md-for-ai.md # DESIGN.md that agents can execute
 │   ├── premium-site-method.md     # Premium polish method
-│   └── ai-website-methods-corpus.md
+│   ├── ai-website-methods-corpus.md
+│   └── removed-ai-slop-templates.md  # culled items + why
 ├── .grok/skills/                  # Agent skills (/ship-template, …)
 ├── .github/workflows/pages.yml    # GitHub Pages deploy (Node 24)
 ├── robots.txt                     # Disallow all crawlers
@@ -51,6 +52,7 @@ Each library folder is self-contained (`index.html` / assets + `preview.jpg` as 
 | Clean SaaS / whitespace / product-as-proof | `/clean-interface` |
 | Micro craft (feel / radii / hit areas) | `/interface-craft` |
 | X methods corpus | [docs/ai-website-methods-corpus.md](docs/ai-website-methods-corpus.md) |
+| Culled AI-slop templates (why they failed) | [docs/removed-ai-slop-templates.md](docs/removed-ai-slop-templates.md) |
 | Agent hard rules | **[AGENTS.md](AGENTS.md)** |
 
 ### Doc & skill filename scheme (short)

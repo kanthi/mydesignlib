@@ -21,9 +21,9 @@
 
 ## What we rebranded as
 
-- Fictional brand **Quietly** (`library/websites/quietly/`)  
-- Soft indigo accent kept as *product vernacular* for privacy analytics, not generic AI purple mesh  
-- All copy, logos, metrics fictional  
+- Fictional brand **Quietly** was the first catalog ship of this structure; **culled** as the clean-SaaS AI default (`docs/removed-ai-slop-templates.md`). Keep the structure notes; do not treat Quietly as a quality example.  
+- Soft indigo as *product vernacular* for privacy analytics, not generic AI purple mesh  
+- All copy, logos, metrics fictional when rebuilding this direction  
 
 ## Skill absorption
 
