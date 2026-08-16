@@ -20,9 +20,36 @@
   const TYPE_ORDER = ["all", "website", "brand", "logo", "system"];
 
   const DEVICES = {
-    mobile: { label: "Mobile", width: 390, hint: "≈ iPhone" },
-    tablet: { label: "Tablet", width: 768, hint: "≈ iPad portrait" },
-    desktop: { label: "Desktop", width: 1280, hint: "wide layout" },
+    mobile: {
+      label: "Phone",
+      width: 390,
+      height: 844,
+      padX: 10,
+      padTop: 10,
+      padBot: 10,
+      stand: 0,
+      hint: "outline",
+    },
+    tablet: {
+      label: "Tablet",
+      width: 768,
+      height: 1024,
+      padX: 12,
+      padTop: 12,
+      padBot: 12,
+      stand: 0,
+      hint: "outline",
+    },
+    desktop: {
+      label: "Display",
+      width: 1280,
+      height: 800,
+      padX: 12,
+      padTop: 12,
+      padBot: 12,
+      stand: 145,
+      hint: "monitor",
+    },
   };
 
   const state = {
@@ -71,6 +98,8 @@
     deviceTitle: document.getElementById("device-preview-title"),
     deviceSize: document.getElementById("device-preview-size"),
     deviceFrame: document.getElementById("device-frame"),
+    deviceSlot: document.getElementById("device-slot"),
+    deviceStage: document.getElementById("device-preview-stage"),
     deviceIframe: document.getElementById("device-iframe"),
     deviceOpenTab: document.getElementById("device-open-tab"),
     deviceClose: document.getElementById("device-preview-close"),
@@ -115,6 +144,9 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.catalog = await res.json();
       renderAll();
+      const q = new URLSearchParams(location.search);
+      const previewId = q.get("preview");
+      if (previewId) openDevicePreview(previewId, q.get("device") || "desktop");
     } catch (err) {
       console.error(err);
       els.grid.innerHTML = `
@@ -591,9 +623,6 @@
     if (els.deviceTitle) els.deviceTitle.textContent = t.name;
     if (els.deviceOpenTab) els.deviceOpenTab.href = t.path;
 
-    const frameUrl = document.getElementById("device-frame-url");
-    if (frameUrl) frameUrl.textContent = t.path;
-
     // Always set src so reopening works after about:blank
     els.deviceIframe.src = url;
 
@@ -603,7 +632,10 @@
     els.devicePreview.classList.add("is-open");
     els.devicePreview.setAttribute("aria-hidden", "false");
     document.body.classList.add("device-preview-open");
-    // Prefer focusing the active device control so the switcher is obvious
+    requestAnimationFrame(() => {
+      fitDevice();
+      requestAnimationFrame(fitDevice);
+    });
     els.devicePreview
       .querySelector(`.device-btn[data-device="${state.device}"]`)
       ?.focus();
@@ -628,6 +660,8 @@
 
     if (els.deviceFrame) {
       els.deviceFrame.dataset.device = device;
+      els.deviceFrame.style.setProperty("--screen-w", `${conf.width}px`);
+      els.deviceFrame.style.setProperty("--screen-h", `${conf.height}px`);
     }
 
     const switcher = document.getElementById("device-switch");
@@ -638,8 +672,37 @@
     });
 
     if (els.deviceSize) {
-      els.deviceSize.textContent = `${conf.label} · ${conf.width}px wide · ${conf.hint}`;
+      els.deviceSize.textContent = `${conf.label} · ${conf.width}×${conf.height}`;
     }
+
+    fitDevice();
+  }
+
+  function hardwareSize(conf) {
+    return {
+      w: conf.width + (conf.padX || 0) * 2,
+      h: conf.height + (conf.padTop || 0) + (conf.padBot || 0) + (conf.stand || 0),
+    };
+  }
+
+  function fitDevice() {
+    const stage = els.deviceStage;
+    const frame = els.deviceFrame;
+    const slot = els.deviceSlot;
+    if (!stage || !frame || !slot || els.devicePreview?.hidden) return;
+
+    const conf = DEVICES[state.device] || DEVICES.desktop;
+    const hw = hardwareSize(conf);
+    const pad = 48;
+    const availW = Math.max(120, stage.clientWidth - pad);
+    const availH = Math.max(160, stage.clientHeight - pad);
+    const scale = Math.min(1, availW / hw.w, availH / hw.h);
+
+    frame.style.width = `${hw.w}px`;
+    frame.style.height = `${hw.h}px`;
+    frame.style.transform = `scale(${scale})`;
+    slot.style.width = `${hw.w * scale}px`;
+    slot.style.height = `${hw.h * scale}px`;
   }
 
   /* ---------- Events ---------- */
@@ -762,6 +825,12 @@
         if (id) openDevicePreview(id, device);
       }
     });
+
+    if (els.deviceStage && typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => fitDevice());
+      ro.observe(els.deviceStage);
+    }
+    window.addEventListener("resize", fitDevice);
 
     els.devicePreview?.addEventListener("click", (e) => {
       if (e.target.closest("[data-close-device]")) {
