@@ -40,6 +40,16 @@
       stand: 0,
       hint: "outline",
     },
+    laptop: {
+      label: "Laptop",
+      width: 1440,
+      height: 900,
+      padX: 10,
+      padTop: 10,
+      padBot: 16,
+      stand: 128,
+      hint: "laptop",
+    },
     desktop: {
       label: "Display",
       width: 1280,
@@ -477,7 +487,7 @@
                 data-device-preview
                 data-device="desktop"
                 data-id="${escapeAttr(t.id)}"
-                title="Live preview · mobile / tablet / desktop"
+                title="Live preview · phone / tablet / laptop / display"
               >Live preview</button>
               <button type="button" class="btn btn-sm btn-ghost" data-details data-id="${escapeAttr(t.id)}">
                 Details

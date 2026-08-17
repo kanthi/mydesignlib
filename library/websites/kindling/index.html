@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <title>Kindling — Design that starts heat</title>
+  <meta name="description" content="Fictional digital studio. Sites, apps, and campaigns for brands that need to move. Sample template." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Sora", system-ui, sans-serif;
+      --font-body: "Figtree", system-ui, sans-serif;
+      --font-label: "IBM Plex Mono", ui-monospace, monospace;
+      --surface-page: #f7f5f2;
+      --surface-ink: #141210;
+      --text-primary: #171513;
+      --text-on-heat: #f6efe6;
+      --text-secondary: #6b6560;
+      --border-default: #e4dfd8;
+      --action-primary: #e24a1a;
+      --text-display: clamp(3.4rem, 8vw, 6.6rem);
+      --text-3xl: clamp(2rem, 4vw, 2.8rem);
+      --wrap: min(1120px, 100% - 2.4rem);
+      --radius: 12px;
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--text-primary);
+      background: var(--surface-page);
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .skip { position: absolute; left: -999px; }
+    .skip:focus { left: 1rem; top: 1rem; z-index: 40; background: #fff; padding: .4rem .7rem; }
+    .label { font-family: var(--font-label); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.04em; margin: 0; }
+    h1 { font-size: var(--text-display); line-height: 0.92; }
+    h2 { font-size: var(--text-3xl); line-height: 1.12; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0 1.15rem; border: 0; border-radius: var(--radius-pill);
+      font-family: var(--font-label); font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none; cursor: pointer;
+      background: var(--action-primary); color: var(--text-on-heat);
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+
+    .hero-shell { padding: 0.7rem 0.7rem 0; }
+    .hero {
+      position: relative;
+      min-height: calc(100svh - 0.7rem);
+      border-radius: var(--radius);
+      overflow: hidden;
+      color: var(--text-on-heat);
+      background: #3a1408 url("hero.jpg") center / cover no-repeat;
+    }
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(20,10,4,0.25) 0%, rgba(60,18,6,0.35) 50%, rgba(30,8,2,0.55) 100%);
+      pointer-events: none;
+    }
+    .hero-top, .hero-mid, .hero-bot { position: relative; z-index: 1; }
+    .hero-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 1.1rem 1.3rem;
+    }
+    .clock { line-height: 1.4; opacity: 0.9; }
+    .word {
+      font-family: var(--font-display); font-weight: 700; letter-spacing: 0.08em;
+      text-decoration: none; font-size: 0.82rem;
+    }
+    .word i { font-style: normal; color: var(--action-primary); }
+    .menu {
+      width: 40px; height: 40px; border: 0; background: transparent; color: inherit; cursor: pointer;
+    }
+    .menu span, .menu span::before, .menu span::after {
+      display: block; width: 18px; height: 1.5px; background: currentColor; position: relative;
+    }
+    .menu span::before, .menu span::after { content: ""; position: absolute; left: 0; }
+    .menu span::before { top: -6px; }
+    .menu span::after { top: 6px; }
+    .nav-panel {
+      display: none; position: absolute; top: 3.6rem; right: 1rem; z-index: 3;
+      background: rgba(20,18,16,0.92); border-radius: 12px; padding: 0.8rem 1rem;
+      min-width: 11rem;
+    }
+    .nav-panel.is-open { display: grid; gap: 0.55rem; }
+    .nav-panel a { text-decoration: none; font-size: 0.92rem; }
+    .badge {
+      position: absolute; top: 0; left: 50%; transform: translate(-50%, -40%);
+      z-index: 2; background: #1a1a1a; color: #fff; border-radius: var(--radius-pill);
+      padding: 0.28rem 0.7rem; font-size: 0.62rem;
+    }
+    .badge::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3dce6a; margin-right: 0.4rem; vertical-align: 1px; }
+    .hero-mid { padding: 6vh 6vw 2rem; max-width: 52rem; }
+    .lede { max-width: 22rem; opacity: 0.92; }
+    .heat { color: var(--action-primary); }
+    .year { display: inline-block; margin-top: 1rem; border: 1px solid rgba(246,239,230,0.35); padding: 0.25rem 0.5rem; border-radius: 4px; }
+    .hero-bot { padding: 0 6vw 2rem; display: flex; justify-content: flex-end; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; max-width: 22rem; justify-content: flex-end; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.75rem; border-radius: var(--radius-pill);
+      background: rgba(246,239,230,0.12); border: 1px solid rgba(246,239,230,0.22);
+      font-size: 0.82rem; backdrop-filter: blur(8px);
+    }
+
+    .rail {
+      display: flex; overflow: hidden; border-bottom: 1px solid var(--border-default);
+      background: #fff;
+    }
+    .rail-track {
+      display: flex; gap: 0; animation: rail 28s linear infinite; min-width: max-content;
+    }
+    .rail span {
+      flex: 0 0 auto; padding: 1.15rem 2.2rem; border-right: 1px solid var(--border-default);
+      font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; font-size: 1.05rem;
+      color: #8a847c;
+    }
+    @keyframes rail { to { transform: translateX(-50%); } }
+
+    .band { padding: clamp(4.5rem, 9vw, 7.5rem) 0; }
+    .about-k { color: var(--text-secondary); margin: 0 0 1.2rem; }
+    .about-copy { max-width: 38rem; margin-inline: auto; text-align: center; }
+    .about-copy p { color: var(--text-secondary); }
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      margin-top: 3.2rem; text-align: center;
+    }
+    .stats b { display: block; font-family: var(--font-display); font-size: clamp(2.6rem, 6vw, 4rem); letter-spacing: -0.05em; }
+    .stats p { margin: 0.4rem 0 0; color: var(--text-secondary); font-size: 0.92rem; }
+    .stats article { padding-top: 1rem; border-top: 1px dashed var(--border-default); }
+
+    .work-head { text-align: center; margin-bottom: 2rem; }
+    .cases { display: grid; gap: 1.1rem; }
+    .case {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 1.4rem; align-items: center;
+      background: #1b1a18; color: var(--text-on-heat); border-radius: 16px; padding: 1.4rem;
+    }
+    .case h3 { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .case p { color: #c4bdb4; margin: 0 0 0.8rem; }
+    .case img { border-radius: 10px; width: 100%; height: 220px; object-fit: cover; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag { border: 1px solid rgba(246,239,230,0.2); border-radius: 999px; padding: 0.2rem 0.55rem; font-size: 0.72rem; }
+
+    .night { background: var(--surface-ink); color: var(--text-on-heat); }
+    .night h2 { margin-bottom: 1.6rem; }
+    .svc {
+      border-top: 1px solid #2a2724; padding: 1.3rem 0;
+    }
+    .svc summary {
+      list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-display); font-size: 1.45rem; letter-spacing: -0.03em;
+    }
+    .svc summary::-webkit-details-marker { display: none; }
+    .svc p { color: #b7b0a8; max-width: 36rem; }
+    .svc-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 1rem; }
+    .svc-photos img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; }
+
+    .cta { text-align: center; }
+    footer.site {
+      display: flex; justify-content: space-between; gap: 1rem;
+      padding: 1.4rem 0 2rem; font-family: var(--font-label); font-size: 0.68rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+    }
+
+    @media (max-width: 720px) {
+      .hero-mid { padding-top: 12vh; }
+      .hero-bot { justify-content: flex-start; }
+      .chips { justify-content: flex-start; }
+      .stats, .case, .svc-photos { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rail-track { animation: none; }
+      .chip { backdrop-filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#about">Skip to content</a>
+
+  <div class="hero-shell">
+    <header class="hero" id="top">
+      <p class="badge label">Available for new projects</p>
+      <div class="hero-top">
+        <p class="clock label">Kiln City<br><span id="clock">09:21 AM</span></p>
+        <a class="word" href="#top">KINDL<i>ING</i></a>
+        <button class="menu" type="button" aria-expanded="false" aria-controls="nav" id="menu"><span></span></button>
+      </div>
+      <nav class="nav-panel" id="nav">
+        <a href="#about">Studio</a>
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="mailto:hello@kindling.example">Start a project</a>
+      </nav>
+      <div class="hero-mid">
+        <p class="lede">We make sites, apps, and campaigns that actually change what a brand can do next.</p>
+        <h1>Design that<br>starts <span class="heat">heat</span></h1>
+        <p class="year label">© 20–26</p>
+      </div>
+      <div class="hero-bot">
+        <div>
+          <p class="label" style="text-align:right;margin:0 0 .5rem;opacity:.75">As a studio we ship</p>
+          <div class="chips">
+            <span class="chip">Branding</span>
+            <span class="chip">Website design</span>
+            <span class="chip">Web application</span>
+            <span class="chip">Mobile app</span>
+            <span class="chip">Illustration</span>
+            <span class="chip">Icon systems</span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="rail" aria-hidden="true">
+    <div class="rail-track">
+      <span>kite</span><span>northspin</span><span>goldfoil</span><span>tide</span><span>marrow</span><span>loomcast</span>
+      <span>kite</span><span>northspin</span><span>goldfoil</span><span>tide</span><span>marrow</span><span>loomcast</span>
+    </div>
+  </div>
+
+  <main>
+    <section class="band" id="about">
+      <div class="wrap about-copy">
+        <p class="about-k label">01 · About Kindling</p>
+        <h2>Sites, products, and campaigns that give a brand something to stand on.</h2>
+        <p>One bench. Design and build in the same room. We stay on the work until it is live, not until the deck looks finished.</p>
+        <div class="stats">
+          <article><b>24+</b><strong>Sites launched</strong><p>Brands that needed a surface, not a slogan.</p></article>
+          <article><b>3.7M+</b><strong>People reached</strong><p>Work that had to survive outside the studio.</p></article>
+          <article><b>94%</b><strong>Still with us</strong><p>Partnerships that outlast the first launch.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="work" style="padding-top:0">
+      <div class="wrap">
+        <div class="work-head">
+          <p class="label">02 · Featured work</p>
+          <h2>Recent heat</h2>
+        </div>
+        <div class="cases">
+          <article class="case">
+            <div>
+              <p class="label">01</p>
+              <h3>Northspin</h3>
+              <p>A cycling house that needed a shop as sharp as the kit. Site, lookbook, and a cart that does not apologise.</p>
+              <div class="tags"><span class="tag">Brand</span><span class="tag">Commerce</span></div>
+            </div>
+            <img src="work-northspin.jpg" alt="Cyclist in a dark skinsuit on a studio bike" width="800" height="600" />
+          </article>
+          <article class="case">
+            <div>
+              <p class="label">02</p>
+              <h3>Vaultnote</h3>
+              <p>A private-markets desk. Charts first, chrome second. The product is the proof.</p>
+              <div class="tags"><span class="tag">Product</span><span class="tag">Fintech</span></div>
+            </div>
+            <img src="work-vaultnote.jpg" alt="Dark trading dashboard with orange and teal charts" width="800" height="600" />
+          </article>
+          <article class="case">
+            <div>
+              <p class="label">03</p>
+              <h3>Loomcast</h3>
+              <p>A small studio for people who publish. Identity, site, and a player that stays out of the way.</p>
+              <div class="tags"><span class="tag">Identity</span><span class="tag">Site</span></div>
+            </div>
+            <img src="work-loomcast.jpg" alt="Person in a pale shirt under cool studio light" width="800" height="600" />
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band night" id="services">
+      <div class="wrap">
+        <p class="label">03</p>
+        <h2>Services we keep on the bench</h2>
+        <details class="svc" open>
+          <summary>Branding</summary>
+          <p>Names, marks, and the rules so the next person does not invent a second brand.</p>
+          <div class="svc-photos">
+            <img src="svc-motion.jpg" alt="Motion-blurred figure in orange light" />
+            <img src="svc-hold.jpg" alt="Silhouette holding a glowing panel" />
+          </div>
+        </details>
+        <details class="svc">
+          <summary>UI &amp; product</summary>
+          <p>Interfaces for things people actually open twice. Screens, flows, the dull parts that make it ship.</p>
+        </details>
+        <details class="svc">
+          <summary>Illustration</summary>
+          <p>Pictures that belong to the brand, not a stock folder.</p>
+        </details>
+        <details class="svc">
+          <summary>No-code and hand-built sites</summary>
+          <p>A site you can run. We pick the stack for the work, not for the portfolio.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="band cta" id="start">
+      <div class="wrap">
+        <h2>Bring the thing that is stuck.</h2>
+        <p>One conversation. If it is a fit, we start.</p>
+        <p><a class="btn" href="mailto:hello@kindling.example">Start a project</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site wrap">
+    <span>Kindling · Sample template</span>
+    <a href="mailto:hello@kindling.example">hello@kindling.example</a>
+  </footer>
+
+  <script>
+    const menu = document.getElementById("menu");
+    const nav = document.getElementById("nav");
+    menu.addEventListener("click", () => {
+      const open = nav.classList.toggle("is-open");
+      menu.setAttribute("aria-expanded", String(open));
+    });
+    nav.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+      nav.classList.remove("is-open");
+      menu.setAttribute("aria-expanded", "false");
+    }));
+
+    const el = document.getElementById("clock");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function tick() {
+      const d = new Date();
+      el.textContent = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    }
+    tick();
+    if (!reduced) setInterval(tick, 10000);
+  </script>
+</body>
+</html>

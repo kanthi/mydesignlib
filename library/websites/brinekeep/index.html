@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <title>Brinekeep — The keep that builds with the tide</title>
+  <meta name="description" content="Fictional North Atlantic salt-works keep. A Three.js construction study: clip-plane build, weather, and a prospectus for Skerry Holm." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Newsreader", "Times New Roman", serif;
+      --font-body: "Source Serif 4", Georgia, serif;
+      --font-label: "IBM Plex Mono", ui-monospace, monospace;
+      --surface-page: #e6e1d4;
+      --surface-ink: #12181c;
+      --text-primary: #161d22;
+      --text-on-ink: #e8e2d4;
+      --text-secondary: #5c6870;
+      --border-default: #c4bdaa;
+      --action-primary: #1f6f68;
+      --copper: #c56a3a;
+      --lantern: #e0b25a;
+      --fog: #7a8b94;
+      --text-display: clamp(3.2rem, 8vw, 6.4rem);
+      --text-3xl: clamp(2.1rem, 4vw, 3.1rem);
+      --text-2xl: clamp(1.6rem, 2.6vw, 2.1rem);
+      --text-xl: 1.35rem;
+      --text-base: 1.05rem;
+      --text-sm: 0.82rem;
+      --text-xs: 0.68rem;
+      --leading-body: 1.62;
+      --section-y: clamp(4.5rem, 10vw, 8rem);
+      --wrap: min(1180px, 100% - 2.5rem);
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      color: var(--text-primary);
+      background: var(--surface-page);
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .skip {
+      position: absolute; left: -999px;
+    }
+    .skip:focus { left: 1rem; top: 1rem; z-index: 20; background: var(--surface-page); padding: .4rem .7rem; }
+    .label {
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    header.mast {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.4rem;
+      color: var(--text-on-ink);
+    }
+    .word {
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+    nav.mast-nav {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    nav.mast-nav a {
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.78;
+    }
+    nav.mast-nav a:hover { opacity: 1; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 1.15rem;
+      border-radius: var(--radius-pill);
+      border: 0;
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+    }
+    .btn-primary { background: var(--action-primary); color: var(--text-on-ink); }
+    .btn-primary:hover { background: #268880; }
+    .btn-primary:focus-visible { outline: 2px solid var(--text-on-ink); outline-offset: 3px; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-on-ink);
+      border: 1px solid color-mix(in srgb, var(--text-on-ink) 35%, transparent);
+    }
+    .study {
+      position: relative;
+      height: 100svh;
+      min-height: 640px;
+      background: var(--surface-ink);
+      overflow: hidden;
+      color: var(--text-on-ink);
+    }
+    #gl, #fx {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #fx { pointer-events: none; z-index: 2; }
+    .flash {
+      position: absolute;
+      inset: 0;
+      background: #e8eeff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity 80ms linear;
+    }
+    .frame-mark {
+      position: absolute;
+      top: 4.4rem;
+      left: 1.4rem;
+      z-index: 3;
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.16em;
+      opacity: 0.7;
+    }
+    .quote {
+      position: absolute;
+      left: 1.4rem;
+      bottom: 7.2rem;
+      z-index: 3;
+      max-width: 22rem;
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+      font-style: italic;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+    .pct {
+      position: absolute;
+      right: 1.4rem;
+      top: 42%;
+      z-index: 3;
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 10vw, 7.5rem);
+      font-weight: 500;
+      letter-spacing: -0.05em;
+      line-height: 0.85;
+      opacity: 0.88;
+    }
+    .pct span { font-size: 0.32em; }
+    .stage {
+      position: absolute;
+      left: 1.4rem;
+      bottom: 3.4rem;
+      z-index: 3;
+    }
+    .stage b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+    .controls {
+      position: absolute;
+      right: 1.4rem;
+      bottom: 1.3rem;
+      z-index: 4;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: flex-end;
+      max-width: 22rem;
+    }
+    .chip {
+      min-height: 36px;
+      padding: 0 0.7rem;
+      border: 1px solid color-mix(in srgb, var(--text-on-ink) 28%, transparent);
+      background: transparent;
+      color: var(--text-on-ink);
+      font-family: var(--font-label);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .chip.is-on { background: var(--text-on-ink); color: var(--surface-ink); }
+    .chip:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+    .keys {
+      position: absolute;
+      left: 1.4rem;
+      bottom: 1.35rem;
+      z-index: 3;
+      opacity: 0.55;
+    }
+    main { background: var(--surface-page); }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    section.band { padding: var(--section-y) 0; }
+    .kicker {
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--action-primary);
+      margin: 0 0 0.8rem;
+    }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.03em; }
+    h2 { font-size: var(--text-3xl); line-height: 1.08; margin: 0 0 1rem; }
+    h3 { font-size: var(--text-2xl); margin: 0 0 0.5rem; }
+    .lede { font-size: var(--text-xl); max-width: 38rem; }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .plate { border: 0; }
+    .plate figcaption {
+      margin-top: 0.65rem;
+      padding-top: 0.55rem;
+      border-top: 1px solid var(--border-default);
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .stages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border-default);
+    }
+    .stages article {
+      padding: 1.4rem 1.2rem 1.4rem 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .stages .n {
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.14em;
+      color: var(--action-primary);
+    }
+    .weather-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .rule { height: 1px; background: var(--border-default); border: 0; margin: 0; }
+    .cta-band {
+      background: var(--surface-ink);
+      color: var(--text-on-ink);
+      padding: var(--section-y) 0;
+    }
+    .cta-band h2 { max-width: 16ch; }
+    footer.site {
+      padding: 2rem 0 2.4rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--font-label);
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    footer.site a { color: var(--text-primary); }
+    @media (max-width: 720px) {
+      .split, .weather-grid, .stages { grid-template-columns: 1fr; }
+      .quote { max-width: 16rem; bottom: 8.5rem; }
+      .pct { top: 34%; font-size: 4.2rem; }
+      .controls { max-width: none; left: 1rem; right: 1rem; justify-content: flex-start; }
+      .keys { display: none; }
+      nav.mast-nav a:not(.btn) { display: none; }
+      header.mast { mix-blend-mode: normal; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#chapters">Skip to writing</a>
+  <header class="mast">
+    <a class="word" href="#top">Brinekeep</a>
+    <nav class="mast-nav" aria-label="Chapters">
+      <a href="#method">Method</a>
+      <a href="#stages">Stages</a>
+      <a href="#weather">Weather</a>
+      <a class="btn btn-primary" href="mailto:hello@brinekeep.example">Request a berth</a>
+    </nav>
+  </header>
+
+  <section class="study" id="top" aria-label="Construction study">
+    <canvas id="gl"></canvas>
+    <div class="flash" id="flash" aria-hidden="true"></div>
+    <canvas id="fx"></canvas>
+    <p class="frame-mark">FRAME / 028 · SKERRY HOLM</p>
+    <p class="quote">“The viewpoint never leaves the skerry. Stone, timber and copper rise from the tide line until the lantern holds.”</p>
+    <p class="pct" aria-live="polite"><span id="percent">0</span><span>%</span></p>
+    <div class="stage">
+      <span class="label" id="stage-en">READY</span>
+      <b id="stage-local">REIDY</b>
+    </div>
+    <p class="keys label">Space play · R rebuild · T time · W weather · C centre</p>
+    <div class="controls" role="toolbar" aria-label="Study controls">
+      <button type="button" class="chip" id="btn-play" aria-pressed="true">Play</button>
+      <button type="button" class="chip" data-time="morning">Morning</button>
+      <button type="button" class="chip" data-time="noon">Noon</button>
+      <button type="button" class="chip" data-time="sunset">Sunset</button>
+      <button type="button" class="chip" data-time="night">Night</button>
+      <button type="button" class="chip" data-wx="clear">Clear</button>
+      <button type="button" class="chip" data-wx="spray">Spray</button>
+      <button type="button" class="chip" data-wx="storm">Storm</button>
+      <button type="button" class="chip" data-wx="snow">Snow</button>
+      <button type="button" class="chip" id="btn-rebuild">Rebuild</button>
+    </div>
+  </section>
+
+  <main id="chapters">
+    <section class="band" id="method">
+      <div class="wrap split">
+        <div>
+          <p class="kicker">01 — The tide line</p>
+          <h2>Everything exists from the first frame.</h2>
+          <p class="lede">A plane faces the sea and travels up the keep. Below it, work is finished. Above it, only scaffolding — always one course ahead of the masonry.</p>
+          <p>Brinekeep is a fictional salt-works and signal hold on Skerry Holm. The model is not a mesh file. Granite, copper pans, timber gallery and lantern are assembled from a small set of prisms, rings and boxes, then clipped by that single plane. Drag to orbit. The wheel zooms. Double-click recentres.</p>
+        </div>
+        <figure class="plate">
+          <img src="plate-spray.jpg" alt="Granite plinth of the keep standing in Atlantic spray and kelp" width="1280" height="720" />
+          <figcaption>Plinth — granite courses above the surge</figcaption>
+        </figure>
+      </div>
+    </section>
+    <hr class="rule wrap" />
+    <section class="band" id="stages">
+      <div class="wrap">
+        <p class="kicker">02 — Five stages</p>
+        <h2>Four and a half seconds of weather-allowed work.</h2>
+        <div class="stages">
+          <article>
+            <p class="n">00 Reidy</p>
+            <h3>Ready</h3>
+            <p>Survey marks on wet stone. The plane sits at the tide line. Scaffolding already stands.</p>
+          </article>
+          <article>
+            <p class="n">01 Stein</p>
+            <h3>Granite</h3>
+            <p>An octagonal plinth and the drum. Courses clip solid because a cap fills the section.</p>
+          </article>
+          <article>
+            <p class="n">02 Timmer</p>
+            <h3>Timber</h3>
+            <p>A gallery ring and posts. Pine grain is scaled in world units so a brace does not read as a beam.</p>
+          </article>
+          <article>
+            <p class="n">03 Koparr</p>
+            <h3>Copper</h3>
+            <p>Eight evaporating pans and the lantern house. Verdigris is a metal, not a button colour.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="band" id="weather">
+      <div class="wrap weather-grid">
+        <figure class="plate">
+          <img src="plate-pans.jpg" alt="Circular copper brine pans on a granite terrace at dusk" width="1280" height="720" />
+          <figcaption>Pans — brine held for the wind</figcaption>
+        </figure>
+        <div>
+          <p class="kicker">03 — Weather is one system</p>
+          <h2>Spray, then storm, then snow that stays.</h2>
+          <p>Spray is rain leaned toward the sea. Storm is the same pool drawn in full, falling faster, slanting harder, with lightning on a light of its own. Thunder — if you imagine it — arrives late. Snow builds a pack on the skerry instead of resetting every flake.</p>
+          <p>Salt motes follow the pointer by distance, not by the clock, so a flick and a crawl draw the same ribbon. On a still hand they breathe. Touch devices keep the trail parked.</p>
+        </div>
+      </div>
+    </section>
+    <section class="band">
+      <div class="wrap split">
+        <div>
+          <p class="kicker">04 — Afterlight</p>
+          <h2>The lantern is the last course.</h2>
+          <p>Night is not a filter. The sun drops, the fog pulls in, and the glass in the octagon begins to carry its own heat. The keep does not glow along the silhouette — only the house that is meant to burn.</p>
+          <p>This is a sample in a private library. Names, the holm, and the berth list are invented. Mail goes to hello@brinekeep.example.</p>
+        </div>
+        <figure class="plate">
+          <img src="plate-lantern.jpg" alt="Interior of the octagonal copper lantern house with an oil lamp and salt on the glass" width="1152" height="864" />
+          <figcaption>Lantern — oil, salt, eight panes</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="cta-band" id="berth">
+      <div class="wrap">
+        <p class="kicker" style="color: var(--lantern)">Berth</p>
+        <h2>Come when the plane has reached the lantern.</h2>
+        <p style="max-width:38rem;opacity:.82">Ninety minutes on the holm. You watch one rebuild, walk the gallery, and leave with the smell of copper and wet granite. Capacity is four.</p>
+        <p><a class="btn btn-primary" href="mailto:hello@brinekeep.example">Request a berth</a></p>
+      </div>
+    </section>
+  </main>
+  <footer class="site wrap">
+    <span>Brinekeep · Sample template</span>
+    <a href="mailto:hello@brinekeep.example">hello@brinekeep.example</a>
+  </footer>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./three.module.js"
+    }
+  }
+  </script>
+  <script type="module">
+    import { mountKeep } from "./world.js";
+
+    const playBtn = document.getElementById("btn-play");
+    const timeBtns = [...document.querySelectorAll("[data-time]")];
+    const wxBtns = [...document.querySelectorAll("[data-wx]")];
+
+    const ui = {
+      stageLocal: document.getElementById("stage-local"),
+      stageEn: document.getElementById("stage-en"),
+      percent: document.getElementById("percent"),
+      flash: document.getElementById("flash"),
+      syncPlay(on) {
+        playBtn.textContent = on ? "Pause" : "Play";
+        playBtn.setAttribute("aria-pressed", String(on));
+        playBtn.classList.toggle("is-on", on);
+      },
+      syncTime(name) {
+        timeBtns.forEach((b) => b.classList.toggle("is-on", b.dataset.time === name));
+      },
+      syncWeather(name) {
+        wxBtns.forEach((b) => b.classList.toggle("is-on", b.dataset.wx === name));
+      },
+      onTime: () => {},
+      onWeather: () => {},
+      onPlay: () => {},
+      onRebuild: () => {},
+    };
+
+    playBtn.addEventListener("click", () => ui.onPlay());
+    document.getElementById("btn-rebuild").addEventListener("click", () => ui.onRebuild());
+    timeBtns.forEach((b) => b.addEventListener("click", () => ui.onTime(b.dataset.time)));
+    wxBtns.forEach((b) => b.addEventListener("click", () => ui.onWeather(b.dataset.wx)));
+
+    mountKeep(document.getElementById("gl"), document.getElementById("fx"), ui).catch((err) => {
+      console.error(err);
+      const p = document.querySelector(".quote");
+      if (p) p.textContent = "Study failed to load. " + (err && err.message ? err.message : err);
+    });
+  </script>
+</body>
+</html>
