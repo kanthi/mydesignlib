@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <title>Hush — The room goes quiet. You stay.</title>
+  <meta name="description" content="Hush One wireless ANC headphones. Sage, Wine, and Sand. A fictional product catalogue." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Darker Grotesque", "Arial Narrow", sans-serif;
+      --font-body: "Public Sans", "Helvetica Neue", sans-serif;
+      --field-sage: #647560;
+      --field-wine: #744851;
+      --field-sand: #816851;
+      --field: var(--field-sage);
+      --text-on-field: #F7F4EE;
+      --text-on-field-muted: rgba(247, 244, 238, 0.68);
+      --surface-page: #F3EEE6;
+      --surface-ink: #161412;
+      --text-primary: #161412;
+      --text-secondary: #6A645C;
+      --text-on-ink: #F3EEE6;
+      --action-primary: #F7F4EE;
+      --on-action: #161412;
+      --border-on-field: rgba(247, 244, 238, 0.28);
+      --focus-ring: #F7F4EE;
+      --text-display: clamp(3.1rem, 7.4vw, 5.6rem);
+      --text-3xl: clamp(2rem, 3.6vw, 2.85rem);
+      --text-xl: 1.25rem;
+      --text-lg: 1.0625rem;
+      --text-base: 1rem;
+      --text-sm: 0.8125rem;
+      --text-xs: 0.6875rem;
+      --leading-body: 1.6;
+      --section-y: clamp(4.5rem, 9vw, 7.5rem);
+      --wrap: 1180px;
+      --page-pad: clamp(1.2rem, 3.6vw, 2.75rem);
+      --radius-pill: 999px;
+      --radius-card: 18px;
+      --shadow-product: 0 28px 70px rgba(0, 0, 0, 0.22);
+      --dur: 240ms;
+      --dur-field: 420ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: var(--font-body);
+      background: var(--surface-page);
+      color: var(--text-primary);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    :focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 80;
+      background: var(--surface-ink);
+      color: var(--text-on-ink);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-pill);
+    }
+    .skip:focus { top: 1rem; }
+
+    /* —— Hero —— */
+    .hero {
+      --focus-ring: var(--text-on-field);
+      position: relative;
+      min-height: 100svh;
+      background: var(--field);
+      color: var(--text-on-field);
+      overflow: hidden;
+      transition: background-color var(--dur-field) var(--ease);
+    }
+    .hero[data-way="sage"] { --field: var(--field-sage); }
+    .hero[data-way="wine"] { --field: var(--field-wine); }
+    .hero[data-way="sand"] { --field: var(--field-sand); }
+
+    .chrome {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 6;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 1.35rem var(--page-pad) 0;
+      gap: 1rem;
+    }
+    .wordmark {
+      justify-self: start;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .pill {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      padding: 0.28rem 0.4rem;
+      border: 1px solid var(--border-on-field);
+      border-radius: var(--radius-pill);
+      list-style: none;
+    }
+    .pill a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 1.05rem;
+      color: var(--text-on-field-muted);
+      font-size: var(--text-sm);
+      letter-spacing: 0.04em;
+      border-radius: var(--radius-pill);
+      transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .pill a:hover,
+    .pill a[aria-current="true"] { color: var(--text-on-field); }
+
+    .hero-copy {
+      position: absolute;
+      left: var(--page-pad);
+      top: 46%;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+    .hero-copy h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--text-display);
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+      max-width: 8.6ch;
+    }
+    .hero-copy p {
+      margin-top: 1rem;
+      color: var(--text-on-field-muted);
+      font-size: var(--text-sm);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .hero-visual {
+      position: absolute;
+      left: 52%;
+      top: 54%;
+      transform: translate(-50%, -50%);
+      width: min(64vw, 780px);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-visual img {
+      width: 100%;
+      height: auto;
+      animation: float 8s var(--ease) infinite;
+      transition: opacity 280ms var(--ease);
+    }
+    .hero-visual img.is-out { opacity: 0; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .hero-arrows {
+      position: absolute;
+      right: var(--page-pad);
+      top: 38%;
+      z-index: 4;
+      display: flex;
+      gap: 0.65rem;
+    }
+    .arrow {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border-on-field);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--text-on-field);
+      transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .arrow:hover { background: rgba(247, 244, 238, 0.1); }
+    .arrow:active { transform: scale(0.97); }
+    .arrow svg { width: 18px; height: 18px; }
+
+    .hero-buy {
+      position: absolute;
+      right: var(--page-pad);
+      bottom: 2rem;
+      z-index: 4;
+    }
+    .btn-buy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 128px;
+      min-height: 48px;
+      padding: 0 1.7rem;
+      background: var(--action-primary);
+      color: var(--on-action);
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform var(--dur) var(--ease);
+    }
+    .btn-buy:hover { transform: scale(1.03); }
+    .btn-buy:active { transform: scale(0.97); }
+    .btn-buy:focus-visible { outline-color: var(--text-on-field); }
+
+    .live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* —— Page sections —— */
+    .wrap {
+      width: min(var(--wrap), 100% - var(--page-pad) * 2);
+      margin-inline: auto;
+    }
+    section { padding: var(--section-y) 0; }
+    .kicker {
+      font-size: var(--text-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .on-ink .kicker { color: rgba(243, 238, 230, 0.55); }
+    h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--text-3xl);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+    .lede {
+      max-width: 36rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+    }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    /* Sound */
+    .sound-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .still {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      outline: 1px solid rgba(22, 20, 18, 0.08);
+    }
+    .still img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2.25rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid rgba(22, 20, 18, 0.1);
+    }
+    .metrics dt {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .metrics dd {
+      margin-top: 0.4rem;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    /* Design */
+    .design-head { max-width: 34rem; margin-bottom: 2.5rem; }
+    .design-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+    .plate {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: #e7e0d6;
+      outline: 1px solid rgba(22, 20, 18, 0.08);
+    }
+    .plate img { width: 100%; height: 320px; object-fit: cover; }
+    .plate figcaption {
+      padding: 1rem 1.15rem 1.15rem;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    .ways {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1.75rem;
+    }
+    .way {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 44px;
+      padding: 0 0.95rem 0 0.45rem;
+      border: 1px solid rgba(22, 20, 18, 0.12);
+      border-radius: var(--radius-pill);
+      background: #fff;
+      transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .way:hover { transform: scale(1.03); }
+    .way:active { transform: scale(0.97); }
+    .way[aria-pressed="true"] { border-color: var(--text-primary); }
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+    }
+    .swatch.sage { background: var(--field-sage); }
+    .swatch.wine { background: var(--field-wine); }
+    .swatch.sand { background: var(--field-sand); }
+    .way span { font-size: var(--text-sm); font-weight: 500; }
+
+    /* Specs */
+    .ink {
+      background: var(--surface-ink);
+      color: var(--text-on-ink);
+      --focus-ring: var(--text-on-ink);
+    }
+    .specs-head { max-width: 28rem; margin-bottom: 2.5rem; }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+    .spec-table tr { border-top: 1px solid rgba(243, 238, 230, 0.12); }
+    .spec-table th,
+    .spec-table td {
+      text-align: left;
+      padding: 1.05rem 0;
+      font-weight: 400;
+      vertical-align: baseline;
+    }
+    .spec-table th {
+      width: 28%;
+      color: rgba(243, 238, 230, 0.5);
+      font-size: var(--text-sm);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .spec-table td { font-size: var(--text-lg); }
+
+    /* Review */
+    .review-grid {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+    .review-face {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      outline: 1px solid rgba(22, 20, 18, 0.08);
+    }
+    .review-face img { width: 100%; height: 520px; object-fit: cover; object-position: 50% 20%; }
+    blockquote {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      text-wrap: pretty;
+    }
+    .cite {
+      margin-top: 1.5rem;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    /* Buy */
+    .buy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .price {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      letter-spacing: -0.035em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      margin: 0.85rem 0 0.4rem;
+    }
+    .buy-note { color: rgba(243, 238, 230, 0.58); font-size: var(--text-sm); }
+    form { display: grid; gap: 1rem; margin-top: 1.75rem; }
+    label { display: grid; gap: 0.4rem; font-size: var(--text-sm); }
+    input[type="email"],
+    input[type="text"] {
+      height: 46px;
+      border: 1px solid rgba(243, 238, 230, 0.18);
+      background: rgba(243, 238, 230, 0.04);
+      color: var(--text-on-ink);
+      border-radius: 10px;
+      padding: 0 0.9rem;
+      font: inherit;
+    }
+    input:focus-visible { outline: 2px solid var(--text-on-ink); outline-offset: 2px; }
+    .form-ways { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+    .form-ways .way {
+      background: transparent;
+      border-color: rgba(243, 238, 230, 0.22);
+      color: var(--text-on-ink);
+    }
+    .form-ways .way[aria-pressed="true"] { border-color: var(--text-on-ink); }
+    .btn-ink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 1.4rem;
+      background: var(--action-primary);
+      color: var(--on-action);
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      justify-self: start;
+      transition: transform var(--dur) var(--ease);
+    }
+    .btn-ink:hover { transform: scale(1.03); }
+    .btn-ink:active { transform: scale(0.97); }
+    .thanks {
+      display: none;
+      padding: 1.1rem 0;
+      color: var(--text-on-ink);
+    }
+    .thanks.is-on { display: block; }
+
+    footer {
+      padding: 1.6rem var(--page-pad) 2rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: var(--text-sm);
+      color: rgba(243, 238, 230, 0.5);
+      border-top: 1px solid rgba(243, 238, 230, 0.1);
+    }
+    footer .wordmark { color: var(--text-on-ink); font-size: 1.05rem; }
+    footer a:hover { color: var(--text-on-ink); }
+
+    @media (max-width: 1100px) {
+      .hero-visual { width: min(70vw, 640px); left: 56%; }
+    }
+
+    @media (max-width: 720px) {
+      .chrome {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+        position: relative;
+      }
+      .pill {
+        display: flex;
+        flex-wrap: wrap;
+        border: 0;
+        padding: 0;
+        gap: 0;
+      }
+      .pill a { padding: 0 0.85rem 0 0; }
+      .hero {
+        display: flex;
+        flex-direction: column;
+        min-height: 100svh;
+        padding: 5.5rem var(--page-pad) 1.5rem;
+      }
+      .hero-copy {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+      }
+      .hero-copy h1 { max-width: 8.6ch; }
+      .hero-visual {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: min(86vw, 420px);
+        margin: 0.25rem auto 0;
+      }
+      .hero-arrows {
+        position: relative;
+        right: auto;
+        top: auto;
+        justify-content: center;
+        margin-top: 0.35rem;
+      }
+      .hero-buy {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        margin-top: 0.85rem;
+      }
+      .hero-buy .btn-buy { width: 100%; }
+      .sound-grid,
+      .design-grid,
+      .review-grid,
+      .buy-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+      .review-face img { height: 380px; }
+      .plate img { height: 240px; }
+      .metrics { grid-template-columns: 1fr; gap: 1rem; }
+      .spec-table th { width: 38%; }
+    }
+
+    @media (max-width: 720px) and (max-height: 880px) {
+      .hero-visual { width: min(68vw, 260px); }
+      .hero-copy h1 { font-size: clamp(2.35rem, 11vw, 3.2rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero { transition: none; }
+      .hero-visual img { animation: none; transition: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .arrow, .btn-buy, .way, .btn-ink { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#sound">Skip to content</a>
+
+  <header class="hero" data-way="sage" id="top">
+    <nav class="chrome" aria-label="Primary">
+      <a class="wordmark" href="#top">Hush</a>
+      <ul class="pill">
+        <li><a href="#sound">Sound</a></li>
+        <li><a href="#design">Design</a></li>
+        <li><a href="#specs">Specs</a></li>
+        <li><a href="#review">Review</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-copy">
+      <h1>The room goes quiet. You stay.</h1>
+      <p>Hush One · wireless ANC</p>
+    </div>
+
+    <div class="hero-visual">
+      <img id="product" src="one-sage.jpg" alt="Hush One headphones in Sage" width="1024" height="946" />
+    </div>
+
+    <div class="hero-arrows">
+      <button class="arrow" type="button" data-dir="-1" aria-label="Previous colorway">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14.5 6.5 9 12l5.5 5.5"/></svg>
+      </button>
+      <button class="arrow" type="button" data-dir="1" aria-label="Next colorway">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 6.5 15 12l-5.5 5.5"/></svg>
+      </button>
+    </div>
+
+    <div class="hero-buy">
+      <a class="btn-buy" href="#buy">Buy</a>
+    </div>
+    <p class="live" aria-live="polite" id="way-live">Sage colorway</p>
+  </header>
+
+  <main>
+    <section id="sound">
+      <div class="wrap sound-grid">
+        <figure class="still reveal">
+          <img src="still-desk.jpg" alt="Hush One in Sage on a pale oak desk beside a linen notebook and tea" width="1280" height="642" />
+        </figure>
+        <div class="reveal">
+          <p class="kicker">Sound</p>
+          <h2>A 32-decibel hush</h2>
+          <p class="lede">Hush One reads the room 6,000 times a second and writes a quieter one. The 40 mm driver stays honest — a voice stays a voice. The HVAC does not.</p>
+          <dl class="metrics">
+            <div>
+              <dt>32 dB</dt>
+              <dd>Typical hush, mid-band</dd>
+            </div>
+            <div>
+              <dt>40 h</dt>
+              <dd>Charge with hush on</dd>
+            </div>
+            <div>
+              <dt>6k</dt>
+              <dd>Room reads each second</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="design">
+      <div class="wrap">
+        <div class="design-head reveal">
+          <p class="kicker">Design</p>
+          <h2>Cut for the long sit</h2>
+          <p class="lede">Suede on the cups. Knit on the band. One silver hinge. No mark on the shell — the colorway is the identity.</p>
+        </div>
+        <div class="design-grid">
+          <figure class="plate reveal">
+            <img src="detail-cushion.jpg" alt="Close-up of the sage suede ear cushion and hand stitching" width="1152" height="786" />
+            <figcaption>Memory foam, wrapped in matching suede. Made to disappear after the first hour.</figcaption>
+          </figure>
+          <figure class="plate reveal">
+            <img src="detail-band.jpg" alt="Knit headband and brushed-silver hinge of Hush One" width="1152" height="786" />
+            <figcaption>A slim knit band and a single hinge. Nothing extra on the cup.</figcaption>
+          </figure>
+        </div>
+        <div class="ways reveal" role="group" aria-label="Colorways">
+          <button class="way" type="button" data-way="sage" aria-pressed="true"><i class="swatch sage"></i><span>Sage</span></button>
+          <button class="way" type="button" data-way="wine" aria-pressed="false"><i class="swatch wine"></i><span>Wine</span></button>
+          <button class="way" type="button" data-way="sand" aria-pressed="false"><i class="swatch sand"></i><span>Sand</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="ink" id="specs">
+      <div class="wrap">
+        <div class="specs-head reveal">
+          <p class="kicker">Specs</p>
+          <h2>Hush One, on paper</h2>
+        </div>
+        <table class="spec-table reveal">
+          <tbody>
+            <tr><th scope="row">Model</th><td>Hush One</td></tr>
+            <tr><th scope="row">Weight</th><td>248 g</td></tr>
+            <tr><th scope="row">Drivers</th><td>40 mm dynamic</td></tr>
+            <tr><th scope="row">Hush</th><td>32 dB typical ANC, 8 beamformed mics</td></tr>
+            <tr><th scope="row">Battery</th><td>40 hours with hush on · USB-C, 10 min → 5 h</td></tr>
+            <tr><th scope="row">Wireless</th><td>Bluetooth 5.4, multipoint</td></tr>
+            <tr><th scope="row">Weather</th><td>IPX4</td></tr>
+            <tr><th scope="row">Colorways</th><td>Sage, Wine, Sand</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="wrap review-grid">
+        <figure class="review-face reveal">
+          <img src="review-face.jpg" alt="Nia Park wearing Hush One in Sage, eyes closed" width="864" height="1074" />
+        </figure>
+        <div class="reveal">
+          <p class="kicker">Review</p>
+          <blockquote>“I take the train at 7:10. Since January the carriage has been a room I chose.”</blockquote>
+          <p class="cite">Nia Park · editor, Harbour Review</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ink" id="buy">
+      <div class="wrap buy-grid">
+        <div class="reveal">
+          <p class="kicker">Buy</p>
+          <h2>Hush One</h2>
+          <p class="price">$329</p>
+          <p class="buy-note">Ships in 3–5 days. Thirty days to send it back if the room is still too loud.</p>
+        </div>
+        <form class="reveal" id="order" novalidate>
+          <div>
+            <p class="kicker" id="color-label">Colorway</p>
+            <div class="form-ways" role="group" aria-labelledby="color-label">
+              <button class="way" type="button" data-way="sage" aria-pressed="true"><i class="swatch sage"></i><span>Sage</span></button>
+              <button class="way" type="button" data-way="wine" aria-pressed="false"><i class="swatch wine"></i><span>Wine</span></button>
+              <button class="way" type="button" data-way="sand" aria-pressed="false"><i class="swatch sand"></i><span>Sand</span></button>
+            </div>
+          </div>
+          <label>
+            Name
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <button class="btn-ink" type="submit">Buy Hush One</button>
+          <p class="thanks" id="thanks">Hold the room. We’ll write to you at that address — this is a sample template, so no charge was taken.</p>
+        </form>
+      </div>
+      <footer>
+        <a class="wordmark" href="#top">Hush</a>
+        <span>Sample template</span>
+        <a href="mailto:hello@hush.example">hello@hush.example</a>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var ways = [
+        { id: "sage", src: "one-sage.jpg", label: "Sage" },
+        { id: "wine", src: "one-wine.jpg", label: "Wine" },
+        { id: "sand", src: "one-sand.jpg", label: "Sand" }
+      ];
+      var i = 0;
+      var hero = document.querySelector(".hero");
+      var img = document.getElementById("product");
+      var live = document.getElementById("way-live");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function setWay(next) {
+        i = (next + ways.length) % ways.length;
+        var w = ways[i];
+        function apply() {
+          hero.setAttribute("data-way", w.id);
+          img.src = w.src;
+          img.alt = "Hush One headphones in " + w.label;
+          live.textContent = w.label + " colorway";
+          document.querySelectorAll("[data-way]").forEach(function (el) {
+            if (el.classList.contains("way")) {
+              el.setAttribute("aria-pressed", el.getAttribute("data-way") === w.id ? "true" : "false");
+            }
+          });
+          img.classList.remove("is-out");
+        }
+        if (reduce) { apply(); return; }
+        img.classList.add("is-out");
+        window.setTimeout(apply, 180);
+      }
+
+      document.querySelectorAll(".arrow").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setWay(i + Number(btn.getAttribute("data-dir")));
+        });
+      });
+      document.querySelectorAll(".way").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var id = btn.getAttribute("data-way");
+          var idx = ways.findIndex(function (w) { return w.id === id; });
+          if (idx >= 0) setWay(idx);
+        });
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.target.matches("input, textarea")) return;
+        if (e.key === "ArrowLeft") setWay(i - 1);
+        if (e.key === "ArrowRight") setWay(i + 1);
+      });
+
+      var links = document.querySelectorAll(".pill a");
+      var sections = ["sound", "design", "specs", "review"].map(function (id) {
+        return document.getElementById(id);
+      });
+      function markNav() {
+        var y = window.scrollY + 120;
+        var current = null;
+        sections.forEach(function (s) {
+          if (s && s.offsetTop <= y) current = s.id;
+        });
+        links.forEach(function (a) {
+          var on = current && a.getAttribute("href") === "#" + current;
+          if (on) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+      }
+      window.addEventListener("scroll", markNav, { passive: true });
+
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              en.target.classList.add("is-in");
+              io.unobserve(en.target);
+            }
+          });
+        }, { threshold: 0.16 });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("is-in"); });
+      }
+
+      var form = document.getElementById("order");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        form.querySelectorAll("label, .btn-ink, .form-ways, #color-label").forEach(function (el) {
+          el.style.display = "none";
+        });
+        document.getElementById("thanks").classList.add("is-on");
+      });
+    })();
+  </script>
+</body>
+</html>
