@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flint — Crafting digital products</title>
+  <meta name="description" content="Fictional product-design folio. Vermilion portrait hero, stacked work, services, and proof." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-page: #FFFFFF;
+      --surface-vermilion: #F23B12;
+      --surface-vermilion-deep: #C21F00;
+      --text-primary: #111111;
+      --text-secondary: #6A6A6A;
+      --border-default: #E8E8E8;
+      --action-primary: #111111;
+      --action-accent: #F23B12;
+      --font-display: "Syne", system-ui, sans-serif;
+      --font-body: "Outfit", system-ui, sans-serif;
+      --text-display: clamp(2.6rem, 6vw, 4.4rem);
+      --text-3xl: clamp(1.8rem, 3vw, 2.4rem);
+      --text-base: 1.02rem;
+      --text-xs: 0.72rem;
+      --section-y: clamp(3.5rem, 7vw, 5.5rem);
+      --wrap: min(1040px, 100% - 2.5rem);
+      --rail: 7.5rem;
+      --radius: 12px;
+      --radius-frame: 20px;
+      --radius-pill: 999px;
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: #E8E8E8;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--action-accent); outline-offset: 3px; }
+
+    .frame {
+      width: min(1180px, 100% - 1.5rem);
+      margin: 1.25rem auto 2.5rem;
+      background: var(--surface-page);
+      border-radius: var(--radius-frame);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(17,17,17,0.08);
+    }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .mark { width: 1em; height: 1em; display: block; flex-shrink: 0; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-vermilion) 92%, transparent);
+    }
+    .nav {
+      display: flex; align-items: center; gap: 1rem;
+      min-height: 64px; padding: 0.55rem 1.4rem;
+      color: #fff;
+    }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em;
+    }
+    .nav-brand .mark { width: 22px; height: 22px; }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; gap: 1.15rem; margin-left: auto; margin-right: 1rem;
+      font-size: 0.82rem; font-weight: 500; opacity: 0.92;
+    }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .nav-links a:hover { opacity: 1; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      min-height: 42px; padding: 0.45rem 1rem; border-radius: var(--radius-pill);
+      font-weight: 600; font-size: 0.84rem;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-ink { background: var(--action-primary); color: #fff; }
+    .btn-ink:hover { background: #2a2a2a; }
+    .btn-accent { background: var(--action-accent); color: #fff; }
+    .menu-toggle {
+      display: none; width: 44px; height: 44px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.35);
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px; margin-left: auto;
+    }
+    .menu-toggle span { width: 16px; height: 1.5px; background: #fff; transition: transform var(--dur) var(--ease), opacity var(--dur); }
+    .nav.is-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.is-open .menu-toggle span:nth-child(2) { opacity: 0; }
+    .nav.is-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .hero {
+      position: relative; min-height: min(78vh, 640px);
+      background: linear-gradient(180deg, var(--surface-vermilion) 0%, var(--surface-vermilion-deep) 62%, #fff 100%);
+      color: #fff; overflow: hidden;
+    }
+    .hero-face {
+      position: absolute; right: 4%; bottom: 0; height: 94%;
+      width: auto; max-width: 54%;
+      object-fit: cover; object-position: center top;
+      mix-blend-mode: multiply;
+      -webkit-mask-image: linear-gradient(180deg, #000 58%, transparent 100%),
+        linear-gradient(90deg, transparent, #000 16%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(180deg, #000 58%, transparent 100%);
+    }
+    .hero-copy {
+      position: relative; z-index: 1;
+      width: var(--wrap); margin: 0 auto;
+      padding: clamp(4.5rem, 12vw, 8rem) 0 7rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-display); letter-spacing: -0.04em; line-height: 1.02;
+      max-width: 12ch; text-wrap: balance;
+    }
+    .hero .aside {
+      position: absolute; right: 4%; top: 58%;
+      max-width: 18ch; font-size: 0.95rem; line-height: 1.45;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .band { padding: var(--section-y) 0; }
+    .rail-row {
+      display: grid; grid-template-columns: var(--rail) 1fr;
+      gap: 1.25rem; align-items: start;
+    }
+    .rail {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-secondary);
+      display: flex; align-items: center; gap: 0.45rem; padding-top: 0.55rem;
+    }
+    .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--action-accent); flex-shrink: 0; }
+    .head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.6rem; }
+    .head-row h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      letter-spacing: -0.035em; line-height: 1.08; text-wrap: balance;
+    }
+
+    .work { display: grid; gap: 2.2rem; }
+    .slab-art {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      min-height: 280px; background: #111;
+      box-shadow: 0 16px 40px rgba(17,17,17,0.1);
+    }
+    .slab-art img.bg { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
+    .slab-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1rem 0 0;
+    }
+    .slab-meta h3 { font-size: 1.05rem; font-weight: 650; }
+    .slab-meta p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    .laptop {
+      position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%) rotate(-8deg);
+      width: min(72%, 520px);
+    }
+    .laptop .lid {
+      background: #1a1a1a; border-radius: 10px 10px 4px 4px; padding: 10px 10px 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    }
+    .laptop .screen {
+      aspect-ratio: 16/10; border-radius: 4px;
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em;
+      font-size: clamp(1.4rem, 3vw, 2.2rem); text-align: center; line-height: 0.95;
+    }
+    .screen.orange { background: #FF4A14; color: #111; }
+    .screen.lime { background: #D6FF3A; color: #111; }
+    .phones {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+    }
+    .phone {
+      width: 28%; max-width: 160px; aspect-ratio: 9/19; background: #111; border-radius: 22px;
+      padding: 8px; transform: rotate(-12deg);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.28);
+    }
+    .phone + .phone { transform: rotate(10deg) translateY(12px); }
+    .phone .glass { height: 100%; border-radius: 16px; display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; line-height: 0.9; text-align: center; padding: 0.4rem;
+    }
+    .glass.y { background: #E8FF3A; }
+    .glass.w { background: #F4F4F0; }
+
+    .quote-box { display: grid; grid-template-columns: 96px 1fr; gap: 1.25rem; align-items: start; }
+    .quote-box img { width: 96px; height: 96px; object-fit: cover; border-radius: 4px; }
+    .quote-box blockquote { font-size: 1.05rem; max-width: 48ch; }
+    .who { margin-top: 0.85rem; font-size: 0.88rem; }
+    .who strong { display: block; }
+    .who span { color: var(--text-secondary); }
+    .pager { display: flex; gap: 0.35rem; }
+    .pager button {
+      width: 36px; height: 36px; border: 1px solid var(--border-default);
+      display: grid; place-items: center; font-size: 1.1rem; color: var(--text-secondary);
+    }
+    .pager button[aria-disabled="true"] { opacity: 0.35; }
+    .quote-slide { display: none; }
+    .quote-slide.is-on { display: grid; }
+
+    .awards { display: flex; flex-wrap: wrap; gap: 1.5rem 2.4rem; align-items: center; color: #9A9A9A; }
+    .award { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem; }
+
+    .services { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+    .svc .stone { width: 48px; height: 48px; margin-bottom: 0.7rem; color: #C4C4C4; }
+    .svc h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+    .svc p { color: var(--text-secondary); font-size: 0.9rem; max-width: 36ch; }
+
+    .about p { max-width: 52ch; color: var(--text-secondary); }
+    .contact-band {
+      background: var(--text-primary); color: #fff; border-radius: var(--radius);
+      padding: 2rem 1.6rem; display: flex; flex-wrap: wrap; gap: 1rem;
+      align-items: center; justify-content: space-between;
+    }
+    .contact-band h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.03em; }
+    .contact-band .btn-ink { background: #fff; color: #111; }
+
+    footer {
+      padding: 1.6rem 1.4rem 2rem; border-top: 1px solid var(--border-default);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+      color: var(--text-secondary); font-size: 0.86rem;
+    }
+    .footer-brand { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-primary); font-family: var(--font-display); font-weight: 800; }
+
+    @media (max-width: 1023px) {
+      .rail-row { grid-template-columns: 1fr; }
+      .rail { padding-top: 0; margin-bottom: 0.6rem; }
+      .hero .aside { position: static; max-width: 36ch; margin-top: 1rem; }
+      .hero-copy { padding-bottom: 5rem; }
+    }
+    @media (max-width: 720px) {
+      .frame { width: 100%; margin: 0; border-radius: 0; }
+      :root { --wrap: min(1040px, 100% - 2rem); }
+      .nav-panel {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface-vermilion-deep); padding: 0.6rem 1rem 1rem;
+        flex-direction: column;
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links { flex-direction: column; margin: 0; gap: 0; }
+      .nav-links a { display: block; padding: 0.7rem 0.3rem; }
+      .menu-toggle { display: flex; }
+      .site-header { position: sticky; }
+      .nav { position: relative; }
+      .nav-actions { display: none; }
+      .hero-face { right: 0; width: 72%; max-width: none; height: 52%; object-position: 75% 10%; }
+      .hero h1 { max-width: none; font-size: clamp(2.05rem, 11vw, 2.8rem); }
+      .hero-copy { padding-top: 2.2rem; padding-bottom: 12rem; }
+      .services, .quote-box { grid-template-columns: 1fr; }
+      .quote-box img { width: 72px; height: 72px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .menu-toggle span { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <symbol id="flint-mark" viewBox="0 0 64 64">
+        <path fill="currentColor" d="M36 4 L58 30 L40 60 L8 34 Z"/>
+      </symbol>
+      <symbol id="ico-chat" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M4 5h16v10H7l-3 3V5z"/>
+      </symbol>
+      <symbol id="st-oct" viewBox="0 0 48 48"><path fill="currentColor" d="M24 4 L42 16 V32 L24 44 L6 32 V16 Z"/></symbol>
+      <symbol id="st-cube" viewBox="0 0 48 48"><path fill="currentColor" d="M24 6 L42 16 V34 L24 44 L6 34 V16 Z"/></symbol>
+      <symbol id="st-ring" viewBox="0 0 48 48"><ellipse cx="24" cy="24" rx="16" ry="10" fill="none" stroke="currentColor" stroke-width="5"/><ellipse cx="24" cy="24" rx="7" ry="4" fill="currentColor"/></symbol>
+      <symbol id="st-block" viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="8" fill="currentColor"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="frame">
+    <header class="site-header">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="mark" aria-hidden="true"><use href="#flint-mark"></use></svg>
+          Flint
+        </a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#top">Home</a>
+            <a href="#about">About</a>
+            <a href="#work">Project</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ink" href="mailto:hello@flint.example">
+            <svg class="mark" style="width:14px" aria-hidden="true"><use href="#ico-chat"></use></svg>
+            Contact me
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <img class="hero-face" src="face.jpg" alt="Portrait of the Flint designer in vermilion light" />
+      <div class="hero-copy">
+        <h1>Crafting digital products.</h1>
+        <p class="aside">I design products people finish using — focused on real jobs, not decks.</p>
+      </div>
+    </section>
+
+    <section class="band" id="work">
+      <div class="wrap rail-row">
+        <p class="rail"><span class="pip"></span> Work showcase</p>
+        <div>
+          <div class="head-row">
+            <h2>A selection of my best work.</h2>
+            <a class="btn btn-accent" href="#work">View all</a>
+          </div>
+          <div class="work">
+            <article>
+              <div class="slab-art">
+                <img class="bg" src="mallow.jpg" alt="Mallow still life" />
+                <div class="laptop" aria-hidden="true">
+                  <div class="lid"><div class="screen orange">MALLOW<br />NOTES</div></div>
+                </div>
+              </div>
+              <div class="slab-meta">
+                <div>
+                  <h3>Mallow beauty site</h3>
+                  <p>A quiet shop for a ceramic scent line — cream, stone, no costume luxury.</p>
+                </div>
+                <a class="btn btn-ink" href="#contact">View work</a>
+              </div>
+            </article>
+            <article>
+              <div class="slab-art" style="background:#2A2A2A">
+                <div class="phones" aria-hidden="true">
+                  <div class="phone"><div class="glass y">tally<br />pay</div></div>
+                  <div class="phone"><div class="glass w">your<br />design<br />here</div></div>
+                </div>
+              </div>
+              <div class="slab-meta">
+                <div>
+                  <h3>Tally app UI</h3>
+                  <p>A ledger you can read in one thumb. Lime for the send, paper for the rest.</p>
+                </div>
+                <a class="btn btn-ink" href="#contact">View work</a>
+              </div>
+            </article>
+            <article>
+              <div class="slab-art">
+                <img class="bg" src="metal.jpg" alt="Brushed metal field" />
+                <div class="laptop" aria-hidden="true">
+                  <div class="lid"><div class="screen lime">HARBOR<br />REVIEW</div></div>
+                </div>
+              </div>
+              <div class="slab-meta">
+                <div>
+                  <h3>Harbor Review</h3>
+                  <p>An editorial paste-up for a small press — type first, chrome last.</p>
+                </div>
+                <a class="btn btn-ink" href="#contact">View work</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="words" style="border-top:1px solid var(--border-default)">
+      <div class="wrap rail-row">
+        <p class="rail"><span class="pip"></span> Testimonials</p>
+        <div>
+          <div class="head-row">
+            <h2>Kind words from people I shipped with.</h2>
+            <div class="pager">
+              <button type="button" id="prevQ" aria-label="Previous quote">−</button>
+              <button type="button" id="nextQ" aria-label="Next quote">+</button>
+            </div>
+          </div>
+          <div class="quote-slide is-on" data-q>
+            <div class="quote-box">
+              <img src="quote.jpg" alt="Portrait of Nia Park" />
+              <div>
+                <blockquote>“Flint cut the deck in half and kept the job. From research to UI the work was specific, on time, and still looks like us.”</blockquote>
+                <p class="who"><strong>Nia Park</strong><span>Founder, Mallow</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="quote-slide" data-q>
+            <div class="quote-box">
+              <img src="face.jpg" alt="" />
+              <div>
+                <blockquote>“We asked for a send flow. We got a ledger people actually finish. No extra chrome.”</blockquote>
+                <p class="who"><strong>Jon Vale</strong><span>Product, Tally</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="awards" style="border-top:1px solid var(--border-default)">
+      <div class="wrap rail-row">
+        <p class="rail"><span class="pip"></span> Awards</p>
+        <div>
+          <h2 class="head-row" style="margin-bottom:1.4rem">Notes from the field.</h2>
+          <div class="awards" aria-label="Fictional mentions">
+            <span class="award">Fieldmark ’26</span>
+            <span class="award">Northglass Note</span>
+            <span class="award">Harbor Review</span>
+            <span class="award">Desk Prize</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="services" style="border-top:1px solid var(--border-default)">
+      <div class="wrap rail-row">
+        <p class="rail"><span class="pip"></span> Services</p>
+        <div>
+          <h2 class="head-row">Work I take.</h2>
+          <div class="services">
+            <article class="svc">
+              <svg class="stone" aria-hidden="true"><use href="#st-oct"></use></svg>
+              <h3>Product design</h3>
+              <p>Interfaces for a job you can name. Flows, states, and the one screen that has to work.</p>
+            </article>
+            <article class="svc">
+              <svg class="stone" aria-hidden="true"><use href="#st-cube"></use></svg>
+              <h3>Brand identity</h3>
+              <p>A mark, a field, and type that still holds on a packing slip.</p>
+            </article>
+            <article class="svc">
+              <svg class="stone" aria-hidden="true"><use href="#st-ring"></use></svg>
+              <h3>Web builds</h3>
+              <p>Static sites you can ship. No extra stack unless the work needs it.</p>
+            </article>
+            <article class="svc">
+              <svg class="stone" aria-hidden="true"><use href="#st-block"></use></svg>
+              <h3>Interface craft</h3>
+              <p>The last 10% — type, hit areas, empty states — so the product feels finished.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band about" id="about" style="border-top:1px solid var(--border-default)">
+      <div class="wrap rail-row">
+        <p class="rail"><span class="pip"></span> About</p>
+        <div>
+          <h2 class="head-row">A one-person studio with a flint mark.</h2>
+          <p>I work with small product teams who already know the job. I don’t sell process theater. You get a short brief, a tight set of screens, and a site or identity that can ship without a second designer in the room.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="contact">
+      <div class="wrap">
+        <div class="contact-band">
+          <h2>Have a product that needs a record.</h2>
+          <a class="btn btn-ink" href="mailto:hello@flint.example">Contact me</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-brand">
+        <svg class="mark" style="width:16px" aria-hidden="true"><use href="#flint-mark"></use></svg>
+        Flint
+      </div>
+      <p>Fictional folio · Sample template · hello@flint.example</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      var toggle = document.getElementById("menuToggle");
+      function setOpen(open) {
+        if (!nav || !toggle) return;
+        nav.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      }
+      if (toggle) {
+        toggle.addEventListener("click", function () { setOpen(!nav.classList.contains("is-open")); });
+        nav.querySelectorAll(".nav-panel a").forEach(function (a) {
+          a.addEventListener("click", function () { setOpen(false); });
+        });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+        window.addEventListener("resize", function () { if (window.innerWidth > 720) setOpen(false); });
+      }
+
+      var slides = Array.prototype.slice.call(document.querySelectorAll("[data-q]"));
+      var i = 0;
+      var prev = document.getElementById("prevQ");
+      var next = document.getElementById("nextQ");
+      function show(n) {
+        i = (n + slides.length) % slides.length;
+        slides.forEach(function (s, k) { s.classList.toggle("is-on", k === i); });
+        if (prev) prev.setAttribute("aria-disabled", i === 0 ? "true" : "false");
+        if (next) next.setAttribute("aria-disabled", i === slides.length - 1 ? "true" : "false");
+      }
+      if (prev) prev.addEventListener("click", function () { if (i > 0) show(i - 1); });
+      if (next) next.addEventListener("click", function () { if (i < slides.length - 1) show(i + 1); });
+      show(0);
+    })();
+  </script>
+</body>
+</html>
