@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arris — Brand identity system</title>
+  <meta name="description" content="Fictional civic-edge identity. Crimson, true black, charcoal, warm paper. Ridge mark, wayfinding cube, stationery." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-crimson: #c70024;
+      --surface-ink: #000000;
+      --surface-charcoal: #2c2c2c;
+      --surface-paper: #f4f1ec;
+      --surface-page: #e8e6e1;
+      --text-primary: #111111;
+      --text-on-field: #ffffff;
+      --text-secondary: #5c5c5c;
+      --action-primary: #c70024;
+      --action-ink: #ffffff;
+      --font-ui: "Outfit", "Avenir Next", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --text-display: clamp(2.4rem, 5vw, 3.6rem);
+      --section-y: clamp(3.2rem, 6vw, 5rem);
+      --wrap: min(1120px, 100% - 2.4rem);
+      --board: min(1200px, 100% - 1.2rem);
+      --radius: 8px;
+      --radius-app: 22%;
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; }
+    body {
+      font-family: var(--font-ui);
+      color: var(--text-primary);
+      background: var(--surface-page);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.03em; line-height: 1.1; text-wrap: balance; }
+    p { margin: 0; }
+    :focus-visible { outline: 2px solid var(--surface-ink); outline-offset: 3px; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .board-wrap { width: var(--board); margin-inline: auto; }
+    .ridge { width: 1em; height: 1em; display: block; flex-shrink: 0; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-page) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+    }
+    .nav { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-weight: 700; font-size: 1.15rem; letter-spacing: -0.04em;
+    }
+    .nav-brand .ridge { width: 22px; height: 22px; color: var(--surface-crimson); }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 0.2rem 1.15rem;
+      margin-left: 0.8rem; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);
+    }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-actions { margin-left: auto; display: flex; gap: 0.45rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0.5rem 1rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.82rem;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--action-primary); color: var(--action-ink); }
+    .btn-primary:hover { background: #a8001e; }
+    .btn-ghost { border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent); }
+    .menu-toggle {
+      display: none; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    }
+    .menu-toggle span { width: 16px; height: 1.5px; background: var(--text-primary); }
+
+    .intro { padding: var(--section-y) 0 2rem; }
+    .kicker {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--surface-crimson); margin-bottom: 0.5rem;
+    }
+    .intro h1 { font-size: var(--text-display); }
+    .intro .lead { margin-top: 0.8rem; max-width: 44ch; color: var(--text-secondary); }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      outline: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .cell { min-height: 280px; position: relative; overflow: hidden; }
+    .cell img.fill { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .lockup {
+      display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+      background: var(--surface-crimson); color: var(--text-on-field);
+      font-weight: 700; font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: -0.045em;
+    }
+    .lockup .ridge { width: 1.15em; height: 1.15em; }
+    .marks {
+      display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+      background: #fff; min-height: 280px;
+    }
+    .app {
+      width: 108px; height: 108px; border-radius: 24px; display: grid; place-items: center;
+    }
+    .app .ridge { width: 58px; height: 58px; }
+    .app-solid { background: var(--surface-crimson); color: #fff; }
+    .app-line { background: #fff; color: var(--surface-ink); box-shadow: inset 0 0 0 3px var(--surface-ink); }
+
+    .palette { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1.15fr 0.85fr; min-height: 280px; color: #fff; font-family: var(--font-mono); font-size: 0.68rem; }
+    .swatch { padding: 0.85rem 1rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .swatch b { font-family: var(--font-ui); font-size: 0.82rem; }
+    .sw-ink { background: #000; grid-row: 1 / 3; }
+    .sw-red { background: var(--surface-crimson); }
+    .sw-ch { background: var(--surface-charcoal); }
+    .sw-paper { background: var(--surface-paper); color: var(--text-primary); }
+    .num { opacity: 0.55; font-variant-numeric: tabular-nums; }
+
+    .cards-css {
+      background: #f3f3f3; display: grid; place-items: center; padding: 1.5rem;
+    }
+    .card-stack { position: relative; width: min(78%, 280px); aspect-ratio: 1.65; }
+    .bc {
+      position: absolute; inset: 0; border-radius: 14px;
+      display: flex; align-items: center; gap: 0.45rem; padding: 0 1.1rem;
+      font-weight: 700; letter-spacing: -0.03em;
+    }
+    .bc .ridge { width: 28px; height: 28px; }
+    .bc-red { background: var(--surface-crimson); color: #fff; transform: rotate(-8deg) translate(-8%, 6%); }
+    .bc-paper { background: var(--surface-paper); color: var(--text-primary); transform: rotate(7deg) translate(14%, -4%); font-size: 0.62rem; font-weight: 500; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.2rem; }
+    .bc-paper span { font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-secondary); }
+
+    section.system { padding: var(--section-y) 0; }
+    .title { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.4rem; }
+    .sub { color: var(--text-secondary); max-width: 48ch; margin-bottom: 1.4rem; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .tile { min-height: 200px; border-radius: var(--radius); display: grid; place-items: center; }
+    .tile .ridge { width: 92px; height: 92px; }
+    .colors { display: grid; gap: 0.5rem; }
+    .crow {
+      display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 1rem;
+      background: #fff; border-radius: 10px; overflow: hidden;
+    }
+    .cchip { height: 58px; }
+    .crow code { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); padding-right: 1rem; font-variant-numeric: tabular-nums; }
+    .type-grid, .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .card {
+      background: #fff; border-radius: 10px; padding: 1.2rem;
+    }
+    .card h3 { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.55rem; }
+    .spec-word { font-weight: 700; font-size: 1.6rem; letter-spacing: -0.04em; }
+    .spec-mono { font-family: var(--font-mono); font-size: 0.85rem; }
+    .rules ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .voice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+    .voice article { background: var(--surface-ink); color: #fff; border-radius: 10px; padding: 1.15rem; }
+    .voice h3 { color: var(--surface-crimson); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .voice p { font-size: 0.88rem; color: rgba(255,255,255,0.78); }
+
+    footer { padding: 2.2rem 0; border-top: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent); color: var(--text-secondary); font-size: 0.86rem; }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+    .foot .nav-brand { color: var(--text-primary); }
+
+    @media (max-width: 860px) {
+      .board, .pair, .type-grid, .rules, .voice { grid-template-columns: 1fr; }
+      .palette { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .sw-ink { grid-row: auto; min-height: 140px; }
+      .crow { grid-template-columns: 88px 1fr; }
+      .crow code { grid-column: 2; padding: 0 1rem 0.7rem; }
+      .nav-panel {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface-page); padding: 0.75rem 1rem 1rem; flex-direction: column;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links { flex-direction: column; margin: 0; }
+      .menu-toggle { display: flex; }
+      .nav-actions .btn { display: none; }
+      .site-header .wrap { position: relative; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <symbol id="arris-ridge" viewBox="0 0 64 64">
+        <path fill="currentColor" d="M6 58 L32 8 L58 58 H45.2 L32 32.5 L18.8 58 Z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="ridge" aria-hidden="true"><use href="#arris-ridge"></use></svg>
+          arris
+        </a>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#board">Board</a>
+            <a href="#mark">Mark</a>
+            <a href="#color">Color</a>
+            <a href="#type">Type</a>
+            <a href="#voice">Voice</a>
+            <a href="#rules">Rules</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#board">Kit</a>
+          <a class="btn btn-primary" href="mailto:kit@arris.example">Request the kit</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="wrap">
+        <p class="kicker">Brand identity · civic envelope</p>
+        <h1>The edge<br />that holds the building.</h1>
+        <p class="lead">Arris is a fictional practice for facade corners, copings, and wayfinding. Crimson field, true black, a ridge that reads from the street.</p>
+      </div>
+    </section>
+
+    <section id="board">
+      <div class="board-wrap">
+        <div class="board" aria-label="Arris identity board">
+          <div class="cell lockup">
+            <svg class="ridge" aria-hidden="true"><use href="#arris-ridge"></use></svg>
+            arris
+          </div>
+          <div class="cell">
+            <img class="fill" src="sign.jpg" alt="Crimson and white wayfinding cube with an arrow on a concrete wall" />
+          </div>
+          <div class="cell marks">
+            <div class="app app-solid" aria-label="Solid app icon">
+              <svg class="ridge"><use href="#arris-ridge"></use></svg>
+            </div>
+            <div class="app app-line" aria-label="Line app icon">
+              <svg class="ridge"><use href="#arris-ridge"></use></svg>
+            </div>
+          </div>
+          <div class="cell palette" aria-label="Colour system">
+            <div class="swatch sw-ink"><span class="num">01</span><div><b>True black</b><br />#000000</div></div>
+            <div class="swatch sw-red"><span class="num">02</span><div><b>Crimson</b><br />#C70024</div></div>
+            <div class="swatch sw-ch"><span class="num">03</span><div><b>Charcoal</b><br />#2C2C2C</div></div>
+            <div class="swatch sw-paper"><span class="num">04</span><div><b>Warm paper</b><br />#F4F1EC</div></div>
+          </div>
+          <div class="cell">
+            <img class="fill" src="tote.jpg" alt="White tote with crimson handles on a metal bench" />
+          </div>
+          <div class="cell cards-css">
+            <div class="card-stack">
+              <div class="bc bc-paper">
+                kit@arris.example
+                <span>Civic envelope · Klar edge</span>
+              </div>
+              <div class="bc bc-red">
+                <svg class="ridge"><use href="#arris-ridge"></use></svg>
+                arris
+              </div>
+            </div>
+          </div>
+          <div class="cell">
+            <img class="fill" src="desk.jpg" alt="White letterhead and crimson envelope on corrugated metal" />
+          </div>
+          <div class="cell">
+            <img class="fill" src="phone.jpg" alt="Person in a black jacket holding a phone with a crimson screen" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="mark">
+      <div class="wrap">
+        <p class="kicker">Mark</p>
+        <h2 class="title">A ridge, not a letter.</h2>
+        <p class="sub">Two planes meeting. Clear space is one cap-height of the word. Never add a drop shadow, never rotate, never set in mid-grey.</p>
+        <div class="pair">
+          <div class="tile" style="background:var(--surface-crimson);color:#fff"><svg class="ridge"><use href="#arris-ridge"></use></svg></div>
+          <div class="tile" style="background:#fff;color:#000"><svg class="ridge"><use href="#arris-ridge"></use></svg></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="color" style="background:color-mix(in srgb, var(--surface-page) 60%, #fff)">
+      <div class="wrap">
+        <p class="kicker">Color</p>
+        <h2 class="title">Crimson or black. Not both as fill.</h2>
+        <p class="sub">One saturated field. The rest of the kit is ink, charcoal, and paper.</p>
+        <div class="colors">
+          <div class="crow"><div class="cchip" style="background:#C70024"></div><strong>Crimson</strong><code>#C70024 · RGB 199 0 36</code></div>
+          <div class="crow"><div class="cchip" style="background:#000"></div><strong>True black</strong><code>#000000 · RGB 0 0 0</code></div>
+          <div class="crow"><div class="cchip" style="background:#2C2C2C"></div><strong>Charcoal</strong><code>#2C2C2C · RGB 44 44 44</code></div>
+          <div class="crow"><div class="cchip" style="background:#F4F1EC"></div><strong>Warm paper</strong><code>#F4F1EC · RGB 244 241 236</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="type">
+      <div class="wrap">
+        <p class="kicker">Type</p>
+        <h2 class="title">Outfit for the street. Mono for the spec.</h2>
+        <div class="type-grid">
+          <article class="card">
+            <h3>Wordmark</h3>
+            <p class="spec-word">arris</p>
+            <p style="color:var(--text-secondary);margin-top:0.5rem;font-size:0.9rem;">Outfit 700, lowercase, tracking −0.04em. Always with the ridge, never stretched.</p>
+          </article>
+          <article class="card">
+            <h3>Spec</h3>
+            <p class="spec-mono">#C70024 · 20 mm clear · 1:1 mark</p>
+            <p style="color:var(--text-secondary);margin-top:0.5rem;font-size:0.9rem;">IBM Plex Mono for hex, drawings, and edge schedules.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="voice">
+      <div class="wrap">
+        <p class="kicker">Voice</p>
+        <h2 class="title">Name the joint.</h2>
+        <div class="voice">
+          <article><h3>Specific</h3><p>Say coping, arris, and soffit. Do not say “solutions for the built environment.”</p></article>
+          <article><h3>Short</h3><p>One clause. If it needs a comma, it needs a drawing instead.</p></article>
+          <article><h3>Civic</h3><p>Written for the person on the pavement, not the pitch deck.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="rules">
+      <div class="wrap">
+        <p class="kicker">Rules</p>
+        <div class="rules">
+          <article class="card">
+            <h3>Do</h3>
+            <ul>
+              <li>Set the ridge in white on crimson, or crimson on paper.</li>
+              <li>Keep the cube sign: one face mark, one face arrow.</li>
+              <li>Use true black for long text on paper.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Don’t</h3>
+            <ul>
+              <li>Outline the ridge in grey or add a glow.</li>
+              <li>Set crimson type on black.</li>
+              <li>Replace the ridge with a letter A.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <a class="nav-brand" href="#top">
+        <svg class="ridge" style="width:20px;height:20px;color:var(--surface-crimson)"><use href="#arris-ridge"></use></svg>
+        arris
+      </a>
+      <span>kit@arris.example · fictional identity · sample template</span>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById("nav");
+    const btn = document.getElementById("menuToggle");
+    btn?.addEventListener("click", () => {
+      const open = nav.classList.toggle("is-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  </script>
+</body>
+</html>

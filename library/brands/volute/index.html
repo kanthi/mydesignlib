@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volute — Visual identity</title>
+  <meta name="description" content="Fictional spatial-AI identity. Travertine hall, hexagonal spiral mark, construction drawing, black card, watch, campaign stills." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-stone: #c4a882;
+      --surface-ink: #141414;
+      --surface-paper: #f3f1ec;
+      --surface-line: #d9d4cc;
+      --text-primary: #161513;
+      --text-on-stone: #f7f3ec;
+      --text-secondary: #6b665e;
+      --action-primary: #141414;
+      --action-ink: #f7f3ec;
+      --font-ui: "Syne", "Avenir Next", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --text-display: clamp(2.3rem, 5vw, 3.5rem);
+      --section-y: clamp(3rem, 6vw, 4.8rem);
+      --wrap: min(1120px, 100% - 2.4rem);
+      --board: min(1180px, 100% - 1.2rem);
+      --radius: 10px;
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; }
+    body {
+      font-family: var(--font-ui);
+      background: var(--surface-paper);
+      color: var(--text-primary);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.03em; line-height: 1.1; text-wrap: balance; }
+    p { margin: 0; }
+    :focus-visible { outline: 2px solid var(--surface-stone); outline-offset: 3px; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .board-wrap { width: var(--board); margin-inline: auto; }
+    .mark { width: 1em; height: 1em; display: block; flex-shrink: 0; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-paper) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .nav { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-weight: 700; font-size: 1.08rem; letter-spacing: -0.03em;
+    }
+    .nav-brand .mark { width: 22px; }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem;
+      margin-left: 0.7rem; font-size: 0.76rem; font-weight: 600; color: var(--text-secondary);
+    }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-actions { margin-left: auto; display: flex; gap: 0.45rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0.5rem 1rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.8rem;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--action-primary); color: var(--action-ink); }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-ghost { border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent); }
+    .menu-toggle {
+      display: none; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent);
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    }
+    .menu-toggle span { width: 16px; height: 1.5px; background: var(--text-primary); }
+
+    .intro { padding: var(--section-y) 0 1.5rem; }
+    .kicker {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem;
+    }
+    .intro h1 { font-size: var(--text-display); }
+    .intro .lead { margin-top: 0.75rem; max-width: 46ch; color: var(--text-secondary); }
+
+    .board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cell { position: relative; min-height: 260px; overflow: hidden; background: #111; }
+    .cell img.fill { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .lock {
+      position: relative; z-index: 1; min-height: 260px;
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      color: var(--text-on-stone); font-weight: 700; font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      letter-spacing: -0.03em; text-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .lock .mark { width: 1.15em; height: 1.15em; }
+
+    .draw {
+      background: #f7f6f3;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      display: grid; place-items: center;
+      min-height: 260px;
+    }
+    .draw svg { width: min(72%, 280px); height: auto; color: #1a1a1a; }
+
+    .ribbed { min-height: 260px; }
+    .card-abs {
+      position: absolute; left: 10%; top: 22%;
+      width: min(72%, 280px);
+      background: #111; color: #f7f3ec;
+      border-radius: 6px; padding: 1.1rem 1.15rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem;
+      font-size: 0.62rem; letter-spacing: 0.04em;
+    }
+    .card-abs .who { font-weight: 700; font-size: 0.78rem; letter-spacing: -0.02em; }
+    .card-abs .brand {
+      grid-column: 1 / -1; display: flex; align-items: center; gap: 0.4rem;
+      font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem;
+    }
+
+    .search-cell { min-height: 280px; }
+    .ask {
+      position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 0.7rem;
+      width: min(78%, 340px); background: #fff; border-radius: 999px;
+      padding: 0.55rem 0.55rem 0.55rem 1.1rem;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+      color: var(--text-secondary); font-size: 0.88rem;
+    }
+    .ask .dot {
+      margin-left: auto; width: 36px; height: 36px; border-radius: 50%; background: #111; color: #fff;
+      display: grid; place-items: center;
+    }
+    .ask .mark { width: 16px; }
+
+    .campaign {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+      background: var(--surface-paper); min-height: 260px; padding: 1.1rem;
+    }
+    .cap {
+      display: flex; flex-direction: column; background: #111; color: #fff; min-height: 0;
+    }
+    .cap img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+    .cap p {
+      padding: 0.7rem 0.75rem 0.85rem; font-size: 0.78rem; font-weight: 600;
+      display: flex; align-items: flex-start; gap: 0.4rem;
+    }
+    .cap .mark { width: 14px; margin-top: 0.15rem; }
+
+    section.system { padding: var(--section-y) 0; }
+    .title { font-size: clamp(1.45rem, 2.8vw, 2rem); margin-bottom: 0.4rem; }
+    .sub { color: var(--text-secondary); max-width: 48ch; margin-bottom: 1.3rem; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .tile { min-height: 180px; border-radius: var(--radius); display: grid; place-items: center; }
+    .tile .mark { width: 88px; height: 88px; }
+    .colors { display: grid; gap: 0.45rem; }
+    .crow {
+      display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 1rem;
+      background: #fff; border-radius: 10px; overflow: hidden;
+    }
+    .cchip { height: 56px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
+    .crow code { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-secondary); padding-right: 1rem; font-variant-numeric: tabular-nums; }
+    .type-grid, .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .card { background: #fff; border-radius: 10px; padding: 1.15rem; }
+    .card h3 { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .card ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .voice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; }
+    .voice article { background: var(--surface-ink); color: var(--text-on-stone); border-radius: 10px; padding: 1.1rem; }
+    .voice h3 { color: var(--surface-stone); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .voice p { font-size: 0.88rem; color: rgba(247,243,236,0.72); }
+
+    footer { padding: 2rem 0; border-top: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent); color: var(--text-secondary); font-size: 0.84rem; }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+    .foot .nav-brand { color: var(--text-primary); }
+
+    @media (max-width: 860px) {
+      .board, .pair, .type-grid, .rules, .voice, .campaign { grid-template-columns: 1fr; }
+      .crow { grid-template-columns: 88px 1fr; }
+      .crow code { grid-column: 2; padding: 0 1rem 0.7rem; }
+      .nav-panel {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface-paper); padding: 0.75rem 1rem 1rem; flex-direction: column;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links { flex-direction: column; margin: 0; }
+      .menu-toggle { display: flex; }
+      .nav-actions .btn { display: none; }
+      .site-header .wrap { position: relative; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <symbol id="volute-mark" viewBox="0 0 64 64">
+        <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter" stroke-linecap="square"
+          d="M32 8 L50 18 L50 38 L32 48 L18 40 L18 28 L32 20 L42 26 L42 36 L32 42 L24 37"/>
+        <circle cx="32" cy="8" r="1.6" fill="currentColor"/>
+        <circle cx="50" cy="18" r="1.6" fill="currentColor"/>
+        <circle cx="50" cy="38" r="1.6" fill="currentColor"/>
+        <circle cx="32" cy="48" r="1.6" fill="currentColor"/>
+        <circle cx="18" cy="40" r="1.6" fill="currentColor"/>
+        <circle cx="32" cy="20" r="1.6" fill="currentColor"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="mark" aria-hidden="true"><use href="#volute-mark"></use></svg>
+          Volute
+        </a>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#board">Board</a>
+            <a href="#mark">Mark</a>
+            <a href="#color">Color</a>
+            <a href="#type">Type</a>
+            <a href="#voice">Voice</a>
+            <a href="#rules">Rules</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#board">Kit</a>
+          <a class="btn btn-primary" href="mailto:hall@volute.example">Request the kit</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="wrap">
+        <p class="kicker">Visual identity · spatial studio</p>
+        <h1>Mass the hall<br />before you pour.</h1>
+        <p class="lead">Volute is a fictional spatial model for architects. Travertine, raking light, a hexagonal spiral that records how the volume turns.</p>
+      </div>
+    </section>
+
+    <section id="board">
+      <div class="board-wrap">
+        <div class="board" aria-label="Volute identity board">
+          <div class="cell">
+            <img class="fill" src="hall.jpg" alt="Travertine colonnade with long raking shadows" />
+            <div class="lock">
+              <svg class="mark"><use href="#volute-mark"></use></svg>
+              Volute
+            </div>
+          </div>
+          <div class="cell draw" aria-label="Mark construction">
+            <svg viewBox="0 0 64 64" width="280" height="280">
+              <use href="#volute-mark"></use>
+            </svg>
+          </div>
+          <div class="cell ribbed">
+            <img class="fill" src="ribbed.jpg" alt="Dark ribbed metal" />
+            <div class="card-abs">
+              <div class="brand"><svg class="mark" style="width:18px;height:18px"><use href="#volute-mark"></use></svg> Volute</div>
+              <div>
+                <div class="who">Mira Solt</div>
+                Hall lead
+              </div>
+              <div>+1 (555) 014-2090<br />hall@volute.example</div>
+            </div>
+          </div>
+          <div class="cell">
+            <img class="fill" src="watch.jpg" alt="Black square watch on a boom arm" />
+          </div>
+          <div class="cell search-cell">
+            <img class="fill" src="spiral.jpg" alt="Wooden spiral staircase with a slit of daylight" />
+            <div class="ask">
+              Ask the hall…
+              <span class="dot"><svg class="mark"><use href="#volute-mark"></use></svg></span>
+            </div>
+          </div>
+          <div class="cell campaign">
+            <article class="cap">
+              <img src="campaign-a.jpg" alt="Brutalist interior volumes" />
+              <p><svg class="mark"><use href="#volute-mark"></use></svg> Mass it before you pour</p>
+            </article>
+            <article class="cap">
+              <img src="campaign-b.jpg" alt="Geometric concrete planes" />
+              <p><svg class="mark"><use href="#volute-mark"></use></svg> The hall, then the drawing</p>
+            </article>
+            <article class="cap">
+              <img src="campaign-c.jpg" alt="Stone corridor in perspective" />
+              <p><svg class="mark"><use href="#volute-mark"></use></svg> See the joint. Build it.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="mark">
+      <div class="wrap">
+        <p class="kicker">Mark</p>
+        <h2 class="title">A spiral that still reads as a hex.</h2>
+        <p class="sub">Line and nodes only. Clear space is the mark’s width. Never fill the spiral solid. Never redraw it as three cubes.</p>
+        <div class="pair">
+          <div class="tile" style="background:#141414;color:#f7f3ec"><svg class="mark"><use href="#volute-mark"></use></svg></div>
+          <div class="tile" style="background:#fff;color:#141414;outline:1px solid var(--surface-line)"><svg class="mark"><use href="#volute-mark"></use></svg></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="color">
+      <div class="wrap">
+        <p class="kicker">Color</p>
+        <h2 class="title">Stone is the photograph. Ink is the card.</h2>
+        <div class="colors">
+          <div class="crow"><div class="cchip" style="background:#C4A882"></div><strong>Stone</strong><code>#C4A882 · RGB 196 168 130</code></div>
+          <div class="crow"><div class="cchip" style="background:#141414"></div><strong>Ink</strong><code>#141414 · RGB 20 20 20</code></div>
+          <div class="crow"><div class="cchip" style="background:#F3F1EC"></div><strong>Paper</strong><code>#F3F1EC · RGB 243 241 236</code></div>
+          <div class="crow"><div class="cchip" style="background:#D9D4CC"></div><strong>Line</strong><code>#D9D4CC · RGB 217 212 204</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="type">
+      <div class="wrap">
+        <p class="kicker">Type</p>
+        <h2 class="title">Syne for the hall. Mono for the grid.</h2>
+        <div class="type-grid">
+          <article class="card">
+            <h3>Wordmark</h3>
+            <p style="font-weight:700;font-size:1.6rem;letter-spacing:-0.03em">Volute</p>
+            <p style="color:var(--text-secondary);margin-top:0.45rem;font-size:0.9rem;">Syne 700. Always with the spiral. Never a .ai suffix.</p>
+          </article>
+          <article class="card">
+            <h3>Spec</h3>
+            <p style="font-family:var(--font-mono);font-size:0.88rem;">GRID 28 · NODE 1.6 · #141414</p>
+            <p style="color:var(--text-secondary);margin-top:0.45rem;font-size:0.9rem;">IBM Plex Mono for construction notes.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="voice">
+      <div class="wrap">
+        <p class="kicker">Voice</p>
+        <h2 class="title">Name the volume.</h2>
+        <div class="voice">
+          <article><h3>Measured</h3><p>Say hall, joint, and pour. Do not say “reimagine reality.”</p></article>
+          <article><h3>Quiet</h3><p>One sentence, then the drawing. Light does the rest.</p></article>
+          <article><h3>Civic</h3><p>Written for the person who will walk the colonnade, not the pitch.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="rules">
+      <div class="wrap">
+        <p class="kicker">Rules</p>
+        <div class="rules">
+          <article class="card">
+            <h3>Do</h3>
+            <ul>
+              <li>Set the mark in paper on stone photos, or ink on paper.</li>
+              <li>Keep the construction drawing on a 28px grid.</li>
+              <li>Use the search pill only on the spiral plate.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Don’t</h3>
+            <ul>
+              <li>Fill the spiral or turn it into a cube cluster.</li>
+              <li>Add gold gradients over the hall.</li>
+              <li>Use a live street address or a real architect’s name.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <a class="nav-brand" href="#top">
+        <svg class="mark" style="width:20px"><use href="#volute-mark"></use></svg>
+        Volute
+      </a>
+      <span>hall@volute.example · fictional spatial studio · sample template</span>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById("nav");
+    const btn = document.getElementById("menuToggle");
+    btn?.addEventListener("click", () => {
+      const open = nav.classList.toggle("is-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  </script>
+</body>
+</html>

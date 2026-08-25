@@ -24,10 +24,11 @@
       label: "Phone",
       width: 390,
       height: 844,
-      padX: 10,
-      padTop: 10,
-      padBot: 10,
+      padX: 12,
+      padTop: 12,
+      padBot: 12,
       stand: 0,
+      overhang: 4,
       hint: "outline",
     },
     tablet: {
@@ -44,10 +45,11 @@
       label: "Laptop",
       width: 1440,
       height: 900,
-      padX: 10,
-      padTop: 10,
-      padBot: 16,
-      stand: 128,
+      padX: 16,
+      padTop: 16,
+      padBot: 18,
+      stand: 40,
+      overhang: 52,
       hint: "laptop",
     },
     desktop: {
@@ -672,6 +674,7 @@
       els.deviceFrame.dataset.device = device;
       els.deviceFrame.style.setProperty("--screen-w", `${conf.width}px`);
       els.deviceFrame.style.setProperty("--screen-h", `${conf.height}px`);
+      els.deviceFrame.style.setProperty("--overhang", `${conf.overhang || 0}px`);
     }
 
     const switcher = document.getElementById("device-switch");
@@ -689,8 +692,9 @@
   }
 
   function hardwareSize(conf) {
+    const overhang = conf.overhang || 0;
     return {
-      w: conf.width + (conf.padX || 0) * 2,
+      w: conf.width + (conf.padX || 0) * 2 + overhang * 2,
       h: conf.height + (conf.padTop || 0) + (conf.padBot || 0) + (conf.stand || 0),
     };
   }

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daygrid — Solar production in Klarfeld</title>
+  <meta name="description" content="Daygrid manufactures utility-scale modules and trackers in Klarfeld. Fictional solar manufacturer sample." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Syne:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Syne", "Avenir Next", sans-serif;
+      --font-body: "Outfit", "Segoe UI", sans-serif;
+      --surface-page: #e8e9ed;
+      --surface-ink: #101112;
+      --surface-raised: #ffffff;
+      --text-primary: #121314;
+      --text-on-dark: #f3f3f0;
+      --text-secondary: #5c5f66;
+      --action-primary: #f0e34a;
+      --action-ink: #121314;
+      --border-default: #d2d4da;
+      --status-danger: #b23b2a;
+      --text-display: clamp(2.6rem, 6vw, 4.25rem);
+      --text-3xl: clamp(1.9rem, 3.4vw, 2.85rem);
+      --text-xl: 1.25rem;
+      --text-base: 1.05rem;
+      --text-sm: 0.875rem;
+      --text-xs: 0.75rem;
+      --section-y: clamp(4rem, 9vw, 6.5rem);
+      --wrap: min(1160px, 100% - 2.5rem);
+      --radius-frame: 20px;
+      --radius-card: 14px;
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+    html, body { margin: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.55;
+      color: var(--text-primary);
+      background: #c9cdd3;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      text-wrap: balance;
+      margin: 0;
+    }
+    p { margin: 0; }
+    :focus-visible { outline: 2px solid var(--action-primary); outline-offset: 2px; }
+
+    .page { width: min(1280px, 100% - 1.25rem); margin: 1.25rem auto 0; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .kicker {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0.65rem 1.2rem;
+      border-radius: var(--radius-pill); border: 1px solid transparent;
+      font-weight: 600; font-size: var(--text-sm); cursor: pointer;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-white { background: var(--surface-raised); color: var(--action-ink); }
+    .btn-white:hover { background: #f4f4f2; }
+    .btn-ghost-light {
+      background: transparent; color: var(--text-on-dark);
+      border-color: rgba(243,243,240,0.28);
+    }
+    .btn-ink { background: var(--surface-ink); color: var(--text-on-dark); }
+    .btn-ink:hover { background: #1c1d1f; }
+    .btn-lemon { background: var(--action-primary); color: var(--action-ink); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: min(86vh, 720px);
+      border-radius: var(--radius-frame) var(--radius-frame) 0 0;
+      overflow: hidden;
+      color: var(--text-on-dark);
+      display: flex; flex-direction: column;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: #1a1814 center / cover no-repeat;
+    }
+    .hero-bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(12,14,12,0.55) 0%, rgba(12,14,12,0.12) 55%, rgba(12,14,12,0.2) 100%),
+        linear-gradient(180deg, rgba(12,14,12,0.25) 0%, transparent 35%, rgba(12,14,12,0.35) 100%);
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
+    }
+    .hero-inner { position: relative; z-index: 2; display: flex; flex-direction: column; flex: 1; padding: 1.1rem 1.15rem 1.75rem; }
+
+    .bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    }
+    .logo {
+      font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.03em;
+    }
+    .nav {
+      display: none; align-items: center; gap: 0.1rem;
+      padding: 0.28rem; background: rgba(18,20,18,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-pill);
+    }
+    .nav a { padding: 0.5rem 0.8rem; font-size: 0.82rem; font-weight: 500; border-radius: var(--radius-pill); }
+    .nav a:hover { background: rgba(255,255,255,0.08); }
+    .nav .cta { background: var(--surface-raised); color: var(--action-ink); font-weight: 600; }
+    .lang {
+      display: none; align-items: center; gap: 0.35rem;
+      font-size: var(--text-xs); font-weight: 600; opacity: 0.9;
+    }
+    .menu {
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.25);
+      color: inherit; cursor: pointer; display: grid; place-items: center;
+    }
+
+    .hero-copy { max-width: 22rem; margin-top: clamp(2.5rem, 8vh, 5.5rem); }
+    .hero-copy h1 { font-size: var(--text-display); }
+    .hero-copy p { margin-top: 1rem; max-width: 36rem; color: rgba(243,243,240,0.86); font-size: 0.98rem; }
+    .hero-copy .btn { margin-top: 1.5rem; }
+
+    .stats {
+      margin-top: auto; align-self: flex-end; width: min(100%, 22rem);
+      background: var(--surface-raised); color: var(--text-primary);
+      border-radius: var(--radius-card);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+    .stats-note {
+      padding: 0.7rem 0.9rem 0.2rem;
+      font-size: var(--text-xs); color: var(--text-secondary); display: flex; justify-content: space-between;
+    }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .stat { padding: 0.75rem 0.9rem 1rem; border-top: 1px solid var(--border-default); }
+    .stat:nth-child(2) { border-left: 1px solid var(--border-default); }
+    .stat.wide { grid-column: 1 / -1; }
+    .stat b {
+      display: block; font-family: var(--font-display); font-size: 1.45rem;
+      letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+    }
+    .stat span { font-size: var(--text-xs); color: var(--text-secondary); }
+
+    /* Offering */
+    .offer {
+      background: var(--surface-ink); color: var(--text-on-dark);
+      border-radius: 0 0 var(--radius-frame) var(--radius-frame);
+      padding: 2.25rem 0 2.5rem;
+    }
+    .offer h2 { font-size: 1rem; font-weight: 600; letter-spacing: 0; margin-bottom: 1.25rem; font-family: var(--font-body); }
+    .hw-row {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+      align-items: stretch;
+    }
+    .hw {
+      flex: 1 0 160px;
+      background: #18191b;
+      border-radius: 12px;
+      padding: 0.65rem 0.5rem 0.35rem;
+      transition: transform var(--dur) var(--ease);
+    }
+    .hw:hover { transform: translateY(-4px); }
+    .hw img {
+      width: 100%;
+      height: 132px;
+      object-fit: contain;
+    }
+    .hw p {
+      font-size: var(--text-xs);
+      text-align: center;
+      padding: 0.4rem 0.2rem 0.35rem;
+      color: rgba(243,243,240,0.7);
+    }
+
+    /* Discover */
+    .discover { background: var(--surface-page); padding: var(--section-y) 0; }
+    .discover-grid { display: grid; gap: 2rem; align-items: center; }
+    .discover h2 { font-size: var(--text-3xl); max-width: 12ch; }
+    .discover .lede { margin: 1rem 0 1.4rem; color: var(--text-secondary); max-width: 28rem; }
+    .array-shot {
+      border-radius: 16px; overflow: hidden;
+      outline: 1px solid rgba(0,0,0,0.08);
+    }
+    .array-shot img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+
+    /* Building */
+    .build {
+      background: var(--surface-ink); color: var(--text-on-dark);
+      padding: var(--section-y) 0;
+    }
+    .build-hw {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .build-hw .hw { flex: none; }
+    .rule {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: rgba(243,243,240,0.45); font-size: var(--text-xs);
+      letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: rgba(243,243,240,0.12); }
+    .build h2 { font-size: var(--text-3xl); max-width: 22ch; }
+
+    /* Energy */
+    .energy {
+      display: grid; background: var(--action-primary); color: var(--action-ink);
+    }
+    .energy-copy { padding: clamp(2rem, 6vw, 3.5rem); }
+    .energy .kicker { color: var(--action-ink); opacity: 0.7; }
+    .energy h2 { font-size: var(--text-3xl); margin-top: 0.5rem; max-width: 16ch; }
+    .energy img { width: 100%; height: 100%; object-fit: cover; min-height: 220px; }
+
+    /* Rest */
+    .rest { background: var(--surface-page); padding: var(--section-y) 0; }
+    .steps { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+    .step { background: var(--surface-raised); border-radius: var(--radius-card); padding: 1.25rem; }
+    .step b { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+    .step h3 { font-size: 1.05rem; margin: 0.35rem 0; }
+    .step p { font-size: var(--text-sm); color: var(--text-secondary); }
+
+    .contact {
+      display: grid; gap: 1.5rem; margin-top: var(--section-y);
+      background: var(--surface-raised); border-radius: var(--radius-frame); padding: clamp(1.5rem, 4vw, 2.5rem);
+    }
+    form { display: grid; gap: 0.8rem; }
+    label { display: grid; gap: 0.3rem; font-size: var(--text-sm); font-weight: 600; }
+    input, select, textarea {
+      min-height: 48px; padding: 0.65rem 0.8rem; border-radius: 12px;
+      border: 1px solid var(--border-default); background: #f6f6f7;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .err { display: none; color: var(--status-danger); font-size: var(--text-xs); }
+    .field.is-invalid .err { display: block; }
+    .ok { display: none; padding: 0.9rem; border-radius: 12px; background: #eef6d8; font-weight: 600; }
+    form.is-sent { display: none; }
+    .ok.is-on { display: block; }
+
+    .faq { margin-top: var(--section-y); }
+    .faq h2 { font-size: var(--text-3xl); margin-bottom: 1rem; }
+    details { border-top: 1px solid var(--border-default); padding: 0.85rem 0; }
+    details:last-child { border-bottom: 1px solid var(--border-default); }
+    summary {
+      cursor: pointer; font-weight: 600; list-style: none;
+      display: flex; justify-content: space-between; gap: 1rem; min-height: 44px; align-items: center;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--text-secondary); }
+    details[open] summary::after { content: "–"; }
+    details p { margin-top: 0.35rem; color: var(--text-secondary); font-size: var(--text-sm); max-width: 40rem; }
+
+    footer {
+      background: var(--surface-ink); color: var(--text-on-dark);
+      border-radius: var(--radius-frame) var(--radius-frame) 0 0;
+      padding: 2.25rem 0 1.4rem; margin-top: 2rem;
+    }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+    .fine { margin-top: 1.5rem; font-size: var(--text-xs); color: rgba(243,243,240,0.4); }
+
+    .drawer { display: none; position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.5); }
+    .drawer.is-open { display: block; }
+    .drawer-panel {
+      position: absolute; right: 0; top: 0; height: 100%; width: min(20rem, 100%);
+      background: var(--surface-ink); color: var(--text-on-dark); padding: 1.2rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .drawer-panel a, .drawer-panel .close { min-height: 44px; display: flex; align-items: center; }
+    .drawer-panel .close { border: 0; background: none; color: inherit; cursor: pointer; align-self: flex-end; }
+
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 240ms var(--ease), transform 240ms var(--ease); }
+    .reveal.is-in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hw:hover, .btn { transform: none; transition: none; }
+    }
+
+    @media (min-width: 720px) {
+      .nav, .lang { display: inline-flex; }
+      .menu { display: none; }
+      .hero-copy { max-width: 28rem; }
+      .build-hw { grid-template-columns: repeat(3, 1fr); }
+      .steps { grid-template-columns: repeat(3, 1fr); }
+      .contact { grid-template-columns: 1fr 1.05fr; }
+      .energy { grid-template-columns: 1fr 1.1fr; }
+    }
+    @media (min-width: 1024px) {
+      .discover-grid { grid-template-columns: 0.85fr 1.15fr; }
+      .hw-row { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero" id="top">
+      <div class="hero-bg" aria-hidden="true">
+        <img src="hero.jpg" width="1203" height="677" alt="" />
+      </div>
+      <div class="hero-inner">
+        <div class="bar">
+          <a class="logo" href="#top">Daygrid.</a>
+          <nav class="nav" aria-label="Primary">
+            <a href="#technology">Technology</a>
+            <a href="#manufacturing">Manufacturing</a>
+            <a href="#company">Company</a>
+            <a href="#investors">Investors</a>
+            <a class="cta" href="#contact">Contact us</a>
+          </nav>
+          <span class="lang" aria-hidden="true">EN</span>
+          <button class="menu" type="button" data-open-menu aria-label="Open menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+        <div class="hero-copy">
+          <h1>Cutting-edge solar production in Klarfeld</h1>
+          <p>Daygrid builds the glass, racks, and inverters that sit on the range. Offtake is contracted in megawatts, not kits.</p>
+          <a class="btn btn-white" href="#manufacturing">Discover more</a>
+        </div>
+        <aside class="stats" aria-label="Production figures">
+          <p class="stats-note"><span>Daygrid is a Klarfeld manufacturer building the energy estate.</span><span>Sept 2026</span></p>
+          <div class="stats-grid">
+            <div class="stat"><b>20%</b><span>of Klarfeld public production capacity</span></div>
+            <div class="stat"><b>&gt;2.6GW</b><span>commissioned module production in 2026</span></div>
+            <div class="stat wide"><b>$63.6M</b><span>first quarter 2026 revenue</span></div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="offer" id="technology">
+      <div class="wrap">
+        <h2>Daygrid’s offering services</h2>
+        <div class="hw-row">
+          <figure class="hw"><img src="hw-ground.jpg" width="1083" height="812" alt="Ground-mount rack with a single module" /><p>DG-Tilt rack</p></figure>
+          <figure class="hw"><img src="hw-roof.jpg" width="1083" height="812" alt="Low-profile commercial roof mount" /><p>DG-Low roof</p></figure>
+          <figure class="hw"><img src="hw-tracker.jpg" width="1083" height="812" alt="Dual-axis tracker assembly" /><p>DG-Axis tracker</p></figure>
+          <figure class="hw"><img src="hw-inverter.jpg" width="1083" height="812" alt="String inverter on a steel skid" /><p>DG-String skid</p></figure>
+          <figure class="hw"><img src="hw-field.jpg" width="1083" height="812" alt="Four-module ground row on concrete piers" /><p>DG-Row field</p></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="discover" id="manufacturing">
+      <div class="wrap discover-grid">
+        <div>
+          <p class="kicker">Discovery</p>
+          <h2>Top products we manufactured</h2>
+          <p class="lede">Daygrid delivers durable solar components that convert sunlight into contracted electricity — racks first, glass second, inverters last.</p>
+          <a class="btn btn-white" href="#contact" style="background:#fff;border:1px solid var(--border-default);">Discover more</a>
+        </div>
+        <div class="array-shot reveal">
+          <img src="array.jpg" width="1203" height="677" alt="Isometric field of Daygrid racks in a pale technical view" />
+        </div>
+      </div>
+    </section>
+
+    <section class="build" id="company">
+      <div class="wrap">
+        <div class="build-hw">
+          <figure class="hw"><img src="hw-ground.jpg" alt="" /></figure>
+          <figure class="hw"><img src="hw-roof.jpg" alt="" /></figure>
+          <figure class="hw"><img src="hw-field.jpg" alt="" /></figure>
+        </div>
+        <p class="rule">Our building</p>
+        <h2>Daygrid is developing local solar and battery supply chains to energize Klarfeld with scalable, dependable, and affordable power.</h2>
+      </div>
+    </section>
+
+    <section class="energy" id="investors">
+      <div class="energy-copy">
+        <p class="kicker">Energy</p>
+        <h2>Bringing light to every offtake we sign</h2>
+        <p style="margin-top:0.9rem;max-width:28rem;">Investor notes go out quarterly. Capacity is booked against named fields on the Klarfeld range — not a waiting list.</p>
+        <a class="btn btn-ink" href="#contact" style="margin-top:1.25rem;">Contact us</a>
+      </div>
+      <img src="dunes.jpg" width="1203" height="677" alt="Desert test row of modules at sunset" />
+    </section>
+
+    <section class="rest" id="process">
+      <div class="wrap">
+        <p class="kicker">How a line is built</p>
+        <h2>Glass, rack, then the skid</h2>
+        <div class="steps">
+          <article class="step reveal"><b>01</b><h3>Cell and laminate</h3><p>Modules leave the Klarfeld hall with a serial that matches the offtake lot. No mixed bins.</p></article>
+          <article class="step reveal"><b>02</b><h3>Rack and tracker</h3><p>Steel is cut for the slope on the drawing. Trackers are assembled as units, not field puzzles.</p></article>
+          <article class="step reveal"><b>03</b><h3>Skid and ship</h3><p>Inverters sit on the same skid they will land on. The crate list is the install list.</p></article>
+        </div>
+
+        <div class="contact" id="contact">
+          <div>
+            <p class="kicker">Contact</p>
+            <h2>Write the offtake, not a brochure request</h2>
+            <p class="lede" style="margin-top:0.75rem;color:var(--text-secondary);">desk@daygrid.example · Klarfeld range. Sample template — not a live manufacturer.</p>
+          </div>
+          <div>
+            <p class="ok" id="form-ok">Note received. A Daygrid lead will answer from desk@daygrid.example on the next working day.</p>
+            <form id="cform" novalidate>
+              <div class="field">
+                <label>Name <input name="name" required autocomplete="name" /></label>
+                <span class="err">Add a name.</span>
+              </div>
+              <div class="field">
+                <label>Email <input name="email" type="email" required autocomplete="email" /></label>
+                <span class="err">Use a real email.</span>
+              </div>
+              <div class="field">
+                <label>Interest
+                  <select name="kind" required>
+                    <option value="">Select</option>
+                    <option>Modules</option>
+                    <option>Trackers</option>
+                    <option>Offtake</option>
+                    <option>Investor note</option>
+                  </select>
+                </label>
+                <span class="err">Pick a topic.</span>
+              </div>
+              <div class="field">
+                <label>Note <textarea name="note" required placeholder="MW, date, field…"></textarea></label>
+                <span class="err">A short note is enough.</span>
+              </div>
+              <button class="btn btn-ink" type="submit">Contact us</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="faq">
+          <h2>Before a site visit</h2>
+          <details>
+            <summary>Do you sell rooftop kits?</summary>
+            <p>No. Daygrid makes utility and large commercial hardware. We will name a local installer if you only need a house roof.</p>
+          </details>
+          <details>
+            <summary>Where is Klarfeld?</summary>
+            <p>A fictional alpine range used for this sample. Treat every figure as invented.</p>
+          </details>
+          <details>
+            <summary>Can we tour the hall?</summary>
+            <p>Offtake partners yes, after a signed NDA. Public tours are not on the calendar.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="foot">
+          <a class="logo" href="#top">Daygrid.</a>
+          <div style="display:flex;gap:1.25rem;font-size:var(--text-sm);">
+            <a href="#technology">Technology</a>
+            <a href="#contact">Contact us</a>
+            <span>desk@daygrid.example</span>
+          </div>
+        </div>
+        <p class="fine">© 2026 Daygrid. Fictional rebrand for a private design library.</p>
+      </div>
+    </footer>
+  </div>
+
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-panel">
+      <button class="close" type="button" data-close-menu>Close</button>
+      <a href="#technology" data-close-menu>Technology</a>
+      <a href="#manufacturing" data-close-menu>Manufacturing</a>
+      <a href="#company" data-close-menu>Company</a>
+      <a href="#investors" data-close-menu>Investors</a>
+      <a class="btn btn-white" href="#contact" data-close-menu>Contact us</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const drawer = document.getElementById("drawer");
+      document.querySelector("[data-open-menu]")?.addEventListener("click", () => {
+        drawer.hidden = false; drawer.classList.add("is-open");
+      });
+      drawer?.addEventListener("click", (e) => {
+        if (e.target === drawer || e.target.closest("[data-close-menu]")) {
+          drawer.hidden = true; drawer.classList.remove("is-open");
+        }
+      });
+      const form = document.getElementById("cform");
+      const ok = document.getElementById("form-ok");
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let valid = true;
+        form.querySelectorAll(".field").forEach((field) => {
+          const input = field.querySelector("input, select, textarea");
+          const good = input.checkValidity();
+          field.classList.toggle("is-invalid", !good);
+          if (!good) valid = false;
+        });
+        if (!valid) return;
+        form.classList.add("is-sent");
+        ok.classList.add("is-on");
+      });
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const io = new IntersectionObserver((ents) => {
+          ents.forEach((en) => { if (en.isIntersecting) en.target.classList.add("is-in"); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+      } else {
+        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
+      }
+    })();
+  </script>
+</body>
+</html>

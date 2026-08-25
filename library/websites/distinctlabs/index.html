@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DistinctLabs — Actuators priced in seconds</title>
+  <meta name="description" content="DistinctLabs machines robot actuators and housings. Upload a STEP, get a quote, ship a cell part in days. Fictional robotics startup." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-page: #f4f5f7;
+      --surface-paper: #ffffff;
+      --surface-ink: #0e1013;
+      --text-primary: #111317;
+      --text-on-ink: #f3f4f6;
+      --text-secondary: #5c636c;
+      --action-primary: #4db8e8;
+      --action-ink: #0e1013;
+      --border-default: #e2e5ea;
+      --status-warn: #e6b800;
+      --status-fail: #d64545;
+      --status-pass: #2fa36b;
+      --font-ui: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --text-display: clamp(2.4rem, 5.5vw, 3.55rem);
+      --section-y: clamp(3.5rem, 7vw, 5.5rem);
+      --wrap: min(1180px, 100% - 2.5rem);
+      --radius: 8px;
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    html, body { margin: 0; }
+    body {
+      font-family: var(--font-ui);
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-size: 1.02rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    [hidden] { display: none !important; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; color: inherit; }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.08; text-wrap: balance; font-weight: 600; }
+    p { margin: 0; }
+    :focus-visible { outline: 2px solid var(--action-primary); outline-offset: 2px; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .bars { display: inline-flex; gap: 3px; align-items: flex-end; height: 18px; }
+    .bars i { display: block; width: 4px; background: currentColor; border-radius: 1px; }
+    .bars i:nth-child(1) { height: 18px; }
+    .bars i:nth-child(2) { height: 14px; } /* remix: middle inset */
+    .bars i:nth-child(3) { height: 18px; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-paper) 92%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .nav { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.95rem; }
+    .brand span { font-weight: 400; color: var(--text-secondary); }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; gap: 1.1rem; margin-left: 1rem;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.04em;
+    }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .nav-actions { margin-left: auto; display: flex; gap: 0.5rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0.5rem 1rem; border-radius: var(--radius); border: 0;
+      font-weight: 600; font-size: 0.82rem; cursor: pointer;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-cyan { background: var(--action-primary); color: var(--action-ink); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border-default); }
+    .btn-ink { background: var(--surface-ink); color: var(--text-on-ink); }
+    .menu {
+      display: none; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 1px solid var(--border-default); background: #fff; cursor: pointer;
+    }
+
+    .hero {
+      display: grid;
+      background: var(--surface-paper);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .hero-copy {
+      padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3.5rem);
+      background-image:
+        linear-gradient(rgba(14,16,19,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,16,19,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero h1 { font-size: var(--text-display); max-width: 12ch; text-transform: uppercase; }
+    .hero .lead { margin-top: 1rem; color: var(--text-secondary); max-width: 36ch; }
+    .hero-steps { display: grid; gap: 0.85rem; margin-top: 2rem; max-width: 28rem; }
+    .hero-steps div { font-size: 0.82rem; }
+    .hero-steps strong { display: block; }
+    .hero-steps span { color: var(--text-secondary); font-size: 0.75rem; }
+    .hero-view {
+      background: var(--surface-ink); color: var(--text-on-ink);
+      min-height: 420px; position: relative;
+      display: grid; place-items: center;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-view img { width: min(78%, 420px); mix-blend-mode: lighten; }
+    .chip {
+      position: absolute; font-family: var(--font-mono); font-size: 0.68rem;
+      background: rgba(14,16,19,0.7); border: 1px solid rgba(255,255,255,0.12);
+      padding: 0.3rem 0.45rem; border-radius: 4px;
+    }
+    .chip-a { top: 22%; left: 10%; }
+    .chip-b { bottom: 24%; right: 12%; }
+    .quote-float {
+      position: absolute; left: 50%; top: 52%; transform: translate(-40%, -20%);
+      background: #fff; color: var(--text-primary); border-radius: 6px;
+      padding: 0.55rem 0.7rem; display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .quote-float .btn { min-height: 32px; padding: 0.25rem 0.55rem; font-size: 0.7rem; }
+
+    .rail {
+      overflow: hidden; border-block: 1px solid var(--border-default); background: #fff;
+    }
+    .rail-track {
+      display: flex; gap: 2rem; padding: 1.1rem 0;
+      width: max-content; animation: marquee 42s linear infinite;
+    }
+    .rail figure { display: flex; align-items: center; gap: 0.7rem; }
+    .rail img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: #111; }
+    .rail figcaption { font-size: 0.78rem; color: var(--text-secondary); }
+    .rail strong { display: block; color: var(--text-primary); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    .problem { padding: var(--section-y) 0; }
+    .problem h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); max-width: 22ch; }
+    .problem p { margin-top: 0.8rem; color: var(--text-secondary); max-width: 42ch; }
+
+    .steps { padding: 0 0 var(--section-y); }
+    .step-grid { display: grid; gap: 1px; background: var(--border-default); border: 1px solid var(--border-default); }
+    .step { background: #fff; padding: 1.4rem; }
+    .step b { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); }
+    .step h3 { margin: 0.4rem 0 0.35rem; font-size: 1.05rem; }
+    .step p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    .quote {
+      background: #fff; border-block: 1px solid var(--border-default);
+      padding: var(--section-y) 0;
+    }
+    .quote-grid { display: grid; gap: 1.5rem; align-items: start; }
+    .viewer {
+      background: #f0f2f5; min-height: 380px; border-radius: var(--radius);
+      position: relative; display: grid; place-items: center; overflow: hidden;
+    }
+    .viewer img { width: min(78%, 380px); }
+    .viewer.dfm img.solid { opacity: 0.35; }
+    .viewer .dfm-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; pointer-events: none; }
+    .viewer.dfm .dfm-img { opacity: 1; }
+    .drop {
+      text-align: center; padding: 2rem; cursor: pointer; color: var(--text-secondary);
+    }
+    .drop strong { display: block; color: var(--text-primary); margin-bottom: 0.3rem; }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1rem; font-family: var(--font-mono);
+      font-size: 0.68rem; color: var(--text-secondary); margin-top: 0.75rem;
+    }
+    .config h2 { font-size: 1.15rem; margin-bottom: 1rem; }
+    .alloys { display: flex; gap: 0.7rem; margin-bottom: 1rem; }
+    .alloy {
+      width: 44px; height: 44px; border-radius: 50%; border: 2px solid transparent;
+      cursor: pointer; background: #9aa0a6;
+    }
+    .alloy.on { border-color: var(--text-primary); }
+    .a2 { background: #c5c8cc; }
+    .a3 { background: #d8d6d2; }
+    .qty { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    .qty td { padding: 0.45rem 0; border-bottom: 1px solid var(--border-default); }
+    .qty tr { cursor: pointer; }
+    .qty tr.on td { font-weight: 600; }
+    .warn {
+      margin-top: 1rem; padding: 0.7rem 0.8rem; background: #fff8e6; border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .warn b { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8a6a00; }
+    .dfm-btn { margin-top: 0.8rem; }
+
+    .specs { padding: var(--section-y) 0; }
+    .spec-grid { display: grid; gap: 1px; background: var(--border-default); border: 1px solid var(--border-default); }
+    .spec { background: #fff; padding: 1rem 1.1rem; display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; }
+    .spec span { color: var(--text-secondary); }
+
+    .cta {
+      background: var(--surface-ink); color: var(--text-on-ink);
+      padding: var(--section-y) 0;
+    }
+    .cta h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); max-width: 16ch; }
+    .cta ul { margin: 1rem 0 1.4rem; padding: 0; list-style: none; color: #9aa1aa; }
+    .cta li { padding: 0.25rem 0; }
+
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 8px 0 var(--section-y); }
+    .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; background: #111; }
+
+    footer { padding: 1.6rem 0; font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-default); }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.8rem; }
+
+    .drawer { display: none; position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.4); }
+    .drawer.is-open { display: block; }
+    .drawer-panel {
+      position: absolute; right: 0; top: 0; height: 100%; width: min(20rem, 100%);
+      background: #fff; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .hero { grid-template-columns: 1fr 1.05fr; }
+      .hero-steps { grid-template-columns: 1fr 1fr 1fr; }
+      .step-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .quote-grid { grid-template-columns: 1.15fr 0.85fr; }
+      .spec-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .nav-panel { display: none; }
+      .menu { display: grid; place-items: center; }
+      .nav-actions .btn-ghost { display: none; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .quote-float { position: static; transform: none; margin: 1rem auto; width: max-content; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rail-track { animation: none; }
+      .btn { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav">
+        <a class="brand" href="#top" id="top">
+          <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+          Distinct<span>Labs</span>
+        </a>
+        <div class="nav-panel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#quote">Quote</a>
+            <a href="#how">How</a>
+            <a href="#specs">Specs</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#quote">Upload STEP</a>
+          <a class="btn btn-cyan" href="#quote">Get a quote</a>
+          <button class="menu" type="button" data-open aria-label="Open menu"><span class="bars"><i></i><i></i><i></i></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>Machine robot actuators. Priced in seconds. On the cell in days.</h1>
+      <p class="lead">DistinctLabs cuts housings, wrists, and joints from a STEP. No tooling queue. No sales call.</p>
+      <div class="hero-steps">
+        <div><strong>Upload your file</strong><span>STEP / STP · &lt;25MB</span></div>
+        <div><strong>Estimate in seconds</strong><span>We’ll quote you instantly</span></div>
+        <div><strong>Get your part</strong><span>5–10 business days</span></div>
+      </div>
+    </div>
+    <div class="hero-view">
+      <img src="hero-part.jpg" width="800" height="800" alt="Harmonic-drive style robot actuator on a dark grid" />
+      <span class="chip chip-a">SRFC 17.91 cm²</span>
+      <span class="chip chip-b">VOL 1.33 cm³</span>
+      <a class="quote-float" href="#quote">
+        Get your instant quote
+        <span class="btn btn-cyan">STEP/STP</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="rail" aria-hidden="true">
+    <div class="rail-track">
+      <figure><img src="actuator.jpg" alt="" /><figcaption><strong>DL-ACT-40</strong> rotary housing</figcaption></figure>
+      <figure><img src="wrist.jpg" alt="" /><figcaption><strong>DL-WRIST-2</strong> wrist joint</figcaption></figure>
+      <figure><img src="gripper.jpg" alt="" /><figcaption><strong>DL-GRIP-2F</strong> gripper</figcaption></figure>
+      <figure><img src="bracket.jpg" alt="" /><figcaption><strong>DL-MNT-A</strong> motor mount</figcaption></figure>
+      <figure><img src="actuator.jpg" alt="" /><figcaption><strong>DL-ACT-40</strong> rotary housing</figcaption></figure>
+      <figure><img src="wrist.jpg" alt="" /><figcaption><strong>DL-WRIST-2</strong> wrist joint</figcaption></figure>
+      <figure><img src="gripper.jpg" alt="" /><figcaption><strong>DL-GRIP-2F</strong> gripper</figcaption></figure>
+      <figure><img src="bracket.jpg" alt="" /><figcaption><strong>DL-MNT-A</strong> motor mount</figcaption></figure>
+    </div>
+  </div>
+
+  <section class="problem wrap">
+    <h2>Every week a housing sits in a quoting queue, the cell slips.</h2>
+    <p>You need a price now, parts that hold concentricity, and a shop that moves with the program. DistinctLabs was built for that — not for hobby kits.</p>
+  </section>
+
+  <section class="steps wrap" id="how">
+    <h2 style="margin-bottom:1rem;">Three steps from file to finished joint.</h2>
+    <div class="step-grid">
+      <article class="step"><b>01</b><h3>Upload your STEP file</h3><p>Drop geometry and get instant pricing with a full machining DFM pass. No account to quote.</p></article>
+      <article class="step"><b>02</b><h3>Configure the order</h3><p>Alloy, quantity, finish in the viewer. Reprice as you change the lot.</p></article>
+      <article class="step"><b>03</b><h3>Check out and ship</h3><p>Pay online. No purchase order theater. Parts leave in days.</p></article>
+    </div>
+  </section>
+
+  <section class="quote" id="quote">
+    <div class="wrap quote-grid">
+      <div>
+        <div class="viewer" id="viewer">
+          <div class="drop" id="drop">
+            <strong>Add a model</strong>
+            STEP / STP · &lt;25MB<br />
+            Click to load a sample actuator. Files stay in this browser.
+          </div>
+          <img class="solid" id="part-img" src="actuator.jpg" alt="DL-ACT-40 actuator" hidden />
+          <img class="dfm-img" src="dfm.jpg" alt="" />
+        </div>
+        <p class="meta" id="meta" hidden>
+          <span>VOL 276.81 cm³</span>
+          <span>BOUNDS 114.3 × 114.3 × 83.2 mm</span>
+          <span>SRFC 422.54 cm²</span>
+        </p>
+      </div>
+      <div class="config" id="config" hidden>
+        <h2>DL-ACT-40 · rotary housing</h2>
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.8rem;">Alloy</p>
+        <div class="alloys" role="listbox" aria-label="Alloy">
+          <button class="alloy on" data-alloy="6061" data-mult="1" title="6061-T6"></button>
+          <button class="alloy a2" data-alloy="7075" data-mult="1.18" title="7075-T6"></button>
+          <button class="alloy a3" data-alloy="17-4" data-mult="1.42" title="17-4 PH"></button>
+        </div>
+        <p id="alloy-label" style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;">6061-T6 — included in the base price.</p>
+        <table class="qty">
+          <tbody>
+            <tr data-q="1" data-p="475.93"><td>1</td><td>$475.93</td></tr>
+            <tr class="on" data-q="5" data-p="383.00"><td>5</td><td>$383.00</td></tr>
+            <tr data-q="10" data-p="371.39"><td>10</td><td>$371.39</td></tr>
+            <tr data-q="20" data-p="365.58"><td>20</td><td>$365.58</td></tr>
+          </tbody>
+        </table>
+        <button class="btn btn-ghost dfm-btn" type="button" id="dfm-toggle">Toggle DFM</button>
+        <div class="warn">
+          <b>1 warn</b>
+          <p style="margin-top:0.3rem;">Sharp internal corner at bore 0001 — 89° dihedral. Add a 0.8 mm fillet before we cut.</p>
+        </div>
+        <p style="margin-top:1rem;font-variant-numeric:tabular-nums;font-weight:600;" id="total">Lot · 5 × $383.00</p>
+        <a class="btn btn-cyan" href="#contact" style="margin-top:0.8rem;width:100%;">Proceed to checkout</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-top:var(--section-y);">
+    <h2>Parts already on cells</h2>
+    <div class="gallery">
+      <img src="actuator.jpg" alt="Rotary actuator housing" />
+      <img src="wrist.jpg" alt="Wrist joint" />
+      <img src="gripper.jpg" alt="Two-finger gripper" />
+      <img src="bracket.jpg" alt="Motor mount" />
+      <img src="hero-part.jpg" alt="Harmonic-style actuator" />
+      <img src="dfm.jpg" alt="Translucent DFM view of a housing" />
+    </div>
+  </section>
+
+  <section class="specs wrap" id="specs">
+    <h2 style="margin-bottom:1rem;">Cell capabilities</h2>
+    <div class="spec-grid">
+      <div class="spec"><span>Minimum order</span><strong>1 piece</strong></div>
+      <div class="spec"><span>Alloys</span><strong>6061-T6, 7075-T6, 17-4 PH</strong></div>
+      <div class="spec"><span>File formats</span><strong>STEP / STP</strong></div>
+      <div class="spec"><span>Lead time</span><strong>5–10 business days</strong></div>
+      <div class="spec"><span>Max envelope</span><strong>350 × 350 × 200 mm</strong></div>
+      <div class="spec"><span>Tolerance</span><strong>±0.05 mm typical</strong></div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <h2>The shop that actually ships the joint on time.</h2>
+      <ul>
+        <li>5–10 business day lead times.</li>
+        <li>1-piece minimum.</li>
+        <li>No tooling fees.</li>
+      </ul>
+      <a class="btn btn-cyan" href="#quote">Get a quote</a>
+      <p style="margin-top:1.2rem;font-size:0.8rem;color:#8b9198;">cells@distinctlabs.example · fictional robotics shop · sample template</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <a class="brand" href="#top"><span class="bars"><i></i><i></i><i></i></span> DistinctLabs</a>
+      <span>© 2026 DistinctLabs. Fictional robotics shop. Sample template.</span>
+    </div>
+  </footer>
+
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-panel">
+      <button type="button" data-close>Close</button>
+      <a href="#quote" data-close>Quote</a>
+      <a href="#how" data-close>How</a>
+      <a href="#specs" data-close>Specs</a>
+      <a class="btn btn-cyan" href="#quote" data-close>Get a quote</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const drawer = document.getElementById("drawer");
+      document.querySelector("[data-open]")?.addEventListener("click", () => {
+        drawer.hidden = false; drawer.classList.add("is-open");
+      });
+      drawer?.addEventListener("click", (e) => {
+        if (e.target === drawer || e.target.closest("[data-close]")) {
+          drawer.hidden = true; drawer.classList.remove("is-open");
+        }
+      });
+
+      const drop = document.getElementById("drop");
+      const img = document.getElementById("part-img");
+      const meta = document.getElementById("meta");
+      const config = document.getElementById("config");
+      const viewer = document.getElementById("viewer");
+      const load = () => {
+        drop.hidden = true;
+        img.hidden = false;
+        meta.hidden = false;
+        config.hidden = false;
+      };
+      drop?.addEventListener("click", load);
+      drop?.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") load(); });
+      drop?.setAttribute("tabindex", "0");
+      drop?.setAttribute("role", "button");
+
+      document.getElementById("dfm-toggle")?.addEventListener("click", () => {
+        viewer.classList.toggle("dfm");
+      });
+
+      const alloys = document.querySelectorAll(".alloy");
+      const label = document.getElementById("alloy-label");
+      const names = { "6061": "6061-T6 — included in the base price.", "7075": "7075-T6 — +18% on the lot.", "17-4": "17-4 PH — +42% on the lot." };
+      alloys.forEach((b) => b.addEventListener("click", () => {
+        alloys.forEach((x) => x.classList.remove("on"));
+        b.classList.add("on");
+        label.textContent = names[b.dataset.alloy];
+      }));
+
+      const rows = document.querySelectorAll(".qty tr");
+      const total = document.getElementById("total");
+      rows.forEach((r) => r.addEventListener("click", () => {
+        rows.forEach((x) => x.classList.remove("on"));
+        r.classList.add("on");
+        total.textContent = "Lot · " + r.dataset.q + " × $" + r.dataset.p;
+      }));
+    })();
+  </script>
+</body>
+</html>
