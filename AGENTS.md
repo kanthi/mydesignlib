@@ -91,3 +91,12 @@ Methods corpus (X sources): **`docs/ai-website-methods-corpus.md`**.
 Default route: design-system-first → anti-slop → (clean-interface if soft SaaS) → ship/premium build → polish → interface-craft → audit.
 
 Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.
+
+## Repository working model (keep in mind)
+
+- This is a **private-by-convention static design archive**, not a production application or public template marketplace. It remains publicly reachable by URL when Pages is enabled, so preserve robots/noindex controls and do not treat it as authenticated storage.
+- The root showcase (`index.html` + `css/styles.css` + `js/app.js`) loads `data/catalog.json`. That catalog is the source of truth for cards, filters, detail modals, related-item links, and responsive iframe previews.
+- Each item in `library/<type>/<id>/` is a self-contained deliverable. A new item needs a usable `index.html`, `preview.jpg`, original local assets, and a matching catalog record before it is complete.
+- The intended contribution loop is: understand the reference → fictional rebrand → define the item design system → make original assets and static implementation → register → privacy/GA and brand audit → Caddy HTTP verification. Use the full skills route above for reference-driven websites.
+- Keep root-site changes and item changes separate conceptually: a catalog/UI change affects the gallery; an item-folder change affects one deliverable. Use relative paths throughout because deployment is under `/mydesignlib/`.
+- Pages and its workflow are intentionally paused. Do not enable or push for a deployment unless the user explicitly asks to ship live and the re-enable sequence in `docs/OPERATIONS.md` has been followed.
