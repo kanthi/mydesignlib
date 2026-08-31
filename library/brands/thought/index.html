@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thought — Brand Identity System</title>
+  <meta name="description" content="Thought brand identity template. Light slate blue, pitch black, and white. Quadfoil star emblem, logo construction grid, business cards, collateral." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-blue: #7366FF;
+      --surface-blue-hover: #5E50EC;
+      --surface-black: #08080A;
+      --surface-dark-card: #121216;
+      --surface-light-card: #FAFAFC;
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --border-light: rgba(0, 0, 0, 0.08);
+      
+      --text-white: #FFFFFF;
+      --text-muted: #9A9AB0;
+      --text-dark: #0A0A0E;
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --dur: 200ms;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--surface-black);
+      color: var(--text-white);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 4rem;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+    /* Top Navigation */
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(8, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+      height: 70px;
+      display: flex; align-items: center;
+    }
+    .header-inner {
+      width: min(1320px, 100% - 3rem);
+      margin-inline: auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-weight: 800; font-size: 1.25rem; letter-spacing: -0.03em;
+    }
+    .emblem-svg { width: 28px; height: 28px; fill: var(--surface-blue); flex-shrink: 0; }
+    .header-nav { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
+    .header-nav a:hover { color: var(--text-white); }
+    .btn-primary {
+      background: var(--surface-blue);
+      color: var(--text-white);
+      font-weight: 600; font-size: 0.88rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: var(--radius-sm);
+      transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .btn-primary:hover { background: var(--surface-blue-hover); transform: translateY(-1px); }
+
+    /* Hero Section */
+    .hero {
+      width: min(1320px, 100% - 3rem);
+      margin: 3.5rem auto 2.5rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .hero-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+    .hero-subtitle { color: var(--text-muted); max-width: 520px; font-size: 1rem; font-weight: 400; margin-top: 0.5rem; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(115, 102, 255, 0.12); border: 1px solid rgba(115, 102, 255, 0.3);
+      color: var(--surface-blue); padding: 0.3rem 0.8rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 600; font-family: var(--font-mono); margin-bottom: 0.75rem;
+    }
+
+    /* Main Collateral Grid */
+    .grid-container {
+      width: min(1320px, 100% - 3rem);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 960px) {
+      .grid-container { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--surface-dark-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative;
+      transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .card:hover { border-color: rgba(115, 102, 255, 0.5); }
+    .card-body { position: relative; width: 100%; aspect-ratio: 16/11; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .card-meta { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border-dark); background: rgba(18, 18, 22, 0.6); display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; }
+    .card-desc { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* Card 1: Billboard */
+    .billboard-frame {
+      width: 82%; height: 75%; background: #F0F2F6; border: 8px solid #1A1A1E;
+      border-radius: 4px; position: relative; overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: space-between; padding: 2rem;
+    }
+    .billboard-bg-shape {
+      position: absolute; top: -10%; right: -10%; width: 65%; height: 95%;
+      background: var(--surface-blue);
+      clip-path: path('M 0,0 Q 100,0 200,100 T 400,400 L 0,400 Z');
+      border-bottom-left-radius: 120px;
+    }
+    .billboard-header { position: relative; z-index: 2; font-family: var(--font-mono); font-size: 0.75rem; color: #4A4A58; }
+    .billboard-footer { position: relative; z-index: 2; display: flex; align-items: center; gap: 0.75rem; color: #0A0A0E; }
+    .billboard-footer .emblem-svg { width: 36px; height: 36px; fill: var(--surface-blue); }
+    .billboard-footer span { font-weight: 800; font-size: 1.8rem; letter-spacing: -0.04em; }
+    .billboard-stand {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 140px; height: 18px; background: #2A2A30; border-top: 2px solid #3A3A42;
+    }
+
+    /* Card 2: Construction Grid */
+    .construction-bg { width: 100%; height: 100%; background: #040405; position: relative; display: flex; align-items: center; justify-content: center; }
+    .grid-lines {
+      position: absolute; inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .guide-box {
+      position: relative; width: 180px; height: 180px;
+      border: 1px dashed rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .guide-box::before, .guide-box::after {
+      content: ''; position: absolute; background: rgba(255,255,255,0.25);
+    }
+    .guide-box::before { width: 140%; height: 1px; top: 50%; left: -20%; }
+    .guide-box::after { height: 140%; width: 1px; left: 50%; top: -20%; }
+    .construction-emblem { width: 110px; height: 110px; fill: var(--surface-blue); z-index: 2; filter: drop-shadow(0 0 15px rgba(115, 102, 255, 0.4)); }
+    .guide-node { position: absolute; width: 6px; height: 6px; background: #FFF; border-radius: 50%; z-index: 3; }
+    .n1 { top: -3px; left: 50%; transform: translateX(-50%); }
+    .n2 { bottom: -3px; left: 50%; transform: translateX(-50%); }
+    .n3 { left: -3px; top: 50%; transform: translateY(-50%); }
+    .n4 { right: -3px; top: 50%; transform: translateY(-50%); }
+
+    /* Card 3: Business Cards */
+    .cards-layout { width: 90%; height: 85%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; align-items: center; }
+    .b-card {
+      aspect-ratio: 1.6/1; border-radius: 8px; padding: 0.85rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+      font-size: 0.65rem; transition: transform 200ms ease;
+    }
+    .b-card:hover { transform: translateY(-4px); }
+    .bc-black { background: #0A0A0C; color: #FFF; border: 1px solid rgba(255,255,255,0.1); }
+    .bc-white { background: #FFF; color: #0A0A0C; border: 1px solid rgba(0,0,0,0.1); }
+    .bc-blue { background: var(--surface-blue); color: #FFF; }
+    .bc-logo { display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.78rem; }
+    .bc-logo svg { width: 14px; height: 14px; }
+    .bc-info { line-height: 1.3; opacity: 0.85; font-size: 0.58rem; }
+
+    /* Card 4: Typeface & Palette */
+    .specs-split { width: 90%; height: 85%; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .spec-box { background: #0A0A0E; border: 1px solid var(--border-dark); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .type-spec { color: #FFF; }
+    .type-spec h4 { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .type-spec .aa { font-size: 3.5rem; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    .type-spec .font-name { font-size: 0.9rem; font-weight: 700; margin-top: 0.5rem; }
+    .type-spec .font-chars { font-size: 0.6rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.25rem; word-break: break-all; }
+    .color-swatches { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
+    .swatch { border-radius: 8px; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: opacity 150ms; }
+    .swatch:hover { opacity: 0.9; }
+    .swatch-blue { background: var(--surface-blue); color: #FFF; }
+    .swatch-black { background: #000; color: #FFF; border: 1px solid rgba(255,255,255,0.15); }
+    .swatch-white { background: #FFF; color: #000; }
+
+    /* Card 5: Mobile Screen Perspective */
+    .mobile-frame {
+      width: 220px; height: 380px; background: #0A0A0C; border: 8px solid #22222A;
+      border-radius: 36px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); position: relative;
+      overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      transform: rotate(-6deg) translateY(10px); transition: transform 300ms ease;
+    }
+    .card:hover .mobile-frame { transform: rotate(0deg) translateY(0); }
+    .phone-bg-curve {
+      position: absolute; top: -30%; right: -40%; width: 260px; height: 260px;
+      background: var(--surface-blue); border-radius: 50%; opacity: 0.9;
+    }
+    .phone-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .phone-content svg { width: 50px; height: 50px; fill: var(--surface-blue); }
+    .phone-content h3 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; }
+
+    /* Card 6: Handheld Smartphone */
+    .handheld-container { width: 100%; height: 100%; background: radial-gradient(circle at center, #181820 0%, #050508 100%); display: flex; align-items: center; justify-content: center; }
+    .phone-blue-screen {
+      width: 170px; height: 320px; background: var(--surface-blue); border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(115, 102, 255, 0.35); display: flex; align-items: center; justify-content: center;
+      border: 4px solid #111116; position: relative;
+    }
+    .phone-blue-screen svg { width: 64px; height: 64px; fill: #FFF; }
+
+    /* Card 7: Tote Bag */
+    .tote-container { width: 100%; height: 100%; background: #16161B; display: flex; align-items: center; justify-content: center; }
+    .tote-bag {
+      width: 220px; height: 260px; background: #E8E8EE; border-radius: 4px 4px 16px 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;
+    }
+    .tote-strap {
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 90px; height: 80px; border: 8px solid #D0D0DA; border-bottom: 0; border-radius: 40px 40px 0 0;
+    }
+    .tote-art {
+      position: absolute; top: 0; right: 0; width: 130px; height: 130px;
+      background: var(--surface-blue); clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%);
+    }
+    .tote-brand { position: relative; z-index: 2; display: flex; align-items: center; gap: 0.4rem; color: #0A0A0E; font-weight: 800; font-size: 1.1rem; }
+    .tote-brand svg { width: 22px; height: 22px; fill: var(--surface-blue); }
+
+    /* Card 8: Card Stack */
+    .stack-container { width: 100%; height: 100%; background: #08080C; display: flex; align-items: center; justify-content: center; }
+    .card-stack { position: relative; width: 220px; height: 130px; transform: rotate(-8deg); }
+    .stack-layer {
+      position: absolute; inset: 0; border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+    }
+    .l1 { background: var(--surface-blue); transform: translateY(12px) scale(0.96); opacity: 0.7; }
+    .l2 { background: var(--surface-blue); transform: translateY(6px) scale(0.98); opacity: 0.9; }
+    .l3 { background: #FFFFFF; color: #0A0A0C; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; }
+    .l3-top { display: flex; align-items: center; gap: 0.4rem; font-weight: 800; font-size: 1rem; }
+    .l3-top svg { width: 20px; height: 20px; fill: var(--surface-blue); }
+    .l3-bottom { font-size: 0.65rem; color: #555; font-weight: 500; }
+
+    /* Interactive Color Tester Section */
+    .section-tester {
+      width: min(1320px, 100% - 3rem);
+      margin: 4rem auto 0;
+      background: var(--surface-dark-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+    }
+    .tester-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+    .tester-title { font-size: 1.5rem; font-weight: 700; }
+    .tester-preview {
+      aspect-ratio: 21/9; border-radius: var(--radius-md); background: #000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+      transition: background-color 300ms ease, color 300ms ease;
+    }
+    .tester-preview svg { width: 72px; height: 72px; transition: fill 300ms ease; }
+    .tester-preview h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.04em; }
+    .palette-picker { display: flex; gap: 0.75rem; }
+    .picker-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 150ms; }
+    .picker-btn:hover { transform: scale(1.1); }
+    .picker-btn.active { border-color: #FFF; }
+
+    /* Footer */
+    .footer {
+      width: min(1320px, 100% - 3rem);
+      margin: 4rem auto 0;
+      padding-top: 2rem; border-top: 1px solid var(--border-dark);
+      display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand-logo">
+        <svg class="emblem-svg" viewBox="0 0 100 100">
+          <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+        </svg>
+        <span>Thought</span>
+      </div>
+      <nav class="header-nav">
+        <a href="#specimens">Collateral Grid</a>
+        <a href="#tester">Interactive Specimen</a>
+        <a href="DESIGN.md" target="_blank">Design Doc</a>
+      </nav>
+      <button class="btn-primary" onclick="copyBrandAssets()">Copy Brand Kit</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div>
+      <span class="tag">BRAND IDENTITY SYSTEM</span>
+      <h1 class="hero-title">Thought Identity Specimen</h1>
+      <p class="hero-subtitle">Minimalist, high-precision visual identity system powered by electric slate blue (#7366FF), pitch black, and quadfoil geometry.</p>
+    </div>
+  </section>
+
+  <!-- Collateral 8-Card Showcase Grid -->
+  <main class="grid-container" id="specimens">
+
+    <!-- Card 1: Billboard -->
+    <div class="card">
+      <div class="card-body">
+        <div class="billboard-frame">
+          <div class="billboard-bg-shape"></div>
+          <div class="billboard-header">thought.com</div>
+          <div class="billboard-footer">
+            <svg class="emblem-svg" viewBox="0 0 100 100">
+              <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+            </svg>
+            <span>Thought</span>
+          </div>
+        </div>
+        <div class="billboard-stand"></div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Digital Billboard Display</div>
+          <div class="card-desc">Large format outdoor & digital screen specimen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Construction Grid -->
+    <div class="card">
+      <div class="card-body">
+        <div class="construction-bg">
+          <div class="grid-lines"></div>
+          <div class="guide-box">
+            <div class="guide-node n1"></div>
+            <div class="guide-node n2"></div>
+            <div class="guide-node n3"></div>
+            <div class="guide-node n4"></div>
+            <svg class="construction-emblem" viewBox="0 0 100 100">
+              <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Logo Construction Geometry</div>
+          <div class="card-desc">Quadfoil star curves & bounding guide breakdown</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Business Cards Set -->
+    <div class="card">
+      <div class="card-body">
+        <div class="cards-layout">
+          <div class="b-card bc-black">
+            <div class="bc-logo">
+              <svg fill="#7366FF" viewBox="0 0 100 100"><path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" /></svg>
+              <span>Thought</span>
+            </div>
+            <div class="bc-info">Mike Smithson<br>Sales Director</div>
+          </div>
+          <div class="b-card bc-white">
+            <div class="bc-logo">
+              <svg fill="#7366FF" viewBox="0 0 100 100"><path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" /></svg>
+              <span>Thought</span>
+            </div>
+            <div class="bc-info">thought.com<br>Michigan, USA</div>
+          </div>
+          <div class="b-card bc-blue">
+            <div class="bc-logo">
+              <svg fill="#FFF" viewBox="0 0 100 100"><path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" /></svg>
+              <span>Thought</span>
+            </div>
+            <div class="bc-info">Mike Smithson<br>+1 832 123 4567</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Business Card Suite</div>
+          <div class="card-desc">Pitch Black, Pure White, and Light Slate Blue variants</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Typeface & Palette -->
+    <div class="card">
+      <div class="card-body">
+        <div class="specs-split">
+          <div class="spec-box type-spec">
+            <h4>Typeface</h4>
+            <div class="aa">Aa</div>
+            <div class="font-name">Bw Gradual / Jakarta</div>
+            <div class="font-chars">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div>
+          </div>
+          <div class="color-swatches">
+            <div class="swatch swatch-blue" onclick="copyHex('#7366FF')">
+              <span>Light Slate Blue</span>
+              <span>#7366FF</span>
+            </div>
+            <div class="swatch swatch-black" onclick="copyHex('#000000')">
+              <span>Black</span>
+              <span>#000000</span>
+            </div>
+            <div class="swatch swatch-white" onclick="copyHex('#FFFFFF')">
+              <span>White</span>
+              <span>#FFFFFF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Brand Specifications</div>
+          <div class="card-desc">Typeface specimen & core color swatches</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Mobile Close-up -->
+    <div class="card">
+      <div class="card-body">
+        <div class="mobile-frame">
+          <div class="phone-bg-curve"></div>
+          <div class="phone-content">
+            <svg viewBox="0 0 100 100">
+              <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+            </svg>
+            <h3>Thought</h3>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Mobile App Interface</div>
+          <div class="card-desc">3D angle mockup showing hero splash screen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Handheld Smartphone -->
+    <div class="card">
+      <div class="card-body">
+        <div class="handheld-container">
+          <div class="phone-blue-screen">
+            <svg viewBox="0 0 100 100">
+              <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Handheld Device Specimen</div>
+          <div class="card-desc">Full-bleed periwinkle screen presentation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7: Canvas Tote Bag -->
+    <div class="card">
+      <div class="card-body">
+        <div class="tote-container">
+          <div class="tote-bag">
+            <div class="tote-strap"></div>
+            <div class="tote-art"></div>
+            <div class="tote-brand">
+              <svg viewBox="0 0 100 100">
+                <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+              </svg>
+              <span>Thought</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Canvas Tote Bag</div>
+          <div class="card-desc">Physical brand collateral mockup</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8: Stacked Business Cards -->
+    <div class="card">
+      <div class="card-body">
+        <div class="stack-container">
+          <div class="card-stack">
+            <div class="stack-layer l1"></div>
+            <div class="stack-layer l2"></div>
+            <div class="stack-layer l3">
+              <div class="l3-top">
+                <svg viewBox="0 0 100 100">
+                  <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+                </svg>
+                <span>Thought</span>
+              </div>
+              <div class="l3-bottom">
+                Mike Smithson<br>Sales Director • thought.com
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-title">Stacked Business Cards</div>
+          <div class="card-desc">3D depth card stack with periwinkle edging</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Interactive Color Tester Section -->
+  <section class="section-tester" id="tester">
+    <div class="tester-header">
+      <div>
+        <h2 class="tester-title">Interactive Brand Tester</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Test the Thought emblem and wordmark on different brand surfaces.</p>
+      </div>
+      <div class="palette-picker">
+        <button class="picker-btn active" style="background:#000;" onclick="setSurface('#000000', '#7366FF', '#FFFFFF', this)"></button>
+        <button class="picker-btn" style="background:#7366FF;" onclick="setSurface('#7366FF', '#FFFFFF', '#FFFFFF', this)"></button>
+        <button class="picker-btn" style="background:#FFFFFF;" onclick="setSurface('#FFFFFF', '#7366FF', '#0A0A0C', this)"></button>
+      </div>
+    </div>
+    <div class="tester-preview" id="previewBox">
+      <svg id="previewEmblem" fill="#7366FF" viewBox="0 0 100 100">
+        <path d="M 50,0 C 50,27.6 27.6,50 0,50 C 27.6,50 50,72.4 50,100 C 50,72.4 72.4,50 100,50 C 72.4,50 50,27.6 50,0 Z" />
+      </svg>
+      <h2 id="previewText">Thought</h2>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>Thought Brand Identity System — MyDesignLib</div>
+    <div>License: Internal Specimen</div>
+  </footer>
+
+  <script>
+    function copyHex(hex) {
+      navigator.clipboard.writeText(hex);
+      alert('Copied color ' + hex + ' to clipboard!');
+    }
+    function copyBrandAssets() {
+      alert('Thought Brand Kit assets copied to clipboard!');
+    }
+    function setSurface(bg, fill, text, btn) {
+      const box = document.getElementById('previewBox');
+      const emblem = document.getElementById('previewEmblem');
+      const label = document.getElementById('previewText');
+      box.style.backgroundColor = bg;
+      box.style.color = text;
+      emblem.style.fill = fill;
+      
+      document.querySelectorAll('.picker-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
