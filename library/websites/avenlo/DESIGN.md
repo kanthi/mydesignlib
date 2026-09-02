@@ -1,72 +1,37 @@
-# DESIGN — Avenlo
+# Avenlo — Design System & Layout Architecture
 
-## Overview
+Redesigned and structured using the **L.I.F.T. Layout Framework** (Leverage, Internal Rhythm, Friction & Flow, Transferability).
 
-- Audience: small revenue teams that need a clear, shared view of pipeline work.
-- Single CTA: **Build your pipeline**.
-- Emotion: energetic operational calm.
-- Create this through a spacious periwinkle canvas, warm paper content bands, a sharply framed black product section, and a vivid cobalt action color used only for movement and decisions.
+## 1. Vision & Brand Identity
+Avenlo is a modern revenue operations and pipeline intelligence platform for high-velocity B2B revenue teams.
+Aesthetic commitment: **Tinted Ledger & Operational Calm** — combining spacious periwinkle (`#e8ebff`), warm paper surfaces (`#fffefa`), high-contrast ink execution chambers (`#0b0b10`), cobalt decision actions (`#2454ff`), and electric lime status flags (`#d7fb70`).
 
-## Source of truth
+## 2. Color System
+- **Surface Lilac (Hero & Canvas)**: `#e8ebff`
+- **Surface Paper (Reading Bands)**: `#fffefa`
+- **Surface Card**: `#ffffff`
+- **Surface Ink (Decision Room / Night Stage)**: `#0b0b10`
+- **Surface Ink Elevated**: `#161720`
+- **Line & Border**: `#d9dced`
+- **Ink Line & Border**: `rgba(255, 255, 255, 0.12)`
+- **Text Primary**: `#11121a`
+- **Text Secondary / Muted**: `#5e6270`
+- **Ink Text Primary**: `#f5f6fa`
+- **Ink Text Muted**: `#9a9eb2`
+- **Action Primary (Cobalt)**: `#2454ff`
+- **Action Dark**: `#173bc4`
+- **Highlight (Electric Lime)**: `#d7fb70`
+- **Status Positive**: `#1aaa70`
+- **Status Risk**: `#e15d62`
 
-This document and the `:root` tokens in `index.html` are the system. The implementation wins if they conflict.
+## 3. Typography & Rhythmic Grid
+- **Typeface**: `DM Sans` (Display 700/800, Body 400/500/600)
+- **Telemetry / Metrics**: `JetBrains Mono` / Tabular Numerals (`font-variant-numeric: tabular-nums`)
+- **Spacing Scale**: 8px baseline rhythm (`4px`, `8px`, `16px`, `24px`, `32px`, `48px`, `64px`, `96px`, `128px`)
+- **Grid Architecture**: 12-Column Compound Grid
 
-## Aesthetic commitment
-
-- Name: **Tinted ledger**.
-- Signature element: a dense-but-legible revenue board that layers chart paper, status marks, and guided callouts over a quiet page.
-- Editorial cue: a small, numbered field-guide marker grounds the hero in the working-notes metaphor; it is supporting metadata, never a second headline.
-- The page borrows the reference’s high-contrast light/dark rhythm, not its brand, words, composition, or product UI.
-
-## Colors
-
-- `surface-lilac`: `#e8ebff` — hero and optimistic product moments.
-- `surface-paper`: `#fffefa` — reading and pricing space.
-- `surface-ink`: `#0b0b10` — conversion and proof zone.
-- `text-primary`: `#11121a` — headings and UI labels.
-- `text-muted`: `#5e6270` — supporting copy only.
-- `line`: `#d9dced` — quiet grouping and table structure.
-- `action-primary`: `#2454ff` — primary CTAs, active controls, selected data only.
-- `highlight`: `#d7fb70` — labels and low-volume emphasis; never an entire page surface.
-
-Do not use a gradient. Cobalt is action color, not decoration. Ink sections use paper text and lime labels, with no extra brand colors.
-
-## Typography and space
-
-- Display: **DM Sans**, 700–800, tight tracking and balanced wrapping.
-- Body: **DM Sans**, 400–600. Metrics use tabular figures.
-- Display scale: `clamp(2.8rem, 5.6vw, 5.6rem)`; utility labels use 11px uppercase tracking.
-- Wrap: 1180px. Section rhythm: `clamp(4.5rem, 9vw, 8rem)`.
-- Cards are soft (18–26px); nested panels reduce their radius by 6–8px.
-
-## Layout and responsive behavior
-
-- Compact (<680px): nav links collapse into a button-controlled drawer; hero, proof cards, product board, pricing, and footer stack; primary CTA remains visible.
-- Medium (680–1023px): hero visual sits beneath the copy; two-column grids become two equal columns.
-- Expanded (≥1024px): hero is 5/7 split, callouts may overlap the product board, and the black product section may use a staggered two-column reading path.
-
-## Components
-
-### Buttons
-
-- Primary: `action-primary`, white label, pill radius, at least 44px high. Hover darkens and lifts 2px; press scales to .97.
-- Secondary: transparent with `line` border on light surfaces, white border on ink. It never competes with the primary action.
-- Focus: 3px `highlight` ring plus a 2px offset.
-
-### Labels, cards, and product UI
-
-- Labels: `highlight` on light and ink surfaces, black uppercase text, small radius.
-- Cards: use borders for grouping and one restrained shadow only when a card overlaps its parent surface.
-- Product UI: browser-like shell, 1px line, 16px outer radius, 10px inner panels, tabular metrics, consistent 1.5px inline icon stroke.
-- Range and billing controls are functional toggles with a visible selected state; changing billing updates the displayed plan values.
-
-## Motion and accessibility
-
-- Use one 260ms opacity/translate reveal and small chart motion only. No bounce or continuous decorative movement.
-- Honor `prefers-reduced-motion` by disabling animation and smooth scrolling.
-- All controls show focus, have descriptive labels, and meet 44px touch targets.
-
-## Content and bans
-
-- Clear, specific revenue-operations language; no lorem, generic AI claims, or fake real-company logo cloud.
-- Ban: gradients, emoji icons, real trademarks, source brand terms, purple SaaS meshes, and three equal feature cards as the main proof.
+## 4. L.I.F.T. Layout Execution
+- **L (Leverage Point)**: High-impact hero headline and field-guide badge leading directly into the Cobalt CTA and an interactive Live Pipeline Pulse card.
+- **I (Internal Rhythm)**: Rhythmic cadence across 6 structured zones: Hero $\to$ Proof Ribbon $\to$ 3-Step Rhythm $\to$ The Decision Room $\to$ ROI & Customer Stories $\to$ Pricing Matrix.
+- **F (Friction & Flow)**: Strategic tactile ledger annotations, live chart scrub telemetry, and deal health indicators balanced by spacious, calming flow zones.
+- **T (Transferability)**: Fluid responsive typography (`clamp()`), mobile drawer navigation, and accessible high-contrast UI across all viewports.
