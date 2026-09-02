@@ -19,6 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === modal) modal.classList.remove('active');
   });
 
+  // Slider Controls
+  const sliderLambda = document.getElementById('sliderLambda');
+  const sliderIndex = document.getElementById('sliderIndex');
+  const valLambda = document.getElementById('valLambda');
+  const valIndex = document.getElementById('valIndex');
+
+  let wavelength = 540;
+  let refracIndex = 1.52;
+
+  if (sliderLambda) {
+    sliderLambda.addEventListener('input', (e) => {
+      wavelength = parseInt(e.target.value, 10);
+      if (valLambda) valLambda.textContent = `${wavelength} nm`;
+    });
+  }
+
+  if (sliderIndex) {
+    sliderIndex.addEventListener('input', (e) => {
+      refracIndex = parseFloat(e.target.value);
+      if (valIndex) valIndex.textContent = `${refracIndex.toFixed(2)}`;
+    });
+  }
+
   // Prism Canvas Simulator
   const canvas = document.getElementById('prismCanvas');
   if (!canvas) return;
@@ -33,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let mouseX = canvas.width / 2;
   let mouseY = canvas.height / 2;
+  let isHovered = false;
+
+  canvas.addEventListener('mouseenter', () => { isHovered = true; });
+  canvas.addEventListener('mouseleave', () => { isHovered = false; });
 
   canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -40,62 +67,85 @@ document.addEventListener('DOMContentLoaded', () => {
     mouseY = e.clientY - rect.top;
   });
 
+  function wavelengthToColor(wl) {
+    if (wl < 440) return '#8a2be2';
+    if (wl < 490) return '#00bfff';
+    if (wl < 550) return '#00ff88';
+    if (wl < 590) return '#ffd700';
+    if (wl < 640) return '#ff9900';
+    return '#ff3366';
+  }
+
   function drawPrism() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cx = canvas.width / 2;
-    const cy = canvas.height / 2 + 20;
+    const cy = canvas.height / 2 + 10;
 
-    // Incoming light ray from top-left
-    const rayStartX = 50;
-    const rayStartY = 80;
+    // Incoming light ray
+    const rayStartX = 40;
+    const rayStartY = isHovered ? Math.max(30, Math.min(canvas.height - 30, mouseY)) : cy - 50;
+
+    const incidentColor = wavelengthToColor(wavelength);
 
     ctx.beginPath();
     ctx.moveTo(rayStartX, rayStartY);
-    ctx.lineTo(cx - 40, cy - 20);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.lineWidth = 4;
-    ctx.shadowColor = '#ffffff';
-    ctx.shadowBlur = 12;
+    ctx.lineTo(cx - 50, cy);
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3.5;
+    ctx.shadowColor = incidentColor;
+    ctx.shadowBlur = 14;
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Draw Glass Prism Pyramid
+    // Center Glass Prism Geometry
     ctx.beginPath();
     ctx.moveTo(cx, cy - 90);
-    ctx.lineTo(cx + 80, cy + 60);
-    ctx.lineTo(cx - 80, cy + 60);
+    ctx.lineTo(cx + 70, cy + 65);
+    ctx.lineTo(cx - 70, cy + 65);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // Refracted Rainbow Spectral Beams on the Right
-    const colors = ['#ff3366', '#ff9900', '#ffea00', '#33cc66', '#0099ff', '#8a2be2'];
-    const count = colors.length;
+    // Internal Refraction path
+    ctx.beginPath();
+    ctx.moveTo(cx - 50, cy);
+    ctx.lineTo(cx + 35, cy + 10);
+    ctx.strokeStyle = incidentColor;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Refracted Rainbow Beams
+    const spectralColors = ['#ff3366', '#ff9900', '#ffd700', '#00ff88', '#00bfff', '#8a2be2'];
+    const count = spectralColors.length;
+    const dispersionSpread = (refracIndex - 1.0) * 45;
 
     for (let i = 0; i < count; i++) {
-      const spreadY = (cy - 30) + (i - count / 2) * (18 + Math.sin(Date.now() * 0.002 + i) * 3);
-      const targetX = canvas.width - 60;
-      const targetY = (cy - 20) + (i - count / 2) * (35 + (mouseX / canvas.width) * 20);
+      const offset = (i - count / 2) * (dispersionSpread / (count / 2));
+      const targetX = canvas.width - 40;
+      const targetY = (cy + 10) + offset + Math.sin(Date.now() * 0.003 + i) * 3;
 
       ctx.beginPath();
-      ctx.moveTo(cx + 40, cy - 10);
-      ctx.quadraticCurveTo(cx + 140, spreadY, targetX, targetY);
-      ctx.strokeStyle = colors[i];
-      ctx.lineWidth = 3;
-      ctx.shadowColor = colors[i];
+      ctx.moveTo(cx + 35, cy + 10);
+      ctx.quadraticCurveTo(cx + 120, (cy + 10) + offset * 0.4, targetX, targetY);
+      ctx.strokeStyle = spectralColors[i];
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = spectralColors[i];
       ctx.shadowBlur = 10;
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Glow particles at endpoint
+      // Glow particles at beam target
       ctx.beginPath();
       ctx.arc(targetX, targetY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = colors[i];
+      ctx.fillStyle = spectralColors[i];
+      ctx.shadowColor = spectralColors[i];
+      ctx.shadowBlur = 8;
       ctx.fill();
+      ctx.shadowBlur = 0;
     }
 
     requestAnimationFrame(drawPrism);
