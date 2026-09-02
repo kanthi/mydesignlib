@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Modal controls
+  // Mobile Menu Toggle
+  const header = document.querySelector('header');
+  const menuToggle = document.getElementById('menuToggle');
+
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      header.classList.toggle('open');
+    });
+  }
+
+  // Consultation Modal controls
   const modal = document.getElementById('consultModal');
   const openBtns = document.querySelectorAll('.open-consult-modal');
   const closeBtn = document.querySelector('.modal-close');
@@ -19,14 +29,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === modal) modal.classList.remove('active');
   });
 
-  // Smooth scroll
+  // Project Portfolio Filter Tabs
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const projectShowcase = document.querySelector('.project-showcase');
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      if (projectShowcase) {
+        projectShowcase.style.opacity = '0.7';
+        projectShowcase.style.transform = 'scale(0.99)';
+        setTimeout(() => {
+          projectShowcase.style.opacity = '1';
+          projectShowcase.style.transform = 'none';
+        }, 180);
+      }
+    });
+  });
+
+  // Smooth scroll with fixed header offset
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+        header.classList.remove('open');
+        const headerOffset = 90;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
       }
     });
   });
 });
+

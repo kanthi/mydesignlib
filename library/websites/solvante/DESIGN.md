@@ -1,27 +1,32 @@
-# Solvante — Design System
+# Solvante — Design System & Layout Architecture
 
-## Vision & Brand Identity
-Solvante is a high-end luxury architectural interior design studio. The design aesthetic uses deep charcoal obsidian (#121417), warm ochre yellow (#f5b82e), forest sage green (#1b3d2f), clean typography, and background translucent section watermark headings.
+Elevated using the **L.I.F.T. Layout Framework** (Leverage, Internal Rhythm, Friction & Flow, Transferability).
 
-## Color Palette
-- Canvas Dark: `#121417`
-- Card Surface: `#1a1c22`
-- Accent Yellow: `#f5b82e`
-- Accent Green: `#1b3d2f`
-- Text Primary: `#ffffff`
-- Text Muted: `#8e93a0`
-- Watermark Background Text: `rgba(255, 255, 255, 0.03)`
+## 1. Vision & Brand Identity
+Solvante is an ultra-luxury modern architectural and bespoke interior design studio.
+Aesthetic commitment: **Obsidian Obsidian & Warm Ochre Materiality** — marrying deep architectural charcoal (`#101216`), warm brass ochre (`#f5b82e`), forest moss slate (`#1b3d2f`), delicate technical watermarks, and editorial typography.
 
-## Typography
-- Display / Headline: `Plus Jakarta Sans`, `Outfit`, sans-serif
-- Body: `Inter`, sans-serif
+## 2. Color Palette
+- **Canvas Dark (Obsidian)**: `#101216`
+- **Surface Card**: `#181b22`
+- **Surface Card Elevated / Hover**: `#20242e`
+- **Accent Ochre Brass**: `#f5b82e`
+- **Accent Ochre Dark / Hover**: `#dfa21c`
+- **Accent Forest Slate**: `#1b3d2f`
+- **Border Subtle**: `rgba(255, 255, 255, 0.08)`
+- **Border Hover / Focus**: `rgba(245, 184, 46, 0.45)`
+- **Text Primary**: `#ffffff`
+- **Text Secondary / Muted**: `#9499a8`
+- **Watermark Subtle**: `rgba(255, 255, 255, 0.025)`
 
-## Core Layout & Components
-1. **Header & Navigation**: Brand emblem "SOLVANTE" + nav links + call CTA badge `+1 987 654 3210`.
-2. **Hero Section**: Vertical background watermark "SOLVANTE", headline "Making Spaces Speak Your Style", subhead, warm yellow rounded pill button ("Explore Our Services ↗"), right side rounded architectural photo card.
-3. **Logo Trust Bar**: Minimalist client logos.
-4. **About Us Section**: Translucent "ABOUT US" background watermark, headline "We Provide You Best Experience", dual interior photos, 1.2M+ global clients counter.
-5. **Services Section**: 3-column service cards (Residential Interior, Commercial Interior, Architectural Design).
-6. **Featured Projects Showcase**: Large luxury green card with floating detail tag ("Residential Architecture / Rustic Farmhouse Retreat / Napa Valley, CA").
-7. **Reviews & Testimonials**: 4.8 star client rating card.
-8. **CTA Banner**: Deep rich forest green background with dual contact pills.
+## 3. Typography & Rhythmic Grid
+- **Headings / Display**: `Plus Jakarta Sans` (800 / 700 / 600)
+- **Body**: `Inter` (400 / 500 / 600)
+- **Technical Metadata**: `JetBrains Mono` / Tabular Numerals
+- **Grid Architecture**: 12-Column Compound Bento Matrix with 8px baseline rhythm (`8px`, `16px`, `24px`, `32px`, `48px`, `64px`, `96px`, `128px`).
+
+## 4. L.I.F.T. Layout Execution
+- **L (Leverage Point)**: High-dominance hero headline paired with an architectural beacon badge and an interactive architectural photo showcase card with technical coordinate badges.
+- **I (Internal Rhythm)**: 7-Zone spatial progression: Hero Anchor $\to$ Editorial Trust Bar $\to$ About & Materiality $\to$ 12-Col Compound Services Bento $\to$ Featured Project Showcase with Filter Tabs $\to$ Client Endorsements $\to$ Forest Green CTA Chamber.
+- **F (Friction & Flow)**: Monospace coordinate tags (`[PROJECT NO: 084]`, `[AREA: 4,800 SQ FT]`) and subtle watermark typography combined with spacious editorial breathing room.
+- **T (Transferability)**: Fluid responsive typography (`clamp()`), flex/grid scaling across mobile and ultra-wide displays, and accessible high-contrast UI.
