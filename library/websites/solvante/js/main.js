@@ -49,6 +49,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Logo Stress Test Lab Controls
+  const btnToggleBlur = document.getElementById('btnToggleBlur');
+  const btnToggleInvert = document.getElementById('btnToggleInvert');
+  const logoViewport = document.getElementById('logoViewport');
+  const logoTestStage = document.getElementById('logoTestStage');
+
+  if (btnToggleBlur && logoViewport) {
+    btnToggleBlur.addEventListener('click', () => {
+      const isBlurred = logoViewport.classList.toggle('blur-active');
+      btnToggleBlur.classList.toggle('active', isBlurred);
+      btnToggleBlur.textContent = isBlurred ? 'Reset Blur Filter' : 'Blur Test (Gaussian)';
+    });
+  }
+
+  if (btnToggleInvert && logoTestStage) {
+    btnToggleInvert.addEventListener('click', () => {
+      const isInverted = logoTestStage.classList.toggle('invert-active');
+      btnToggleInvert.classList.toggle('active', isInverted);
+      btnToggleInvert.textContent = isInverted ? 'Reset to Dark Mode' : 'Inversion (Paper Light)';
+    });
+  }
+
   // Smooth scroll with fixed header offset
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -70,4 +92,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
