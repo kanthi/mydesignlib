@@ -105,6 +105,11 @@ Same verdict: still look AI-made, including “polished” v1/v2 and brand-syste
 | `archvault` | Archvault | Nested-arch monochrome lockups. Thin AI-infra mark sheet, not a considered identity. |
 | `verdwind` | Verdwind | Wind-farm hero, glass pill nav, services grid. Sustainability landing default. |
 | `quietly` | Quietly | Privacy analytics: white, soft indigo, centered thesis, floating chips. The clean-SaaS AI default — was wrongly cited as a quality example. |
+| `solvante` | Solvante / Solvento | Removed per user directive. |
+| `nocturna` | Nocturna | Removed per user directive. |
+| `aegis` | Aegis AI | Removed per user directive. |
+| `avenlo` | Avenlo | Removed per user directive. |
+| `credexis` | Credexis (Credixo) | Removed per user directive. |
 
 ## How to cull more
 
