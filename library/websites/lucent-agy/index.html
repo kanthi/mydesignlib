@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Lucent — Convert screen recording into clear, intelligent insights</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&display=block" rel="stylesheet" />
+
+  <style>
+    :root {
+      --font-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --fs-display: 55.7px;
+      --fs-body: 16.1px;
+      --fs-ui: 15px;
+      --fs-sup: 11.4px;
+      --fs-wordmark: 17.1px;
+
+      --fw-light: 388;
+      --fw-regular: 470;
+      --fw-medium: 500;
+      --fw-semibold: 511;
+      --fw-bold: 577;
+      --fw-black: 783;
+
+      --tr-display: -0.0572em;
+      --tr-title: -0.0570em;
+      --tr-heading: -0.0200em;
+      --tr-body: -0.0475em;
+      --tr-eyebrow: -0.0293em;
+      --tr-ui: -0.0080em;
+      --tr-cta: -0.0200em;
+      --tr-meta: -0.0447em;
+      --tr-item: -0.0287em;
+      --tr-caption: -0.0295em;
+      --tr-tab: -0.0398em;
+      --tr-wordmark: -0.0075em;
+
+      --lh-display: 61px;
+      --lh-body: 20px;
+      --lh-flat: 1;
+
+      --c-ink: #000000;
+      --c-ink-soft: #2e2e2e;
+      --c-muted: #b8b8b8;
+      --c-on-dark: #ffffff;
+      --c-on-light: #000000;
+      --c-accent: #38c6ec;
+
+      --u: 548px;
+      --dp: calc(var(--u) / 548);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; background: #ffffff; font-family: var(--font-sans); }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
+    }
+
+    #viewport { position: fixed; inset: 0; overflow: hidden; background: #ffffff; }
+    #stage {
+      position: absolute; top: 0; left: 0;
+      width: 1290px; height: 860px;
+      transform-origin: 0 0; background: #ffffff;
+    }
+
+    /* Nav */
+    .nav {
+      position: absolute;
+      left: calc(50% - 440px);
+      top: 43px;
+      width: 880px;
+      height: 52px;
+      background: #000000;
+      border-radius: 26px;
+      z-index: 20;
+    }
+
+    .wordmark-wrap {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-svg {
+      width: 26px;
+      height: 25px;
+      flex-shrink: 0;
+    }
+
+    .wordmark {
+      font-size: var(--fs-wordmark);
+      font-weight: var(--fw-black);
+      letter-spacing: var(--tr-wordmark);
+      color: #ffffff;
+      white-space: nowrap;
+    }
+    .wordmark sup {
+      font-size: var(--fs-sup);
+      font-weight: var(--fw-black);
+      position: relative;
+      top: -5px;
+      left: 1px;
+    }
+
+    .nav-links {
+      position: absolute;
+      left: 240px;
+      top: 0;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav-links a {
+      font-size: var(--fs-ui);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--tr-ui);
+      color: #ffffff;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 0.75; }
+
+    .btn--nav {
+      position: absolute;
+      right: 9px;
+      top: 9px;
+      width: 153px;
+      height: 34px;
+      border-radius: 17px;
+      border: 0;
+      background: #ffffff;
+      color: #000000;
+      font-family: inherit;
+      font-size: var(--fs-ui);
+      font-weight: var(--fw-bold);
+      letter-spacing: var(--tr-cta);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .btn--nav:hover { background: #f0f0f0; }
+
+    /* Hero Text */
+    .hero-h1 {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 203px;
+      margin: 0;
+      text-align: center;
+      white-space: pre-line;
+      font-size: var(--fs-display);
+      font-weight: var(--fw-regular);
+      letter-spacing: var(--tr-display);
+      line-height: var(--lh-display);
+      color: var(--c-ink);
+    }
+
+    .hero-sub {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 333px;
+      margin: 0;
+      text-align: center;
+      white-space: pre-line;
+      font-size: var(--fs-body);
+      font-weight: var(--fw-regular);
+      letter-spacing: var(--tr-body);
+      line-height: var(--lh-body);
+      color: var(--c-ink);
+    }
+
+    .btn--hero {
+      position: absolute;
+      left: calc(50% - 64px);
+      top: 388px;
+      width: 129px;
+      height: 34px;
+      border: 0;
+      border-radius: 17px;
+      background: #000000;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: var(--fs-ui);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--tr-cta);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .btn--hero:hover { background: #222222; }
+
+    /* Cyan Video Band */
+    .band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 473px;
+      bottom: 0;
+      overflow: hidden;
+      background-color: #0db5ed;
+      z-index: 1;
+    }
+
+    .band__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: 0;
+    }
+
+    /* Floating Product Card */
+    .card {
+      position: absolute;
+      left: calc(50% - 274px);
+      top: 549px;
+      width: var(--u);
+      height: calc(var(--dp) * 340);
+      background: #f2f2f2;
+      border-radius: calc(var(--dp) * 16);
+      overflow: hidden;
+      z-index: 5;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.6),
+        0 0 calc(var(--dp) * 9) calc(var(--dp) * 3) rgba(255, 255, 255, 0.5),
+        0 calc(var(--dp) * 22) calc(var(--dp) * 64) rgba(2, 72, 105, 0.16);
+    }
+
+    .eyebrow {
+      position: absolute;
+      left: calc(var(--dp) * 19);
+      top: calc(var(--dp) * 21);
+      font-size: calc(var(--dp) * 15.8);
+      font-weight: var(--fw-light);
+      letter-spacing: var(--tr-eyebrow);
+      color: var(--c-ink);
+      white-space: nowrap;
+    }
+
+    .cardtitle {
+      position: absolute;
+      left: calc(var(--dp) * 18);
+      top: calc(var(--dp) * 47);
+      font-size: calc(var(--dp) * 20);
+      font-weight: var(--fw-bold);
+      letter-spacing: var(--tr-title);
+      color: var(--c-ink);
+      white-space: nowrap;
+    }
+
+    .meta {
+      position: absolute;
+      left: calc(var(--dp) * 18);
+      top: calc(var(--dp) * 81);
+      height: calc(var(--dp) * 28);
+      display: flex;
+      align-items: center;
+      gap: calc(var(--dp) * 8);
+      font-size: calc(var(--dp) * 14.3);
+      color: var(--c-muted);
+      font-weight: var(--fw-light);
+    }
+
+    .avatars {
+      display: flex;
+      position: relative;
+      width: calc(var(--dp) * 56);
+      height: calc(var(--dp) * 28);
+    }
+    .av {
+      position: absolute;
+      width: calc(var(--dp) * 28);
+      height: calc(var(--dp) * 28);
+      border-radius: 50%;
+      border: calc(var(--dp) * 2) solid #ffffff;
+      background: #8d6a52;
+    }
+    .av1 { left: 0; background: #8d6a52; }
+    .av2 { left: calc(var(--dp) * 14); background: #b9b3ad; }
+    .av3 { left: calc(var(--dp) * 28); background: #a08b7a; }
+
+    /* Tabs */
+    .tabs {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(var(--dp) * 129);
+      height: calc(var(--dp) * 30);
+      display: flex;
+      padding-left: calc(var(--dp) * 19);
+      gap: calc(var(--dp) * 22);
+    }
+
+    .tab {
+      font-size: calc(var(--dp) * 12.1);
+      font-weight: var(--fw-light);
+      color: var(--c-muted);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .tab.is-active {
+      font-weight: var(--fw-medium);
+      color: #2e2e2e;
+      position: relative;
+    }
+    .tab.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(var(--dp) * -6);
+      height: calc(var(--dp) * 2);
+      background: var(--c-accent);
+    }
+
+    /* Panel */
+    .panel {
+      position: absolute;
+      left: calc(var(--dp) * 19);
+      top: calc(var(--dp) * 160);
+      width: calc(var(--dp) * 510);
+      height: calc(var(--dp) * 169);
+      background: #ffffff;
+      border-radius: calc(var(--dp) * 8);
+      padding: calc(var(--dp) * 12);
+    }
+
+    .panel__heading {
+      font-size: calc(var(--dp) * 17);
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--tr-heading);
+      margin-bottom: calc(var(--dp) * 10);
+      color: var(--c-ink);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--dp) * 10);
+      height: calc(var(--dp) * 46);
+      border: 1px solid #ededed;
+      border-radius: calc(var(--dp) * 8);
+      padding: 0 calc(var(--dp) * 10);
+      margin-bottom: calc(var(--dp) * 8);
+      background: #ffffff;
+    }
+
+    .row-dot {
+      width: calc(var(--dp) * 16);
+      height: calc(var(--dp) * 16);
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .row-dot.green { background: #2a9a30; }
+    .row-dot.amber { background: #f6a825; }
+
+    .row-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .rowtitle {
+      font-size: calc(var(--dp) * 12.9);
+      font-weight: var(--fw-medium);
+      color: var(--c-ink);
+    }
+    .rowowner {
+      font-size: calc(var(--dp) * 12.2);
+      font-weight: var(--fw-light);
+      color: var(--c-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="viewport">
+    <div id="stage">
+      <!-- Navbar -->
+      <nav class="nav">
+        <a href="#top" class="wordmark-wrap">
+          <!-- Logo SVG -->
+          <svg class="logo-svg" viewBox="0 0 26 25" fill="none" aria-label="Lucent mark">
+            <path fill-rule="evenodd" d="M9.45 24.95 L7.07 24.09 L5.56 23.30 L3.33 21.03 L2.31 19.44 L0.74 16.05 L0.27 13.91 L0.29 11.25 L0.80 8.75 L1.95 6.20 L3.26 4.50 L5.15 2.67 L7.77 1.02 L9.91 0.18 L12.16 -0.20 L15.22 -0.16 L17.61 0.35 L19.30 1.06 L20.88 2.06 L22.23 3.37 L24.01 5.48 L24.76 6.58 L25.70 8.63 L26.00 10.35 L26.02 11.35 L25.54 12.12 L24.96 12.32 L22.35 12.36 L21.46 12.18 L20.78 11.85 L20.32 11.37 L19.45 9.56 L17.88 7.58 L16.59 6.60 L14.59 5.84 L13.24 5.69 L11.54 5.93 L10.47 6.44 L9.12 7.35 L7.92 8.50 L6.70 10.55 L6.26 12.65 L6.41 14.36 L7.14 15.86 L8.63 17.79 L12.57 20.70 L12.96 21.60 L13.13 22.82 L12.93 24.36 L12.65 24.86 L12.03 25.35 L11.27 25.42 L9.45 24.95 Z M24.55 25.53 L22.49 24.77 L19.56 23.18 L18.15 22.07 L16.63 20.48 L16.14 19.79 L15.63 18.71 L14.66 15.66 L14.59 14.50 L14.75 13.92 L15.12 13.45 L15.85 13.10 L16.91 12.88 L18.90 12.85 L19.49 13.04 L19.94 13.38 L20.25 13.88 L20.86 15.66 L21.97 17.30 L23.05 18.22 L25.00 19.43 L26.05 20.27 L26.34 20.66 L26.63 21.86 L26.51 23.68 L25.79 25.10 L25.35 25.42 L24.55 25.53 Z" fill="#38c6ec"/>
+          </svg>
+          <span class="wordmark">Lucent<sup>2</sup></span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#product">Product</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#blog">Blog</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <button type="button" class="btn--nav" onclick="alert('Downloading Lucent for desktop...')">
+          Download Now
+        </button>
+      </nav>
+
+      <!-- Hero Heading & Sub -->
+      <h1 class="hero-h1">Convert Screen recording into
+clear, intelligent insights</h1>
+
+      <p class="hero-sub">From screen recordings to searchable knowledge, powered by quantum AI.
+Skip the manual work.</p>
+
+      <button type="button" class="btn--hero" onclick="alert('Starting Lucent Free Trial...')">
+        Get Started
+      </button>
+
+      <!-- Cyan Video Band -->
+      <section class="band">
+        <video class="band__video" autoplay muted loop playsinline poster="./preview.jpg">
+          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_125119_4963ddd4-c287-4044-b014-b68943cdd8bd.mp4" type="video/mp4" />
+        </video>
+      </section>
+
+      <!-- Floating Product Mockup Card -->
+      <aside class="card">
+        <div class="eyebrow"># Project Horizon 1742m/ Strategy Sync</div>
+        <div class="cardtitle">Outcome Review</div>
+
+        <div class="meta">
+          <div class="avatars">
+            <span class="av av1"></span>
+            <span class="av av2"></span>
+            <span class="av av3"></span>
+          </div>
+          <span>Today at 10:30 a.m. • 45 mins • Aligned</span>
+        </div>
+
+        <div class="tabs">
+          <span class="tab is-active">Outcomes</span>
+          <span class="tab">Decisions</span>
+          <span class="tab">Action Items</span>
+          <span class="tab">Open Questions</span>
+        </div>
+
+        <div class="panel">
+          <div class="panel__heading">Key Outcomes</div>
+
+          <div class="row">
+            <div class="row-dot green">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 6.5L4.8 8.8L9.5 4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="row-info">
+              <div class="rowtitle">Agreed on success metrics for Q3 launch</div>
+              <div class="rowowner">Owner: Product Lead</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="row-dot amber">
+              <span style="color:#ffffff; font-size:10px; font-weight:bold;">?</span>
+            </div>
+            <div class="row-info">
+              <div class="rowtitle">Refined product positioning strategy pending approval</div>
+              <div class="rowowner">Owner: Marketing Manager</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const stage = document.getElementById('stage');
+      function resize() {
+        if (!stage) return;
+        const scale = Math.min(window.innerWidth / 1290, window.innerHeight / 860);
+        stage.style.transform = `scale(${scale})`;
+        stage.style.left = `${(window.innerWidth - 1290 * scale) / 2}px`;
+        stage.style.top = `${(window.innerHeight - 860 * scale) / 2}px`;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+    })();
+  </script>
+</body>
+</html>
