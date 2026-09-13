@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Praxis — Run Your Practice From One Calm Inbox</title>
+  <meta name="description" content="Phone, text, fax, video visits, and patient communication unified in one HIPAA-compliant platform. Launch your clinical practice in minutes. No sales calls, BAA included automatically." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       PRAXIS DESIGN SYSTEM TOKENS & RESET
+       ========================================================================== */
+    :root {
+      --bg-page: #FAFBF9;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F3F5F2;
+      --bg-inset: #EAEDE8;
+      --ink-primary: #111827;
+      --ink-secondary: #4B5563;
+      --ink-muted: #6B7280;
+      --ink-light: #9CA3AF;
+      --border-subtle: #E5E7EB;
+      --border-medium: #D1D5DB;
+      --cobalt: #0066FF;
+      --cobalt-dark: #0052CC;
+      --cobalt-light: #EBF3FF;
+      --cobalt-glow: rgba(0, 102, 255, 0.25);
+      --mint: #059669;
+      --mint-light: #ECFDF5;
+      --mint-border: #A7F3D0;
+      --amber: #D97706;
+      --amber-light: #FEF3C7;
+      --dark-navy: #0B131F;
+      --dark-navy-surface: #131E2E;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-xl: 32px;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 1px 3px rgba(17, 24, 39, 0.05);
+      --shadow-md: 0 8px 24px rgba(17, 24, 39, 0.06);
+      --shadow-lg: 0 16px 40px rgba(17, 24, 39, 0.08);
+      --shadow-glow: 0 12px 36px rgba(0, 102, 255, 0.22);
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-page);
+      color: var(--ink-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--ink-primary);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       TOP ANNOUNCEMENT BAR & STICKY NAVIGATION
+       ========================================================================== */
+    .top-banner {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .banner-badge {
+      background: var(--mint-light);
+      color: var(--mint);
+      border: 1px solid var(--mint-border);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .top-banner a {
+      color: var(--ink-primary);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .top-banner a:hover {
+      color: var(--cobalt);
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(250, 251, 249, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.7);
+      z-index: 100;
+      height: 74px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      color: var(--ink-primary);
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-link:hover {
+      color: var(--ink-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      padding: 8px 14px;
+    }
+
+    .btn-text:hover {
+      color: var(--ink-primary);
+    }
+
+    .btn-primary {
+      background: var(--cobalt);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 8px rgba(0, 102, 255, 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 102, 255, 0.35);
+    }
+
+    /* ==========================================================================
+       HERO SECTION WITH PATIENT INBOX APP VISUAL
+       ========================================================================== */
+    .hero-section {
+      padding: 64px 0 80px;
+      position: relative;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 52px;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 520px;
+    }
+
+    .hero-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .hero-pill-tag .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--mint);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--mint-light);
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 4.4vw, 3.85rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--ink-primary);
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+      margin-bottom: 32px;
+      font-weight: 450;
+    }
+
+    .hero-signup-box {
+      display: flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-signup-box:focus-within {
+      border-color: var(--cobalt);
+      box-shadow: 0 0 0 3px var(--cobalt-light);
+    }
+
+    .hero-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 14px;
+      font-size: 14.5px;
+      font-family: inherit;
+      color: var(--ink-primary);
+      background: transparent;
+    }
+
+    .hero-input::placeholder {
+      color: var(--ink-light);
+    }
+
+    .hero-proof-row {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .proof-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .proof-stars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      color: #F59E0B;
+      margin-bottom: 3px;
+    }
+
+    .proof-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    /* ==========================================================================
+       HERO APP MOCKUP (THE UNIFIED MEDICAL INBOX)
+       ========================================================================== */
+    .hero-mockup-wrapper {
+      position: relative;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(17, 24, 39, 0.08), 0 2px 10px rgba(17, 24, 39, 0.03);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+    }
+
+    .mockup-top-bar {
+      height: 44px;
+      background: #F9FAF8;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    .mockup-window-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-window-controls span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #E5E7EB;
+    }
+
+    .mockup-search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      padding: 4px 10px;
+      border-radius: 6px;
+      width: 220px;
+      font-size: 11.5px;
+      color: var(--ink-light);
+    }
+
+    .mockup-body-grid {
+      display: grid;
+      grid-template-columns: 160px 1.4fr 1.2fr;
+      flex: 1;
+      height: calc(100% - 44px);
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .mockup-sidebar {
+      background: #FAFBF9;
+      border-right: 1px solid var(--border-subtle);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-clinic-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-nav-item.active, .sidebar-nav-item:hover {
+      background: #EBF3FF;
+      color: var(--cobalt);
+      font-weight: 600;
+    }
+
+    .sidebar-count {
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: #E5E7EB;
+      color: var(--ink-primary);
+    }
+
+    .sidebar-nav-item.active .sidebar-count {
+      background: var(--cobalt);
+      color: #FFFFFF;
+    }
+
+    /* Message Thread List */
+    .mockup-thread-list {
+      border-right: 1px solid var(--border-subtle);
+      overflow-y: auto;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thread-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .thread-item:hover, .thread-item.active {
+      background: #F8FAFC;
+    }
+
+    .thread-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .thread-patient {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .unread-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cobalt);
+      display: inline-block;
+    }
+
+    .thread-time {
+      font-size: 10.5px;
+      color: var(--ink-light);
+      font-family: var(--font-mono);
+    }
+
+    .thread-snippet {
+      font-size: 11.5px;
+      color: var(--ink-secondary);
+      line-height: 1.35;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .thread-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .thread-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .tag-blue { background: #EBF3FF; color: var(--cobalt); }
+    .tag-mint { background: var(--mint-light); color: var(--mint); }
+    .tag-amber { background: var(--amber-light); color: var(--amber); }
+
+    /* Conversation Pane */
+    .mockup-detail-pane {
+      background: #FAFBF9;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+
+    .detail-patient-header {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 12px;
+    }
+
+    .detail-patient-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .detail-patient-sub {
+      font-size: 10.5px;
+      color: var(--ink-light);
+      font-family: var(--font-mono);
+    }
+
+    .chat-bubble-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 8px 11px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    .chat-incoming {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--ink-primary);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-outgoing {
+      background: var(--cobalt);
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-internal-note {
+      background: var(--amber-light);
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      align-self: center;
+      width: 100%;
+      font-size: 10.5px;
+      font-weight: 500;
+    }
+
+    .mockup-composer {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mockup-composer input {
+      border: none;
+      outline: none;
+      font-size: 11.5px;
+      flex: 1;
+      font-family: inherit;
+    }
+
+    .composer-btn {
+      background: var(--cobalt);
+      color: #FFFFFF;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    /* ==========================================================================
+       TRUSTED CLINIC MARQUEE LOGO BAR
+       ========================================================================== */
+    .trust-section {
+      padding: 38px 0;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .trust-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 22px;
+      letter-spacing: 0.02em;
+    }
+
+    .trust-logo-grid {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 32px;
+      opacity: 0.82;
+    }
+
+    .clinic-logo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: var(--ink-secondary);
+    }
+
+    .clinic-logo-item svg {
+      color: var(--cobalt);
+    }
+
+    /* ==========================================================================
+       LARGE EDITORIAL TESTIMONIAL QUOTE (LEAD QUOTE)
+       ========================================================================== */
+    .quote-spotlight {
+      padding: 85px 0 75px;
+      background: var(--bg-page);
+      text-align: center;
+    }
+
+    .quote-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .quote-lead {
+      font-size: clamp(1.45rem, 2.6vw, 2.15rem);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+      margin-bottom: 24px;
+    }
+
+    .quote-highlight {
+      color: var(--cobalt);
+      font-weight: 700;
+    }
+
+    .quote-author {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+    }
+
+    .quote-author-role {
+      color: var(--ink-light);
+      font-weight: 450;
+    }
+
+    /* ==========================================================================
+       FEATURE PILLARS: EVERYTHING YOUR PHONE USED TO MISS
+       ========================================================================== */
+    .features-section {
+      padding: 90px 0;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-header-split {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-header-left {
+      max-width: 580px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: var(--ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+    }
+
+    .features-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-smooth);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-medium);
+    }
+
+    .feature-icon-bubble {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .bubble-blue { background: var(--cobalt-light); color: var(--cobalt); }
+    .bubble-mint { background: var(--mint-light); color: var(--mint); }
+    .bubble-amber { background: var(--amber-light); color: var(--amber); }
+
+    .feature-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card-p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+      margin-bottom: 24px;
+      flex: 1;
+    }
+
+    /* Mini Mockups inside Feature Cards */
+    .card-preview-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.04);
+    }
+
+    /* Audio Waveform Player inside Feature 3 */
+    .audio-player-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .audio-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .waveform-visual-container {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 38px;
+      padding: 0 6px;
+    }
+
+    .wave-bar {
+      width: 4px;
+      background: #D1D5DB;
+      border-radius: 4px;
+      transition: height 0.2s ease, background 0.2s ease;
+    }
+
+    .wave-bar.active {
+      background: var(--cobalt);
+    }
+
+    .audio-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+    }
+
+    .play-pill-btn {
+      background: var(--cobalt);
+      color: #FFFFFF;
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .play-pill-btn:hover {
+      background: var(--cobalt-dark);
+    }
+
+    .transcription-pill-badge {
+      background: var(--mint-light);
+      border: 1px solid var(--mint-border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      color: #065F46;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       EHR & TOOLS PERSPECTIVE GRID SECTION
+       ========================================================================== */
+    .ehr-section {
+      padding: 95px 0;
+      background: var(--bg-page);
+      position: relative;
+    }
+
+    .ehr-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .ehr-cards-perspective {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      perspective: 1000px;
+    }
+
+    .ehr-badge-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ehr-badge-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: var(--cobalt);
+      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.12);
+    }
+
+    .ehr-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    .ehr-sync-status {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--mint);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sync-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+
+    /* ==========================================================================
+       DARK MIDNIGHT TESTIMONIAL SHOWCASE
+       ========================================================================== */
+    .midnight-testimonial-section {
+      background: var(--dark-navy);
+      color: #FFFFFF;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .midnight-testimonial-card {
+      background: var(--dark-navy-surface);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 56px;
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 48px;
+      align-items: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .midnight-quote-icon {
+      color: var(--cobalt);
+      margin-bottom: 24px;
+    }
+
+    .midnight-quote-text {
+      font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 32px;
+    }
+
+    .midnight-author-block {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 20px;
+    }
+
+    .midnight-author-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .midnight-author-clinic {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .midnight-photo-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/4.5;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .midnight-doctor-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ==========================================================================
+       TRANSPARENT 3-TIER PRICING SECTION
+       ========================================================================== */
+    .pricing-section {
+      padding: 100px 0;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .pricing-header-center {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 48px;
+    }
+
+    .billing-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      margin-top: 24px;
+    }
+
+    .billing-toggle-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .billing-toggle-btn.active {
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .save-badge {
+      background: var(--cobalt-light);
+      color: var(--cobalt);
+      border-radius: var(--radius-pill);
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pricing-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .pricing-card.featured {
+      background: #FFFFFF;
+      border-color: var(--cobalt);
+      box-shadow: 0 12px 36px rgba(0, 102, 255, 0.14);
+      transform: translateY(-6px);
+    }
+
+    .pricing-badge-popular {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cobalt);
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+    }
+
+    .pricing-tier-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-tier-desc {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      line-height: 1.45;
+      margin-bottom: 24px;
+      min-height: 40px;
+    }
+
+    .pricing-num-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .pricing-dollar {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+    }
+
+    .pricing-val {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ink-primary);
+      line-height: 1;
+    }
+
+    .pricing-period {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+
+    .pricing-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+      flex: 1;
+    }
+
+    .pricing-feature-item {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+
+    .pricing-feature-item svg {
+      color: var(--mint);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .btn-tier {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      display: inline-block;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-tier-outline {
+      background: #FFFFFF;
+      border: 1px solid var(--border-medium);
+      color: var(--ink-primary);
+    }
+
+    .btn-tier-outline:hover {
+      border-color: var(--ink-primary);
+      background: var(--bg-subtle);
+    }
+
+    .btn-tier-solid {
+      background: var(--cobalt);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(0, 102, 255, 0.3);
+    }
+
+    .btn-tier-solid:hover {
+      background: var(--cobalt-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       CONVERSION FAQ ACCORDION SECTION
+       ========================================================================== */
+    .faq-section {
+      padding: 90px 0;
+      background: var(--bg-page);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 56px;
+      align-items: flex-start;
+    }
+
+    .faq-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      background: transparent;
+      text-align: left;
+    }
+
+    .faq-trigger:hover {
+      color: var(--cobalt);
+    }
+
+    .faq-icon {
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+      color: var(--ink-secondary);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+      color: var(--cobalt);
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+      padding: 0 24px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--ink-secondary);
+    }
+
+    .faq-item.open .faq-body {
+      max-height: 300px;
+      padding-bottom: 22px;
+      transition: max-height 0.3s ease-in-out;
+    }
+
+    /* ==========================================================================
+       BOTTOM CONVERSION CTA BANNER
+       ========================================================================== */
+    .cta-banner-section {
+      padding: 70px 0 100px;
+      background: var(--bg-page);
+    }
+
+    .cta-banner-card {
+      background: var(--cobalt);
+      border-radius: var(--radius-xl);
+      padding: 64px 48px;
+      text-align: center;
+      color: #FFFFFF;
+      box-shadow: 0 20px 50px rgba(0, 102, 255, 0.28);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner-card h2 {
+      font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .cta-banner-card p {
+      font-size: 1.125rem;
+      max-width: 580px;
+      margin: 0 auto 36px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+    }
+
+    .cta-banner-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      max-width: 480px;
+      margin: 0 auto 18px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .cta-banner-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 16px;
+      font-size: 14.5px;
+      font-family: inherit;
+    }
+
+    .cta-banner-btn {
+      background: var(--ink-primary);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .cta-banner-btn:hover {
+      background: #000000;
+    }
+
+    .cta-security-badge {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .site-footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 36px;
+      font-size: 13.5px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+
+    .footer-brand-summary {
+      max-width: 320px;
+    }
+
+    .footer-brand-summary p {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .footer-links-group {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .footer-col-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col-links a {
+      color: var(--ink-secondary);
+    }
+
+    .footer-col-links a:hover {
+      color: var(--cobalt);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--ink-light);
+      font-size: 12.5px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .features-grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .ehr-grid-layout {
+        grid-template-columns: 1fr;
+      }
+      .midnight-testimonial-card {
+        grid-template-columns: 1fr;
+        padding: 36px;
+      }
+      .pricing-cards-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .pricing-card.featured {
+        transform: none;
+      }
+      .faq-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .mockup-body-grid {
+        grid-template-columns: 1fr;
+      }
+      .mockup-sidebar, .mockup-detail-pane {
+        display: none;
+      }
+      .hero-signup-box {
+        flex-direction: column;
+        padding: 8px;
+        gap: 8px;
+      }
+      .hero-signup-box button {
+        width: 100%;
+      }
+      .cta-banner-card {
+        padding: 40px 24px;
+      }
+      .cta-banner-form {
+        flex-direction: column;
+      }
+      .cta-banner-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-banner">
+    <span class="banner-badge">NEW</span>
+    <span>Automatic HIPAA BAA included on every clinical plan.</span>
+    <a href="#pricing">See plans &rarr;</a>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="site-nav">
+    <div class="container nav-inner">
+      <a href="#" class="brand-logo">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" fill="#0066FF" />
+          <path d="M16 8 V24 M8 16 H24" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+          <circle cx="16" cy="16" r="3.5" fill="#FFFFFF" />
+        </svg>
+        <span>praxis</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features" class="nav-link">Product</a></li>
+        <li><a href="#ehr" class="nav-link">Integrations</a></li>
+        <li><a href="#testimonials" class="nav-link">Clinics</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#pricing" class="btn-text">Log in</a>
+        <a href="#pricing" class="btn-primary">
+          Start Free
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container hero-layout">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-pill-tag">
+          <span class="badge-dot"></span>
+          <span>Automatic BAA Included &bull; Zero Migration</span>
+        </div>
+
+        <h1 class="hero-title">
+          Run your practice from one calm inbox.
+        </h1>
+
+        <p class="hero-desc">
+          Phone, text, fax, video visits, and patient communication unified in one platform. Set it up yourself in 15 minutes. No sales call, no separate BAA to chase.
+        </p>
+
+        <!-- Email Signup Input -->
+        <form class="hero-signup-box" onsubmit="event.preventDefault(); alert('Trial initiated. Your HIPAA BAA is automatically queued.');">
+          <input type="email" class="hero-input" placeholder="doctor@practice.example" required />
+          <button type="submit" class="btn-primary" style="padding: 11px 22px;">
+            Start for Free
+          </button>
+        </form>
+
+        <!-- Social Proof Rating Row -->
+        <div class="hero-proof-row">
+          <div class="proof-item">
+            <div class="proof-stars">★★★★★</div>
+            <div class="proof-label">85,000+ clinicians</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-stars">★★★★★</div>
+            <div class="proof-label">4.9 on Capterra</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-stars">★★★★★</div>
+            <div class="proof-label">Leader on G2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right App Mockup: Unified Medical Inbox -->
+      <div class="hero-mockup-wrapper">
+        <!-- Window Controls & Search -->
+        <div class="mockup-top-bar">
+          <div class="mockup-window-controls">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="mockup-search">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Search Summit Health patients...</span>
+          </div>
+          <span style="color: var(--mint); font-size: 11px; font-weight: 700;">● BAA VERIFIED</span>
+        </div>
+
+        <!-- 3-Column Mockup Interface -->
+        <div class="mockup-body-grid">
+          <!-- Sidebar -->
+          <div class="mockup-sidebar">
+            <div class="sidebar-clinic-name">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <span>Summit Primary Care</span>
+            </div>
+
+            <ul class="sidebar-nav-list">
+              <li class="sidebar-nav-item active">
+                <span>All Inboxes</span>
+                <span class="sidebar-count">7</span>
+              </li>
+              <li class="sidebar-nav-item">
+                <span>Triage Queue</span>
+                <span class="sidebar-count">3</span>
+              </li>
+              <li class="sidebar-nav-item">
+                <span>Voicemails</span>
+                <span class="sidebar-count">2</span>
+              </li>
+              <li class="sidebar-nav-item">
+                <span>e-Fax Direct</span>
+                <span class="sidebar-count">0</span>
+              </li>
+              <li class="sidebar-nav-item">
+                <span>Scheduled</span>
+                <span class="sidebar-count">12</span>
+              </li>
+            </ul>
+
+            <div style="margin-top: auto; padding: 10px; background: #EBF3FF; border-radius: 8px; font-size: 11px; color: var(--cobalt); font-weight: 600;">
+              Earn $200 per clinic referral &rarr;
+            </div>
+          </div>
+
+          <!-- Thread Stream -->
+          <div class="mockup-thread-list">
+            <!-- Item 1: Active -->
+            <div class="thread-item active">
+              <div class="thread-header">
+                <div class="thread-patient">
+                  <span class="unread-indicator"></span>
+                  <span>Elena Rostova</span>
+                </div>
+                <span class="thread-time">4:06 PM</span>
+              </div>
+              <div class="thread-snippet">
+                Dr. Vance, question regarding the blood pressure medication dosage after this morning's lab panel.
+              </div>
+              <div class="thread-tags">
+                <span class="thread-tag tag-blue">Dr. Vance</span>
+                <span class="thread-tag tag-mint">SMS Verified</span>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="thread-item">
+              <div class="thread-header">
+                <div class="thread-patient">
+                  <span>Marcus Thorne</span>
+                </div>
+                <span class="thread-time">3:04 PM</span>
+              </div>
+              <div class="thread-snippet">
+                Follow-up appointment confirmed for Tuesday at 10:30 AM. Intake form completed.
+              </div>
+              <div class="thread-tags">
+                <span class="thread-tag tag-mint">Confirmed</span>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="thread-item">
+              <div class="thread-header">
+                <div class="thread-patient">
+                  <span>Michelle Morrison</span>
+                </div>
+                <span class="thread-time">2:20 PM</span>
+              </div>
+              <div class="thread-snippet">
+                [Voicemail transcribed] "Hi Dr. Vance, checking if the orthotics referral went through..."
+              </div>
+              <div class="thread-tags">
+                <span class="thread-tag tag-amber">AI Voicemail</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conversation Detail Pane -->
+          <div class="mockup-detail-pane">
+            <div class="detail-patient-header">
+              <div class="detail-patient-title">Elena Rostova (DOB: 11/04/84)</div>
+              <div class="detail-patient-sub">MRN #8921-A &bull; Assigned: Dr. Peter Vance</div>
+            </div>
+
+            <div class="chat-bubble-stream">
+              <div class="chat-bubble chat-incoming">
+                Hi doctor, is it safe to take my lisinopril with food? My blood pressure reading was 124/82 today.
+              </div>
+
+              <div class="chat-bubble chat-internal-note">
+                🔒 Internal Clinician Note: Chart reviewed. Lab potassium normal at 4.2. Advised to take with breakfast.
+              </div>
+
+              <div class="chat-bubble chat-outgoing">
+                Hello Elena! Yes, taking it with breakfast is completely fine. Your readings look great. Keep logging them daily.
+              </div>
+            </div>
+
+            <div class="mockup-composer">
+              <input type="text" placeholder="Reply via HIPAA Secure SMS..." />
+              <button class="composer-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Clinic Social Proof Logos -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="trust-label">TRUSTED BY 60,000+ HEALTHCARE PROFESSIONALS &amp; CLINICAL TEAMS</div>
+      <div class="trust-logo-grid">
+        <div class="clinic-logo-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>Summit Health</span>
+        </div>
+        <div class="clinic-logo-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+          <span>Pacific DPC</span>
+        </div>
+        <div class="clinic-logo-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Meridia Orthopedics</span>
+        </div>
+        <div class="clinic-logo-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          <span>Sano Family Care</span>
+        </div>
+        <div class="clinic-logo-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Beacon Physical Therapy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Large Editorial Quote Spotlight -->
+  <section class="quote-spotlight">
+    <div class="container quote-inner">
+      <p class="quote-lead">
+        &ldquo;Our staff couldn&rsquo;t support our call volume. <span class="quote-highlight">Praxis has given us the ability to communicate more efficiently with patients</span>, even with a lean team and heavy triage surges.&rdquo;
+      </p>
+      <div class="quote-author">
+        Dr. Kaela Thurman, MD &bull; <span class="quote-author-role">Medical Director, Hometown Health Center</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Core Feature Pillars -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header-split">
+        <div class="section-header-left">
+          <h2 class="section-title">Everything your clinic phone used to miss, in one place.</h2>
+          <p class="section-desc">
+            One inbox for every patient call, text, and voicemail. Calls route where they need to go, and nothing sits unanswered on a sticky note.
+          </p>
+        </div>
+        <a href="#pricing" class="btn-primary">
+          Explore All Capabilities
+        </a>
+      </div>
+
+      <div class="features-grid-3">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon-bubble bubble-blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3 class="feature-card-title">One inbox, every channel</h3>
+          <p class="feature-card-p">
+            Calls, two-way texts, faxes, video visits, and secure messaging all thread into one clean patient timeline. Never piece together a history across four siloed apps again.
+          </p>
+          <div class="card-preview-box">
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <span class="thread-tag tag-blue" style="padding: 3px 8px;">SMS</span>
+              <span class="thread-tag tag-mint" style="padding: 3px 8px;">Phone Call</span>
+              <span class="thread-tag tag-amber" style="padding: 3px 8px;">e-Fax</span>
+            </div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--ink-primary); margin-bottom: 3px;">Patient Thread: Caleb Wright</div>
+            <div style="font-size: 11.5px; color: var(--ink-secondary);">"Rx sent to Walgreens &bull; Follow-up 10/12"</div>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon-bubble bubble-mint">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <h3 class="feature-card-title">A phone system built for healthcare</h3>
+          <p class="feature-card-p">
+            Smart routing trees, professional clinic lines, and automated on-call schedules. Protect your physicians' personal cell phone numbers forever.
+          </p>
+          <div class="card-preview-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--mint);">CUSTOM IVR ROUTING</span>
+              <button id="testRouteBtn" class="play-pill-btn" style="background: var(--mint); font-size: 10px; padding: 2px 8px;">Simulate Call</button>
+            </div>
+            <div id="routeStatusDisplay" style="font-size: 11.5px; color: var(--ink-secondary); font-family: var(--font-mono);">
+              Press 1 &rarr; On-Call Physician<br>
+              Press 2 &rarr; Front Desk / Refills
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: Audio Waveform -->
+        <div class="feature-card">
+          <div class="feature-icon-bubble bubble-amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          </div>
+          <h3 class="feature-card-title">Voicemail that transcribes itself</h3>
+          <p class="feature-card-p">
+            Every clinical voicemail is transcribed and summarized automatically. Skip tedious dial-in menus. Get the urgent callback reason in 5 seconds.
+          </p>
+          <div class="card-preview-box audio-player-card">
+            <div class="audio-header-row">
+              <span>Voicemail: John Smith</span>
+              <span style="font-size: 11px; color: var(--ink-light); font-family: var(--font-mono);">Today &bull; 3:04 PM</span>
+            </div>
+
+            <!-- Animated Interactive Waveform -->
+            <div class="waveform-visual-container" id="waveformContainer">
+              <!-- Dynamically rendered waveform bars via JS -->
+            </div>
+
+            <div class="audio-controls-row">
+              <button class="play-pill-btn" id="waveformPlayBtn">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span id="playBtnText">Listen</span>
+              </button>
+              <span id="audioTimecode">00:10 / 00:23</span>
+            </div>
+
+            <div class="transcription-pill-badge">
+              <strong>AI Summary:</strong> Prescription refill request for Dr. Vance. No severe symptoms reported.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EHR Seamless Compatibility Perspective Grid -->
+  <section class="ehr-section" id="ehr">
+    <div class="container ehr-grid-layout">
+      <div>
+        <div class="hero-pill-tag" style="margin-bottom: 16px;">
+          <span class="badge-dot"></span>
+          <span>Zero Migration Friction</span>
+        </div>
+        <h2 class="section-title">Works alongside the tools you already rely on.</h2>
+        <p class="section-desc" style="margin-bottom: 24px;">
+          Unlike legacy suites that demand you abandon your existing practice software, Praxis integrates seamlessly beside your current EHR. No messy data migration, no staff retraining. Just one calm, unified communications layer.
+        </p>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: var(--ink-secondary);">
+          <li style="display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Bi-directional contact &amp; chart sync</span>
+          </li>
+          <li style="display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Automatic communication log export to patient file</span>
+          </li>
+          <li style="display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Custom webhooks &amp; FHIR REST API available</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3D Perspective Card Grid -->
+      <div class="ehr-cards-perspective">
+        <div class="ehr-badge-card">
+          <div class="ehr-name">Epic Systems</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Verified Sync</div>
+        </div>
+        <div class="ehr-badge-card">
+          <div class="ehr-name">AthenaHealth</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Active Hook</div>
+        </div>
+        <div class="ehr-badge-card">
+          <div class="ehr-name">DrChrono</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Full API</div>
+        </div>
+        <div class="ehr-badge-card">
+          <div class="ehr-name">Elation Health</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Direct Sync</div>
+        </div>
+        <div class="ehr-badge-card">
+          <div class="ehr-name">TherapyNotes</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Connected</div>
+        </div>
+        <div class="ehr-badge-card">
+          <div class="ehr-name">Cerner Oracle</div>
+          <div class="ehr-sync-status"><span class="sync-dot"></span> Verified</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Midnight Contrast Testimonial Section -->
+  <section class="midnight-testimonial-section" id="testimonials">
+    <div class="container">
+      <div class="midnight-testimonial-card">
+        <div>
+          <svg class="midnight-quote-icon" width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+          </svg>
+          <blockquote class="midnight-quote-text">
+            &ldquo;Our clinicians used to spend two hours every night answering voicemails and piecing together SMS records. With Praxis, patient communication is resolved live during clinic hours. We reclaimed our evenings.&rdquo;
+          </blockquote>
+          <div class="midnight-author-block">
+            <div class="midnight-author-name">Dr. Althea Thorne, MD</div>
+            <div class="midnight-author-clinic">Founding Partner &bull; Pacific Northwest DPC Network</div>
+          </div>
+        </div>
+
+        <div class="midnight-photo-wrap">
+          <img src="assets/doctor-portrait.jpg" alt="Dr. Althea Thorne, clinic director" class="midnight-doctor-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transparent 3-Tier Pricing Section -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="pricing-header-center">
+        <h2 class="section-title">A transparent plan for every practice stage.</h2>
+        <p class="section-desc">
+          From solo providers getting off personal cell phones to multi-location health networks. HIPAA compliance and BAA included on every plan. No sales friction.
+        </p>
+
+        <!-- Billing Switcher Toggle -->
+        <div class="billing-toggle-wrap">
+          <button class="billing-toggle-btn active" id="btnMonthly">Monthly Billing</button>
+          <button class="billing-toggle-btn" id="btnAnnual">
+            Annual Billing
+            <span class="save-badge">-25%</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-cards-grid">
+        <!-- Tier 1: Basic -->
+        <div class="pricing-card">
+          <h3 class="pricing-tier-name">Solo Practice</h3>
+          <p class="pricing-tier-desc">For solo providers getting off personal cell numbers and Google Voice.</p>
+          <div class="pricing-num-wrap">
+            <span class="pricing-dollar">$</span>
+            <span class="pricing-val" id="priceSolo">24</span>
+            <span class="pricing-period">/ user / mo</span>
+          </div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Automatic HIPAA BAA included</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Dedicated clinic phone &amp; fax line</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Two-way patient SMS &amp; MMS</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>AI voicemail transcription</span>
+            </li>
+          </ul>
+
+          <a href="#" class="btn-tier btn-tier-outline">Start 14-Day Free Trial</a>
+        </div>
+
+        <!-- Tier 2: Communicator (Featured) -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge-popular">MOST POPULAR</div>
+          <h3 class="pricing-tier-name">Clinical Team</h3>
+          <p class="pricing-tier-desc">For growing practices that need call routing trees and automated staff handoffs.</p>
+          <div class="pricing-num-wrap">
+            <span class="pricing-dollar">$</span>
+            <span class="pricing-val" id="priceTeam">49</span>
+            <span class="pricing-period">/ user / mo</span>
+          </div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Everything in Solo Practice, plus:</strong></span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Custom multi-tier phone menus (IVR)</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Automated after-hours triage escalation</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>EHR integration &amp; webhook access</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Internal clinician notes &amp; mentions</span>
+            </li>
+          </ul>
+
+          <a href="#" class="btn-tier btn-tier-solid">Start 14-Day Free Trial</a>
+        </div>
+
+        <!-- Tier 3: Enterprise -->
+        <div class="pricing-card">
+          <h3 class="pricing-tier-name">Health Network</h3>
+          <p class="pricing-tier-desc">For multi-provider groups managing complex triage across geographic sites.</p>
+          <div class="pricing-num-wrap">
+            <span class="pricing-val" style="font-size: 2.8rem;">Custom</span>
+          </div>
+
+          <ul class="pricing-feature-list">
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Everything in Clinical Team, plus:</strong></span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Multi-location routing permissions</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Dedicated onboarding specialist</span>
+            </li>
+            <li class="pricing-feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Custom SLA &amp; 24/7 priority clinical support</span>
+            </li>
+          </ul>
+
+          <a href="mailto:sales@praxis.example" class="btn-tier btn-tier-outline">Contact Clinical Advisory</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conversion FAQ Accordion Section -->
+  <section class="faq-section" id="faq">
+    <div class="container faq-layout">
+      <div>
+        <h2 class="section-title">Questions before you get started.</h2>
+        <p class="section-desc">
+          Answers to common questions about HIPAA compliance, number porting, and staff setup.
+        </p>
+      </div>
+
+      <div class="faq-wrap">
+        <!-- FAQ 1 -->
+        <div class="faq-item open">
+          <button class="faq-trigger">
+            <span>Is my HIPAA BAA really included automatically?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-body">
+            Yes. Unlike other platforms that hide Business Associate Agreements behind high-tier enterprise paywalls or require weeks of legal red tape, Praxis signs and executes your BAA electronically the moment you create your account.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>Can we keep our existing practice phone numbers?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-body">
+            Absolutely. You can port your existing local or toll-free numbers into Praxis with zero downtime. During the brief porting window, you can forward calls immediately so your patients never experience a busy signal.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>Does this replace our EHR or integrate beside it?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-body">
+            Praxis functions as your communication front-end and integrates directly beside your EHR (Epic, Athena, DrChrono, Elation, etc.). We don't force you to change your charting or billing workflow.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>How fast can our clinical staff be trained?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-body">
+            Most clinical teams are up and running within 15 minutes. The interface is designed like a modern messenger inbox, meaning zero specialized software training is needed for nurses, front desk staff, or physicians.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Conversion Banner -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <div class="cta-banner-card">
+        <h2>Ready to run your practice from one calm inbox?</h2>
+        <p>
+          Join thousands of clinics that eliminated phone queues, safeguarded clinician peace of mind, and modernized patient care.
+        </p>
+
+        <form class="cta-banner-form" onsubmit="event.preventDefault(); alert('14-day trial activated. BAA issued.');">
+          <input type="email" class="cta-banner-input" placeholder="Enter your work email..." required />
+          <button type="submit" class="cta-banner-btn">Get Started Now</button>
+        </form>
+
+        <div class="cta-security-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>HIPAA Compliant &bull; 14-Day Free Trial &bull; No Credit Card Required</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-summary">
+          <div class="brand-logo" style="font-size: 19px;">
+            <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px;">
+              <circle cx="16" cy="16" r="14" fill="#0066FF" />
+              <path d="M16 8 V24 M8 16 H24" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+            </svg>
+            <span>praxis</span>
+          </div>
+          <p>
+            Unified communications infrastructure engineered for modern clinical practices, physicians, and care teams.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <div>
+            <div class="footer-col-title">Platform</div>
+            <ul class="footer-col-links">
+              <li><a href="#features">Unified Inbox</a></li>
+              <li><a href="#features">Clinical Phone Tree</a></li>
+              <li><a href="#features">AI Voicemail</a></li>
+              <li><a href="#ehr">EHR Integrations</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Compliance</div>
+            <ul class="footer-col-links">
+              <li><a href="#">HIPAA Security</a></li>
+              <li><a href="#">BAA Guarantee</a></li>
+              <li><a href="#">SOC-2 Type II</a></li>
+              <li><a href="#">Audit Trails</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Company</div>
+            <ul class="footer-col-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="mailto:care@praxis.example">care@praxis.example</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Praxis Health Technologies Inc. All rights reserved. Sample template for mydesignlib.</div>
+        <div>HIPAA Compliant Cloud &bull; 99.99% Guaranteed Availability</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Logic -->
+  <script>
+    (function() {
+      // 1. Audio Waveform Dynamic Bars
+      const waveformContainer = document.getElementById("waveformContainer");
+      const waveformPlayBtn = document.getElementById("waveformPlayBtn");
+      const playBtnText = document.getElementById("playBtnText");
+      const heights = [12, 18, 28, 14, 22, 34, 18, 26, 36, 20, 14, 28, 32, 16, 24, 30, 18, 12];
+      let isPlayingAudio = false;
+      let audioInterval = null;
+      let currentWaveIndex = 0;
+
+      if (waveformContainer) {
+        heights.forEach((h, idx) => {
+          const bar = document.createElement("div");
+          bar.className = "wave-bar";
+          bar.style.height = `${h}px`;
+          if (idx < 7) bar.classList.add("active");
+          waveformContainer.appendChild(bar);
+        });
+
+        const waveBars = waveformContainer.querySelectorAll(".wave-bar");
+
+        waveformPlayBtn.addEventListener("click", () => {
+          isPlayingAudio = !isPlayingAudio;
+          if (isPlayingAudio) {
+            playBtnText.textContent = "Pause";
+            waveformPlayBtn.querySelector("svg").innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+            audioInterval = setInterval(() => {
+              currentWaveIndex = (currentWaveIndex + 1) % waveBars.length;
+              waveBars.forEach((bar, i) => {
+                if (i <= currentWaveIndex) {
+                  bar.classList.add("active");
+                } else {
+                  bar.classList.remove("active");
+                }
+              });
+            }, 180);
+          } else {
+            playBtnText.textContent = "Listen";
+            waveformPlayBtn.querySelector("svg").innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+            if (audioInterval) clearInterval(audioInterval);
+          }
+        });
+      }
+
+      // 2. Pricing Billing Toggle
+      const btnMonthly = document.getElementById("btnMonthly");
+      const btnAnnual = document.getElementById("btnAnnual");
+      const priceSolo = document.getElementById("priceSolo");
+      const priceTeam = document.getElementById("priceTeam");
+
+      if (btnMonthly && btnAnnual) {
+        btnMonthly.addEventListener("click", () => {
+          btnMonthly.classList.add("active");
+          btnAnnual.classList.remove("active");
+          priceSolo.textContent = "24";
+          priceTeam.textContent = "49";
+        });
+
+        btnAnnual.addEventListener("click", () => {
+          btnAnnual.classList.add("active");
+          btnMonthly.classList.remove("active");
+          priceSolo.textContent = "18";
+          priceTeam.textContent = "36";
+        });
+      }
+
+      // 3. IVR Call Route Simulation
+      const testRouteBtn = document.getElementById("testRouteBtn");
+      const routeStatusDisplay = document.getElementById("routeStatusDisplay");
+      if (testRouteBtn && routeStatusDisplay) {
+        testRouteBtn.addEventListener("click", () => {
+          testRouteBtn.disabled = true;
+          routeStatusDisplay.innerHTML = '<span style="color: var(--cobalt);">⚡ Incoming patient call routed to On-Call Nurse (Ring 1)...</span>';
+          setTimeout(() => {
+            routeStatusDisplay.innerHTML = '<span style="color: var(--mint);">✓ Handed off to Nurse Practitioner Elena • Call Connected (00:04)</span>';
+            setTimeout(() => {
+              testRouteBtn.disabled = false;
+              routeStatusDisplay.innerHTML = 'Press 1 &rarr; On-Call Physician<br>Press 2 &rarr; Front Desk / Refills';
+            }, 3000);
+          }, 1200);
+        });
+      }
+
+      // 4. FAQ Accordion
+      const faqItems = document.querySelectorAll(".faq-item");
+      faqItems.forEach(item => {
+        const trigger = item.querySelector(".faq-trigger");
+        trigger.addEventListener("click", () => {
+          const isOpen = item.classList.contains("open");
+          faqItems.forEach(i => i.classList.remove("open"));
+          if (!isOpen) {
+            item.classList.add("open");
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radial — Intelligence for the Whole Field</title>
+  <meta name="description" content="Radial connects the signals around your work, so your team can move with context instead of catching up. Spatial context and continuous intelligence." />
+  
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       RADIAL DESIGN SYSTEM & CSS TOKENS
+       ========================================================================== */
+    :root {
+      --color-canvas: #F0EFEA;
+      --color-canvas-subtle: #E8E6DC;
+      --color-canvas-inset: #DFDCD1;
+      --color-surface-white: #FFFFFF;
+      --color-surface-dark: #11231D;
+      --color-surface-dark-elevated: #183329;
+      --color-surface-dark-active: #204135;
+      
+      --color-text-primary: #11221C;
+      --color-text-secondary: #42534B;
+      --color-text-muted: #78877F;
+      --color-text-inverse: #F0EFEA;
+
+      --color-accent-persimmon: #EB5A36;
+      --color-accent-persimmon-hover: #D74A27;
+      --color-accent-persimmon-subtle: rgba(235, 90, 54, 0.12);
+      
+      --color-accent-radar-lime: #9EC255;
+      --color-accent-radar-lime-glow: rgba(158, 194, 85, 0.28);
+
+      --color-field-ring: rgba(17, 35, 29, 0.13);
+      --color-field-ring-active: rgba(17, 35, 29, 0.28);
+      --color-border-subtle: rgba(17, 35, 29, 0.09);
+
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-sm: 0 2px 8px rgba(17, 35, 29, 0.05);
+      --shadow-md: 0 8px 24px rgba(17, 35, 29, 0.08);
+      --shadow-lg: 0 16px 40px rgba(17, 35, 29, 0.12);
+      --shadow-disc: 0 24px 60px rgba(17, 35, 29, 0.25), 0 6px 16px rgba(17, 35, 29, 0.15);
+
+      --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: all 0.25s var(--ease-snappy);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--color-canvas);
+      color: var(--color-text-primary);
+      font-family: var(--font-body);
+    }
+
+    body {
+      background-color: var(--color-canvas);
+      background-image: radial-gradient(circle at 85% 20%, rgba(158, 194, 85, 0.04) 0%, transparent 45%),
+                        radial-gradient(circle at 15% 70%, rgba(235, 90, 54, 0.03) 0%, transparent 40%);
+      color: var(--color-text-primary);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ::selection {
+      background: var(--color-accent-persimmon);
+      color: #FFFFFF;
+    }
+    :focus-visible {
+      outline: 2px solid var(--color-accent-persimmon);
+      outline-offset: 3px;
+    }
+
+    .field-container {
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding-left: clamp(1.25rem, 4vw, 3.5rem);
+      padding-right: clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      padding: 1.5rem 0;
+      transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
+    }
+
+    .site-header.scrolled {
+      background-color: rgba(240, 239, 234, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding: 1rem 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--color-text-primary);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      position: relative;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-icon svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--color-text-secondary);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      letter-spacing: -0.01em;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--color-text-primary);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 1.5px;
+      background: var(--color-accent-persimmon);
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Buttons */
+    .btn-pill-dark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: var(--color-surface-dark);
+      color: var(--color-text-inverse);
+      padding: 0.6875rem 1.45rem;
+      border-radius: 9999px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: 0 2px 8px rgba(17, 35, 29, 0.1);
+      white-space: nowrap;
+    }
+
+    .btn-pill-dark:hover {
+      background-color: var(--color-surface-dark-elevated);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(17, 35, 29, 0.16);
+    }
+
+    .btn-pill-dark .arrow-glyph {
+      font-family: inherit;
+      font-size: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-pill-dark:hover .arrow-glyph {
+      transform: translate(2px, -2px);
+    }
+
+    .btn-pill-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background-color: transparent;
+      color: var(--color-text-primary);
+      padding: 0.6875rem 1.45rem;
+      border-radius: 9999px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--color-text-primary);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .btn-pill-outline:hover {
+      background-color: rgba(17, 35, 29, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .btn-pill-outline .play-glyph {
+      font-size: 0.75rem;
+      color: var(--color-text-primary);
+    }
+
+    .mobile-nav-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--color-text-primary);
+    }
+
+    /* ==========================================================================
+       HERO SECTION (Matches Reference Perfectly)
+       ========================================================================== */
+    .hero-section {
+      position: relative;
+      padding-top: clamp(2.5rem, 5vw, 4.5rem);
+      padding-bottom: clamp(3.5rem, 7vw, 6.5rem);
+      min-height: 84vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-accent-persimmon);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1.5px;
+      background-color: var(--color-accent-persimmon);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.75rem, 7.5vw, 6.75rem);
+      font-weight: 700;
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      color: var(--color-text-primary);
+      margin-bottom: 2rem;
+    }
+
+    .hero-title .title-line-1 {
+      display: block;
+      color: var(--color-text-primary);
+    }
+
+    .hero-title .title-line-2 {
+      display: inline-block;
+      color: var(--color-accent-persimmon);
+      position: relative;
+    }
+
+    .hero-title .focal-dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background-color: var(--color-accent-persimmon);
+      border-radius: 50%;
+      margin-left: 0.25rem;
+      vertical-align: 0.35em;
+      opacity: 0.85;
+      box-shadow: 0 0 16px rgba(235, 90, 54, 0.4);
+      animation: pulseFocal 3.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseFocal {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 22px rgba(235, 90, 54, 0.6); }
+    }
+
+    .hero-desc {
+      font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+      line-height: 1.55;
+      color: var(--color-text-secondary);
+      max-width: 520px;
+      margin-bottom: 2.75rem;
+      letter-spacing: -0.01em;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .scroll-cue:hover {
+      color: var(--color-text-primary);
+      transform: translateX(4px);
+    }
+
+    .scroll-cue-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid rgba(17, 35, 29, 0.25);
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+    }
+
+    /* ==========================================================================
+       HERO VISUAL: THE GRAVITATIONAL FIELD & ORBITAL STAGE
+       ========================================================================== */
+    .hero-field-stage {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      display: grid;
+      place-items: center;
+      user-select: none;
+    }
+
+    .field-canvas-wrapper {
+      position: absolute;
+      inset: -60px -100px -60px -40px;
+      pointer-events: none;
+    }
+
+    .field-canvas-wrapper svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .field-disc-container {
+      position: relative;
+      z-index: 10;
+      width: 230px;
+      height: 230px;
+      display: grid;
+      place-items: center;
+      cursor: grab;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.4, 1);
+    }
+
+    .field-disc-container:active {
+      cursor: grabbing;
+    }
+
+    .field-disc {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 35% 35%, #18372d 0%, #11231D 70%, #0d1a16 100%);
+      border-radius: 50%;
+      box-shadow: var(--shadow-disc);
+      display: grid;
+      place-items: center;
+      position: relative;
+      transition: transform 0.3s var(--ease-snappy), box-shadow 0.3s ease;
+    }
+
+    .field-disc-container:hover .field-disc {
+      transform: scale(1.03);
+      box-shadow: 0 32px 70px rgba(17, 35, 29, 0.32), 0 8px 24px rgba(17, 35, 29, 0.18);
+    }
+
+    .disc-inner-ring {
+      width: 110px;
+      height: 110px;
+      border: 1px solid rgba(240, 239, 234, 0.3);
+      border-radius: 50%;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .disc-label {
+      position: absolute;
+      bottom: -16px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      color: rgba(240, 239, 234, 0.7);
+      transform: rotate(35deg);
+      pointer-events: none;
+    }
+
+    .satellite-node {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--color-accent-radar-lime);
+      box-shadow: 0 0 18px var(--color-accent-radar-lime-glow);
+      cursor: pointer;
+      z-index: 15;
+      transition: transform 0.2s ease;
+    }
+
+    .satellite-node::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-accent-radar-lime);
+      opacity: 0.5;
+      animation: radarPing 2.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+
+    @keyframes radarPing {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .telemetry-node-card {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 12px;
+      padding: 0.85rem 1.15rem;
+      box-shadow: var(--shadow-md);
+      pointer-events: auto;
+      z-index: 20;
+      min-width: 220px;
+      font-size: 0.8125rem;
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s var(--ease-snappy);
+    }
+
+    .telemetry-node-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .card-meta-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+    }
+
+    .card-meta-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-accent-persimmon);
+      font-weight: 600;
+    }
+
+    .status-pip {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-accent-persimmon);
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      color: var(--color-text-secondary);
+      font-size: 0.75rem;
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       ARCHITECTURAL PILLAR TICKER STRIP (Matches Reference Bar)
+       ========================================================================== */
+    .ticker-strip {
+      background-color: var(--color-canvas-subtle);
+      border-top: 1px solid var(--color-canvas-inset);
+      border-bottom: 1px solid var(--color-canvas-inset);
+      padding: 1.25rem 0;
+      width: 100%;
+    }
+
+    .ticker-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .ticker-slash {
+      color: var(--color-accent-persimmon);
+      font-weight: 400;
+    }
+
+    .telemetry-live-stat {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pulse-dot-lime {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--color-accent-radar-lime);
+      box-shadow: 0 0 8px var(--color-accent-radar-lime);
+      animation: pulseSlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseSlow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* ==========================================================================
+       SECTION 2: THE CONTEXT PARADOX
+       ========================================================================== */
+    .section-spacing {
+      padding: clamp(5rem, 10vw, 8.5rem) 0;
+      position: relative;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .section-heading-split {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--color-text-primary);
+    }
+
+    .section-lead {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+    }
+
+    .topology-comparator {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 24px;
+      padding: clamp(1.75rem, 4vw, 3rem);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comparator-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-canvas-inset);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .mode-switch-group {
+      display: inline-flex;
+      background: var(--color-canvas-subtle);
+      border-radius: 9999px;
+      padding: 4px;
+    }
+
+    .mode-btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--color-surface-dark);
+      color: var(--color-text-inverse);
+      box-shadow: 0 2px 8px rgba(17, 35, 29, 0.15);
+    }
+
+    .comparator-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .stage-card {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .stage-card.highlighted {
+      background: #FFFFFF;
+      border-color: rgba(235, 90, 54, 0.35);
+      box-shadow: 0 12px 32px rgba(235, 90, 54, 0.08);
+    }
+
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+      width: fit-content;
+    }
+
+    .badge-fragmented {
+      background: rgba(17, 35, 29, 0.07);
+      color: var(--color-text-secondary);
+    }
+
+    .badge-radial {
+      background: var(--color-accent-persimmon-subtle);
+      color: var(--color-accent-persimmon);
+    }
+
+    .stage-metric-big {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-display);
+    }
+
+    .stage-metric-label {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+      margin-bottom: 1.75rem;
+    }
+
+    .tool-drift-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .tool-drift-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.9rem;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    .stage-card.highlighted .tool-drift-item {
+      background: var(--color-canvas);
+    }
+
+    /* ==========================================================================
+       SECTION 3: THREE-STAGE FIELD ARCHITECTURE
+       ========================================================================== */
+    .architecture-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .arch-card {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem 2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 420px;
+      transition: transform 0.25s var(--ease-snappy), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .arch-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(17, 35, 29, 0.22);
+    }
+
+    .arch-step-num {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-accent-persimmon);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-diagram-slot {
+      height: 170px;
+      background: var(--color-canvas);
+      border-radius: 12px;
+      border: 1px solid var(--color-border-subtle);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+    }
+
+    .arch-diagram-slot svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .arch-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--color-text-primary);
+    }
+
+    .arch-text {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+    }
+
+    /* ==========================================================================
+       SECTION 4: SPATIAL TELEMETRY CAPABILITIES (BENTO GRID)
+       ========================================================================== */
+    .bento-compound {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.75rem;
+      margin-top: 3.5rem;
+    }
+
+    .bento-item {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+    }
+
+    .bento-item:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(17, 35, 29, 0.2);
+    }
+
+    .col-span-8 { grid-column: span 8; }
+    .col-span-4 { grid-column: span 4; }
+
+    .bento-canvas-box {
+      width: 100%;
+      height: 250px;
+      background: var(--color-canvas);
+      border-radius: 14px;
+      border: 1px solid var(--color-border-subtle);
+      position: relative;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    #gravCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .radar-container {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 1px dashed rgba(17, 35, 29, 0.25);
+      position: relative;
+      margin: 1.5rem auto;
+      display: grid;
+      place-items: center;
+    }
+
+    .radar-sweep-beam {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 70%, rgba(158, 194, 85, 0.4) 100%);
+      animation: radarRotate 3.5s linear infinite;
+    }
+
+    @keyframes radarRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .briefing-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .briefing-tab-btn {
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      border-radius: 6px;
+      border: 1px solid var(--color-border-subtle);
+      background: var(--color-canvas);
+      cursor: pointer;
+      color: var(--color-text-secondary);
+    }
+
+    .briefing-tab-btn.active {
+      background: var(--color-surface-dark);
+      color: #FFFFFF;
+      border-color: var(--color-surface-dark);
+    }
+
+    .briefing-content-box {
+      background: var(--color-canvas);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    /* ==========================================================================
+       SECTION 5: LIVE INTERACTIVE FIELD SIMULATOR
+       ========================================================================== */
+    .simulator-panel {
+      background: var(--color-surface-dark);
+      color: var(--color-text-inverse);
+      border-radius: 28px;
+      padding: clamp(2rem, 5vw, 4rem);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .simulator-panel::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(158, 194, 85, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .simulator-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3.5rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sim-slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      margin-top: 2rem;
+    }
+
+    .sim-slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sim-label-bar {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: rgba(240, 239, 234, 0.8);
+    }
+
+    .sim-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(240, 239, 234, 0.15);
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .sim-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-accent-persimmon);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(235, 90, 54, 0.6);
+      transition: transform 0.1s ease;
+    }
+
+    .sim-range::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+
+    .sim-canvas-viewport {
+      width: 100%;
+      height: 380px;
+      background: rgba(13, 26, 22, 0.8);
+      border: 1px solid rgba(240, 239, 234, 0.15);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    #simCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .sim-telemetry-hud {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      background: rgba(17, 35, 29, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(240, 239, 234, 0.1);
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(240, 239, 234, 0.85);
+    }
+
+    /* ==========================================================================
+       SECTION 6: FIELD NOTES (EDITORIAL DISPATCHES)
+       ========================================================================== */
+    .field-notes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .note-card {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .note-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(17, 35, 29, 0.25);
+      box-shadow: var(--shadow-md);
+    }
+
+    .note-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .note-tag {
+      color: var(--color-accent-persimmon);
+      font-weight: 600;
+    }
+
+    .note-title {
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: var(--color-text-primary);
+    }
+
+    .note-summary {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .note-link-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--color-text-primary);
+    }
+
+    .note-card:hover .note-link-action {
+      color: var(--color-accent-persimmon);
+    }
+
+    /* ==========================================================================
+       SECTION 7: PROOF & FIELD METRICS
+       ========================================================================== */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin: 4rem 0;
+      border-top: 1px solid var(--color-canvas-inset);
+      border-bottom: 1px solid var(--color-canvas-inset);
+      padding: 3rem 0;
+    }
+
+    .metric-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .metric-value-huge {
+      font-size: clamp(2.75rem, 5vw, 4.25rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--color-text-primary);
+      font-family: var(--font-display);
+    }
+
+    .metric-value-huge .stat-unit {
+      color: var(--color-accent-persimmon);
+      font-weight: 600;
+      font-size: 0.6em;
+    }
+
+    .metric-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-text-primary);
+    }
+
+    .metric-sub {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+    }
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .quote-box {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quote-text {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.75rem;
+    }
+
+    .quote-author-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .quote-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-canvas-subtle);
+      border: 1px solid var(--color-border-subtle);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+    }
+
+    .quote-name {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--color-text-primary);
+    }
+
+    .quote-role {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ==========================================================================
+       SECTION 8: ACCESS GATE ("ENTER THE FIELD")
+       ========================================================================== */
+    .cta-horizon-box {
+      background: var(--color-surface-dark);
+      color: var(--color-text-inverse);
+      border-radius: 28px;
+      padding: clamp(3rem, 7vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .cta-horizon-box::after {
+      content: '';
+      position: absolute;
+      bottom: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(235, 90, 54, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+      color: #FFFFFF;
+    }
+
+    .cta-sub {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: rgba(240, 239, 234, 0.8);
+      max-width: 580px;
+      margin: 0 auto 3rem auto;
+    }
+
+    .access-form {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .access-input {
+      flex: 1;
+      padding: 0.875rem 1.25rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(240, 239, 234, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .access-input:focus {
+      border-color: var(--color-accent-persimmon);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .access-input::placeholder {
+      color: rgba(240, 239, 234, 0.45);
+    }
+
+    .btn-submit-persimmon {
+      background: var(--color-accent-persimmon);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.875rem 1.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .btn-submit-persimmon:hover {
+      background: var(--color-accent-persimmon-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(235, 90, 54, 0.35);
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--color-canvas);
+      border-top: 1px solid var(--color-canvas-inset);
+      padding: 4.5rem 0 3rem 0;
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-col-desc {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      margin-top: 1rem;
+      max-width: 300px;
+    }
+
+    .footer-heading {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: var(--color-text-secondary);
+      font-size: 0.9375rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-accent-persimmon);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--color-canvas-inset);
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       MODALS & OVERLAYS
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 35, 29, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-dialog {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 640px;
+      padding: 2.5rem;
+      position: relative;
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.3s var(--ease-snappy);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-overlay.open .modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border-subtle);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      transition: var(--transition-smooth);
+    }
+
+    .modal-close-btn:hover {
+      background: var(--color-surface-dark);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+      .hero-field-stage {
+        height: 480px;
+      }
+      .section-heading-split {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .architecture-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-compound {
+        grid-template-columns: 1fr;
+      }
+      .col-span-8, .col-span-4 {
+        grid-column: span 1;
+      }
+      .comparator-stage {
+        grid-template-columns: 1fr;
+      }
+      .simulator-layout {
+        grid-template-columns: 1fr;
+      }
+      .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .quotes-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-nav-btn {
+        display: block;
+      }
+      .hero-title {
+        font-size: 3.25rem;
+      }
+      .field-notes-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-row {
+        grid-template-columns: 1fr;
+      }
+      .access-form {
+        flex-direction: column;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SITE HEADER
+       ========================================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="field-container">
+      <nav class="nav-inner" aria-label="Main Navigation">
+        <!-- Logo -->
+        <a href="#hero" class="brand-mark" aria-label="Radial Home">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10.5" stroke="var(--color-text-primary)" stroke-width="1.6" />
+              <circle cx="12" cy="12" r="4.5" stroke="var(--color-text-primary)" stroke-width="1.2" stroke-dasharray="2 2" />
+              <circle cx="12" cy="12" r="2.8" fill="var(--color-accent-persimmon)" />
+            </svg>
+          </div>
+          <span>radial</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links">
+          <li><a href="#why-radial" class="nav-link">Why Radial</a></li>
+          <li><a href="#how-it-works" class="nav-link">How it works</a></li>
+          <li><a href="#spatial-telemetry" class="nav-link">Field nodes</a></li>
+          <li><a href="#field-notes" class="nav-link">Field notes</a></li>
+        </ul>
+
+        <!-- Action / CTA -->
+        <div class="nav-actions">
+          <button type="button" class="btn-pill-dark" onclick="openAccessModal()">
+            <span>Request access</span>
+            <span class="arrow-glyph" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" class="mobile-nav-btn" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION (Matches Reference Exactly)
+       ========================================================================== -->
+  <main>
+    <section class="hero-section" id="hero">
+      <div class="field-container">
+        <div class="hero-layout">
+          
+          <!-- Left Column: Typography & CTAs -->
+          <div class="hero-content">
+            <div class="hero-eyebrow">
+              Intelligence for the whole field
+            </div>
+
+            <h1 class="hero-title">
+              <span class="title-line-1">See the</span>
+              <span class="title-line-2">whole field.<span class="focal-dot" aria-hidden="true"></span></span>
+            </h1>
+
+            <p class="hero-desc">
+              Radial connects the signals around your work, so your team can move with context instead of catching up.
+            </p>
+
+            <div class="hero-actions">
+              <button type="button" class="btn-pill-dark" onclick="openAccessModal()">
+                <span>Request access</span>
+                <span class="arrow-glyph" aria-hidden="true">↗</span>
+              </button>
+
+              <button type="button" class="btn-pill-outline" onclick="openVideoModal()">
+                <span class="play-glyph" aria-hidden="true">▶</span>
+                <span>Watch the field note</span>
+              </button>
+            </div>
+
+            <a href="#why-radial" class="scroll-cue">
+              <span class="scroll-cue-circle" aria-hidden="true">→</span>
+              <span>Scroll to enter the field</span>
+            </a>
+          </div>
+
+          <!-- Right Column: Interactive Orbital Telemetry Visual Stage -->
+          <div class="hero-field-stage" id="heroOrbitalStage">
+            
+            <!-- SVG Orbital Rings Graphic -->
+            <div class="field-canvas-wrapper" aria-hidden="true">
+              <svg viewBox="-250 0 1000 700" fill="none" style="overflow: visible;">
+                <!-- Concentric orbital circles centered at (350, 350) -->
+                <circle cx="350" cy="350" r="420" stroke="rgba(17, 35, 29, 0.09)" stroke-width="0.9" />
+                <circle cx="350" cy="350" r="290" stroke="rgba(17, 35, 29, 0.12)" stroke-width="0.9" />
+                <circle cx="350" cy="350" r="185" stroke="rgba(17, 35, 29, 0.15)" stroke-width="1.1" />
+                
+                <!-- Tangent intersecting orbital arcs -->
+                <path d="M -200,620 A 560,560 0 0,1 750,-50" stroke="rgba(17, 35, 29, 0.12)" stroke-width="1.1" />
+                <path d="M -80,720 A 480,480 0 0,1 780,180" stroke="rgba(17, 35, 29, 0.08)" stroke-width="0.8" />
+              </svg>
+            </div>
+
+            <!-- The Center Gravitational Disc -->
+            <div class="field-disc-container" id="centerDisc" title="Radial Gravitational Anchor">
+              <div class="field-disc">
+                <div class="disc-inner-ring">
+                  <span class="disc-label">FIELD</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Satellite Node (Glowing Lime Ping in Reference) -->
+            <div class="satellite-node" id="satelliteLime" style="top: 260px; right: 40px;" onclick="triggerTelemetryNode('lime')" title="Live Telemetry Stream"></div>
+
+            <!-- Secondary Orbiting Node (Persimmon Vector) -->
+            <div class="satellite-node" id="satellitePersimmon" style="top: 130px; left: 160px; background-color: var(--color-accent-persimmon); box-shadow: 0 0 16px rgba(235,90,54,0.35);" onclick="triggerTelemetryNode('persimmon')" title="Decision Momentum Node"></div>
+
+            <!-- Interactive Context Cards -->
+            <div class="telemetry-node-card" id="telemetryCardLime" style="top: 285px; right: 20px;">
+              <div class="card-meta-line">
+                <span>ORBIT #04 • 142.8 MHz</span>
+                <span class="card-meta-status"><span class="status-pip"></span>SYNCHRONIZED</span>
+              </div>
+              <div class="card-title">Deployment Topology Active</div>
+              <div class="card-desc">Production release #8491 mapped. All 42 cross-service dependencies verified in field.</div>
+            </div>
+
+            <div class="telemetry-node-card" id="telemetryCardPersimmon" style="top: 70px; left: 180px;">
+              <div class="card-meta-line">
+                <span>VECTOR #12 • AUTH CORE</span>
+                <span class="card-meta-status" style="color: var(--color-accent-persimmon);"><span class="status-pip"></span>ALIGNMENT REQ</span>
+              </div>
+              <div class="card-title">Schema Drift Detected</div>
+              <div class="card-desc">Billing service PR #314 diverges from API v3 contract. Context dispatched to author.</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         ARCHITECTURAL PILLAR TICKER STRIP (Matches Reference Bar)
+         ========================================================================== -->
+    <section class="ticker-strip" aria-label="System Pillars">
+      <div class="field-container">
+        <div class="ticker-grid">
+          <div class="ticker-item">
+            <span>One center of gravity</span>
+            <span class="ticker-slash" aria-hidden="true">/</span>
+          </div>
+          <div class="ticker-item">
+            <span>Signals in context</span>
+            <span class="ticker-slash" aria-hidden="true">/</span>
+          </div>
+          <div class="ticker-item">
+            <span>Clarity that compounds</span>
+            <span class="ticker-slash" aria-hidden="true">/</span>
+          </div>
+          <div class="ticker-item">
+            <span>Built for the next move</span>
+          </div>
+          <div class="telemetry-live-stat">
+            <span class="pulse-dot-lime" aria-hidden="true"></span>
+            <span>FIELD LATENCY: 9ms</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 2: THE CONTEXT PARADOX
+       ========================================================================== -->
+    <section class="section-spacing" id="why-radial">
+      <div class="field-container">
+        <span class="section-eyebrow">01 / The Context Paradox</span>
+        
+        <div class="section-heading-split">
+          <h2 class="section-title">
+            Teams don't drown in lack of data.<br />They drown in severed context.
+          </h2>
+          <p class="section-lead">
+            When teams scale, every tool creates a high-walled silo. Product lives in Linear, design in Figma, code in GitHub, and reality in incident logs. Radial continuously re-establishes the shared gravitational field.
+          </p>
+        </div>
+
+        <!-- Split Topology Comparator -->
+        <div class="topology-comparator">
+          <div class="comparator-controls">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem;">Spatial Topology Comparator</h3>
+              <p style="font-size: 0.875rem; color: var(--color-text-muted);">Toggle between conventional tool fragmentation and Radial continuous field.</p>
+            </div>
+            <div class="mode-switch-group">
+              <button type="button" class="mode-btn active" id="btnModeRadial" onclick="setComparatorMode('radial')">Radial Field (Unified)</button>
+              <button type="button" class="mode-btn" id="btnModeFragmented" onclick="setComparatorMode('fragmented')">Fragmented Silos</button>
+            </div>
+          </div>
+
+          <div class="comparator-stage">
+            <div class="stage-card" id="cardFragmented">
+              <div>
+                <span class="stage-badge badge-fragmented">Traditional Multi-Tool Silos</span>
+                <div class="stage-metric-big" style="color: var(--color-text-muted);">74%</div>
+                <div class="stage-metric-label">TIME WASTED SYNCHRONIZING ARTIFACTS</div>
+                <ul class="tool-drift-list">
+                  <li class="tool-drift-item">
+                    <span>Slack thread archaeology</span>
+                    <strong style="color: #BA3317;">Disconnected</strong>
+                  </li>
+                  <li class="tool-drift-item">
+                    <span>PR reviewed without architectural context</span>
+                    <strong style="color: #BA3317;">High Risk</strong>
+                  </li>
+                  <li class="tool-drift-item">
+                    <span>Figma spec drifted from React implementation</span>
+                    <strong style="color: #BA3317;">Silent Drift</strong>
+                  </li>
+                </ul>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 1.5rem;">
+                Decisions happen in the gaps between tools. High synchronization friction.
+              </p>
+            </div>
+
+            <div class="stage-card highlighted" id="cardRadial">
+              <div>
+                <span class="stage-badge badge-radial">Radial Continuous Field</span>
+                <div class="stage-metric-big" style="color: var(--color-accent-persimmon);">99.2%</div>
+                <div class="stage-metric-label">SITUATIONAL TOPOLOGY ACCURACY</div>
+                <ul class="tool-drift-list">
+                  <li class="tool-drift-item">
+                    <span>Continuous automated context synthesis</span>
+                    <strong style="color: #2F7A46;">Real-time</strong>
+                  </li>
+                  <li class="tool-drift-item">
+                    <span>Pre-merge dependency blast radius map</span>
+                    <strong style="color: #2F7A46;">Zero Surprises</strong>
+                  </li>
+                  <li class="tool-drift-item">
+                    <span>Autonomous cross-functional briefings</span>
+                    <strong style="color: #2F7A46;">Synthesized</strong>
+                  </li>
+                </ul>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--color-text-secondary); margin-top: 1.5rem;">
+                One coherent center of gravity. Every engineer and product leader moves with full context.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 3: THREE-STAGE FIELD ARCHITECTURE
+       ========================================================================== -->
+    <section class="section-spacing" id="how-it-works" style="background-color: var(--color-canvas-subtle);">
+      <div class="field-container">
+        <span class="section-eyebrow">02 / Field Architecture</span>
+        
+        <div class="section-heading-split">
+          <h2 class="section-title">
+            Three phases of continuous<br />situational awareness.
+          </h2>
+          <p class="section-lead">
+            Radial is not another dashboard your team has to remember to check. It passively ingests the perimeter, models systemic gravity, and projects clarity into your existing daily workflows.
+          </p>
+        </div>
+
+        <div class="architecture-grid">
+          <div class="arch-card">
+            <div>
+              <div class="arch-step-num">PHASE 01 / INGESTION</div>
+              <div class="arch-diagram-slot">
+                <svg viewBox="0 0 200 120" fill="none">
+                  <circle cx="100" cy="60" r="45" stroke="rgba(17,35,29,0.15)" stroke-width="1" />
+                  <circle cx="100" cy="60" r="25" stroke="rgba(17,35,29,0.25)" stroke-width="1" stroke-dasharray="2 2" />
+                  <circle cx="100" cy="60" r="6" fill="var(--color-surface-dark)" />
+                  <circle cx="45" cy="40" r="4" fill="var(--color-accent-radar-lime)" />
+                  <circle cx="155" cy="80" r="4" fill="var(--color-accent-persimmon)" />
+                  <line x1="45" y1="40" x2="94" y2="58" stroke="rgba(17,35,29,0.2)" stroke-dasharray="2 2" />
+                  <line x1="155" y1="80" x2="106" y2="62" stroke="rgba(17,35,29,0.2)" stroke-dasharray="2 2" />
+                </svg>
+              </div>
+              <h3 class="arch-title">Ingest the Perimeter</h3>
+              <p class="arch-text">
+                Connect your code repositories, issue trackers, production telemetry, and design files with zero configuration. Passive webhooks ingest telemetry without developer overhead.
+              </p>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 1.5rem;">
+              INPUTS: GIT, LINEAR, FIGMA, DATADOG
+            </div>
+          </div>
+
+          <div class="arch-card">
+            <div>
+              <div class="arch-step-num">PHASE 02 / SYNTHESIS</div>
+              <div class="arch-diagram-slot">
+                <svg viewBox="0 0 200 120" fill="none">
+                  <path d="M 30,90 Q 100,10 170,90" stroke="rgba(17,35,29,0.2)" stroke-width="1.2" />
+                  <circle cx="100" cy="50" r="16" fill="var(--color-surface-dark)" />
+                  <circle cx="60" cy="72" r="5" fill="var(--color-accent-persimmon)" />
+                  <circle cx="140" cy="72" r="5" fill="var(--color-accent-radar-lime)" />
+                  <circle cx="100" cy="50" r="28" stroke="rgba(235,90,54,0.3)" stroke-width="1" stroke-dasharray="3 3" />
+                </svg>
+              </div>
+              <h3 class="arch-title">Synthesize the Topology</h3>
+              <p class="arch-text">
+                The Radial graph engine models the invisible relationships between system components. It maps who is touching what, detects upstream dependencies, and calculates divergence velocity.
+              </p>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 1.5rem;">
+              ENGINE: CAUSAL GRAVITATIONAL GRAPH
+            </div>
+          </div>
+
+          <div class="arch-card">
+            <div>
+              <div class="arch-step-num">PHASE 03 / PROJECTION</div>
+              <div class="arch-diagram-slot">
+                <svg viewBox="0 0 200 120" fill="none">
+                  <rect x="35" y="25" width="130" height="70" rx="10" fill="#FFFFFF" stroke="rgba(17,35,29,0.15)" />
+                  <line x1="50" y1="45" x2="110" y2="45" stroke="var(--color-surface-dark)" stroke-width="2" stroke-linecap="round" />
+                  <line x1="50" y1="60" x2="145" y2="60" stroke="rgba(17,35,29,0.2)" stroke-width="1.5" stroke-linecap="round" />
+                  <line x1="50" y1="72" x2="90" y2="72" stroke="var(--color-accent-persimmon)" stroke-width="1.5" stroke-linecap="round" />
+                  <circle cx="142" cy="45" r="4" fill="var(--color-accent-radar-lime)" />
+                </svg>
+              </div>
+              <h3 class="arch-title">Project Contextual Clarity</h3>
+              <p class="arch-text">
+                Real-time field intelligence is projected directly into pull requests, developer terminals, and morning executive dispatches before costly drift solidifies into code.
+              </p>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 1.5rem;">
+              OUTPUTS: HEADS-UP CARDS, PR CHECKS, DISPATCHES
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 4: SPATIAL TELEMETRY CAPABILITIES (BENTO GRID)
+       ========================================================================== -->
+    <section class="section-spacing" id="spatial-telemetry">
+      <div class="field-container">
+        <span class="section-eyebrow">03 / Spatial Telemetry</span>
+        
+        <div class="section-heading-split">
+          <h2 class="section-title">
+            Precision instrumentation for<br />high-velocity engineering systems.
+          </h2>
+          <p class="section-lead">
+            Every feature in Radial is designed to replace guesswork with empirical geometric clarity. Explore the four core telemetry surfaces below.
+          </p>
+        </div>
+
+        <div class="bento-compound">
+          <div class="bento-item col-span-8">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="stage-badge badge-radial">Live Interaction</span>
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted);">DRAG NODES TO TEST EQUILIBRIUM</span>
+              </div>
+              <h3 class="arch-title" style="font-size: 1.6rem; margin-top: 0.75rem;">Gravitational Alignment Engine</h3>
+              <p class="arch-text">
+                Visualize the real-time magnetic pull between engineering modules, design specs, and active pull requests. Drag the nodes to experience self-stabilizing context balance.
+              </p>
+            </div>
+
+            <div class="bento-canvas-box">
+              <canvas id="gravCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="bento-item col-span-4">
+            <div>
+              <span class="stage-badge badge-fragmented">Real-time Radar</span>
+              <h3 class="arch-title" style="margin-top: 0.75rem;">Drift Velocity Radar</h3>
+              <p class="arch-text">
+                Detect divergence in system contracts before merge. Sweeps across all microservice boundaries every 4 seconds.
+              </p>
+            </div>
+
+            <div class="radar-container">
+              <div class="radar-sweep-beam"></div>
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-surface-dark); z-index: 5;"></div>
+              <div style="position: absolute; top: 35px; right: 40px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent-persimmon); z-index: 5;" title="Detected Drift Node"></div>
+            </div>
+
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); display: flex; justify-content: space-between;">
+              <span>DRIFT VELOCITY: 0.04 rad/s</span>
+              <span style="color: var(--color-accent-persimmon);">1 MINOR DIVERGENCE</span>
+            </div>
+          </div>
+
+          <div class="bento-item col-span-4">
+            <div>
+              <span class="stage-badge badge-fragmented">Temporal Timeline</span>
+              <h3 class="arch-title" style="margin-top: 0.75rem;">Causal Replay</h3>
+              <p class="arch-text">
+                Scrub through historical decisions like a DVR for system architecture. Pinpoint the exact moment a dependency became entangled.
+              </p>
+            </div>
+
+            <div style="margin: 2rem 0;">
+              <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 0.5rem;">
+                <span id="replayTimeLabel">T - 48 Hours</span>
+                <span id="replayStateLabel" style="color: var(--color-accent-radar-lime);">Clean Topology</span>
+              </div>
+              <input type="range" min="0" max="100" value="70" class="sim-range" id="replayScrubber" oninput="updateReplay(this.value)" style="background: var(--color-canvas-subtle);" />
+            </div>
+
+            <div style="font-size: 0.8125rem; color: var(--color-text-secondary); background: var(--color-canvas); padding: 0.85rem; border-radius: 8px;">
+              <strong id="replayDescTitle">PR #482 merged:</strong>
+              <span id="replayDescBody">Payment service schema synchronized without downstream collisions.</span>
+            </div>
+          </div>
+
+          <div class="bento-item col-span-8">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="stage-badge badge-radial">Automated Synthesis</span>
+                <div class="briefing-tabs">
+                  <button type="button" class="briefing-tab-btn active" id="tabTech" onclick="setBriefingTab('tech')">Technical Lens</button>
+                  <button type="button" class="briefing-tab-btn" id="tabExec" onclick="setBriefingTab('exec')">Executive Horizon</button>
+                </div>
+              </div>
+              <h3 class="arch-title" style="font-size: 1.5rem; margin-top: 0.75rem;">Autonomous Field Notes Generator</h3>
+              <p class="arch-text">
+                Continuous natural-language intelligence dispatches synthesized from code changes, design revisions, and metric fluctuations. Zero manual status meetings required.
+              </p>
+            </div>
+
+            <div class="briefing-content-box" id="briefingBox">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem;">
+                <strong style="color: var(--color-text-primary);">FIELD BRIEFING #142 • 09:30 UTC</strong>
+                <span style="color: var(--color-accent-persimmon);">SYNTHESIS SCORE: 99.8%</span>
+              </div>
+              <p id="briefingText">
+                "Core platform migration reached stage 3 equilibrium. Downstream dependencies in Auth v2 and Billing Service are fully aligned with 0 breaking changes detected. Next critical gate: PostgreSQL schema rotation at 14:00 UTC."
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 5: LIVE INTERACTIVE FIELD SIMULATOR
+       ========================================================================== -->
+    <section class="section-spacing">
+      <div class="field-container">
+        <div class="simulator-panel">
+          <div class="simulator-layout">
+            <div>
+              <span class="stage-badge" style="background: rgba(235,90,54,0.2); color: #FFA085;">Interactive Workbench</span>
+              <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; margin: 1rem 0 1rem 0;">
+                Calibrate your team’s context horizon.
+              </h2>
+              <p style="font-size: 1rem; line-height: 1.6; color: rgba(240, 239, 234, 0.8); margin-bottom: 2rem;">
+                Adjust signal parameters to observe how the Radial gravitational field absorbs organizational entropy and maintains structural coherence.
+              </p>
+
+              <div class="sim-slider-group">
+                <div class="sim-slider-row">
+                  <div class="sim-label-bar">
+                    <span>Signal Ingestion Density</span>
+                    <span id="lblDensity">48 signals/sec</span>
+                  </div>
+                  <input type="range" min="10" max="120" value="48" class="sim-range" id="sliderDensity" oninput="updateSimulator()" />
+                </div>
+
+                <div class="sim-slider-row">
+                  <div class="sim-label-bar">
+                    <span>Noise Suppression Threshold</span>
+                    <span id="lblNoise">88%</span>
+                  </div>
+                  <input type="range" min="50" max="99" value="88" class="sim-range" id="sliderNoise" oninput="updateSimulator()" />
+                </div>
+
+                <div class="sim-slider-row">
+                  <div class="sim-label-bar">
+                    <span>Gravitational Coupling Speed</span>
+                    <span id="lblCoupling">Fast (12ms)</span>
+                  </div>
+                  <input type="range" min="1" max="10" value="8" class="sim-range" id="sliderCoupling" oninput="updateSimulator()" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="sim-canvas-viewport">
+                <canvas id="simCanvas"></canvas>
+                <div class="sim-telemetry-hud">
+                  <span>FIELD HARMONY: <strong id="hudHarmony" style="color: var(--color-accent-radar-lime);">99.4%</strong></span>
+                  <span>DRIFT RESOLUTION: <strong id="hudResolution">0.14s</strong></span>
+                  <span>ACTIVE VECTORS: <strong id="hudVectors">32</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 6: FIELD NOTES (EDITORIAL DISPATCHES)
+       ========================================================================== -->
+    <section class="section-spacing" id="field-notes">
+      <div class="field-container">
+        <span class="section-eyebrow">04 / Editorial Dispatches</span>
+        
+        <div class="section-heading-split">
+          <h2 class="section-title">
+            Dispatches on systems, gravity,<br />and organizational momentum.
+          </h2>
+          <p class="section-lead">
+            Curated research notes exploring the hidden physics of software organizations, communication topology, and context preservation.
+          </p>
+        </div>
+
+        <div class="field-notes-grid">
+          <article class="note-card" onclick="openDispatchModal('01')">
+            <div>
+              <div class="note-meta">
+                <span class="note-tag">DISPATCH #01</span>
+                <span>5 MIN READ</span>
+              </div>
+              <h3 class="note-title">Why linear roadmaps fail in non-linear software systems</h3>
+              <p class="note-summary">
+                A quantitative investigation into why Gantt charts and waterfall epics break down when engineering meshes scale past 30 active contributors.
+              </p>
+            </div>
+            <div class="note-link-action">
+              <span>Read dispatch</span>
+              <span aria-hidden="true">→</span>
+            </div>
+          </article>
+
+          <article class="note-card" onclick="openDispatchModal('02')">
+            <div>
+              <div class="note-meta">
+                <span class="note-tag">DISPATCH #02</span>
+                <span>7 MIN READ</span>
+              </div>
+              <h3 class="note-title">The 300ms context horizon: eliminating synchronization lag</h3>
+              <p class="note-summary">
+                How sub-second context delivery directly inside the code editor halts the compounding blast radius of architectural assumptions.
+              </p>
+            </div>
+            <div class="note-link-action">
+              <span>Read dispatch</span>
+              <span aria-hidden="true">→</span>
+            </div>
+          </article>
+
+          <article class="note-card" onclick="openDispatchModal('03')">
+            <div>
+              <div class="note-meta">
+                <span class="note-tag">DISPATCH #03</span>
+                <span>4 MIN READ</span>
+              </div>
+              <h3 class="note-title">Signal entropy: the hidden physics of broken dependencies</h3>
+              <p class="note-summary">
+                Analyzing the mathematical probability of uncoordinated breaking changes in distributed service mesh architectures.
+              </p>
+            </div>
+            <div class="note-link-action">
+              <span>Read dispatch</span>
+              <span aria-hidden="true">→</span>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 7: PROOF & FIELD METRICS
+       ========================================================================== -->
+    <section class="section-spacing" style="background: var(--color-canvas-subtle);">
+      <div class="field-container">
+        <span class="section-eyebrow">05 / Measured in the Field</span>
+        
+        <h2 class="section-title" style="max-width: 800px; margin-bottom: 2rem;">
+          Verified across the industry’s most demanding engineering fields.
+        </h2>
+
+        <div class="metrics-row">
+          <div class="metric-col">
+            <div class="metric-value-huge">84<span class="stat-unit">%</span></div>
+            <div class="metric-title">Less Synchronization Overhead</div>
+            <p class="metric-sub">Reduction in manual status meetings, Slack tag archaeology, and duplicate tickets.</p>
+          </div>
+
+          <div class="metric-col">
+            <div class="metric-value-huge">3.2<span class="stat-unit">x</span></div>
+            <div class="metric-title">Faster Incident Resolution</div>
+            <p class="metric-sub">Instant causal graph tracking identifies root cause divergence in seconds.</p>
+          </div>
+
+          <div class="metric-col">
+            <div class="metric-value-huge">0<span class="stat-unit" style="font-size:0.4em;">DRIFT</span></div>
+            <div class="metric-title">Undetected Breaking Changes</div>
+            <p class="metric-sub">Cross-service schema mutations intercepted before reaching staging environments.</p>
+          </div>
+
+          <div class="metric-col">
+            <div class="metric-value-huge">12<span class="stat-unit">ms</span></div>
+            <div class="metric-title">Global Telemetry Latency</div>
+            <p class="metric-sub">Sub-second event ingestion and topology projection across all active developer seats.</p>
+          </div>
+        </div>
+
+        <div class="quotes-grid">
+          <div class="quote-box">
+            <p class="quote-text">
+              “Radial replaced six fragmented status rituals with one indisputable picture of reality. Our leads spend zero time asking what’s happening, because the field is always visible.”
+            </p>
+            <div class="quote-author-bar">
+              <div class="quote-avatar">MT</div>
+              <div>
+                <div class="quote-name">Dr. Maya Thorne</div>
+                <div class="quote-role">VP of Engineering, Vektor Aerospace</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quote-box">
+            <p class="quote-text">
+              “For the first time in ten years, every engineer sees the whole field before writing a single line of code. It feels like turning on the radar in a storm.”
+            </p>
+            <div class="quote-author-bar">
+              <div class="quote-avatar">SK</div>
+              <div>
+                <div class="quote-name">Soren Kvale</div>
+                <div class="quote-role">Principal Systems Architect, Monolith Dynamics</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+       SECTION 8: ACCESS GATE ("ENTER THE FIELD")
+       ========================================================================== -->
+    <section class="section-spacing" id="request-access">
+      <div class="field-container">
+        <div class="cta-horizon-box">
+          <h2 class="cta-title">See the whole field today.</h2>
+          <p class="cta-sub">
+            Private deployment clusters are available now for forward-thinking engineering and product organizations. Claim your field access.
+          </p>
+
+          <form class="access-form" id="accessForm" onsubmit="handleAccessSubmit(event)">
+            <input type="email" class="access-input" id="accessEmail" placeholder="Enter work email (e.g. name@company.com)" required />
+            <button type="submit" class="btn-submit-persimmon">
+              <span>Request Access</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+
+          <div id="accessSuccessMsg" style="display: none; margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-accent-radar-lime);">
+            ✓ Access request registered. Our systems guild will dispatch your field invite shortly.
+          </div>
+
+          <div style="margin-top: 2.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.75rem; color: rgba(240, 239, 234, 0.65);">
+            <span>SOC2 TYPE II CERTIFIED</span>
+            <span>•</span>
+            <span>ZERO-KNOWLEDGE ENCRYPTION</span>
+            <span>•</span>
+            <span>AIR-GAPPED CLUSTERS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="field-container">
+      <div class="footer-grid">
+        <div>
+          <a href="#hero" class="brand-mark">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10.5" stroke="var(--color-text-primary)" stroke-width="1.6" />
+                <circle cx="12" cy="12" r="4.5" stroke="var(--color-text-primary)" stroke-width="1.2" stroke-dasharray="2 2" />
+                <circle cx="12" cy="12" r="2.8" fill="var(--color-accent-persimmon)" />
+              </svg>
+            </div>
+            <span>radial</span>
+          </a>
+          <p class="footer-col-desc">
+            Spatial context and continuous intelligence for modern engineering and product teams.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Architecture</h4>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">Perimeter Ingestion</a></li>
+            <li><a href="#how-it-works">Topology Graph</a></li>
+            <li><a href="#spatial-telemetry">Gravitational Engine</a></li>
+            <li><a href="#spatial-telemetry">Drift Radar</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Dispatches</h4>
+          <ul class="footer-links">
+            <li><a href="#field-notes">Linear Roadmaps</a></li>
+            <li><a href="#field-notes">Context Horizon</a></li>
+            <li><a href="#field-notes">Signal Entropy</a></li>
+            <li><a href="#field-notes">Guild Papers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Company & Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#why-radial">Manifesto</a></li>
+            <li><a href="mailto:inquiries@radial.example">inquiries@radial.example</a></li>
+            <li><a href="#">Privacy Protocol</a></li>
+            <li><a href="#">Security Specification</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Radial Systems Inc. Sample design library template.</div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono);">
+          <span class="pulse-dot-lime"></span>
+          <span>ALL FIELD RELAYS SYNCHRONIZED • 99.998% UPTIME</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL: WATCH FIELD NOTE (Video Simulation)
+       ========================================================================== -->
+  <div class="modal-overlay" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" onclick="closeVideoModal()" aria-label="Close modal">×</button>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-persimmon); margin-bottom: 0.5rem;">
+        FIELD NOTE AUDIOVISUAL BRIEFING
+      </div>
+      <h3 id="videoModalTitle" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">
+        Field Note 01: The Gravitational Architecture
+      </h3>
+      <div style="background: var(--color-surface-dark); border-radius: 14px; height: 260px; display: grid; place-items: center; position: relative; overflow: hidden; margin-bottom: 1.5rem;">
+        <svg viewBox="0 0 400 200" fill="none" style="width: 100%; height: 100%;">
+          <circle cx="200" cy="100" r="70" stroke="rgba(240,239,234,0.15)" stroke-width="1" />
+          <circle cx="200" cy="100" r="40" stroke="rgba(235,90,54,0.3)" stroke-width="1.5" />
+          <circle cx="200" cy="100" r="16" fill="var(--color-accent-persimmon)" />
+          <path d="M 50,100 Q 120,40 200,100 T 350,100" stroke="var(--color-accent-radar-lime)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6" />
+        </svg>
+        <div style="position: absolute; bottom: 12px; font-family: var(--font-mono); font-size: 0.75rem; color: rgba(240,239,234,0.7);">
+          ▶ SIMULATING 3-PHASE EVENT TOPOLOGY (02:45)
+        </div>
+      </div>
+      <p style="font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+        This walkthrough demonstrates how continuous spatial context eliminates cross-functional misalignment before breaking changes propagate to production.
+      </p>
+      <button type="button" class="btn-pill-dark" onclick="closeVideoModal(); openAccessModal();" style="width: 100%;">
+        <span>Claim Access to Live Sandbox</span>
+        <span class="arrow-glyph">↗</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: REQUEST ACCESS DIALOG
+       ========================================================================== -->
+  <div class="modal-overlay" id="accessModal" role="dialog" aria-modal="true" aria-labelledby="accessModalTitle">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" onclick="closeAccessModal()" aria-label="Close modal">×</button>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-persimmon); margin-bottom: 0.5rem;">
+        PRIVATE FIELD DEPLOYMENT
+      </div>
+      <h3 id="accessModalTitle" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">
+        Request Dedicated Field Access
+      </h3>
+      <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 1.5rem;">
+        Deploy Radial into your engineering organization. Zero-friction integration with existing telemetry.
+      </p>
+      
+      <form onsubmit="handleModalSubmit(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-text-muted); margin-bottom: 0.35rem;">WORK EMAIL</label>
+          <input type="email" required placeholder="alex@company.com" style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--color-border-subtle); background: var(--color-canvas); font-size: 0.9375rem;" />
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-text-muted); margin-bottom: 0.35rem;">TEAM SIZE</label>
+          <select style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--color-border-subtle); background: var(--color-canvas); font-size: 0.9375rem;">
+            <option>10 - 50 Engineers</option>
+            <option>50 - 200 Engineers</option>
+            <option>200+ Enterprise Cluster</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-text-muted); margin-bottom: 0.35rem;">PRIMARY ARCHITECTURE</label>
+          <select style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--color-border-subtle); background: var(--color-canvas); font-size: 0.9375rem;">
+            <option>Distributed Microservices / Kubernetes</option>
+            <option>Monolith + Edge Workers</option>
+            <option>Multi-Region Hybrid Cloud</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-submit-persimmon" style="margin-top: 0.5rem; width: 100%;">
+          <span>Submit Request</span>
+        </button>
+      </form>
+      <div id="modalSuccess" style="display:none; margin-top: 1rem; color: var(--color-accent-persimmon); font-size: 0.875rem; text-align: center; font-weight: 600;">
+        ✓ Your deployment inquiry is queued. Our guild will contact you within 24 hours.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: EDITORIAL DISPATCH READER
+       ========================================================================== -->
+  <div class="modal-overlay" id="dispatchModal" role="dialog" aria-modal="true" aria-labelledby="dispatchTitle">
+    <div class="modal-dialog" style="max-width: 720px; max-height: 85vh; overflow-y: auto;">
+      <button type="button" class="modal-close-btn" onclick="closeDispatchModal()" aria-label="Close modal">×</button>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-persimmon); margin-bottom: 0.5rem;" id="dispatchTag">
+        DISPATCH RESEARCH
+      </div>
+      <h3 id="dispatchTitle" style="font-size: 1.75rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;">
+        Article Title
+      </h3>
+      <div style="font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary);" id="dispatchBody">
+        Content loads dynamically...
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       CLIENT-SIDE INTERACTIVITY & PHYSICS ENGINES
+       ========================================================================== -->
+  <script>
+    const siteHeader = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 30) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    const centerDisc = document.getElementById('centerDisc');
+    const heroStage = document.getElementById('heroOrbitalStage');
+
+    if (heroStage && centerDisc) {
+      heroStage.addEventListener('mousemove', (e) => {
+        const rect = heroStage.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        centerDisc.style.transform = `translate(${x * 24}px, ${y * 24}px) rotate(${x * 8}deg)`;
+      });
+
+      heroStage.addEventListener('mouseleave', () => {
+        centerDisc.style.transform = 'translate(0px, 0px) rotate(0deg)';
+      });
+    }
+
+    function triggerTelemetryNode(type) {
+      const cardLime = document.getElementById('telemetryCardLime');
+      const cardPersimmon = document.getElementById('telemetryCardPersimmon');
+      if (type === 'lime') {
+        cardLime.classList.toggle('visible');
+        cardPersimmon.classList.remove('visible');
+      } else {
+        cardPersimmon.classList.toggle('visible');
+        cardLime.classList.remove('visible');
+      }
+    }
+
+    const satelliteLime = document.getElementById('satelliteLime');
+    const satellitePersimmon = document.getElementById('satellitePersimmon');
+    if (satelliteLime) {
+      satelliteLime.addEventListener('mouseenter', () => document.getElementById('telemetryCardLime').classList.add('visible'));
+      satelliteLime.addEventListener('mouseleave', () => document.getElementById('telemetryCardLime').classList.remove('visible'));
+    }
+    if (satellitePersimmon) {
+      satellitePersimmon.addEventListener('mouseenter', () => document.getElementById('telemetryCardPersimmon').classList.add('visible'));
+      satellitePersimmon.addEventListener('mouseleave', () => document.getElementById('telemetryCardPersimmon').classList.remove('visible'));
+    }
+
+    function setComparatorMode(mode) {
+      const btnRadial = document.getElementById('btnModeRadial');
+      const btnFrag = document.getElementById('btnModeFragmented');
+      const cardRadial = document.getElementById('cardRadial');
+      const cardFrag = document.getElementById('cardFragmented');
+
+      if (mode === 'radial') {
+        btnRadial.classList.add('active');
+        btnFrag.classList.remove('active');
+        cardRadial.classList.add('highlighted');
+        cardFrag.classList.remove('highlighted');
+      } else {
+        btnFrag.classList.add('active');
+        btnRadial.classList.remove('active');
+        cardFrag.classList.add('highlighted');
+        cardRadial.classList.remove('highlighted');
+      }
+    }
+
+    (function initGravCanvas() {
+      const canvas = document.getElementById('gravCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+
+      function resize() {
+        const box = canvas.parentElement.getBoundingClientRect();
+        canvas.width = box.width * window.devicePixelRatio;
+        canvas.height = box.height * window.devicePixelRatio;
+        width = box.width;
+        height = box.height;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const nodes = [
+        { name: 'Core API', x: 0.5, y: 0.5, vx: 0, vy: 0, r: 18, color: '#11231D', isCenter: true },
+        { name: 'Auth v2', x: 0.25, y: 0.35, vx: 0.2, vy: -0.15, r: 10, color: '#EB5A36' },
+        { name: 'Billing', x: 0.75, y: 0.35, vx: -0.2, vy: 0.1, r: 9, color: '#9EC255' },
+        { name: 'Figma Spec', x: 0.3, y: 0.75, vx: 0.15, vy: 0.2, r: 8, color: '#11231D' },
+        { name: 'Telemetry Mesh', x: 0.7, y: 0.75, vx: -0.1, vy: -0.2, r: 8, color: '#11231D' }
+      ];
+
+      let draggedNode = null;
+
+      canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        nodes.forEach(n => {
+          const dx = mx - n.x * width;
+          const dy = my - n.y * height;
+          if (Math.hypot(dx, dy) < n.r + 8) {
+            draggedNode = n;
+          }
+        });
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!draggedNode) return;
+        const rect = canvas.getBoundingClientRect();
+        draggedNode.x = Math.max(0.1, Math.min(0.9, (e.clientX - rect.left) / width));
+        draggedNode.y = Math.max(0.1, Math.min(0.9, (e.clientY - rect.top) / height));
+      });
+
+      window.addEventListener('mouseup', () => { draggedNode = null; });
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        const center = nodes[0];
+        for (let i = 1; i < nodes.length; i++) {
+          const n = nodes[i];
+          if (n !== draggedNode) {
+            const dx = center.x - n.x;
+            const dy = center.y - n.y;
+            const dist = Math.hypot(dx, dy);
+            const targetDist = 0.35;
+            const force = (dist - targetDist) * 0.008;
+            n.vx += (dx / dist) * force;
+            n.vy += (dy / dist) * force;
+            n.vx *= 0.94;
+            n.vy *= 0.94;
+            n.x += n.vx;
+            n.y += n.vy;
+          }
+        }
+
+        for (let i = 1; i < nodes.length; i++) {
+          const n = nodes[i];
+          ctx.beginPath();
+          ctx.moveTo(center.x * width, center.y * height);
+          ctx.lineTo(n.x * width, n.y * height);
+          ctx.strokeStyle = 'rgba(17, 35, 29, 0.15)';
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(nodes[1].x * width, nodes[1].y * height);
+        ctx.lineTo(nodes[3].x * width, nodes[3].y * height);
+        ctx.lineTo(nodes[4].x * width, nodes[4].y * height);
+        ctx.lineTo(nodes[2].x * width, nodes[2].y * height);
+        ctx.strokeStyle = 'rgba(17, 35, 29, 0.08)';
+        ctx.setLineDash([3, 3]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        nodes.forEach(n => {
+          const px = n.x * width;
+          const py = n.y * height;
+
+          ctx.beginPath();
+          ctx.arc(px, py, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = n.color;
+          ctx.fill();
+
+          if (n.color === '#EB5A36' || n.color === '#9EC255') {
+            ctx.beginPath();
+            ctx.arc(px, py, n.r + 4, 0, Math.PI * 2);
+            ctx.strokeStyle = n.color;
+            ctx.globalAlpha = 0.35;
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+          }
+
+          ctx.fillStyle = '#11221C';
+          ctx.font = '500 11px Plus Jakarta Sans, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(n.name, px, py + n.r + 14);
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    function updateReplay(val) {
+      const timeLbl = document.getElementById('replayTimeLabel');
+      const stateLbl = document.getElementById('replayStateLabel');
+      const descTitle = document.getElementById('replayDescTitle');
+      const descBody = document.getElementById('replayDescBody');
+
+      if (val < 33) {
+        timeLbl.innerText = 'T - 72 Hours';
+        stateLbl.innerText = 'Initial Branch Point';
+        stateLbl.style.color = '#78877F';
+        descTitle.innerText = 'Feature branch auth-v2 spawned:';
+        descBody.innerText = 'Base schema branched from main repository with initial token refresh spec.';
+      } else if (val < 66) {
+        timeLbl.innerText = 'T - 36 Hours';
+        stateLbl.innerText = 'Divergence Warning';
+        stateLbl.style.color = 'var(--color-accent-persimmon)';
+        descTitle.innerText = 'Billing API contract shifted:';
+        descBody.innerText = 'Schema mutation detected by Radial. Automated context card sent to both teams.';
+      } else {
+        timeLbl.innerText = 'T - 4 Hours';
+        stateLbl.innerText = 'Harmonized Merge';
+        stateLbl.style.color = 'var(--color-accent-radar-lime)';
+        descTitle.innerText = 'PR #482 merged with 0 drift:';
+        descBody.innerText = 'Both services reconciled before deploy. Zero customer regression recorded.';
+      }
+    }
+
+    function setBriefingTab(tab) {
+      const btnTech = document.getElementById('tabTech');
+      const btnExec = document.getElementById('tabExec');
+      const text = document.getElementById('briefingText');
+
+      if (tab === 'tech') {
+        btnTech.classList.add('active');
+        btnExec.classList.remove('active');
+        text.innerText = '"Core platform migration reached stage 3 equilibrium. Downstream dependencies in Auth v2 and Billing Service are fully aligned with 0 breaking changes detected. Next critical gate: PostgreSQL schema rotation at 14:00 UTC."';
+      } else {
+        btnExec.classList.add('active');
+        btnTech.classList.remove('active');
+        text.innerText = '"Engineering velocity maintained at 104% of quarterly pace. High-risk cross-team dependency between Revenue Systems and Identity resolved autonomously without project delay."';
+      }
+    }
+
+    (function initSimulatorCanvas() {
+      const canvas = document.getElementById('simCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+
+      function resize() {
+        const box = canvas.parentElement.getBoundingClientRect();
+        canvas.width = box.width * window.devicePixelRatio;
+        canvas.height = box.height * window.devicePixelRatio;
+        width = box.width;
+        height = box.height;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const particles = [];
+      for (let i = 0; i < 36; i++) {
+        particles.push({
+          angle: (i / 36) * Math.PI * 2,
+          radius: 40 + (i % 4) * 28,
+          speed: 0.008 + (i % 3) * 0.004,
+          size: 2.5 + (i % 3),
+          color: (i % 5 === 0) ? '#EB5A36' : (i % 7 === 0 ? '#9EC255' : 'rgba(240, 239, 234, 0.75)')
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        const cx = width / 2;
+        const cy = height / 2;
+
+        [40, 68, 96, 124].forEach(r => {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(240, 239, 234, 0.1)';
+          ctx.stroke();
+        });
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+        ctx.fillStyle = '#18372d';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(240, 239, 234, 0.3)';
+        ctx.stroke();
+
+        particles.forEach(p => {
+          p.angle += p.speed;
+          const px = cx + Math.cos(p.angle) * p.radius;
+          const py = cy + Math.sin(p.angle) * p.radius;
+
+          ctx.beginPath();
+          ctx.arc(px, py, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+
+    function updateSimulator() {
+      const density = document.getElementById('sliderDensity').value;
+      const noise = document.getElementById('sliderNoise').value;
+      const coupling = document.getElementById('sliderCoupling').value;
+
+      document.getElementById('lblDensity').innerText = `${density} signals/sec`;
+      document.getElementById('lblNoise').innerText = `${noise}%`;
+      document.getElementById('lblCoupling').innerText = coupling > 7 ? 'Instant (8ms)' : (coupling > 4 ? 'Fast (14ms)' : 'Mesh (24ms)');
+
+      const harmony = (98 + (noise / 50) - (density / 200)).toFixed(1);
+      document.getElementById('hudHarmony').innerText = `${Math.min(99.9, harmony)}%`;
+      document.getElementById('hudVectors').innerText = Math.round(density * 0.75);
+    }
+
+    function openVideoModal() {
+      document.getElementById('videoModal').classList.add('open');
+    }
+    function closeVideoModal() {
+      document.getElementById('videoModal').classList.remove('open');
+    }
+    function openAccessModal() {
+      document.getElementById('accessModal').classList.add('open');
+    }
+    function closeAccessModal() {
+      document.getElementById('accessModal').classList.remove('open');
+    }
+
+    const dispatches = {
+      '01': {
+        tag: 'DISPATCH #01 • ARCHITECTURAL SYSTEMS',
+        title: 'Why linear roadmaps fail in non-linear software systems',
+        body: `<p>Modern software engineering organizations are distributed networks of causal feedback loops, not manufacturing assembly lines. When an architectural team attempts to map a complex distributed system onto a two-dimensional linear timeline, they inevitably sever the invisible gravitational links connecting architectural intent with runtime reality.</p><p style="margin-top:1rem;">Radial was founded on the premise that teams require spatial telemetry—a continuous, real-time map of cognitive and code velocity—rather than static snapshot meetings. By continuously calculating the blast radius of changes as they are authored, teams preserve architectural integrity with zero synchronization friction.</p>`
+      },
+      '02': {
+        tag: 'DISPATCH #02 • HUMAN FACTORS & VELOCITY',
+        title: 'The 300ms context horizon: eliminating synchronization lag',
+        body: `<p>Cognitive research demonstrates that when an engineer encounters an interruption or has to context-switch into a separate tracking tool to verify an upstream API dependency, recovery time averages 23 minutes. Over an organization of 200 engineers, this translates to thousands of lost hours each quarter.</p><p style="margin-top:1rem;">By tightening the feedback horizon to under 300 milliseconds—projecting living context directly inside code editors and git pull requests—Radial prevents diverging assumptions from solidifying into debt.</p>`
+      },
+      '03': {
+        tag: 'DISPATCH #03 • COMPLEX SYSTEMS',
+        title: 'Signal entropy: the hidden physics of broken dependencies',
+        body: `<p>In any distributed system, entropy increases with every independent actor unless an active gravitational field restores coherence. When team members work across disconnected silos, the probability of an uncoordinated breaking change approaches 100% as the number of microservices exceeds twelve.</p><p style="margin-top:1rem;">Radial acts as the active harmonic stabilizer. By streaming signals from Git, Jira, Slack, and production telemetry into one unified topology, every team moves with complete awareness of the entire field.</p>`
+      }
+    };
+
+    function openDispatchModal(id) {
+      const d = dispatches[id];
+      if (!d) return;
+      document.getElementById('dispatchTag').innerText = d.tag;
+      document.getElementById('dispatchTitle').innerText = d.title;
+      document.getElementById('dispatchBody').innerHTML = d.body;
+      document.getElementById('dispatchModal').classList.add('open');
+    }
+
+    function closeDispatchModal() {
+      document.getElementById('dispatchModal').classList.remove('open');
+    }
+
+    function handleAccessSubmit(e) {
+      e.preventDefault();
+      document.getElementById('accessEmail').value = '';
+      document.getElementById('accessSuccessMsg').style.display = 'block';
+    }
+
+    function handleModalSubmit(e) {
+      e.preventDefault();
+      document.getElementById('modalSuccess').style.display = 'block';
+      setTimeout(() => {
+        closeAccessModal();
+        document.getElementById('modalSuccess').style.display = 'none';
+      }, 2500);
+    }
+
+    function toggleMobileMenu() {
+      const links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = 'none';
+      } else {
+        links.style.display = 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '100%';
+        links.style.left = '0';
+        links.style.right = '0';
+        links.style.background = 'rgba(240,239,234,0.98)';
+        links.style.padding = '1.5rem';
+        links.style.borderBottom = '1px solid var(--color-border-subtle)';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeVideoModal();
+        closeAccessModal();
+        closeDispatchModal();
+      }
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

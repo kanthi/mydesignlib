@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optix — The WebGPU library, designed for agents</title>
+  <meta name="description" content="High-performance WebGPU shader infrastructure, optical glass caustics, and hardware-accelerated rendering designed for autonomous AI agents." />
+
+  <!-- Privacy & No-Index Controls (Strictly Required) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Newsreader (Serif) + Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-serif: "Newsreader", Georgia, serif;
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+
+      --bg-studio: #F5F5F3;
+      --bg-card: #FFFFFF;
+      --bg-panel-dark: #141416;
+      --bg-panel-dark-subtle: #1C1C1F;
+
+      --ink-primary: #0A0A0B;
+      --ink-secondary: #4A4A52;
+      --ink-muted: #71717A;
+      --ink-inverse: #F4F4F5;
+
+      --border-hairline: rgba(10, 10, 12, 0.08);
+      --border-panel: rgba(255, 255, 255, 0.1);
+      --border-active: #0A0A0B;
+
+      --accent-beam: #FFFFFF;
+      --accent-dispersion-red: #EF4444;
+      --accent-dispersion-green: #10B981;
+      --accent-dispersion-blue: #3B82F6;
+      --accent-dispersion-violet: #8B5CF6;
+
+      --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-floating: 0 16px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+      --shadow-node: 0 8px 24px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink-primary);
+      background-color: var(--bg-studio);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Architectural Drafting Grid Background */
+    .drafting-grid-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BAR
+       ========================================================================== */
+    .top-navbar {
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 0.85rem 0;
+      position: relative;
+      z-index: 40;
+      background: rgba(245, 245, 243, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--ink-primary);
+    }
+
+    .prism-triangle-icon {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-tab-link {
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .nav-tab-link:hover, .nav-tab-link.active {
+      color: var(--ink-primary);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .quality-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+
+    .btn-action-outline {
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hairline);
+      background: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background-color 0.12s ease;
+    }
+
+    .btn-action-outline:hover {
+      background-color: #EFEFEF;
+    }
+
+    /* ==========================================================================
+       HERO & INTERACTIVE PRISM STAGE
+       ========================================================================== */
+    .hero-stage {
+      position: relative;
+      min-height: 720px;
+      padding: 3.5rem 0 4rem;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 3rem;
+      align-items: flex-start;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-manifesto {
+      padding-top: 1rem;
+    }
+
+    .hero-title-huge {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 4.8vw, 4.2rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2vw, 1.75rem);
+      font-weight: 400;
+      line-height: 1.3;
+      color: #27272A;
+      margin-bottom: 1.75rem;
+    }
+
+    .protocol-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+    }
+
+    .protocol-dot {
+      color: #A1A1AA;
+    }
+
+    /* Install Command Box */
+    .install-box {
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      padding: 0.65rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 1.5rem;
+    }
+
+    .install-code {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--ink-primary);
+      user-select: all;
+    }
+
+    .btn-copy-code {
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--ink-muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      transition: all 0.12s ease;
+    }
+
+    .btn-copy-code:hover {
+      color: var(--ink-primary);
+      background: #F4F4F5;
+    }
+
+    /* Live Telemetry Pill */
+    .hero-telemetry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #10B981;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    /* ==========================================================================
+       CANVAS STAGE & SHADER NODE GRAPH (THE WILD WORK ENGINE)
+       ========================================================================== */
+    .stage-interactive-container {
+      position: relative;
+      height: 620px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-hairline);
+      background: linear-gradient(135deg, #FAF8F5 0%, #EFECE6 50%, #E4E0D8 100%);
+      box-shadow: var(--shadow-floating);
+    }
+
+    #prismCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    /* SVG Connecting Wires between Shader Nodes */
+    .node-wires-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Floating Shader Nodes Layer */
+    .nodes-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .shader-node {
+      position: absolute;
+      width: 220px;
+      background: var(--bg-panel-dark);
+      border: 1px solid var(--border-panel);
+      border-radius: var(--radius-sm);
+      color: var(--ink-inverse);
+      box-shadow: var(--shadow-node);
+      pointer-events: auto;
+      font-size: 0.75rem;
+      user-select: none;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .shader-node:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .node-header {
+      padding: 0.45rem 0.65rem;
+      background: var(--bg-panel-dark-subtle);
+      border-bottom: 1px solid var(--border-panel);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .node-status-indicator {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+
+    .node-body {
+      padding: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #A1A1AA;
+    }
+
+    .node-preview-swatch {
+      height: 48px;
+      border-radius: 4px;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .node-slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mini-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: #27272A;
+      outline: none;
+    }
+
+    .mini-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       OPTICAL PARAMETER CONTROLLER (DRAWER / DOCK)
+       ========================================================================== */
+    .optics-dock-bar {
+      margin-top: 2rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.75rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .optics-param-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .param-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .param-num-val {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .dock-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      border-radius: 3px;
+      background: #E4E4E7;
+      outline: none;
+    }
+
+    .dock-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--ink-primary);
+      cursor: pointer;
+    }
+
+    .btn-reset-params {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hairline);
+      background: #FAF8F5;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .btn-reset-params:hover {
+      background: #EFECE6;
+    }
+
+    /* ==========================================================================
+       ARCHITECTURE BENTO GRID
+       ========================================================================== */
+    .architecture-section {
+      padding: 6rem 0;
+      border-top: 1px solid var(--border-hairline);
+      background-color: #FFFFFF;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-headline-serif {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .bento-grid-quad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .bento-card {
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      background-color: var(--bg-studio);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .bento-card.span-2 {
+      grid-column: span 2;
+    }
+
+    .bento-badge-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+    }
+
+    .bento-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .bento-desc {
+      font-size: 0.92rem;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+
+    .code-preview-pane {
+      margin-top: 1.25rem;
+      background: var(--bg-panel-dark);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #E4E4E7;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    .code-keyword { color: #F43F5E; }
+    .code-type { color: #38BDF8; }
+    .code-fn { color: #A855F7; }
+    .code-comment { color: #71717A; }
+
+    /* ==========================================================================
+       GPU TELEMETRY BENCHMARK BAR
+       ========================================================================== */
+    .telemetry-strip {
+      padding: 2rem 0;
+      background: var(--bg-panel-dark);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .telemetry-metric-unit {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .telemetry-label {
+      font-size: 0.72rem;
+      color: #71717A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .telemetry-val {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #10B981;
+    }
+
+    /* ==========================================================================
+       MINIMALIST SWISS FOOTER
+       ========================================================================== */
+    .site-footer {
+      padding: 4rem 0 3rem;
+      background: var(--bg-studio);
+      border-top: 1px solid var(--border-hairline);
+      font-size: 0.85rem;
+      color: var(--ink-secondary);
+    }
+
+    .footer-split {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-link {
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--ink-primary);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-grid-quad {
+        grid-template-columns: 1fr;
+      }
+      .bento-card.span-2 {
+        grid-column: span 1;
+      }
+      .optics-dock-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .telemetry-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-tabs {
+        display: none;
+      }
+      .optics-dock-bar {
+        grid-template-columns: 1fr;
+      }
+      .telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+      .shader-node {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="drafting-grid-bg"></div>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION BAR
+       ========================================================================== -->
+  <header class="top-navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <div class="brand-group">
+          <a href="#" class="brand-mark">
+            <svg class="prism-triangle-icon" viewBox="0 0 24 24">
+              <polygon points="12 3 22 21 2 21"/>
+              <line x1="12" y1="3" x2="17" y2="21" stroke-dasharray="2 2" stroke-width="1.2"/>
+            </svg>
+            <span class="brand-title">optix</span>
+          </a>
+
+          <ul class="nav-tabs">
+            <li><a href="#pipeline" class="nav-tab-link active">Light Pipeline</a></li>
+            <li><a href="#docs" class="nav-tab-link">Docs</a></li>
+            <li><a href="#shaders" class="nav-tab-link">Shaders</a></li>
+            <li><a href="#examples" class="nav-tab-link">Examples</a></li>
+            <li><a href="#benchmarks" class="nav-tab-link">Benchmarks</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-controls">
+          <div class="quality-badge" title="Active GPU Rendering Engine">
+            <span>●</span>
+            <span>WebGPU (High)</span>
+          </div>
+          <button class="btn-action-outline" onclick="copyChanges()">
+            <span>⎘</span> Copy changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO & PRISM SHADER STAGE
+       ========================================================================== -->
+  <section class="hero-stage">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Left Column: High-Typography Manifesto -->
+        <div class="hero-manifesto">
+          <h1 class="hero-title-huge">optix</h1>
+          <p class="hero-subtitle-lead">The WebGPU library,<br>designed for agents.</p>
+
+          <div class="protocol-chips-row">
+            <span>Prompt</span>
+            <span class="protocol-dot">•</span>
+            <span>CLI</span>
+            <span class="protocol-dot">•</span>
+            <span>Skill</span>
+            <span class="protocol-dot">•</span>
+            <span>MCP</span>
+          </div>
+
+          <div class="install-box">
+            <code class="install-code" id="installCmd">npm install @optix/core</code>
+            <button class="btn-copy-code" onclick="copyInstallCmd()">Copy</button>
+          </div>
+
+          <div class="hero-telemetry-badge">
+            <div class="pulse-dot"></div>
+            <span>Hardware Accelerated Raymarcher Ready</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Glass Prism Stage with Shader Nodes -->
+        <div class="stage-interactive-container" id="stageContainer">
+          <!-- Canvas for real-time 3D optical glass prism & caustics -->
+          <canvas id="prismCanvas"></canvas>
+
+          <!-- SVG Wires overlay -->
+          <svg class="node-wires-overlay" id="nodeWires">
+            <path id="wire1" d="M 190 70 C 260 70, 260 140, 320 140" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+            <path id="wire2" d="M 190 220 C 260 220, 260 290, 320 290" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none"/>
+            <path id="wire3" d="M 190 380 C 260 380, 260 440, 320 440" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+          </svg>
+
+          <!-- Floating Shader Inspection Nodes -->
+          <div class="nodes-layer">
+            <!-- Node 1: Mesh Input -->
+            <div class="shader-node" style="top: 30px; left: 40px;">
+              <div class="node-header">
+                <span>Prism Mesh Draw</span>
+                <span class="node-status-indicator"></span>
+              </div>
+              <div class="node-body">
+                <div>geometry: prism_equilateral</div>
+                <div>vertices: 1,440</div>
+                <div class="node-preview-swatch" id="swatchMesh" style="display: flex; align-items: center; justify-content: center; background: #222;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" stroke="#FFF" fill="none"><polygon points="12 4 21 20 3 20"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 2: WGSL Caustic Pass -->
+            <div class="shader-node" style="top: 170px; left: 40px;">
+              <div class="node-header">
+                <span>WGSL Caustic Pass</span>
+                <span class="node-status-indicator"></span>
+              </div>
+              <div class="node-body">
+                <div>pass: raymarch_ior_step</div>
+                <div class="node-preview-swatch" id="swatchCaustic" style="background: linear-gradient(90deg, #7C3AED, #3B82F6);"></div>
+                <div class="node-slider-row">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Roughness</span>
+                    <span id="roughnessNodeVal">0.02</span>
+                  </div>
+                  <input type="range" min="0" max="50" value="2" class="mini-range" id="miniRoughness" oninput="syncRoughness(this.value)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 3: Internal Caustic Draw -->
+            <div class="shader-node" style="top: 330px; left: 40px;">
+              <div class="node-header">
+                <span>Internal Caustic Draw</span>
+                <span class="node-status-indicator"></span>
+              </div>
+              <div class="node-body">
+                <div>ior: <span id="nodeIorText">1.520 (Borosilicate)</span></div>
+                <div>dispersion: 0.045 nm</div>
+                <div class="node-preview-swatch" style="background: #111; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <div style="width: 14px; height: 14px; background: #EF4444; border-radius: 50%;"></div>
+                  <div style="width: 14px; height: 14px; background: #10B981; border-radius: 50%;"></div>
+                  <div style="width: 14px; height: 14px; background: #3B82F6; border-radius: 50%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-time Optical Parameters Controller Dock -->
+      <div class="optics-dock-bar">
+        <!-- Param 1: IOR -->
+        <div class="optics-param-col">
+          <div class="param-label-row">
+            <span>Index of Refraction (IOR)</span>
+            <span class="param-num-val" id="dockIorVal">1.52</span>
+          </div>
+          <input type="range" min="100" max="242" value="152" class="dock-range" id="iorSlider" oninput="updateOptics()">
+        </div>
+
+        <!-- Param 2: Chromatic Dispersion -->
+        <div class="optics-param-col">
+          <div class="param-label-row">
+            <span>Chromatic Dispersion</span>
+            <span class="param-num-val" id="dockDispVal">0.65</span>
+          </div>
+          <input type="range" min="0" max="100" value="65" class="dock-range" id="dispSlider" oninput="updateOptics()">
+        </div>
+
+        <!-- Param 3: Light Beam Angle -->
+        <div class="optics-param-col">
+          <div class="param-label-row">
+            <span>Incident Beam Angle</span>
+            <span class="param-num-val" id="dockAngleVal">38°</span>
+          </div>
+          <input type="range" min="0" max="360" value="38" class="dock-range" id="angleSlider" oninput="updateOptics()">
+        </div>
+
+        <!-- Param 4: Glass Roughness -->
+        <div class="optics-param-col">
+          <div class="param-label-row">
+            <span>Optical Roughness</span>
+            <span class="param-num-val" id="dockRoughVal">0.02</span>
+          </div>
+          <input type="range" min="0" max="50" value="2" class="dock-range" id="roughSlider" oninput="updateOptics()">
+        </div>
+
+        <button class="btn-reset-params" onclick="resetOptics()">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       GPU TELEMETRY STRIP
+       ========================================================================== -->
+  <div class="telemetry-strip" id="benchmarks">
+    <div class="container">
+      <div class="telemetry-grid">
+        <div class="telemetry-metric-unit">
+          <span class="telemetry-label">Frame Rate</span>
+          <span class="telemetry-val" id="fpsCounter">60.0 FPS</span>
+        </div>
+        <div class="telemetry-metric-unit">
+          <span class="telemetry-label">Frame Time</span>
+          <span class="telemetry-val" id="frameTimeCounter">0.42 ms</span>
+        </div>
+        <div class="telemetry-metric-unit">
+          <span class="telemetry-label">VRAM Allocation</span>
+          <span class="telemetry-val">18.4 MB</span>
+        </div>
+        <div class="telemetry-metric-unit">
+          <span class="telemetry-label">Shader Execution Mode</span>
+          <span class="telemetry-val" style="color: #38BDF8;">Compute WGSL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ARCHITECTURE BENTO GRID
+       ========================================================================== -->
+  <section class="architecture-section" id="pipeline">
+    <div class="container">
+      <span class="section-eyebrow">Architecture &amp; Core Primitives</span>
+      <h2 class="section-headline-serif">Built for autonomous agent workflows.</h2>
+      <p style="font-size: 1.1rem; color: var(--ink-secondary); max-width: 650px;">
+        Traditional WebGL wrappers require complex state binding and garbage collection pauses. Optix gives AI agents declarative, zero-copy control over GPU memory pools.
+      </p>
+
+      <div class="bento-grid-quad">
+        <!-- Bento 1: Zero-Copy Streaming -->
+        <div class="bento-card span-2">
+          <div>
+            <span class="bento-badge-tag">STORAGE &amp; BUFFERS</span>
+            <h3 class="bento-title">Zero-Copy Ring Buffer Streaming</h3>
+            <p class="bento-desc">Agents stream neural weights and procedural geometry directly to the GPU without main-thread serialization bottlenecks.</p>
+          </div>
+          <div class="code-preview-pane">
+<span class="code-keyword">const</span> pipeline = <span class="code-keyword">await</span> optix.<span class="code-fn">createPipeline</span>({
+  shader: <span class="code-type">WGSL</span>`<span class="code-comment">/* optical caustic raymarch */</span>`,
+  buffers: { ringSize: <span class="code-type">1024</span> * <span class="code-type">1024</span>, format: <span class="code-type">"rgba16float"</span> }
+});
+<span class="code-comment">// Agent binds dynamic uniform without CPU hitch:</span>
+pipeline.<span class="code-fn">setUniform</span>(<span class="code-type">"ior"</span>, <span class="code-type">1.520</span>);
+          </div>
+        </div>
+
+        <!-- Bento 2: Dynamic WGSL Compiler -->
+        <div class="bento-card">
+          <div>
+            <span class="bento-badge-tag">JIT SHADER ENGINE</span>
+            <h3 class="bento-title">Sub-Millisecond WGSL Compilation</h3>
+            <p class="bento-desc">Agents generate custom shader code on the fly. Optix validates AST and compiles pipelines in under 1.8 milliseconds.</p>
+          </div>
+          <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; color: #10B981;">
+            ✓ WGSL Syntax Grounding<br>
+            ✓ Bounds Checking Verified<br>
+            ✓ SPIR-V Cross-Compiled
+          </div>
+        </div>
+
+        <!-- Bento 3: Hybrid WebGL2 Fallback -->
+        <div class="bento-card">
+          <div>
+            <span class="bento-badge-tag">RUNTIME RESILIENCE</span>
+            <h3 class="bento-title">Graceful WebGL2 Fallback</h3>
+            <p class="bento-desc">When running in headless agent environments or mobile viewports without WebGPU, Optix switches to an optimized WebGL2 hybrid pipeline.</p>
+          </div>
+          <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; color: #71717A;">
+            Fallback Latency: +0.2ms<br>
+            Shader Parity: 99.4%
+          </div>
+        </div>
+
+        <!-- Bento 4: Agent Tool Protocol (MCP) -->
+        <div class="bento-card span-2" id="shaders">
+          <div>
+            <span class="bento-badge-tag">AGENT INTERFACE SPEC</span>
+            <h3 class="bento-title">Exposed as Model Context Protocol (MCP) Tools</h3>
+            <p class="bento-desc">Every shader parameter, render pass, and geometry buffer is automatically registered as a structured tool schema for Claude, OpenAI, and Gemini agents.</p>
+          </div>
+          <div class="code-preview-pane">
+<span class="code-keyword">tool</span> <span class="code-fn">adjust_optical_dispersion</span> {
+  <span class="code-type">"ior"</span>: { <span class="code-keyword">type</span>: <span class="code-type">"number"</span>, <span class="code-keyword">minimum</span>: <span class="code-type">1.0</span>, <span class="code-keyword">maximum</span>: <span class="code-type">2.42</span> },
+  <span class="code-type">"caustic_intensity"</span>: { <span class="code-keyword">type</span>: <span class="code-type">"number"</span>, <span class="code-keyword">default</span>: <span class="code-type">0.85</span> }
+}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MINIMALIST SWISS FOOTER
+       ========================================================================== -->
+  <footer class="site-footer" id="docs">
+    <div class="container">
+      <div class="footer-split">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <a href="#" class="brand-mark">
+            <svg class="prism-triangle-icon" viewBox="0 0 24 24">
+              <polygon points="12 3 22 21 2 21"/>
+            </svg>
+            <span class="brand-title">optix</span>
+          </a>
+          <span style="font-size: 0.8rem; color: #A1A1AA;">© 2026 Optix Foundation. Open-source under MIT.</span>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="#github" class="footer-link">GitHub</a></li>
+          <li><a href="#npm" class="footer-link">NPM</a></li>
+          <li><a href="#spec" class="footer-link">WGSL Spec</a></li>
+          <li><a href="#discord" class="footer-link">Discord</a></li>
+          <li><a href="#status" class="footer-link">Telemetry</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       INTERACTIVE JAVASCRIPT & PRISM RENDER CONTROLLER
+       ========================================================================== -->
+  <script>
+    // Canvas & Real-Time Prism Simulation State
+    const canvas = document.getElementById("prismCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let params = {
+      ior: 1.52,
+      dispersion: 0.65,
+      angle: 38,
+      roughness: 0.02
+    };
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    // Mouse Tracking across Canvas
+    const container = document.getElementById("stageContainer");
+    container.addEventListener("mousemove", (e) => {
+      const rect = container.getBoundingClientRect();
+      targetMouseX = e.clientX - rect.left;
+      targetMouseY = e.clientY - rect.top;
+    });
+
+    container.addEventListener("mouseleave", () => {
+      targetMouseX = container.clientWidth / 2;
+      targetMouseY = container.clientHeight / 2;
+    });
+
+    // Main Render Loop
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let fpsTimer = 0;
+
+    function render(time) {
+      const delta = time - lastTime;
+      lastTime = time;
+
+      // Smooth mouse interpolation
+      mouseX += (targetMouseX - mouseX) * 0.08;
+      mouseY += (targetMouseY - mouseY) * 0.08;
+
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Prism Geometry Center
+      const centerX = width * 0.68;
+      const centerY = height * 0.5;
+      const prismSize = Math.min(width, height) * 0.42;
+
+      // Mouse influence on prism tilt
+      const tiltX = (mouseX - width / 2) * 0.04;
+      const tiltY = (mouseY - height / 2) * 0.04;
+
+      // Prism Vertices (Equilateral Triangle with slight perspective tilt)
+      const p1 = { x: centerX + tiltX, y: centerY - prismSize * 0.55 + tiltY };
+      const p2 = { x: centerX - prismSize * 0.5 + tiltX * 0.5, y: centerY + prismSize * 0.45 - tiltY * 0.5 };
+      const p3 = { x: centerX + prismSize * 0.5 - tiltX * 0.5, y: centerY + prismSize * 0.45 - tiltY * 0.5 };
+
+      // Incident Light Beam Origin (from left)
+      const beamAngleRad = (params.angle * Math.PI) / 180;
+      const beamOrigin = { x: 0, y: centerY - 40 + Math.sin(time * 0.001) * 20 };
+      const beamHit = { x: (p1.x + p2.x) / 2 + 10, y: (p1.y + p2.y) / 2 };
+
+      // 1. Draw Incoming Incident Light Beam
+      const beamGrad = ctx.createLinearGradient(beamOrigin.x, beamOrigin.y, beamHit.x, beamHit.y);
+      beamGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      beamGrad.addColorStop(0.8, "rgba(255, 255, 255, 0.85)");
+      beamGrad.addColorStop(1, "rgba(255, 255, 255, 0.6)");
+
+      ctx.beginPath();
+      ctx.moveTo(beamOrigin.x, beamOrigin.y - 12);
+      ctx.lineTo(beamOrigin.x, beamOrigin.y + 12);
+      ctx.lineTo(beamHit.x + 8, beamHit.y + 16);
+      ctx.lineTo(beamHit.x - 8, beamHit.y - 16);
+      ctx.closePath();
+      ctx.fillStyle = beamGrad;
+      ctx.fill();
+
+      // 2. Chromatic Refraction Beams Emerging from Right Face
+      const exitBase = { x: (p1.x + p3.x) / 2 - 10, y: (p1.y + p3.y) / 2 };
+      const spectrumColors = [
+        { color: "rgba(239, 68, 68, 0.55)", spread: 1.0 },   // Red
+        { color: "rgba(245, 158, 11, 0.55)", spread: 0.92 },  // Amber
+        { color: "rgba(16, 185, 129, 0.55)", spread: 0.84 },  // Green
+        { color: "rgba(6, 182, 212, 0.55)", spread: 0.76 },   // Cyan
+        { color: "rgba(59, 130, 246, 0.55)", spread: 0.68 },  // Blue
+        { color: "rgba(139, 92, 246, 0.55)", spread: 0.60 }   // Violet
+      ];
+
+      const dispersionMultiplier = params.dispersion * 1.6;
+
+      spectrumColors.forEach((band) => {
+        const exitYOffset = (band.spread - 0.8) * 80 * dispersionMultiplier;
+        const targetExitY = exitBase.y + exitYOffset;
+        const targetFarX = width + 50;
+        const targetFarY = targetExitY + (exitYOffset * 2.2) + Math.cos(beamAngleRad) * 40;
+
+        ctx.beginPath();
+        ctx.moveTo(beamHit.x, beamHit.y);
+        ctx.lineTo(exitBase.x, targetExitY);
+        ctx.lineTo(targetFarX, targetFarY + 25);
+        ctx.lineTo(targetFarX, targetFarY - 25);
+        ctx.closePath();
+
+        const rainbowGrad = ctx.createLinearGradient(exitBase.x, targetExitY, targetFarX, targetFarY);
+        rainbowGrad.addColorStop(0, band.color);
+        rainbowGrad.addColorStop(1, "rgba(255, 255, 255, 0.02)");
+        ctx.fillStyle = rainbowGrad;
+        ctx.fill();
+      });
+
+      // 3. Draw 3D Optical Glass Prism Body
+      ctx.save();
+      // Prism Drop Shadow & Caustic Glow
+      ctx.shadowColor = "rgba(0, 0, 0, 0.08)";
+      ctx.shadowBlur = 40;
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 20;
+
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.closePath();
+
+      // Glass Body Gradient
+      const glassFill = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+      glassFill.addColorStop(0, "rgba(255, 255, 255, 0.85)");
+      glassFill.addColorStop(0.5, "rgba(240, 245, 250, 0.45)");
+      glassFill.addColorStop(1, "rgba(255, 255, 255, 0.75)");
+
+      ctx.fillStyle = glassFill;
+      ctx.fill();
+
+      // Internal Glass Bevels & Refraction Reflections
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.stroke();
+
+      // Hairline Architectural Edge
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.12)";
+      ctx.stroke();
+
+      // Internal Caustic Triangle Highlight
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y + 10);
+      ctx.lineTo(p2.x + 8, p2.y - 6);
+      ctx.lineTo(p3.x - 8, p3.y - 6);
+      ctx.closePath();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+
+      // FPS & Telemetry updates
+      frameCount++;
+      if (time - fpsTimer > 1000) {
+        document.getElementById("fpsCounter").innerText = `${frameCount} FPS`;
+        document.getElementById("frameTimeCounter").innerText = `${(1000 / frameCount).toFixed(2)} ms`;
+        frameCount = 0;
+        fpsTimer = time;
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    requestAnimationFrame(render);
+
+    // Live Parameter Updates
+    function updateOptics() {
+      params.ior = parseFloat(document.getElementById("iorSlider").value) / 100;
+      params.dispersion = parseFloat(document.getElementById("dispSlider").value) / 100;
+      params.angle = parseInt(document.getElementById("angleSlider").value);
+      params.roughness = parseFloat(document.getElementById("roughSlider").value) / 100;
+
+      document.getElementById("dockIorVal").innerText = params.ior.toFixed(2);
+      document.getElementById("dockDispVal").innerText = params.dispersion.toFixed(2);
+      document.getElementById("dockAngleVal").innerText = `${params.angle}°`;
+      document.getElementById("dockRoughVal").innerText = params.roughness.toFixed(2);
+
+      document.getElementById("nodeIorText").innerText = `${params.ior.toFixed(3)} (${params.ior > 2.0 ? 'Diamond' : params.ior > 1.6 ? 'Flint Glass' : 'Borosilicate'})`;
+      document.getElementById("roughnessNodeVal").innerText = params.roughness.toFixed(2);
+    }
+
+    function syncRoughness(val) {
+      document.getElementById("roughSlider").value = val;
+      updateOptics();
+    }
+
+    function resetOptics() {
+      document.getElementById("iorSlider").value = 152;
+      document.getElementById("dispSlider").value = 65;
+      document.getElementById("angleSlider").value = 38;
+      document.getElementById("roughSlider").value = 2;
+      updateOptics();
+    }
+
+    function copyInstallCmd() {
+      const text = document.getElementById("installCmd").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard: " + text);
+      });
+    }
+
+    function copyChanges() {
+      const config = JSON.stringify(params, null, 2);
+      navigator.clipboard.writeText(config).then(() => {
+        alert("Optix shader configuration copied:\n" + config);
+      });
+    }
+  </script>
+</body>
+</html>

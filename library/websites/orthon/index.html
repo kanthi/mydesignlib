@@ -1,0 +1,2507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orthon — Manufacturing Intelligence &amp; Autonomous Telemetry</title>
+  <meta name="description" content="Orthon turns continuous factory telemetry into real-time decisions, zero unlogged line halts, and peak plant throughput." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-sheet: #f6f7f9;
+      --bg-surface: #ffffff;
+      --bg-surface-subtle: #f0f2f6;
+      --bg-surface-hover: #e8ebf0;
+      --bg-dark: #0e1116;
+      --bg-dark-card: #151a22;
+      
+      --ink-primary: #0e1116;
+      --ink-secondary: #4a5568;
+      --ink-muted: #718096;
+      --ink-faint: #9aa5b5;
+      --ink-inverse: #ffffff;
+      
+      --line-grid: #e2e5eb;
+      --line-bold: #cbd2dc;
+      --line-dark: #272f3d;
+      --line-bracket: #0e1116;
+      
+      --signal-live: #10b981;
+      --signal-live-glow: rgba(16, 185, 129, 0.25);
+      --signal-warn: #f59e0b;
+      --signal-alert: #ef4444;
+      --signal-bus: #2563eb;
+      --signal-conduit: #1e293b;
+
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+      
+      --wrap: min(1320px, 100% - 2rem);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --dur: 200ms;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-sheet);
+      color: var(--ink-primary);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-sheet);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: 0;
+      background: none;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--ink-primary);
+      outline-offset: 2px;
+    }
+
+    /* Architectural Drafting Shell Frame */
+    .cad-shell {
+      width: var(--wrap);
+      margin: 0.75rem auto 3rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--line-bold);
+      position: relative;
+      box-shadow: 0 20px 60px rgba(14, 17, 22, 0.05);
+    }
+
+    /* Drafting Zebra Margins */
+    .cad-zebra-left, .cad-zebra-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      z-index: 10;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0.04),
+        rgba(0, 0, 0, 0.04) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    }
+    .cad-zebra-left { left: 0; border-right: 1px solid var(--line-grid); }
+    .cad-zebra-right { right: 0; border-left: 1px solid var(--line-grid); }
+
+    /* Crosshair drafting markers */
+    .crosshair {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .crosshair::before, .crosshair::after {
+      content: "";
+      position: absolute;
+      background: var(--ink-primary);
+    }
+    .crosshair::before {
+      top: 5px; left: 0; right: 0; height: 1px;
+    }
+    .crosshair::after {
+      left: 5px; top: 0; bottom: 0; width: 1px;
+    }
+    .cross-tl { top: -6px; left: -6px; }
+    .cross-tr { top: -6px; right: -6px; }
+    .cross-bl { bottom: -6px; left: -6px; }
+    .cross-br { bottom: -6px; right: -6px; }
+
+    /* Top Live Telemetry Ticker */
+    .telemetry-ticker {
+      background: var(--bg-surface-subtle);
+      border-bottom: 1px solid var(--line-grid);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-secondary);
+      padding: 0.35rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-stream {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .ticker-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--signal-live);
+      box-shadow: 0 0 6px var(--signal-live);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .ticker-time {
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    /* Main Navigation */
+    .nav-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      border-bottom: 1px solid var(--line-bold);
+      background: var(--bg-surface);
+      position: relative;
+      z-index: 30;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      padding: 0.9rem 1.75rem;
+      border-right: 1px solid var(--line-grid);
+      gap: 0.75rem;
+    }
+    .brand-logo {
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .brand-spec {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+      background: var(--bg-surface-subtle);
+      padding: 0.15rem 0.4rem;
+      border: 1px solid var(--line-grid);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+      padding: 0 1.5rem;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-secondary);
+      transition: color var(--dur) var(--ease);
+      position: relative;
+      padding: 0.25rem 0;
+    }
+    .nav-links a:hover {
+      color: var(--ink-primary);
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--ink-primary);
+      transition: width var(--dur) var(--ease);
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta-wrap {
+      padding: 0.65rem 1.75rem;
+      border-left: 1px solid var(--line-grid);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Technical CAD Corner-Bracket Buttons */
+    .btn-bracket {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.35rem;
+      transition: transform var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+      user-select: none;
+    }
+    /* Corner tick marks using pseudo-elements and borders */
+    .btn-bracket::before, .btn-bracket::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      pointer-events: none;
+      transition: all var(--dur) var(--ease);
+    }
+    
+    /* Primary Black Bracket Button */
+    .btn-bracket-primary {
+      background: var(--ink-primary);
+      color: var(--ink-inverse);
+      border: 1px solid var(--ink-primary);
+    }
+    .btn-bracket-primary::before {
+      top: -3px; left: -3px;
+      border-top: 2px solid var(--ink-primary);
+      border-left: 2px solid var(--ink-primary);
+    }
+    .btn-bracket-primary::after {
+      bottom: -3px; right: -3px;
+      border-bottom: 2px solid var(--ink-primary);
+      border-right: 2px solid var(--ink-primary);
+    }
+    .btn-bracket-primary:hover {
+      background: #1e2530;
+      transform: translateY(-1px);
+    }
+    .btn-bracket-primary:hover::before {
+      top: -5px; left: -5px; width: 7px; height: 7px;
+    }
+    .btn-bracket-primary:hover::after {
+      bottom: -5px; right: -5px; width: 7px; height: 7px;
+    }
+
+    /* Outline Bracket Button */
+    .btn-bracket-outline {
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      border: 1px solid var(--line-bold);
+    }
+    .btn-bracket-outline::before {
+      top: -3px; left: -3px;
+      border-top: 2px solid var(--ink-primary);
+      border-left: 2px solid var(--ink-primary);
+    }
+    .btn-bracket-outline::after {
+      bottom: -3px; right: -3px;
+      border-bottom: 2px solid var(--ink-primary);
+      border-right: 2px solid var(--ink-primary);
+    }
+    .btn-bracket-outline:hover {
+      background: var(--bg-surface-subtle);
+      border-color: var(--ink-primary);
+      transform: translateY(-1px);
+    }
+    .btn-bracket-outline:hover::before {
+      top: -5px; left: -5px; width: 7px; height: 7px;
+    }
+    .btn-bracket-outline:hover::after {
+      bottom: -5px; right: -5px; width: 7px; height: 7px;
+    }
+
+    .btn-bracket:active {
+      transform: scale(0.98);
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-btn {
+      display: none;
+      width: 44px;
+      height: 44px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 1px solid var(--line-grid);
+      background: var(--bg-surface);
+    }
+    .mobile-menu-btn span {
+      width: 18px;
+      height: 2px;
+      background: var(--ink-primary);
+    }
+
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      min-height: 560px;
+      border-bottom: 1px solid var(--line-bold);
+      position: relative;
+      background: linear-gradient(to right, #ffffff 0%, #fafbfc 100%);
+    }
+
+    .hero-content {
+      padding: clamp(2.5rem, 5vw, 4.25rem) clamp(1.75rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--line-grid);
+      position: relative;
+    }
+
+    /* Telemetry Live Operations Badge */
+    .badge-telemetry {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-secondary);
+      padding: 0.35rem 0.75rem;
+      background: var(--bg-surface);
+      border: 1px dashed var(--line-bold);
+      margin-bottom: 1.75rem;
+      width: fit-content;
+    }
+    .beacon-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--signal-live);
+    }
+    .beacon-dot::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1px solid var(--signal-live);
+      animation: beacon-ring 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    @keyframes beacon-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* Hero Headline */
+    .hero-title {
+      font-size: clamp(2.35rem, 4.6vw, 3.85rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      color: var(--ink-primary);
+      margin-bottom: 1.5rem;
+      text-wrap: balance;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.4vw, 1.125rem);
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      max-width: 48ch;
+      margin-bottom: 2.25rem;
+      text-wrap: pretty;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+      border-top: 1px dashed var(--line-grid);
+      padding-top: 1.25rem;
+    }
+    .meta-tag-spec {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .meta-tag-spec strong {
+      color: var(--ink-primary);
+    }
+
+    /* Hero Right Visual: The Master Conduit Schematic Tree */
+    .hero-schematic {
+      position: relative;
+      background: #fafbfc;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      min-height: 480px;
+    }
+    
+    .schematic-toolbar {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--line-grid);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+    }
+    .schematic-modes {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .mode-chip {
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--line-grid);
+      background: var(--bg-surface-subtle);
+      font-size: 0.625rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      transition: all var(--dur) var(--ease);
+    }
+    .mode-chip.active, .mode-chip:hover {
+      background: var(--ink-primary);
+      color: var(--ink-inverse);
+      border-color: var(--ink-primary);
+    }
+
+    .schematic-canvas-area {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .conduit-svg-layer {
+      width: 100%;
+      height: 100%;
+      max-height: 440px;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.03));
+    }
+
+    /* Live Telemetry Node Tooltip Hover */
+    .schematic-readout-hud {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--line-bold);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      backdrop-filter: blur(4px);
+      min-width: 180px;
+      z-index: 15;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    .hud-row:last-child {
+      margin-bottom: 0;
+    }
+    .hud-label {
+      color: var(--ink-muted);
+    }
+    .hud-val {
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+
+    /* Pulse packets moving along conduit lines */
+    .conduit-trace {
+      stroke: var(--signal-conduit);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .conduit-trace-faint {
+      stroke: var(--line-bold);
+      stroke-width: 1;
+      fill: none;
+      stroke-dasharray: 3 3;
+    }
+    .conduit-node {
+      fill: var(--bg-surface);
+      stroke: var(--ink-primary);
+      stroke-width: 1.5;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .conduit-node:hover {
+      fill: var(--signal-live);
+      stroke: var(--ink-primary);
+      r: 6;
+    }
+    .pulse-packet {
+      fill: var(--signal-live);
+      filter: drop-shadow(0 0 4px var(--signal-live));
+    }
+
+    /* Section Grid Container */
+    .blueprint-section {
+      border-bottom: 1px solid var(--line-bold);
+      position: relative;
+    }
+    .section-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.75rem;
+      background: var(--bg-surface-subtle);
+      border-bottom: 1px solid var(--line-grid);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .section-header-bar strong {
+      color: var(--ink-primary);
+    }
+
+    /* Industrial Telemetry Metrics Strip */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+    }
+    .metric-cell {
+      padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.75rem);
+      border-right: 1px solid var(--line-grid);
+      position: relative;
+    }
+    .metric-cell:last-child {
+      border-right: none;
+    }
+    .metric-coord {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .metric-number {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--ink-primary);
+      margin-bottom: 0.5rem;
+    }
+    .metric-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin-bottom: 0.25rem;
+    }
+    .metric-sub {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    /* Industrial Partner / OEM Rail */
+    .partner-rail {
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--line-grid);
+      background: #fafbfc;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .partner-rail-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .partner-logos {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      flex-wrap: wrap;
+    }
+    .oem-logo {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--ink-secondary);
+      opacity: 0.8;
+      transition: opacity var(--dur) var(--ease);
+    }
+    .oem-logo:hover {
+      opacity: 1;
+      color: var(--ink-primary);
+    }
+
+    /* Problem vs. Orthon Architecture (Split Blueprint) */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-surface);
+    }
+    .comp-col {
+      padding: clamp(2rem, 4vw, 3.25rem);
+    }
+    .comp-col-legacy {
+      border-right: 1px solid var(--line-bold);
+      background: #fdfdfd;
+    }
+    .comp-col-orthon {
+      background: var(--bg-surface);
+    }
+    .comp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--line-grid);
+    }
+    .comp-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+    }
+    .comp-tag-legacy {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .comp-tag-orthon {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .comp-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      color: var(--ink-primary);
+    }
+    .comp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+    .comp-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .comp-icon {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      margin-top: 0.1rem;
+    }
+    .comp-icon-fail { color: #dc2626; }
+    .comp-icon-pass { color: #16a34a; }
+
+    /* Interactive Live Plant Floor Digital Twin Simulator */
+    .simulator-container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 480px;
+      background: var(--bg-surface);
+    }
+    .sim-sidebar {
+      border-right: 1px solid var(--line-bold);
+      padding: 1.5rem;
+      background: #fafbfc;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .sim-lines-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sim-line-tab {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--line-grid);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      transition: all var(--dur) var(--ease);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .sim-line-tab.active {
+      border-color: var(--ink-primary);
+      background: var(--ink-primary);
+      color: var(--ink-inverse);
+    }
+    .sim-line-tab.active .tab-meta {
+      color: var(--ink-faint);
+    }
+    .tab-title {
+      font-weight: 700;
+    }
+    .tab-meta {
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+    }
+
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      border-top: 1px dashed var(--line-grid);
+      padding-top: 1.25rem;
+    }
+    .sim-btn {
+      padding: 0.55rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      border: 1px solid var(--line-bold);
+      background: var(--bg-surface);
+      text-align: center;
+      text-transform: uppercase;
+      transition: all var(--dur) var(--ease);
+    }
+    .sim-btn:hover {
+      background: var(--bg-surface-subtle);
+      border-color: var(--ink-primary);
+    }
+    .sim-btn-action {
+      background: var(--signal-bus);
+      color: #fff;
+      border-color: var(--signal-bus);
+    }
+    .sim-btn-action:hover {
+      background: #1d4ed8;
+    }
+
+    .sim-display-area {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #ffffff;
+      position: relative;
+    }
+    .sim-header-telemetry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .sim-title-group h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .sim-title-group p {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+    }
+    .sim-stat-chips {
+      display: flex;
+      gap: 1rem;
+    }
+    .stat-chip {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--line-grid);
+      padding: 0.35rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+    }
+    .stat-chip strong {
+      color: var(--ink-primary);
+    }
+
+    .sim-canvas-wrapper {
+      width: 100%;
+      height: 240px;
+      border: 1px solid var(--line-grid);
+      background: #fafbfc;
+      position: relative;
+    }
+    #sim-telemetry-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .sim-log-strip {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-secondary);
+      background: var(--bg-surface-subtle);
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--line-grid);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* 4 Platform Pillars */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+    }
+    .pillar-card {
+      padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.25rem, 2vw, 1.75rem);
+      border-right: 1px solid var(--line-grid);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background var(--dur) var(--ease);
+      position: relative;
+    }
+    .pillar-card:last-child {
+      border-right: none;
+    }
+    .pillar-card:hover {
+      background: #fafbfc;
+    }
+    .pillar-idx {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .pillar-heading {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--ink-primary);
+    }
+    .pillar-body {
+      font-size: 0.8125rem;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+    .pillar-spec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-muted);
+      border-top: 1px dashed var(--line-grid);
+      padding-top: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* How It Works - 4 Step Deterministic Pipeline */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+    }
+    .pipe-step {
+      padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.25rem, 2vw, 1.75rem);
+      border-right: 1px solid var(--line-grid);
+      position: relative;
+    }
+    .pipe-step:last-child {
+      border-right: none;
+    }
+    .pipe-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      background: var(--ink-primary);
+      color: var(--ink-inverse);
+      margin-bottom: 1rem;
+    }
+    .pipe-name {
+      font-size: 1.125rem;
+      font-weight: 800;
+      margin-bottom: 0.65rem;
+      color: var(--ink-primary);
+    }
+    .pipe-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+    }
+
+    /* Protocol Compatibility Matrix */
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+    }
+    .protocol-cell {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--line-grid);
+      border-bottom: 1px solid var(--line-grid);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background var(--dur) var(--ease);
+    }
+    .protocol-cell:nth-child(4n) {
+      border-right: none;
+    }
+    .protocol-cell:hover {
+      background: var(--bg-surface-subtle);
+    }
+    .proto-name {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+    }
+    .proto-status {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--signal-live);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Case Studies & Production Outcomes */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--bg-surface);
+    }
+    .case-card {
+      padding: clamp(2rem, 3.5vw, 2.75rem) clamp(1.5rem, 2.5vw, 2rem);
+      border-right: 1px solid var(--line-grid);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .case-card:last-child {
+      border-right: none;
+    }
+    .case-industry {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .case-client {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--ink-primary);
+    }
+    .case-quote {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+      margin-bottom: 1.75rem;
+    }
+    .case-stat-box {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--line-grid);
+      padding: 0.85rem 1rem;
+    }
+    .case-stat-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .case-stat-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+    }
+
+    /* Pricing & Deployment Tiers */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--bg-surface);
+    }
+    .pricing-card {
+      padding: clamp(2rem, 3.5vw, 2.75rem) clamp(1.5rem, 2.5vw, 2rem);
+      border-right: 1px solid var(--line-grid);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .pricing-card:last-child {
+      border-right: none;
+    }
+    .pricing-card-featured {
+      background: #fafbfc;
+    }
+    .tier-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--line-bold);
+      margin-bottom: 1rem;
+      width: fit-content;
+    }
+    .tier-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+      margin-bottom: 0.5rem;
+    }
+    .tier-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .tier-price-box {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line-grid);
+    }
+    .tier-amount {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink-primary);
+    }
+    .tier-period {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+    }
+    .tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      font-size: 0.8125rem;
+      color: var(--ink-secondary);
+    }
+    .tier-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tier-features li::before {
+      content: "+";
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--ink-primary);
+    }
+
+    /* FAQ Accordion */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-surface);
+    }
+    .faq-col {
+      border-right: 1px solid var(--line-grid);
+    }
+    .faq-col:last-child {
+      border-right: none;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--line-grid);
+    }
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 1.35rem 1.75rem;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--ink-primary);
+      transition: background var(--dur) var(--ease);
+    }
+    .faq-question:hover {
+      background: var(--bg-surface-subtle);
+    }
+    .faq-icon {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      transition: transform var(--dur) var(--ease);
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      font-size: 0.8125rem;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      background: #fafbfc;
+      padding: 0 1.75rem;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding: 0 1.75rem 1.35rem;
+    }
+
+    /* High-Impact Final CTA Blueprint */
+    .cta-blueprint-frame {
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3.5rem);
+      background: #fafbfc;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid var(--line-bold);
+    }
+    .cta-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--line-bold);
+      margin-bottom: 1.5rem;
+    }
+    .cta-title {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink-primary);
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    .cta-desc {
+      font-size: 1rem;
+      color: var(--ink-secondary);
+      max-width: 48ch;
+      margin: 0 auto 2.25rem;
+      text-wrap: pretty;
+    }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Technical CAD Footer */
+    .cad-footer {
+      background: var(--bg-surface);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      border-bottom: 1px solid var(--line-grid);
+    }
+    .footer-col {
+      padding: 2.25rem 1.75rem;
+      border-right: 1px solid var(--line-grid);
+    }
+    .footer-col:last-child {
+      border-right: none;
+    }
+    .footer-col-title {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .footer-links a {
+      color: var(--ink-secondary);
+      transition: color var(--dur) var(--ease);
+    }
+    .footer-links a:hover {
+      color: var(--ink-primary);
+    }
+    .footer-bottom {
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--ink-muted);
+      font-size: 0.6875rem;
+      background: var(--bg-surface-subtle);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1080px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-content {
+        border-right: none;
+        border-bottom: 1px solid var(--line-grid);
+      }
+      .metrics-grid, .pillars-grid, .pipeline-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .metric-cell:nth-child(2), .pillar-card:nth-child(2), .pipe-step:nth-child(2) {
+        border-right: none;
+      }
+      .metric-cell:nth-child(1), .metric-cell:nth-child(2),
+      .pillar-card:nth-child(1), .pillar-card:nth-child(2),
+      .pipe-step:nth-child(1), .pipe-step:nth-child(2) {
+        border-bottom: 1px solid var(--line-grid);
+      }
+      .simulator-container {
+        grid-template-columns: 1fr;
+      }
+      .sim-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--line-bold);
+      }
+      .cases-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .case-card, .pricing-card {
+        border-right: none;
+        border-bottom: 1px solid var(--line-grid);
+      }
+      .case-card:last-child, .pricing-card:last-child {
+        border-bottom: none;
+      }
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-col:nth-child(2) {
+        border-right: none;
+      }
+      .footer-col:nth-child(1), .footer-col:nth-child(2) {
+        border-bottom: 1px solid var(--line-grid);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cad-shell {
+        width: 100%;
+        margin: 0;
+        border-left: none;
+        border-right: none;
+      }
+      .cad-zebra-left, .cad-zebra-right {
+        display: none;
+      }
+      .nav-links, .nav-cta-wrap {
+        display: none;
+      }
+      .nav-links.mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--line-bold);
+        padding: 1.5rem;
+        gap: 1.25rem;
+        z-index: 50;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      .mobile-menu-btn {
+        display: flex;
+        margin-right: 1.25rem;
+      }
+      .metrics-grid, .pillars-grid, .pipeline-grid, .protocol-grid, .comparison-grid, .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      .metric-cell, .pillar-card, .pipe-step, .protocol-cell, .comp-col-legacy, .faq-col {
+        border-right: none;
+        border-bottom: 1px solid var(--line-grid);
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .footer-col {
+        border-right: none;
+        border-bottom: 1px solid var(--line-grid);
+      }
+      .telemetry-ticker {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cad-shell">
+    <!-- CAD Margin Rulers -->
+    <div class="cad-zebra-left" aria-hidden="true"></div>
+    <div class="cad-zebra-right" aria-hidden="true"></div>
+    
+    <!-- Crosshairs -->
+    <div class="crosshair cross-tl" aria-hidden="true"></div>
+    <div class="crosshair cross-tr" aria-hidden="true"></div>
+    <div class="crosshair cross-bl" aria-hidden="true"></div>
+    <div class="crosshair cross-br" aria-hidden="true"></div>
+
+    <!-- Live Telemetry Stream Ticker -->
+    <div class="telemetry-ticker">
+      <div class="ticker-stream">
+        <div class="ticker-item">
+          <span class="ticker-dot"></span>
+          <span>PLANT 04 / GIGAFAB DETROIT [ONLINE]</span>
+        </div>
+        <div class="ticker-item">
+          <span>EDGE BUS LATENCY: <strong id="live-latency">8.4ms</strong></span>
+        </div>
+        <div class="ticker-item">
+          <span>FLEET OEE: <strong>94.8%</strong> (▲ +3.2%)</span>
+        </div>
+        <div class="ticker-item">
+          <span>ANOMALY RATE: <strong>0.00% CRITICAL</strong></span>
+        </div>
+        <div class="ticker-item">
+          <span>ACTIVE CONDUITS: <strong>1,842 NODES</strong></span>
+        </div>
+      </div>
+      <div class="ticker-time" id="live-clock">UTC 12:24:16.892</div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="nav-bar">
+      <div class="brand-group">
+        <a href="#" class="brand-logo">
+          <span>ORTHON</span>
+        </a>
+        <span class="brand-spec">SYS-08</span>
+      </div>
+
+      <nav>
+        <ul class="nav-links" id="nav-menu">
+          <li><a href="#problem">PROBLEM</a></li>
+          <li><a href="#platform">PLATFORM</a></li>
+          <li><a href="#how-it-works">HOW IT WORKS</a></li>
+          <li><a href="#integrations">INTEGRATIONS</a></li>
+          <li><a href="#case-studies">CASE STUDIES</a></li>
+          <li><a href="#pricing">PRICING</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta-wrap">
+        <button class="btn-bracket btn-bracket-primary" id="btn-book-demo-nav" onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})">
+          BOOK A DEMO
+        </button>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-grid" id="hero">
+      <div class="hero-content">
+        <div class="badge-telemetry">
+          <span class="beacon-dot"></span>
+          <span>LIVE OPERATIONS &middot; 100Hz EDGE BUS</span>
+        </div>
+
+        <h1 class="hero-title">
+          Manufacturing Intelligence That Keeps Every Line Moving
+        </h1>
+
+        <p class="hero-desc">
+          Orthon turns continuous factory telemetry into real-time decisions, zero unlogged line halts, and peak production throughput.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#pricing" class="btn-bracket btn-bracket-primary">
+            GET IN TOUCH
+          </a>
+          <a href="#case-studies" class="btn-bracket btn-bracket-outline">
+            CASE STUDIES
+          </a>
+        </div>
+
+        <div class="hero-meta-row">
+          <div class="meta-tag-spec">
+            <span>INSPECTION:</span> <strong>SUB-MILLIMETER</strong>
+          </div>
+          <div class="meta-tag-spec">
+            <span>PROTOCOLS:</span> <strong>OPC-UA / MQTT / PROFINET</strong>
+          </div>
+          <div class="meta-tag-spec">
+            <span>AIR-GAP:</span> <strong>NATIVE IEC 62443</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual: Interactive Conduit Schematic -->
+      <div class="hero-schematic">
+        <div class="schematic-toolbar">
+          <span>SCHEMATIC // CONDUIT_ROUTING_TREE</span>
+          <div class="schematic-modes">
+            <button class="mode-chip active" data-mode="all">ALL SIGNALS</button>
+            <button class="mode-chip" data-mode="thermal">THERMAL</button>
+            <button class="mode-chip" data-mode="vibration">VIBRATION</button>
+          </div>
+        </div>
+
+        <div class="schematic-canvas-area">
+          <svg class="conduit-svg-layer" viewBox="0 0 500 520" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="0.8" fill="#d1d5db" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-dots)" />
+
+            <!-- Outer drafting bounding guides -->
+            <path d="M 40 40 L 460 40" stroke="#e5e7eb" stroke-width="1" />
+            <path d="M 40 480 L 460 480" stroke="#e5e7eb" stroke-width="1" />
+            <path d="M 250 20 L 250 500" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4 4" />
+
+            <!-- Input feeder channels from top -->
+            <line x1="80" y1="40" x2="80" y2="100" class="conduit-trace-faint" />
+            <line x1="130" y1="40" x2="130" y2="120" class="conduit-trace" />
+            <line x1="180" y1="40" x2="180" y2="140" class="conduit-trace" />
+            <line x1="220" y1="40" x2="220" y2="150" class="conduit-trace-faint" />
+            
+            <line x1="280" y1="40" x2="280" y2="150" class="conduit-trace-faint" />
+            <line x1="320" y1="40" x2="320" y2="140" class="conduit-trace" />
+            <line x1="370" y1="40" x2="370" y2="120" class="conduit-trace" />
+            <line x1="420" y1="40" x2="420" y2="100" class="conduit-trace-faint" />
+
+            <!-- Branching Convergers (45 degree angled traces) -->
+            <path d="M 80 100 L 140 160 L 140 220" class="conduit-trace" />
+            <path d="M 130 120 L 170 160 L 170 220" class="conduit-trace" />
+            <path d="M 180 140 L 210 170 L 210 230" class="conduit-trace" />
+
+            <path d="M 420 100 L 360 160 L 360 220" class="conduit-trace" />
+            <path d="M 370 120 L 330 160 L 330 220" class="conduit-trace" />
+            <path d="M 320 140 L 290 170 L 290 230" class="conduit-trace" />
+
+            <!-- Main Central Y-Trunk (Homage to reference visual) -->
+            <path d="M 140 220 L 230 310 L 230 450" class="conduit-trace" stroke-width="2.5" />
+            <path d="M 360 220 L 270 310 L 270 450" class="conduit-trace" stroke-width="2.5" />
+            <path d="M 210 230 L 245 265 L 245 420" class="conduit-trace" />
+            <path d="M 290 230 L 255 265 L 255 420" class="conduit-trace" />
+
+            <!-- Primary Feedline -->
+            <path d="M 250 160 L 250 470" class="conduit-trace" stroke-width="2" />
+
+            <!-- Circular Junction Nodes -->
+            <circle cx="80" cy="100" r="3.5" class="conduit-node" data-node="NODE_01: INTAKE_PRESSURE · 14.2 bar" />
+            <circle cx="130" cy="120" r="3.5" class="conduit-node" data-node="NODE_02: SPINDLE_TEMP · 42.1°C" />
+            <circle cx="180" cy="140" r="3.5" class="conduit-node" data-node="NODE_03: VIBRATION_RMS · 0.12 g" />
+            <circle cx="320" cy="140" r="3.5" class="conduit-node" data-node="NODE_04: LINE_FEEDRATE · 1,420 mm/s" />
+            <circle cx="370" cy="120" r="3.5" class="conduit-node" data-node="NODE_05: MOTOR_TORQUE · 98.4 Nm" />
+            <circle cx="420" cy="100" r="3.5" class="conduit-node" data-node="NODE_06: THERMAL_DRIFT · +0.02 mm" />
+
+            <!-- Trunk Endpoint Collector Nodes -->
+            <circle cx="230" cy="450" r="5" class="conduit-node" data-node="COLLECTOR_ALPHA: HARMONIC BUS · 99.98% OK" />
+            <circle cx="270" cy="450" r="5" class="conduit-node" data-node="COLLECTOR_BETA: PLC WRITEBACK · SYNCED" />
+            <circle cx="250" cy="470" r="4" class="conduit-node" data-node="COLLECTOR_MAIN: REALTIME MESH · <10ms" />
+
+            <!-- Animated Signal Pulses -->
+            <circle cx="130" cy="120" r="2.5" class="pulse-packet">
+              <animateMotion path="M 0 0 L 40 40 L 40 100 L 100 190 L 100 330" dur="2.4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="370" cy="120" r="2.5" class="pulse-packet">
+              <animateMotion path="M 0 0 L -40 40 L -40 100 L -100 190 L -100 330" dur="2.8s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="180" cy="140" r="2" class="pulse-packet">
+              <animateMotion path="M 0 0 L 30 30 L 30 90 L 65 125 L 65 280" dur="3.1s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="250" cy="160" r="2" class="pulse-packet">
+              <animateMotion path="M 0 0 L 0 310" dur="1.9s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+
+          <div class="schematic-readout-hud" id="node-hud">
+            <div class="hud-row">
+              <span class="hud-label">TARGET:</span>
+              <span class="hud-val" id="hud-target">NODE_02</span>
+            </div>
+            <div class="hud-row">
+              <span class="hud-label">METRIC:</span>
+              <span class="hud-val" id="hud-metric">SPINDLE_TEMP</span>
+            </div>
+            <div class="hud-row">
+              <span class="hud-label">STATUS:</span>
+              <span class="hud-val" style="color: var(--signal-live);">NOMINAL (42.1°C)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operational Metrics Proof Bar -->
+    <section class="blueprint-section">
+      <div class="section-header-bar">
+        <span>01 // VERIFIED PRODUCTION METRICS</span>
+        <span>INDEX REF: [METRIC-COR-2026]</span>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-cell">
+          <span class="metric-coord">[X: 01.0 · UPTIME]</span>
+          <div class="metric-number">99.98%</div>
+          <div class="metric-label">Continuous Line Uptime</div>
+          <div class="metric-sub">Sub-second anomaly interception before mechanical overload trips.</div>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-coord">[X: 02.0 · LATENCY]</span>
+          <div class="metric-number">&lt;12ms</div>
+          <div class="metric-label">Edge Ingestion Speed</div>
+          <div class="metric-sub">Deterministic local sensor streaming via native industrial fieldbuses.</div>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-coord">[X: 03.0 · ISOLATION]</span>
+          <div class="metric-number">3.6&times;</div>
+          <div class="metric-label">Faster Root-Cause Triage</div>
+          <div class="metric-sub">Multi-harmonic correlation isolating spindle chatter and thermal drift.</div>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-coord">[X: 04.0 · SCRAP]</span>
+          <div class="metric-number">$4.8M</div>
+          <div class="metric-label">Average Annual Scrap Saved</div>
+          <div class="metric-sub">Measured across Tier-1 gigafab and aerospace precision machining cells.</div>
+        </div>
+      </div>
+
+      <div class="partner-rail">
+        <span class="partner-rail-label">TRUSTED IN CRITICAL MANUFACTURING:</span>
+        <div class="partner-logos">
+          <span class="oem-logo">VORTEX AERO</span>
+          <span class="oem-logo">NEURAL FORGE</span>
+          <span class="oem-logo">KINETIX AUTO</span>
+          <span class="oem-logo">STRATA SEMI</span>
+          <span class="oem-logo">AXIS TURBINE</span>
+          <span class="oem-logo">VOLTARM ROBOTICS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem vs Orthon Blueprint -->
+    <section class="blueprint-section" id="problem">
+      <div class="section-header-bar">
+        <span>02 // OPERATIONAL PARADIGM COMPARISON</span>
+        <span>LEGACY SCADA vs ORTHON TELEMETRY ENGINE</span>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comp-col comp-col-legacy">
+          <div class="comp-header">
+            <span class="comp-tag comp-tag-legacy">LEGACY INDUSTRIAL ARCHITECTURE</span>
+            <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink-muted);">SILOED &middot; REACTIVE</span>
+          </div>
+
+          <h3 class="comp-title">The Cost of Blind Spots on High-Speed Lines</h3>
+
+          <ul class="comp-list">
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-fail">&times;</span>
+              <div>
+                <strong>Post-Mortem CSV Logs:</strong> Operators discover thermal or bearing wear only after parts fail end-of-line optical inspection.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-fail">&times;</span>
+              <div>
+                <strong>3 to 4-Hour Mean Time to Triage:</strong> Maintenance engineers manually dig through disjointed PLC trace files to locate root fault.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-fail">&times;</span>
+              <div>
+                <strong>Siloed Proprietary Islands:</strong> CNC machines, robotic welders, and conveyor sensors cannot correlate cross-machine harmonics.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-fail">&times;</span>
+              <div>
+                <strong>Unplanned Line Halts:</strong> Sudden motor tripping leads to cascading upstream buffer starvation and lost shift capacity.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="comp-col comp-col-orthon">
+          <div class="comp-header">
+            <span class="comp-tag comp-tag-orthon">ORTHON AUTONOMOUS FABRIC</span>
+            <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--signal-live);">DETERMINISTIC &middot; REAL-TIME</span>
+          </div>
+
+          <h3 class="comp-title">Continuous Telemetry That Intercepts Failure</h3>
+
+          <ul class="comp-list">
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-pass">&check;</span>
+              <div>
+                <strong>45-Minute Advance Drift Warnings:</strong> Continuous state-space models flag sub-micron mechanical drift before scrap is produced.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-pass">&check;</span>
+              <div>
+                <strong>Sub-Second Root Cause Pinpointing:</strong> Multi-sensor harmonic clustering maps the exact actuator or spindle causing variance.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-pass">&check;</span>
+              <div>
+                <strong>Unified 100kHz Fieldbus Mesh:</strong> Standardized OPC-UA and MQTT bridges unify legacy PLCs, modern robotics, and vision rigs.
+              </div>
+            </li>
+            <li class="comp-item">
+              <span class="comp-icon comp-icon-pass">&check;</span>
+              <div>
+                <strong>Closed-Loop Micro-Trims:</strong> Automated feedrate adjustments and line balancing keep throughput steady without manual halts.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Digital Twin Simulator -->
+    <section class="blueprint-section" id="platform">
+      <div class="section-header-bar">
+        <span>03 // DIGITAL TWIN LINE SIMULATOR</span>
+        <span>INTERACTIVE PLANT TELEMETRY CONSOLE</span>
+      </div>
+
+      <div class="simulator-container">
+        <div class="sim-sidebar">
+          <div>
+            <span style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">SELECT ASSEMBLY CELL:</span>
+          </div>
+
+          <div class="sim-lines-list">
+            <button class="sim-line-tab active" data-line="alpha">
+              <span class="tab-title">LINE ALPHA: EV CELL STACKING</span>
+              <span class="tab-meta">54 Actuators · 1,420 ppm · OEE 96.2%</span>
+            </button>
+            <button class="sim-line-tab" data-line="beta">
+              <span class="tab-title">LINE BETA: CNC 5-AXIS AEROSPACE</span>
+              <span class="tab-meta">12 Spindles · Titanium 6Al-4V · OEE 92.8%</span>
+            </button>
+            <button class="sim-line-tab" data-line="gamma">
+              <span class="tab-title">LINE GAMMA: CLEANROOM WAFER PACK</span>
+              <span class="tab-meta">80 Pick-and-Place · 0.2µm Spec · OEE 98.4%</span>
+            </button>
+          </div>
+
+          <div class="sim-controls">
+            <span style="font-family: var(--font-mono); font-size: 0.625rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">SIMULATE STRESS EVENTS:</span>
+            <button class="sim-btn" id="btn-sim-drift">INJECT BEARING DRIFT</button>
+            <button class="sim-btn sim-btn-action" id="btn-sim-balance">AUTO-TRIM LINE BALANCE</button>
+            <button class="sim-btn" id="btn-sim-reset">RESET BASELINE</button>
+          </div>
+        </div>
+
+        <div class="sim-display-area">
+          <div class="sim-header-telemetry">
+            <div class="sim-title-group">
+              <h4 id="sim-cell-title">LINE ALPHA — HIGH-SPEED EV CELL STACKING</h4>
+              <p id="sim-cell-spec">TELEMETRY BUS: PROFINET IRT 125µs · 100kHz SAMPLING · DUAL CONDUIT</p>
+            </div>
+            <div class="sim-stat-chips">
+              <div class="stat-chip">
+                <span>VIBRATION: <strong id="sim-vib">0.14 mm/s</strong></span>
+              </div>
+              <div class="stat-chip">
+                <span>TEMP FLUX: <strong id="sim-temp">+0.4°C</strong></span>
+              </div>
+              <div class="stat-chip">
+                <span>STATUS: <strong id="sim-status" style="color: var(--signal-live);">OPTIMAL</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-canvas-wrapper">
+            <canvas id="sim-telemetry-canvas"></canvas>
+          </div>
+
+          <div class="sim-log-strip">
+            <span>EVENT LOG: <span id="sim-event-msg">[00:00:00] Line balanced. No harmonic anomalies detected across 54 nodes.</span></span>
+            <span>ALGORITHM: <strong>ORTHON-KALMAN-V4</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Platform Pillars -->
+    <section class="blueprint-section">
+      <div class="section-header-bar">
+        <span>04 // CORE ARCHITECTURE MODULES</span>
+        <span>HIGH-PRECISION OPERATIONAL PLATFORM</span>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-idx">
+              <span>MODULE 01</span>
+              <span>[INGEST]</span>
+            </div>
+            <h3 class="pillar-heading">Deterministic Edge Ingestion</h3>
+            <p class="pillar-body">
+              Captures raw high-frequency waveforms from sensors and PLCs up to 100kHz without saturating plant OT networks.
+            </p>
+          </div>
+          <div class="pillar-spec-tag">LATENCY &lt;10ms &middot; DUAL-NIC AIRGAP</div>
+        </div>
+
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-idx">
+              <span>MODULE 02</span>
+              <span>[BALANCE]</span>
+            </div>
+            <h3 class="pillar-heading">Predictive Line Balancing</h3>
+            <p class="pillar-body">
+              Calculates conveyor micro-buffer saturation and redistributes cycle loads before station bottlenecks throttle total throughput.
+            </p>
+          </div>
+          <div class="pillar-spec-tag">DYNAMIC BOTTLENECK REMAPPING</div>
+        </div>
+
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-idx">
+              <span>MODULE 03</span>
+              <span>[TRIAGE]</span>
+            </div>
+            <h3 class="pillar-heading">Sub-Millisecond Defect Triage</h3>
+            <p class="pillar-body">
+              Correlates downstream optical camera rejects directly back to upstream spindle vibration and thermal expansion signatures.
+            </p>
+          </div>
+          <div class="pillar-spec-tag">PHYSICS-INFORMED STATE SPACE</div>
+        </div>
+
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-idx">
+              <span>MODULE 04</span>
+              <span>[ACTUATE]</span>
+            </div>
+            <h3 class="pillar-heading">Closed-Loop Actuation</h3>
+            <p class="pillar-body">
+              Sends calibrated micro-offsets directly to machine controllers with deterministic safety interlocks and watchdog verification.
+            </p>
+          </div>
+          <div class="pillar-spec-tag">IEC 61508 SIL-3 SAFETY COMPLIANT</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works - 4 Stage Deterministic Pipeline -->
+    <section class="blueprint-section" id="how-it-works">
+      <div class="section-header-bar">
+        <span>05 // FOUR-STAGE DEPLOYMENT PIPELINE</span>
+        <span>FROM SENSOR CLAMP TO AUTONOMOUS LINE CONTROL</span>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="pipe-step">
+          <span class="pipe-tag">STAGE 01</span>
+          <h4 class="pipe-name">Tap Existing Bus</h4>
+          <p class="pipe-desc">
+            Non-invasive DIN-rail edge gateway install connects directly to existing PLC racks and vibration transducers with zero line stoppage.
+          </p>
+        </div>
+
+        <div class="pipe-step">
+          <span class="pipe-tag">STAGE 02</span>
+          <h4 class="pipe-name">Model Kinematics</h4>
+          <p class="pipe-desc">
+            Orthon builds an exact state-space physical model of every motor, pneumatic valve, and tooling axis within the first 48 hours.
+          </p>
+        </div>
+
+        <div class="pipe-step">
+          <span class="pipe-tag">STAGE 03</span>
+          <h4 class="pipe-name">Intercept Variance</h4>
+          <p class="pipe-desc">
+            Anomalous harmonic frequencies and thermal drift vectors are isolated in real time, triggering immediate operator alerts.
+          </p>
+        </div>
+
+        <div class="pipe-step">
+          <span class="pipe-tag">STAGE 04</span>
+          <h4 class="pipe-name">Dispatch &amp; Tune</h4>
+          <p class="pipe-desc">
+            Closed-loop PLC adjustments or automated work orders with precise CAD component coordinates are dispatched instantaneously.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hardware & Protocol Compatibility Grid -->
+    <section class="blueprint-section" id="integrations">
+      <div class="section-header-bar">
+        <span>06 // PROTOCOL &amp; FIELDBUS INTERFACES</span>
+        <span>ZERO-VENDOR-LOCK-IN INDUSTRIAL COMPATIBILITY</span>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="protocol-cell">
+          <span class="proto-name">Siemens S7-1500 / 1200</span>
+          <span class="proto-status"><span>&bull;</span> NATIVE DRIVER</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">Rockwell ControlLogix</span>
+          <span class="proto-status"><span>&bull;</span> EIP / CIP NATIVE</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">Beckhoff TwinCAT 3</span>
+          <span class="proto-status"><span>&bull;</span> ADS PROTOCOL</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">Fanuc Roboguide / CNC</span>
+          <span class="proto-status"><span>&bull;</span> FOCAS2 BRIDGE</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">MQTT Sparkplug B</span>
+          <span class="proto-status"><span>&bull;</span> 100k MSG/SEC</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">OPC-UA Unified Arch</span>
+          <span class="proto-status"><span>&bull;</span> PUB/SUB READY</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">Modbus TCP / RTU</span>
+          <span class="proto-status"><span>&bull;</span> LEGACY CLAMP</span>
+        </div>
+        <div class="protocol-cell">
+          <span class="proto-name">Kafka Industrial Stream</span>
+          <span class="proto-status"><span>&bull;</span> ENTERPRISE BUS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section class="blueprint-section" id="case-studies">
+      <div class="section-header-bar">
+        <span>07 // INDUSTRIAL CASE STUDIES</span>
+        <span>VERIFIED RESULTS FROM HIGH-THROUGHPUT FACILITIES</span>
+      </div>
+
+      <div class="cases-grid">
+        <div class="case-card">
+          <div>
+            <div class="case-industry">AEROSPACE TURBINE BLADES</div>
+            <h3 class="case-client">Vortex Aero Group</h3>
+            <p class="case-quote">
+              "Orthon eliminated chatter harmonics on our 5-axis titanium milling cells. We caught tool degradation 35 minutes before surface tolerance was breached."
+            </p>
+          </div>
+          <div class="case-stat-box">
+            <div class="case-stat-val">41.8%</div>
+            <div class="case-stat-lbl">REDUCTION IN SCRAP ON TITANIUM DISCS</div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div>
+            <div class="case-industry">EV BATTERY GIGAFAB</div>
+            <h3 class="case-client">Kinetix Gigafab 03</h3>
+            <p class="case-quote">
+              "Managing line balance across 120 ultrasonic welding stations was a manual guessing game. Orthon gave us sub-millimeter visibility and unified our cycle times."
+            </p>
+          </div>
+          <div class="case-stat-box">
+            <div class="case-stat-val">99.64%</div>
+            <div class="case-stat-lbl">FIRST-PASS POUCH CELL WELDING YIELD</div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div>
+            <div class="case-industry">SEMICONDUCTOR PACKAGING</div>
+            <h3 class="case-client">Strata Microelectronics</h3>
+            <p class="case-quote">
+              "When an actuator drifts by 2 microns in a cleanroom, you lose millions in hours. Orthon's closed-loop writeback stabilized our pick-and-place lines."
+            </p>
+          </div>
+          <div class="case-stat-box">
+            <div class="case-stat-val">14 Min</div>
+            <div class="case-stat-lbl">AVERAGE MTTR DOWN FROM 3.8 HOURS</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Tiers -->
+    <section class="blueprint-section" id="pricing">
+      <div class="section-header-bar">
+        <span>08 // DEPLOYMENT TIERS &amp; PRICING</span>
+        <span>TRANSPARENT PER-CELL &amp; ENTERPRISE LICENSING</span>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div>
+            <span class="tier-badge">PILOT CELL</span>
+            <h3 class="tier-name">Pilot Line</h3>
+            <p class="tier-desc">Designed for single assembly lines or high-criticality CNC cells requiring rapid validation.</p>
+            <div class="tier-price-box">
+              <span class="tier-amount">$4,800</span>
+              <span class="tier-period">/ month / line</span>
+            </div>
+            <ul class="tier-features">
+              <li>Up to 2 Edge Gateway Appliances</li>
+              <li>500 Telemetry Tags at 10kHz</li>
+              <li>Real-time Anomaly Interception</li>
+              <li>OPC-UA / MQTT Connector</li>
+              <li>Standard 8x5 Engineering Support</li>
+            </ul>
+          </div>
+          <button class="btn-bracket btn-bracket-outline" onclick="alert('Pilot Cell assessment requested. An Orthon field engineer will contact your plant team.')">
+            START 30-DAY PILOT
+          </button>
+        </div>
+
+        <div class="pricing-card pricing-card-featured">
+          <div>
+            <span class="tier-badge" style="background: var(--ink-primary); color: #fff;">MOST DEPLOYED</span>
+            <h3 class="tier-name">Plant Standard</h3>
+            <p class="tier-desc">Complete facility coverage with cross-line balancing and closed-loop PLC tuning.</p>
+            <div class="tier-price-box">
+              <span class="tier-amount">$14,500</span>
+              <span class="tier-period">/ month (up to 5 lines)</span>
+            </div>
+            <ul class="tier-features">
+              <li>Redundant Edge Cluster Hardware</li>
+              <li>Unlimited Telemetry Tags at 100kHz</li>
+              <li>Predictive Line Balancing &amp; Buffer Tuning</li>
+              <li>Closed-Loop PLC Actuation Writeback</li>
+              <li>24/7 Dedicated Plant SLA &amp; Support</li>
+            </ul>
+          </div>
+          <button class="btn-bracket btn-bracket-primary" onclick="alert('Plant Standard deployment scheduled. Connecting with engineering lead.')">
+            SCHEDULE DEPLOYMENT
+          </button>
+        </div>
+
+        <div class="pricing-card">
+          <div>
+            <span class="tier-badge">GLOBAL FLEET</span>
+            <h3 class="tier-name">Enterprise Fleet</h3>
+            <p class="tier-desc">Multi-gigafab orchestration with air-gapped on-premise AI compute and on-site field engineers.</p>
+            <div class="tier-price-box">
+              <span class="tier-amount">CUSTOM</span>
+              <span class="tier-period">/ multi-facility fleet</span>
+            </div>
+            <ul class="tier-features">
+              <li>Air-gapped 1U DIN-rail Server Clusters</li>
+              <li>Global Multi-Facility Digital Twin Mesh</li>
+              <li>Custom Legacy PLC Driver Synthesis</li>
+              <li>IEC 62443 Certified Security Audit</li>
+              <li>Dedicated On-Site Field Systems Engineer</li>
+            </ul>
+          </div>
+          <button class="btn-bracket btn-bracket-outline" onclick="alert('Enterprise brief requested. Opening executive technical portal.')">
+            TALK TO SOLUTIONS ARCHITECT
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industrial FAQ Section -->
+    <section class="blueprint-section">
+      <div class="section-header-bar">
+        <span>09 // TECHNICAL FAQ &amp; OBJECTIONS</span>
+        <span>INTEGRATION &middot; AIRGAP &middot; SAFETY INTERLOCKS</span>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-col">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Does Orthon require replacing existing PLCs or wiring?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              No. Orthon connects non-invasively via optical taps, secondary Ethernet ports, or existing industrial fieldbuses (OPC-UA, Modbus, PROFINET). Your existing ladder logic and machine safety circuits remain completely untouched.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can the platform run completely disconnected from the Internet?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Yes. Orthon is built for high-security defense and semiconductor facilities. Our edge appliance runs 100% of the neural state models and telemetry buffering locally with zero outbound internet traffic required.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-col">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How does Orthon ensure safety during closed-loop writeback?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Every actuation command is bound within strictly defined safety envelopes. If any command exceeds preset thermal, velocity, or torque boundaries, hardware watchdogs discard the packet in less than 2 milliseconds.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How long does it take from install to first anomaly catch?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Physical edge hardware is installed in under 4 hours during standard shift changeover. Baseline kinematic modeling completes within 48 hours of normal line operation, after which live anomaly interception begins immediately.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final High-Impact CTA Blueprint -->
+    <section class="cta-blueprint-frame">
+      <span class="cta-badge">INITIALIZE FACILITY ASSESSMENT</span>
+      <h2 class="cta-title">Ready to Eliminate Line Stoppages Before They Happen?</h2>
+      <p class="cta-desc">
+        Connect your assembly cell to Orthon and see live telemetry, predictive harmonic balance, and instantaneous root-cause isolation in under 48 hours.
+      </p>
+      <div class="cta-actions">
+        <button class="btn-bracket btn-bracket-primary" onclick="alert('Technical briefing requested. Confirmation sent.')">
+          REQUEST PILOT HARDWARE
+        </button>
+        <button class="btn-bracket btn-bracket-outline" onclick="alert('Industrial whitepaper downloaded.')">
+          DOWNLOAD ARCHITECTURE WHITEPAPER
+        </button>
+      </div>
+    </section>
+
+    <!-- Technical CAD Footer -->
+    <footer class="cad-footer">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: 0.06em;">ORTHON</div>
+          <p style="font-size: 0.8125rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 1.25rem;">
+            Autonomous manufacturing intelligence and high-frequency industrial telemetry platform for high-throughput global plants.
+          </p>
+          <div style="font-size: 0.6875rem; color: var(--ink-muted);">
+            BUILD: <code>ORTHON-v4.18.2-PROD</code><br />
+            CONTACT: <code>ops@orthon.example</code>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">PLATFORM</div>
+          <ul class="footer-links">
+            <li><a href="#platform">Edge Ingestion</a></li>
+            <li><a href="#platform">Line Balancing</a></li>
+            <li><a href="#platform">Defect Triage</a></li>
+            <li><a href="#platform">Closed-Loop Tuning</a></li>
+            <li><a href="#integrations">Protocol Matrix</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">APPLICATIONS</div>
+          <ul class="footer-links">
+            <li><a href="#case-studies">EV Gigafabs</a></li>
+            <li><a href="#case-studies">Aerospace 5-Axis</a></li>
+            <li><a href="#case-studies">Semiconductor Fab</a></li>
+            <li><a href="#case-studies">Medical Robotics</a></li>
+            <li><a href="#case-studies">Automotive Stamping</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">COMPLIANCE</div>
+          <ul class="footer-links">
+            <li><a href="#">IEC 62443-4-2</a></li>
+            <li><a href="#">SOC 2 Type II</a></li>
+            <li><a href="#">ISO 27001 Certified</a></li>
+            <li><a href="#">SIL-3 Safety Guard</a></li>
+            <li><a href="#">Air-Gap Validation</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 ORTHON SYSTEMS INC. FICTIONAL REBRAND DESIGN TEMPLATE.</div>
+        <div>COORDINATES: LAT 42.3314° N, LON 83.0458° W &middot; DETROIT OT HUB</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Live Millisecond Telemetry Clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getUTCHours()).padStart(2, '0');
+      const m = String(now.getUTCMinutes()).padStart(2, '0');
+      const s = String(now.getUTCSeconds()).padStart(2, '0');
+      const ms = String(now.getUTCMilliseconds()).padStart(3, '0');
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) {
+        clockEl.textContent = `UTC ${h}:${m}:${s}.${ms}`;
+      }
+      
+      // Slight jitter on latency to simulate real live OT network
+      const latEl = document.getElementById('live-latency');
+      if (latEl && Math.random() > 0.8) {
+        const jitter = (8.2 + Math.random() * 0.8).toFixed(1);
+        latEl.textContent = `${jitter}ms`;
+      }
+    }
+    setInterval(updateClock, 80);
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (mobileBtn && navMenu) {
+      mobileBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('mobile-open');
+      });
+      // Close on link click
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('mobile-open');
+        });
+      });
+    }
+
+    // Hero Interactive Conduit Schematic Node Tooltips
+    const conduitNodes = document.querySelectorAll('.conduit-node');
+    const hudTarget = document.getElementById('hud-target');
+    const hudMetric = document.getElementById('hud-metric');
+
+    conduitNodes.forEach(node => {
+      node.addEventListener('mouseenter', (e) => {
+        const raw = e.target.getAttribute('data-node') || '';
+        const parts = raw.split(': ');
+        if (parts.length >= 2) {
+          hudTarget.textContent = parts[0];
+          hudMetric.textContent = parts[1];
+        }
+      });
+    });
+
+    // Schematic Filter Mode Chips
+    const modeChips = document.querySelectorAll('.mode-chip');
+    modeChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        modeChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const mode = chip.getAttribute('data-mode');
+        const pulses = document.querySelectorAll('.pulse-packet');
+        pulses.forEach(p => {
+          if (mode === 'thermal') {
+            p.setAttribute('fill', '#f59e0b');
+          } else if (mode === 'vibration') {
+            p.setAttribute('fill', '#2563eb');
+          } else {
+            p.setAttribute('fill', '#10b981');
+          }
+        });
+      });
+    });
+
+    // Interactive Digital Twin Telemetry Canvas Simulator
+    const canvas = document.getElementById('sim-telemetry-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let animFrame;
+    let timeOffset = 0;
+    let driftFactor = 0;
+    let balanceFactor = 0;
+
+    const lineData = {
+      alpha: {
+        title: "LINE ALPHA — HIGH-SPEED EV CELL STACKING",
+        spec: "TELEMETRY BUS: PROFINET IRT 125µs · 100kHz SAMPLING · DUAL CONDUIT",
+        vib: "0.14 mm/s",
+        temp: "+0.4°C",
+        status: "OPTIMAL",
+        freq: 1.8,
+        amp: 24
+      },
+      beta: {
+        title: "LINE BETA — CNC 5-AXIS AEROSPACE MILLING",
+        spec: "TELEMETRY BUS: BECKHOFF ETHERCAT 250µs · SPINDLE HARMONIC CLUSTER",
+        vib: "0.28 mm/s",
+        temp: "+1.2°C",
+        status: "STABLE",
+        freq: 3.4,
+        amp: 36
+      },
+      gamma: {
+        title: "LINE GAMMA — CLEANROOM WAFER PACKAGING",
+        spec: "TELEMETRY BUS: SIEMENS S7-1500 ISOCHRONOUS · 0.2µm OPTICAL REGISTRATION",
+        vib: "0.04 mm/s",
+        temp: "+0.1°C",
+        status: "PEAK NOMINAL",
+        freq: 0.9,
+        amp: 14
+      }
+    };
+
+    let activeLineKey = 'alpha';
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function renderSimulator() {
+      if (!ctx || !canvas) return;
+      const w = canvas.width;
+      const h = canvas.height;
+      const mid = h / 2;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Grid background in canvas
+      ctx.strokeStyle = '#eef2f6';
+      ctx.lineWidth = 1;
+      const gridSize = 25;
+      for (let x = 0; x < w; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Center baseline
+      ctx.strokeStyle = '#cbd2dc';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(0, mid);
+      ctx.lineTo(w, mid);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const activeLine = lineData[activeLineKey];
+      const baseFreq = activeLine.freq;
+      const baseAmp = activeLine.amp + (driftFactor * 35) - (balanceFactor * 10);
+
+      // Draw primary telemetry harmonic waveform
+      ctx.strokeStyle = driftFactor > 0.5 ? '#ef4444' : '#0e1116';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      for (let x = 0; x < w; x++) {
+        const rad = (x * 0.02 * baseFreq) + timeOffset;
+        const y = mid + Math.sin(rad) * baseAmp + Math.cos(rad * 2.3) * (baseAmp * 0.35) + (Math.random() - 0.5) * (driftFactor * 6);
+        if (x === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Secondary predictive baseline envelope
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let x = 0; x < w; x += 3) {
+        const rad = (x * 0.02 * baseFreq) + timeOffset;
+        const y = mid + Math.sin(rad) * activeLine.amp;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      timeOffset += 0.05;
+      animFrame = requestAnimationFrame(renderSimulator);
+    }
+    renderSimulator();
+
+    // Tab Switcher for Assembly Cells
+    const lineTabs = document.querySelectorAll('.sim-line-tab');
+    lineTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        lineTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeLineKey = tab.getAttribute('data-line');
+        const data = lineData[activeLineKey];
+        document.getElementById('sim-cell-title').textContent = data.title;
+        document.getElementById('sim-cell-spec').textContent = data.spec;
+        document.getElementById('sim-vib').textContent = data.vib;
+        document.getElementById('sim-temp').textContent = data.temp;
+        document.getElementById('sim-status').textContent = data.status;
+        document.getElementById('sim-status').style.color = 'var(--signal-live)';
+        document.getElementById('sim-event-msg').textContent = `[${new Date().toLocaleTimeString()}] Switched to ${data.title}. Continuous bus sync established.`;
+        driftFactor = 0;
+        balanceFactor = 0;
+      });
+    });
+
+    // Stress Event Buttons
+    const btnDrift = document.getElementById('btn-sim-drift');
+    const btnBalance = document.getElementById('btn-sim-balance');
+    const btnReset = document.getElementById('btn-sim-reset');
+
+    if (btnDrift) {
+      btnDrift.addEventListener('click', () => {
+        driftFactor = 1.2;
+        document.getElementById('sim-vib').textContent = "0.78 mm/s [ALERT]";
+        document.getElementById('sim-temp').textContent = "+3.8°C [WARN]";
+        const stat = document.getElementById('sim-status');
+        stat.textContent = "DRIFT DETECTED";
+        stat.style.color = "var(--signal-alert)";
+        document.getElementById('sim-event-msg').textContent = `[${new Date().toLocaleTimeString()}] Harmonic spike injected at Station 04. Drift flagged 45m ahead of tolerance limit.`;
+      });
+    }
+
+    if (btnBalance) {
+      btnBalance.addEventListener('click', () => {
+        driftFactor = 0;
+        balanceFactor = 1;
+        document.getElementById('sim-vib').textContent = "0.11 mm/s [TRIMMED]";
+        document.getElementById('sim-temp').textContent = "+0.2°C [STABILIZED]";
+        const stat = document.getElementById('sim-status');
+        stat.textContent = "AUTO-BALANCED";
+        stat.style.color = "var(--signal-live)";
+        document.getElementById('sim-event-msg').textContent = `[${new Date().toLocaleTimeString()}] Closed-loop micro-trim executed. Line harmonics balanced across all downstream cells.`;
+      });
+    }
+
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        driftFactor = 0;
+        balanceFactor = 0;
+        const data = lineData[activeLineKey];
+        document.getElementById('sim-vib').textContent = data.vib;
+        document.getElementById('sim-temp').textContent = data.temp;
+        const stat = document.getElementById('sim-status');
+        stat.textContent = data.status;
+        stat.style.color = "var(--signal-live)";
+        document.getElementById('sim-event-msg').textContent = `[${new Date().toLocaleTimeString()}] Baseline reset to plant nominal standards.`;
+      });
+    }
+
+    // FAQ Accordion Toggle
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const q = item.querySelector('.faq-question');
+      if (q) {
+        q.addEventListener('click', () => {
+          const isOpen = item.classList.contains('active');
+          faqItems.forEach(i => i.classList.remove('active'));
+          if (!isOpen) {
+            item.classList.add('active');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

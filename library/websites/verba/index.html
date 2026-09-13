@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verba — Your content team, powered by AI agents</title>
+  <meta name="description" content="Give Verba a post, transcript, or rough notes. Your autonomous AI agents turn it into content for every channel, in your voice." />
+
+  <!-- Privacy & No-Index Controls (Strictly Required) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+
+      --sky-top: #76CBFA;
+      --sky-mid: #A5DBFD;
+      --sky-base: #E8F5FE;
+      --sky-horizon: #F6FAFE;
+
+      --color-ink: #0A0D12;
+      --color-ink-muted: #475569;
+      --color-ink-subtle: #64748B;
+      --color-white: #FFFFFF;
+      --color-surface-tint: #F8FAFC;
+      --color-border: rgba(15, 23, 42, 0.08);
+      --color-border-focus: #0284C7;
+
+      --accent-blue: #0284C7;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-purple: #8B5CF6;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 12px rgba(0, 30, 80, 0.06), 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-elevated: 0 24px 60px -10px rgba(0, 70, 150, 0.16), 0 8px 20px -4px rgba(0, 40, 100, 0.08), 0 0 0 1px rgba(0, 30, 80, 0.06);
+      --shadow-popover: 0 20px 40px rgba(10, 20, 40, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-ink);
+      background-color: var(--sky-horizon);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       SKY ATMOSPHERE & BACKGROUND HERO CANVAS
+       ========================================================================== */
+    .sky-hero-wrapper {
+      position: relative;
+      background: linear-gradient(180deg, #71C6F8 0%, #9DD6FB 35%, #CEEBFE 65%, #F4FAFE 100%);
+      min-height: 100vh;
+      overflow: hidden;
+      padding-bottom: 5rem;
+    }
+
+    .cloud-canvas {
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      width: 100%;
+      height: 600px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.96;
+    }
+
+    .cloud-canvas svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cloud-drift-1 {
+      position: absolute;
+      top: 15%;
+      left: -10%;
+      width: 750px;
+      height: 380px;
+      background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.3) 55%, transparent 75%);
+      filter: blur(45px);
+      pointer-events: none;
+      z-index: 1;
+      animation: driftLeft 48s ease-in-out infinite alternate;
+    }
+
+    .cloud-drift-2 {
+      position: absolute;
+      bottom: 12%;
+      right: -15%;
+      width: 950px;
+      height: 520px;
+      background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.45) 50%, transparent 75%);
+      filter: blur(55px);
+      pointer-events: none;
+      z-index: 1;
+      animation: driftRight 55s ease-in-out infinite alternate;
+    }
+
+    @keyframes driftLeft {
+      0% { transform: translateX(0) scale(1); }
+      100% { transform: translateX(80px) scale(1.05); }
+    }
+
+    @keyframes driftRight {
+      0% { transform: translateX(0) scale(1); }
+      100% { transform: translateX(-90px) scale(1.04); }
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== */
+    .site-nav {
+      padding: 1.5rem 0;
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-mark-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--color-ink);
+    }
+
+    .brand-icon-svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .brand-name-text {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #1E293B;
+      transition: color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #0284C7;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-login-link {
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #1E293B;
+      transition: color 0.15s ease;
+    }
+
+    .nav-login-link:hover {
+      color: #0284C7;
+    }
+
+    .btn-pill-white {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.62rem 1.35rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-white);
+      color: var(--color-ink);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0, 30, 80, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-pill-white:hover {
+      background-color: #F8FAFC;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 30, 80, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-pill-black {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.82rem 1.75rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-ink);
+      color: var(--color-white);
+      font-size: 0.98rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-pill-black:hover {
+      background-color: #1E293B;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-link-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      text-decoration: none;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-link-inline:hover {
+      transform: translateX(3px);
+    }
+
+    /* ==========================================================================
+       HERO CONTENT GRID
+       ========================================================================== */
+    .hero-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 3.5rem;
+      align-items: center;
+      padding: 3.5rem 0 3rem;
+    }
+
+    .hero-copy-column {
+      max-width: 520px;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #0F172A;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-sparkle {
+      color: #0284C7;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+      line-height: 1.55;
+      color: #1E293B;
+      margin-bottom: 2.25rem;
+      font-weight: 450;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .avatar-circle:first-child {
+      margin-left: 0;
+    }
+
+    .proof-copy-text {
+      font-size: 0.85rem;
+      color: #334155;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .proof-copy-text strong {
+      color: var(--color-ink);
+    }
+
+    /* ==========================================================================
+       FLOATING APPLICATION WORKSPACE CARD
+       ========================================================================== */
+    .app-card-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    .app-floating-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: var(--shadow-elevated);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      overflow: hidden;
+      min-height: 560px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .app-floating-card:hover {
+      box-shadow: 0 32px 80px -12px rgba(0, 70, 150, 0.22), 0 12px 28px -4px rgba(0, 40, 100, 0.12), 0 0 0 1px rgba(0, 30, 80, 0.08);
+    }
+
+    .app-sidebar {
+      background-color: #FAFBFD;
+      border-right: 1px solid rgba(15, 23, 42, 0.06);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      font-size: 0.86rem;
+    }
+
+    .app-workspace-selector {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background-color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .workspace-brand-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      font-size: 0.88rem;
+    }
+
+    .workspace-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-ink-subtle);
+    }
+
+    .btn-tiny-add {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      line-height: 1;
+      color: #64748B;
+      cursor: pointer;
+    }
+
+    .app-nav-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .app-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.48rem 0.75rem;
+      border-radius: 8px;
+      color: #475569;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+
+    .app-nav-item:hover {
+      background-color: #F1F5F9;
+      color: var(--color-ink);
+    }
+
+    .app-nav-item.active {
+      background-color: #E2E8F0;
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+
+    .nav-label-with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .app-count-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--radius-full);
+      background-color: #E2E8F0;
+      color: #334155;
+    }
+
+    .app-count-pill.purple {
+      background-color: #F3E8FF;
+      color: #7E22CE;
+    }
+
+    .sidebar-section-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.4rem;
+    }
+
+    .brand-voices-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .voice-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.35rem 0.55rem;
+      border-radius: 6px;
+      color: #334155;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .voice-item:hover {
+      background-color: #F1F5F9;
+    }
+
+    .voice-item.selected {
+      background-color: #E0F2FE;
+      color: #0369A1;
+      font-weight: 600;
+    }
+
+    .recent-output-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .recent-output-item {
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .recent-output-item:hover {
+      background-color: #F1F5F9;
+    }
+
+    .output-title-truncate {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1E293B;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.2rem;
+    }
+
+    .output-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      color: #64748B;
+    }
+
+    .status-dot-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-dot-indicator.green {
+      background-color: var(--accent-emerald);
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+    }
+
+    .status-dot-indicator.amber {
+      background-color: var(--accent-amber);
+    }
+
+    .status-dot-indicator.gray {
+      background-color: #94A3B8;
+    }
+
+    /* Main App Panel */
+    .app-main-panel {
+      padding: 1.5rem 1.75rem;
+      background-color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .app-breadcrumb-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+      padding-bottom: 0.75rem;
+    }
+
+    .breadcrumb-text {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    .app-heading-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .app-headline {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+    }
+
+    .app-subheadline {
+      font-size: 0.9rem;
+      color: #64748B;
+    }
+
+    /* Composer Ingestion Box */
+    .composer-box {
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      background-color: #FAFBFD;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .composer-box:focus-within {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+      background-color: #FFFFFF;
+    }
+
+    .composer-textarea {
+      width: 100%;
+      height: 70px;
+      border: none;
+      background: transparent;
+      resize: none;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--color-ink);
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .composer-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(15, 23, 42, 0.06);
+      padding-top: 0.65rem;
+    }
+
+    .composer-chips {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .composer-chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-full);
+      background-color: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .composer-chip-btn:hover {
+      background-color: #F1F5F9;
+    }
+
+    .btn-generate-campaign {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.42rem 0.95rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-ink);
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-generate-campaign:hover {
+      background-color: #1E293B;
+      transform: scale(1.02);
+    }
+
+    /* Suggested Agents Section */
+    .suggested-agents-header {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+
+    .agent-card {
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      background-color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.85rem;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .agent-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+
+    .agent-top-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .agent-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background-color: #F1F5F9;
+      color: var(--color-ink);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .agent-icon-box.x-brand {
+      background-color: #0F172A;
+      color: #FFFFFF;
+    }
+
+    .agent-icon-box.linkedin-brand {
+      background-color: #0077B5;
+      color: #FFFFFF;
+    }
+
+    .agent-icon-box.newsletter-brand {
+      background-color: #FF5A60;
+      color: #FFFFFF;
+    }
+
+    .agent-icon-box.video-brand {
+      background-color: #8B5CF6;
+      color: #FFFFFF;
+    }
+
+    .agent-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .agent-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .agent-desc {
+      font-size: 0.78rem;
+      color: #64748B;
+      line-height: 1.35;
+    }
+
+    .agent-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .agent-badge-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748B;
+      background-color: #F1F5F9;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .btn-run-agent {
+      padding: 0.32rem 0.85rem;
+      border-radius: var(--radius-full);
+      border: 1px solid #CBD5E1;
+      background-color: #FFFFFF;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+
+    .btn-run-agent:hover {
+      background-color: var(--color-ink);
+      color: #FFFFFF;
+      border-color: var(--color-ink);
+    }
+
+    /* Live Output Simulation Drawer */
+    .output-drawer {
+      display: none;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 440px;
+      max-width: calc(100vw - 4rem);
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-popover);
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      z-index: 100;
+      padding: 1.25rem;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .output-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .output-drawer-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .output-drawer-close {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #64748B;
+      cursor: pointer;
+    }
+
+    .output-drawer-body {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #334155;
+      background: #FAFBFD;
+      border-radius: 8px;
+      padding: 0.85rem;
+      border: 1px solid #E2E8F0;
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: var(--font-body);
+      margin-bottom: 0.85rem;
+    }
+
+    .output-drawer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-copy-output {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-ink);
+      color: #FFFFFF;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-copy-output.copied {
+      background-color: var(--accent-emerald);
+    }
+
+    /* ==========================================================================
+       TRUST MARQUEE LOGOS
+       ========================================================================== */
+    .trust-marquee-section {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .trust-logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      opacity: 0.65;
+      transition: opacity 0.2s ease;
+    }
+
+    .trust-logos-row:hover {
+      opacity: 0.9;
+    }
+
+    .partner-logo-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: #0F172A;
+    }
+
+    /* ==========================================================================
+       HOW IT WORKS / 3-STEP PIPELINE
+       ========================================================================== */
+    .pipeline-section {
+      padding: 6rem 0;
+      background-color: #FFFFFF;
+    }
+
+    .section-eyebrow {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-blue);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-ink);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--color-ink-muted);
+      max-width: 620px;
+      line-height: 1.6;
+    }
+
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .pipeline-card {
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
+      background-color: #FAFBFD;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pipeline-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pipeline-step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    .pipeline-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .pipeline-body {
+      font-size: 0.95rem;
+      color: var(--color-ink-muted);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+
+    .pipeline-visual-pill {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      font-size: 0.82rem;
+      color: #334155;
+      font-family: var(--font-mono);
+    }
+
+    /* ==========================================================================
+       INTERACTIVE VOICE TUNER STUDIO
+       ========================================================================== */
+    .tuner-section {
+      padding: 6rem 0;
+      background-color: #F8FAFC;
+      border-top: 1px solid rgba(15, 23, 42, 0.06);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .tuner-card-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3rem;
+      margin-top: 3.5rem;
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 2.75rem;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tuner-controls-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .slider-val-badge {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+
+    .range-input {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #E2E8F0;
+      outline: none;
+    }
+
+    .range-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-ink);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease;
+    }
+
+    .range-input::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .slider-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #94A3B8;
+    }
+
+    .tuner-preview-col {
+      background-color: #FAFBFD;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .preview-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .live-voice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #0284C7;
+      background: #E0F2FE;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+    }
+
+    .tuner-sample-output {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--color-ink);
+      min-height: 140px;
+      transition: opacity 0.15s ease;
+    }
+
+    /* ==========================================================================
+       MULTI-CHANNEL OUTPUT COMPARATOR
+       ========================================================================== */
+    .comparator-section {
+      padding: 6rem 0;
+      background-color: #FFFFFF;
+    }
+
+    .comparator-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 1rem;
+    }
+
+    .tab-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 1px solid #E2E8F0;
+      background-color: #FFFFFF;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: #F8FAFC;
+      color: var(--color-ink);
+    }
+
+    .tab-btn.active {
+      background-color: var(--color-ink);
+      color: #FFFFFF;
+      border-color: var(--color-ink);
+    }
+
+    .platform-display-box {
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-xl);
+      background-color: #FAFBFD;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mockup-container {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      max-width: 680px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mockup-user-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .mockup-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0284C7;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .mockup-user-meta h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .mockup-user-meta span {
+      font-size: 0.8rem;
+      color: #64748B;
+    }
+
+    .mockup-content {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #1E293B;
+      white-space: pre-line;
+    }
+
+    /* ==========================================================================
+       TRANSPARENT 3-TIER PRICING SECTION
+       ========================================================================== */
+    .pricing-section {
+      padding: 6rem 0;
+      background-color: #F8FAFC;
+    }
+
+    .pricing-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .toggle-switch-container {
+      display: flex;
+      align-items: center;
+      background-color: #E2E8F0;
+      border-radius: var(--radius-full);
+      padding: 3px;
+      cursor: pointer;
+    }
+
+    .toggle-pill-option {
+      padding: 0.45rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #475569;
+      transition: all 0.15s ease;
+    }
+
+    .toggle-pill-option.active {
+      background-color: #FFFFFF;
+      color: var(--color-ink);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .save-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #0284C7;
+      background-color: #E0F2FE;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background-color: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--color-ink);
+      box-shadow: var(--shadow-elevated);
+      transform: scale(1.02);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.03) translateY(-2px);
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--color-ink);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.85rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.04em;
+    }
+
+    .tier-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-summary {
+      font-size: 0.9rem;
+      color: #64748B;
+      min-height: 42px;
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .tier-price-amount {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--color-ink);
+    }
+
+    .tier-price-cycle {
+      font-size: 0.9rem;
+      color: #64748B;
+    }
+
+    .tier-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .tier-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    .tier-feature-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-emerald);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       FAQ ACCORDION
+       ========================================================================== */
+    .faq-section {
+      padding: 6rem 0;
+      background-color: #FFFFFF;
+    }
+
+    .faq-accordion {
+      max-width: 800px;
+      margin: 3.5rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: #FAFBFD;
+      transition: border-color 0.15s ease;
+    }
+
+    .faq-item:hover {
+      border-color: #CBD5E1;
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 1.25rem 1.5rem;
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      cursor: pointer;
+    }
+
+    .faq-chevron {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-content {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--color-ink-muted);
+    }
+
+    .faq-item.open .faq-content {
+      display: block;
+    }
+
+    /* ==========================================================================
+       SKY HORIZON FINAL CTA
+       ========================================================================== */
+    .final-cta-section {
+      padding: 7rem 0;
+      background: linear-gradient(180deg, #97D4FA 0%, #76CBFA 40%, #5BB7F3 100%);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      color: var(--color-ink);
+    }
+
+    .cta-card {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin-bottom: 1.25rem;
+      color: var(--color-ink);
+    }
+
+    .cta-desc {
+      font-size: 1.15rem;
+      line-height: 1.55;
+      color: #0F172A;
+      margin-bottom: 2.5rem;
+      font-weight: 450;
+    }
+
+    .email-signup-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .email-input {
+      flex: 1;
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(0,0,0,0.1);
+      background: #FFFFFF;
+      font-size: 0.95rem;
+      color: var(--color-ink);
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .email-input:focus {
+      border-color: var(--color-ink);
+    }
+
+    /* ==========================================================================
+       SITE FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: #FFFFFF;
+      border-top: 1px solid #E2E8F0;
+      padding: 4rem 0 2.5rem;
+      font-size: 0.88rem;
+      color: #64748B;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer-links-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-col-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-link {
+      color: #64748B;
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--color-ink);
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #F1F5F9;
+      padding-top: 2rem;
+      font-size: 0.82rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-split-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .app-floating-card {
+        grid-template-columns: 1fr;
+      }
+      .app-sidebar {
+        display: none;
+      }
+      .pipeline-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .tuner-card-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+      .agents-grid {
+        grid-template-columns: 1fr;
+      }
+      .email-signup-form {
+        flex-direction: column;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom-bar {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HERO & SKY CANVAS WRAPPER
+       ========================================================================== -->
+  <div class="sky-hero-wrapper">
+    <div class="cloud-drift-1"></div>
+    <div class="cloud-drift-2"></div>
+
+    <div class="cloud-canvas">
+      <svg viewBox="0 0 1440 460" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path opacity="0.6" d="M0 460V310C120 280 240 330 380 300C520 270 610 210 760 230C910 250 1020 340 1180 310C1310 280 1390 320 1440 330V460H0Z" fill="white"/>
+        <path opacity="0.85" d="M0 460V350C160 320 290 360 450 320C600 280 730 330 890 300C1040 270 1170 320 1320 290C1380 280 1420 300 1440 310V460H0Z" fill="white"/>
+        <path d="M0 460V380C140 360 260 390 410 360C560 330 690 380 840 350C990 320 1140 360 1280 340C1360 330 1410 345 1440 350V460H0Z" fill="#F8FAFC"/>
+      </svg>
+    </div>
+
+    <div class="container">
+      <!-- Site Navigation -->
+      <nav class="site-nav" aria-label="Main Navigation">
+        <div class="nav-inner">
+          <a href="#" class="brand-mark-link">
+            <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="#0A0D12"/>
+              <path d="M9 10L16 23L23 10H18.5L16 16.5L13.5 10H9Z" fill="#FFFFFF"/>
+            </svg>
+            <span class="brand-name-text">Verba</span>
+          </a>
+
+          <ul class="nav-links">
+            <li><a href="#product" class="nav-link">Product</a></li>
+            <li><a href="#agents" class="nav-link">AI Agents</a></li>
+            <li><a href="#pipeline" class="nav-link">How It Works</a></li>
+            <li><a href="#tuner" class="nav-link">Voice Studio</a></li>
+            <li><a href="#pricing" class="nav-link">Pricing</a></li>
+            <li><a href="#faq" class="nav-link">Docs</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <a href="#login" class="nav-login-link">Log In</a>
+            <a href="#get-started" class="btn-pill-white">Get Started</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero Grid -->
+      <div class="hero-split-grid" id="product">
+        <div class="hero-copy-column">
+          <div class="hero-badge-pill">
+            <span class="badge-sparkle">✦</span> Verba 3.4 is live • Multi-Agent Orchestration
+          </div>
+          <h1 class="hero-headline">Your content team,<br>powered by AI agents.</h1>
+          <p class="hero-subhead">
+            Give Verba a post, transcript, or rough notes. Your autonomous AI agents turn it into content for every channel, in your voice.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#demo" class="btn-pill-black" id="bookDemoHeroBtn">Book a Demo</a>
+            <a href="#get-started" class="btn-link-inline">Get Started &rarr;</a>
+          </div>
+          <div class="hero-social-proof">
+            <div class="avatar-stack">
+              <div class="avatar-circle" style="background-color: #3B82F6;">EM</div>
+              <div class="avatar-circle" style="background-color: #10B981;">KR</div>
+              <div class="avatar-circle" style="background-color: #8B5CF6;">TS</div>
+              <div class="avatar-circle" style="background-color: #F59E0B;">DL</div>
+            </div>
+            <p class="proof-copy-text">
+              Trusted by <strong>14,000+ creators</strong> &amp; editorial teams
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Floating App Canvas -->
+        <div class="app-card-wrapper">
+          <div class="app-floating-card" id="appPreviewCard">
+            <!-- Card Sidebar -->
+            <aside class="app-sidebar">
+              <div class="app-workspace-selector">
+                <div class="workspace-brand-chip">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 19h20L12 2zm0 3.8L18.5 17H5.5L12 5.8z"/>
+                  </svg>
+                  <span>Verba Studio</span>
+                </div>
+                <div class="workspace-actions">
+                  <span>↕</span>
+                  <div class="btn-tiny-add">+</div>
+                </div>
+              </div>
+
+              <ul class="app-nav-menu">
+                <li>
+                  <a class="app-nav-item active">
+                    <span class="nav-label-with-icon">⌂ Home</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="app-nav-item">
+                    <span class="nav-label-with-icon">📁 Library</span>
+                    <span class="app-count-pill">48</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="app-nav-item">
+                    <span class="nav-label-with-icon">🤖 Agents</span>
+                    <span class="app-count-pill purple">12</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="app-nav-item">
+                    <span class="nav-label-with-icon">📅 Calendar</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="app-nav-item">
+                    <span class="nav-label-with-icon">📊 Analytics</span>
+                  </a>
+                </li>
+              </ul>
+
+              <div class="sidebar-section-header">
+                <span>Brand Voices</span>
+                <span style="font-size: 0.9rem;">⌄</span>
+              </div>
+              <ul class="brand-voices-list">
+                <li class="voice-item selected" data-voice="founder">
+                  <span>✦</span> Founder Voice
+                </li>
+                <li class="voice-item" data-voice="editorial">
+                  <span>✨</span> Studio Editorial
+                </li>
+                <li class="voice-item" data-voice="devrel">
+                  <span>◆</span> Engineering Blog
+                </li>
+              </ul>
+
+              <div class="sidebar-section-header" style="margin-top: 0.5rem;">
+                <span>Recent Output</span>
+                <span>🔍</span>
+              </div>
+              <ul class="recent-output-list">
+                <li class="recent-output-item" onclick="loadSampleOutput(0)">
+                  <div class="output-title-truncate">Thread: Why early architecture matters...</div>
+                  <div class="output-meta-row">
+                    <span>Just now</span>
+                    <span>•</span>
+                    <span class="status-dot-indicator green"></span>
+                    <span>Published</span>
+                  </div>
+                </li>
+                <li class="recent-output-item" onclick="loadSampleOutput(1)">
+                  <div class="output-title-truncate">LinkedIn: Q3 infrastructure retros</div>
+                  <div class="output-meta-row">
+                    <span>2m ago</span>
+                    <span>•</span>
+                    <span class="status-dot-indicator amber"></span>
+                    <span>Scheduled</span>
+                  </div>
+                </li>
+                <li class="recent-output-item" onclick="loadSampleOutput(2)">
+                  <div class="output-title-truncate">Newsletter: Shipping at high velocity</div>
+                  <div class="output-meta-row">
+                    <span>4m ago</span>
+                    <span>•</span>
+                    <span class="status-dot-indicator gray"></span>
+                    <span>Draft</span>
+                  </div>
+                </li>
+              </ul>
+            </aside>
+
+            <!-- Card Main Workspace -->
+            <main class="app-main-panel">
+              <div class="app-breadcrumb-bar">
+                <span class="breadcrumb-text">Home &rsaquo; New Multi-Channel Campaign</span>
+                <span style="font-size: 0.78rem; color: #10B981; font-weight: 600;">● Engine Ready</span>
+              </div>
+
+              <div class="app-heading-group">
+                <h2 class="app-headline">Turn one idea into ten pieces of content.</h2>
+                <p class="app-subheadline">Paste a blog post, transcript, rough notes, or a link.</p>
+              </div>
+
+              <!-- Input Composer Box -->
+              <div class="composer-box">
+                <textarea class="composer-textarea" id="rawContentInput" placeholder="Paste your content or describe what you want to write about...">We spent 6 months migrating our legacy microservices into an event-driven agent loop. Latency dropped by 48%, operational overhead decreased by $35k/mo, and debugging time was cut in half. Here are 3 hard lessons we learned the hard way.</textarea>
+                <div class="composer-controls">
+                  <div class="composer-chips">
+                    <button type="button" class="composer-chip-btn" id="voiceSelectorChip">
+                      <span>👤</span> <span id="currentVoiceLabel">Founder Voice</span> ▾
+                    </button>
+                    <button type="button" class="composer-chip-btn">
+                      <span>⚡</span> <span>Verba-4 Omni</span> ▾
+                    </button>
+                  </div>
+                  <button type="button" class="btn-generate-campaign" id="generateCampaignBtn">
+                    <span>✨</span> Generate Campaign
+                  </button>
+                </div>
+              </div>
+
+              <!-- Suggested Agents Grid -->
+              <div class="suggested-agents-header">
+                <span>Suggested Agents</span>
+                <span class="app-count-pill">12</span>
+              </div>
+
+              <div class="agents-grid" id="agents">
+                <div class="agent-card">
+                  <div class="agent-top-row">
+                    <div class="agent-icon-box x-brand">𝕏</div>
+                    <div class="agent-info">
+                      <div class="agent-name">Tweet / X Thread</div>
+                      <div class="agent-desc">Breaks long pieces into a hook-led thread of punchy, standalone tweets.</div>
+                    </div>
+                  </div>
+                  <div class="agent-bottom-row">
+                    <span class="agent-badge-tag">Thread • 6 Tweets</span>
+                    <button type="button" class="btn-run-agent" onclick="runAgent('thread')">Run</button>
+                  </div>
+                </div>
+
+                <div class="agent-card">
+                  <div class="agent-top-row">
+                    <div class="agent-icon-box linkedin-brand">in</div>
+                    <div class="agent-info">
+                      <div class="agent-name">LinkedIn Post</div>
+                      <div class="agent-desc">Rewrites into a compelling narrative with whitespace and high engagement hook.</div>
+                    </div>
+                  </div>
+                  <div class="agent-bottom-row">
+                    <span class="agent-badge-tag">Article • 240 words</span>
+                    <button type="button" class="btn-run-agent" onclick="runAgent('linkedin')">Run</button>
+                  </div>
+                </div>
+
+                <div class="agent-card">
+                  <div class="agent-top-row">
+                    <div class="agent-icon-box newsletter-brand">✉</div>
+                    <div class="agent-info">
+                      <div class="agent-name">Newsletter Section</div>
+                      <div class="agent-desc">Turns a topic into a warm, skimmable email newsletter segment with takeaway.</div>
+                    </div>
+                  </div>
+                  <div class="agent-bottom-row">
+                    <span class="agent-badge-tag">Broadcast • 350 words</span>
+                    <button type="button" class="btn-run-agent" onclick="runAgent('newsletter')">Run</button>
+                  </div>
+                </div>
+
+                <div class="agent-card">
+                  <div class="agent-top-row">
+                    <div class="agent-icon-box video-brand">🎬</div>
+                    <div class="agent-info">
+                      <div class="agent-name">Short Video Script</div>
+                      <div class="agent-desc">Generates a 45-second script with visual hook, pattern-interrupt, and audio beat.</div>
+                    </div>
+                  </div>
+                  <div class="agent-bottom-row">
+                    <span class="agent-badge-tag">Script • 45s</span>
+                    <button type="button" class="btn-run-agent" onclick="runAgent('script')">Run</button>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Output Drawer Modal -->
+  <div class="output-drawer" id="outputDrawer">
+    <div class="output-drawer-header">
+      <div class="output-drawer-title">
+        <span id="drawerIcon">✨</span>
+        <span id="drawerTitle">Generated Output</span>
+      </div>
+      <button class="output-drawer-close" onclick="closeDrawer()">&times;</button>
+    </div>
+    <div class="output-drawer-body" id="drawerBody">Synthesizing multi-agent outputs...</div>
+    <div class="output-drawer-actions">
+      <span style="font-size: 0.72rem; color: #64748B;" id="drawerTokenCount">Tokens: 412 • Latency: 0.4s</span>
+      <button class="btn-copy-output" id="copyOutputBtn" onclick="copyDrawerContent()">
+        <span>📋</span> Copy Output
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       TRUST LOGO MARQUEE
+       ========================================================================== -->
+  <section class="trust-marquee-section">
+    <div class="container">
+      <div class="trust-logos-row">
+        <div class="partner-logo-item">Whop</div>
+        <div class="partner-logo-item">OpenAI</div>
+        <div class="partner-logo-item">Linear</div>
+        <div class="partner-logo-item">Adobe</div>
+        <div class="partner-logo-item">Figma</div>
+        <div class="partner-logo-item">Stripe</div>
+        <div class="partner-logo-item">Notion</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HOW IT WORKS / 3-STEP PIPELINE
+       ========================================================================== -->
+  <section class="pipeline-section" id="pipeline">
+    <div class="container">
+      <span class="section-eyebrow">Architecture &amp; Pipeline</span>
+      <h2 class="section-heading">How one spark becomes a content omnipresence.</h2>
+      <p class="section-desc">Traditional repurposing creates bland, robotic summaries. Verba deploys specialized, role-specific agents that deconstruct your thinking and rebuild it natively for each platform.</p>
+
+      <div class="pipeline-grid">
+        <div class="pipeline-card">
+          <div>
+            <span class="pipeline-step-badge">STEP 01</span>
+            <h3 class="pipeline-title">Raw Ingestion &amp; Angle Mining</h3>
+            <p class="pipeline-body">Drop a voice memo, draft markdown, YouTube link, or raw bullet notes. Verba’s semantic parser isolates core hypotheses, data points, and quotable hooks.</p>
+          </div>
+          <div class="pipeline-visual-pill">Input: 18m Loom recording &rarr; 6 Core Theses Identified</div>
+        </div>
+
+        <div class="pipeline-card">
+          <div>
+            <span class="pipeline-step-badge">STEP 02</span>
+            <h3 class="pipeline-title">Autonomous Agent Synthesis</h3>
+            <p class="pipeline-body">Dedicated agents take over: the X Agent architects high-retention hooks; the LinkedIn Agent formats executive whitespace; the Substack Agent deepens nuance.</p>
+          </div>
+          <div class="pipeline-visual-pill">4 Parallel Agents Executing with Zero Tone Drift</div>
+        </div>
+
+        <div class="pipeline-card">
+          <div>
+            <span class="pipeline-step-badge">STEP 03</span>
+            <h3 class="pipeline-title">One-Click Dispatch &amp; Feedback</h3>
+            <p class="pipeline-body">Review generated drafts in your queue. Push straight to your scheduler, CMS, or clipboard with calibrated metadata, hashtags, and formatting tags intact.</p>
+          </div>
+          <div class="pipeline-visual-pill">Scheduled to X, LinkedIn &amp; Ghost with 1 Click</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE VOICE TUNER STUDIO
+       ========================================================================== -->
+  <section class="tuner-section" id="tuner">
+    <div class="container">
+      <span class="section-eyebrow">Real-Time Persona Engine</span>
+      <h2 class="section-heading">Fine-tune your brand voice. No generic AI fluff.</h2>
+      <p class="section-desc">Adjust tone parameters below and watch the synthesis engine rewrite content live to match your distinct cadence.</p>
+
+      <div class="tuner-card-wrapper">
+        <div class="tuner-controls-col">
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Formality</span>
+              <span class="slider-val-badge" id="formalityVal">Authoritative (75%)</span>
+            </div>
+            <input type="range" min="0" max="100" value="75" class="range-input" id="formalitySlider" oninput="updateTunerOutput()">
+            <div class="slider-labels">
+              <span>Casual / Conversational</span>
+              <span>Institutional Authority</span>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Density &amp; Depth</span>
+              <span class="slider-val-badge" id="densityVal">High Density (80%)</span>
+            </div>
+            <input type="range" min="0" max="100" value="80" class="range-input" id="densitySlider" oninput="updateTunerOutput()">
+            <div class="slider-labels">
+              <span>Quick Skimmable</span>
+              <span>Deep Technical Breakdown</span>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Cadence &amp; Rhythm</span>
+              <span class="slider-val-badge" id="cadenceVal">Punchy Staccato (60%)</span>
+            </div>
+            <input type="range" min="0" max="100" value="60" class="range-input" id="cadenceSlider" oninput="updateTunerOutput()">
+            <div class="slider-labels">
+              <span>Flowing Narrative</span>
+              <span>Punchy Staccato</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tuner-preview-col">
+          <div>
+            <div class="preview-header-bar">
+              <span class="live-voice-badge">⚡ Real-Time Live Persona Preview</span>
+              <span style="font-size: 0.75rem; color: #64748B;">Target: Founder Profile</span>
+            </div>
+            <p class="tuner-sample-output" id="tunerSampleText">
+              "We slashed cloud latency by 48% not by adding caching layers, but by dismantling our event bus. Complexity is the silent killer of engineering velocity."
+            </p>
+          </div>
+          <div style="font-size: 0.75rem; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 0.75rem;">
+            Generated using Verba Persona Profile #409 (0.12s latency)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MULTI-CHANNEL OUTPUT COMPARATOR
+       ========================================================================== -->
+  <section class="comparator-section">
+    <div class="container">
+      <span class="section-eyebrow">Cross-Channel Polish</span>
+      <h2 class="section-heading">Native craft for every platform.</h2>
+      <p class="section-desc">See how Verba respects the unspoken formatting etiquette of each social distribution channel.</p>
+
+      <div class="comparator-tabs">
+        <button class="tab-btn active" onclick="switchTab('x', this)">
+          <span>𝕏</span> 𝕏 Thread
+        </button>
+        <button class="tab-btn" onclick="switchTab('linkedin', this)">
+          <span>💼</span> LinkedIn Post
+        </button>
+        <button class="tab-btn" onclick="switchTab('newsletter', this)">
+          <span>✉</span> Substack Dispatch
+        </button>
+        <button class="tab-btn" onclick="switchTab('script', this)">
+          <span>🎬</span> 60s Reel Script
+        </button>
+      </div>
+
+      <div class="platform-display-box">
+        <div class="mockup-container" id="mockupContainer">
+          <div class="mockup-user-row">
+            <div class="mockup-avatar">V</div>
+            <div class="mockup-user-meta">
+              <h4>Sarah Chen (@sarahc_builds)</h4>
+              <span id="mockupPlatformBadge">Posted to 𝕏 • 12m ago</span>
+            </div>
+          </div>
+          <div class="mockup-content" id="mockupContent">1/7 Most teams fail at event-driven architecture because they copy Netflix instead of solving their own constraints.
+
+Here are the 3 hard truths we uncovered after cutting $35k/mo in unnecessary queues:
+
+👇</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TRANSPARENT 3-TIER PRICING SECTION
+       ========================================================================== -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <span class="section-eyebrow">Predictable Investment</span>
+        <h2 class="section-heading">Simple pricing for founders &amp; studios.</h2>
+        <p class="section-desc">Every plan includes full access to autonomous multi-channel agents and unlimited voice tuning.</p>
+      </div>
+
+      <div class="pricing-toggle-wrapper">
+        <div class="toggle-switch-container" id="billingToggle" onclick="toggleBillingCycle()">
+          <div class="toggle-pill-option active" id="monthlyPill">Monthly</div>
+          <div class="toggle-pill-option" id="annualPill">Annual</div>
+        </div>
+        <span class="save-badge">Save 20% Annual</span>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div>
+            <h3 class="tier-name">Creator</h3>
+            <p class="tier-summary">Ideal for solo founders and executives writing their own content.</p>
+            <div class="tier-price-row">
+              <span class="tier-price-amount" id="priceTier1">$29</span>
+              <span class="tier-price-cycle">/month</span>
+            </div>
+            <ul class="tier-features-list">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                50,000 words / month
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                2 Custom Brand Voices
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                X + LinkedIn Agents
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Standard Scheduler Sync
+              </li>
+            </ul>
+          </div>
+          <a href="#get-started" class="btn-pill-white" style="text-align: center; border: 1px solid #CBD5E1;">Start 14-Day Trial</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="featured-tag">MOST POPULAR</div>
+          <div>
+            <h3 class="tier-name">Studio Team</h3>
+            <p class="tier-summary">For scaling media brands, startups, and high-volume content operations.</p>
+            <div class="tier-price-row">
+              <span class="tier-price-amount" id="priceTier2">$79</span>
+              <span class="tier-price-cycle">/month</span>
+            </div>
+            <ul class="tier-features-list">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Unlimited Word Generation
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                10 Custom Brand Voices
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                All 12 Platform Agents
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Voice Memo Ingestion &amp; Transcripts
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                One-Click Multi-Channel Scheduler
+              </li>
+            </ul>
+          </div>
+          <a href="#get-started" class="btn-pill-black" style="text-align: center;">Start 14-Day Trial</a>
+        </div>
+
+        <div class="pricing-card">
+          <div>
+            <h3 class="tier-name">Media House</h3>
+            <p class="tier-summary">Custom fine-tuning and API hooks for publishing companies and agencies.</p>
+            <div class="tier-price-row">
+              <span class="tier-price-amount" id="priceTier3">$249</span>
+              <span class="tier-price-cycle">/month</span>
+            </div>
+            <ul class="tier-features-list">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Unlimited Team Members
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Fine-Tuned LoRA Voice Models
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                REST API &amp; Webhook Triggers
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Dedicated Account Strategist
+              </li>
+            </ul>
+          </div>
+          <a href="#contact" class="btn-pill-white" style="text-align: center; border: 1px solid #CBD5E1;">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FAQ ACCORDION
+       ========================================================================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <span class="section-eyebrow">Clear Answers</span>
+        <h2 class="section-heading">Frequently asked questions.</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item open">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>How does Verba prevent generated content from sounding like generic AI?</span>
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-content">
+            Verba doesn’t run a generic one-shot prompt. We extract your personal stylistic fingerprints—such as sentence length distribution, signature transition phrases, vocabulary frequency, and rhetorical devices. Our agents apply these constraints strictly during drafting.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Who owns the copyright and IP of the content produced?</span>
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-content">
+            You retain 100% intellectual property ownership of all uploaded source materials, derived outlines, and final generated posts. Verba never claims rights to your work.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Is my private draft data used to train public models?</span>
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-content">
+            No. Your source transcripts, rough notes, and voice profiles are stored in isolated encrypted customer silos and are strictly excluded from foundational model training pools.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Can Verba publish directly to our social accounts or CMS?</span>
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-content">
+            Yes. We integrate natively with Buffer, Typefully, Twitter API, LinkedIn Pages, Substack, and Ghost CMS, or you can export clean markdown with a single keystroke.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FINAL SKY HORIZON CTA
+       ========================================================================== -->
+  <section class="final-cta-section" id="get-started">
+    <div class="container">
+      <div class="cta-card">
+        <h2 class="cta-title">Turn your raw thoughts into a living media engine today.</h2>
+        <p class="cta-desc">Join 14,000+ creators, tech founders, and media operators scaling content without diluting their authenticity.</p>
+        
+        <form class="email-signup-form" onsubmit="handleSignup(event)">
+          <input type="email" class="email-input" placeholder="Enter your work email..." required id="signupEmailInput" />
+          <button type="submit" class="btn-pill-black">Start Free 14-Day Trial</button>
+        </form>
+
+        <p style="font-size: 0.85rem; color: #1E293B; font-weight: 500;">No credit card required • Instant workspace setup in 60 seconds</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="#" class="brand-mark-link">
+            <svg class="brand-icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="#0A0D12"/>
+              <path d="M9 10L16 23L23 10H18.5L16 16.5L13.5 10H9Z" fill="#FFFFFF"/>
+            </svg>
+            <span class="brand-name-text">Verba</span>
+          </a>
+          <p style="font-size: 0.86rem; line-height: 1.5; max-width: 320px;">
+            The multi-channel content engine powered by autonomous AI agents. Built for clarity, speed, and genuine founder voice.
+          </p>
+          <div style="font-size: 0.8rem; color: #94A3B8;">
+            Sample design template specimen.
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-col-title">Product</div>
+          <a href="#product" class="footer-link">AI Agents</a>
+          <a href="#tuner" class="footer-link">Voice Tuner</a>
+          <a href="#pipeline" class="footer-link">Ingestion Engine</a>
+          <a href="#pricing" class="footer-link">Pricing</a>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-col-title">Integrations</div>
+          <a href="#x" class="footer-link">𝕏 / Twitter</a>
+          <a href="#linkedin" class="footer-link">LinkedIn</a>
+          <a href="#substack" class="footer-link">Substack</a>
+          <a href="#ghost" class="footer-link">Ghost CMS</a>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-col-title">Company</div>
+          <a href="#about" class="footer-link">Manifesto</a>
+          <a href="#privacy" class="footer-link">Privacy Policy</a>
+          <a href="#terms" class="footer-link">Terms of Service</a>
+          <a href="#security" class="footer-link">Security &amp; SOC2</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>&copy; 2026 Verba Technologies, Inc. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#" class="footer-link">Status: Operational</a>
+          <a href="#" class="footer-link">Changelog</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       INTERACTIVE JAVASCRIPT CONTROLLERS
+       ========================================================================== -->
+  <script>
+    const agentOutputs = {
+      thread: {
+        title: "𝕏 / Twitter Thread Output",
+        icon: "𝕏",
+        tokens: "382 tokens • 0.38s latency",
+        content: `1/6 We spent 6 months migrating our legacy microservices into an event-driven agent loop.
+
+The results:
+- 48% reduction in latency
+- $35,000/mo cloud cost savings
+- Debugging time sliced in half
+
+Here are the 3 non-obvious architecture lessons we learned: 🧵
+
+2/6 Lesson 1: Centralized message brokers become political bottlenecks.
+When every team needs schema consensus on a shared Kafka cluster, velocity slows to a crawl. Moving to ephemeral event topics unlocked independent agent deployments.
+
+3/6 Lesson 2: Deterministic retry budgets beat endless exponential backoffs.
+Unbounded retries create cascading queue storms during upstream outages. Fail fast, park unprocessable events in dead-letter buckets, and alert human operators immediately.
+
+4/6 Lesson 3: Observability must be semantic, not just distributed traces.
+You need to know *why* an agent made a routing decision, not just that an HTTP 200 occurred. Structured audit metadata made triage painless.
+
+5/6 If you are planning an AI agent migration in 2026:
+Start with one bounded context. Prove latency gains before touching your core ingestion loop.
+
+6/6 Found this valuable? Retweet to share with your engineering team, and follow for weekly distributed systems breakdowns.`
+      },
+      linkedin: {
+        title: "LinkedIn Executive Post Output",
+        icon: "💼",
+        tokens: "264 tokens • 0.29s latency",
+        content: `Most engineering leadership teams treat microservices like an unquestionable orthodoxy.
+
+Six months ago, our infrastructure was buckling under operational drag.
+
+We made a high-conviction decision:
+Dismantle the legacy queues and replace them with a unified event-driven agent loop.
+
+The impact after 180 days:
+→ Latency dropped by 48%
+→ Infrastructure spend decreased by $35,000 per month
+→ Mean time to resolution (MTTR) cut in half
+
+Here are the two biggest takeaways for technical founders:
+
+1. Simplicity is a competitive moat.
+Every extra boundary service you maintain is tax on engineering cognitive load.
+
+2. Build for deterministic recovery.
+When micro-agents fail, they should fail gracefully without taking down your core customer-facing pipeline.
+
+Are you evaluating agentic architectures for your backend this year? Let's discuss in the comments.`
+      },
+      newsletter: {
+        title: "Substack Broadcast Dispatch",
+        icon: "✉",
+        tokens: "310 tokens • 0.32s latency",
+        content: `Subject: What happened when we killed our legacy microservices
+
+Hey friends,
+
+Last month, our team crossed the 6-month milestone of running our core workload on a unified event-driven agent loop.
+
+When we first announced this rewrite internally, skepticism was high. Standard tech dogma says you never rewrite your message pipeline while growing.
+
+Here is the honest retrospective:
+
+1. The Latency Dividend
+By removing two intermediate broker hops, p99 latency plummeted from 420ms to 218ms.
+
+2. The Balance Sheet Reality
+We cut $35,000 every single month from our cloud provider bill. Turns out idle message queues running at 8% utilization were quietly draining the bank.
+
+Actionable step for your team this week:
+Audit your top 3 slowest API endpoints. Ask yourself if an asynchronous event agent could execute that work out of band.
+
+Until next Tuesday,
+The Verba Editorial Team`
+      },
+      script: {
+        title: "Short-Form Video / Reel Script (45s)",
+        icon: "🎬",
+        tokens: "198 tokens • 0.22s latency",
+        content: `[VISUAL HOOK - 0:00 to 0:03]
+(Speaker holds up phone displaying server architecture diagram, looks directly into lens)
+"Stop building microservices like you're Netflix in 2015."
+
+[PATTERN INTERRUPT - 0:04 to 0:12]
+"We just ripped out 4 legacy services and replaced them with a single event-driven agent loop.
+And we saved thirty-five THOUSAND dollars a month."
+
+[THE VALUE BEAT - 0:13 to 0:32]
+"Here’s why it worked:
+First: latency was cut in half because we eliminated two network hops.
+Second: instead of paying for idle broker clusters, our agents only spin up when a message actually lands.
+Third: debugging isn’t a distributed nightmare anymore. One trace gives you the full story."
+
+[CALL TO ACTION - 0:33 to 0:45]
+"If your cloud bill is out of control, comment 'ARCH' and I’ll send you the exact migration diagram."`
+      }
+    };
+
+    const platformSamples = {
+      x: {
+        badge: "Posted to 𝕏 • 12m ago",
+        text: `1/7 Most teams fail at event-driven architecture because they copy Netflix instead of solving their own constraints.
+
+Here are the 3 hard truths we uncovered after cutting $35k/mo in unnecessary queues:
+
+👇`
+      },
+      linkedin: {
+        badge: "Published to LinkedIn • 1h ago",
+        text: `Six months ago, our team made a contrarian bet:
+
+Dismantle our microservices and deploy a unified event-driven agent loop.
+
+The result?
+• 48% latency drop
+• $35,000/month saved on AWS
+• Triage time cut in half
+
+The best code is the infrastructure you don't have to maintain.`
+      },
+      newsletter: {
+        badge: "Dispatched via Substack • Yesterday",
+        text: `Issue #48: The $35k/Month Architecture Pivot
+
+When should a high-growth startup intentionally deconstruct its microservice mesh? In today's dispatch, we break down the operational telemetry and financial reality of moving to an autonomous agent loop.`
+      },
+      script: {
+        badge: "Reel / Short Script • Teleprompter Mode",
+        text: `[HOOK] "Stop building microservices like you're Netflix."
+[BEAT 1] "We deleted 4 services and cut 48% latency."
+[BEAT 2] "Our AWS bill dropped thirty-five thousand dollars."
+[OUTRO] "Link in bio for the complete engineering diagram."`
+      }
+    };
+
+    function runAgent(agentKey) {
+      const data = agentOutputs[agentKey];
+      if (!data) return;
+
+      const drawer = document.getElementById("outputDrawer");
+      const titleEl = document.getElementById("drawerTitle");
+      const iconEl = document.getElementById("drawerIcon");
+      const bodyEl = document.getElementById("drawerBody");
+      const tokenEl = document.getElementById("drawerTokenCount");
+      const copyBtn = document.getElementById("copyOutputBtn");
+
+      titleEl.innerText = data.title;
+      iconEl.innerText = data.icon;
+      tokenEl.innerText = data.tokens;
+      copyBtn.classList.remove("copied");
+      copyBtn.innerHTML = "<span>📋</span> Copy Output";
+
+      drawer.style.display = "block";
+      bodyEl.innerText = "";
+
+      let charIdx = 0;
+      const textToType = data.content;
+      const timer = setInterval(() => {
+        if (charIdx < textToType.length) {
+          bodyEl.innerText += textToType.charAt(charIdx);
+          charIdx += 4;
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+        } else {
+          bodyEl.innerText = textToType;
+          clearInterval(timer);
+        }
+      }, 12);
+    }
+
+    document.getElementById("generateCampaignBtn").addEventListener("click", () => {
+      runAgent("thread");
+    });
+
+    function closeDrawer() {
+      document.getElementById("outputDrawer").style.display = "none";
+    }
+
+    function copyDrawerContent() {
+      const text = document.getElementById("drawerBody").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = document.getElementById("copyOutputBtn");
+        copyBtn.classList.add("copied");
+        copyBtn.innerHTML = "<span>✓</span> Copied to Clipboard!";
+        setTimeout(() => {
+          copyBtn.classList.remove("copied");
+          copyBtn.innerHTML = "<span>📋</span> Copy Output";
+        }, 2000);
+      });
+    }
+
+    document.querySelectorAll(".voice-item").forEach(item => {
+      item.addEventListener("click", () => {
+        document.querySelectorAll(".voice-item").forEach(i => i.classList.remove("selected"));
+        item.classList.add("selected");
+        const voiceName = item.innerText.trim();
+        document.getElementById("currentVoiceLabel").innerText = voiceName;
+      });
+    });
+
+    function loadSampleOutput(idx) {
+      const samples = ["thread", "linkedin", "newsletter"];
+      runAgent(samples[idx] || "thread");
+    }
+
+    function updateTunerOutput() {
+      const formality = parseInt(document.getElementById("formalitySlider").value);
+      const density = parseInt(document.getElementById("densitySlider").value);
+      const cadence = parseInt(document.getElementById("cadenceSlider").value);
+
+      document.getElementById("formalityVal").innerText = formality > 65 ? `Authoritative (${formality}%)` : formality < 35 ? `Casual (${formality}%)` : `Balanced (${formality}%)`;
+      document.getElementById("densityVal").innerText = density > 65 ? `High Density (${density}%)` : density < 35 ? `Skimmable (${density}%)` : `Moderate (${density}%)`;
+      document.getElementById("cadenceVal").innerText = cadence > 65 ? `Punchy Staccato (${cadence}%)` : cadence < 35 ? `Flowing Narrative (${cadence}%)` : `Dynamic (${cadence}%)`;
+
+      const sampleEl = document.getElementById("tunerSampleText");
+      if (formality > 70 && density > 60) {
+        sampleEl.innerText = '"We slashed cloud latency by 48% not by adding caching layers, but by dismantling our event bus. Complexity is the silent killer of engineering velocity."';
+      } else if (formality < 40 && cadence > 60) {
+        sampleEl.innerText = '"Cut latency in half. Saved $35k every 30 days. No crazy new framework—we just deleted four bloated services."';
+      } else if (formality < 50 && density < 50) {
+        sampleEl.innerText = '"Here is a fun engineering story: we killed our message queues on a Friday afternoon and our servers ran twice as fast. Sometimes less really is more."';
+      } else {
+        sampleEl.innerText = '"By restructuring our asynchronous message handlers into an autonomous event loop, we eliminated unnecessary serialization overhead and cut cloud costs by $35,000 monthly."';
+      }
+    }
+
+    function switchTab(platform, btn) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const sample = platformSamples[platform];
+      if (!sample) return;
+
+      document.getElementById("mockupPlatformBadge").innerText = sample.badge;
+      document.getElementById("mockupContent").innerText = sample.text;
+    }
+
+    let isAnnual = false;
+    function toggleBillingCycle() {
+      isAnnual = !isAnnual;
+      const monthlyPill = document.getElementById("monthlyPill");
+      const annualPill = document.getElementById("annualPill");
+
+      if (isAnnual) {
+        monthlyPill.classList.remove("active");
+        annualPill.classList.add("active");
+        document.getElementById("priceTier1").innerText = "$23";
+        document.getElementById("priceTier2").innerText = "$63";
+        document.getElementById("priceTier3").innerText = "$199";
+      } else {
+        annualPill.classList.remove("active");
+        monthlyPill.classList.add("active");
+        document.getElementById("priceTier1").innerText = "$29";
+        document.getElementById("priceTier2").innerText = "$79";
+        document.getElementById("priceTier3").innerText = "$249";
+      }
+    }
+
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+      if (!isOpen) {
+        item.classList.add("open");
+      }
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      const email = document.getElementById("signupEmailInput").value;
+      alert(`Welcome to Verba! Workspace invitation sent to ${email}`);
+    }
+  </script>
+</body>
+</html>

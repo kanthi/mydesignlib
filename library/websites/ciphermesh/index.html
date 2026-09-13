@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>CipherMesh — AI-Powered Zero-Trust Cybersecurity Platform</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans (Headlines), Inter (Body), JetBrains Mono (Telemetry), Silkscreen (Pixel Accent) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       CSS VARIABLES & DESIGN TOKENS
+       ========================================================================= */
+    :root {
+      --surface-page: #FFFFFF;
+      --surface-subtle: #F8FAFC;
+      --surface-card: #FFFFFF;
+      --surface-dark: #0B0F17;
+      --surface-dark-card: #121824;
+
+      --text-primary: #0A0F1D;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+
+      --border-default: #E2E8F0;
+      --border-subtle: rgba(226, 232, 240, 0.7);
+      --border-focus: #2563EB;
+
+      --action-primary: #2563EB;
+      --action-hover: #1D4ED8;
+      --accent-dither: #3B82F6;
+      --accent-light: #EFF6FF;
+      --accent-border: #BFDBFE;
+
+      --font-headline: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-pixel: 'Silkscreen', monospace;
+
+      --gutter-width: 44px;
+      --container-max: 1220px;
+      --dur: 200ms;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* =========================================================================
+       RESET & BASE STYLES
+       ========================================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: #F1F5F9;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scrollbar-width: none;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      background-color: var(--surface-page);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* =========================================================================
+       TECHNICAL BLUEPRINT VIEWPORT & MARGIN GUTTERS
+       ========================================================================= */
+    .blueprint-frame {
+      display: grid;
+      grid-template-columns: var(--gutter-width) 1fr var(--gutter-width);
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+      background-color: var(--surface-page);
+      box-shadow: 0 0 50px rgba(15, 23, 42, 0.08);
+      position: relative;
+    }
+
+    /* Left and Right Millimeter Margin Rulers */
+    .gutter-ruler {
+      background-color: #FAFAFA;
+      position: relative;
+      border-right: 1px solid var(--border-default);
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .gutter-ruler.right {
+      border-right: none;
+      border-left: 1px solid var(--border-default);
+    }
+
+    /* Repeating 12px millimeter tick marks */
+    .gutter-ticks {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        #E2E8F0 0px,
+        #E2E8F0 1px,
+        transparent 1px,
+        transparent 12px
+      );
+      opacity: 0.85;
+    }
+
+    .gutter-label {
+      position: sticky;
+      top: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 16px 0;
+      text-align: center;
+      margin: 0 auto;
+      text-transform: uppercase;
+    }
+
+    .page-main-canvas {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Section Horizontal Blueprint Boundaries with Crosshairs */
+    .section-boundary {
+      position: relative;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .section-crosshair {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .section-crosshair::before,
+    .section-crosshair::after {
+      content: '';
+      position: absolute;
+      background-color: var(--text-muted);
+    }
+
+    .section-crosshair::before {
+      top: 6px;
+      left: 0;
+      width: 13px;
+      height: 1px;
+    }
+
+    .section-crosshair::after {
+      top: 0;
+      left: 6px;
+      width: 1px;
+      height: 13px;
+    }
+
+    .section-crosshair.tl { top: -6px; left: -6px; }
+    .section-crosshair.tr { top: -6px; right: -6px; }
+    .section-crosshair.bl { bottom: -6px; left: -6px; }
+    .section-crosshair.br { bottom: -6px; right: -6px; }
+
+    /* =========================================================================
+       TYPOGRAPHY & ACCENTS
+       ========================================================================= */
+    .display-h1 {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+    }
+
+    .section-h2 {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      color: var(--text-primary);
+    }
+
+    .pixel-accent {
+      font-family: var(--font-pixel);
+      font-size: 0.9em;
+      color: var(--action-primary);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 1px rgba(37, 99, 235, 0.4);
+      display: inline-block;
+      transform: translateY(-0.04em);
+    }
+
+    .mono-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: var(--action-primary);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 13px 24px;
+      border-radius: 2px;
+      transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+      border: 1px solid var(--action-primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--action-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: #FFFFFF;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 13px 24px;
+      border-radius: 2px;
+      border: 1px solid var(--text-primary);
+      transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--surface-subtle);
+      border-color: var(--action-primary);
+      color: var(--action-primary);
+    }
+
+    .btn-square-arrow {
+      width: 38px;
+      height: 38px;
+      background-color: var(--action-primary);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      transition: background-color var(--dur) var(--ease);
+    }
+
+    .btn-square-arrow:hover {
+      background-color: var(--action-hover);
+    }
+
+    /* =========================================================================
+       NAVIGATION BAR
+       ========================================================================= */
+    .top-navbar {
+      height: 68px;
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-default);
+      background-color: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    .brand-mark-svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: var(--action-primary);
+      stroke-width: 2.2;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .nav-link:hover {
+      color: var(--action-primary);
+    }
+
+    /* =========================================================================
+       HERO SECTION
+       ========================================================================= */
+    .hero-section {
+      padding: 56px 44px 0 44px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: #FFFFFF;
+    }
+
+    .hero-badge-row {
+      margin-bottom: 24px;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--action-primary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .category-badge svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--action-primary);
+      animation: spinSlow 12s linear infinite;
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-title {
+      max-width: 960px;
+      margin-bottom: 20px;
+    }
+
+    .hero-subhead {
+      max-width: 520px;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .hero-topo-container {
+      width: 100%;
+      margin-top: -30px;
+      position: relative;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-topo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* =========================================================================
+       SOCIAL PROOF LOGOS BAR
+       ========================================================================= */
+    .social-proof-bar {
+      padding: 32px 44px;
+      background-color: #FFFFFF;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .proof-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .proof-header-square {
+      width: 7px;
+      height: 7px;
+      background-color: var(--action-primary);
+    }
+
+    .logos-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .logo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: #0F172A;
+      opacity: 0.85;
+      transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+    }
+
+    .logo-item:hover {
+      opacity: 1;
+      color: var(--action-primary);
+    }
+
+    .logo-item svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* =========================================================================
+       SECTION: BUILT FOR MODERN ENTERPRISE (3-CARDS + BANNER)
+       ========================================================================= */
+    .features-section {
+      padding: 64px 44px;
+      background-color: #FFFFFF;
+    }
+
+    .section-header-split {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+
+    .header-subtext {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      max-width: 440px;
+      margin-left: auto;
+    }
+
+    .feature-cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+
+    .feat-card {
+      padding: 24px 0;
+    }
+
+    .feat-icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 4px;
+      border: 1px solid var(--accent-border);
+      background-color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--action-primary);
+    }
+
+    .feat-card-title {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .feat-card-desc {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    /* Bottom Highlight Banner */
+    .telemetry-banner {
+      border: 1px solid var(--accent-border);
+      border-radius: 2px;
+      background-color: #FFFFFF;
+      padding: 32px 36px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .banner-statement {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      max-width: 320px;
+      line-height: 1.35;
+    }
+
+    .banner-stat-block {
+      border-left: 1px solid var(--border-default);
+      padding-left: 32px;
+    }
+
+    .banner-stat-num {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .banner-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    /* =========================================================================
+       SECTION: INTERACTIVE TABBED SECURITY SHOWCASE
+       ========================================================================= */
+    .module-split-section {
+      padding: 64px 44px;
+      background-color: #FFFFFF;
+    }
+
+    .split-content-grid {
+      display: grid;
+      grid-template-columns: 42% 58%;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .tab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--dur) var(--ease);
+    }
+
+    .tab-num {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-right: 14px;
+    }
+
+    .tab-title {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      transition: color var(--dur) var(--ease);
+    }
+
+    .tab-item.active .tab-num {
+      color: var(--action-primary);
+      font-weight: 700;
+    }
+
+    .tab-item.active .tab-title {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .tab-arrow {
+      color: var(--action-primary);
+      font-size: 1.2rem;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: all var(--dur) var(--ease);
+    }
+
+    .tab-item.active .tab-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .tab-item:hover .tab-title {
+      color: var(--action-primary);
+    }
+
+    /* Interactive Showcase Display Card */
+    .blueprint-card {
+      border: 1px solid var(--border-default);
+      border-radius: 3px;
+      background-color: #FFFFFF;
+      position: relative;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .blueprint-card-corner {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      pointer-events: none;
+    }
+
+    .blueprint-card-corner::before,
+    .blueprint-card-corner::after {
+      content: '';
+      position: absolute;
+      background-color: #94A3B8;
+    }
+
+    .blueprint-card-corner::before {
+      top: 4px;
+      left: 0;
+      width: 9px;
+      height: 1px;
+    }
+
+    .blueprint-card-corner::after {
+      top: 0;
+      left: 4px;
+      width: 1px;
+      height: 9px;
+    }
+
+    .blueprint-card-corner.c-tl { top: 8px; left: 8px; }
+    .blueprint-card-corner.c-tr { top: 8px; right: 8px; }
+    .blueprint-card-corner.c-bl { bottom: 8px; left: 8px; }
+    .blueprint-card-corner.c-br { bottom: 8px; right: 8px; }
+
+    .card-top-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    /* Avatar stack */
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar-pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      margin-left: -8px;
+      overflow: hidden;
+      background-color: #E2E8F0;
+    }
+
+    .avatar-pill:first-child {
+      margin-left: 0;
+    }
+
+    .avatar-pill img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-badge-more {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: #F1F5F9;
+      border: 2px solid #FFFFFF;
+      margin-left: -8px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+
+    .card-media-canvas {
+      width: 100%;
+      position: relative;
+    }
+
+    .card-media-canvas img,
+    .card-media-canvas svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .card-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+
+    .card-bottom-info {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 24px;
+      align-items: baseline;
+    }
+
+    .info-heading {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .info-paragraph {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* =========================================================================
+       SECTION: THREAT DETECTION METRIC (99.9% + FIREWALL)
+       ========================================================================= */
+    .metric-split-section {
+      padding: 64px 44px;
+      background-color: #FFFFFF;
+    }
+
+    .metric-massive-display {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: clamp(3.2rem, 6.5vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin: 28px 0 12px 0;
+    }
+
+    .metric-subcaption {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Filter Pills below firewall */
+    .pills-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .filter-pill {
+      padding: 8px 18px;
+      border-radius: 20px;
+      background-color: #F1F5F9;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all var(--dur) var(--ease);
+      border: 1px solid transparent;
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+      background-color: var(--accent-light);
+      color: var(--action-primary);
+      border-color: var(--accent-border);
+    }
+
+    /* =========================================================================
+       SECTION: SMART SECURITY 3-STEP PIPELINE
+       ========================================================================= */
+    .pipeline-section {
+      padding: 64px 44px;
+      background-color: #FFFFFF;
+    }
+
+    .pipeline-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pipeline-row {
+      background-color: var(--surface-dark);
+      color: #FFFFFF;
+      padding: 20px 24px;
+      border-radius: 4px;
+      display: grid;
+      grid-template-columns: 140px 1fr 40px;
+      align-items: center;
+      gap: 20px;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+      cursor: pointer;
+    }
+
+    .pipeline-row:hover {
+      background-color: #161D2B;
+      transform: translateX(4px);
+    }
+
+    .pipeline-step-name {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+
+    .pipeline-step-desc {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #94A3B8;
+      line-height: 1.4;
+    }
+
+    /* =========================================================================
+       SECTION: TESTIMONIALS & HALFTONE PORTRAITS
+       ========================================================================= */
+    .testimonials-section {
+      padding: 64px 44px;
+      background-color: #FFFFFF;
+    }
+
+    .testimonials-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      position: relative;
+    }
+
+    .testimonial-card {
+      border: 1px solid var(--border-default);
+      border-radius: 3px;
+      padding: 28px;
+      background-color: #FFFFFF;
+      position: relative;
+    }
+
+    .testimonial-card.dark {
+      background-color: var(--surface-dark);
+      color: #FFFFFF;
+      border-color: #1E293B;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 240px;
+    }
+
+    .portrait-split-card {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .author-info-block h4 {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .author-role {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .rating-stars {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--action-primary);
+    }
+
+    .rating-stars svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--action-primary);
+    }
+
+    .portrait-image-wrapper {
+      width: 100%;
+      height: 100%;
+      max-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .portrait-image-wrapper img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: contrast(1.1);
+    }
+
+    .quote-lead {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .quote-author {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1rem;
+      color: #FFFFFF;
+    }
+
+    .quote-role {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #94A3B8;
+    }
+
+    /* =========================================================================
+       SECTION: BOTTOM CONVERSION HERO
+       ========================================================================= */
+    .bottom-cta-section {
+      padding: 72px 44px 0 44px;
+      position: relative;
+      background-color: #FFFFFF;
+      overflow: hidden;
+    }
+
+    .bottom-cta-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 40px;
+      margin-bottom: 44px;
+    }
+
+    /* =========================================================================
+       FOOTER
+       ========================================================================= */
+    .blueprint-footer {
+      padding: 64px 44px 32px 44px;
+      background-color: #FFFFFF;
+      border-top: 1px solid var(--border-default);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-columns-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) 1.4fr;
+      gap: 36px;
+      margin-bottom: 80px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-link {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .footer-link:hover {
+      color: var(--action-primary);
+    }
+
+    .social-icons-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .social-btn {
+      width: 32px;
+      height: 32px;
+      background-color: #60A5FA;
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 0.82rem;
+      transition: background-color var(--dur) var(--ease);
+    }
+
+    .social-btn:hover {
+      background-color: var(--action-primary);
+    }
+
+    .contact-meta {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Giant Faint Watermark Logo */
+    .footer-watermark {
+      position: absolute;
+      bottom: 60px;
+      left: 44px;
+      right: 44px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.12;
+      z-index: 1;
+    }
+
+    .watermark-shield {
+      width: 140px;
+      height: 140px;
+      fill: var(--action-primary);
+    }
+
+    .watermark-text {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: clamp(4rem, 11vw, 9.5rem);
+      letter-spacing: -0.04em;
+      color: var(--action-primary);
+      line-height: 1;
+    }
+
+    /* Sub-Footer Utility Bar */
+    .sub-footer-bar {
+      border-top: 1px solid var(--border-default);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      position: relative;
+      z-index: 5;
+    }
+
+    .status-badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    .status-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #10B981;
+      box-shadow: 0 0 6px #10B981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Toast Notification for Copy Tokens */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--surface-dark);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 10px 18px;
+      border-radius: 2px;
+      border: 1px solid #334155;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: all 220ms ease;
+      z-index: 1000;
+    }
+
+    .toast-popup.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================= */
+    @media (max-width: 1024px) {
+      .blueprint-frame {
+        grid-template-columns: 24px 1fr 24px;
+      }
+      --gutter-width: 24px;
+      .section-header-split,
+      .split-content-grid,
+      .bottom-cta-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .header-subtext {
+        margin-left: 0;
+      }
+      .telemetry-banner {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .banner-stat-block {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border-default);
+        padding-top: 16px;
+      }
+      .footer-columns-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .blueprint-frame {
+        grid-template-columns: 1fr;
+      }
+      .gutter-ruler {
+        display: none;
+      }
+      .top-navbar {
+        padding: 0 20px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero-section,
+      .social-proof-bar,
+      .features-section,
+      .module-split-section,
+      .metric-split-section,
+      .pipeline-section,
+      .testimonials-section,
+      .bottom-cta-section,
+      .blueprint-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .feature-cards-row,
+      .testimonials-mosaic {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .sub-footer-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Blueprint Frame Wrapper with Millimeter Rulers -->
+  <div class="blueprint-frame">
+
+    <!-- Left Ruler Gutter -->
+    <aside class="gutter-ruler left" aria-hidden="true">
+      <div class="gutter-ticks"></div>
+      <div class="gutter-label">GRID_COORDINATES // 40°42'46.1"N 74°00'21.7"W</div>
+    </aside>
+
+    <!-- Main Page Content Canvas -->
+    <div class="page-main-canvas">
+
+      <!-- Navigation Bar -->
+      <nav class="top-navbar">
+        <a href="#hero" class="brand-logo" aria-label="CipherMesh Home">
+          <!-- Hexagonal Mesh Shield SVG Icon -->
+          <svg class="brand-mark-svg" viewBox="0 0 24 24">
+            <path d="M12 2 L20 6.5 L20 15.5 L12 22 L4 15.5 L4 6.5 Z" />
+            <path d="M12 2 L12 22" stroke-dasharray="2 2" />
+            <path d="M4 6.5 L20 15.5" stroke-dasharray="2 2" />
+            <path d="M4 15.5 L20 6.5" stroke-dasharray="2 2" />
+            <circle cx="12" cy="12" r="3" fill="#2563EB" />
+          </svg>
+          <span>CipherMesh</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#platform" class="nav-link">Platform</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li><a href="#testimonials" class="nav-link">Customers</a></li>
+          <li><a href="#docs" class="nav-link">Docs</a></li>
+        </ul>
+
+        <a href="#cta" class="btn-primary">GET STARTED →</a>
+      </nav>
+
+      <!-- 01 HERO SECTION -->
+      <section class="hero-section section-boundary" id="hero">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="hero-badge-row">
+          <span class="category-badge">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke-width="1.8" />
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" stroke-width="1.8" />
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" stroke-width="1.8" transform="rotate(60 12 12)" />
+              <ellipse cx="12" cy="12" rx="9" ry="3.5" stroke-width="1.8" transform="rotate(120 12 12)" />
+            </svg>
+            Data Security
+          </span>
+        </div>
+
+        <h1 class="display-h1 hero-title">
+          AI secure <span class="pixel-accent">access</span> to your data, anywhere, <span class="pixel-accent">anytime</span>
+        </h1>
+
+        <p class="hero-subhead">
+          Enable remote teams with continuous zero-trust identity verification, instant threat isolation, and hardware-grade cryptographic protection across every device.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#cta" class="btn-primary">GET STARTED →</a>
+          <a href="#docs" class="btn-secondary">
+            VIEW DOCS
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 1h6l4 4v8H1V1z" />
+              <path d="M7 1v4h4" />
+              <path d="M3 6h3M3 9h6" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Hero Halftone Topography Landscape -->
+        <div class="hero-topo-container">
+          <img src="assets/hero_topo.png" alt="Halftone Dither Mountain Topography" />
+        </div>
+      </section>
+
+      <!-- 02 SOCIAL PROOF BAR -->
+      <section class="social-proof-bar section-boundary">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="proof-header">
+          <span class="proof-header-square"></span>
+          <span>Trusted By Leading Security &amp; Infrastructure Teams</span>
+        </div>
+
+        <div class="logos-grid">
+          <!-- Fictional Enterprise Logo: SYNAPSE -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <circle cx="4" cy="6" r="2" />
+              <circle cx="20" cy="6" r="2" />
+              <circle cx="12" cy="20" r="2" />
+              <line x1="6" y1="7.5" x2="10" y2="10.5" />
+              <line x1="18" y1="7.5" x2="14" y2="10.5" />
+              <line x1="12" y1="15" x2="12" y2="18" />
+            </svg>
+            <span>SYNAPSE</span>
+          </div>
+
+          <!-- Fictional Enterprise Logo: OCTACORE -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2, 19 5, 22 12, 19 19, 12 22, 5 19, 2 12, 5 5" />
+              <circle cx="12" cy="12" r="2.5" />
+            </svg>
+            <span>OCTACORE</span>
+          </div>
+
+          <!-- Fictional Enterprise Logo: VAULTIX -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="10" width="14" height="11" rx="2" />
+              <path d="M8 10V6a4 4 0 0 1 8 0v4" />
+              <circle cx="12" cy="15" r="1.5" />
+            </svg>
+            <span>VAULTIX</span>
+          </div>
+
+          <!-- Fictional Enterprise Logo: KRONOS -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span>KRONOS</span>
+          </div>
+
+          <!-- Fictional Enterprise Logo: PRISMLOGIC -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 3, 21 20, 3 20" />
+              <line x1="12" y1="11" x2="18" y2="18" stroke-dasharray="2 2" />
+            </svg>
+            <span>PRISMLOGIC</span>
+          </div>
+
+          <!-- Fictional Enterprise Logo: AETHER LABS -->
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2, 22 12, 12 22, 2 12" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span>AETHER</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 BUILT FOR MODERN ENTERPRISE (3-COLUMN + HIGHLIGHT BANNER) -->
+      <section class="features-section section-boundary" id="features">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="section-header-split">
+          <h2 class="section-h2">
+            Built For Modern<br />Enterprise Protection
+          </h2>
+          <p class="header-subtext">
+            We create intelligent cybersecurity solutions that help businesses secure access across hybrid cloud infrastructure and remote perimeters.
+          </p>
+        </div>
+
+        <div class="feature-cards-row">
+          <!-- Card 1: Zero-Trust Access -->
+          <div class="feat-card">
+            <div class="feat-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+            </div>
+            <h3 class="feat-card-title">Zero-Trust Access</h3>
+            <p class="feat-card-desc">Secure every login and microservice connection with ephemeral keys.</p>
+          </div>
+
+          <!-- Card 2: Real-Time Monitoring -->
+          <div class="feat-card">
+            <div class="feat-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <h3 class="feat-card-title">Real-Time Monitoring</h3>
+            <p class="feat-card-desc">Detect threats instantly across telemetry feeds, 24/7 autonomous triage.</p>
+          </div>
+
+          <!-- Card 3: Data Protection -->
+          <div class="feat-card">
+            <div class="feat-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </div>
+            <h3 class="feat-card-title">Data Protection</h3>
+            <p class="feat-card-desc">Keep sensitive payloads encrypted in transit and resting in isolated enclaves.</p>
+          </div>
+        </div>
+
+        <!-- Highlight Telemetry Banner Box -->
+        <div class="telemetry-banner">
+          <div class="banner-statement">
+            Keeping enterprise systems secure across every device
+          </div>
+          <div class="banner-stat-block">
+            <div class="banner-stat-num">AI-Powered</div>
+            <div class="banner-stat-label">Threat Detection</div>
+          </div>
+          <div class="banner-stat-block">
+            <div class="banner-stat-num">256-bit</div>
+            <div class="banner-stat-label">Data Encryption</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 INTERACTIVE TABBED SECURITY SHOWCASE -->
+      <section class="module-split-section section-boundary" id="platform">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="section-header-split">
+          <h2 class="section-h2">
+            Security Built For<br />Modern Enterprises
+          </h2>
+          <p class="header-subtext">
+            We deliver intelligent cybersecurity solutions designed to protect teams, credentials, and high-throughput data streams.
+          </p>
+        </div>
+
+        <div class="split-content-grid">
+          <!-- Left Column: Interactive Tabbed List -->
+          <div class="tab-list" role="tablist">
+            <div class="tab-item" role="tab" onclick="switchSecurityTab(0, this)">
+              <span class="tab-num">01</span>
+              <span class="tab-title">Zero-Trust Security</span>
+              <span class="tab-arrow">←</span>
+            </div>
+            <div class="tab-item active" role="tab" onclick="switchSecurityTab(1, this)">
+              <span class="tab-num">02</span>
+              <span class="tab-title">Real-Time Monitoring</span>
+              <span class="tab-arrow">←</span>
+            </div>
+            <div class="tab-item" role="tab" onclick="switchSecurityTab(2, this)">
+              <span class="tab-num">03</span>
+              <span class="tab-title">Threat Detection</span>
+              <span class="tab-arrow">←</span>
+            </div>
+            <div class="tab-item" role="tab" onclick="switchSecurityTab(3, this)">
+              <span class="tab-num">04</span>
+              <span class="tab-title">Data Encryption</span>
+              <span class="tab-arrow">←</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Blueprint Card with Isometric Shield -->
+          <div class="blueprint-card">
+            <div class="blueprint-card-corner c-tl"></div>
+            <div class="blueprint-card-corner c-tr"></div>
+            <div class="blueprint-card-corner c-bl"></div>
+            <div class="blueprint-card-corner c-br"></div>
+
+            <div class="card-top-controls">
+              <!-- Avatar Stack -->
+              <div class="avatar-stack">
+                <div class="avatar-pill">
+                  <img src="assets/portrait_alex.png" alt="Security Analyst" />
+                </div>
+                <div class="avatar-pill">
+                  <img src="assets/portrait_andreas.png" alt="DevOps Lead" />
+                </div>
+                <div class="avatar-badge-more">+3</div>
+              </div>
+              <a href="#cta" class="btn-primary" style="padding: 9px 18px; font-size: 0.7rem;">LEARN MORE →</a>
+            </div>
+
+            <!-- Isometric 3D Shield Vector Asset -->
+            <div class="card-media-canvas">
+              <img src="assets/isometric_shield.svg" alt="Isometric Halftone Security Shield" />
+            </div>
+
+            <div class="card-bottom-info">
+              <h3 class="info-heading" id="tab-heading">Real-Time Monitoring</h3>
+              <p class="info-paragraph" id="tab-desc">
+                Sensitive business data protected with intelligent cybersecurity solutions designed for modern digital operations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 ADVANCED ACCESS CONTROL & 360° RADAR -->
+      <section class="module-split-section section-boundary" id="architecture">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="section-header-split">
+          <h2 class="section-h2">
+            Advanced Security Features<br />For Modern Enterprises
+          </h2>
+          <p class="header-subtext">
+            Protect your business with intelligent cybersecurity solutions designed to secure access across distributed cloud environments.
+          </p>
+        </div>
+
+        <div class="split-content-grid">
+          <!-- Left Column: Threat Categories -->
+          <div class="tab-list">
+            <div class="tab-item" onclick="switchRadarTarget(0, this)">
+              <span class="tab-title">Suspicious IP Activity</span>
+              <span class="tab-arrow">←</span>
+            </div>
+            <div class="tab-item active" onclick="switchRadarTarget(1, this)">
+              <span class="tab-title" style="color: var(--action-primary);">Unknown Device</span>
+              <span class="tab-arrow">←</span>
+            </div>
+            <div class="tab-item" onclick="switchRadarTarget(2, this)">
+              <span class="tab-title">Failed Authentication</span>
+              <span class="tab-arrow">←</span>
+            </div>
+
+            <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); margin-top: 32px; max-width: 320px; line-height: 1.5;" id="radar-subtext">
+              Block suspicious logins before they compromise business systems and lateral movement perimeters.
+            </p>
+          </div>
+
+          <!-- Right Column: 360° Radar Blueprint Card -->
+          <div class="blueprint-card">
+            <div class="blueprint-card-corner c-tl"></div>
+            <div class="blueprint-card-corner c-tr"></div>
+            <div class="blueprint-card-corner c-bl"></div>
+            <div class="blueprint-card-corner c-br"></div>
+
+            <div class="card-top-controls">
+              <span class="mono-meta" style="color: var(--action-primary);">ANOMALY_TRACKER // SCANNING</span>
+              <a href="#cta" class="btn-primary" style="padding: 9px 18px; font-size: 0.7rem;">LEARN MORE →</a>
+            </div>
+
+            <!-- Rotating Radar Sweep SVG Graphic -->
+            <div class="card-media-canvas">
+              <img src="assets/isometric_radar.svg" alt="Isometric Halftone Radar Scanner" />
+            </div>
+
+            <div class="card-bottom-bar">
+              <h3 class="info-heading">Prevent Unauthorized Access</h3>
+              <a href="#cta" class="btn-square-arrow" aria-label="Explore Access Controls">→</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 THREAT DETECTION METRIC (99.9% + FIREWALL BARRIER) -->
+      <section class="metric-split-section section-boundary">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="split-content-grid">
+          <!-- Left Column: Big Metric -->
+          <div>
+            <h3 class="info-heading" style="font-size: 1.4rem; margin-bottom: 4px;">Real-Time Threat Detection</h3>
+            <p class="mono-meta">connected systems instantly.</p>
+            <div class="metric-massive-display">99.9%</div>
+            <div class="metric-subcaption">Threat Detection Accuracy</div>
+          </div>
+
+          <!-- Right Column: Firewall Defense Card -->
+          <div class="blueprint-card">
+            <div class="blueprint-card-corner c-tl"></div>
+            <div class="blueprint-card-corner c-tr"></div>
+            <div class="blueprint-card-corner c-bl"></div>
+            <div class="blueprint-card-corner c-br"></div>
+
+            <!-- Isometric Firewall Brick Barrier Vector Asset -->
+            <div class="card-media-canvas">
+              <img src="assets/isometric_firewall.svg" alt="Isometric Halftone Firewall Barrier" />
+            </div>
+
+            <div class="pills-action-bar">
+              <button class="filter-pill active" onclick="togglePill(this, 'AI Monitoring: 40 Gbps packet triage running without latency penalty.')">AI Monitoring</button>
+              <button class="filter-pill" onclick="togglePill(this, 'Threat Analysis: Behavioral heuristic engine flagging zero-day exploits.')">Threat Analysis</button>
+              <button class="filter-pill" onclick="togglePill(this, 'Risk Prevention: Ephemeral session revocation upon risk score breach.')">Risk Prevention</button>
+              <a href="#cta" class="btn-square-arrow" style="margin-left: auto;" aria-label="Configure Defense Engine">→</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 SMART SECURITY 3-STEP PIPELINE (INFINITY LOOP + ACCORDION) -->
+      <section class="pipeline-section section-boundary">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="section-header-split">
+          <h2 class="section-h2">
+            Smart Security In<br />Three Simple Steps
+          </h2>
+          <p class="header-subtext">
+            Protect your business with intelligent cybersecurity infrastructure designed to detect and isolate threats continuously.
+          </p>
+        </div>
+
+        <div class="split-content-grid">
+          <!-- Left Column: Infinity Loop Blueprint Card -->
+          <div class="blueprint-card">
+            <div class="blueprint-card-corner c-tl"></div>
+            <div class="blueprint-card-corner c-tr"></div>
+            <div class="blueprint-card-corner c-bl"></div>
+            <div class="blueprint-card-corner c-br"></div>
+
+            <!-- Isometric Halftone Infinity Loop SVG Graphic -->
+            <div class="card-media-canvas">
+              <img src="assets/isometric_loop.svg" alt="Isometric Infinity Loop Data Integrity" />
+            </div>
+          </div>
+
+          <!-- Right Column: 4 Interactive Dark Pipeline Rows -->
+          <div class="pipeline-stack">
+            <div class="pipeline-row" onclick="highlightPipeline(this)">
+              <div class="pipeline-step-name">Monitor Activity</div>
+              <div class="pipeline-step-desc">connected devices using AI-powered monitoring systems.</div>
+              <span class="btn-square-arrow" style="width: 32px; height: 32px; font-size: 0.8rem;">→</span>
+            </div>
+
+            <div class="pipeline-row" onclick="highlightPipeline(this)">
+              <div class="pipeline-step-name">Detect Threats</div>
+              <div class="pipeline-step-desc">Identify suspicious activity, unauthorized access attempts.</div>
+              <span class="btn-square-arrow" style="width: 32px; height: 32px; font-size: 0.8rem;">→</span>
+            </div>
+
+            <div class="pipeline-row" onclick="highlightPipeline(this)">
+              <div class="pipeline-step-name">Secure Operations</div>
+              <div class="pipeline-step-desc">connected devices using AI-powered monitoring systems.</div>
+              <span class="btn-square-arrow" style="width: 32px; height: 32px; font-size: 0.8rem;">→</span>
+            </div>
+
+            <div class="pipeline-row" onclick="highlightPipeline(this)">
+              <div class="pipeline-step-name">Respond</div>
+              <div class="pipeline-step-desc">Respond instantly and isolate threats with automated runbooks.</div>
+              <span class="btn-square-arrow" style="width: 32px; height: 32px; font-size: 0.8rem;">→</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 TESTIMONIALS & HALFTONE PORTRAITS -->
+      <section class="testimonials-section section-boundary" id="testimonials">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="section-header-split">
+          <h2 class="section-h2">
+            Trusted By Modern<br />Enterprises Worldwide
+          </h2>
+          <p class="header-subtext">
+            Businesses rely on our intelligent cybersecurity solutions to protect sensitive systems and maintain continuous compliance.
+          </p>
+        </div>
+
+        <div class="testimonials-mosaic">
+          <!-- Card 1: Alex Smith with Halftone Portrait -->
+          <div class="testimonial-card portrait-split-card">
+            <div class="author-info-block">
+              <h4>Alex Smith</h4>
+              <span class="author-role">Enterprise Security Lead</span>
+              <div class="rating-stars">
+                <span>5.0</span>
+                <svg viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                <svg viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+              </div>
+            </div>
+            <div class="portrait-image-wrapper">
+              <img src="assets/portrait_alex.png" alt="Alex Smith Halftone Dither Portrait" />
+            </div>
+          </div>
+
+          <!-- Card 2: Andreas Mitchell Floating Card -->
+          <div class="testimonial-card portrait-split-card" style="background-color: var(--surface-subtle);">
+            <div class="author-info-block">
+              <h4>Andreas Mitchell</h4>
+              <span class="author-role">AI Security Operations</span>
+              <p style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5;">
+                "Reduced our incident resolution time from 42 minutes to 8 seconds with autonomous triage."
+              </p>
+            </div>
+            <div class="portrait-image-wrapper">
+              <img src="assets/portrait_andreas.png" alt="Andreas Mitchell Halftone Dither Portrait" />
+            </div>
+          </div>
+
+          <!-- Card 3: Daniel Vance Center Dark Quote Card -->
+          <div class="testimonial-card dark" style="grid-column: 1 / -1; max-width: 640px; margin: 0 auto; width: 100%;">
+            <p class="quote-lead">
+              "The platform helped our teams secure access across every device without slowing developer productivity or requiring heavy agents."
+            </p>
+            <div>
+              <div class="quote-author">Daniel Vance</div>
+              <div class="quote-role">CTO, Nexora Systems</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 BOTTOM CONVERSION HERO -->
+      <section class="bottom-cta-section section-boundary" id="cta">
+        <div class="section-crosshair bl"></div>
+        <div class="section-crosshair br"></div>
+
+        <div class="bottom-cta-grid">
+          <div>
+            <h2 class="display-h1" style="font-size: clamp(2.2rem, 4.4vw, 3.8rem);">
+              Secure your business with intelligent <span class="pixel-accent">cybersecurity</span> solutions
+            </h2>
+            <div class="hero-cta-group" style="margin-top: 32px;">
+              <button class="btn-primary" onclick="showToast('Connecting to CipherMesh provisioning mesh...')">START SECURING NOW →</button>
+              <button class="btn-secondary" onclick="showToast('Free 14-day cryptographic trial initiated')">START FREE TRIAL</button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; justify-content: flex-end;">
+            <p class="mono-meta" style="font-size: 0.88rem; line-height: 1.6; max-width: 380px;">
+              Protect digital operations with intelligent security infrastructure built for zero-trust enterprise resilience.
+            </p>
+          </div>
+        </div>
+
+        <!-- Halftone Topography Landscape Banner -->
+        <div class="hero-topo-container">
+          <img src="assets/hero_topo.png" alt="Halftone Dither Mountain Topography" />
+        </div>
+      </section>
+
+      <!-- 10 BLUEPRINT FOOTER -->
+      <footer class="blueprint-footer">
+        <div class="footer-columns-grid">
+          <!-- Col 1 -->
+          <div>
+            <div class="footer-col-title">Home</div>
+            <ul class="footer-links-list">
+              <li><a href="#hero" class="footer-link">Projects</a></li>
+              <li><a href="#cta" class="footer-link">Contact</a></li>
+              <li><a href="#features" class="footer-link">Features</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 2 -->
+          <div>
+            <div class="footer-col-title">Company</div>
+            <ul class="footer-links-list">
+              <li><a href="#about" class="footer-link">About Us</a></li>
+              <li><a href="#careers" class="footer-link">Careers</a></li>
+              <li><a href="#cta" class="footer-link">Contact</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3 -->
+          <div>
+            <div class="footer-col-title">Product</div>
+            <ul class="footer-links-list">
+              <li><a href="#platform" class="footer-link">How it works</a></li>
+              <li><a href="#features" class="footer-link">Use case</a></li>
+              <li><a href="#architecture" class="footer-link">Discover</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 4 -->
+          <div>
+            <div class="footer-col-title">Resources</div>
+            <ul class="footer-links-list">
+              <li><a href="#growth" class="footer-link">Growth</a></li>
+              <li><a href="#process" class="footer-link">Process</a></li>
+              <li><a href="#support" class="footer-link">Support</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 5: Socials & Contact -->
+          <div>
+            <div class="social-icons-row">
+              <a href="#" class="social-btn" aria-label="X (Twitter)">𝕏</a>
+              <a href="#" class="social-btn" aria-label="Threads">@</a>
+              <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+            </div>
+            <div class="contact-meta">
+              <p style="margin-bottom: 4px;">security@ciphermesh.example</p>
+              <p>+1 (415) 890-2048</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Giant Faint Watermark Logo -->
+        <div class="footer-watermark" aria-hidden="true">
+          <svg class="watermark-shield" viewBox="0 0 24 24">
+            <path d="M12 2 L20 6.5 L20 15.5 L12 22 L4 15.5 L4 6.5 Z" />
+          </svg>
+          <span class="watermark-text">CipherMesh</span>
+        </div>
+
+        <!-- Sub-Footer Utility Bar -->
+        <div class="sub-footer-bar">
+          <div>Built for focus &bull; High-Assurance Zero Trust</div>
+          <div>&copy; 2026 CipherMesh. All Rights Reserved.</div>
+          <div class="status-badge-live">
+            <span class="status-dot-pulse"></span>
+            <span>All Systems Operational // 99.99% Uptime</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Right Ruler Gutter -->
+    <aside class="gutter-ruler right" aria-hidden="true">
+      <div class="gutter-ticks"></div>
+      <div class="gutter-label">ARCHITECTURAL BLUEPRINT // ZERO_TRUST_v2.4</div>
+    </aside>
+
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div class="toast-popup" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Tabbed Security Showcase Interaction
+    const tabData = [
+      {
+        heading: "Zero-Trust Security",
+        desc: "Enforce least-privilege access verification continuously for every microservice, API token, and employee session."
+      },
+      {
+        heading: "Real-Time Monitoring",
+        desc: "Sensitive business data protected with intelligent cybersecurity solutions designed for modern digital operations."
+      },
+      {
+        heading: "Threat Detection",
+        desc: "Autonomous anomaly detection correlating telemetry across cloud providers, VPC logs, and identity gateways."
+      },
+      {
+        heading: "Data Encryption",
+        desc: "Hardware-isolated AES-256-GCM and post-quantum cryptographic envelopes safeguarding data in flight and at rest."
+      }
+    ];
+
+    function switchSecurityTab(index, element) {
+      document.querySelectorAll('.tab-list[role="tablist"] .tab-item').forEach(item => item.classList.remove('active'));
+      element.classList.add('active');
+      document.getElementById('tab-heading').textContent = tabData[index].heading;
+      document.getElementById('tab-desc').textContent = tabData[index].desc;
+    }
+
+    // Radar Target Switcher
+    const radarData = [
+      "Detect and automatically blackhole traffic originating from flagged botnets, TOR exits, and high-risk ASNs.",
+      "Block suspicious logins before they compromise business systems and lateral movement perimeters.",
+      "Lock down brute-force and credential-stuffing sweeps instantly with cryptographic proof-of-work challenges."
+    ];
+
+    function switchRadarTarget(index, element) {
+      const parent = element.parentElement;
+      parent.querySelectorAll('.tab-item').forEach(item => item.classList.remove('active'));
+      element.classList.add('active');
+      document.getElementById('radar-subtext').textContent = radarData[index];
+    }
+
+    // Filter Pill Interaction
+    function togglePill(pill, message) {
+      pill.parentElement.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      showToast(message);
+    }
+
+    // Pipeline Row Highlight
+    function highlightPipeline(row) {
+      document.querySelectorAll('.pipeline-row').forEach(r => r.style.borderColor = 'transparent');
+      row.style.border = '1px solid var(--action-primary)';
+      const step = row.querySelector('.pipeline-step-name').textContent;
+      showToast(`Pipeline Stage: ${step} engaged.`);
+    }
+
+    // Toast Notification helper
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.add('visible');
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 2600);
+    }
+  </script>
+</body>
+</html>

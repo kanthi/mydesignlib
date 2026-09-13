@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zavant — Digital Design Agency</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --font-main: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      --surface-page: #FBFBFA;
+      --surface-card: #FFFFFF;
+      --surface-tint: #F3F4F6;
+      --surface-dark: #0E1015;
+      --surface-dark-card: #151820;
+
+      --border-default: rgba(14, 16, 21, 0.08);
+      --border-subtle: rgba(14, 16, 21, 0.04);
+      --border-dark: rgba(255, 255, 255, 0.1);
+
+      --text-primary: #0E1015;
+      --text-secondary: #525964;
+      --text-faint: #8A92A0;
+      --text-inverse: #FFFFFF;
+
+      --action-orange: #FF4800;
+      --action-orange-hover: #E03E00;
+      --accent-lime: #B8FF24;
+      --accent-cyan: #00D2FF;
+      --accent-lavender: #8A70D6;
+      --accent-emerald: #10B981;
+
+      --wrap: 1220px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+
+      --dur: 260ms;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--surface-page);
+      color: var(--text-primary);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--wrap);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 12px 26px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--dur) var(--ease);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-orange {
+      background-color: var(--action-orange);
+      color: #FFFFFF;
+      box-shadow: 0 4px 18px rgba(255, 72, 0, 0.28);
+    }
+
+    .btn-orange:hover {
+      background-color: var(--action-orange-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(255, 72, 0, 0.34);
+    }
+
+    .btn-dark {
+      background-color: var(--surface-dark);
+      color: #FFFFFF;
+    }
+
+    .btn-dark:hover {
+      background-color: #232731;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border-default);
+      color: var(--text-primary);
+    }
+
+    .btn-ghost:hover {
+      background-color: rgba(14, 16, 21, 0.04);
+      border-color: var(--text-primary);
+    }
+
+    /* Navigation */
+    .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(251, 251, 250, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-default);
+      transition: border-color var(--dur) var(--ease);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-menu {
+      display: none;
+      align-items: center;
+      gap: 32px;
+    }
+
+    @media (min-width: 860px) {
+      .nav-menu {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 64px 0 96px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      position: relative;
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--action-orange);
+    }
+
+    .hero-headline {
+      font-size: clamp(2.6rem, 6.2vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin-bottom: 32px;
+    }
+
+    /* Hero Floating Pills */
+    .hero-floating-badges {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .tilt-pill {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    .pill-delivered {
+      background: #E0E7FF;
+      color: #3730A3;
+      transform: rotate(-6deg);
+    }
+
+    .pill-craft {
+      background: #EDE9FE;
+      color: #5B21B6;
+      transform: rotate(7deg);
+    }
+
+    .collaborate-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 22px 8px 12px;
+      background: #0E1015;
+      color: #FFFFFF;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 12px 30px rgba(14, 16, 21, 0.25);
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+      cursor: pointer;
+    }
+
+    .collaborate-capsule:hover {
+      transform: scale(1.03);
+      box-shadow: 0 16px 36px rgba(14, 16, 21, 0.35);
+    }
+
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #0E1015;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-left: -6px;
+    }
+
+    .avatar-circle:first-child {
+      margin-left: 0;
+      background: #FF4800;
+    }
+    .avatar-circle:nth-child(2) {
+      background: #8A70D6;
+    }
+    .avatar-circle:nth-child(3) {
+      background: #10B981;
+    }
+
+    .collaborate-text {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    /* 3D Depth Card Stage */
+    .hero-depth-stage {
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      margin: 0 auto;
+    }
+
+    .deck-container {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 1180px;
+    }
+
+    @media (min-width: 900px) {
+      .deck-container {
+        grid-template-columns: 280px 320px 320px 240px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .stage-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 40px -10px rgba(14, 16, 21, 0.08);
+      padding: 24px;
+      position: relative;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+
+    .stage-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 50px -10px rgba(14, 16, 21, 0.14);
+    }
+
+    /* Card 1: Dark Analytics */
+    .card-dark-analytics {
+      background: #11141A;
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .analytics-metric {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 8px 0;
+      color: #FFFFFF;
+    }
+
+    .analytics-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(184, 255, 36, 0.15);
+      color: #B8FF24;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 70px;
+      margin-top: 16px;
+    }
+
+    /* Card 2: Client Details */
+    .card-client-details {
+      background: #FFFFFF;
+    }
+
+    .client-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .client-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF7B00, #FF4800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-weight: 700;
+    }
+
+    .client-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .client-status {
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+
+    .client-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 12px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .metric-box strong {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .metric-box span {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    /* Card 3: Sprint Voucher Offer */
+    .card-offer-banner {
+      background: radial-gradient(120% 120% at 10% 10%, #2A174E 0%, #151026 100%);
+      color: #FFFFFF;
+      border-color: rgba(138, 112, 214, 0.3);
+      box-shadow: 0 24px 48px -12px rgba(42, 23, 78, 0.35);
+    }
+
+    .offer-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-lime);
+      margin-bottom: 8px;
+    }
+
+    .offer-headline {
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .offer-code-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.8125rem;
+      font-family: monospace;
+      color: #DDD;
+      display: flex;
+      justify-content: space-between;
+      margin: 14px 0;
+    }
+
+    .btn-grab-offer {
+      width: 100%;
+      background: linear-gradient(135deg, #FF4800, #FF6A00);
+      color: #FFF;
+      font-weight: 700;
+      padding: 10px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: opacity var(--dur) var(--ease);
+    }
+
+    .btn-grab-offer:hover {
+      opacity: 0.92;
+    }
+
+    /* Card 4: Pro Plan Checklist */
+    .card-pro-checklist {
+      background: #FFFFFF;
+    }
+
+    .pro-price {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 6px 0 14px;
+    }
+
+    .pro-checklist {
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .pro-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .check-icon {
+      color: var(--accent-emerald);
+      font-weight: 800;
+    }
+
+    /* Social Proof Ribbon */
+    .proof-section {
+      padding: 48px 0;
+      border-top: 1px solid var(--border-default);
+      border-bottom: 1px solid var(--border-default);
+      background-color: #FFFFFF;
+    }
+
+    .proof-label {
+      text-align: center;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      margin-bottom: 32px;
+    }
+
+    .client-logos-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      opacity: 0.7;
+    }
+
+    .client-logos-row svg {
+      height: 24px;
+      fill: var(--text-primary);
+      transition: opacity var(--dur) var(--ease);
+    }
+
+    .client-logos-row svg:hover {
+      opacity: 1;
+    }
+
+    /* Services Section */
+    .services-section {
+      padding: 100px 0;
+      background-color: var(--surface-page);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 64px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--action-orange);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .services-interactive-deck {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (min-width: 900px) {
+      .services-interactive-deck {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 64px;
+      }
+    }
+
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .service-row-item {
+      padding: 24px 28px;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--dur) var(--ease);
+    }
+
+    .service-row-item:hover {
+      background: rgba(14, 16, 21, 0.03);
+    }
+
+    .service-row-item.active {
+      background: #FFFFFF;
+      border-color: var(--border-default);
+      box-shadow: 0 10px 30px rgba(14, 16, 21, 0.06);
+    }
+
+    .service-row-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-faint);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .service-row-item.active .service-row-title {
+      color: var(--text-primary);
+    }
+
+    .service-index {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-faint);
+    }
+
+    .service-preview-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 48px -12px rgba(14, 16, 21, 0.08);
+      overflow: hidden;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .preview-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preview-cat {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .preview-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 72, 0, 0.12);
+      color: var(--action-orange);
+    }
+
+    .preview-mockup-frame {
+      background: #F1F3F5;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      padding: 24px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .mockup-inner-screen {
+      background: #FFFFFF;
+      border-radius: 6px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      padding: 20px;
+      width: 100%;
+      max-width: 340px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .mockup-header-line {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .mockup-sub-line {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .preview-description {
+      font-size: 1.0rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .preview-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-item {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--surface-tint);
+      color: var(--text-secondary);
+    }
+
+    /* Works Section */
+    .works-section {
+      padding: 100px 0;
+      background-color: #FFFFFF;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 56px;
+    }
+
+    @media (min-width: 768px) {
+      .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .works-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .work-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+      background: var(--surface-page);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+
+    .work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(14, 16, 21, 0.09);
+    }
+
+    .work-thumb {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb-growth {
+      background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+    }
+
+    .thumb-ai {
+      background: radial-gradient(circle at center, #1E1B4B 0%, #0F172A 100%);
+      color: #FFF;
+    }
+
+    .thumb-legal {
+      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    }
+
+    .thumb-green {
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: #FFF;
+    }
+
+    .thumb-terminal {
+      background: radial-gradient(circle at center, #881337 0%, #4C0519 100%);
+      color: #FFF;
+    }
+
+    .thumb-editorial {
+      background: #FDFBF7;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .work-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .work-client-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--action-orange);
+    }
+
+    .work-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .work-meta {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .works-cta-wrap {
+      text-align: center;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+      padding: 100px 0;
+      background-color: var(--surface-page);
+      border-top: 1px solid var(--border-default);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    @media (min-width: 880px) {
+      .testimonials-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .testimonial-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 12px 28px rgba(14, 16, 21, 0.04);
+    }
+
+    .metric-headline {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    .quote-text {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .author-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 18px;
+    }
+
+    .author-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0E1015;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .author-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .author-role {
+      font-size: 0.75rem;
+      color: var(--text-faint);
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 100px 0;
+      background-color: #FFFFFF;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    @media (min-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .pricing-card {
+      background: var(--surface-page);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      background: #0E1015;
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 24px 50px -12px rgba(14, 16, 21, 0.3);
+      transform: scale(1.02);
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: -12px;
+      right: 32px;
+      background: var(--action-orange);
+      color: #FFF;
+      font-size: 0.6875rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+    }
+
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .plan-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-card.featured .plan-desc {
+      color: #A0AEC0;
+    }
+
+    .plan-price-box {
+      margin-bottom: 32px;
+    }
+
+    .plan-price {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .plan-cadence {
+      font-size: 0.875rem;
+      color: var(--text-faint);
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.9375rem;
+      margin-bottom: 40px;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .check-mark {
+      color: var(--action-orange);
+      font-weight: 800;
+    }
+
+    .pricing-card.featured .check-mark {
+      color: var(--accent-lime);
+    }
+
+    /* CTA Section */
+    .cta-banner-section {
+      padding: 100px 0;
+      background: radial-gradient(100% 100% at 50% 0%, #171A21 0%, #0E1015 100%);
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .cta-headline {
+      font-size: clamp(2.4rem, 5vw, 4.0rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .cta-desc {
+      font-size: 1.125rem;
+      color: #9CA3AF;
+      max-width: 600px;
+      margin: 0 auto 36px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #0E1015;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #6B7280;
+      padding: 60px 0 40px;
+      font-size: 0.875rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a:hover {
+      color: #FFF;
+    }
+
+    /* Modal Form */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(14, 16, 21, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-faint);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.9375rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION
+       ========================================================================== -->
+  <header class="nav-header">
+    <div class="container nav-inner">
+      <a href="#" class="nav-brand">
+        <div class="brand-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="#0E1015"/>
+            <path d="M7 8H21L13 20H7L15 8" fill="#FF4800"/>
+            <circle cx="19" cy="19" r="2.5" fill="#B8FF24"/>
+          </svg>
+        </div>
+        <span>Zavant</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#services" class="nav-link">Solutions</a>
+        <a href="#works" class="nav-link">Works</a>
+        <a href="#testimonials" class="nav-link">Proof</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-dark" onclick="openModal()">
+          <span>Book a Sprint</span>
+          <span style="color: var(--accent-lime);">✦</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION WITH 3D DEPTH CARD STAGE
+       ========================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge-tag">
+          <span class="tag-dot"></span>
+          <span>Digital Design Agency &middot; 26</span>
+        </div>
+
+        <h1 class="hero-headline">
+          We transform ideas into digital outcomes
+        </h1>
+
+        <!-- Floating Badge Accents -->
+        <div class="hero-floating-badges">
+          <div class="tilt-pill pill-delivered">
+            <span>⚡</span>
+            <span>240+ Delivered</span>
+          </div>
+
+          <div class="collaborate-capsule" onclick="openModal()">
+            <div class="avatar-stack">
+              <div class="avatar-circle">Z</div>
+              <div class="avatar-circle">K</div>
+              <div class="avatar-circle">M</div>
+            </div>
+            <span class="collaborate-text">Let's Collaborate &rarr;</span>
+          </div>
+
+          <div class="tilt-pill pill-craft">
+            <span>✦</span>
+            <span>Top 1% Craft</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Card Depth Deck Stage -->
+      <div class="hero-depth-stage">
+        <div class="deck-container">
+          
+          <!-- Card 1: Dark Telemetry -->
+          <div class="stage-card card-dark-analytics">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.75rem; color: #8C95A0; font-weight: 700;">ARR ACCELERATION</span>
+              <span class="analytics-badge">+142%</span>
+            </div>
+            <div class="analytics-metric">$540,000</div>
+            <p style="font-size: 0.75rem; color: #6E7681;">Client median post-launch revenue expansion</p>
+            <svg class="chart-svg" viewBox="0 0 200 60" fill="none">
+              <path d="M0 50 Q 40 45, 70 30 T 130 25 T 200 5" stroke="#FF4800" stroke-width="3" fill="none"/>
+              <path d="M0 50 Q 40 45, 70 30 T 130 25 T 200 5 L 200 60 L 0 60 Z" fill="url(#grad1)" opacity="0.2"/>
+              <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FF4800"/>
+                  <stop offset="100%" stop-color="#FF4800" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <!-- Card 2: Client Details -->
+          <div class="stage-card card-client-details">
+            <div class="client-header">
+              <div class="client-avatar">CK</div>
+              <div>
+                <div class="client-name">Cornelius Klein</div>
+                <div class="client-status">&#x25CF; Active Partner</div>
+              </div>
+            </div>
+            <div class="client-metrics-grid">
+              <div class="metric-box">
+                <strong>3</strong>
+                <span>Ongoing Sprints</span>
+              </div>
+              <div class="metric-box">
+                <strong>28</strong>
+                <span>Completed Tasks</span>
+              </div>
+            </div>
+            <button class="btn btn-ghost" style="width: 100%; padding: 8px; font-size: 0.8125rem;" onclick="openModal()">
+              Message Lead Designer &rarr;
+            </button>
+          </div>
+
+          <!-- Card 3: Sprint Voucher Offer -->
+          <div class="stage-card card-offer-banner">
+            <div class="offer-tag">⚡ Exclusive Agency Sprint</div>
+            <div class="offer-headline">Unlock 14-Day Sprint 25% Off</div>
+            <p style="font-size: 0.8125rem; color: #C4B5FD; line-height: 1.4;">
+              Reserve your Q4 product sprint window before booking closes.
+            </p>
+            <div class="offer-code-box">
+              <span>CODE: SPRINT25</span>
+              <span style="color: var(--accent-lime);">&#x2713; Active</span>
+            </div>
+            <button class="btn-grab-offer" onclick="openModal()">Grab The Offer</button>
+          </div>
+
+          <!-- Card 4: Pro Plan Checklist -->
+          <div class="stage-card card-pro-checklist">
+            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--action-orange);">
+              Pro Retainer
+            </span>
+            <div class="pro-price">$3,800 <span style="font-size: 0.875rem; font-weight: 500; color: var(--text-faint);">/mo</span></div>
+            <ul class="pro-checklist">
+              <li><span class="check-icon">&#x2713;</span> Dedicated Design Lead</li>
+              <li><span class="check-icon">&#x2713;</span> Next.js & Webflow Build</li>
+              <li><span class="check-icon">&#x2713;</span> Unlimited Revisions</li>
+              <li><span class="check-icon">&#x2713;</span> 48h Turnaround</li>
+            </ul>
+            <button class="btn btn-dark" style="width: 100%; padding: 8px; font-size: 0.8125rem;" onclick="openModal()">
+              Select Retainer
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PROOF RIBBON
+       ========================================================================== -->
+  <section class="proof-section">
+    <div class="container">
+      <div class="proof-label">Trusted by brands that believe in digital excellence</div>
+      <div class="client-logos-row">
+        <!-- Logo 1 -->
+        <svg width="120" height="24" viewBox="0 0 120 24">
+          <circle cx="12" cy="12" r="8" fill="#0E1015"/>
+          <text x="28" y="16" font-family="sans-serif" font-weight="700" font-size="13" fill="#0E1015">VERTEX</text>
+        </svg>
+        <!-- Logo 2 -->
+        <svg width="120" height="24" viewBox="0 0 120 24">
+          <polygon points="12,4 20,20 4,20" fill="#0E1015"/>
+          <text x="28" y="16" font-family="sans-serif" font-weight="700" font-size="13" fill="#0E1015">NOVAKIN</text>
+        </svg>
+        <!-- Logo 3 -->
+        <svg width="120" height="24" viewBox="0 0 120 24">
+          <rect x="4" y="4" width="16" height="16" rx="4" fill="#0E1015"/>
+          <text x="28" y="16" font-family="sans-serif" font-weight="700" font-size="13" fill="#0E1015">PULSELAB</text>
+        </svg>
+        <!-- Logo 4 -->
+        <svg width="120" height="24" viewBox="0 0 120 24">
+          <circle cx="8" cy="12" r="5" fill="#0E1015"/>
+          <circle cx="16" cy="12" r="5" fill="#FF4800"/>
+          <text x="28" y="16" font-family="sans-serif" font-weight="700" font-size="13" fill="#0E1015">SYNAPSE</text>
+        </svg>
+        <!-- Logo 5 -->
+        <svg width="120" height="24" viewBox="0 0 120 24">
+          <path d="M4 18 L12 6 L20 18 Z" fill="#0E1015"/>
+          <text x="28" y="16" font-family="sans-serif" font-weight="700" font-size="13" fill="#0E1015">AETHER</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE SERVICES ACCORDION
+       ========================================================================== -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">
+          <span class="tag-dot"></span>
+          <span>Our Solutions &middot; 05</span>
+        </div>
+        <h2 class="section-title">Our digital solutions</h2>
+        <p class="section-subtitle">
+          Empowering modern businesses with innovative strategies, responsive design systems, and digital craftsmanship that inspire real conversions.
+        </p>
+      </div>
+
+      <div class="services-interactive-deck">
+        <!-- Interactive Service List -->
+        <div class="services-list">
+          <div class="service-row-item" onclick="switchService(0)" data-index="0">
+            <div class="service-row-title">Branding ( 01 )</div>
+            <div class="service-index">&rarr;</div>
+          </div>
+          <div class="service-row-item active" onclick="switchService(1)" data-index="1">
+            <div class="service-row-title">Web Design ( 02 )</div>
+            <div class="service-index">&rarr;</div>
+          </div>
+          <div class="service-row-item" onclick="switchService(2)" data-index="2">
+            <div class="service-row-title">App Design ( 03 )</div>
+            <div class="service-index">&rarr;</div>
+          </div>
+          <div class="service-row-item" onclick="switchService(3)" data-index="3">
+            <div class="service-row-title">Design Systems ( 04 )</div>
+            <div class="service-index">&rarr;</div>
+          </div>
+          <div class="service-row-item" onclick="switchService(4)" data-index="4">
+            <div class="service-row-title">AI Products ( 05 )</div>
+            <div class="service-index">&rarr;</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Preview Specimen Card -->
+        <div class="service-preview-card" id="servicePreviewCard">
+          <div class="preview-card-header">
+            <span class="preview-cat" id="previewCatTitle">Web Design ( 02 )</span>
+            <span class="preview-pill" id="previewPill">Most Popular</span>
+          </div>
+
+          <div class="preview-mockup-frame">
+            <div class="mockup-inner-screen">
+              <div class="mockup-header-line" id="mockupHeading">Smarter money management starts here</div>
+              <div class="mockup-sub-line" id="mockupSub">Unified capital orchestration for enterprise teams.</div>
+              <div style="margin-top: 14px; height: 32px; background: #0E1015; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 0.6875rem; font-weight: 700;">
+                Live Product Interface
+              </div>
+            </div>
+          </div>
+
+          <p class="preview-description" id="previewDescText">
+            We design modern, high-conversion websites that capture immediate attention, articulate your distinctive value proposition, and convert visitors into qualified buyers.
+          </p>
+
+          <div class="preview-tags-row" id="previewTagsRow">
+            <span class="tag-item">Next.js</span>
+            <span class="tag-item">Framer Motion</span>
+            <span class="tag-item">Lighthouse 99+</span>
+            <span class="tag-item">SEO Strategy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OUR WORKS GRID
+       ========================================================================== -->
+  <section class="works-section" id="works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">
+          <span class="tag-dot"></span>
+          <span>Selected Case Studies</span>
+        </div>
+        <h2 class="section-title">Our Works</h2>
+        <p class="section-subtitle">
+          Real client outcomes engineered through rigorous strategy, modern typography, and pixel-level execution.
+        </p>
+      </div>
+
+      <div class="works-grid">
+        <!-- Work 1 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-growth">
+            <div style="background: #FFF; border-radius: 8px; padding: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.06); width: 85%;">
+              <div style="font-size: 0.75rem; color: #0284C7; font-weight: 700;">GROWTH BOOST</div>
+              <div style="font-size: 1.1rem; font-weight: 800; margin: 4px 0;">B2B Analytics Platform</div>
+              <div style="font-size: 0.75rem; color: #64748B;">+218% User Activation</div>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">Fintech &middot; Web App</span>
+            <h3 class="work-title">Growth Boost Orchestration</h3>
+            <p class="work-meta">Complete identity, UI kit, and high-conversion dashboard re-architecture.</p>
+          </div>
+        </article>
+
+        <!-- Work 2 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-ai">
+            <div style="text-align: center;">
+              <div style="font-size: 0.75rem; color: #A5B4FC; font-weight: 700; letter-spacing: 0.1em;">TRANSCEND AI</div>
+              <div style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">Autonomous Cognitive Core</div>
+              <span style="font-size: 0.6875rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px;">Series B Launch</span>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">AI & Machine Learning</span>
+            <h3 class="work-title">Transcend Intelligence</h3>
+            <p class="work-meta">Interactive 3D model playground and generative workflow UI suite.</p>
+          </div>
+        </article>
+
+        <!-- Work 3 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-legal">
+            <div style="background: #FFF; border-radius: 8px; padding: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.06); width: 85%;">
+              <div style="font-size: 0.75rem; color: #B45309; font-weight: 700;">VANGUARD LEGAL</div>
+              <div style="font-size: 1.1rem; font-weight: 800; margin: 4px 0;">Contract Automation</div>
+              <div style="font-size: 0.75rem; color: #78716C;">Enterprise Risk Management</div>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">Legal Tech &middot; Corporate</span>
+            <h3 class="work-title">Vanguard Architecture</h3>
+            <p class="work-meta">Authoritative typography, editorial layout, and client onboarding portal.</p>
+          </div>
+        </article>
+
+        <!-- Work 4 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-green">
+            <div style="text-align: center;">
+              <div style="font-size: 0.75rem; color: #A7F3D0; font-weight: 700; letter-spacing: 0.08em;">VERDE CLIMATE</div>
+              <div style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">Carbon Ledger Protocol</div>
+              <span style="font-size: 0.6875rem; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 4px;">ESG Audit Engine</span>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">Climate Tech</span>
+            <h3 class="work-title">Verde Sustainability Platform</h3>
+            <p class="work-meta">Real-time telemetry displays and public accountability disclosure suite.</p>
+          </div>
+        </article>
+
+        <!-- Work 5 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-terminal">
+            <div style="text-align: center;">
+              <div style="font-size: 0.75rem; color: #FDA4AF; font-weight: 700;">KINETIQ TERMINAL</div>
+              <div style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">$50M+ Daily Liquidity</div>
+              <div style="font-size: 0.75rem; color: #F43F5E;">Sub-Millisecond Execution</div>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">High-Frequency Trading</span>
+            <h3 class="work-title">Kinetiq Capital Trading UI</h3>
+            <p class="work-meta">Ultra-dense dark mode execution console and latency telemetry dashboards.</p>
+          </div>
+        </article>
+
+        <!-- Work 6 -->
+        <article class="work-card">
+          <div class="work-thumb thumb-editorial">
+            <div style="border: 2px solid #0E1015; padding: 18px 24px; text-align: center; background: #FFF;">
+              <div style="font-size: 1.4rem; font-weight: 800; letter-spacing: 0.15em;">MATTHEW</div>
+              <div style="font-size: 0.6875rem; text-transform: uppercase; color: #666; margin-top: 4px;">Atelier Paris &middot; MMXXVI</div>
+            </div>
+          </div>
+          <div class="work-body">
+            <span class="work-client-tag">Luxury & Fashion</span>
+            <h3 class="work-title">Matthew Atelier Lookbook</h3>
+            <p class="work-meta">Editorial e-commerce experience with fluid micro-interactions and archive grid.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="works-cta-wrap">
+        <button class="btn btn-orange" onclick="openModal()">View All Works (24+) &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       CLIENT PROOF & TESTIMONIALS
+       ========================================================================== -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">
+          <span class="tag-dot"></span>
+          <span>Verified Client Outcomes</span>
+        </div>
+        <h2 class="section-title">Trusted by our clients</h2>
+        <p class="section-subtitle">
+          Direct measurable results from founders and design leaders across high-growth ventures.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+          <div>
+            <div class="metric-headline">80% Higher Brand Recognition</div>
+            <p class="quote-text">
+              "Our new website and design system transformed our enterprise presence overnight. The team's ability to balance technical precision with commercial conversion was incredible."
+            </p>
+          </div>
+          <div class="author-lockup">
+            <div class="author-img">DK</div>
+            <div>
+              <div class="author-name">David Kim</div>
+              <div class="author-role">Founder, UrbanEdge Studio</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+          <div>
+            <div class="metric-headline">75% Boost in Inbound Pipeline</div>
+            <p class="quote-text">
+              "Working with Zavant was an absolute game-changer. Their conversion architecture and clean visual hierarchy doubled our qualified sales inquiries within 30 days of launch."
+            </p>
+          </div>
+          <div class="author-lockup">
+            <div class="author-img">SJ</div>
+            <div>
+              <div class="author-name">Sarah Johnson</div>
+              <div class="author-role">Marketing Director, Horizon Cloud</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+          <div>
+            <div class="metric-headline">70% Faster Product Cycles</div>
+            <p class="quote-text">
+              "From wireframe validation to production handoff, the Zavant team executed with flawless precision. Their tokenized design kit accelerated our entire frontend timeline."
+            </p>
+          </div>
+          <div class="author-lockup">
+            <div class="author-img">EC</div>
+            <div>
+              <div class="author-name">Emily Carter</div>
+              <div class="author-role">COO, Nova Digital</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PRICING TIERS
+       ========================================================================== -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">
+          <span class="tag-dot"></span>
+          <span>Predictable Retainers</span>
+        </div>
+        <h2 class="section-title">Flexible Plans for Bold Brands</h2>
+        <p class="section-subtitle">
+          Transparent, high-velocity design partnerships. No opaque agency markups or hidden fees.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plan 1 -->
+        <div class="pricing-card">
+          <div class="plan-name">Basic Sprint</div>
+          <p class="plan-desc">Ideal for early-stage startups needing a core landing page and brand polish.</p>
+          <div class="plan-price-box">
+            <div class="plan-price">$2,500 <span class="plan-cadence">/ sprint</span></div>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-mark">&#x2713;</span> 1 Core Landing Page Design</li>
+            <li><span class="check-mark">&#x2713;</span> Mobile Responsive UI</li>
+            <li><span class="check-mark">&#x2713;</span> Basic SEO & Micro-copy</li>
+            <li><span class="check-mark">&#x2713;</span> 2 Revision Rounds</li>
+            <li><span class="check-mark">&#x2713;</span> 7-Day Fast Delivery</li>
+          </ul>
+          <button class="btn btn-ghost" onclick="openModal()">Get Started &rarr;</button>
+        </div>
+
+        <!-- Plan 2: Featured -->
+        <div class="pricing-card featured">
+          <div class="featured-tag">Most Popular</div>
+          <div class="plan-name">Growth Retainer</div>
+          <p class="plan-desc">Full-service dedicated design team for scaling products needing continuous velocity.</p>
+          <div class="plan-price-box">
+            <div class="plan-price">$4,800 <span class="plan-cadence">/ month</span></div>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-mark">&#x2713;</span> Up to 5 Web Pages / Sprints</li>
+            <li><span class="check-mark">&#x2713;</span> Brand Guidelines & Typography Kit</li>
+            <li><span class="check-mark">&#x2713;</span> Custom SVG & Micro-Interactions</li>
+            <li><span class="check-mark">&#x2713;</span> 4 Revision Rounds per deliverable</li>
+            <li><span class="check-mark">&#x2713;</span> Priority Slack Channel & Direct Access</li>
+            <li><span class="check-mark">&#x2713;</span> Pause or Cancel Anytime</li>
+          </ul>
+          <button class="btn btn-orange" onclick="openModal()">Join Retainer &rarr;</button>
+        </div>
+
+        <!-- Plan 3 -->
+        <div class="pricing-card">
+          <div class="plan-name">Enterprise Systems</div>
+          <p class="plan-desc">Multi-product organizations requiring bespoke design systems and dedicated leads.</p>
+          <div class="plan-price-box">
+            <div class="plan-price">$8,500 <span class="plan-cadence">/ month</span></div>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-mark">&#x2713;</span> Complete Design System Architecture</li>
+            <li><span class="check-mark">&#x2713;</span> Web, Mobile & Dashboard Applications</li>
+            <li><span class="check-mark">&#x2713;</span> Dedicated Design Director & Engineers</li>
+            <li><span class="check-mark">&#x2713;</span> Custom 3D & Motion Production</li>
+            <li><span class="check-mark">&#x2713;</span> Unlimited Iterations & Live Sprints</li>
+          </ul>
+          <button class="btn btn-ghost" onclick="openModal()">Contact Sales &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       CALL TO ACTION BANNER
+       ========================================================================== -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <h2 class="cta-headline">Let's build something unforgettable</h2>
+      <p class="cta-desc">
+        Turn your next product milestone into a category-defining digital experience. Book a discovery sprint today.
+      </p>
+      <button class="btn btn-orange" onclick="openModal()">
+        <span>Schedule Strategy Call</span>
+        <span>&rarr;</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #FFF; margin-bottom: 6px;">
+          <span>Zavant Studio</span>
+        </div>
+        <p>&copy; 2026 Zavant Digital Design Agency. Fictional specimen template.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#services">Solutions</a>
+        <a href="#works">Works</a>
+        <a href="#testimonials">Proof</a>
+        <a href="#pricing">Pricing</a>
+        <a href="mailto:hello@zavant.example">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       INQUIRY MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="inquiryModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+      <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">Initiate a Design Sprint</h3>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 20px;">
+        Share your vision and our lead partner will respond within 12 hours.
+      </p>
+
+      <form id="inquiryForm" onsubmit="handleInquiry(event)">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" class="form-control" placeholder="Jane Doe" required />
+        </div>
+        <div class="form-group">
+          <label>Work Email</label>
+          <input type="email" class="form-control" placeholder="jane@company.com" required />
+        </div>
+        <div class="form-group">
+          <label>Project Scope</label>
+          <select class="form-control">
+            <option>Web Design & Conversion</option>
+            <option>Full Brand Identity</option>
+            <option>Product & Mobile UI/UX</option>
+            <option>Enterprise Design System</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estimated Budget</label>
+          <select class="form-control">
+            <option>$2,500 - $5,000</option>
+            <option>$5,000 - $10,000</option>
+            <option>$10,000+</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-orange" style="width: 100%; margin-top: 10px;">
+          Submit Inquiry &rarr;
+        </button>
+      </form>
+
+      <div id="modalSuccess" style="display: none; text-align: center; padding: 24px 0;">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">🎉</div>
+        <h4 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">Inquiry Received</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          Thank you! Our creative director will review your brief and send over our sprint deck.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Scripts -->
+  <script>
+    const serviceData = [
+      {
+        title: "Branding ( 01 )",
+        pill: "Strategic Foundation",
+        heading: "Identity that commands immediate market authority",
+        sub: "Wordmarks, proportion tokens, color psychology, and multi-scale vectors.",
+        desc: "We construct foundational brand identities that scale seamlessly from 16px favicons to international transit billboards with unflinching precision.",
+        tags: ["Brand Book", "Logo Systems", "Typography", "Art Direction"]
+      },
+      {
+        title: "Web Design ( 02 )",
+        pill: "Most Popular",
+        heading: "Smarter money management starts here",
+        sub: "Unified capital orchestration for enterprise teams.",
+        desc: "We design modern, high-conversion websites that capture immediate attention, articulate your distinctive value proposition, and convert visitors into qualified buyers.",
+        tags: ["Next.js", "Framer Motion", "Lighthouse 99+", "SEO Strategy"]
+      },
+      {
+        title: "App Design ( 03 )",
+        pill: "High Retention",
+        heading: "Effortless workflows designed for muscle memory",
+        sub: "Mobile and desktop applications that feel like an extension of thought.",
+        desc: "Every interaction is calibrated for micro-feedback, ergonomics, and clarity, driving daily active engagement and low churn.",
+        tags: ["iOS & Android", "Design Tokens", "Micro-Interactions", "Figma Auto-Layout"]
+      },
+      {
+        title: "Design Systems ( 04 )",
+        pill: "Engineering Ready",
+        heading: "A unified language between design and code",
+        sub: "Production-ready Web Components and headless UI patterns.",
+        desc: "Eliminate UI drift and engineering friction with robust design systems engineered for scale, accessibility, and high velocity.",
+        tags: ["Tokens Studio", "Storybook", "WCAG 2.1 AAA", "Component Specimens"]
+      },
+      {
+        title: "AI Products ( 05 )",
+        pill: "Next-Gen UI",
+        heading: "Human-centered interfaces for generative AI",
+        sub: "Canvas interfaces, agent orchestration, and prompt ergonomics.",
+        desc: "We design mental models and interaction paradigms for AI tools that make complex model outputs tangible, controllable, and delightful.",
+        tags: ["Agentic UX", "Canvas Workspaces", "Streaming UI", "Latency Design"]
+      }
+    ];
+
+    function switchService(index) {
+      const items = document.querySelectorAll('.service-row-item');
+      items.forEach((item, idx) => {
+        if (idx === index) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      const data = serviceData[index];
+      if (!data) return;
+
+      document.getElementById('previewCatTitle').textContent = data.title;
+      document.getElementById('previewPill').textContent = data.pill;
+      document.getElementById('mockupHeading').textContent = data.heading;
+      document.getElementById('mockupSub').textContent = data.sub;
+      document.getElementById('previewDescText').textContent = data.desc;
+
+      const tagsContainer = document.getElementById('previewTagsRow');
+      tagsContainer.innerHTML = '';
+      data.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'tag-item';
+        span.textContent = tag;
+        tagsContainer.appendChild(span);
+      });
+    }
+
+    function openModal() {
+      document.getElementById('inquiryModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('inquiryModal').classList.remove('active');
+    }
+
+    function handleInquiry(e) {
+      e.preventDefault();
+      document.getElementById('inquiryForm').style.display = 'none';
+      document.getElementById('modalSuccess').style.display = 'block';
+    }
+
+    // Close modal on escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

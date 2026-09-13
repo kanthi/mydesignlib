@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strata AI — Autonomous Architectural Intelligence Inside Your CAD & BIM</title>
+  <meta name="description" content="Strata AI inspects your architectural models in real-time, identifies building code violations, and automatically synthesizes parametric fixes inside Revit, Rhino, and Archicad." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.5/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #F4F3ED;
+      --bg-card: #ECEAE1;
+      --bg-white: #FFFFFF;
+      --ink: #141413;
+      --ink-muted: #6E6B61;
+      --hairline: #D5D2C5;
+      --hairline-dark: #2A2926;
+      --cad-red: #FF3318;
+      --cad-red-hover: #E02810;
+      --cad-red-dim: rgba(255, 51, 24, 0.08);
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg);
+      line-height: 1.5;
+      position: relative;
+    }
+
+    /* Architectural Hairline Grid Background */
+    .blueprint-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-size: 80px 80px;
+      background-image: 
+        linear-gradient(to right, rgba(213, 210, 197, 0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(213, 210, 197, 0.35) 1px, transparent 1px);
+    }
+
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-left: 1px solid var(--hairline);
+      border-right: 1px solid var(--hairline);
+      max-width: 1720px;
+      margin: 0 auto;
+      background: var(--bg);
+    }
+
+    /* Corner Drafting Crosses (+) */
+    .cross-marker {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      pointer-events: none;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 9px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      font-weight: 400;
+    }
+    .cross-tl { top: -4px; left: -4px; }
+    .cross-tr { top: -4px; right: -4px; }
+    .cross-bl { bottom: -4px; left: -4px; }
+    .cross-br { bottom: -4px; right: -4px; }
+
+    /* Top Navigation */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244, 243, 237, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: 280px 1fr auto;
+      align-items: stretch;
+      height: 58px;
+    }
+
+    .brand-col {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px;
+      border-right: 1px solid var(--hairline);
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand-cube {
+      width: 20px;
+      height: 20px;
+    }
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      height: 100%;
+    }
+    .nav-links li {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-right: 1px solid var(--hairline);
+    }
+    .nav-links a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      text-decoration: none;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--cad-red);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid var(--cad-red);
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+    .btn-contact:hover {
+      background: var(--cad-red);
+      color: var(--bg-white);
+    }
+
+    /* Red Hairline Benchmark Bar */
+    .benchmark-line {
+      height: 20px;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      background: var(--bg);
+    }
+    .benchmark-line .metric {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .benchmark-line .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--cad-red);
+      display: inline-block;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      border-bottom: 1px solid var(--hairline);
+      padding: 48px 24px 36px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .hero-h1-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr auto;
+      align-items: end;
+      gap: 40px;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 28px;
+      margin-bottom: 32px;
+    }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.4vw, 68px);
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+    }
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--ink-muted);
+      max-width: 480px;
+    }
+    .hero-desc strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .hero-cta-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cad-red);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .hero-cta-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Interactive CAD Hero Drawing Container */
+    .cad-viewport {
+      position: relative;
+      width: 100%;
+      min-height: 600px;
+      max-height: 780px;
+      background: var(--bg-white);
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      cursor: crosshair;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cad-img-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: contrast(1.04) brightness(0.98);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Mouse Tracking Hairlines */
+    .crosshair-line-h, .crosshair-line-v {
+      position: absolute;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .crosshair-line-h {
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(20, 20, 19, 0.4);
+      top: 50%;
+    }
+    .crosshair-line-v {
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(20, 20, 19, 0.4);
+      left: 50%;
+    }
+
+    /* Coordinates HUD */
+    .cad-hud-coordinates {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 20;
+      background: rgba(244, 243, 237, 0.92);
+      border: 1px solid var(--hairline);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink);
+      display: flex;
+      gap: 16px;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }
+    .cad-hud-coordinates span {
+      color: var(--cad-red);
+      font-weight: 600;
+    }
+
+    /* Interaction Prompt */
+    .cad-hud-prompt {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 20;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cad-hud-prompt .pulse-red {
+      width: 6px;
+      height: 6px;
+      background: var(--cad-red);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.6); opacity: 0.4; }
+    }
+
+    /* Interactive Violation Markers (Authentic IBC Rules) */
+    .violation-card {
+      position: absolute;
+      background: var(--cad-red);
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      line-height: 1.35;
+      letter-spacing: 0.05em;
+      z-index: 15;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 51, 24, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      max-width: 260px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+    }
+    .violation-card:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: var(--cad-red-hover);
+    }
+    .violation-card .v-header {
+      font-weight: 600;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .violation-card .v-status {
+      font-size: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .violation-card .v-action {
+      margin-top: 6px;
+      font-size: 9px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: underline;
+    }
+
+    /* Fixed State */
+    .violation-card.is-fixed {
+      background: #141413;
+      border-color: #3CD070;
+    }
+    .violation-card.is-fixed .v-header {
+      border-bottom-color: rgba(60, 208, 112, 0.3);
+    }
+    .violation-card.is-fixed .v-status {
+      background: rgba(60, 208, 112, 0.2);
+      color: #3CD070;
+    }
+
+    /* Placed Violation 1: Handrail Stairs */
+    .v-pos-1 {
+      top: 54%;
+      left: 18%;
+    }
+    /* Placed Violation 2: Guardrail Terrace */
+    .v-pos-2 {
+      top: 28%;
+      left: 58%;
+    }
+    /* Placed Violation 3: Cantilever Egress */
+    .v-pos-3 {
+      top: 66%;
+      left: 64%;
+    }
+
+    /* Running Continuous Marquee Ticker */
+    .marquee-strip {
+      border-bottom: 1px solid var(--hairline);
+      overflow: hidden;
+      background: var(--bg);
+      padding: 12px 0;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .marquee-item .sym {
+      color: var(--cad-red);
+      font-size: 13px;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Section: Monolith Tower & Editorial Split */
+    .section-editorial {
+      position: relative;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .editorial-media-col {
+      border-right: 1px solid var(--hairline);
+      position: relative;
+      background: var(--bg-card);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+    .tower-artwork {
+      width: 100%;
+      max-width: 580px;
+      height: auto;
+      object-fit: contain;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--hairline);
+    }
+
+    .editorial-content-col {
+      padding: 72px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cad-red);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .editorial-heading {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 3.2vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .editorial-body {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 14px 28px;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--ink);
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+    .btn-primary:hover {
+      background: var(--cad-red);
+      border-color: var(--cad-red);
+      color: #FFFFFF;
+    }
+
+    /* Client Partner Strip */
+    .partners-strip {
+      border-top: 1px solid var(--hairline);
+      padding-top: 32px;
+      margin-top: 56px;
+    }
+    .partners-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .partners-grid {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+    .partner-firm {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: 0.7;
+    }
+
+    /* Section: Interactive Floorplan Scanner */
+    .section-floorplan {
+      position: relative;
+      border-bottom: 1px solid var(--hairline);
+      padding: 64px 24px;
+    }
+    .section-header-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .floorplan-workspace {
+      position: relative;
+      border: 1px solid var(--hairline);
+      background: var(--bg-white);
+      height: 620px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      overflow: hidden;
+    }
+
+    .floorplan-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FAF9F6;
+    }
+
+    /* SVG Floorplan & Nodes */
+    .floorplan-svg {
+      width: 90%;
+      height: 90%;
+    }
+    .fp-wall {
+      stroke: var(--ink);
+      stroke-width: 4;
+      fill: none;
+      stroke-linecap: square;
+    }
+    .fp-thin {
+      stroke: #8A887E;
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+      fill: none;
+    }
+    .fp-ray {
+      stroke: var(--cad-red);
+      stroke-width: 1.5;
+      stroke-dasharray: 6 4;
+      animation: rayPulse 2s infinite linear;
+    }
+    @keyframes rayPulse {
+      to { stroke-dashoffset: -20; }
+    }
+    .fp-node {
+      fill: var(--cad-red);
+      cursor: pointer;
+      transition: r 0.2s ease, fill 0.2s ease;
+    }
+    .fp-node:hover {
+      r: 8;
+      fill: var(--ink);
+    }
+    .fp-text {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      fill: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Side Diagnostic Drawer */
+    .diagnostic-panel {
+      border-left: 1px solid var(--hairline);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+    .diag-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--hairline);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .diag-logs {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .diag-log-item {
+      border-left: 2px solid var(--hairline);
+      padding-left: 10px;
+    }
+    .diag-log-item.active {
+      border-left-color: var(--cad-red);
+      color: var(--ink);
+    }
+    .diag-log-item .time {
+      font-size: 9px;
+      color: var(--ink-muted);
+    }
+    .diag-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--hairline);
+      background: var(--bg-card);
+    }
+    .btn-run-check {
+      width: 100%;
+      padding: 10px;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-run-check:hover {
+      background: var(--cad-red);
+    }
+
+    /* 3-Column Pillars */
+    .section-pillars {
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .pillar-card {
+      padding: 48px 36px;
+      border-right: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 340px;
+    }
+    .pillar-card:last-child {
+      border-right: none;
+    }
+    .pillar-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--cad-red);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .pillar-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+    }
+
+    /* Monumental Bottom Section & Monument Stairs */
+    .section-monument {
+      position: relative;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .monument-img-col {
+      border-right: 1px solid var(--hairline);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+    .monument-img {
+      width: 100%;
+      max-width: 580px;
+      height: auto;
+      object-fit: contain;
+      border: 1px solid var(--hairline);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+    }
+    .monument-cta-col {
+      padding: 72px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .monument-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3.8vw, 54px);
+      line-height: 1.02;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .monument-sub {
+      font-size: 16px;
+      color: var(--ink-muted);
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+    .cta-form-row {
+      display: flex;
+      max-width: 480px;
+      border: 1px solid var(--ink);
+    }
+    .cta-input {
+      flex: 1;
+      padding: 14px 18px;
+      background: var(--bg-white);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink);
+      outline: none;
+    }
+    .cta-submit {
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      padding: 0 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .cta-submit:hover {
+      background: var(--cad-red);
+    }
+
+    /* Giant Wireframe Logo In Footer */
+    .giant-logo-section {
+      position: relative;
+      border-bottom: 1px solid var(--hairline);
+      padding: 64px 24px 72px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .giant-logo-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      user-select: none;
+    }
+    .wireframe-letter {
+      flex: 1;
+      height: 140px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wireframe-letter svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .letter-path-outline {
+      fill: transparent;
+      stroke: var(--ink);
+      stroke-width: 1.5;
+      stroke-linecap: square;
+      transition: fill 0.3s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+    }
+    .letter-path-fill {
+      fill: var(--ink);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .wireframe-letter:hover .letter-path-outline {
+      stroke: var(--cad-red);
+    }
+    .wireframe-letter:hover .letter-path-fill {
+      opacity: 1;
+    }
+    .wireframe-letter .cross-marker {
+      opacity: 0.6;
+    }
+
+    /* Site Footer Details */
+    footer.site-footer {
+      display: grid;
+      grid-template-columns: 320px 1fr 1fr 280px;
+      border-top: 1px solid var(--hairline);
+      padding: 48px 24px;
+      gap: 32px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .footer-col p {
+      line-height: 1.6;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .footer-col a:hover {
+      color: var(--cad-red);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      header.site-header {
+        grid-template-columns: 220px 1fr auto;
+      }
+      .section-editorial, .section-monument {
+        grid-template-columns: 1fr;
+      }
+      .editorial-media-col, .monument-img-col {
+        border-right: none;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .floorplan-workspace {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .floorplan-canvas-wrap {
+        height: 480px;
+      }
+      .section-pillars {
+        grid-template-columns: 1fr;
+      }
+      .pillar-card {
+        border-right: none;
+        border-bottom: 1px solid var(--hairline);
+      }
+      footer.site-footer {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-h1-row {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      footer.site-footer {
+        grid-template-columns: 1fr;
+      }
+      .giant-logo-wrap {
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hairline Blueprint Background -->
+  <div class="blueprint-bg"></div>
+
+  <div class="main-wrapper">
+    <!-- Top Nav Header -->
+    <header class="site-header">
+      <div class="cross-marker cross-tl">+</div>
+      <div class="cross-marker cross-tr">+</div>
+
+      <a href="#" class="brand-col">
+        <svg class="brand-cube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor"/>
+          <path d="M2 17L12 22L22 17" stroke="currentColor"/>
+          <path d="M2 12L12 17L22 12" stroke="currentColor"/>
+        </svg>
+        <span class="brand-title">Strata AI</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#product">Product</a></li>
+        <li><a href="#engine">Engine</a></li>
+        <li><a href="#compliance">IBC Compliance</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#about">Studio</a></li>
+      </ul>
+
+      <div class="header-actions">
+        <a href="#demo" class="btn-contact">Request Access →</a>
+      </div>
+    </header>
+
+    <!-- Benchmark Telemetry Bar -->
+    <div class="benchmark-line">
+      <div class="metric">
+        <span><span class="dot"></span> STRATA CORE V2.8.4 RUNNING</span>
+        <span>LATENCY: 14MS</span>
+        <span>VIEWPORT: BIM SYNC ACTIVE</span>
+      </div>
+      <div class="metric">
+        <span>HOST: REVIT / RHINO / ARCHICAD</span>
+        <span>BUILDING CODE DATABASE: IBC 2024/2026</span>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="product">
+      <div class="hero-h1-row">
+        <h1 class="hero-h1">An AI agent that works inside your design tools</h1>
+        <p class="hero-desc">
+          Strata reviews your CAD model, identifies regulatory building code issues, and proposes parametric solutions. Upon approval, it applies edits natively without exporting files.
+        </p>
+        <a href="#engine" class="hero-cta-link">Explore the Architecture ↓</a>
+      </div>
+
+      <!-- Interactive CAD Crosshair Viewport -->
+      <div class="cad-viewport" id="cadViewport">
+        <div class="cross-marker cross-tl">+</div>
+        <div class="cross-marker cross-tr">+</div>
+        <div class="cross-marker cross-bl">+</div>
+        <div class="cross-marker cross-br">+</div>
+
+        <!-- Mouse Following Hairline Guides -->
+        <div class="crosshair-line-h" id="hairlineH"></div>
+        <div class="crosshair-line-v" id="hairlineV"></div>
+
+        <!-- Live Telemetry Coordinates -->
+        <div class="cad-hud-coordinates">
+          <div>X: <span id="hudX">1120</span>PX</div>
+          <div>Y: <span id="hudY">460</span>PX</div>
+        </div>
+
+        <div class="cad-hud-prompt">
+          <span class="pulse-red"></span>
+          <span>Click and drag to inspect building violations</span>
+        </div>
+
+        <!-- High-Res Elevation Artwork -->
+        <img src="assets/hero_elevation.jpg" alt="Modern Brutalist Elevation Blueprint" class="cad-img-canvas" />
+
+        <!-- Interactive Violation Markers -->
+        <div class="violation-card v-pos-1" id="v1" onclick="toggleFix('v1', 'IBC 1011.11 Handrail Injected')">
+          <div class="v-header">
+            <span>IBC 1011.11</span>
+            <span class="v-status" id="v1-status">FLAGGED</span>
+          </div>
+          <div>Handrails required: Stair riser/tread slope deficit detected.</div>
+          <div class="v-action" id="v1-action">Click to inject Strata fix →</div>
+        </div>
+
+        <div class="violation-card v-pos-2" id="v2" onclick="toggleFix('v2', 'IBC 1015.3 Guardrail Built')">
+          <div class="v-header">
+            <span>IBC 1015.3</span>
+            <span class="v-status" id="v2-status">FLAGGED</span>
+          </div>
+          <div>Guardrail required for fall protection: Terrace elevation exceeds 30".</div>
+          <div class="v-action" id="v2-action">Click to inject Strata fix →</div>
+        </div>
+
+        <div class="violation-card v-pos-3" id="v3" onclick="toggleFix('v3', 'IBC 1005.1 Clearance Verified')">
+          <div class="v-header">
+            <span>IBC 1005.1</span>
+            <span class="v-status" id="v3-status">FLAGGED</span>
+          </div>
+          <div>Egress width verification: Nominal clearance meets 44.0" threshold.</div>
+          <div class="v-action" id="v3-action">Click to inject Strata fix →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Running Marquee Ticker -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <div class="marquee-item">Fewer Mistakes <span class="sym">⊕</span></div>
+        <div class="marquee-item">Less Busywork <span class="sym">⊕</span></div>
+        <div class="marquee-item">Faster Iterations <span class="sym">⊕</span></div>
+        <div class="marquee-item">Native BIM Synchronization <span class="sym">⊕</span></div>
+        <div class="marquee-item">Zero IFC Export Friction <span class="sym">⊕</span></div>
+        <div class="marquee-item">Autonomous Generative Geometry <span class="sym">⊕</span></div>
+        <div class="marquee-item">Fewer Mistakes <span class="sym">⊕</span></div>
+        <div class="marquee-item">Less Busywork <span class="sym">⊕</span></div>
+        <div class="marquee-item">Faster Iterations <span class="sym">⊕</span></div>
+        <div class="marquee-item">Native BIM Synchronization <span class="sym">⊕</span></div>
+        <div class="marquee-item">Zero IFC Export Friction <span class="sym">⊕</span></div>
+        <div class="marquee-item">Autonomous Generative Geometry <span class="sym">⊕</span></div>
+      </div>
+    </div>
+
+    <!-- Monolith Tower Section (Red Sun) -->
+    <section class="section-editorial" id="engine">
+      <div class="cross-marker cross-tl">+</div>
+      <div class="cross-marker cross-tr">+</div>
+
+      <div class="editorial-media-col">
+        <img src="assets/tower_redsun.jpg" alt="Brutalist Tower with Red Sun" class="tower-artwork" />
+      </div>
+
+      <div class="editorial-content-col">
+        <div>
+          <div class="section-label">
+            <span>// 01 ARCHITECTURAL ENGINE</span>
+          </div>
+          <h2 class="editorial-heading">
+            The repetitive parts of modelling shouldn't eat your day. Strata handles the fiddly, manual work so you can stay focused on the design, not the software.
+          </h2>
+          <p class="editorial-body">
+            Architectural production is bogged down by manual drafting checks, schedule alignment, wall fire-ratings, and IBC code lookups. Strata operates as a quiet ambient intelligence in the background of your CAD software, verifying geometric compliance with zero latency.
+          </p>
+          <a href="#compliance" class="btn-primary">Learn How Strata Works →</a>
+        </div>
+
+        <div class="partners-strip">
+          <div class="partners-label">TRUSTED BY LEADING ARCHITECTURAL PRACTICES NATIONWIDE</div>
+          <div class="partners-grid">
+            <span class="partner-firm">MONOLITH</span>
+            <span class="partner-firm">TERRA ARCH</span>
+            <span class="partner-firm">AXIS STUDIO</span>
+            <span class="partner-firm">VERTEX BIM</span>
+            <span class="partner-firm">KINETIC WORK</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-Column Architectural Pillars -->
+    <section class="section-pillars" id="integrations">
+      <div class="pillar-card">
+        <div class="pillar-num">[ 01 / DETECTION ]</div>
+        <div>
+          <h3 class="pillar-title">Sub-Millimeter Geometry Auditing</h3>
+          <p class="pillar-desc">
+            Continuous background analysis tracks polyline loops, wall joints, floor slab cantilevers, and staircase riser ratios against 4,800+ municipal building codes.
+          </p>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-num">[ 02 / SYNTHESIS ]</div>
+        <div>
+          <h3 class="pillar-title">Parametric Direct-Edits</h3>
+          <p class="pillar-desc">
+            No messy external code generation. When you approve an amendment, Strata drives your tool's native API to inject compliant NURBS, BIM families, or dimension tags.
+          </p>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-num">[ 03 / RUNTIME ]</div>
+        <div>
+          <h3 class="pillar-title">Native Viewport C++ Plugin</h3>
+          <p class="pillar-desc">
+            Runs natively inside Autodesk Revit, Rhino 8, McNeel Grasshopper, Graphisoft Archicad, and SketchUp Pro without cloud round-trip lag or proprietary lock-in.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive CAD Floorplan Section -->
+    <section class="section-floorplan" id="compliance">
+      <div class="cross-marker cross-tl">+</div>
+      <div class="cross-marker cross-tr">+</div>
+
+      <div class="section-header-block">
+        <div>
+          <div class="section-label">// 02 REAL-TIME TOPOLOGY VALIDATION</div>
+          <h2 class="section-title">Run an agent natively in your model</h2>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);">
+          STATUS: 12 NODES EVALUATING 6 CODES
+        </div>
+      </div>
+
+      <div class="floorplan-workspace">
+        <div class="floorplan-canvas-wrap">
+          <svg class="floorplan-svg" viewBox="0 0 800 600">
+            <!-- Exterior Walls -->
+            <polygon class="fp-wall" points="80,60 720,60 720,540 80,540" />
+            <!-- Interior Partitions -->
+            <line class="fp-wall" x1="280" y1="60" x2="280" y2="400" />
+            <line class="fp-wall" x1="280" y1="400" x2="520" y2="400" />
+            <line class="fp-wall" x1="520" y1="60" x2="520" y2="540" />
+            <line class="fp-wall" x1="80" y1="260" x2="280" y2="260" />
+
+            <!-- Subdivisions & Room Labels -->
+            <text x="140" y="160" class="fp-text">Gallery Hall A</text>
+            <text x="360" y="240" class="fp-text">Main Atrium</text>
+            <text x="600" y="300" class="fp-text">East Wing Labs</text>
+            <text x="140" y="420" class="fp-text">Service Corridors</text>
+
+            <!-- Diagnostic Egress Rays -->
+            <line class="fp-ray" x1="140" y1="160" x2="360" y2="240" />
+            <line class="fp-ray" x1="360" y1="240" x2="600" y2="300" />
+            <line class="fp-ray" x1="360" y1="240" x2="400" y2="540" />
+
+            <!-- Animated Red Vertices (Nodes) -->
+            <circle class="fp-node" cx="80" cy="60" r="5" onclick="triggerLog('Vertex 01: Corner Column OK')" />
+            <circle class="fp-node" cx="280" cy="60" r="5" onclick="triggerLog('Node 02: Shear Wall Intersect Verified')" />
+            <circle class="fp-node" cx="520" cy="60" r="5" onclick="triggerLog('Node 03: Thermal Bridge Inspected')" />
+            <circle class="fp-node" cx="720" cy="60" r="5" onclick="triggerLog('Node 04: Corner Column OK')" />
+
+            <circle class="fp-node" cx="280" cy="260" r="6" fill="#FF3318" onclick="triggerLog('Node 05 [ALERT]: Fire Door Rating Required')" />
+            <circle class="fp-node" cx="280" cy="400" r="5" onclick="triggerLog('Node 06: Partition Junction Clear')" />
+            <circle class="fp-node" cx="520" cy="400" r="6" fill="#FF3318" onclick="triggerLog('Node 07 [ALERT]: Egress Width Clearance 42 inches (Min 44)')" />
+            <circle class="fp-node" cx="400" cy="540" r="5" onclick="triggerLog('Node 08: Primary Egress Threshold OK')" />
+          </svg>
+        </div>
+
+        <!-- Diagnostic Side Panel -->
+        <div class="diagnostic-panel">
+          <div class="diag-head">
+            <span>Model Telemetry</span>
+            <span style="color: var(--cad-red);">● LIVE</span>
+          </div>
+          <div class="diag-logs" id="diagLogs">
+            <div class="diag-log-item active">
+              <div class="time">18:56:02.12</div>
+              <div>[SCAN] Parsing Revit Project "Atrium_2026_V4.rvt"</div>
+            </div>
+            <div class="diag-log-item active">
+              <div class="time">18:56:02.44</div>
+              <div>[CODE] Evaluating IBC Chapter 10: Means of Egress</div>
+            </div>
+            <div class="diag-log-item active">
+              <div class="time">18:56:03.01</div>
+              <div>[ALERT] Node 07 flagged: Egress width deficit (42" found, 44" req).</div>
+            </div>
+            <div class="diag-log-item">
+              <div class="time">18:56:03.18</div>
+              <div>[ACTION] Parametric wall offset generated (+2.00"). Ready to apply.</div>
+            </div>
+          </div>
+          <div class="diag-footer">
+            <button class="btn-run-check" onclick="simulateFullSweep()">Run Full Compliance Sweep</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monumental Civic Building Section & CTA -->
+    <section class="section-monument" id="demo">
+      <div class="cross-marker cross-tl">+</div>
+      <div class="cross-marker cross-tr">+</div>
+
+      <div class="monument-img-col">
+        <img src="assets/monument_stairs.jpg" alt="Brutalist Cultural Pavilion" class="monument-img" />
+      </div>
+
+      <div class="monument-cta-col">
+        <div class="section-label">// 03 ADMISSION & ROLLOUT</div>
+        <h2 class="monument-title">See what Strata can do in your model</h2>
+        <p class="monument-sub">
+          Join architectural practices from London to Sydney using Strata to automate drawing audits and code synthesis.
+        </p>
+
+        <form class="cta-form-row" onsubmit="event.preventDefault(); alert('Demo request received. Our engineering team will provision your studio license.');">
+          <input type="email" placeholder="ENTER YOUR WORK EMAIL" required class="cta-input" />
+          <button type="submit" class="cta-submit">Request Demo</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Giant Wireframe Architectural Typography (Footer Logo) -->
+    <section class="giant-logo-section">
+      <div class="cross-marker cross-tl">+</div>
+      <div class="cross-marker cross-tr">+</div>
+      <div class="cross-marker cross-bl">+</div>
+      <div class="cross-marker cross-br">+</div>
+
+      <div class="giant-logo-wrap">
+        <!-- S -->
+        <div class="wireframe-letter" title="Hover to inspect mesh">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M80,30 C80,15 65,10 50,10 C30,10 20,22 20,38 C20,55 35,62 55,68 C75,74 85,82 85,98 C85,112 70,120 48,120 C25,120 15,108 15,92 L28,92 C28,102 36,108 48,108 C60,108 72,102 72,92 C72,82 62,76 42,70 C22,64 10,54 10,38 C10,18 25,2 50,2 C72,2 88,14 90,30 Z" />
+            <path class="letter-path-fill" d="M80,30 C80,15 65,10 50,10 C30,10 20,22 20,38 C20,55 35,62 55,68 C75,74 85,82 85,98 C85,112 70,120 48,120 C25,120 15,108 15,92 L28,92 C28,102 36,108 48,108 C60,108 72,102 72,92 C72,82 62,76 42,70 C22,64 10,54 10,38 C10,18 25,2 50,2 C72,2 88,14 90,30 Z" />
+          </svg>
+        </div>
+
+        <!-- T -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M10,10 L90,10 L90,24 L56,24 L56,120 L44,120 L44,24 L10,24 Z" />
+            <path class="letter-path-fill" d="M10,10 L90,10 L90,24 L56,24 L56,120 L44,120 L44,24 L10,24 Z" />
+          </svg>
+        </div>
+
+        <!-- R -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M15,10 L60,10 C75,10 85,20 85,38 C85,52 75,62 60,65 L88,120 L74,120 L48,68 L28,68 L28,120 L15,120 Z M28,22 L28,56 L58,56 C68,56 72,50 72,38 C72,26 66,22 58,22 Z" />
+            <path class="letter-path-fill" d="M15,10 L60,10 C75,10 85,20 85,38 C85,52 75,62 60,65 L88,120 L74,120 L48,68 L28,68 L28,120 L15,120 Z M28,22 L28,56 L58,56 C68,56 72,50 72,38 C72,26 66,22 58,22 Z" />
+          </svg>
+        </div>
+
+        <!-- A -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+            <path class="letter-path-fill" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+          </svg>
+        </div>
+
+        <!-- T -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M10,10 L90,10 L90,24 L56,24 L56,120 L44,120 L44,24 L10,24 Z" />
+            <path class="letter-path-fill" d="M10,10 L90,10 L90,24 L56,24 L56,120 L44,120 L44,24 L10,24 Z" />
+          </svg>
+        </div>
+
+        <!-- A -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+            <path class="letter-path-fill" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+          </svg>
+        </div>
+
+        <div style="width: 20px;"></div>
+
+        <!-- A -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 100 120">
+            <path class="letter-path-outline" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+            <path class="letter-path-fill" d="M50,10 L88,120 L74,120 L62,85 L38,85 L26,120 L12,120 Z M50,38 L42,73 L58,73 Z" />
+          </svg>
+        </div>
+
+        <!-- I -->
+        <div class="wireframe-letter">
+          <div class="cross-marker cross-tl">+</div>
+          <svg viewBox="0 0 60 120">
+            <path class="letter-path-outline" d="M15,10 L45,10 L45,120 L15,120 Z" />
+            <path class="letter-path-fill" d="M15,10 L45,10 L45,120 L15,120 Z" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comprehensive Site Footer -->
+    <footer class="site-footer">
+      <div class="footer-col">
+        <h4>STRATA AI LABS</h4>
+        <p>
+          Architectural computational intelligence for next-generation practice. Autonomous geometry reasoning, continuous building code compliance, and direct parametric synthesis.
+        </p>
+        <p style="margin-top: 14px; font-size: 10px; color: var(--ink-muted);">
+          COORD: 33°51'30"S 151°12'32"E<br/>
+          SYDNEY • LONDON • ZURICH
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>PLATFORMS</h4>
+        <ul>
+          <li><a href="#">Autodesk Revit 2024–2026</a></li>
+          <li><a href="#">Robert McNeel Rhino 8 &amp; GH</a></li>
+          <li><a href="#">Graphisoft Archicad 27</a></li>
+          <li><a href="#">Trimble SketchUp Studio</a></li>
+          <li><a href="#">Vectorworks Architect</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>REGULATORY COMPLIANCE</h4>
+        <ul>
+          <li><a href="#">International Building Code (IBC)</a></li>
+          <li><a href="#">ADA Standards for Accessible Design</a></li>
+          <li><a href="#">UK Approved Documents (Parts B, K, M)</a></li>
+          <li><a href="#">National Construction Code (NCC AU)</a></li>
+          <li><a href="#">LEED v4.1 Daylighting &amp; Envelope</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>LEGAL &amp; PRIVACY</h4>
+        <p>© 2026 STRATA AI TECHNOLOGIES INC. ALL RIGHTS RESERVED.</p>
+        <ul style="margin-top: 12px;">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of License</a></li>
+          <li><a href="#">BIM Data Sovereignty</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Interactive Crosshair & Diagnostic Engine Script -->
+  <script>
+    // Initialize Lenis Smooth Scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Hero Crosshair Mouse Tracking
+    const viewport = document.getElementById('cadViewport');
+    const hairlineH = document.getElementById('hairlineH');
+    const hairlineV = document.getElementById('hairlineV');
+    const hudX = document.getElementById('hudX');
+    const hudY = document.getElementById('hudY');
+
+    if (viewport) {
+      viewport.addEventListener('mousemove', (e) => {
+        const rect = viewport.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        hairlineH.style.top = `${y}px`;
+        hairlineV.style.left = `${x}px`;
+
+        hudX.textContent = Math.round(x);
+        hudY.textContent = Math.round(y);
+      });
+    }
+
+    // Toggle Violation Fix
+    function toggleFix(id, fixMsg) {
+      const el = document.getElementById(id);
+      const statusEl = document.getElementById(`${id}-status`);
+      const actionEl = document.getElementById(`${id}-action`);
+
+      if (!el.classList.contains('is-fixed')) {
+        el.classList.add('is-fixed');
+        statusEl.textContent = 'FIXED';
+        actionEl.textContent = '✓ ' + fixMsg;
+        triggerLog(`[RESOLVED] ${fixMsg}`);
+      } else {
+        el.classList.remove('is-fixed');
+        statusEl.textContent = 'FLAGGED';
+        actionEl.textContent = 'Click to inject Strata fix →';
+        triggerLog(`[REVERTED] Manual override on ${id.toUpperCase()}`);
+      }
+    }
+
+    // Add Live Diagnostic Log Entry
+    function triggerLog(text) {
+      const logs = document.getElementById('diagLogs');
+      if (!logs) return;
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+
+      const item = document.createElement('div');
+      item.className = 'diag-log-item active';
+      item.innerHTML = `<div class="time">${timeStr}</div><div>${text}</div>`;
+      logs.prepend(item);
+    }
+
+    // Full Sweep Simulation
+    function simulateFullSweep() {
+      triggerLog('[SWEEP INITIATED] Re-evaluating complete model assembly...');
+      setTimeout(() => triggerLog('[ANALYSIS] 242 walls, 38 slabs, 14 stair runs verified.'), 400);
+      setTimeout(() => triggerLog('[STATUS] 100% compliant with IBC 2026 Chapter 10.'), 900);
+    }
+  </script>
+</body>
+</html>

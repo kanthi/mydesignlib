@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AxonCAD | Browser-Native AI Parametric CAD & Solid Geometry Engine</title>
+  <meta name="description" content="Turn mechanical engineering intent into exact parametric B-Rep solids, auto-dimensioned 2D drawings, and Git-collaborative assemblies directly in your browser with WebGPU." />
+  <meta name="keywords" content="AI CAD, parametric modeling, browser CAD, text to CAD, WebGPU, B-Rep geometry, STEP export, mechanical engineering" />
+
+  <!-- Privacy & No Search Indexing -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Plus Jakarta Sans, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Three.js for Interactive 3D Parametric CAD Viewport -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       AXONCAD DESIGN SYSTEM & MOTION TOKENS
+       ========================================================================== */
+    :root {
+      --bg-canvas: #070709;
+      --bg-workbench: #0d0e12;
+      --bg-surface: #12141a;
+      --bg-surface-elevated: #181b22;
+      --bg-surface-hover: #1f232c;
+      --bg-surface-active: #262b36;
+      --bg-glass: rgba(18, 20, 26, 0.85);
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-standard: rgba(255, 255, 255, 0.14);
+      --border-focus: rgba(0, 240, 255, 0.5);
+      --border-cyan: #00f0ff;
+      --border-blue: #3b82f6;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-faint: #475569;
+      --text-cyan: #00f0ff;
+      --text-emerald: #10b981;
+      --text-amber: #f59e0b;
+
+      --cyan-primary: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.28);
+      --blue-primary: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.28);
+      --emerald-status: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --amber-warning: #f59e0b;
+      --rose-alert: #f43f5e;
+
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Space Grotesk", sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", monospace;
+
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-full: 9999px;
+
+      --container-max: 1280px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Canvas for Floating Particles / Laser Rays */
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid Background */
+    .cad-grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+
+    .radial-glow-top {
+      position: absolute;
+      top: -180px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(59, 130, 246, 0.08) 45%, transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    /* Utility typography */
+    .font-mono { font-family: var(--font-mono); }
+    .font-display { font-family: var(--font-display); }
+    .text-cyan { color: var(--text-cyan); }
+    .text-emerald { color: var(--text-emerald); }
+    .text-secondary { color: var(--text-secondary); }
+    .text-muted { color: var(--text-muted); }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-canvas); }
+    ::-webkit-scrollbar-thumb { background: #262b36; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3b4252; }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 3vw, 2.5rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================================================
+       ANIMATIONS & MOTION SYSTEM (Word Reveals, Shimmer, Floats)
+       ========================================================================== */
+    .word-reveal {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(18px);
+      animation: wordBlurIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes wordBlurIn {
+      to {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(0);
+      }
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navigation Bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(7, 7, 9, 0.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #181b22, #0d0e12);
+      border: 1px solid var(--border-cyan);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px var(--cyan-glow);
+      transition: transform 0.3s ease;
+    }
+
+    .brand-logo:hover .brand-icon {
+      transform: rotate(10deg) scale(1.05);
+    }
+
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--cyan-primary);
+      stroke-width: 2;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f0ff 0%, #00a8ff 100%);
+      color: #070709;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 28px rgba(0, 240, 255, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid var(--border-standard);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-cyan);
+      color: var(--cyan-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Live Telemetry Pill */
+    .telemetry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: var(--radius-full);
+      padding: 5px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--cyan-primary);
+      backdrop-filter: blur(8px);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan-primary);
+      box-shadow: 0 0 8px var(--cyan-primary);
+      animation: pulse-ring 2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 6px var(--cyan-primary)); }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: 145px;
+      padding-bottom: 70px;
+      position: relative;
+    }
+
+    .hero-header {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 36px auto;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 6.2vw, 4.75rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      margin: 20px 0 18px 0;
+      color: #f1f5f9;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 20%, #00f0ff 80%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 740px;
+      margin: 0 auto 32px auto;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* Natural Language Prompt Input Bar with Animated Focus Glow */
+    .prompt-container {
+      max-width: 780px;
+      margin: 0 auto 16px auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      padding: 6px 8px 6px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.1);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .prompt-container:focus-within {
+      border-color: var(--border-cyan);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 240, 255, 0.25);
+    }
+
+    .prompt-icon {
+      color: var(--cyan-primary);
+      display: flex;
+      align-items: center;
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .prompt-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: var(--font-sans);
+      outline: none;
+    }
+
+    .prompt-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .prompt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      max-width: 840px;
+      margin: 0 auto 40px auto;
+    }
+
+    .prompt-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .prompt-chip:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: var(--border-cyan);
+      color: var(--cyan-primary);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       HERO LIVE 3D CAD WORKBENCH SIMULATOR
+       ========================================================================== */
+    .workbench-window {
+      background: var(--bg-workbench);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 45px rgba(0, 240, 255, 0.15);
+      margin-bottom: 70px;
+      position: relative;
+    }
+
+    .workbench-topbar {
+      height: 44px;
+      background: #111319;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a2e39;
+    }
+
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr 280px;
+      height: 560px;
+      position: relative;
+    }
+
+    @media (max-width: 1024px) {
+      .workbench-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .feature-tree-panel { display: none; }
+      .parameter-panel { border-top: 1px solid var(--border-subtle); }
+    }
+
+    /* Left Panel: Feature Tree */
+    .feature-tree-panel {
+      background: #0f1117;
+      border-right: 1px solid var(--border-subtle);
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-header {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-xs);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-mono);
+    }
+
+    .tree-item:hover, .tree-item.active {
+      background: rgba(0, 240, 255, 0.08);
+      color: var(--text-primary);
+      border-left: 2px solid var(--cyan-primary);
+      transform: translateX(2px);
+    }
+
+    .tree-icon {
+      color: var(--cyan-primary);
+      font-size: 0.85rem;
+    }
+
+    /* Center Panel: 3D Viewport */
+    .viewport-panel {
+      position: relative;
+      background: #090a0e;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 380px;
+    }
+
+    #cad-canvas-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: grab;
+    }
+
+    #cad-canvas-container:active {
+      cursor: grabbing;
+    }
+
+    .viewport-overlay-controls {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .view-btn {
+      background: rgba(18, 20, 26, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xs);
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+    }
+
+    .view-btn:hover, .view-btn.active {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: var(--border-cyan);
+      color: var(--cyan-primary);
+      transform: translateY(-1px);
+    }
+
+    .viewport-status-bar {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .status-group {
+      display: flex;
+      gap: 14px;
+      background: rgba(14, 16, 22, 0.88);
+      padding: 5px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Right Panel: Parametric Inspector */
+    .parameter-panel {
+      background: #0f1117;
+      border-left: 1px solid var(--border-subtle);
+      padding: 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .param-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .param-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+    }
+
+    .param-label {
+      color: var(--text-secondary);
+    }
+
+    .param-val {
+      color: var(--cyan-primary);
+      font-weight: 600;
+    }
+
+    .param-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: #242936;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .param-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan-primary);
+      box-shadow: 0 0 10px var(--cyan-primary);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .param-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+
+    .material-select {
+      background: #181b22;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 8px 10px;
+      border-radius: var(--radius-xs);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       MARQUEE TICKER (TRUSTED BY BUILDERS EVERYWHERE)
+       ========================================================================== */
+    .marquee-section {
+      padding: 20px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(13, 14, 18, 0.6);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+      gap: 40px;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .marquee-item span.accent {
+      color: var(--cyan-primary);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       THE FEATURE BOARD (EVERYTHING, PINNED DOWN — SKEUOMORPHIC TACTILE PINBOARD)
+       ========================================================================== */
+    .pinboard-container {
+      margin-top: 50px;
+      position: relative;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+      padding: 14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 40px 100px rgba(0,0,0,0.6);
+    }
+
+    .pinboard-corner {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      border: 1px solid #64748b;
+      box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
+      z-index: 20;
+    }
+    .pinboard-corner.tl { top: 6px; left: 6px; }
+    .pinboard-corner.tr { top: 6px; right: 6px; }
+    .pinboard-corner.bl { bottom: 6px; left: 6px; }
+    .pinboard-corner.br { bottom: 6px; right: 6px; }
+
+    .pinboard-interior {
+      position: relative;
+      background: #18428a;
+      background-image: 
+        radial-gradient(ellipse 85% 65% at 50% 0%, rgba(255,255,255,0.22), transparent 70%),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px);
+      border-radius: 18px;
+      padding: clamp(20px, 3.5vw, 40px);
+      box-shadow: inset 0 6px 18px rgba(0,0,0,0.5), inset 0 -3px 8px rgba(0,0,0,0.3);
+    }
+
+    .pinboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 960px) {
+      .pinboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pin-card {
+      position: relative;
+      border-radius: 14px;
+      padding: 26px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pin-card:hover {
+      transform: translateY(-6px) scale(1.02) rotate(0deg) !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 25px rgba(255,255,255,0.2);
+      z-index: 30;
+    }
+
+    /* Pushpin Head */
+    .pushpin {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.6);
+      z-index: 25;
+    }
+
+    .pushpin.red { background: radial-gradient(circle at 35% 35%, #ff4d4d, #b30000); }
+    .pushpin.blue { background: radial-gradient(circle at 35% 35%, #38bdf8, #0369a1); }
+    .pushpin.yellow { background: radial-gradient(circle at 35% 35%, #fde047, #ca8a04); }
+    .pushpin.green { background: radial-gradient(circle at 35% 35%, #4ade80, #15803d); }
+
+    .pin-card.white-note {
+      background: #f8fafc;
+      color: #0f172a;
+      transform: rotate(-1.2deg);
+    }
+    .pin-card.white-note h3 { color: #0284c7; font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; margin-bottom: 6px; }
+    .pin-card.white-note h2 { color: #0f172a; font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
+    .pin-card.white-note p { color: #475569; font-size: 0.9rem; line-height: 1.55; }
+
+    .pin-card.yellow-postit {
+      background: #fef08a;
+      color: #713f12;
+      transform: rotate(1.5deg);
+    }
+    .pin-card.yellow-postit h3 { color: #854d0e; font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; margin-bottom: 6px; }
+    .pin-card.yellow-postit h2 { color: #422006; font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
+    .pin-card.yellow-postit p { color: #713f12; font-size: 0.9rem; line-height: 1.55; }
+
+    .pin-card.cyan-note {
+      background: #e0f2fe;
+      color: #0c4a6e;
+      transform: rotate(-0.8deg);
+    }
+    .pin-card.cyan-note h3 { color: #0284c7; font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; margin-bottom: 6px; }
+    .pin-card.cyan-note h2 { color: #082f49; font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
+    .pin-card.cyan-note p { color: #075985; font-size: 0.9rem; line-height: 1.55; }
+
+    /* Animated GPU Terminal Box on Card */
+    .mini-gpu-box {
+      background: #090a0e;
+      border: 1px solid rgba(0,0,0,0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 18px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #94a3b8;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .gpu-progress-track {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .gpu-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6);
+      width: 75%;
+      box-shadow: 0 0 10px #00f0ff;
+      animation: gpuPulseWidth 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes gpuPulseWidth {
+      0% { width: 35%; }
+      50% { width: 92%; }
+      100% { width: 60%; }
+    }
+
+    /* Section Headings */
+    .section {
+      padding: 90px 0;
+      position: relative;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--cyan-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.2vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       AI 2D DRAFTING / BLUEPRINT DRAWING ENGINE
+       ========================================================================== */
+    .blueprint-frame {
+      background: #091224;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      position: relative;
+      background-image: 
+        linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.2);
+    }
+
+    .drawing-title-block {
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      background: rgba(7, 14, 28, 0.92);
+      padding: 10px 14px;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #93c5fd;
+      line-height: 1.4;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 18px;
+      border-radius: var(--radius-xs);
+    }
+
+    /* SVG Stroke Animation */
+    .dim-line {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: drawInLine 2s ease forwards;
+    }
+
+    @keyframes drawInLine {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ==========================================================================
+       PRICING TIERS
+       ========================================================================== */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pricing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .pricing-card.popular {
+      background: linear-gradient(180deg, rgba(18, 24, 38, 0.95) 0%, rgba(14, 17, 24, 0.95) 100%);
+      border-color: var(--border-cyan);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cyan-primary);
+      color: #070709;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 14px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .price-num {
+      font-size: 3.2rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      line-height: 1;
+      margin: 18px 0 6px 0;
+    }
+
+    .price-period {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .check-icon {
+      color: var(--cyan-primary);
+      font-size: 0.9rem;
+    }
+
+    /* Comparison Table */
+    .comparison-table-wrap {
+      margin-top: 50px;
+      overflow-x: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    .comparison-table th, .comparison-table td {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .comparison-table th {
+      background: #0f1117;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 7, 9, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-lg);
+      max-width: 540px;
+      width: 100%;
+      padding: 36px;
+      position: relative;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 240, 255, 0.2);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-backdrop.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .form-input {
+      background: #181b22;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xs);
+      padding: 11px 14px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      border-color: var(--border-cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      background: #050608;
+      padding: 70px 0 30px 0;
+      position: relative;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer-col h4 {
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: var(--transition);
+    }
+
+    .footer-col a:hover {
+      color: var(--cyan-primary);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Mobile Drawer */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    @media (max-width: 820px) {
+      .nav-links { display: none; }
+      .mobile-menu-toggle { display: block; }
+    }
+  </style>
+</head>
+<body class="cad-grid-bg">
+
+  <!-- Interactive Background Canvas (Laser Particles & Subtle Flow) -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <div class="radial-glow-top"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="container nav-inner">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <span>AXON<span class="text-cyan">CAD</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#workbench">Design Engine</a></li>
+        <li><a href="#feature-board">Feature Board</a></li>
+        <li><a href="#git-cad">Git for CAD</a></li>
+        <li><a href="#drawings">2D Blueprint</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="telemetry-badge">
+          <span class="pulse-dot"></span>
+          <span>WASM v4.2 LIVE</span>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('launch')">
+          <span>Launch Workbench</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="mobile-menu-toggle" onclick="toggleMobileNav()" aria-label="Toggle menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-header">
+          <div class="telemetry-badge word-reveal" style="animation-delay: 0.1s; margin-bottom: 16px;">
+            <span>[ THE FUTURE OF CAD IS HERE • BROWSER-NATIVE ]</span>
+          </div>
+
+          <h1 class="hero-title">
+            <span class="word-reveal" style="animation-delay: 0.2s;">Next-Generation</span>
+            <span class="word-reveal" style="animation-delay: 0.3s;">CAD.</span><br />
+            <span class="gradient-text word-reveal" style="animation-delay: 0.4s;">Engineered for the AI Age.</span>
+          </h1>
+
+          <p class="hero-subtitle word-reveal" style="animation-delay: 0.5s;">
+            Turn mechanical intent into exact parametric B-Rep solids, auto-dimensioned 2D engineering blueprints, and Git-collaborative assemblies — 100% directly in your browser.
+          </p>
+
+          <!-- Prompt-to-CAD Engine Bar with Live Typing Simulation -->
+          <div class="prompt-container word-reveal" style="animation-delay: 0.6s;">
+            <div class="prompt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <input type="text" id="prompt-input" class="prompt-input" placeholder="Describe a mechanical part: e.g. NEMA 23 stepper mount with M4 counterbores..." value="Flanged planetary gearbox casing with 6x M4 mount holes and weight relief" />
+            <button class="btn btn-primary" id="btn-generate-cad" onclick="generateFromPrompt()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              <span>Generate Solid</span>
+            </button>
+          </div>
+
+          <!-- Prompt Suggestion Chips -->
+          <div class="prompt-chips word-reveal" style="animation-delay: 0.7s;">
+            <span class="prompt-chip" onclick="simulateTypePrompt('NEMA 23 Dual-Axis Stepper Mount Bracket with cooling fins')">⚡ NEMA 23 Stepper Bracket</span>
+            <span class="prompt-chip" onclick="simulateTypePrompt('24T Mod 1.5 Helical Pinion Gear with 8mm keyed shaft bore')">⚙️ 24T Helical Pinion</span>
+            <span class="prompt-chip" onclick="simulateTypePrompt('Aerospace Titanium Hex-Lattice Structural Truss Node')">🛸 Hex Lattice Node</span>
+            <span class="prompt-chip" onclick="simulateTypePrompt('Robotic Arm Dual-Jaw Gripper Linkage with pin joints')">🦾 Gripper Linkage</span>
+          </div>
+        </div>
+
+        <!-- ==========================================================================
+             HERO LIVE 3D CAD WORKBENCH SIMULATOR
+             ========================================================================== -->
+        <div id="workbench" class="workbench-window reveal-on-scroll">
+          <!-- Top Window Bar -->
+          <div class="workbench-topbar">
+            <div class="window-dots">
+              <div class="window-dot" style="background:#ef4444;"></div>
+              <div class="window-dot" style="background:#f59e0b;"></div>
+              <div class="window-dot" style="background:#10b981;"></div>
+            </div>
+            <div style="color: var(--text-secondary); display:flex; align-items:center; gap:8px;">
+              <span class="text-cyan font-mono">axon_part_0492.brep</span>
+              <span style="color:var(--text-muted);">|</span>
+              <span id="active-feature-label">ACTIVE: Flanged Housing Assembly</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span style="color: var(--emerald-status);">● SOLVED (0.34ms)</span>
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.72rem;" onclick="exportStepFile()">EXPORT STEP</button>
+            </div>
+          </div>
+
+          <!-- Workbench 3-Column Grid -->
+          <div class="workbench-grid">
+            <!-- Left: Feature Tree -->
+            <div class="feature-tree-panel">
+              <div class="panel-header">
+                <span>Feature Tree (B-Rep)</span>
+                <span class="text-cyan">5 Ops</span>
+              </div>
+
+              <div class="tree-item active" onclick="highlightFeature('base')">
+                <span class="tree-icon">⬢</span>
+                <span>Base_Extrude_01 (24mm)</span>
+              </div>
+              <div class="tree-item" onclick="highlightFeature('boss')">
+                <span class="tree-icon">◎</span>
+                <span>Bore_Revolve_02 (Ø36mm)</span>
+              </div>
+              <div class="tree-item" onclick="highlightFeature('holes')">
+                <span class="tree-icon">⁝</span>
+                <span>Bolt_Pattern_03 (6x M4)</span>
+              </div>
+              <div class="tree-item" onclick="highlightFeature('fillet')">
+                <span class="tree-icon">◠</span>
+                <span>Stress_Fillet_04 (R3.5mm)</span>
+              </div>
+              <div class="tree-item" onclick="highlightFeature('relief')">
+                <span class="tree-icon">◩</span>
+                <span>Pocket_Relief_05 (-8mm)</span>
+              </div>
+
+              <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+                <div class="panel-header"><span>Kernel Topology</span></div>
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); line-height: 1.8; margin-top: 6px;">
+                  <div>Vertices: <span class="text-cyan">84</span></div>
+                  <div>Edges: <span class="text-cyan">148</span></div>
+                  <div>Exact Faces: <span class="text-cyan">42</span></div>
+                  <div>Euler Char: <span class="text-cyan">χ = 2</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Center: Live Three.js 3D Viewport -->
+            <div class="viewport-panel">
+              <div id="cad-canvas-container"></div>
+
+              <!-- Viewport Overlay Toolbar -->
+              <div class="viewport-overlay-controls">
+                <button class="view-btn active" id="btn-shade" onclick="setRenderMode('shaded')">Shaded</button>
+                <button class="view-btn" id="btn-wire" onclick="setRenderMode('wireframe')">Wireframe</button>
+                <button class="view-btn" id="btn-fea" onclick="setRenderMode('fea')">FEA Stress</button>
+                <button class="view-btn" id="btn-reset" onclick="resetCamera()">Reset View</button>
+              </div>
+
+              <!-- Status Telemetry Bar -->
+              <div class="viewport-status-bar">
+                <div class="status-group">
+                  <span>WASM SIMD: <strong style="color:var(--emerald-status);">ACTIVE</strong></span>
+                  <span>WEBGPU: <strong style="color:var(--cyan-primary);">144.0 FPS</strong></span>
+                  <span>SOLVER: <strong id="solver-latency">0.34ms</strong></span>
+                </div>
+                <div class="status-group">
+                  <span>ORBIT: [L-CLICK]</span>
+                  <span>PAN: [R-CLICK]</span>
+                  <span>ZOOM: [SCROLL]</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Parametric Inspector -->
+            <div class="parameter-panel">
+              <div class="panel-header">
+                <span>Parametric Inspector</span>
+                <span class="text-cyan">LIVE</span>
+              </div>
+
+              <div class="param-group">
+                <div class="param-header">
+                  <span class="param-label">Bore Radius (mm)</span>
+                  <span class="param-val" id="val-radius">18.0 mm</span>
+                </div>
+                <input type="range" class="param-slider" id="slider-radius" min="10" max="30" step="0.5" value="18" oninput="updateCadParameters()" />
+              </div>
+
+              <div class="param-group">
+                <div class="param-header">
+                  <span class="param-label">Flange Height (mm)</span>
+                  <span class="param-val" id="val-height">24.0 mm</span>
+                </div>
+                <input type="range" class="param-slider" id="slider-height" min="10" max="45" step="1" value="24" oninput="updateCadParameters()" />
+              </div>
+
+              <div class="param-group">
+                <div class="param-header">
+                  <span class="param-label">Bolt Hole Count</span>
+                  <span class="param-val" id="val-holes">6 Pattern</span>
+                </div>
+                <input type="range" class="param-slider" id="slider-holes" min="3" max="12" step="1" value="6" oninput="updateCadParameters()" />
+              </div>
+
+              <div class="param-group">
+                <div class="param-header">
+                  <span class="param-label">Fillet Curvature (mm)</span>
+                  <span class="param-val" id="val-fillet">3.5 mm</span>
+                </div>
+                <input type="range" class="param-slider" id="slider-fillet" min="0.5" max="8" step="0.5" value="3.5" oninput="updateCadParameters()" />
+              </div>
+
+              <div class="param-group">
+                <label class="form-label">Material Alloy</label>
+                <select class="material-select" id="material-select" onchange="updateCadParameters()">
+                  <option value="al6061">Al 6061-T6 (2.70 g/cm³)</option>
+                  <option value="ti64">Ti-6Al-4V Grade 5 (4.43 g/cm³)</option>
+                  <option value="peek">Carbon PEEK 450CA30 (1.41 g/cm³)</option>
+                  <option value="ss316">316L Stainless (8.00 g/cm³)</option>
+                </select>
+              </div>
+
+              <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: 0.75rem;">
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;">
+                  <span class="text-secondary">Solid Mass:</span>
+                  <span class="text-cyan" id="stat-mass">228.4 g</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;">
+                  <span class="text-secondary">Displaced Volume:</span>
+                  <span class="text-cyan" id="stat-vol">84.6 cm³</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span class="text-secondary">Max Von Mises:</span>
+                  <span class="text-emerald" id="stat-stress">142.8 MPa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MARQUEE TICKER (TRUSTED BY BUILDERS EVERYWHERE) -->
+    <div class="marquee-section">
+      <div class="marquee-track">
+        <div class="marquee-item"><span>⚡</span> <span>TRUSTED BY HARDWARE BUILDERS EVERYWHERE</span></div>
+        <div class="marquee-item"><span class="accent">144 FPS</span> <span>WEBGPU SHADER ENGINE</span></div>
+        <div class="marquee-item"><span>✦</span> <span>IMPACT FIRST. RECOGNITION FOLLOWS.</span></div>
+        <div class="marquee-item"><span class="accent">0.34ms</span> <span>WASM CONSTRAINT SOLVER</span></div>
+        <div class="marquee-item"><span>⚙️</span> <span>ISO / ASME AUTOMATED 2D BLUEPRINTS</span></div>
+        <div class="marquee-item"><span class="accent">GIT-FOR-CAD</span> <span>BRANCH, MERGE & REVIEW</span></div>
+        <div class="marquee-item"><span>🛸</span> <span>ANALYTICAL B-REP SOLIDS (STEP AP242)</span></div>
+        <!-- Duplicate for continuous loop -->
+        <div class="marquee-item"><span>⚡</span> <span>TRUSTED BY HARDWARE BUILDERS EVERYWHERE</span></div>
+        <div class="marquee-item"><span class="accent">144 FPS</span> <span>WEBGPU SHADER ENGINE</span></div>
+        <div class="marquee-item"><span>✦</span> <span>IMPACT FIRST. RECOGNITION FOLLOWS.</span></div>
+        <div class="marquee-item"><span class="accent">0.34ms</span> <span>WASM CONSTRAINT SOLVER</span></div>
+        <div class="marquee-item"><span>⚙️</span> <span>ISO / ASME AUTOMATED 2D BLUEPRINTS</span></div>
+        <div class="marquee-item"><span class="accent">GIT-FOR-CAD</span> <span>BRANCH, MERGE & REVIEW</span></div>
+        <div class="marquee-item"><span>🛸</span> <span>ANALYTICAL B-REP SOLIDS (STEP AP242)</span></div>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         SECTION: THE FEATURE BOARD (EVERYTHING, PINNED DOWN)
+         ========================================================================== -->
+    <section id="feature-board" class="section">
+      <div class="container">
+        <div style="text-align: center; max-width: 760px; margin: 0 auto 40px auto;">
+          <span class="section-tag">The Feature Board</span>
+          <h2 class="section-title">Everything, Pinned Down.</h2>
+          <p class="section-desc" style="margin: 0 auto;">
+            A complete mechanical engineering stack running entirely on client hardware. No remote server queues, no cloud streaming lag.
+          </p>
+        </div>
+
+        <!-- The Skeuomorphic Blueprint Pinboard -->
+        <div class="pinboard-container reveal-on-scroll">
+          <div class="pinboard-corner tl"></div>
+          <div class="pinboard-corner tr"></div>
+          <div class="pinboard-corner bl"></div>
+          <div class="pinboard-corner br"></div>
+
+          <div class="pinboard-interior">
+            <div class="pinboard-grid">
+              
+              <!-- Pinned Card 1: AI Design Engine -->
+              <div class="pin-card white-note" style="grid-column: span 2;">
+                <div class="pushpin blue"></div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>AI Design Engine</h3>
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:#64748b;">cad_engine_v4</span>
+                  </div>
+                  <h2>Natural Language Modeling</h2>
+                  <p>
+                    Describe your engineering intent in plain speech. The Design Engine instantly maps out and compiles robust, parametric B-Rep models directly ready for manufacture.
+                  </p>
+                </div>
+
+                <!-- Interactive Visual in Card -->
+                <div style="margin-top: 20px; background:#0f172a; border-radius:10px; padding:14px; border:1px solid #334155; color:#f8fafc; font-family:var(--font-mono); font-size:0.8rem;">
+                  <div style="color:#38bdf8; margin-bottom:6px;">&gt; input_intent:</div>
+                  <div id="card-typing-text" style="color:#e2e8f0; min-height:22px;">"Parametric flanged housing with 6 bolt holes..."</div>
+                  <div style="margin-top:10px; display:flex; justify-content:space-between; font-size:0.72rem; color:#94a3b8; border-top:1px solid #1e293b; padding-top:8px;">
+                    <span>STATUS: <strong style="color:#4ade80;">COMPILED (0.34ms)</strong></span>
+                    <span>TOPOLOGY: <strong style="color:#38bdf8;">WATERTIGHT B-REP</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pinned Card 2: Core Kernel (Yellow Post-It Note) -->
+              <div class="pin-card yellow-postit">
+                <div class="pushpin red"></div>
+                <div>
+                  <h3>Core Kernel</h3>
+                  <h2>Browser Native</h2>
+                  <p>
+                    A full-fledged, high-speed geometry kernel running directly on the client. Blazing fast, WASM-powered.
+                  </p>
+                </div>
+
+                <div class="mini-gpu-box">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span style="color:#cbd5e1;">GPU ACCEL</span>
+                    <span style="color:#22c55e; font-weight:700;">ENABLED</span>
+                  </div>
+                  <div class="gpu-progress-track">
+                    <div class="gpu-progress-fill"></div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; font-size:0.7rem;">
+                    <div>LATENCY: <span style="color:#38bdf8;">0.34ms</span></div>
+                    <div>FPS: <span style="color:#22c55e;">144.0</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pinned Card 3: Parametric Live Tweaks -->
+              <div class="pin-card cyan-note">
+                <div class="pushpin yellow"></div>
+                <div>
+                  <h3>Parametric</h3>
+                  <h2>Live Tweaks</h2>
+                  <p>
+                    Fine-tune holes, radii, and features on the fly with instantaneous engine updates.
+                  </p>
+                </div>
+                <div style="margin-top:18px; background:rgba(255,255,255,0.7); border:1px solid #bae6fd; border-radius:8px; padding:10px; font-family:var(--font-mono); font-size:0.75rem;">
+                  <div style="display:flex; justify-content:space-between; color:#0369a1; margin-bottom:4px;">
+                    <span>Flange Fillet</span>
+                    <span>R3.5 mm</span>
+                  </div>
+                  <div style="height:4px; background:#bae6fd; border-radius:2px; overflow:hidden;">
+                    <div style="width:60%; height:100%; background:#0284c7;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pinned Card 4: Branches (Git for CAD) -->
+              <div class="pin-card white-note">
+                <div class="pushpin blue"></div>
+                <div>
+                  <h3>Branches</h3>
+                  <h2>Git for CAD</h2>
+                  <p>
+                    Branch, fork, and merge assembly designs with full parametric version logs and volumetric visual diffs.
+                  </p>
+                </div>
+                <div style="margin-top:18px; display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:0.75rem; color:#0284c7; background:#f0f9ff; padding:8px 12px; border-radius:6px;">
+                  <span>⑂</span>
+                  <span>branch 'feat/lightweight-ribs'</span>
+                </div>
+              </div>
+
+              <!-- Pinned Card 5: Teams (Live Editing) -->
+              <div class="pin-card white-note">
+                <div class="pushpin green"></div>
+                <div>
+                  <h3>Teams</h3>
+                  <h2>Live Editing</h2>
+                  <p>
+                    Co-design assemblies with teammates simultaneously. Instantly push updates and solve spatial conflicts in the cloud.
+                  </p>
+                </div>
+                <div style="margin-top:18px; display:flex; align-items:center; justify-content:space-between; font-family:var(--font-mono); font-size:0.72rem; color:#0369a1; background:#f0f9ff; padding:8px 12px; border-radius:6px;">
+                  <span style="display:flex; align-items:center; gap:6px;">
+                    <span style="width:6px; height:6px; border-radius:50%; background:#22c55e;"></span>
+                    3 Engineers Online
+                  </span>
+                  <span>0 Clashes</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: GIT FOR CAD COLLABORATION -->
+    <section id="git-cad" class="section" style="border-top: 1px solid var(--border-subtle); background: rgba(13, 14, 18, 0.4);">
+      <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+          <div class="reveal-on-scroll">
+            <span class="section-tag">Distributed Engineering</span>
+            <h2 class="section-title">GitHub for Mechanical Hardware.</h2>
+            <p class="section-desc" style="margin-bottom: 24px;">
+              Stop emailing `.step` files with names like `bracket_v3_final_rev2_FINAL.step`. AxonCAD brings declarative branching, parametric geometric diffs, and concurrent multi-user editing to CAD.
+            </p>
+
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px;">
+              <li style="display: flex; gap: 12px; align-items: flex-start;">
+                <span class="text-cyan" style="font-size: 1.1rem; line-height: 1;">✦</span>
+                <span style="color: var(--text-secondary); font-size: 0.92rem;"><strong style="color: var(--text-primary);">Visual Volumetric Diffs:</strong> Highlight mass addition in green, material removal in amber, and clash interference in crimson.</span>
+              </li>
+              <li style="display: flex; gap: 12px; align-items: flex-start;">
+                <span class="text-cyan" style="font-size: 1.1rem; line-height: 1;">✦</span>
+                <span style="color: var(--text-secondary); font-size: 0.92rem;"><strong style="color: var(--text-primary);">Non-Destructive Merge:</strong> Branch experimental lightweight truss topologies and merge back with automated constraint resolution.</span>
+              </li>
+              <li style="display: flex; gap: 12px; align-items: flex-start;">
+                <span class="text-cyan" style="font-size: 1.1rem; line-height: 1;">✦</span>
+                <span style="color: var(--text-secondary); font-size: 0.92rem;"><strong style="color: var(--text-primary);">Live Co-Design Presence:</strong> See team cursor tags, active parameter adjustments, and spatial clearances in real time.</span>
+              </li>
+            </ul>
+
+            <button class="btn btn-secondary" onclick="openModal('enterprise')">
+              <span>Request Team Collaboration Demo</span>
+            </button>
+          </div>
+
+          <!-- Git Visualizer Window -->
+          <div class="reveal-on-scroll" style="background: #0b0d13; border: 1px solid var(--border-standard); border-radius: var(--radius-md); padding: 24px; font-family: var(--font-mono);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--text-muted); font-size: 0.75rem;">BRANCH: <strong class="text-cyan">feature/weight-reduction-v3</strong></span>
+              <span style="color: var(--emerald-status); font-size: 0.75rem;">● 3 PEERS ACTIVE</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: rgba(0, 240, 255, 0.08); border: 1px solid var(--border-cyan); border-radius: var(--radius-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--cyan-primary); box-shadow: 0 0 8px var(--cyan-primary);"></div>
+                <span class="text-cyan" style="font-size: 0.8rem;">#8f4b1a</span>
+                <div style="flex: 1;">
+                  <div style="font-size: 0.82rem; color: var(--text-primary);">Hollowed pocket webbing for -14% mass</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">by @sarah.k • 12 mins ago • PR #42</div>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></div>
+                <span style="color:#10b981; font-size: 0.8rem;">#e29c0d</span>
+                <div style="flex: 1;">
+                  <div style="font-size: 0.82rem; color: var(--text-primary);">Merged branch 'fix/m4-hole-tolerance' into main</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">by @alex.t • 2 hours ago</div>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 8px #a855f7;"></div>
+                <span style="color:#a855f7; font-size: 0.8rem;">#3a812e</span>
+                <div style="flex: 1;">
+                  <div style="font-size: 0.82rem; color: var(--text-primary);">Added chamfer radius R2.0 on outer perimeter</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">by @devin.m • 5 hours ago</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; padding: 12px; background: rgba(0, 240, 255, 0.04); border: 1px dashed rgba(0, 240, 255, 0.25); border-radius: var(--radius-xs); font-size: 0.78rem;">
+              <div style="color: var(--cyan-primary); font-weight: 600; margin-bottom: 4px;">Volumetric Delta:</div>
+              <div style="color: var(--text-secondary); display:flex; justify-content:space-between;">
+                <span>Mass: <span style="color:#10b981;">-32.4 g (-14.2%)</span></span>
+                <span>Max Stress: <span style="color:var(--text-primary);">142 MPa (OK)</span></span>
+                <span>Clash: <span style="color:#10b981;">0 Overlaps</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: AI 2D DRAFTING & BLUEPRINT STUDIO -->
+    <section id="drawings" class="section" style="border-top: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div style="text-align: center; max-width: 760px; margin: 0 auto 50px auto;">
+          <span class="section-tag">Automated Drafting</span>
+          <h2 class="section-title">From 3D Solid to 2D Engineering Drawing in 5 Seconds.</h2>
+          <p class="section-desc" style="margin: 0 auto;">
+            AI auto-generates ASME Y14.5 and ISO compliant manufacturing blueprints with complete orthographic projections, automated dimensions, and GD&T title blocks.
+          </p>
+        </div>
+
+        <!-- Interactive Blueprint Preview Frame -->
+        <div class="blueprint-frame reveal-on-scroll">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(59, 130, 246, 0.3); padding-bottom: 10px;">
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #93c5fd;">
+              <span>DWG NO: <strong style="color:#fff;">AXON-PRT-0492-REV-C</strong></span>
+              <span style="margin: 0 10px; opacity:0.4;">|</span>
+              <span>SCALE: 1:1</span>
+              <span style="margin: 0 10px; opacity:0.4;">|</span>
+              <span>PROJECTION: THIRD ANGLE</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.72rem; border-color: rgba(59,130,246,0.5); color:#93c5fd;" onclick="alert('Exporting high-precision vector DXF blueprint...')">Export DXF</button>
+              <button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.72rem;" onclick="alert('Exporting ISO-compliant vector PDF...')">Export PDF</button>
+            </div>
+          </div>
+
+          <!-- SVG Technical Blueprint Illustration with Animated Dimensions -->
+          <div style="width: 100%; height: 380px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <svg viewBox="0 0 900 360" style="width: 100%; height: 100%; stroke: #93c5fd; fill: none; stroke-linecap: round; stroke-linejoin: round;">
+              <!-- Top View Orthographic -->
+              <g transform="translate(180, 180)">
+                <circle cx="0" cy="0" r="90" stroke="#93c5fd" stroke-width="2" />
+                <circle cx="0" cy="0" r="50" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6,4" />
+                <circle cx="0" cy="0" r="28" stroke="#93c5fd" stroke-width="2" />
+                <!-- Bolt Pattern 6x Holes -->
+                <circle cx="0" cy="-68" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="58.9" cy="-34" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="58.9" cy="34" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="0" cy="68" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="-58.9" cy="34" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="-58.9" cy="-34" r="7" stroke="#93c5fd" stroke-width="1.5" />
+                
+                <!-- Centerlines -->
+                <line x1="-110" y1="0" x2="110" y2="0" stroke="rgba(0, 240, 255, 0.6)" stroke-width="1" stroke-dasharray="12,4,2,4" />
+                <line x1="0" y1="-110" x2="0" y2="110" stroke="rgba(0, 240, 255, 0.6)" stroke-width="1" stroke-dasharray="12,4,2,4" />
+
+                <!-- Dimension Callout -->
+                <line x1="0" y1="0" x2="115" y2="-75" stroke="#00f0ff" stroke-width="1" class="dim-line" />
+                <text x="120" y="-75" fill="#00f0ff" font-size="11" font-family="JetBrains Mono">6x Ø6.50 THRU [±0.05]</text>
+                <text x="-90" y="-120" fill="#93c5fd" font-size="12" font-weight="bold" font-family="JetBrains Mono">VIEW A: TOP ORTHO</text>
+              </g>
+
+              <!-- Front Section View (Section A-A) -->
+              <g transform="translate(540, 180)">
+                <polygon points="-80,-40 80,-40 80,40 -80,40" stroke="#93c5fd" stroke-width="2" />
+                <polygon points="-30,-40 30,-40 30,40 -30,40" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="4,4" fill="rgba(59,130,246,0.1)" />
+                <!-- Hatching Pattern -->
+                <line x1="-75" y1="-35" x2="-60" y2="35" stroke="rgba(147, 197, 253, 0.4)" stroke-width="1" />
+                <line x1="-60" y1="-35" x2="-45" y2="35" stroke="rgba(147, 197, 253, 0.4)" stroke-width="1" />
+                <line x1="45" y1="-35" x2="60" y2="35" stroke="rgba(147, 197, 253, 0.4)" stroke-width="1" />
+                <line x1="60" y1="-35" x2="75" y2="35" stroke="rgba(147, 197, 253, 0.4)" stroke-width="1" />
+
+                <!-- Dimension Lines -->
+                <line x1="-80" y1="60" x2="80" y2="60" stroke="#00f0ff" stroke-width="1" class="dim-line" />
+                <line x1="-80" y1="42" x2="-80" y2="68" stroke="#00f0ff" stroke-width="0.8" />
+                <line x1="80" y1="42" x2="80" y2="68" stroke="#00f0ff" stroke-width="0.8" />
+                <text x="-18" y="75" fill="#00f0ff" font-size="11" font-family="JetBrains Mono">Ø 160.00</text>
+
+                <line x1="100" y1="-40" x2="100" y2="40" stroke="#00f0ff" stroke-width="1" class="dim-line" />
+                <line x1="82" y1="-40" x2="108" y2="-40" stroke="#00f0ff" stroke-width="0.8" />
+                <line x1="82" y1="40" x2="108" y2="40" stroke="#00f0ff" stroke-width="0.8" />
+                <text x="115" y="4" fill="#00f0ff" font-size="11" font-family="JetBrains Mono">80.00 ±0.1</text>
+                <text x="-60" y="-60" fill="#93c5fd" font-size="12" font-weight="bold" font-family="JetBrains Mono">SECTION A-A</text>
+              </g>
+            </svg>
+
+            <!-- Technical Title Block -->
+            <div class="drawing-title-block">
+              <div>PART: FLANGE HOUSING</div>
+              <div>MATL: AL 6061-T6</div>
+              <div>DESIGNER: AXON AI ENGINE</div>
+              <div>TOL: ISO 2768-mK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PRICING -->
+    <section id="pricing" class="section" style="border-top: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div style="text-align: center; max-width: 760px; margin: 0 auto 50px auto;">
+          <span class="section-tag">Transparent Pricing</span>
+          <h2 class="section-title">Built for Individual Builders to Global Enterprises.</h2>
+          <p class="section-desc" style="margin: 0 auto;">
+            Start free with full browser CAD capabilities. Upgrade when you need team collaboration, high-compute AI generation, and headless API automation.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Tier 1: Starter -->
+          <div class="pricing-card reveal-on-scroll">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary);">STARTER / MAKER</div>
+              <div class="price-num">$0</div>
+              <div class="price-period">Free forever • No credit card required</div>
+
+              <ul class="pricing-features">
+                <li class="pricing-feature"><span class="check-icon">✓</span> Full WebGPU browser CAD workbench</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> 50 AI Natural Language generations/mo</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Unlimited STEP, STL, & OBJ exports</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Client-side parametric solving</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Community forum support</li>
+              </ul>
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="openModal('starter')">Start Free</button>
+          </div>
+
+          <!-- Tier 2: Engineer (Popular) -->
+          <div class="pricing-card popular reveal-on-scroll" style="animation-delay: 0.1s;">
+            <div class="pricing-badge">MOST POPULAR</div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--cyan-primary);">ENGINEER PRO</div>
+              <div class="price-num text-cyan">$39<span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">/mo</span></div>
+              <div class="price-period">Billed annually ($49/mo billed monthly)</div>
+
+              <ul class="pricing-features">
+                <li class="pricing-feature"><span class="check-icon">✓</span> <strong>500 AI compute credits/mo</strong></li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> AI auto-dimensioned 2D engineering blueprints</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Unlimited Git branches & version history</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Real-time FEA stress & weight optimization</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Priority WASM SIMD compute worker</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Priority email & Discord support</li>
+              </ul>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="openModal('pro')">Upgrade to Pro</button>
+          </div>
+
+          <!-- Tier 3: Enterprise -->
+          <div class="pricing-card reveal-on-scroll" style="animation-delay: 0.2s;">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary);">TEAM & ENTERPRISE</div>
+              <div class="price-num">Custom</div>
+              <div class="price-period">Tailored to your organization scale</div>
+
+              <ul class="pricing-features">
+                <li class="pricing-feature"><span class="check-icon">✓</span> Unlimited shared team compute credits</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Dedicated WebGPU server clusters</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Headless REST/Python API SLA access</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Custom on-premise / private cloud deploy</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> SAML SSO, audit logs & RBAC permissions</li>
+                <li class="pricing-feature"><span class="check-icon">✓</span> Dedicated solutions engineer</li>
+              </ul>
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="openModal('enterprise')">Contact Sales</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: FINAL CTA -->
+    <section class="section" style="border-top: 1px solid var(--border-subtle); background: radial-gradient(circle at 50% 50%, rgba(0,240,255,0.08) 0%, transparent 60%);">
+      <div class="container" style="text-align: center; max-width: 800px;">
+        <span class="section-tag">Get Started Today</span>
+        <h2 class="section-title" style="font-size: clamp(2.2rem, 4.5vw, 3.4rem);">
+          From Intent to Production-Ready Solids in Seconds.
+        </h2>
+        <p class="section-desc" style="margin: 0 auto 36px auto;">
+          Join thousands of mechanical engineers, robotics builders, and industrial designers creating the next generation of physical hardware with AxonCAD.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <button class="btn btn-primary" style="padding: 12px 28px; font-size: 1rem;" onclick="openModal('launch')">
+            <span>Launch Free Browser Workbench</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn btn-secondary" style="padding: 12px 24px; font-size: 1rem;" onclick="openModal('enterprise')">
+            <span>Book Enterprise Demo</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#" class="brand-logo" style="margin-bottom: 14px;">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span>AXON<span class="text-cyan">CAD</span></span>
+          </a>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 320px; line-height: 1.6; margin-bottom: 16px;">
+            Browser-native AI parametric CAD platform. Engineered with WebGPU acceleration and client-side boundary representation geometry kernels.
+          </p>
+          <div class="telemetry-badge">
+            <span class="pulse-dot"></span>
+            <span>ALL SYSTEMS OPERATIONAL</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#workbench">Design Engine</a></li>
+            <li><a href="#feature-board">Feature Board</a></li>
+            <li><a href="#git-cad">Git for CAD</a></li>
+            <li><a href="#drawings">2D Blueprint Studio</a></li>
+            <li><a href="#pricing">Pricing & Tiers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Developers</h4>
+          <ul>
+            <li><a href="#" onclick="openModal('docs')">Documentation</a></li>
+            <li><a href="#" onclick="openModal('docs')">Python SDK</a></li>
+            <li><a href="#" onclick="openModal('docs')">REST API Reference</a></li>
+            <li><a href="#" onclick="openModal('docs')">B-Rep Specifications</a></li>
+            <li><a href="#" onclick="openModal('docs')">Community Discord</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#" onclick="openModal('enterprise')">Enterprise Solutions</a></li>
+            <li><a href="#" onclick="openModal('enterprise')">Security & Compliance</a></li>
+            <li><a href="#" onclick="openModal('enterprise')">Careers</a></li>
+            <li><a href="#" onclick="openModal('enterprise')">Contact Sales</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 AxonCAD Technologies. Sample Template. Fictional rebrand.</div>
+        <div style="display:flex; gap: 18px;">
+          <span>WASM SIMD KERNEL v4.2</span>
+          <span>WEBGPU SHADER LEVEL 3</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INTERACTIVE MODAL DIALOG -->
+  <div id="modal-backdrop" class="modal-backdrop" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close dialog">✕</button>
+      
+      <div id="modal-content-launch">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 12px;">
+          <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <h3 style="font-size: 1.3rem;">Launch AxonCAD Workbench</h3>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+          Experience instant sub-millisecond parametric CAD directly in your browser. No download, no license key required.
+        </p>
+        <form onsubmit="handleModalSubmit(event, 'Workbench Launched! Compiling WASM kernel in WebGPU...')">
+          <div class="form-group">
+            <label class="form-label">Work Email</label>
+            <input type="email" class="form-input" required placeholder="engineer@organization.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Primary Application</label>
+            <select class="form-input" style="cursor: pointer;">
+              <option>Robotics & Mechanical Assemblies</option>
+              <option>Aerospace & Structural Nodes</option>
+              <option>Consumer Electronics & Tooling</option>
+              <option>Additive Manufacturing & 3D Printing</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+            <span>Open Browser Workbench Now</span>
+          </button>
+        </form>
+      </div>
+
+      <div id="modal-content-enterprise" style="display: none;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 12px;">
+          <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <h3 style="font-size: 1.3rem;">AxonCAD Enterprise & API Access</h3>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+          Deploy dedicated WebGPU clusters, custom headless geometry APIs, and enterprise CAD governance.
+        </p>
+        <form onsubmit="handleModalSubmit(event, 'Inquiry Received! An engineering solutions lead will respond within 2 hours.')">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" required placeholder="Dr. Evelyn Wright" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Work Email</label>
+            <input type="email" class="form-input" required placeholder="evelyn@aerospace-sys.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Organization & Team Size</label>
+            <input type="text" class="form-input" required placeholder="Acme Dynamics • 50+ Engineers" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+            <span>Submit Enterprise Request</span>
+          </button>
+        </form>
+      </div>
+
+      <div id="modal-success" style="display: none; text-align: center; padding: 20px 0;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--emerald-status); color: var(--emerald-status); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">✓</div>
+        <h3 id="modal-success-msg" style="font-size: 1.2rem; margin-bottom: 8px;">Success!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Initializing environment and compiling WASM geometry kernel...</p>
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: AMBIENT CANVAS PARTICLES, THREE.JS 3D VIEWPORT & TACTILE INTERACTIONS -->
+  <script>
+    // ==========================================================================
+    // 1. AMBIENT BACKGROUND PARTICLES & LASER GRID CANVAS
+    // ==========================================================================
+    const ambCanvas = document.getElementById('ambient-canvas');
+    const ambCtx = ambCanvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 120 };
+
+    function initAmbientCanvas() {
+      ambCanvas.width = window.innerWidth;
+      ambCanvas.height = window.innerHeight;
+      particles = [];
+
+      const numParticles = Math.min(window.innerWidth > 768 ? 60 : 30, 80);
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * ambCanvas.width,
+          y: Math.random() * ambCanvas.height,
+          size: Math.random() * 1.5 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4,
+          color: Math.random() > 0.4 ? 'rgba(0, 240, 255, ' + (Math.random() * 0.4 + 0.1) + ')' : 'rgba(59, 130, 246, ' + (Math.random() * 0.3 + 0.1) + ')'
+        });
+      }
+    }
+
+    function animateAmbientCanvas() {
+      ambCtx.clearRect(0, 0, ambCanvas.width, ambCanvas.height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0) p.x = ambCanvas.width;
+        if (p.x > ambCanvas.width) p.x = 0;
+        if (p.y < 0) p.y = ambCanvas.height;
+        if (p.y > ambCanvas.height) p.y = 0;
+
+        ambCtx.beginPath();
+        ambCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ambCtx.fillStyle = p.color;
+        ambCtx.fill();
+
+        // Connect nearby particles
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 90) {
+            ambCtx.beginPath();
+            ambCtx.strokeStyle = 'rgba(0, 240, 255, ' + (0.08 * (1 - dist / 90)) + ')';
+            ambCtx.lineWidth = 0.5;
+            ambCtx.moveTo(p.x, p.y);
+            ambCtx.lineTo(p2.x, p2.y);
+            ambCtx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateAmbientCanvas);
+    }
+
+    window.addEventListener('resize', () => {
+      if (ambCanvas) {
+        ambCanvas.width = window.innerWidth;
+        ambCanvas.height = window.innerHeight;
+      }
+    });
+
+    // ==========================================================================
+    // 2. THREE.JS REAL-TIME 3D CAD VIEWPORT IMPLEMENTATION
+    // ==========================================================================
+    let scene, camera, renderer, currentCadMesh, edgesMesh;
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let renderMode = 'shaded';
+
+    let cadParams = {
+      boreRadius: 18.0,
+      flangeHeight: 24.0,
+      boltHoles: 6,
+      filletCurvature: 3.5,
+      material: 'al6061'
+    };
+
+    const densities = {
+      al6061: 2.70,
+      ti64: 4.43,
+      peek: 1.41,
+      ss316: 8.00
+    };
+
+    function initThreeCadViewport() {
+      const container = document.getElementById('cad-canvas-container');
+      if (!container) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x090a0e);
+
+      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+      camera.position.set(45, 35, 55);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0x00f0ff, 1.3);
+      keyLight.position.set(50, 70, 40);
+      keyLight.castShadow = true;
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0x3b82f6, 0.85);
+      fillLight.position.set(-50, -30, -40);
+      scene.add(fillLight);
+
+      const topLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      topLight.position.set(0, 60, 0);
+      scene.add(topLight);
+
+      const gridHelper = new THREE.GridHelper(80, 40, 0x00f0ff, 0x1f2633);
+      gridHelper.position.y = -15;
+      scene.add(gridHelper);
+
+      buildCadModel();
+
+      const dom = renderer.domElement;
+      dom.addEventListener('mousedown', onMouseDown);
+      dom.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+      dom.addEventListener('wheel', onMouseWheel, { passive: false });
+
+      dom.addEventListener('touchstart', onTouchStart, { passive: false });
+      dom.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd);
+
+      window.addEventListener('resize', onWindowResize);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        if (currentCadMesh && !isDragging) {
+          currentCadMesh.rotation.y += 0.0025;
+          if (edgesMesh) edgesMesh.rotation.y = currentCadMesh.rotation.y;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    function buildCadModel() {
+      if (currentCadMesh) scene.remove(currentCadMesh);
+      if (edgesMesh) scene.remove(edgesMesh);
+
+      const group = new THREE.Group();
+
+      let material;
+      if (renderMode === 'fea') {
+        material = new THREE.MeshStandardMaterial({
+          color: 0x00f0ff,
+          metalness: 0.6,
+          roughness: 0.2,
+          emissive: 0x003366
+        });
+      } else if (renderMode === 'wireframe') {
+        material = new THREE.MeshBasicMaterial({
+          color: 0x00f0ff,
+          wireframe: true
+        });
+      } else {
+        material = new THREE.MeshStandardMaterial({
+          color: 0xdde4ec,
+          metalness: 0.75,
+          roughness: 0.28,
+          clearcoat: 0.4,
+          clearcoatRoughness: 0.1
+        });
+      }
+
+      const baseRadius = 22 + (cadParams.boreRadius * 0.4);
+      const flangeGeo = new THREE.CylinderGeometry(baseRadius, baseRadius, cadParams.flangeHeight, 48);
+      const flangeMesh = new THREE.Mesh(flangeGeo, material);
+      flangeMesh.castShadow = true;
+      flangeMesh.receiveShadow = true;
+      group.add(flangeMesh);
+
+      const hubGeo = new THREE.CylinderGeometry(cadParams.boreRadius, cadParams.boreRadius, cadParams.flangeHeight + 8, 36);
+      hubGeo.translate(0, 4, 0);
+      const hubMesh = new THREE.Mesh(hubGeo, material);
+      group.add(hubMesh);
+
+      const innerBoreRadius = cadParams.boreRadius * 0.6;
+      const innerBoreGeo = new THREE.CylinderGeometry(innerBoreRadius, innerBoreRadius, cadParams.flangeHeight + 12, 32);
+      const innerBoreMat = new THREE.MeshStandardMaterial({
+        color: 0x0a0c10,
+        metalness: 0.9,
+        roughness: 0.5,
+        side: THREE.BackSide
+      });
+      const innerBoreMesh = new THREE.Mesh(innerBoreGeo, innerBoreMat);
+      group.add(innerBoreMesh);
+
+      const boltDistance = (baseRadius + cadParams.boreRadius) / 2;
+      const numHoles = Math.round(cadParams.boltHoles);
+      const holeMat = new THREE.MeshStandardMaterial({ color: 0x00f0ff, metalness: 0.8, roughness: 0.2 });
+
+      for (let i = 0; i < numHoles; i++) {
+        const angle = (i / numHoles) * Math.PI * 2;
+        const hx = Math.cos(angle) * boltDistance;
+        const hz = Math.sin(angle) * boltDistance;
+        const holeGeo = new THREE.CylinderGeometry(2.2, 2.2, cadParams.flangeHeight + 2, 16);
+        holeGeo.translate(hx, 0, hz);
+        const holeMesh = new THREE.Mesh(holeGeo, holeMat);
+        group.add(holeMesh);
+      }
+
+      for (let i = 0; i < 4; i++) {
+        const angle = (i / 4) * Math.PI * 2 + Math.PI / 8;
+        const ribGeo = new THREE.BoxGeometry(3, cadParams.flangeHeight * 0.8, baseRadius * 0.7);
+        ribGeo.translate(0, 0, baseRadius * 0.45);
+        const ribMesh = new THREE.Mesh(ribGeo, material);
+        ribMesh.rotation.y = angle;
+        group.add(ribMesh);
+      }
+
+      currentCadMesh = group;
+      scene.add(currentCadMesh);
+
+      const edges = new THREE.EdgesGeometry(flangeGeo, 20);
+      edgesMesh = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x00f0ff, linewidth: 1.5 }));
+      scene.add(edgesMesh);
+
+      computePhysicsTelemetry();
+    }
+
+    function computePhysicsTelemetry() {
+      const vol = (Math.PI * Math.pow(cadParams.boreRadius, 2) * cadParams.flangeHeight * 0.05).toFixed(1);
+      const density = densities[cadParams.material] || 2.70;
+      const mass = (vol * density * 0.65).toFixed(1);
+      const stress = (110 + (30 - cadParams.filletCurvature * 8)).toFixed(1);
+
+      const elVol = document.getElementById('stat-vol');
+      const elMass = document.getElementById('stat-mass');
+      const elStress = document.getElementById('stat-stress');
+      const elLatency = document.getElementById('solver-latency');
+
+      if (elVol) elVol.innerText = `${vol} cm³`;
+      if (elMass) elMass.innerText = `${mass} g`;
+      if (elStress) elStress.innerText = `${stress} MPa`;
+      if (elLatency) {
+        const latency = (0.32 + Math.random() * 0.08).toFixed(2);
+        elLatency.innerText = `${latency}ms`;
+      }
+    }
+
+    function updateCadParameters() {
+      cadParams.boreRadius = parseFloat(document.getElementById('slider-radius').value);
+      cadParams.flangeHeight = parseFloat(document.getElementById('slider-height').value);
+      cadParams.boltHoles = parseInt(document.getElementById('slider-holes').value);
+      cadParams.filletCurvature = parseFloat(document.getElementById('slider-fillet').value);
+      cadParams.material = document.getElementById('material-select').value;
+
+      document.getElementById('val-radius').innerText = `${cadParams.boreRadius.toFixed(1)} mm`;
+      document.getElementById('val-height').innerText = `${cadParams.flangeHeight.toFixed(1)} mm`;
+      document.getElementById('val-holes').innerText = `${cadParams.boltHoles} Pattern`;
+      document.getElementById('val-fillet').innerText = `${cadParams.filletCurvature.toFixed(1)} mm`;
+
+      buildCadModel();
+    }
+
+    function setRenderMode(mode) {
+      renderMode = mode;
+      document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+      if (mode === 'shaded') document.getElementById('btn-shade').classList.add('active');
+      if (mode === 'wireframe') document.getElementById('btn-wire').classList.add('active');
+      if (mode === 'fea') document.getElementById('btn-fea').classList.add('active');
+      buildCadModel();
+    }
+
+    function resetCamera() {
+      camera.position.set(45, 35, 55);
+      camera.lookAt(0, 0, 0);
+      if (currentCadMesh) {
+        currentCadMesh.rotation.set(0, 0, 0);
+        if (edgesMesh) edgesMesh.rotation.set(0, 0, 0);
+      }
+    }
+
+    function highlightFeature(name) {
+      document.getElementById('active-feature-label').innerText = `INSPECTING: ${name.toUpperCase()} PARAMETERS`;
+      if (name === 'holes') {
+        document.getElementById('slider-holes').value = 8;
+      } else if (name === 'boss') {
+        document.getElementById('slider-radius').value = 24;
+      }
+      updateCadParameters();
+    }
+
+    function onMouseDown(e) {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onMouseMove(e) {
+      if (!isDragging || !currentCadMesh) return;
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+
+      currentCadMesh.rotation.y += deltaX * 0.008;
+      currentCadMesh.rotation.x += deltaY * 0.008;
+      if (edgesMesh) {
+        edgesMesh.rotation.y = currentCadMesh.rotation.y;
+        edgesMesh.rotation.x = currentCadMesh.rotation.x;
+      }
+
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onMouseUp() {
+      isDragging = false;
+    }
+
+    function onMouseWheel(e) {
+      e.preventDefault();
+      const zoomFactor = e.deltaY * 0.05;
+      camera.position.z = Math.max(20, Math.min(120, camera.position.z + zoomFactor));
+    }
+
+    function onTouchStart(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }
+
+    function onTouchMove(e) {
+      if (!isDragging || e.touches.length !== 1 || !currentCadMesh) return;
+      const deltaX = e.touches[0].clientX - previousMousePosition.x;
+      const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+      currentCadMesh.rotation.y += deltaX * 0.01;
+      currentCadMesh.rotation.x += deltaY * 0.01;
+      if (edgesMesh) {
+        edgesMesh.rotation.y = currentCadMesh.rotation.y;
+        edgesMesh.rotation.x = currentCadMesh.rotation.x;
+      }
+
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+
+    function onTouchEnd() {
+      isDragging = false;
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('cad-canvas-container');
+      if (!container || !renderer || !camera) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    // ==========================================================================
+    // 3. LIVE PROMPT TYPING SIMULATION
+    // ==========================================================================
+    function simulateTypePrompt(targetText) {
+      const input = document.getElementById('prompt-input');
+      input.value = '';
+      let index = 0;
+
+      const timer = setInterval(() => {
+        if (index < targetText.length) {
+          input.value += targetText.charAt(index);
+          index++;
+        } else {
+          clearInterval(timer);
+          generateFromPrompt();
+        }
+      }, 20);
+    }
+
+    function generateFromPrompt() {
+      const prompt = document.getElementById('prompt-input').value;
+      const btn = document.getElementById('btn-generate-cad');
+      const origText = btn.innerHTML;
+      btn.innerHTML = `<span>Synthesizing B-Rep...</span>`;
+      btn.disabled = true;
+
+      // Also update card typing demo
+      const cardType = document.getElementById('card-typing-text');
+      if (cardType) cardType.innerText = `"${prompt.substring(0, 45)}..."`;
+
+      setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+
+        if (prompt.toLowerCase().includes('nema') || prompt.toLowerCase().includes('mount')) {
+          document.getElementById('slider-radius').value = 16;
+          document.getElementById('slider-height').value = 32;
+          document.getElementById('slider-holes').value = 4;
+        } else if (prompt.toLowerCase().includes('pinion') || prompt.toLowerCase().includes('gear')) {
+          document.getElementById('slider-radius').value = 26;
+          document.getElementById('slider-height').value = 18;
+          document.getElementById('slider-holes').value = 10;
+        } else if (prompt.toLowerCase().includes('lattice') || prompt.toLowerCase().includes('titanium')) {
+          document.getElementById('slider-radius').value = 22;
+          document.getElementById('slider-height').value = 40;
+          document.getElementById('slider-holes').value = 6;
+          document.getElementById('material-select').value = 'ti64';
+        }
+        updateCadParameters();
+      }, 600);
+    }
+
+    function exportStepFile() {
+      alert("Generating analytical STEP AP242 B-Rep solid file... Download initiated.");
+    }
+
+    // ==========================================================================
+    // 4. SCROLL INTERSECTION OBSERVER REVEALS
+    // ==========================================================================
+    function setupScrollObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // ==========================================================================
+    // 5. MODALS & NAVIGATION
+    // ==========================================================================
+    function openModal(type) {
+      const backdrop = document.getElementById('modal-backdrop');
+      const launch = document.getElementById('modal-content-launch');
+      const enterprise = document.getElementById('modal-content-enterprise');
+      const success = document.getElementById('modal-success');
+
+      launch.style.display = (type === 'launch' || type === 'starter' || type === 'pro') ? 'block' : 'none';
+      enterprise.style.display = (type === 'enterprise' || type === 'docs') ? 'block' : 'none';
+      success.style.display = 'none';
+
+      backdrop.classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (!e || e.target === document.getElementById('modal-backdrop') || e.target.classList.contains('modal-close') || e.target.tagName === 'BUTTON') {
+        document.getElementById('modal-backdrop').classList.remove('open');
+      }
+    }
+
+    function handleModalSubmit(e, message) {
+      e.preventDefault();
+      document.getElementById('modal-content-launch').style.display = 'none';
+      document.getElementById('modal-content-enterprise').style.display = 'none';
+      const success = document.getElementById('modal-success');
+      document.getElementById('modal-success-msg').innerText = message;
+      success.style.display = 'block';
+    }
+
+    function toggleMobileNav() {
+      const links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = 'none';
+      } else {
+        links.style.display = 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '70px';
+        links.style.left = '0';
+        links.style.right = '0';
+        links.style.background = '#070709';
+        links.style.padding = '20px';
+        links.style.borderBottom = '1px solid var(--border-standard)';
+      }
+    }
+
+    // Initialize all components on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initAmbientCanvas();
+      animateAmbientCanvas();
+      initThreeCadViewport();
+      setupScrollObserver();
+    });
+  </script>
+</body>
+</html>

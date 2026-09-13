@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modalis — The World Model</title>
+  <meta name="description" content="Modalis builds open world models that give you full control, from production-grade video to physical AI systems." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-Z97ZD3EVSF");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --retake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --retake-slow-ease: cubic-bezier(0.65, 0, 0.35, 1);
+      --glass-x: 24%; --glass-y: 8%;
+      --bg-canvas: #040608; --bg-surface: #0a0e14; --bg-card: rgba(13, 19, 28, 0.55);
+      --border-subtle: rgba(255, 255, 255, 0.08); --border-hover: rgba(255, 255, 255, 0.22);
+      --accent-cyan: #00f0ff; --accent-sky: #38bdf8;
+      --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.72); --text-muted: rgba(255, 255, 255, 0.44);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg-canvas); color: var(--text-primary); font-family: 'Manrope', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    body { width: 100%; min-height: 100vh; overflow-x: hidden; background: var(--bg-canvas); }
+    ::selection { background: rgba(0, 240, 255, 0.25); color: #ffffff; }
+
+    .top-nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; transition: all 300ms var(--retake-ease); border-bottom: 1px solid transparent; pointer-events: none; }
+    .top-nav.scrolled { background: rgba(4, 6, 8, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-subtle); padding: 16px 40px; pointer-events: auto; }
+    .nav-left { display: flex; align-items: center; gap: 36px; pointer-events: auto; }
+    .brand-link { display: flex; align-items: center; text-decoration: none; }
+    .brand-logo { height: 24px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 200ms ease; }
+    .nav-link:hover { color: #ffffff; }
+    .nav-right { display: flex; align-items: center; gap: 16px; pointer-events: auto; }
+    .meta-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); border-radius: 999px; padding: 6px 14px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .cta-button { display: inline-flex; align-items: center; justify-content: center; height: 38px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.75); background: transparent; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 250ms var(--retake-ease); }
+    .cta-button:hover { background: #ffffff; color: #000000; border-color: #ffffff; }
+
+    .hero-stage { position: relative; width: 100%; height: 100vh; height: 100dvh; overflow: hidden; contain: layout size; background: #000000; }
+    .media-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none; background: #000000; }
+    .scene-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; visibility: hidden; opacity: 0; transition: opacity 0.05s linear; pointer-events: none; }
+    .scene-media.active { visibility: visible; opacity: 1; z-index: 2; }
+    .scene-media.underneath { visibility: visible; opacity: 1; z-index: 1; }
+
+    .hero-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; user-select: none; }
+    .hero-heading { position: absolute; top: 35.9%; left: 50%; transform: translateX(-50%); width: min(901px, calc(100vw - 48px)); font-size: clamp(62px, 6.8vw, 100px); font-weight: 500; line-height: 0.8; letter-spacing: -0.04em; text-align: center; white-space: nowrap; color: #ffffff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.14); display: flex; justify-content: center; gap: 0.28em; }
+    .hero-word { display: inline-block; transition: opacity 900ms var(--retake-slow-ease), filter 900ms var(--retake-slow-ease), transform 900ms var(--retake-slow-ease); }
+    .hero-heading.hidden-state .hero-word:nth-child(1) { opacity: 0; filter: blur(12px); transform: translateY(-10px); transition-delay: 0ms; }
+    .hero-heading.hidden-state .hero-word:nth-child(2) { opacity: 0; filter: blur(12px); transform: translateY(-10px); transition-delay: 90ms; }
+    .hero-heading.hidden-state .hero-word:nth-child(3) { opacity: 0; filter: blur(12px); transform: translateY(-10px); transition-delay: 180ms; }
+    .hero-description { position: absolute; top: calc(46.78% + 94px); left: 50%; transform: translateX(-50%); width: min(734px, calc(100vw - 48px)); font-size: clamp(14px, 1.25vw, 18px); font-weight: 400; line-height: 1.2; letter-spacing: -0.04em; text-align: center; color: #ffffff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4); }
+
+    .controller-container { position: absolute; top: 46.78%; left: 50%; transform: translateX(-50%); width: min(880px, calc(100vw - 48px)); height: 72px; z-index: 20; pointer-events: auto; transition: width 980ms var(--retake-slow-ease); }
+    .glass-track { position: absolute; top: 4px; left: 0; width: 100%; height: 64px; border-radius: 999px; background: rgb(24 55 82 / 0.31); border: 1px solid rgb(255 255 255 / 0.2); backdrop-filter: blur(9px) saturate(126%) contrast(108%) brightness(103%); -webkit-backdrop-filter: blur(9px) saturate(126%) contrast(108%) brightness(103%); box-shadow: 0 14px 38px rgb(4 24 43 / 0.16), 0 2px 7px rgb(4 24 43 / 0.1), inset 1px 1px 0 rgb(255 255 255 / 0.48), inset -1px -1px 0 rgb(21 49 73 / 0.14), inset 0 0 0 0.5px rgb(255 255 255 / 0.16); pointer-events: none; transition: opacity 400ms var(--retake-ease), width 980ms var(--retake-slow-ease), left 980ms var(--retake-slow-ease); overflow: hidden; }
+    .glass-capsule { position: absolute; top: -1px; left: -5px; width: calc(20% + 5px); height: 72px; border-radius: 999px; background: rgb(246 251 255 / 0.24); border: 1px solid rgb(255 255 255 / 0.28); backdrop-filter: blur(13px) saturate(128%) contrast(107%) brightness(105%); -webkit-backdrop-filter: blur(13px) saturate(128%) contrast(107%) brightness(105%); box-shadow: 0 11px 28px rgb(4 24 43 / 0.17), 0 2px 6px rgb(4 24 43 / 0.1), inset 1px 1px 0 rgb(255 255 255 / 0.62), inset -1px -1px 0 rgb(20 49 73 / 0.18), inset 0 0 12px rgb(255 255 255 / 0.055); pointer-events: none; transition: left 620ms var(--retake-ease), width 620ms var(--retake-ease), background 520ms var(--retake-ease); overflow: hidden; z-index: 2; }
+    .glass-track::before, .glass-capsule::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--glass-x, 24%) var(--glass-y, 8%), rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 54%), linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%); }
+    .glass-track::after, .glass-capsule::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; padding: 1px; background: conic-gradient(from 225deg, #00f0ff, rgba(255,255,255,0.7), #ffffff, #ffd6e0, rgba(255,255,255,0.7), #00f0ff); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+    .glass-track::after { opacity: 0.27; } .glass-capsule::after { opacity: 0.30; }
+
+    .controller-items { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, 1fr); height: 100%; z-index: 3; }
+    .ctrl-item { display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: #ffffff; font-family: inherit; font-size: 23px; font-weight: 400; line-height: 1.2; letter-spacing: -0.04em; padding: 0 14px; cursor: pointer; position: relative; text-decoration: none; transition: opacity 300ms var(--retake-ease), filter 420ms var(--retake-ease), transform 420ms var(--retake-ease); user-select: none; -webkit-tap-highlight-color: transparent; }
+    .ctrl-label-item { cursor: default; pointer-events: none; }
+    .ctrl-item:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; border-radius: 999px; }
+    .ctrl-text { white-space: nowrap; transition: opacity 300ms var(--retake-ease); }
+    .reset-btn { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: transparent; border: none; color: #ffffff; font-family: inherit; font-size: 23px; font-weight: 400; line-height: 1.2; letter-spacing: -0.04em; cursor: pointer; z-index: 4; user-select: none; opacity: 0; filter: blur(8px); transition: opacity 520ms var(--retake-ease), filter 520ms var(--retake-ease); -webkit-tap-highlight-color: transparent; }
+    .reset-btn:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; border-radius: 999px; }
+    .reset-text { text-decoration: underline; text-underline-offset: 3px; }
+
+    .controller-container.state-forward, .controller-container.state-selected { width: 200px; }
+    .controller-container.state-forward .glass-capsule, .controller-container.state-selected .glass-capsule { left: 0 !important; width: 200px !important; }
+    .controller-container.state-forward .glass-track, .controller-container.state-selected .glass-track { left: 4px; width: 192px; }
+    .controller-container.track-hidden .glass-track { opacity: 0; }
+    .controller-container.state-selected .glass-capsule { background: rgb(246 251 255 / 0.14); }
+    .controller-container.state-forward .ctrl-item:not(.chosen-target), .controller-container.state-selected .ctrl-item { opacity: 0; filter: blur(10px); transform: scale(0.94); pointer-events: none; }
+    .controller-container.state-forward .ctrl-item.chosen-target { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 1; filter: blur(0); transform: scale(1); }
+    .controller-container.state-selected .reset-btn { display: flex; opacity: 1; filter: blur(0); pointer-events: auto; }
+    .controller-container.dim-label #item-label { opacity: 0.5; }
+
+    .scroll-down { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; z-index: 25; transition: color 200ms ease; }
+    .scroll-down:hover { color: #ffffff; }
+    .scroll-chevron { width: 18px; height: 18px; animation: bounceSoft 2s infinite; }
+    @keyframes bounceSoft { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(6px); } 60% { transform: translateY(3px); } }
+
+    .section { position: relative; width: 100%; padding: 120px 40px; max-width: 1320px; margin: 0 auto; }
+    .section-full { position: relative; width: 100%; padding: 120px 40px; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); background: #06090e; }
+    .section-inner { max-width: 1320px; margin: 0 auto; }
+    .section-tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
+    .section-tag::before { content: '//'; color: var(--text-muted); }
+    .section-title { font-size: clamp(36px, 4.5vw, 64px); font-weight: 600; line-height: 1.08; letter-spacing: -0.035em; color: #ffffff; max-width: 860px; margin-bottom: 24px; }
+    .section-lead { font-size: clamp(16px, 1.4vw, 20px); font-weight: 400; line-height: 1.5; color: var(--text-secondary); max-width: 720px; margin-bottom: 64px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .glass-card { position: relative; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 36px 32px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: border-color 300ms ease, transform 300ms var(--retake-ease), box-shadow 300ms ease; overflow: hidden; }
+    .glass-card:hover { border-color: var(--border-hover); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+    .card-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; }
+    .card-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 12px; }
+    .card-text { font-size: 15px; line-height: 1.6; color: var(--text-secondary); }
+
+    .state-tabs { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; overflow-x: auto; }
+    .state-tab { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: inherit; font-size: 16px; font-weight: 600; padding: 10px 22px; border-radius: 999px; cursor: pointer; transition: all 250ms ease; white-space: nowrap; }
+    .state-tab:hover { color: #ffffff; background: rgba(255, 255, 255, 0.04); }
+    .state-tab.active { color: #ffffff; background: rgba(0, 240, 255, 0.12); border-color: rgba(0, 240, 255, 0.35); }
+    .state-display-panel { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; overflow: hidden; }
+    .state-visual { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16 / 9; border: 1px solid var(--border-subtle); background: #000; }
+    .state-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .state-visual-badge { position: absolute; top: 16px; left: 16px; background: rgba(4, 6, 8, 0.85); backdrop-filter: blur(12px); padding: 6px 12px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent-cyan); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .state-meta-list { list-style: none; margin-top: 28px; display: flex; flex-direction: column; gap: 16px; }
+    .state-meta-item { display: flex; align-items: flex-start; gap: 16px; padding: 14px 18px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); }
+    .meta-key { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-sky); min-width: 110px; }
+    .meta-val { font-size: 14px; color: var(--text-secondary); }
+
+    .telemetry-board { background: #06090e; border: 1px solid var(--border-subtle); border-radius: 24px; padding: 40px; margin-bottom: 48px; }
+    .telemetry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px; }
+    .telemetry-item { padding: 24px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 16px; }
+    .telemetry-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .telemetry-value { font-size: 38px; font-weight: 700; color: #ffffff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+    .telemetry-note { font-size: 13px; color: #10b981; }
+    .benchmarks-table-wrapper { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 16px; }
+    .benchmarks-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    .benchmarks-table th, .benchmarks-table td { padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); }
+    .benchmarks-table th { background: rgba(255, 255, 255, 0.03); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .benchmarks-table td { color: var(--text-secondary); }
+    .benchmarks-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .benchmarks-table tr:last-child td { border-bottom: none; }
+    .tag-modalis { color: var(--accent-cyan); font-weight: 600; }
+
+    .code-container { background: #020305; border: 1px solid var(--border-subtle); border-radius: 20px; overflow: hidden; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border-subtle); }
+    .code-tabs { display: flex; align-items: center; gap: 8px; }
+    .code-tab { background: transparent; border: none; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text-muted); padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all 200ms ease; }
+    .code-tab.active { color: #ffffff; background: rgba(255, 255, 255, 0.08); }
+    .copy-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 200ms ease; }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.12); color: #ffffff; }
+    .code-pre { padding: 28px 32px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.7; color: #e2e8f0; }
+    .c-kw { color: #f43f5e; } .c-fn { color: #38bdf8; } .c-str { color: #a3e635; } .c-cm { color: #64748b; font-style: italic; } .c-num { color: #fb923c; }
+
+    .billing-toggle-wrap { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 64px; }
+    .billing-label { font-size: 15px; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
+    .billing-label.active { color: #ffffff; }
+    .toggle-switch { position: relative; width: 52px; height: 28px; background: rgba(255, 255, 255, 0.12); border-radius: 999px; cursor: pointer; padding: 3px; transition: background 250ms ease; }
+    .toggle-thumb { width: 22px; height: 22px; border-radius: 50%; background: #ffffff; transition: transform 250ms var(--retake-ease); }
+    .toggle-switch.annual { background: var(--accent-cyan); }
+    .toggle-switch.annual .toggle-thumb { transform: translateX(24px); background: #000000; }
+    .discount-pill { font-size: 12px; font-weight: 600; color: var(--accent-cyan); background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.3); padding: 2px 8px; border-radius: 999px; }
+
+    .pricing-card { position: relative; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 44px 36px; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(16px); transition: all 300ms ease; }
+    .pricing-card.featured { background: rgba(14, 25, 40, 0.7); border-color: rgba(0, 240, 255, 0.4); box-shadow: 0 0 50px rgba(0, 240, 255, 0.12); }
+    .featured-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-cyan); color: #000000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 16px; border-radius: 999px; }
+    .tier-name { font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+    .tier-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; min-height: 42px; }
+    .tier-price-wrap { display: flex; align-items: baseline; gap: 6px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle); }
+    .tier-price { font-size: 48px; font-weight: 800; color: #ffffff; letter-spacing: -0.04em; }
+    .tier-period { font-size: 14px; color: var(--text-muted); }
+    .tier-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+    .feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary); }
+    .check-icon { color: var(--accent-cyan); flex-shrink: 0; }
+    .tier-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 48px; border-radius: 999px; border: 1px solid var(--border-subtle); background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 250ms ease; }
+    .tier-btn:hover { background: #ffffff; color: #000000; border-color: #ffffff; }
+    .pricing-card.featured .tier-btn { background: var(--accent-cyan); color: #000000; border-color: var(--accent-cyan); }
+    .pricing-card.featured .tier-btn:hover { background: #ffffff; border-color: #ffffff; }
+
+    .faq-list { display: flex; flex-direction: column; gap: 16px; max-width: 960px; }
+    .faq-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; overflow: hidden; transition: border-color 200ms ease; }
+    .faq-item:hover { border-color: var(--border-hover); }
+    .faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; background: transparent; border: none; color: #ffffff; font-family: inherit; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; text-align: left; cursor: pointer; }
+    .faq-chevron { transition: transform 300ms var(--retake-ease); color: var(--text-muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent-cyan); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 350ms var(--retake-ease); padding: 0 28px; }
+    .faq-answer-inner { padding-bottom: 24px; font-size: 15px; line-height: 1.65; color: var(--text-secondary); }
+
+    .final-cta { position: relative; text-align: center; padding: 160px 40px; background: radial-gradient(circle at 50% 100%, rgba(0, 240, 255, 0.15), transparent 70%), #040608; border-top: 1px solid var(--border-subtle); }
+    .final-cta-inner { max-width: 780px; margin: 0 auto; }
+    .final-title { font-size: clamp(40px, 5vw, 68px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; color: #ffffff; margin-bottom: 20px; }
+    .final-lead { font-size: 18px; color: var(--text-secondary); margin-bottom: 40px; }
+    .final-actions { display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 32px; border-radius: 999px; background: #ffffff; color: #000000; font-size: 16px; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 250ms ease; }
+    .btn-primary:hover { background: var(--accent-cyan); transform: translateY(-2px); }
+    .btn-secondary { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 32px; border-radius: 999px; background: transparent; color: #ffffff; border: 1px solid var(--border-hover); font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 250ms ease; }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: #ffffff; }
+
+    .site-footer { background: #020305; border-top: 1px solid var(--border-subtle); padding: 96px 40px 48px; }
+    .footer-inner { max-width: 1320px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 80px; }
+    .footer-brand p { margin-top: 18px; font-size: 14px; line-height: 1.6; color: var(--text-muted); max-width: 340px; }
+    .footer-col-title { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-link { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 200ms ease; }
+    .footer-link:hover { color: #ffffff; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 40px; border-top: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-muted); }
+
+    .sr-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .error-banner { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 999px; background: rgba(180, 20, 20, 0.85); backdrop-filter: blur(12px); color: #ffffff; font-size: 14px; display: none; align-items: center; gap: 12px; z-index: 40; }
+    .error-banner.visible { display: flex; }
+    .retry-btn { background: #ffffff; color: #000000; border: none; border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+    @media (max-width: 1024px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .telemetry-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .state-display-panel { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) { .ctrl-item, .reset-btn { font-size: clamp(17px, 2.5vw, 24px); } }
+    @media (max-width: 768px) {
+      .top-nav { padding: 18px 20px; }
+      .nav-links, .meta-badge { display: none; }
+      .section, .section-full { padding: 96px 20px; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .telemetry-grid { grid-template-columns: 1fr; }
+      .final-actions { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+
+      .hero-heading { top: 34%; width: calc(100vw - 40px); font-size: clamp(48px, 14vw, 64px); line-height: 0.88; white-space: normal; flex-wrap: wrap; }
+      .controller-container { top: 53%; width: calc(100vw - 40px); height: 156px; }
+      .glass-track { top: 0; left: 0; width: 100%; height: 100%; border-radius: 28px; }
+      .controller-container:not(.state-forward):not(.state-selected) .glass-capsule { display: none; }
+      .controller-items { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 48px 54px 54px; inset: 0; height: 100%; }
+      .ctrl-label-item { grid-column: 1 / span 2; border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 17px; }
+      #btn-scene { border-right: 1px solid rgba(255, 255, 255, 0.12); border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 17px; }
+      #btn-lighting { border-bottom: 1px solid rgba(255, 255, 255, 0.12); font-size: 17px; }
+      #btn-clothing { border-right: 1px solid rgba(255, 255, 255, 0.12); font-size: 17px; }
+      #btn-cast { font-size: 17px; }
+
+      .controller-container.state-forward, .controller-container.state-selected { top: 57%; width: 196px; height: 64px; transform: translate(-50%, -50%); }
+      .controller-container.state-forward .glass-capsule, .controller-container.state-selected .glass-capsule {
+        display: block !important; position: absolute; inset: 0; top: 0 !important; left: 0 !important; width: 196px !important; height: 64px !important; border-radius: 999px;
+      }
+      .controller-container.state-forward .glass-track, .controller-container.state-selected .glass-track { display: none; }
+      .reset-btn { font-size: 17px; }
+      .hero-description { top: 77%; width: calc(100vw - 44px); font-size: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.001s !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="top-nav" id="topNav">
+    <div class="nav-left">
+      <a href="#" class="brand-link" aria-label="Modalis home">
+        <img src="./assets/modalis-logo.svg" alt="Modalis" class="brand-logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+        <li><a href="#state-engine" class="nav-link">State Engine</a></li>
+        <li><a href="#telemetry" class="nav-link">Telemetry</a></li>
+        <li><a href="#pipeline" class="nav-link">Pipeline</a></li>
+        <li><a href="#api" class="nav-link">Developer API</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <div class="meta-badge">
+        <span class="status-dot"></span>
+        <span>Modalis-2.5 Online</span>
+      </div>
+      <a href="#pricing" class="cta-button">Launch Studio</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-stage" id="hero">
+    <div class="media-layer" aria-hidden="true">
+      <img id="still-base" class="scene-media active" src="./assets/state-base.png" alt="" />
+      
+      <video id="vid-clothing-fwd" class="scene-media" src="./assets/video-1.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-scene-fwd" class="scene-media" src="./assets/video-2.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-lighting-fwd" class="scene-media" src="./assets/video-3.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-cast-fwd" class="scene-media" src="./assets/video-4.mp4" muted playsinline preload="auto"></video>
+      
+      <video id="vid-clothing-rev" class="scene-media" src="./assets/video-1-reverse.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-scene-rev" class="scene-media" src="./assets/video-2-reverse.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-lighting-rev" class="scene-media" src="./assets/video-3-reverse.mp4" muted playsinline preload="auto"></video>
+      <video id="vid-cast-rev" class="scene-media" src="./assets/video-4-reverse.mp4" muted playsinline preload="auto"></video>
+    </div>
+
+    <div class="hero-layer">
+      <h1 class="hero-heading" id="heroHeading">
+        <span class="hero-word">The</span>
+        <span class="hero-word">world</span>
+        <span class="hero-word">model</span>
+      </h1>
+      <p class="hero-description" id="heroDesc">
+        Modalis builds open world models that give you full control, from production-grade video to systems that understand and operate in the physical world.
+      </p>
+    </div>
+
+    <nav class="controller-container" id="controllerContainer" aria-label="Scene state selector" role="region">
+      <div class="glass-track" id="glassTrack"></div>
+      <div class="glass-capsule" id="glassCapsule"></div>
+
+      <div class="controller-items" id="controllerItems">
+        <div class="ctrl-item ctrl-label-item" id="item-label">
+          <span class="ctrl-text">Select state &rarr;</span>
+        </div>
+        <button type="button" class="ctrl-item ctrl-btn" id="btn-scene" data-state="scene">
+          <span class="ctrl-text">Scene</span>
+        </button>
+        <button type="button" class="ctrl-item ctrl-btn" id="btn-lighting" data-state="lighting">
+          <span class="ctrl-text">Lighting</span>
+        </button>
+        <button type="button" class="ctrl-item ctrl-btn" id="btn-clothing" data-state="clothing">
+          <span class="ctrl-text">Clothing</span>
+        </button>
+        <button type="button" class="ctrl-item ctrl-btn" id="btn-cast" data-state="cast">
+          <span class="ctrl-text">Cast</span>
+        </button>
+      </div>
+
+      <button type="button" class="reset-btn" id="btn-reset" aria-label="Reset state" tabindex="-1">
+        <span class="reset-text">Reset</span>
+      </button>
+    </nav>
+
+    <a href="#architecture" class="scroll-down" id="scrollIndicator">
+      <span>Explore Architecture</span>
+      <svg class="scroll-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 9l-7 7-7-7"/>
+      </svg>
+    </a>
+
+    <div class="sr-status" id="srStatus" aria-live="polite">Initial scene ready.</div>
+    <div class="error-banner" id="errorBanner" role="alert">
+      <span id="errorMessage">Playback stalled.</span>
+      <button type="button" class="retry-btn" id="retryBtn">Retry</button>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="section" id="architecture">
+    <div class="section-tag">Physical Latent Synthesis</div>
+    <h2 class="section-title">Deterministic physical priors meet generative freedom.</h2>
+    <p class="section-lead">
+      Conventional video diffusion hallucinates pixels frame-by-frame, causing temporal jitter and identity drift. Modalis enforces persistent 4D spatial representation, photometric energy conservation, and rigid architectural geometry across all state mutations.
+    </p>
+
+    <div class="grid-3">
+      <div class="glass-card">
+        <div class="card-icon">01</div>
+        <h3 class="card-title">Persistent 4D Latent Geometry</h3>
+        <p class="card-text">
+          Architectural walls, flooring planes, and character contact points are anchored in a continuous 3D world coordinate frame. Camera parallax and translation maintain zero spatial drift across cuts.
+        </p>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-icon">02</div>
+        <h3 class="card-title">Coupled Radiosity & Optics</h3>
+        <p class="card-text">
+          Illumination changes synchronously calculate bounce radiosity across subjects, walls, and floor contact shadows. Time-of-day progression alters specular highlights without graphic gradient banding.
+        </p>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-icon">03</div>
+        <h3 class="card-title">Non-Destructive Branching</h3>
+        <p class="card-text">
+          Execute forward and return cycles through paired keyframe paths. State transitions commit to verifiable terminal holds, allowing sequential re-branching without raster re-encoding degeneration.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- State Engine Deep-Dive -->
+  <section class="section-full" id="state-engine">
+    <div class="section-inner">
+      <div class="section-tag">Multimodal Conditioning</div>
+      <h2 class="section-title">Four decoupled dimensions of physical state control.</h2>
+      <p class="section-lead">
+        Isolate and transform individual elements of a scene while holding all other continuous constraints locked. Examine the verified endpoints of each state branch below.
+      </p>
+
+      <div class="state-tabs" role="tablist">
+        <button type="button" class="state-tab active" data-target="dim-scene">01. Scene Environment</button>
+        <button type="button" class="state-tab" data-target="dim-lighting">02. Photometric Lighting</button>
+        <button type="button" class="state-tab" data-target="dim-clothing">03. Garment Colorway</button>
+        <button type="button" class="state-tab" data-target="dim-cast">04. Cast & Identity</button>
+      </div>
+
+      <div class="state-display-panel" id="dim-scene">
+        <div class="state-visual">
+          <img src="./assets/state-environment.png" alt="Scene Environment Endpoint" loading="lazy" />
+          <div class="state-visual-badge">STATE // ENVIRONMENT.02</div>
+        </div>
+        <div class="state-info">
+          <h3 class="card-title" style="font-size: 28px;">Architectural Scene Expansion</h3>
+          <p class="card-text">
+            Two rigid monolithic walls slide outward along the lateral axis, revealing an expansive sky horizon. The subject's ground contact, perspective horizon, and silhouette remain locked without geometry folding or synthetic canvas tearing.
+          </p>
+          <ul class="state-meta-list">
+            <li class="state-meta-item"><span class="meta-key">ACTION</span><span class="meta-val">Rigid bilateral translation (outward slide)</span></li>
+            <li class="state-meta-item"><span class="meta-key">CAMERA</span><span class="meta-val">Locked 50mm cinematic prime, zero pan/drift</span></li>
+            <li class="state-meta-item"><span class="meta-key">TIMING</span><span class="meta-val">2.08s duration · 1.90s verified reverse hold</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="state-display-panel" id="dim-lighting" style="display: none;">
+        <div class="state-visual">
+          <img src="./assets/keyframe-light-shift-v2.png" alt="Lighting Shift Endpoint" loading="lazy" />
+          <div class="state-visual-badge">STATE // PHOTOMETRY.03</div>
+        </div>
+        <div class="state-info">
+          <h3 class="card-title" style="font-size: 28px;">Coupled Blue-Hour Shift</h3>
+          <p class="card-text">
+            Full-spectrum photometric shift from daylight high-noon to cinematic blue-hour twilight. Warm key light grazes the subject's face and faux-fur texture, casting lengthened contact shadows across the floor without posterization.
+          </p>
+          <ul class="state-meta-list">
+            <li class="state-meta-item"><span class="meta-key">SPECTRUM</span><span class="meta-val">5800K daylight &rarr; 3200K tungsten & deep cyan</span></li>
+            <li class="state-meta-item"><span class="meta-key">RADIOSITY</span><span class="meta-val">Floor contact & wall bounce synchronously updated</span></li>
+            <li class="state-meta-item"><span class="meta-key">TIMING</span><span class="meta-val">2.08s forward · 2.04s reverse cycle</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="state-display-panel" id="dim-clothing" style="display: none;">
+        <div class="state-visual">
+          <img src="./assets/state-colorway.png" alt="Garment Colorway Endpoint" loading="lazy" />
+          <div class="state-visual-badge">STATE // TEXTILE.01</div>
+        </div>
+        <div class="state-info">
+          <h3 class="card-title" style="font-size: 28px;">Garment Pivot & Material Swap</h3>
+          <p class="card-text">
+            The subject executes a smooth 180° rotation, transitioning from vibrant green polka-dot shearling to a sleek monochrome colorway. Fabric shear, micro-hair simulation, and zipper hardware maintain anatomical fidelity throughout the turn.
+          </p>
+          <ul class="state-meta-list">
+            <li class="state-meta-item"><span class="meta-key">TRANSFORM</span><span class="meta-val">180° axial character rotation & texture swap</span></li>
+            <li class="state-meta-item"><span class="meta-key">PHYSICS</span><span class="meta-val">High-dampening cloth shear & micro-fur dynamics</span></li>
+            <li class="state-meta-item"><span class="meta-key">TIMING</span><span class="meta-val">2.08s forward · 2.00s terminal hold</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="state-display-panel" id="dim-cast" style="display: none;">
+        <div class="state-visual">
+          <img src="./assets/keyframe-full-look-v3.png" alt="Cast Endpoint" loading="lazy" />
+          <div class="state-visual-badge">STATE // CAST.04</div>
+        </div>
+        <div class="state-info">
+          <h3 class="card-title" style="font-size: 28px;">Touchdown Match-Cut Identity</h3>
+          <p class="card-text">
+            Vertical leap transition executing a seamless match-cut at exact foot contact (touchdown). Replaces the male streetwear model with a female high-fashion silhouette while preserving scene physics, lighting vector angle, and architectural depth.
+          </p>
+          <ul class="state-meta-list">
+            <li class="state-meta-item"><span class="meta-key">CUT MECHANIC</span><span class="meta-val">Frame-exact touchdown match cut (zero air-jitter)</span></li>
+            <li class="state-meta-item"><span class="meta-key">IDENTITY</span><span class="meta-val">Anatomical replacement with preserved spatial vector</span></li>
+            <li class="state-meta-item"><span class="meta-key">TIMING</span><span class="meta-val">3.00s forward · 2.48s reverse hold</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry -->
+  <section class="section" id="telemetry">
+    <div class="section-tag">Cluster Telemetry</div>
+    <h2 class="section-title">Engineered for sub-second production latency.</h2>
+    <p class="section-lead">
+      Real-time telemetry across distributed H100 NVLink clusters. Modalis compiles diffusion latents directly into streamable video frames with hardware-accelerated decoded handoffs.
+    </p>
+
+    <div class="telemetry-board">
+      <div class="telemetry-grid">
+        <div class="telemetry-item">
+          <div class="telemetry-label">Cluster Ingest Latency</div>
+          <div class="telemetry-value">0.38<span style="font-size: 20px; font-weight: 500; color: var(--text-muted);">s</span></div>
+          <div class="telemetry-note">&uarr; 3.4x faster than diffusion baseline</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">VRAM Allocation</div>
+          <div class="telemetry-value">11.4<span style="font-size: 20px; font-weight: 500; color: var(--text-muted);">GB</span></div>
+          <div class="telemetry-note">Fits comfortably on consumer RTX 4090</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Temporal Coherence</div>
+          <div class="telemetry-value">99.8<span style="font-size: 20px; font-weight: 500; color: var(--text-muted);">%</span></div>
+          <div class="telemetry-note">Zero camera drift across 12-second chains</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Render Resolution</div>
+          <div class="telemetry-value">4K<span style="font-size: 20px; font-weight: 500; color: var(--text-muted);">HDR</span></div>
+          <div class="telemetry-note">Full Rec.709 & DCI-P3 color compliance</div>
+        </div>
+      </div>
+
+      <div class="benchmarks-table-wrapper">
+        <table class="benchmarks-table">
+          <thead>
+            <tr>
+              <th>Architecture & Pipeline</th>
+              <th>Keyframe Seam Jitter</th>
+              <th>Camera Drift</th>
+              <th>Reverse Path Coherence</th>
+              <th>Inference Time / Sec</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag-modalis">Modalis-2.5 (Open World Model)</span></td>
+              <td>&lt; 0.02 px (Imperceptible)</td>
+              <td>0.00% (Rigid lock)</td>
+              <td>100% (Decoded Match)</td>
+              <td>0.38s / sec</td>
+            </tr>
+            <tr>
+              <td>Standard Text-to-Video Diffusion</td>
+              <td>4.20 px (High jitter)</td>
+              <td>14.8% (Continuous roll)</td>
+              <td>Fail (Re-hallucinates)</td>
+              <td>4.10s / sec</td>
+            </tr>
+            <tr>
+              <td>Frame-Interpolation Blend (EBS)</td>
+              <td>Ghosting artifacts</td>
+              <td>Variable drift</td>
+              <td>Non-deterministic</td>
+              <td>1.65s / sec</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="section-full" id="pipeline">
+    <div class="section-inner">
+      <div class="section-tag">Production Methodology</div>
+      <h2 class="section-title">From prompt specification to master grade.</h2>
+      <p class="section-lead">
+        How professional studios orchestrate state-driven video production with Modalis.
+      </p>
+
+      <div class="grid-3">
+        <div class="glass-card">
+          <div class="card-icon">01</div>
+          <h3 class="card-title">Spatial Staging</h3>
+          <p class="card-text">
+            Establish a baseline frame. Define focal length, ground plane coordinates, character eyeline, and architectural boundaries in an approved 16:9 master keyframe.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-icon">02</div>
+          <h3 class="card-title">Target Conditioning</h3>
+          <p class="card-text">
+            Specify isolated state modifications (e.g. lighting Kelvin shift, wardrobe colorway, environmental geometry) using bounded prompt directives without re-prompting the scene.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-icon">03</div>
+          <h3 class="card-title">Seam-Safe Packaging</h3>
+          <p class="card-text">
+            Export forward/reverse clip pairs with calibrated terminal hold guards. Integrate into real-time web experiences, interactive installations, or virtual production stages.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer API -->
+  <section class="section" id="api">
+    <div class="section-tag">Developer Infrastructure</div>
+    <h2 class="section-title">Full programmatic control in three lines of code.</h2>
+    <p class="section-lead">
+      Deploy state-driven video pipelines across web applications, video editors, and game engines using our open Python SDK or REST endpoints.
+    </p>
+
+    <div class="code-container">
+      <div class="code-header">
+        <div class="code-tabs">
+          <button type="button" class="code-tab active" data-lang="python">Python SDK</button>
+          <button type="button" class="code-tab" data-lang="typescript">TypeScript</button>
+          <button type="button" class="code-tab" data-lang="curl">cURL</button>
+        </div>
+        <button type="button" class="copy-btn" id="copyCodeBtn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copyBtnText">Copy Code</span>
+        </button>
+      </div>
+
+      <pre class="code-pre" id="codeSnippet"><code><span class="c-kw">import</span> modalis
+
+<span class="c-cm"># 1. Initialize client with open-weights or hosted endpoint</span>
+client = modalis.<span class="c-fn">Client</span>(api_key=<span class="c-str">"sk_live_modalis_world_model"</span>)
+
+<span class="c-cm"># 2. Stage base master keyframe and condition state change</span>
+transition = client.states.<span class="c-fn">create_transition</span>(
+    base_frame=<span class="c-str">"assets/state-base.png"</span>,
+    dimension=<span class="c-str">"scene"</span>,
+    target_prompt=<span class="c-str">"Pale blue architectural walls translate outward, revealing sky"</span>,
+    camera_lock=<span class="c-kw">True</span>,
+    duration_seconds=<span class="c-num">2.08</span>,
+    terminal_guard_seconds=<span class="c-num">0.08</span>
+)
+
+<span class="c-cm"># 3. Stream paired forward and reverse video buffers</span>
+transition.<span class="c-fn">export_pair</span>(output_dir=<span class="c-str">"./exports/"</span>, format=<span class="c-str">"mp4"</span>)
+<span class="c-fn">print</span>(<span class="c-str">f"Ready: {transition.forward_url} &lt;-&gt; {transition.reverse_url}"</span>)</code></pre>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="section-tag">Compute &amp; Deployment</div>
+    <h2 class="section-title">Predictable pricing for creators, studios, and lab infrastructure.</h2>
+    <p class="section-lead">
+      Run locally on your cluster with open weights or stream millisecond inferences from our high-throughput global edge API.
+    </p>
+
+    <div class="billing-toggle-wrap">
+      <span class="billing-label active" id="billingMonthlyLabel">Monthly</span>
+      <div class="toggle-switch" id="billingToggle" role="switch" aria-checked="false" tabindex="0" aria-label="Toggle annual billing">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="billing-label" id="billingAnnualLabel">Annual</span>
+      <span class="discount-pill">Save 20%</span>
+    </div>
+
+    <div class="grid-3">
+      <!-- Tier 1: Researcher -->
+      <div class="pricing-card">
+        <div>
+          <h3 class="tier-name">Researcher</h3>
+          <p class="tier-desc">For independent researchers, model evaluators, and visual prototypers exploring latent conditioning.</p>
+          <div class="tier-price-wrap">
+            <span class="tier-price" data-monthly="$49" data-annual="$39">$49</span>
+            <span class="tier-period">/ month</span>
+          </div>
+          <ul class="tier-features">
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>500 state transition seconds / mo</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Single 1080p spatial resolution</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Standard queue latency (450ms)</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Open Python &amp; TypeScript SDK</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Community Discord &amp; forum support</span>
+            </li>
+          </ul>
+        </div>
+        <a href="#hero" class="tier-btn">Start Prototyping</a>
+      </div>
+
+      <!-- Tier 2: Production Studio (Featured) -->
+      <div class="pricing-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div>
+          <h3 class="tier-name">Production Studio</h3>
+          <p class="tier-desc">Designed for high-output VFX pipelines, creative agencies, and production design teams.</p>
+          <div class="tier-price-wrap">
+            <span class="tier-price" data-monthly="$199" data-annual="$159">$199</span>
+            <span class="tier-period">/ month</span>
+          </div>
+          <ul class="tier-features">
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>3,500 state transition seconds / mo</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Full 4K Spatial Upsampling</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Priority H100 cluster routing (&lt;120ms)</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Automatic forward/reverse pairing</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Dedicated Slack engineering channel</span>
+            </li>
+          </ul>
+        </div>
+        <a href="#hero" class="tier-btn">Deploy Studio Tier</a>
+      </div>
+
+      <!-- Tier 3: Enterprise Lab -->
+      <div class="pricing-card">
+        <div>
+          <h3 class="tier-name">Enterprise Lab</h3>
+          <p class="tier-desc">Custom on-prem weights, air-gapped private clusters, and dedicated SLA for major studios.</p>
+          <div class="tier-price-wrap">
+            <span class="tier-price" data-monthly="Custom" data-annual="Custom">Custom</span>
+            <span class="tier-period">/ annual contract</span>
+          </div>
+          <ul class="tier-features">
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Unlimited transition volume</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>On-prem weight export &amp; air-gap weights</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Custom LoRA fine-tuning on proprietary IP</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>Guaranteed 99.99% latency SLA</span>
+            </li>
+            <li class="feature-item">
+              <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              <span>24/7 dedicated research partner team</span>
+            </li>
+          </ul>
+        </div>
+        <a href="#hero" class="tier-btn">Contact Research Lab</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-tag">Common Questions</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-lead">
+      Everything you need to know about Modalis latent architecture, bidirectional pairing, and production deployment.
+    </p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button type="button" class="faq-question">
+          <span>How does Modalis differ from conventional text-to-video generators?</span>
+          <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Conventional diffusion models generate transient frames from text noise, resulting in flickering identities, temporal drift, and unpredictable physics across edits. Modalis operates on an explicit 3D-aware latent state space where camera trajectory, identity tokens, lighting vectors, and environmental geometry are isolated into discrete coordinates. Modifying one coordinate leaves the remainder of the world mathematically invariant.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question">
+          <span>What ensures seamless visual reversibility without black-frame flash?</span>
+          <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Standard video players flash when looping or ping-ponging because H.264/H.265 decoders discard reference frames at container boundaries. Modalis generates paired forward and reverse trajectories with calibrated terminal hold guards (e.g. 0.08s buffer). The client player holds the final decoded frame in DOM memory until the reverse clip is pre-buffered, guaranteeing zero-flash transitions.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question">
+          <span>Can I self-host Modalis weights on our own private GPU clusters?</span>
+          <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Yes. Enterprise Lab tier licenses include full open-weight model checkpoints, TensorRT-LLM inference kernels, and Triton deployment manifests for private on-premises NVIDIA H100/A100 clusters. Your video feeds and training assets never leave your sovereign network perimeter.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question">
+          <span>What export formats and container codecs are supported?</span>
+          <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Modalis streams native ProRes 4444 XQ with alpha channels, web-optimized H.265/H.264 MP4 containers, AV1 streams for ultra-low bandwidth delivery, and raw OpenEXR multilayer frame sequences for Nuke/DaVinci Resolve compositing pipelines.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-question">
+          <span>How does the system handle high-frequency textures like textiles and hair?</span>
+          <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Our multi-scale continuous temporal flow model decouples macro-geometry from microscopic surface normals. Fine textures such as ribbed knitwear, individual hair strands, and dynamic fabric folds preserve micro-continuity across state changes with a recorded 99.4% identity retention score.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="final-cta-inner">
+      <div class="section-tag">Begin Building</div>
+      <h2 class="final-title">Experience the physics of state-driven video.</h2>
+      <p class="final-lead">
+        Join leading VFX studios, game engines, and creative directors building real-time generative worlds with Modalis.
+      </p>
+      <div class="final-actions">
+        <a href="#hero" class="btn-primary">Test Live Interactive Model</a>
+        <a href="#api" class="btn-secondary">Explore API Reference</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" aria-label="Modalis home">
+            <img src="./assets/modalis-logo.svg" alt="Modalis" class="brand-logo" />
+          </a>
+          <p>
+            Modalis is a continuous world-model foundation research lab advancing deterministic physics, temporal latent coherence, and state-reversible generative video.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Architecture</div>
+          <ul class="footer-links">
+            <li><a href="#architecture" class="footer-link">Continuous Latents</a></li>
+            <li><a href="#state-engine" class="footer-link">Modality Engine</a></li>
+            <li><a href="#telemetry" class="footer-link">Comparative Benchmarks</a></li>
+            <li><a href="#pipeline" class="footer-link">Studio Pipeline</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Developers</div>
+          <ul class="footer-links">
+            <li><a href="#api" class="footer-link">Python SDK</a></li>
+            <li><a href="#api" class="footer-link">TypeScript Client</a></li>
+            <li><a href="#api" class="footer-link">REST Endpoints</a></li>
+            <li><a href="#telemetry" class="footer-link">Cluster Health</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Foundation</div>
+          <ul class="footer-links">
+            <li><a href="#pricing" class="footer-link">Pricing &amp; Quotas</a></li>
+            <li><a href="#faq" class="footer-link">Documentation</a></li>
+            <li><a href="#" class="footer-link">Research Papers</a></li>
+            <li><a href="#" class="footer-link">Model Checkpoints</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Modalis Foundation Lab. Fictional design specimen for personal library archive.</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted);">
+          LATENT CLUSTER // STATUS: NOMINAL
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Client Script -->
+  <script>
+    (function () {
+      'use strict';
+
+      // -------------------------------------------------------------
+      // 1. Top Navigation Scroll Effect
+      // -------------------------------------------------------------
+      const topNav = document.getElementById('topNav');
+      function handleNavScroll() {
+        if (window.scrollY > 30) {
+          topNav.classList.add('scrolled');
+        } else {
+          topNav.classList.remove('scrolled');
+        }
+      }
+      window.addEventListener('scroll', handleNavScroll, { passive: true });
+      handleNavScroll();
+
+      // -------------------------------------------------------------
+      // 2. Video Player & State Engine Machine
+      // -------------------------------------------------------------
+      const container = document.getElementById('controllerContainer');
+      const capsule = document.getElementById('glassCapsule');
+      const heading = document.getElementById('heroHeading');
+      const resetBtn = document.getElementById('btn-reset');
+      const srStatus = document.getElementById('srStatus');
+      const errorBanner = document.getElementById('errorBanner');
+      const retryBtn = document.getElementById('retryBtn');
+      const stillBase = document.getElementById('still-base');
+
+      const stateButtons = {
+        scene: document.getElementById('btn-scene'),
+        lighting: document.getElementById('btn-lighting'),
+        clothing: document.getElementById('btn-clothing'),
+        cast: document.getElementById('btn-cast')
+      };
+
+      // State Video Manifest & Hold Guards
+      const STATES = {
+        scene: {
+          label: 'Scene',
+          fwdVideo: document.getElementById('vid-scene-fwd'),
+          revVideo: document.getElementById('vid-scene-rev'),
+          fwdHoldTime: 2.00,
+          revHoldTime: 1.90, // Guard against tail black frame in video-2-reverse (2.08s total)
+          capsuleLeft: '20%',
+          capsuleWidth: '20%'
+        },
+        lighting: {
+          label: 'Lighting',
+          fwdVideo: document.getElementById('vid-lighting-fwd'),
+          revVideo: document.getElementById('vid-lighting-rev'),
+          fwdHoldTime: 2.00,
+          revHoldTime: 1.96, // video-3-reverse is 2.04s total
+          capsuleLeft: '40%',
+          capsuleWidth: '20%'
+        },
+        clothing: {
+          label: 'Clothing',
+          fwdVideo: document.getElementById('vid-clothing-fwd'),
+          revVideo: document.getElementById('vid-clothing-rev'),
+          fwdHoldTime: 2.00,
+          revHoldTime: 2.00, // video-1-reverse is 2.08s total
+          capsuleLeft: '60%',
+          capsuleWidth: '20%'
+        },
+        cast: {
+          label: 'Cast',
+          fwdVideo: document.getElementById('vid-cast-fwd'),
+          revVideo: document.getElementById('vid-cast-rev'),
+          fwdHoldTime: 2.92, // video-4 is 3.00s total
+          revHoldTime: 2.40, // video-4-reverse is 2.48s total
+          capsuleLeft: '80%',
+          capsuleWidth: '20%'
+        }
+      };
+
+      let currentState = null; // null | 'scene' | 'lighting' | 'clothing' | 'cast'
+      let playerState = 'ready'; // 'ready' | 'transitioning-fwd' | 'settled' | 'transitioning-rev'
+      let activeMedia = stillBase;
+      let guardRafId = null;
+
+      function updateSrStatus(msg) {
+        if (srStatus) srStatus.textContent = msg;
+      }
+
+      function showError(msg) {
+        if (errorBanner) {
+          document.getElementById('errorMessage').textContent = msg || 'Playback stalled.';
+          errorBanner.classList.add('visible');
+        }
+      }
+
+      function clearError() {
+        if (errorBanner) {
+          errorBanner.classList.remove('visible');
+        }
+      }
+
+      // Preload / warm video elements
+      Object.values(STATES).forEach(s => {
+        [s.fwdVideo, s.revVideo].forEach(v => {
+          if (v) {
+            v.load();
+            v.addEventListener('error', () => showError('Media buffer error'));
+          }
+        });
+      });
+
+      // Capsule Hover Positioning (when idle in ready state)
+      const ctrlItems = document.getElementById('controllerItems');
+      function resetCapsuleHover() {
+        if (playerState === 'ready' && !container.classList.contains('state-forward') && !container.classList.contains('state-selected')) {
+          capsule.style.left = '-5px';
+          capsule.style.width = 'calc(20% + 5px)';
+        }
+      }
+
+      Object.entries(stateButtons).forEach(([stateKey, btn]) => {
+        if (!btn) return;
+        btn.addEventListener('mouseenter', () => {
+          if (playerState === 'ready') {
+            const cfg = STATES[stateKey];
+            capsule.style.left = cfg.capsuleLeft;
+            capsule.style.width = cfg.capsuleWidth;
+          }
+        });
+      });
+
+      if (ctrlItems) {
+        ctrlItems.addEventListener('mouseleave', resetCapsuleHover);
+      }
+
+      // Transition Forward
+      function triggerForward(stateKey) {
+        if (playerState !== 'ready') return;
+        clearError();
+
+        const cfg = STATES[stateKey];
+        if (!cfg || !cfg.fwdVideo) return;
+
+        currentState = stateKey;
+        playerState = 'transitioning-fwd';
+        updateSrStatus(`Transforming to state: ${cfg.label}`);
+
+        // Mark target button
+        const targetBtn = stateButtons[stateKey];
+        if (targetBtn) targetBtn.classList.add('chosen-target');
+
+        // UI morph to collapsed forward pill
+        container.classList.add('state-forward');
+        heading.classList.add('hidden-state');
+
+        const fwdVid = cfg.fwdVideo;
+        fwdVid.currentTime = 0;
+
+        // Atomic swap once the video actually starts rendering
+        const playPromise = fwdVid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('Playback error:', err);
+            showError('Unable to start video playback. Tap retry.');
+          });
+        }
+
+        function onFirstFrame() {
+          fwdVid.classList.add('active');
+          if (activeMedia && activeMedia !== fwdVid) {
+            activeMedia.classList.remove('active');
+          }
+          activeMedia = fwdVid;
+        }
+
+        if ('requestVideoFrameCallback' in fwdVid) {
+          fwdVid.requestVideoFrameCallback(onFirstFrame);
+        } else {
+          fwdVid.addEventListener('playing', onFirstFrame, { once: true });
+        }
+
+        // Seam-Safe Hold Guard Loop
+        const holdThreshold = cfg.fwdHoldTime;
+        function checkFwdSeam() {
+          if (fwdVid.currentTime >= holdThreshold) {
+            fwdVid.pause();
+            cancelAnimationFrame(guardRafId);
+            onForwardSettled(stateKey);
+          } else {
+            guardRafId = requestAnimationFrame(checkFwdSeam);
+          }
+        }
+        guardRafId = requestAnimationFrame(checkFwdSeam);
+      }
+
+      function onForwardSettled(stateKey) {
+        playerState = 'settled';
+        const cfg = STATES[stateKey];
+        updateSrStatus(`State ${cfg.label} reached. Reset available.`);
+
+        // Clean up chosen button class and switch controller to selected state
+        const targetBtn = stateButtons[stateKey];
+        if (targetBtn) targetBtn.classList.remove('chosen-target');
+
+        container.classList.remove('state-forward');
+        container.classList.add('state-selected');
+        resetBtn.setAttribute('tabindex', '0');
+        resetBtn.focus();
+      }
+
+      // Transition Reverse (Return to Master Base)
+      function triggerReverse() {
+        if (playerState !== 'settled' || !currentState) return;
+        clearError();
+
+        const cfg = STATES[currentState];
+        if (!cfg || !cfg.revVideo) return;
+
+        playerState = 'transitioning-rev';
+        updateSrStatus(`Returning to initial state from ${cfg.label}`);
+
+        // Morph controller back to default wide bar
+        container.classList.remove('state-selected');
+        heading.classList.remove('hidden-state');
+        resetBtn.setAttribute('tabindex', '-1');
+
+        const revVid = cfg.revVideo;
+        revVid.currentTime = 0;
+
+        const playPromise = revVid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('Playback reverse error:', err);
+            showError('Unable to play reverse sequence.');
+          });
+        }
+
+        function onFirstRevFrame() {
+          revVid.classList.add('active');
+          if (activeMedia && activeMedia !== revVid) {
+            activeMedia.classList.remove('active');
+          }
+          activeMedia = revVid;
+        }
+
+        if ('requestVideoFrameCallback' in revVid) {
+          revVid.requestVideoFrameCallback(onFirstRevFrame);
+        } else {
+          revVid.addEventListener('playing', onFirstRevFrame, { once: true });
+        }
+
+        const holdThreshold = cfg.revHoldTime;
+        function checkRevSeam() {
+          if (revVid.currentTime >= holdThreshold) {
+            revVid.pause();
+            cancelAnimationFrame(guardRafId);
+            onReverseSettled();
+          } else {
+            guardRafId = requestAnimationFrame(checkRevSeam);
+          }
+        }
+        guardRafId = requestAnimationFrame(checkRevSeam);
+      }
+
+      function onReverseSettled() {
+        playerState = 'ready';
+        currentState = null;
+        updateSrStatus('Returned to master keyframe.');
+
+        // Seamlessly switch back to still-base layer
+        stillBase.classList.add('active');
+        if (activeMedia && activeMedia !== stillBase) {
+          activeMedia.classList.remove('active');
+        }
+        activeMedia = stillBase;
+
+        // Reset capsule positioning
+        resetCapsuleHover();
+      }
+
+      // Bind button events
+      Object.entries(stateButtons).forEach(([stateKey, btn]) => {
+        if (btn) {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            triggerForward(stateKey);
+          });
+        }
+      });
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          triggerReverse();
+        });
+      }
+
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          clearError();
+          if (currentState && playerState === 'transitioning-fwd') {
+            triggerForward(currentState);
+          } else if (currentState && playerState === 'transitioning-rev') {
+            triggerReverse();
+          } else {
+            onReverseSettled();
+          }
+        });
+      }
+
+      // Keyboard navigation for controller
+      container.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && playerState === 'settled') {
+          triggerReverse();
+        }
+      });
+
+      // -------------------------------------------------------------
+      // 3. Section 3: Dimension Engine Tabs
+      // -------------------------------------------------------------
+      const stateTabs = document.querySelectorAll('.state-tab');
+      const statePanels = {
+        'dim-scene': document.getElementById('dim-scene'),
+        'dim-lighting': document.getElementById('dim-lighting'),
+        'dim-clothing': document.getElementById('dim-clothing'),
+        'dim-cast': document.getElementById('dim-cast')
+      };
+
+      stateTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          stateTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const targetId = tab.getAttribute('data-target');
+          Object.entries(statePanels).forEach(([id, panel]) => {
+            if (!panel) return;
+            if (id === targetId) {
+              panel.style.display = 'grid';
+            } else {
+              panel.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // -------------------------------------------------------------
+      // 4. Section 6: Developer Code Tabs & Copy Button
+      // -------------------------------------------------------------
+      const codeTabs = document.querySelectorAll('.code-tab');
+      const codeSnippet = document.getElementById('codeSnippet');
+      const copyCodeBtn = document.getElementById('copyCodeBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
+
+      const CODE_SAMPLES = {
+        python: `<span class="c-kw">import</span> modalis
+
+<span class="c-cm"># 1. Initialize client with open-weights or hosted endpoint</span>
+client = modalis.<span class="c-fn">Client</span>(api_key=<span class="c-str">"sk_live_modalis_world_model"</span>)
+
+<span class="c-cm"># 2. Stage base master keyframe and condition state change</span>
+transition = client.states.<span class="c-fn">create_transition</span>(
+    base_frame=<span class="c-str">"assets/state-base.png"</span>,
+    dimension=<span class="c-str">"scene"</span>,
+    target_prompt=<span class="c-str">"Pale blue architectural walls translate outward, revealing sky"</span>,
+    camera_lock=<span class="c-kw">True</span>,
+    duration_seconds=<span class="c-num">2.08</span>,
+    terminal_guard_seconds=<span class="c-num">0.08</span>
+)
+
+<span class="c-cm"># 3. Stream paired forward and reverse video buffers</span>
+transition.<span class="c-fn">export_pair</span>(output_dir=<span class="c-str">"./exports/"</span>, format=<span class="c-str">"mp4"</span>)
+<span class="c-fn">print</span>(<span class="c-str">f"Ready: {transition.forward_url} &lt;-&gt; {transition.reverse_url}"</span>)`,
+
+        typescript: `<span class="c-kw">import</span> { <span class="c-fn">ModalisClient</span> } <span class="c-kw">from</span> <span class="c-str">'@modalis/world-engine'</span>;
+
+<span class="c-kw">const</span> modalis = <span class="c-kw">new</span> <span class="c-fn">ModalisClient</span>({
+  apiKey: process.env.<span class="c-fn">MODALIS_API_KEY</span>
+});
+
+<span class="c-cm">// Stage base master keyframe and trigger deterministic latent shift</span>
+<span class="c-kw">const</span> transition = <span class="c-kw">await</span> modalis.states.<span class="c-fn">createTransition</span>({
+  baseFrame: <span class="c-str">'./assets/state-base.png'</span>,
+  dimension: <span class="c-str">'lighting'</span>,
+  targetPrompt: <span class="c-str">'Warm cinematic sunset bounce at 2700K with long shadows'</span>,
+  cameraLock: <span class="c-kw">true</span>,
+  guardHoldSeconds: <span class="c-num">0.08</span>
+});
+
+<span class="c-kw">await</span> transition.<span class="c-fn">savePair</span>(<span class="c-str">'./exports/lighting-transition'</span>);
+console.<span class="c-fn">log</span>(<span class="c-str">\`Paired clips ready: \${transition.pairId}\`</span>);`,
+
+        curl: `<span class="c-fn">curl</span> -X POST <span class="c-str">"https://api.modalis.ai/v1/transitions"</span> \
+  -H <span class="c-str">"Authorization: Bearer sk_live_modalis_world_model"</span> \
+  -H <span class="c-str">"Content-Type: application/json"</span> \
+  -d <span class="c-str">'{
+    "base_frame_url": "https://assets.modalis.ai/state-base.png",
+    "dimension": "clothing",
+    "prompt": "Deep emerald techwear jacket with tactical matte texture",
+    "camera_lock": true,
+    "terminal_guard_ms": 80,
+    "pairing_mode": "bidirectional_reversible"
+  }'</span>`
+      };
+
+      codeTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          codeTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const lang = tab.getAttribute('data-lang');
+          if (codeSnippet && CODE_SAMPLES[lang]) {
+            codeSnippet.innerHTML = `<code>${CODE_SAMPLES[lang]}</code>`;
+          }
+        });
+      });
+
+      if (copyCodeBtn && codeSnippet) {
+        copyCodeBtn.addEventListener('click', () => {
+          const rawCode = codeSnippet.innerText;
+          navigator.clipboard.writeText(rawCode).then(() => {
+            copyBtnText.textContent = 'Copied!';
+            copyCodeBtn.style.borderColor = 'var(--accent-cyan)';
+            setTimeout(() => {
+              copyBtnText.textContent = 'Copy Code';
+              copyCodeBtn.style.borderColor = 'var(--border-subtle)';
+            }, 2000);
+          }).catch(err => {
+            console.error('Clipboard copy failed:', err);
+          });
+        });
+      }
+
+      // -------------------------------------------------------------
+      // 5. Section 7: Pricing Billing Toggle
+      // -------------------------------------------------------------
+      const billingToggle = document.getElementById('billingToggle');
+      const monthlyLabel = document.getElementById('billingMonthlyLabel');
+      const annualLabel = document.getElementById('billingAnnualLabel');
+      const tierPrices = document.querySelectorAll('.tier-price');
+
+      let isAnnual = false;
+      function setBilling(annual) {
+        isAnnual = annual;
+        if (isAnnual) {
+          billingToggle.classList.add('annual');
+          billingToggle.setAttribute('aria-checked', 'true');
+          annualLabel.classList.add('active');
+          monthlyLabel.classList.remove('active');
+        } else {
+          billingToggle.classList.remove('annual');
+          billingToggle.setAttribute('aria-checked', 'false');
+          monthlyLabel.classList.add('active');
+          annualLabel.classList.remove('active');
+        }
+
+        tierPrices.forEach(p => {
+          p.textContent = isAnnual ? p.getAttribute('data-annual') : p.getAttribute('data-monthly');
+        });
+      }
+
+      if (billingToggle) {
+        billingToggle.addEventListener('click', () => setBilling(!isAnnual));
+        billingToggle.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            setBilling(!isAnnual);
+          }
+        });
+      }
+      if (monthlyLabel) monthlyLabel.addEventListener('click', () => setBilling(false));
+      if (annualLabel) annualLabel.addEventListener('click', () => setBilling(true));
+
+      // -------------------------------------------------------------
+      // 6. Section 8: FAQ Accordion
+      // -------------------------------------------------------------
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const answer = item.querySelector('.faq-answer');
+          const isOpen = item.classList.contains('open');
+
+          // Close other accordion items
+          document.querySelectorAll('.faq-item.open').forEach(other => {
+            if (other !== item) {
+              other.classList.remove('open');
+              other.querySelector('.faq-answer').style.maxHeight = null;
+            }
+          });
+
+          if (isOpen) {
+            item.classList.remove('open');
+            answer.style.maxHeight = null;
+          } else {
+            item.classList.add('open');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+          }
+        });
+      });
+
+      // -------------------------------------------------------------
+      // 7. Hero Viewport Visibility Observer (Power & GPU Saving)
+      // -------------------------------------------------------------
+      const heroSection = document.getElementById('hero');
+      if ('IntersectionObserver' in window && heroSection) {
+        const heroObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              // Pause active video when user scrolls into lower sections
+              if (activeMedia && activeMedia.tagName === 'VIDEO' && !activeMedia.paused) {
+                activeMedia.pause();
+              }
+            }
+          });
+        }, { threshold: 0.1 });
+        heroObserver.observe(heroSection);
+      }
+
+    })();
+  </script>
+</body>
+</html>

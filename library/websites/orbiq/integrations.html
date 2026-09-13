@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Integrations & Ecosystem — Orbiq</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-pure: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-alt: #f1f5f9;
+      --coral-core: #f95738;
+      --coral-hover: #e04627;
+      --coral-soft: rgba(249, 87, 56, 0.08);
+      --coral-border: rgba(249, 87, 56, 0.2);
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+      --border-light: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 36px -4px rgba(15, 23, 42, 0.1);
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background-color: var(--bg-pure); color: var(--text-body); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+    body { overflow-x: hidden; background: var(--bg-pure); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Top Nav */
+    .site-header {
+      position: sticky; top: 0; left: 0; width: 100%; height: 76px; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .brand-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+    .brand-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--coral-core); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 2px 8px rgba(249, 87, 56, 0.35); }
+    .brand-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+    .nav-menu { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-item { position: relative; }
+    .nav-item a { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; padding: 6px 0; }
+    .nav-item a:hover, .nav-item.active a { color: var(--text-main); }
+    .nav-item.active a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--coral-core); border-radius: 2px; }
+    
+    .header-actions { display: flex; align-items: center; gap: 16px; }
+    .btn-login { font-size: 0.9rem; font-weight: 600; color: var(--text-main); text-decoration: none; padding: 8px 16px; }
+    .btn-primary {
+      font-family: var(--font-display); font-size: 0.88rem; font-weight: 600; padding: 10px 22px;
+      border-radius: 9999px; background: var(--coral-core); color: #fff; text-decoration: none; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(249, 87, 56, 0.25); transition: all 0.2s ease;
+    }
+    .btn-primary:hover { background: var(--coral-hover); transform: translateY(-1px); }
+
+    /* Hero */
+    .hero-section {
+      position: relative; padding: 80px 0 60px; text-align: center;
+      background: radial-gradient(circle at 50% 15%, rgba(249, 87, 56, 0.04) 0%, transparent 65%);
+      overflow: hidden;
+    }
+    
+    /* Background Asterisk Grid */
+    .hero-grid-bg {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1000px; height: 380px; display: grid;
+      grid-template-columns: repeat(10, 100px); grid-template-rows: repeat(4, 90px);
+      pointer-events: none; z-index: 1; opacity: 0.35;
+      mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 80%);
+    }
+    .grid-cell {
+      border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: center;
+      color: #94a3b8; font-size: 14px;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; }
+    .hero-pill-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 9999px;
+      background: #fff; border: 1px solid var(--border-light); font-family: var(--font-mono);
+      font-size: 0.78rem; font-weight: 600; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.4rem); font-weight: 800;
+      line-height: 1.08; letter-spacing: -0.035em; color: var(--text-main); margin-bottom: 20px;
+    }
+    .hero-title .text-coral { color: var(--coral-core); }
+    .hero-subtitle {
+      font-size: 1.15rem; line-height: 1.6; color: var(--text-muted); max-width: 640px; margin: 0 auto 36px;
+    }
+
+    /* Social proof strip */
+    .trust-strip {
+      border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);
+      padding: 32px 0; margin-top: 20px; text-align: center;
+    }
+    .trust-label { font-size: 0.95rem; font-weight: 500; color: var(--text-muted); margin-bottom: 24px; }
+    .trust-label strong { color: var(--coral-core); font-weight: 700; }
+    .trust-logos {
+      display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap;
+    }
+    .trust-logo-item {
+      display: flex; align-items: center; gap: 8px; font-family: var(--font-display);
+      font-weight: 700; font-size: 1.1rem; color: #334155; opacity: 0.75;
+      transition: all 0.2s ease;
+    }
+    .trust-logo-item:hover { opacity: 1; color: var(--text-main); }
+    .trust-logo-item svg { width: 22px; height: 22px; }
+
+    /* Directory Controls & Badge */
+    .directory-section { padding: 70px 0 100px; background: var(--bg-pure); }
+    .directory-header {
+      text-align: center; margin-bottom: 48px;
+    }
+    .directory-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 9999px;
+      background: var(--bg-alt); border: 1px solid var(--border-light); font-family: var(--font-mono);
+      font-size: 0.76rem; font-weight: 600; color: var(--text-body); margin-bottom: 24px;
+    }
+    
+    /* Search & Filter Bar */
+    .filter-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .filter-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .filter-tab {
+      padding: 8px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--border-light); background: #fff; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s ease; font-family: var(--font-display);
+    }
+    .filter-tab:hover { border-color: #cbd5e1; color: var(--text-main); }
+    .filter-tab.active { background: var(--coral-core); border-color: var(--coral-core); color: #fff; }
+
+    .search-box {
+      position: relative; min-width: 280px;
+    }
+    .search-input {
+      width: 100%; padding: 9px 16px 9px 38px; border-radius: 9999px;
+      border: 1px solid var(--border-light); font-size: 0.88rem; outline: none;
+      font-family: var(--font-body); transition: border-color 0.2s ease;
+    }
+    .search-input:focus { border-color: var(--coral-core); box-shadow: 0 0 0 3px rgba(249, 87, 56, 0.1); }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-dim); pointer-events: none;
+    }
+
+    /* 12-Card Grid */
+    .integrations-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .integration-card {
+      background: #ffffff; border: 1px solid var(--border-light); border-radius: 20px;
+      padding: 32px 28px; display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: var(--shadow-sm); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; min-height: 250px;
+    }
+    .integration-card:hover {
+      transform: translateY(-4px); border-color: rgba(249, 87, 56, 0.3);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(249, 87, 56, 0.15);
+    }
+
+    .card-top {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+    }
+    .app-stamp {
+      width: 46px; height: 46px; border-radius: 12px; background: #fff5f2;
+      border: 1px solid rgba(249, 87, 56, 0.25); display: flex; align-items: center;
+      justify-content: center; color: var(--coral-core); font-weight: 800; font-size: 1.15rem;
+      font-family: var(--font-display); box-shadow: 0 2px 6px rgba(249, 87, 56, 0.1);
+      transition: transform 0.2s ease;
+    }
+    .integration-card:hover .app-stamp { transform: scale(1.06); }
+    .card-num {
+      font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; color: var(--text-dim);
+    }
+
+    .card-title {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+      color: var(--text-main); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .card-desc {
+      font-size: 0.88rem; line-height: 1.55; color: var(--text-muted); margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .card-action {
+      display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display);
+      font-size: 0.88rem; font-weight: 600; color: var(--text-main); text-decoration: none;
+      cursor: pointer; border: none; background: transparent; padding: 0;
+      transition: all 0.2s ease;
+    }
+    .card-action span.arrow { transition: transform 0.2s ease; display: inline-block; }
+    .integration-card:hover .card-action { color: var(--coral-core); }
+    .integration-card:hover .card-action span.arrow { transform: translateX(4px); }
+
+    /* Custom Request Banner */
+    .custom-connector-cta {
+      margin-top: 60px; background: #0f172a; border-radius: 24px; padding: 48px;
+      color: #fff; display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .custom-connector-cta::after {
+      content: ''; position: absolute; top: -50px; right: -50px; width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(249, 87, 56, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-left { max-width: 600px; position: relative; z-index: 2; }
+    .cta-left h3 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .cta-left p { color: #94a3b8; font-size: 0.98rem; line-height: 1.6; }
+    .cta-actions { display: flex; gap: 14px; position: relative; z-index: 2; }
+    .btn-light {
+      font-family: var(--font-display); font-size: 0.88rem; font-weight: 600; padding: 12px 24px;
+      border-radius: 9999px; background: #fff; color: #0f172a; text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: all 0.2s ease;
+    }
+    .btn-light:hover { background: #f1f5f9; transform: translateY(-1px); }
+    .btn-outline-light {
+      font-family: var(--font-display); font-size: 0.88rem; font-weight: 600; padding: 12px 24px;
+      border-radius: 9999px; background: transparent; color: #fff; text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.25); cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-outline-light:hover { border-color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+    /* Modal for App Details */
+    .modal-backdrop {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+      z-index: 1500; display: none; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s ease;
+    }
+    .modal-backdrop.active { display: flex; opacity: 1; }
+    .modal-card {
+      background: #fff; border-radius: 20px; width: 90%; max-width: 520px;
+      padding: 36px; box-shadow: var(--shadow-lg); position: relative;
+      transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-backdrop.active .modal-card { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px; background: none; border: none;
+      font-size: 1.5rem; line-height: 1; color: var(--text-dim); cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text-main); }
+    .modal-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .modal-stamp { width: 52px; height: 52px; border-radius: 14px; background: #fff5f2; border: 1px solid rgba(249, 87, 56, 0.25); display: flex; align-items: center; justify-content: center; color: var(--coral-core); font-size: 1.4rem; font-weight: 800; }
+    .modal-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+    .modal-category { font-family: var(--font-mono); font-size: 0.78rem; color: var(--coral-core); font-weight: 600; text-transform: uppercase; }
+    .modal-desc { font-size: 0.95rem; color: var(--text-body); line-height: 1.6; margin-bottom: 24px; }
+    .modal-meta-box {
+      background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: 12px;
+      padding: 16px; margin-bottom: 24px; font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-muted);
+    }
+    .modal-meta-box div { margin-bottom: 6px; }
+    .modal-meta-box div:last-child { margin-bottom: 0; }
+    .modal-meta-box strong { color: var(--text-main); }
+
+    /* Footer */
+    .site-footer {
+      background: #ffffff; border-top: 1px solid var(--border-light); padding: 70px 0 40px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 60px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-main);
+      margin-bottom: 18px; letter-spacing: -0.01em;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a { font-size: 0.88rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--coral-core); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; padding-top: 32px;
+      border-top: 1px solid var(--border-light); font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-dim);
+    }
+
+    /* Floating Variation Switcher Bar */
+    .variation-bar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); padding: 8px 14px;
+      border-radius: 9999px; display: flex; align-items: center; gap: 6px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .variation-tag { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; color: #94a3b8; padding: 0 8px; letter-spacing: 0.1em; }
+    .variation-pill {
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: #cbd5e1;
+      text-decoration: none; padding: 6px 14px; border-radius: 9999px; transition: all 0.2s ease;
+    }
+    .variation-pill:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    .variation-pill.active { background: var(--coral-core); color: #fff; }
+
+    @media (max-width: 1024px) {
+      .integrations-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .custom-connector-cta { flex-direction: column; gap: 24px; text-align: center; }
+    }
+    @media (max-width: 768px) {
+      .site-header { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .integrations-grid { grid-template-columns: 1fr; }
+      .trust-logos { gap: 24px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+      .search-box { width: 100%; }
+      .variation-bar { width: 92%; justify-content: center; flex-wrap: wrap; border-radius: 20px; bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <a href="index.html" class="brand-link">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line></svg>
+      </div>
+      <span class="brand-name">Orbiq</span>
+    </a>
+
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="index.html">Home</a></li>
+      <li class="nav-item"><a href="index.html#features">Features</a></li>
+      <li class="nav-item"><a href="pricing.html">Pricing</a></li>
+      <li class="nav-item"><a href="company.html">Company</a></li>
+      <li class="nav-item active"><a href="integrations.html">Integrations</a></li>
+      <li class="nav-item"><a href="company.html#culture">Culture</a></li>
+    </ul>
+
+    <div class="header-actions">
+      <a href="#" class="btn-login">Log in</a>
+      <a href="pricing.html" class="btn-primary">Sign up</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <!-- Asterisk background pattern grid -->
+    <div class="hero-grid-bg">
+      <div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div>
+      <div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div>
+      <div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div>
+      <div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div><div class="grid-cell">✻</div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="hero-pill-badge">
+        <span>⚡ Orbiq Integrations</span>
+      </div>
+
+      <h1 class="hero-title">
+        Automate everything with<br />
+        <span class="text-coral">Integrations</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Fed up with "integrations" that break more than they fix, we built a system that pulls your whole workflow together.
+      </p>
+    </div>
+
+    <!-- Social proof band -->
+    <div class="trust-strip">
+      <div class="container">
+        <p class="trust-label">Trusted by <strong>1000+</strong> Marketing teams in <strong>90+</strong> countries</p>
+        <div class="trust-logos">
+          <div class="trust-logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span>Logoipsum</span>
+          </div>
+          <div class="trust-logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+            <span>Logoipsum</span>
+          </div>
+          <div class="trust-logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M8 10h8M8 14h4"/></svg>
+            <span>Logoipsum</span>
+          </div>
+          <div class="trust-logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V15a2 2 0 0 0-2-2H9v-2h2a4 4 0 0 0 4-4V5.07A8 8 0 0 1 20 12a7.93 7.93 0 0 1-7 4.93z"/></svg>
+            <span>Logoipsum</span>
+          </div>
+          <div class="trust-logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>Logoipsum</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Directory Section -->
+  <section class="directory-section">
+    <div class="container">
+      <div class="directory-header">
+        <div class="directory-badge">See all integrations</div>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div class="filter-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All (12)</button>
+          <button class="filter-tab" data-filter="cloud">Cloud & Infra</button>
+          <button class="filter-tab" data-filter="ai">AI & Models</button>
+          <button class="filter-tab" data-filter="social">Social & Media</button>
+          <button class="filter-tab" data-filter="dev">Dev & Database</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search integrations..." />
+        </div>
+      </div>
+
+      <!-- 12-Card Integrations Directory Grid -->
+      <div class="integrations-grid" id="gridContainer">
+        
+        <!-- #1 Alibaba Cloud -->
+        <article class="integration-card" data-category="cloud" data-title="Alibaba Cloud" data-index="#1" data-desc="Alibaba Cloud supports over 500 link apps, including enterprise CRMs, relational databases, distributed message queues, and hybrid container management tools.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/><polyline points="8 15 10 13 8 11"/></svg>
+              </div>
+              <span class="card-num">#1</span>
+            </div>
+            <h3 class="card-title">Alibaba Cloud</h3>
+            <p class="card-desc">Alibaba cloud supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #2 Amazon -->
+        <article class="integration-card" data-category="cloud" data-title="Amazon AWS" data-index="#2" data-desc="Native high-speed telemetry hooks into AWS S3, CloudWatch metrics, Lambda serverless events, and distributed DynamoDB tables with sub-10ms pipeline dispatch.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <span style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-display); line-height: 1;">a</span>
+              </div>
+              <span class="card-num">#2</span>
+            </div>
+            <h3 class="card-title">Amazon</h3>
+            <p class="card-desc">Amazon supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #3 Anthropic -->
+        <article class="integration-card" data-category="ai" data-title="Anthropic Claude" data-index="#3" data-desc="Integrate Claude 3.7 Sonnet reasoning into automated support ticket escalation, code review pipelines, and structured customer feedback synthesis.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <span style="font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); letter-spacing: -0.05em;">A\</span>
+              </div>
+              <span class="card-num">#3</span>
+            </div>
+            <h3 class="card-title">Anthropic</h3>
+            <p class="card-desc">Anthropic supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #4 Bard / Gemini -->
+        <article class="integration-card" data-category="ai" data-title="Bard & Gemini" data-index="#4" data-desc="Stream real-time Google Vertex AI reasoning, vision analysis, and search-grounded telemetry into your automated customer workflows.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+              </div>
+              <span class="card-num">#4</span>
+            </div>
+            <h3 class="card-title">Bard</h3>
+            <p class="card-desc">Bard supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #5 Blogger -->
+        <article class="integration-card" data-category="social" data-title="Blogger CMS" data-index="#5" data-desc="Publish continuous changelog updates, release notes, and documentation articles straight from closed GitHub pull requests and internal issue trackers.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <span style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-display);">B</span>
+              </div>
+              <span class="card-num">#5</span>
+            </div>
+            <h3 class="card-title">Blogger</h3>
+            <p class="card-desc">Blogger supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #6 Bluesky -->
+        <article class="integration-card" data-category="social" data-title="Bluesky AT Protocol" data-index="#6" data-desc="Broadcast automated platform status alerts, release announcements, and decentralized developer updates directly across the AT Protocol ecosystem.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 13c-2.5-4.5-8-6.5-10-3 2.5 4.5 7 3.5 10 3zm0 0c2.5-4.5 8-6.5 10-3-2.5 4.5-7 3.5-10 3zm-3 4.5c-2.5 2-4 1-5-.5 1-1.5 3-1.5 5 .5zm6 0c2.5 2 4 1 5-.5-1-1.5-3-1.5-5 .5z"/></svg>
+              </div>
+              <span class="card-num">#6</span>
+            </div>
+            <h3 class="card-title">Bluesky</h3>
+            <p class="card-desc">Bluesky supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #7 DeepSeek -->
+        <article class="integration-card" data-category="ai" data-title="DeepSeek R1" data-index="#7" data-desc="Incorporate deep open-weight mathematical reasoning and code synthesis directly into your automated linting and unit-test triage cycles.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12c-1.5-3-4.5-5-9-5s-7.5 2-9 5c1.5 3 4.5 5 9 5s7.5-2 9-5z"/><circle cx="12" cy="12" r="3"/><path d="M18 10l3-2M6 10L3 8"/></svg>
+              </div>
+              <span class="card-num">#7</span>
+            </div>
+            <h3 class="card-title">Deepseek</h3>
+            <p class="card-desc">Deepseek supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #8 Discord -->
+        <article class="integration-card" data-category="social" data-title="Discord Community & Ops" data-index="#8" data-desc="Orchestrate team incident war-rooms, VIP customer notifications, and automated bot telemetry threads across private channels.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6h-2c-1 0-2 1-2 2v2H10V8c0-1-1-2-2-2H6c-2 0-3 2-3 4v6c0 1 1 2 2 2h2c1 0 2-1 2-2v-2h4v2c0 1 1 2 2 2h2c2 0 3-1 3-3V8c0-2-1-2-3-2z"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/></svg>
+              </div>
+              <span class="card-num">#8</span>
+            </div>
+            <h3 class="card-title">Discord</h3>
+            <p class="card-desc">Discord supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #9 Flutter -->
+        <article class="integration-card" data-category="dev" data-title="Flutter SDK" data-index="#9" data-desc="Bind cross-platform iOS, Android, and Web clients directly to reactive Orbiq websockets for instant configuration updates without app store redeploys.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="14 2 3 13 7 17 21 3 14 2"/><polygon points="14 14 9 19 14 24 19 19 14 14"/></svg>
+              </div>
+              <span class="card-num">#9</span>
+            </div>
+            <h3 class="card-title">Flutter</h3>
+            <p class="card-desc">Flutter supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #10 Kick -->
+        <article class="integration-card" data-category="social" data-title="Kick Streaming" data-index="#10" data-desc="Real-time creator economy webhooks: synchronize live stream status, subscriber events, tipping integrations, and automated chat moderation.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <span style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-display);">K</span>
+              </div>
+              <span class="card-num">#10</span>
+            </div>
+            <h3 class="card-title">Kick</h3>
+            <p class="card-desc">Kick supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #11 Pix -->
+        <article class="integration-card" data-category="dev" data-title="Pix Instant Settlement" data-index="#11" data-desc="Real-time settlement webhooks: auto-reconcile customer transactions, dynamic QR code dispatch, and sub-second payment confirmation triggers.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" transform="rotate(45 6.5 6.5)"/><rect x="14" y="14" width="7" height="7" transform="rotate(45 17.5 17.5)"/></svg>
+              </div>
+              <span class="card-num">#11</span>
+            </div>
+            <h3 class="card-title">Pix</h3>
+            <p class="card-desc">Pix supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+        <!-- #12 Supabase -->
+        <article class="integration-card" data-category="dev" data-title="Supabase Backend" data-index="#12" data-desc="Seamless bidirectional synchronization with PostgreSQL tables, row-level security tokens, edge functions, and real-time pgvector search vectors.">
+          <div>
+            <div class="card-top">
+              <div class="app-stamp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <span class="card-num">#12</span>
+            </div>
+            <h3 class="card-title">Supabase</h3>
+            <p class="card-desc">Supabase supports over 500 link apps, including CRMs, project form to management tools.</p>
+          </div>
+          <button class="card-action" onclick="openDetails(this)">
+            Learn More <span class="arrow">→</span>
+          </button>
+        </article>
+
+      </div>
+
+      <!-- Custom Connector CTA Banner -->
+      <div class="custom-connector-cta">
+        <div class="cta-left">
+          <h3>Need a proprietary connector?</h3>
+          <p>Don't see your stack listed? Connect any internal database or webhook endpoint with our zero-latency REST API and OpenAPI 3.1 specification.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="mailto:integrations@orbiq.example" class="btn-light">Request Connector</a>
+          <a href="index.html#features" class="btn-outline-light">Read API Specs →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Detail Modal -->
+  <div class="modal-backdrop" id="appModal" onclick="closeDetails(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeDetails()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-stamp" id="modalIcon">⚡</div>
+        <div>
+          <div class="modal-category" id="modalCategory">Cloud & Infra</div>
+          <h3 class="modal-title" id="modalTitle">App Title</h3>
+        </div>
+      </div>
+      <p class="modal-desc" id="modalDesc">Detailed description goes here.</p>
+      <div class="modal-meta-box">
+        <div><strong>Status:</strong> <span style="color:#10b981;">● Certified Integration</span></div>
+        <div><strong>Auth Method:</strong> OAuth 2.0 / API Token</div>
+        <div><strong>Sync Latency:</strong> Sub-second (<150ms)</div>
+        <div><strong>Webhook Support:</strong> Bidirectional streaming</div>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-primary" style="flex: 1;" onclick="alert('Integration workflow connector simulated.')">Connect Integration</button>
+        <button class="btn-secondary" style="padding: 10px 18px;" onclick="closeDetails()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="index.html" class="brand-link">
+            <div class="brand-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line></svg>
+            </div>
+            <span class="brand-name">Orbiq</span>
+          </a>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 14px; max-width: 320px;">
+            The modular operational suite designed to streamline inventory, telemetry, and automated workflows.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="company.html">Company</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="integrations.html">Integrations</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ecosystem</h4>
+          <ul>
+            <li><a href="integrations.html">All Integrations</a></li>
+            <li><a href="DESIGN.md">Design Spec</a></li>
+            <li><a href="mailto:hello@orbiq.example">Partner Program</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Library</h4>
+          <ul>
+            <li><a href="../../index.html">← Design Library</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Orbiq Technologies Inc. All rights reserved. Fictional design specimen.</div>
+        <div>Variation 4: Integrations Directory</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Variation Switcher Bar -->
+  <nav class="variation-bar">
+    <span class="variation-tag">PAGES:</span>
+    <a href="index.html" class="variation-pill">1. Home</a>
+    <a href="company.html" class="variation-pill">2. Company</a>
+    <a href="pricing.html" class="variation-pill">3. Pricing</a>
+    <a href="integrations.html" class="variation-pill active">4. Integrations</a>
+  </nav>
+
+  <script>
+    // Tab Filtering
+    const tabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.integration-card');
+    const searchInput = document.getElementById('searchInput');
+
+    function filterCards() {
+      const activeTab = document.querySelector('.filter-tab.active').getAttribute('data-filter');
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const title = card.getAttribute('data-title').toLowerCase();
+        const desc = card.getAttribute('data-desc').toLowerCase();
+
+        const matchesTab = (activeTab === 'all' || cat === activeTab);
+        const matchesQuery = (!query || title.includes(query) || desc.includes(query));
+
+        if (matchesTab && matchesQuery) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Modal Details
+    const modal = document.getElementById('appModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalIcon = document.getElementById('modalIcon');
+
+    function openDetails(btn) {
+      const card = btn.closest('.integration-card');
+      modalTitle.textContent = card.getAttribute('data-title');
+      modalCategory.textContent = card.getAttribute('data-index') + ' • ' + card.getAttribute('data-category').toUpperCase();
+      modalDesc.textContent = card.getAttribute('data-desc');
+      modalIcon.innerHTML = card.querySelector('.app-stamp').innerHTML;
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetails(e) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeDetails();
+      }
+    });
+  </script>
+
+</body>
+</html>

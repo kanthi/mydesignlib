@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#76CBFA" />
+      <stop offset="35%" stop-color="#A5DBFD" />
+      <stop offset="70%" stop-color="#DCF0FE" />
+      <stop offset="100%" stop-color="#F2F8FD" />
+    </linearGradient>
+    <filter id="cloudFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="6" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="65" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="16" />
+    </filter>
+    <filter id="softMist" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="4" result="mist" />
+      <feColorMatrix type="matrix" values="1 0 0 0 1  0 1 0 0 1  0 0 1 0 1  0 0 0 0.45 0"/>
+    </filter>
+  </defs>
+  
+  <!-- Sky Base -->
+  <rect width="1920" height="1080" fill="url(#skyGrad)" />
+  
+  <!-- Deep Cloud Formations -->
+  <g filter="url(#cloudFilter)" opacity="0.92">
+    <!-- Huge Billowing Clouds on Bottom & Right -->
+    <ellipse cx="1600" cy="850" rx="650" ry="380" fill="#FFFFFF" opacity="0.95" />
+    <ellipse cx="1200" cy="920" rx="550" ry="320" fill="#FFFFFF" opacity="0.9" />
+    <ellipse cx="700" cy="1000" rx="600" ry="280" fill="#FFFFFF" opacity="0.85" />
+    <ellipse cx="1850" cy="620" rx="420" ry="290" fill="#FFFFFF" opacity="0.8" />
+    <ellipse cx="1450" cy="680" rx="380" ry="240" fill="#F4FAFE" opacity="0.85" />
+    <ellipse cx="250" cy="1050" rx="450" ry="250" fill="#FFFFFF" opacity="0.8" />
+    <ellipse cx="980" cy="780" rx="320" ry="180" fill="#EBF6FD" opacity="0.75" />
+  </g>
+  
+  <!-- Foreground Soft Mist Layer -->
+  <rect y="700" width="1920" height="380" fill="url(#skyGrad)" opacity="0.25" />
+</svg>

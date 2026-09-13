@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kinetiq | Creative Technologist &amp; Generative Frontend Engineer</title>
+  <meta name="description" content="Portfolio of Kaizen Thalor (Kinetiq), a creative developer shaping thoughtful digital experiences through motion, typography, and front-end craft." />
+  <meta name="keywords" content="audio-reactive 3D, Three.js, WebGPU, creative developer, motion design, front-end craft, shaders, interactive portfolio" />
+
+  <!-- Privacy & No Search Indexing -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Syne (Monument aesthetic), Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Three.js for 3D Music-Reactive Goo & Cube Morph -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       KINETIQ DESIGN SYSTEM TOKENS
+       ========================================================================== */
+    :root {
+      --scene-base: #dbdbda;
+      --off-white: #dbdbda;
+      --orange: #ff641c;
+      --black: #202020;
+      --white: #dbdbda;
+      --dark-gray: #161616;
+      --border-color: rgba(32, 32, 32, 0.15);
+
+      --font-display: 'Syne', -apple-system, sans-serif;
+      --font-body: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+
+      --container: 1440px;
+      --gutter: 24px;
+
+      --site-loader-cols: 10;
+      --site-loader-rows: 8;
+      --section-transition-cols: 6;
+      --page-entry-panel-cols: 6;
+      --topbar-menu-cols: 6;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--scene-base);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      selection-background-color: var(--orange);
+      selection-color: #ffffff;
+    }
+
+    ::selection {
+      background: var(--orange);
+      color: #ffffff;
+    }
+
+    /* Ambient Canvas Grain Overlay */
+    .site-noise-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.045;
+    }
+
+    /* Precision Technical Corner Crosses */
+    .site-corner-crosses {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 80;
+    }
+
+    .site-corner-cross {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      color: var(--black);
+      opacity: 0.4;
+    }
+    .site-corner-cross::before, .site-corner-cross::after {
+      content: '';
+      position: absolute;
+      background: currentColor;
+    }
+    .site-corner-cross::before {
+      top: 6px;
+      left: 0;
+      width: 14px;
+      height: 1.5px;
+    }
+    .site-corner-cross::after {
+      top: 0;
+      left: 6px;
+      width: 1.5px;
+      height: 14px;
+    }
+    .site-corner-cross-tl { top: 20px; left: 20px; }
+    .site-corner-cross-tr { top: 20px; right: 20px; }
+    .site-corner-cross-bl { bottom: 20px; left: 20px; }
+    .site-corner-cross-br { bottom: 20px; right: 20px; }
+    .site-corner-cross-tc { top: 20px; left: 50%; transform: translateX(-50%); }
+    .site-corner-cross-bc { bottom: 20px; left: 50%; transform: translateX(-50%); }
+
+    /* Custom Interactive Cursor Orb */
+    .cursor-orb {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--black);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+      opacity: 0.85;
+    }
+    .cursor-orb.hover-state {
+      width: 44px;
+      height: 44px;
+      background-color: rgba(255, 100, 28, 0.15);
+      border-color: var(--orange);
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    /* ==========================================================================
+       SITE LOADER (10x8 PIXEL GRID MATRIX)
+       ========================================================================== */
+    .site-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.6s ease;
+    }
+    .site-loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .site-loader-pixels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(var(--site-loader-cols), minmax(0, 1fr));
+      grid-template-rows: repeat(var(--site-loader-rows), 1fr);
+      background: #050505;
+      transition: opacity 0.5s ease 0.3s;
+    }
+    .site-loader.loaded .site-loader-pixels {
+      opacity: 0;
+    }
+
+    .site-loader-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .site-loader-runner-canvas {
+      width: 80px;
+      height: 80px;
+    }
+
+    /* ==========================================================================
+       SECTION SCROLL TRANSITION (6-COLUMN ORANGE PIXEL WIPE)
+       ========================================================================== */
+    .section-scroll-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+    .section-scroll-transition.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .section-scroll-transition-pixels {
+      display: grid;
+      grid-template-columns: repeat(var(--section-transition-cols), minmax(0, 1fr));
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .section-scroll-transition-cell {
+      background: var(--orange);
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* ==========================================================================
+       TOPBAR NAVIGATION & PIXEL HOVER LINKS
+       ========================================================================== */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 30px 40px 10px;
+      pointer-events: none;
+    }
+
+    .topbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .topbar-name-wrap {
+      pointer-events: auto;
+    }
+
+    .topbar-name {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 3.5rem;
+      pointer-events: auto;
+    }
+
+    .topbar-link {
+      position: relative;
+      text-decoration: none;
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      padding: 4px 6px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .topbar-link-create {
+      font-weight: 700;
+    }
+
+    /* Interactive pixel hover overlay on links */
+    .topbar-link-hover-pixels {
+      position: absolute;
+      inset: -4px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 1px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .topbar-link:hover .topbar-link-hover-pixels {
+      opacity: 1;
+    }
+
+    .topbar-link-hover-pixel {
+      background: var(--orange);
+      opacity: 0.7;
+    }
+
+    /* Mobile Menu Toggle */
+    .topbar-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      pointer-events: auto;
+    }
+
+    /* ==========================================================================
+       HERO STAGE (300VH TRACK WITH STICKY 100DVH 3D MORPH SCENE)
+       ========================================================================== */
+    .hero-stage {
+      min-height: 300vh;
+      position: relative;
+    }
+
+    .hero-canvas-wrap {
+      width: 100%;
+      height: 300vh;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-canvas-track {
+      height: 300vh;
+      position: relative;
+    }
+
+    .hero-sticky {
+      background: var(--off-white);
+      height: 100dvh;
+      position: sticky;
+      top: 0;
+      overflow: hidden;
+    }
+
+    .morph-scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .morph-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    .morph-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Hero Typography Panel */
+    .page-entry-scroll {
+      position: relative;
+      min-height: 300vh;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .hero-title-wrap {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 100px clamp(1.25rem, 4vw, 3.5rem) 40px;
+    }
+
+    .hero-title-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      flex: 1;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 13vw, 13rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--black);
+      pointer-events: auto;
+      user-select: none;
+    }
+
+    .hero-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: auto;
+    }
+
+    .hero-meta-row-date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: #666666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid var(--border-color);
+      padding-top: 12px;
+      pointer-events: auto;
+    }
+
+    .hero-meta-slide-track span {
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    .hero-split-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-copy-col {
+      max-width: 380px;
+      pointer-events: auto;
+    }
+
+    .hero-copy {
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--black);
+    }
+
+    .hero-title-right {
+      text-align: right;
+    }
+
+    /* Hero Music Player */
+    .hero-music-player {
+      position: absolute;
+      bottom: 40px;
+      right: clamp(1.25rem, 4vw, 3.5rem);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: auto;
+      z-index: 12;
+    }
+
+    .hero-music-toggle {
+      width: 36px;
+      height: 36px;
+      background: var(--black);
+      border: none;
+      border-radius: 50%;
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .hero-music-toggle:hover {
+      background: var(--orange);
+      transform: scale(1.08);
+    }
+
+    .hero-music-toggle-icon {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+    }
+
+    .hero-music-label-button {
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--black);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+    }
+
+    .hero-music-track {
+      width: 140px;
+      height: 14px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .hero-music-track-line {
+      width: 100%;
+      height: 2px;
+      background: rgba(32, 32, 32, 0.25);
+    }
+
+    .hero-music-track-fill {
+      position: absolute;
+      top: 6px;
+      left: 0;
+      height: 2px;
+      background: var(--orange);
+      width: 0%;
+    }
+
+    .hero-music-track-puck {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 8px;
+      height: 8px;
+      background: var(--orange);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-music-playlist {
+      display: none;
+      position: absolute;
+      bottom: 48px;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 260px;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hero-music-playlist.show {
+      display: flex;
+    }
+
+    .hero-music-playlist-item {
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--black);
+      padding: 6px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .hero-music-playlist-item:hover {
+      background: var(--scene-base);
+      color: var(--orange);
+    }
+
+    /* ==========================================================================
+       PAGE ENTRY SPLIT SECTION (INSIDE 300VH SCROLL TRACK)
+       ========================================================================== */
+    .page-entry-track {
+      position: relative;
+      height: 100vh;
+      margin-top: -100vh;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .page-entry-inner {
+      width: 100%;
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    .page-entry-row-headings {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(2rem, 6vw, 6rem);
+    }
+
+    .page-entry-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.8vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--black);
+    }
+
+    /* ==========================================================================
+       ABOUT & PIXEL MATRIX GALLERY SECTION
+       ========================================================================== */
+    .page-entry-pixel-section {
+      position: relative;
+      background: var(--scene-base);
+      padding: 100px 0 140px;
+      z-index: 20;
+    }
+
+    .page-entry-pixel-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .page-entry-content {
+      width: 100%;
+    }
+
+    .page-entry-content-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+
+    .page-entry-gallery-wrap {
+      width: 100%;
+    }
+
+    .page-entry-gallery-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .page-entry-gallery-card {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: #c8c8c6;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    /* 8x8 Pixel Grid Frame */
+    .page-entry-gallery-pixel-frame {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      gap: 1px;
+    }
+
+    .page-entry-gallery-pixel-cell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .page-entry-gallery-pixel-image {
+      position: absolute;
+      width: 800%;
+      height: 800%;
+      object-fit: cover;
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .page-entry-gallery-card:hover .page-entry-gallery-pixel-image {
+      filter: contrast(1.15) brightness(1.05);
+    }
+
+    /* Skills List */
+    .page-entry-skills {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .page-entry-skill-row {
+      display: grid;
+      grid-template-columns: 80px 240px 1fr;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border-color);
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .skill-num {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .skill-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+
+    .skill-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: #333333;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       TOOLS REEL / INTERACTIVE PLAYGROUND
+       ========================================================================== */
+    .tools-strip {
+      padding: 120px 0;
+      background: var(--scene-base);
+      border-top: 1px solid var(--border-color);
+      position: relative;
+      z-index: 20;
+    }
+
+    .tools-strip-frame {
+      border: 1px solid var(--border-color);
+      background: #d4d4d2;
+      padding: 40px;
+    }
+
+    .tools-strip-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: #555555;
+      text-transform: uppercase;
+    }
+
+    .tools-strip-media-stage {
+      height: 480px;
+      position: relative;
+      background: #1e1e1e;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+
+    #tools-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .tools-strip-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+    }
+
+    .tools-nav-btns {
+      display: flex;
+      gap: 12px;
+    }
+
+    .tool-btn {
+      background: var(--black);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .tool-btn.active {
+      background: var(--orange);
+    }
+
+    /* ==========================================================================
+       WORK SHOWCASE SECTION
+       ========================================================================== */
+    .page-entry-work-progress {
+      padding: 120px 0;
+      background: var(--scene-base);
+      border-top: 1px solid var(--border-color);
+      position: relative;
+      z-index: 20;
+    }
+
+    .projects-work-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      margin-bottom: 48px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px;
+    }
+
+    .project-card {
+      background: #cececc;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: var(--black);
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .project-img-wrap {
+      width: 100%;
+      height: 320px;
+      position: relative;
+      overflow: hidden;
+      background: #202020;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .project-card:hover .project-img {
+      transform: scale(1.04);
+    }
+
+    .project-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .project-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .project-category {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: #666666;
+    }
+
+    .project-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: #333333;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       SITE FOOTER & CONTACT PORTAL
+       ========================================================================== */
+    .site-footer {
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 100px 0 40px;
+      position: relative;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .site-footer-quote {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 6.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+
+    .site-footer-cta {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 800;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .site-footer-sub {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: #a0a0a0;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .footer-email-btn {
+      background: var(--orange);
+      color: #ffffff;
+      border: none;
+      padding: 16px 36px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .footer-email-btn:hover {
+      background: #ff7836;
+    }
+
+    .site-footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 16vw, 18rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.75;
+      color: rgba(255, 255, 255, 0.08);
+      text-align: center;
+      user-select: none;
+      margin-top: 60px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .page-entry-gallery-row { grid-template-columns: 1fr; }
+      .page-entry-skill-row { grid-template-columns: 50px 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .topbar-nav { display: none; }
+      .page-entry-row-headings { grid-template-columns: 1fr; }
+      .hero-music-player { position: static; margin-top: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Noise Canvas Overlay -->
+  <canvas class="site-noise-layer" id="noise-canvas" aria-hidden="true"></canvas>
+
+  <!-- Precision Corner Crosses -->
+  <div class="site-corner-crosses" aria-hidden="true">
+    <span class="site-corner-cross site-corner-cross-tl"></span>
+    <span class="site-corner-cross site-corner-cross-tr"></span>
+    <span class="site-corner-cross site-corner-cross-tc"></span>
+    <span class="site-corner-cross site-corner-cross-bl"></span>
+    <span class="site-corner-cross site-corner-cross-br"></span>
+    <span class="site-corner-cross site-corner-cross-bc"></span>
+  </div>
+
+  <!-- Site Loader (10x8 Pixels) -->
+  <div class="site-loader" id="site-loader">
+    <div class="site-loader-pixels"></div>
+    <div class="site-loader-inner">
+      <canvas class="site-loader-runner-canvas" id="loader-runner-canvas"></canvas>
+      <p>LOADING</p>
+    </div>
+  </div>
+
+  <!-- Interactive Custom Cursor -->
+  <div class="cursor-orb" id="cursor-orb" aria-hidden="true"></div>
+
+  <!-- Section Scroll Transition (6-Column Orange Pixels) -->
+  <div class="section-scroll-transition" id="section-transition" aria-hidden="true">
+    <div class="section-scroll-transition-pixels">
+      <span class="section-scroll-transition-cell"></span>
+      <span class="section-scroll-transition-cell"></span>
+      <span class="section-scroll-transition-cell"></span>
+      <span class="section-scroll-transition-cell"></span>
+      <span class="section-scroll-transition-cell"></span>
+      <span class="section-scroll-transition-cell"></span>
+    </div>
+  </div>
+
+  <!-- Fixed Topbar Header -->
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="topbar-name-wrap">
+        <a href="#" class="topbar-name">KINETIQ</a>
+      </div>
+      <nav class="topbar-nav" aria-label="Primary">
+        <a href="#about" class="topbar-link"><span class="topbar-link-hover-pixels"><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span></span>About</a>
+        <a href="#tools" class="topbar-link"><span class="topbar-link-hover-pixels"><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span></span>Tools</a>
+        <a href="#work" class="topbar-link"><span class="topbar-link-hover-pixels"><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span></span>Work</a>
+        <a href="mailto:hello@kinetiq.design" class="topbar-link topbar-link-create"><span class="topbar-link-hover-pixels"><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span><span class="topbar-link-hover-pixel"></span></span>Let's create</a>
+      </nav>
+      <button type="button" class="topbar-menu-toggle" aria-label="Open menu"></button>
+    </div>
+  </header>
+
+  <!-- Main Hero Stage & 300vh 3D Goo Scroll Track -->
+  <section class="hero-stage">
+    <div class="hero-canvas-wrap">
+      <div class="hero-canvas-track">
+        <div class="hero-sticky">
+          <div class="morph-scene">
+            <canvas class="morph-canvas" id="goo-canvas" aria-label="Interactive 3D Music-Reactive Goo Canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Content Overlay (300vh) -->
+    <div class="page-entry-scroll">
+      <div class="hero-title-wrap">
+        <div class="hero-title-panel">
+          <!-- Top Row: Creative -->
+          <div class="hero-title-group">
+            <h1 class="hero-title">Creative</h1>
+          </div>
+
+          <!-- Bottom Row: Meta + Bio + Developer -->
+          <div class="hero-bottom">
+            <div class="hero-meta-row-date">
+              <div><p>About</p></div>
+              <div><p>Location: <span class="hero-meta-slide-track"><span id="town-carousel">London</span></span></p></div>
+            </div>
+
+            <div class="hero-split-row">
+              <div class="hero-copy-col">
+                <p class="hero-copy">
+                  Building expressive digital experiences with thoughtful motion, strong typography, and modern front-end craft for brands, campaigns, and digital products across web and interactive spaces.
+                </p>
+              </div>
+
+              <div class="hero-title-right">
+                <h1 class="hero-title">Developer</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline Floating Music Player -->
+        <div class="hero-music-player">
+          <div class="hero-music-track" id="music-track-bar" aria-label="Track progress">
+            <div class="hero-music-track-line"></div>
+            <div class="hero-music-track-fill" id="music-fill"></div>
+            <span class="hero-music-track-puck" id="music-puck"></span>
+          </div>
+
+          <button type="button" class="hero-music-toggle" id="music-toggle-btn" aria-label="Play So Did We">
+            <svg class="hero-music-toggle-icon" id="music-icon" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"></polygon></svg>
+          </button>
+
+          <button type="button" class="hero-music-label-button" id="music-label-btn">
+            <span id="music-label-text">PRESS PLAY</span>
+          </button>
+
+          <!-- Playlist Dropdown -->
+          <div class="hero-music-playlist" id="music-playlist">
+            <button type="button" class="hero-music-playlist-item" data-track="0">01. Darling - Tulipa Moves - So Did We</button>
+            <button type="button" class="hero-music-playlist-item" data-track="1">02. The Wamdue Kids - In My Soul (3c Deep Mix)</button>
+            <button type="button" class="hero-music-playlist-item" data-track="2">03. SP101 - Dreamstate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page Entry Split Headings (Right behind the Cube Morph) -->
+  <section class="page-entry-track">
+    <div class="page-entry-inner">
+      <div class="page-entry-row-headings">
+        <div>
+          <h2 class="page-entry-heading">Thoughtful ideas shaped with meaning</h2>
+        </div>
+        <div>
+          <h2 class="page-entry-heading">Bold systems built to hold attention</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About & Pixel Matrix Gallery Section -->
+  <section id="about" class="page-entry-pixel-section">
+    <div class="container">
+      <div class="page-entry-content-inner">
+        <!-- 3 Pixel Gallery Cards (8x8 Grid Chunks) -->
+        <div class="page-entry-gallery-wrap">
+          <div class="page-entry-gallery-row">
+            <!-- Card 1 -->
+            <figure class="page-entry-gallery-card">
+              <div class="page-entry-gallery-pixel-frame" data-src="media/side-1.webp"></div>
+            </figure>
+            <!-- Card 2 -->
+            <figure class="page-entry-gallery-card">
+              <div class="page-entry-gallery-pixel-frame" data-src="media/me-2.webp"></div>
+            </figure>
+            <!-- Card 3 -->
+            <figure class="page-entry-gallery-card">
+              <div class="page-entry-gallery-pixel-frame" data-src="media/side-2.webp"></div>
+            </figure>
+          </div>
+        </div>
+
+        <!-- 5 Numbered Capabilities -->
+        <div class="page-entry-skills">
+          <div class="page-entry-skill-row">
+            <span class="skill-num">[01]</span>
+            <h3 class="skill-name">Visual systems</h3>
+            <p class="skill-desc">Building clear art direction, strong composition, and digital identities that feel distinctive and intentional.</p>
+          </div>
+
+          <div class="page-entry-skill-row">
+            <span class="skill-num">[02]</span>
+            <h3 class="skill-name">Front-end craft</h3>
+            <p class="skill-desc">Developing responsive interfaces with thoughtful detail, smooth performance, and precise implementation.</p>
+          </div>
+
+          <div class="page-entry-skill-row">
+            <span class="skill-num">[03]</span>
+            <h3 class="skill-name">Motion language</h3>
+            <p class="skill-desc">Using animation and interaction to guide attention, add atmosphere, and make the work feel alive.</p>
+          </div>
+
+          <div class="page-entry-skill-row">
+            <span class="skill-num">[04]</span>
+            <h3 class="skill-name">Brand presence</h3>
+            <p class="skill-desc">Translating ideas into polished launches, campaigns, and product surfaces that feel cohesive across touchpoints.</p>
+          </div>
+
+          <div class="page-entry-skill-row">
+            <span class="skill-num">[05]</span>
+            <h3 class="skill-name">Concept to form</h3>
+            <p class="skill-desc">Shaping early ideas into clear visual systems that stay flexible, purposeful, and ready to evolve.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools Strip Section -->
+  <section id="tools" class="tools-strip">
+    <div class="container">
+      <div class="tools-strip-frame">
+        <div class="tools-strip-meta">
+          <span>Tools Reel</span>
+          <span id="tool-scroll-counter">Scroll # 0 // 000</span>
+        </div>
+
+        <div class="tools-strip-media-stage">
+          <canvas id="tools-canvas"></canvas>
+        </div>
+
+        <div class="tools-strip-footer">
+          <div class="tools-nav-btns">
+            <button type="button" class="tool-btn active" data-tool="0">000 Runman</button>
+            <button type="button" class="tool-btn" data-tool="1">001 Chroma Warp</button>
+            <button type="button" class="tool-btn" data-tool="2">002 Split Mask</button>
+            <button type="button" class="tool-btn" data-tool="3">003 Text Maze</button>
+            <button type="button" class="tool-btn" data-tool="4">004 Whale Wave</button>
+          </div>
+          <p style="font-family:var(--font-body); font-size:12px; color:#555;" id="tool-desc">
+            A lightweight looping motion mark used as a lead-in for the tool reel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Showcase Section -->
+  <section id="work" class="page-entry-work-progress">
+    <div class="container">
+      <h2 class="projects-work-title">Work</h2>
+
+      <div class="projects-grid">
+        <!-- 01 Dash -->
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="media/dash.webp" alt="Dash studio build" class="project-img" loading="lazy" />
+          </div>
+          <div class="project-info">
+            <div class="project-header-row">
+              <h3 class="project-title">Dash</h3>
+              <span class="project-category">01 // Studio build</span>
+            </div>
+            <p class="project-desc">A custom template shaped for a modern creative studio. Built with a sharp CMS structure, reusable sections, and script-led motion details.</p>
+          </div>
+        </article>
+
+        <!-- 02 Racepoint -->
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="media/racepoint.webp" alt="Racepoint editorial system" class="project-img" loading="lazy" />
+          </div>
+          <div class="project-info">
+            <div class="project-header-row">
+              <h3 class="project-title">Racepoint</h3>
+              <span class="project-category">02 // Editorial system</span>
+            </div>
+            <p class="project-desc">An editorial visual system, custom page templates, and a flexible component setup. Modern interactions bring movement without losing clean brand feel.</p>
+          </div>
+        </article>
+
+        <!-- 03 Commuter -->
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="media/commuter.webp" alt="Commuter film portfolio" class="project-img" loading="lazy" />
+          </div>
+          <div class="project-info">
+            <div class="project-header-row">
+              <h3 class="project-title">Commuter</h3>
+              <span class="project-category">03 // Film portfolio</span>
+            </div>
+            <p class="project-desc">A cinematic portfolio built around immersive project presentation. Custom templates and modern script enhancements give the site a bold rhythm.</p>
+          </div>
+        </article>
+
+        <!-- 04 Roger W Smith -->
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="media/roger.webp" alt="Roger luxury archive" class="project-img" loading="lazy" />
+          </div>
+          <div class="project-info">
+            <div class="project-header-row">
+              <h3 class="project-title">Roger W Smith</h3>
+              <span class="project-category">04 // Luxury archive</span>
+            </div>
+            <p class="project-desc">A refined build for a luxury watchmaker, designed around atmosphere, detail, and controlled pacing with subtle modern scripts.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer & Contact Section -->
+  <footer id="contact" class="site-footer">
+    <div class="container">
+      <div class="site-footer-top">
+        <h2 class="site-footer-quote">"Alarm bells are ringing, Willie"</h2>
+        <h3 class="site-footer-cta">Let me Run your next project!</h3>
+        <p class="site-footer-sub">
+          It's the one you didn't expect. Not in the spotlight, but out there on the edge.
+        </p>
+        <button type="button" class="footer-email-btn" id="copy-email-btn">
+          <span>hello@kinetiq.design</span>
+        </button>
+      </div>
+
+      <div class="site-footer-wordmark">
+        KINETIQ
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       JAVASCRIPT ENGINE: THREE.JS 3D GOO, REAL WEB AUDIO SYNTH & PIXEL EFFECTS
+       ========================================================================== */
+  -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* --- Noise Canvas Background --- */
+      const noiseCanvas = document.getElementById('noise-canvas');
+      if (noiseCanvas) {
+        const ctx = noiseCanvas.getContext('2d');
+        let nW = noiseCanvas.width = 256;
+        let nH = noiseCanvas.height = 256;
+        const imgData = ctx.createImageData(nW, nH);
+        const buffer = new Uint32Array(imgData.data.buffer);
+        for (let i = 0; i < buffer.length; i++) {
+          if (Math.random() < 0.5) {
+            buffer[i] = 0xff000000 | (Math.random() * 255 << 16) | (Math.random() * 255 << 8) | (Math.random() * 255);
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+
+      /* --- Loader Simulation (Dissolves 10x8 Pixels) --- */
+      const siteLoader = document.getElementById('site-loader');
+      const loaderPixels = document.querySelector('.site-loader-pixels');
+      if (loaderPixels) {
+        for (let i = 0; i < 80; i++) {
+          const span = document.createElement('span');
+          span.style.background = '#050505';
+          loaderPixels.appendChild(span);
+        }
+      }
+
+      // Looping runner mark on loader
+      const runnerCanvas = document.getElementById('loader-runner-canvas');
+      if (runnerCanvas) {
+        const rCtx = runnerCanvas.getContext('2d');
+        let rTime = 0;
+        function animateLoaderRunner() {
+          rTime += 0.05;
+          rCtx.clearRect(0, 0, 80, 80);
+          rCtx.save();
+          rCtx.translate(40, 40);
+          rCtx.strokeStyle = '#ff641c';
+          rCtx.lineWidth = 2;
+          // Head
+          rCtx.beginPath();
+          rCtx.arc(0, -18, 5, 0, Math.PI * 2);
+          rCtx.stroke();
+          // Body & Limbs
+          rCtx.beginPath();
+          rCtx.moveTo(0, -13);
+          rCtx.lineTo(-2, 6);
+          // Legs
+          rCtx.lineTo(-12 + Math.sin(rTime * 6) * 10, 20);
+          rCtx.moveTo(-2, 6);
+          rCtx.lineTo(10 + Math.cos(rTime * 6) * 10, 20);
+          // Arms
+          rCtx.moveTo(0, -10);
+          rCtx.lineTo(-10 - Math.cos(rTime * 6) * 8, -2);
+          rCtx.moveTo(0, -10);
+          rCtx.lineTo(10 + Math.sin(rTime * 6) * 8, -2);
+          rCtx.stroke();
+          rCtx.restore();
+          if (!siteLoader.classList.contains('hidden')) {
+            requestAnimationFrame(animateLoaderRunner);
+          }
+        }
+        animateLoaderRunner();
+      }
+
+      setTimeout(() => {
+        if (siteLoader) {
+          siteLoader.classList.add('loaded');
+          setTimeout(() => siteLoader.classList.add('hidden'), 500);
+        }
+      }, 700);
+
+      /* --- Custom Cursor Tracking --- */
+      const cursorOrb = document.getElementById('cursor-orb');
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let orbX = mouseX;
+      let orbY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function animateCursor() {
+        orbX += (mouseX - orbX) * 0.2;
+        orbY += (mouseY - orbY) * 0.2;
+        if (cursorOrb) {
+          cursorOrb.style.left = orbX + 'px';
+          cursorOrb.style.top = orbY + 'px';
+        }
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      document.querySelectorAll('a, button, .page-entry-gallery-card, .project-card').forEach(el => {
+        el.addEventListener('mouseenter', () => cursorOrb && cursorOrb.classList.add('hover-state'));
+        el.addEventListener('mouseleave', () => cursorOrb && cursorOrb.classList.remove('hover-state'));
+      });
+
+      /* --- Sliding Town Name Carousel --- */
+      const towns = ["London", "Tokyo", "Berlin", "New York", "Remote"];
+      let townIdx = 0;
+      const townEl = document.getElementById('town-carousel');
+      setInterval(() => {
+        townIdx = (townIdx + 1) % towns.length;
+        if (townEl) townEl.textContent = towns[townIdx];
+      }, 2500);
+
+      /* --- 8x8 Pixel Grid Gallery Cards --- */
+      document.querySelectorAll('.page-entry-gallery-pixel-frame').forEach(frame => {
+        const imgSrc = frame.dataset.src;
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const cell = document.createElement('span');
+            cell.className = 'page-entry-gallery-pixel-cell';
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = 'page-entry-gallery-pixel-image';
+            img.style.left = (-c * 100) + '%';
+            img.style.top = (-r * 100) + '%';
+            cell.appendChild(img);
+            frame.appendChild(cell);
+          }
+        }
+      });
+
+      /* --- Copy Email Toast --- */
+      const copyEmailBtn = document.getElementById('copy-email-btn');
+      if (copyEmailBtn) {
+        copyEmailBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText('hello@kinetiq.design').then(() => {
+            copyEmailBtn.innerHTML = '<span>COPIED TO CLIPBOARD ✓</span>';
+            setTimeout(() => {
+              copyEmailBtn.innerHTML = '<span>hello@kinetiq.design</span>';
+            }, 3000);
+          });
+        });
+      }
+
+      /* ==========================================================================
+         WEB AUDIO API SYNTHESIZER (3 ELECTRONIC TRACKS)
+         ========================================================================== */
+      let audioCtx = null;
+      let analyser = null;
+      let isPlaying = false;
+      let currentTrack = 0;
+      let synthInterval = null;
+      let trackProgress = 0;
+
+      const trackList = [
+        { title: "Darling - Tulipa Moves - So Did We", bpm: 124 },
+        { title: "The Wamdue Kids - In My Soul (3c Deep Mix)", bpm: 110 },
+        { title: "SP101 - Dreamstate", bpm: 132 }
+      ];
+
+      const audioState = {
+        low: 0,
+        mid: 0,
+        high: 0,
+        lowPulse: 0,
+        midPulse: 0,
+        highPulse: 0
+      };
+
+      function initAudio() {
+        if (audioCtx) return;
+        const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioCtxClass();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.8;
+      }
+
+      let step = 0;
+      function synthTick() {
+        if (!audioCtx || audioCtx.state !== 'running') return;
+        const now = audioCtx.currentTime;
+
+        // Kick Drum
+        if (step % 4 === 0) {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(150, now);
+          osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+          gain.gain.setValueAtTime(1.0, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.connect(gain);
+          gain.connect(analyser);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+          audioState.lowPulse = 1.0;
+        }
+
+        // Snare / Clap
+        if (step % 8 === 4) {
+          const buf = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * 0.1), audioCtx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < buf.length; i++) data[i] = Math.random() * 2 - 1;
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buf;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.value = 1400;
+          const gain = audioCtx.createGain();
+          gain.gain.setValueAtTime(0.4, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(analyser);
+          gain.connect(audioCtx.destination);
+          noise.start(now);
+          noise.stop(now + 0.13);
+          audioState.midPulse = 0.85;
+        }
+
+        // Hi-Hats
+        if (step % 2 === 0) {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(8000, now);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.connect(gain);
+          gain.connect(analyser);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+          audioState.highPulse = 0.6;
+        }
+
+        // Bassline Notes
+        const notes = [55, 65, 73, 82, 98, 110];
+        const osc = audioCtx.createOscillator();
+        const filter = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(notes[step % notes.length], now);
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450 + Math.sin(step) * 300, now);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(analyser);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+
+        step = (step + 1) % 16;
+      }
+
+      function startAudio() {
+        initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        isPlaying = true;
+        document.getElementById('music-label-text').textContent = 'PLAYING';
+        document.getElementById('music-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        const bpm = trackList[currentTrack].bpm;
+        clearInterval(synthInterval);
+        synthInterval = setInterval(synthTick, 60000 / (bpm * 4));
+      }
+
+      function stopAudio() {
+        isPlaying = false;
+        clearInterval(synthInterval);
+        document.getElementById('music-label-text').textContent = 'PRESS PLAY';
+        document.getElementById('music-icon').innerHTML = '<polygon points="6,4 20,12 6,20"></polygon>';
+      }
+
+      const musicToggleBtn = document.getElementById('music-toggle-btn');
+      const musicLabelBtn = document.getElementById('music-label-btn');
+      const playlist = document.getElementById('music-playlist');
+
+      if (musicToggleBtn) {
+        musicToggleBtn.addEventListener('click', () => {
+          if (isPlaying) stopAudio(); else startAudio();
+        });
+      }
+
+      if (musicLabelBtn) {
+        musicLabelBtn.addEventListener('click', () => {
+          playlist.classList.toggle('show');
+        });
+      }
+
+      document.querySelectorAll('.hero-music-playlist-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          currentTrack = parseInt(e.target.dataset.track);
+          playlist.classList.remove('show');
+          if (isPlaying) startAudio();
+        });
+      });
+
+      // Track timeline update
+      setInterval(() => {
+        if (isPlaying) {
+          trackProgress = (trackProgress + 0.5) % 100;
+          document.getElementById('music-fill').style.width = trackProgress + '%';
+          document.getElementById('music-puck').style.left = trackProgress + '%';
+        }
+      }, 500);
+
+      /* ==========================================================================
+         THREE.JS 3D AUDIO-REACTIVE GOO (REFRACTIVE SHELL + ORANGE CORE)
+         ========================================================================== */
+      const gooCanvas = document.getElementById('goo-canvas');
+      if (!gooCanvas) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 0, 7.5);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: gooCanvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lighting against light #dbdbda base
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+      scene.add(ambientLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.2);
+      dirLight1.position.set(5, 6, 7);
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xff641c, 2.5);
+      dirLight2.position.set(-6, -4, 4);
+      scene.add(dirLight2);
+
+      const corePointLight = new THREE.PointLight(0xff641c, 4.0, 8);
+      corePointLight.position.set(0, 0, 0);
+      scene.add(corePointLight);
+
+      // 1. Outer Glass Refractive Shell
+      const shellDetail = 4;
+      const shellBaseRadius = 1.9;
+      const shellGeometry = new THREE.IcosahedronGeometry(shellBaseRadius, shellDetail);
+      shellGeometry.userData.origPositions = shellGeometry.attributes.position.clone();
+
+      const shellMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        roughness: 0.05,
+        metalness: 0.05,
+        transmission: 0.92,
+        ior: 1.52,
+        transparent: true,
+        opacity: 0.88,
+        reflectivity: 0.9,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.04
+      });
+      const shellMesh = new THREE.Mesh(shellGeometry, shellMaterial);
+      scene.add(shellMesh);
+
+      // 2. Inner Dense Electric Orange Core
+      const coreDetail = 3;
+      const coreBaseRadius = 1.18;
+      const coreGeometry = new THREE.IcosahedronGeometry(coreBaseRadius, coreDetail);
+      coreGeometry.userData.origPositions = coreGeometry.attributes.position.clone();
+
+      const coreMaterial = new THREE.MeshStandardMaterial({
+        color: 0xff641c,
+        emissive: 0xff4500,
+        emissiveIntensity: 0.85,
+        roughness: 0.25,
+        metalness: 0.1
+      });
+      const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+      scene.add(coreMesh);
+
+      // Shadow Disk beneath goo
+      const shadowGeo = new THREE.PlaneGeometry(4.5, 4.5);
+      const shadowMat = new THREE.MeshBasicMaterial({
+        color: 0x202020,
+        transparent: true,
+        opacity: 0.08,
+        depthWrite: false
+      });
+      const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+      shadowMesh.rotation.x = -Math.PI / 2;
+      shadowMesh.position.y = -2.4;
+      scene.add(shadowMesh);
+
+      // Projection to Cube Points
+      function getCubePoint(dx, dy, dz, cubeRadius) {
+        const maxCoord = Math.max(Math.abs(dx), Math.abs(dy), Math.abs(dz)) || 1.0;
+        return {
+          x: (dx / maxCoord) * cubeRadius,
+          y: (dy / maxCoord) * cubeRadius,
+          z: (dz / maxCoord) * cubeRadius
+        };
+      }
+
+      function smoothstep(min, max, value) {
+        const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
+        return x * x * (3 - 2 * x);
+      }
+
+      function getNoise(x, y, z, t, f) {
+        return Math.sin(x * f + t) * Math.cos(y * f + t * 0.8) * Math.sin(z * f + t * 1.2) +
+               Math.sin(x * f * 2.0 - t * 0.5) * Math.cos(z * f * 2.0 + t * 0.6) * 0.35;
+      }
+
+      const freqBuf = new Uint8Array(128);
+      let easedImpact = 0;
+      let easedLobe = 0;
+      let easedRipple = 0;
+      let morphProgress = 0;
+
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const maxScroll = window.innerHeight * 1.5;
+        morphProgress = Math.min(1.0, Math.max(0.0, scrollY / maxScroll));
+      });
+
+      let clock = new THREE.Clock();
+
+      function animateGoo() {
+        requestAnimationFrame(animateGoo);
+
+        const elapsed = clock.getElapsedTime();
+
+        // Audio Frequency Extraction
+        if (analyser && isPlaying) {
+          analyser.getByteFrequencyData(freqBuf);
+          let lowSum = 0, midSum = 0, highSum = 0;
+          for (let i = 0; i < 16; i++) lowSum += freqBuf[i];
+          for (let i = 16; i < 64; i++) midSum += freqBuf[i];
+          for (let i = 64; i < 128; i++) highSum += freqBuf[i];
+
+          audioState.low = lowSum / (16 * 255);
+          audioState.mid = midSum / (48 * 255);
+          audioState.high = highSum / (64 * 255);
+        } else {
+          audioState.low = 0.15 + Math.sin(elapsed * 1.6) * 0.08;
+          audioState.mid = 0.12 + Math.cos(elapsed * 2.0) * 0.06;
+          audioState.high = 0.08 + Math.sin(elapsed * 3.0) * 0.04;
+        }
+
+        // Fast attack, slow viscous release
+        const targetImpact = (audioState.low * 1.6) + audioState.lowPulse;
+        const attackEase = targetImpact > easedImpact ? 0.34 : 0.075;
+        easedImpact += (targetImpact - easedImpact) * attackEase;
+
+        const targetLobe = audioState.mid * 1.2 + audioState.midPulse;
+        easedLobe += (targetLobe - easedLobe) * 0.12;
+
+        const targetRipple = audioState.high * 1.5 + audioState.highPulse;
+        easedRipple += (targetRipple - easedRipple) * 0.18;
+
+        audioState.lowPulse *= 0.88;
+        audioState.midPulse *= 0.9;
+        audioState.highPulse *= 0.86;
+
+        // Cube Morph Interp
+        const cubeMix = smoothstep(0.12, 0.95, morphProgress);
+        const organicMix = 1.0 - smoothstep(0.35, 0.98, morphProgress);
+
+        // Deform Outer Glass Shell
+        const shellPos = shellGeometry.attributes.position;
+        const shellOrig = shellGeometry.userData.origPositions;
+        for (let i = 0; i < shellPos.count; i++) {
+          const ox = shellOrig.getX(i);
+          const oy = shellOrig.getY(i);
+          const oz = shellOrig.getZ(i);
+
+          const len = Math.sqrt(ox*ox + oy*oy + oz*oz) || 1;
+          const dx = ox / len;
+          const dy = oy / len;
+          const dz = oz / len;
+
+          const noise = getNoise(dx, dy, dz, elapsed * 1.1, 1.5) * (0.35 * organicMix);
+          const wave = Math.sin(dx * 4.0 + dy * 3.0 + elapsed * 3.0) * (0.12 * easedRipple * organicMix);
+          const rBlob = shellBaseRadius * (1.0 + noise + wave + easedImpact * 0.18 * organicMix);
+
+          let px = dx * rBlob;
+          let py = dy * rBlob;
+          let pz = dz * rBlob;
+
+          if (cubeMix > 0) {
+            const cubeRadius = shellBaseRadius * THREE.MathUtils.lerp(1.0, 0.88, morphProgress);
+            const cubePoint = getCubePoint(dx, dy, dz, cubeRadius);
+            px = THREE.MathUtils.lerp(px, cubePoint.x, cubeMix);
+            py = THREE.MathUtils.lerp(py, cubePoint.y, cubeMix);
+            pz = THREE.MathUtils.lerp(pz, cubePoint.z, cubeMix);
+          }
+
+          shellPos.setXYZ(i, px, py, pz);
+        }
+        shellPos.needsUpdate = true;
+        shellGeometry.computeVertexNormals();
+
+        // Deform Inner Orange Core
+        const corePos = coreGeometry.attributes.position;
+        const coreOrig = coreGeometry.userData.origPositions;
+        for (let i = 0; i < corePos.count; i++) {
+          const ox = coreOrig.getX(i);
+          const oy = coreOrig.getY(i);
+          const oz = coreOrig.getZ(i);
+
+          const len = Math.sqrt(ox*ox + oy*oy + oz*oz) || 1;
+          const dx = ox / len;
+          const dy = oy / len;
+          const dz = oz / len;
+
+          const coreNoise = getNoise(dx, dy, dz, elapsed * 1.8, 2.0) * (0.42 * organicMix);
+          const thump = easedImpact * 0.45 * organicMix;
+          const rCore = Math.min(shellBaseRadius * 0.85, coreBaseRadius * (1.0 + coreNoise + thump));
+
+          let px = dx * rCore;
+          let py = dy * rCore;
+          let pz = dz * rCore;
+
+          if (cubeMix > 0) {
+            const cubePoint = getCubePoint(dx, dy, dz, coreBaseRadius * 0.78);
+            px = THREE.MathUtils.lerp(px, cubePoint.x, cubeMix);
+            py = THREE.MathUtils.lerp(py, cubePoint.y, cubeMix);
+            pz = THREE.MathUtils.lerp(pz, cubePoint.z, cubeMix);
+          }
+
+          corePos.setXYZ(i, px, py, pz);
+        }
+        corePos.needsUpdate = true;
+        coreGeometry.computeVertexNormals();
+
+        // Subtle rotation
+        shellMesh.rotation.y += 0.003;
+        coreMesh.rotation.y = shellMesh.rotation.y * 1.15;
+
+        renderer.render(scene, camera);
+      }
+
+      animateGoo();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      });
+
+      /* ==========================================================================
+         TOOLS STRIP CANVAS (5 PROCEDURAL EXPERIMENTS)
+         ========================================================================== */
+      const toolsCanvas = document.getElementById('tools-canvas');
+      if (toolsCanvas) {
+        const tCtx = toolsCanvas.getContext('2d');
+        let currentTool = 0;
+        let tMouse = { x: 0, y: 0, active: false };
+
+        function resizeTools() {
+          toolsCanvas.width = toolsCanvas.parentElement.clientWidth;
+          toolsCanvas.height = toolsCanvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeTools);
+        resizeTools();
+
+        toolsCanvas.addEventListener('mousemove', (e) => {
+          const rect = toolsCanvas.getBoundingClientRect();
+          tMouse.x = e.clientX - rect.left;
+          tMouse.y = e.clientY - rect.top;
+          tMouse.active = true;
+        });
+        toolsCanvas.addEventListener('mouseleave', () => { tMouse.active = false; });
+
+        const toolBtns = document.querySelectorAll('.tool-btn');
+        const toolDesc = document.getElementById('tool-desc');
+        const toolScrollCounter = document.getElementById('tool-scroll-counter');
+
+        const toolDescriptions = [
+          "A lightweight looping motion mark used as a lead-in for the tool reel.",
+          "Chroma Warp: Real-time optical RGB split shader dispersion effect.",
+          "Split Mask: Typography distortion lattice reacting to cursor gravity.",
+          "Text Maze: Generative procedural ASCII/monospace labyrinth solver.",
+          "Whale Wave: Interactive 3D particle wave and gravitational lattice."
+        ];
+
+        toolBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            toolBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTool = parseInt(btn.dataset.tool);
+            toolDesc.textContent = toolDescriptions[currentTool];
+            toolScrollCounter.textContent = "Scroll # " + currentTool + " // 00" + currentTool;
+          });
+        });
+
+        let tTime = 0;
+        function renderTools() {
+          requestAnimationFrame(renderTools);
+          tTime += 0.025;
+          const w = toolsCanvas.width;
+          const h = toolsCanvas.height;
+
+          tCtx.fillStyle = 'rgba(20, 20, 20, 0.3)';
+          tCtx.fillRect(0, 0, w, h);
+
+          if (currentTool === 0) {
+            // Runman looping runner mark
+            tCtx.save();
+            tCtx.translate(w / 2, h / 2);
+            tCtx.strokeStyle = '#ff641c';
+            tCtx.lineWidth = 3;
+
+            const rx = Math.sin(tTime * 3) * 40;
+            const ry = Math.cos(tTime * 6) * 15;
+
+            // Head
+            tCtx.beginPath();
+            tCtx.arc(rx, ry - 50, 12, 0, Math.PI * 2);
+            tCtx.fillStyle = '#ffffff';
+            tCtx.fill();
+            tCtx.stroke();
+
+            // Torso & legs
+            tCtx.beginPath();
+            tCtx.moveTo(rx, ry - 38);
+            tCtx.lineTo(rx - 8, ry + 10);
+            tCtx.lineTo(rx - 35 + Math.sin(tTime * 6) * 30, ry + 50);
+            tCtx.moveTo(rx - 8, ry + 10);
+            tCtx.lineTo(rx + 25 + Math.cos(tTime * 6) * 30, ry + 50);
+            tCtx.moveTo(rx, ry - 25);
+            tCtx.lineTo(rx - 25 - Math.cos(tTime * 6) * 25, ry - 5);
+            tCtx.moveTo(rx, ry - 25);
+            tCtx.lineTo(rx + 25 + Math.sin(tTime * 6) * 25, ry - 5);
+            tCtx.stroke();
+            tCtx.restore();
+
+          } else if (currentTool === 1) {
+            // Chroma Warp
+            const cx = tMouse.active ? tMouse.x : w / 2;
+            const cy = tMouse.active ? tMouse.y : h / 2;
+            tCtx.globalCompositeOperation = 'screen';
+            tCtx.strokeStyle = 'rgba(255, 100, 28, 0.8)';
+            tCtx.lineWidth = 6;
+            tCtx.beginPath();
+            tCtx.arc(cx - 20, cy, 80, 0, Math.PI * 2);
+            tCtx.stroke();
+            tCtx.strokeStyle = 'rgba(0, 240, 255, 0.8)';
+            tCtx.beginPath();
+            tCtx.arc(cx + 20, cy, 80, 0, Math.PI * 2);
+            tCtx.stroke();
+            tCtx.globalCompositeOperation = 'source-over';
+
+          } else if (currentTool === 2) {
+            // Split Mask
+            tCtx.font = 'bold 54px Syne, sans-serif';
+            tCtx.fillStyle = '#ffffff';
+            tCtx.textAlign = 'center';
+            tCtx.textBaseline = 'middle';
+            const split = tMouse.active ? (tMouse.x - w/2) * 0.4 : Math.sin(tTime * 2) * 25;
+            tCtx.save();
+            tCtx.rect(0, 0, w, h/2);
+            tCtx.clip();
+            tCtx.fillText('SPLIT MASK', w/2 + split, h/2);
+            tCtx.restore();
+            tCtx.save();
+            tCtx.rect(0, h/2, w, h/2);
+            tCtx.clip();
+            tCtx.fillStyle = '#ff641c';
+            tCtx.fillText('SPLIT MASK', w/2 - split, h/2);
+            tCtx.restore();
+
+          } else if (currentTool === 3) {
+            // Text Maze
+            tCtx.font = '12px JetBrains Mono, monospace';
+            const cols = Math.floor(w / 20);
+            const rows = Math.floor(h / 20);
+            const chars = ['/', '\\', '+', '━', '┃', '╬'];
+            for (let r = 0; r < rows; r++) {
+              for (let c = 0; c < cols; c++) {
+                const charIdx = Math.floor((Math.sin(c * 0.3 + tTime) + Math.cos(r * 0.3 + tTime * 0.8) + 2) * 2) % chars.length;
+                tCtx.fillStyle = (c + r) % 4 === 0 ? '#ff641c' : 'rgba(255, 255, 255, 0.7)';
+                tCtx.fillText(chars[charIdx], c * 20 + 10, r * 20 + 15);
+              }
+            }
+
+          } else if (currentTool === 4) {
+            // Whale wave particles
+            tCtx.fillStyle = '#ff641c';
+            for (let i = 0; i < 60; i++) {
+              const x = (w / 60) * i;
+              const y = h/2 + Math.sin(i * 0.15 + tTime * 3) * 60 + Math.cos(i * 0.05 + tTime) * 30;
+              tCtx.beginPath();
+              tCtx.arc(x, y, 4, 0, Math.PI * 2);
+              tCtx.fill();
+            }
+          }
+        }
+        renderTools();
+      }
+
+    })();
+  </script>
+</body>
+</html>

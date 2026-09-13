@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kerf — Judgment that leaves a mark</title>
+  <meta name="description" content="Kerf Yield keeps how your revenue team decides, then runs that judgment on every account. The model stays yours." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+      --font-body: "Sora", "Avenir Next", sans-serif;
+      --font-mono: "IBM Plex Mono", "SFMono-Regular", ui-monospace, monospace;
+      --surface-page: #121110;
+      --surface-raised: #1c1b19;
+      --surface-ink: #0b0b0a;
+      --text-primary: #f2ede4;
+      --text-secondary: #a39e94;
+      --text-faint: #6e6a62;
+      --border-default: rgba(242, 237, 228, 0.12);
+      --action-primary: #f2ede4;
+      --action-ink: #161513;
+      --signal-live: #c4a574;
+      --status-danger: #c45a3a;
+      --text-display: clamp(2.75rem, 8vw, 5rem);
+      --text-3xl: clamp(2rem, 4vw, 3rem);
+      --text-xl: 1.25rem;
+      --text-lg: 1.0625rem;
+      --text-base: 1rem;
+      --text-sm: 0.8125rem;
+      --text-xs: 0.6875rem;
+      --leading-body: 1.7;
+      --section-y: clamp(5rem, 12vw, 8.5rem);
+      --wrap: min(1080px, 100% - 2.5rem);
+      --wrap-essay: min(720px, 100% - 2.5rem);
+      --radius-card: 22px;
+      --radius-well: 18px;
+      --radius-pill: 999px;
+      --shadow-island: 0 12px 40px rgba(0, 0, 0, 0.35);
+      --dur: 220ms;
+      --dur-hero: 760ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.32, 1.15, 0.42, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    :focus-visible {
+      outline: 2px solid var(--signal-live);
+      outline-offset: 2px;
+    }
+
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .essay { width: var(--wrap-essay); margin-inline: auto; }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .dots-h {
+      height: 1px;
+      background-image: radial-gradient(circle, var(--text-faint) 0.6px, transparent 0.7px);
+      background-size: 6px 1px;
+      background-repeat: repeat-x;
+      opacity: 0.45;
+    }
+    .dots-v {
+      width: 1px;
+      height: 40px;
+      background-image: radial-gradient(circle, var(--text-faint) 0.6px, transparent 0.7px);
+      background-size: 1px 6px;
+      background-repeat: repeat-y;
+      opacity: 0.55;
+    }
+    .num { font-variant-numeric: tabular-nums; }
+
+    .mark {
+      display: inline-flex;
+      gap: 5px;
+      width: 14px;
+      height: 18px;
+      align-items: stretch;
+    }
+    .mark i {
+      flex: 1;
+      background: var(--signal-live);
+      border-radius: 1px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+    .btn-primary {
+      background: var(--action-primary);
+      color: var(--action-ink);
+    }
+    .btn-primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      box-shadow: inset 0 0 0 1px var(--border-default);
+    }
+    .btn-ghost:hover { background: rgba(242, 237, 228, 0.04); }
+    .btn-ghost:active { transform: scale(0.97); }
+    .btn svg { flex: 0 0 auto; }
+
+    /* Nav */
+    .nav-slot { position: sticky; top: 0; z-index: 40; padding: 14px 16px 0; }
+    .island {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 8px 10px 8px 16px;
+      background: rgba(28, 27, 25, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-island);
+      animation: dock-in 0.7s var(--ease-spring) 0.08s both;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+    .island-links {
+      display: none;
+      gap: 22px;
+      margin-left: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .island-links a { text-decoration: none; }
+    .island-links a:hover { color: var(--text-primary); }
+    .island-cta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .island-cta .btn-primary,
+    .login { display: none; }
+    .menu-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-pill);
+      display: grid;
+      place-items: center;
+    }
+    .menu-btn .bars,
+    .menu-btn .bars::before,
+    .menu-btn .bars::after {
+      display: block;
+      width: 16px;
+      height: 1.5px;
+      background: var(--text-primary);
+      position: relative;
+      border-radius: 1px;
+    }
+    .menu-btn .bars::before,
+    .menu-btn .bars::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    .menu-btn .bars::before { top: -5px; }
+    .menu-btn .bars::after { top: 5px; }
+    .drawer {
+      display: none;
+      max-width: 1080px;
+      margin: 8px auto 0;
+      padding: 12px 16px 16px;
+      background: var(--surface-raised);
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+    }
+    .drawer.is-open { display: grid; gap: 4px; }
+    .drawer a {
+      display: block;
+      padding: 12px 8px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      min-height: 44px;
+    }
+    .drawer a:hover { color: var(--text-primary); }
+
+    /* Hero — sticky canvas + scroll chapter */
+    .hero-track {
+      position: relative;
+      height: 170vh;
+    }
+    .hero-canvas {
+      --hx: 0;
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .shapes {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 135vmin;
+      height: 135vmin;
+      transform: translate(-50%, -50%);
+      color: var(--text-primary);
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(closest-side, rgba(0,0,0,0.85), rgba(0,0,0,0.4) 42%, transparent 70%);
+      -webkit-mask-image: radial-gradient(closest-side, rgba(0,0,0,0.85), rgba(0,0,0,0.4) 42%, transparent 70%);
+    }
+    .shapes svg { width: 100%; height: 100%; display: block; }
+    .spin-cw, .spin-ccw {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation-name: spin-cw;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    .spin-ccw { animation-name: spin-ccw; }
+    .beam {
+      animation-name: beam-life;
+      animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+      animation-iteration-count: infinite;
+    }
+
+    .notes {
+      position: relative;
+      z-index: 2;
+      width: min(1080px, 100% - 2.3rem);
+      display: grid;
+      gap: 28px;
+      padding-top: 1.5rem;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.85;
+      opacity: calc(1 - var(--hx) * 2);
+    }
+    .note-line {
+      display: block;
+      white-space: nowrap;
+      width: max-content;
+      clip-path: inset(0 100% 0 0);
+      -webkit-clip-path: inset(0 100% 0 0);
+      animation: note-type calc(var(--n) * 26ms) steps(var(--n), end) forwards;
+    }
+    .notes .live { color: var(--signal-live); }
+    .hero-stagger {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: min(860px, 100% - 2.3rem);
+      transform: translateY(calc(var(--hx) * -72px));
+      opacity: calc(1 - var(--hx) * 1.7);
+    }
+    .hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--text-display);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+    .hero h1 span {
+      display: block;
+      animation: rise-in var(--dur-hero) var(--ease) both;
+    }
+    .hero h1 span:nth-child(2) { animation-delay: 90ms; }
+    .hero-lead {
+      margin: 1.25rem 0 0;
+      max-width: 38ch;
+      color: var(--text-secondary);
+      font-size: 17px;
+      line-height: 1.55;
+      text-wrap: balance;
+      animation: rise-in 0.7s var(--ease) 180ms both;
+    }
+    .hero-cta { margin-top: 1.75rem; animation: rise-in 0.7s var(--ease) 260ms both; }
+    .more {
+      margin-top: auto;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-faint);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+      animation: rise-in 0.7s var(--ease) 340ms both;
+    }
+    .more:hover { color: var(--text-secondary); }
+
+    .hero-essay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 1.15rem 4rem;
+      opacity: calc((var(--hx) - 0.22) * 2.15);
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, transparent 2%, #000 13%, #000 87%, transparent 98%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 2%, #000 13%, #000 87%, transparent 98%);
+    }
+    .hero-canvas.hx-live .hero-essay { pointer-events: auto; }
+
+    @keyframes rise-in {
+      from { opacity: 0; filter: blur(6px); transform: translateY(16px); }
+      to { opacity: 1; filter: blur(0); transform: none; }
+    }
+    @keyframes note-type {
+      from { clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); }
+      to {
+        clip-path: inset(0 calc(-100% / (var(--n) - 1) - 2px) 0 0);
+        -webkit-clip-path: inset(0 calc(-100% / (var(--n) - 1) - 2px) 0 0);
+      }
+    }
+    @keyframes spin-cw { to { transform: rotate(360deg); } }
+    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+    @keyframes beam-life {
+      0% { stroke-dashoffset: var(--beam-seg); opacity: 0; }
+      4% { opacity: 1; }
+      46% { opacity: 1; }
+      54% { stroke-dashoffset: calc(var(--beam-len) * -1); opacity: 0; }
+      100% { stroke-dashoffset: calc(var(--beam-len) * -1); opacity: 0; }
+    }
+    @keyframes dock-in {
+      from { opacity: 0; transform: translateY(-28px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes chart-draw {
+      from { stroke-dashoffset: 900; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Manifesto */
+    .manifesto-band {
+      position: relative;
+      z-index: 2;
+      background: var(--surface-page);
+      padding: var(--section-y) 0;
+    }
+    .manifesto {
+      width: var(--wrap-essay);
+      margin-inline: auto;
+    }
+    .manifesto p {
+      margin: 0 0 1.35rem;
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      line-height: var(--leading-body);
+      text-wrap: pretty;
+    }
+    .manifesto p.pull {
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      margin: 2rem 0;
+    }
+    .close-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .close-cta p {
+      margin: 0;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+    }
+
+    /* Practice */
+    .practice {
+      position: relative;
+      z-index: 2;
+      background: var(--surface-page);
+      padding: 0 0 var(--section-y);
+    }
+    .practice-head { text-align: center; margin-bottom: 2.5rem; }
+    .practice-head h2 {
+      margin: 14px auto 0;
+      max-width: 16ch;
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+    .practice-head p {
+      margin: 12px auto 0;
+      max-width: 42ch;
+      color: var(--text-secondary);
+    }
+    .pair {
+      display: grid;
+      gap: 16px;
+    }
+    .plate {
+      background: var(--surface-raised);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+      padding: 28px 24px 24px;
+    }
+    .plate h3 {
+      margin: 12px 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+    }
+    .facts {
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+    .facts li {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+    .facts i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--signal-live);
+      flex: 0 0 auto;
+      transform: translateY(-1px);
+    }
+    .plate .btn { margin-top: 20px; }
+
+    .chart {
+      margin-top: 22px;
+      background: var(--surface-ink);
+      border-radius: var(--radius-well);
+      padding: 16px 14px 12px;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .legend b { font-weight: 500; color: var(--text-secondary); }
+    .swatch {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .swatch.agent { background: var(--text-primary); }
+    .swatch.human { background: #6a655c; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .axis {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .axis span:nth-child(even) { display: none; }
+
+    .vault {
+      margin-top: 22px;
+      background: var(--surface-ink);
+      border-radius: var(--radius-well);
+      padding: 6px;
+    }
+    .vault li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-default);
+      font-size: 14px;
+    }
+    .vault ul { margin: 0; padding: 0; }
+    .vault li:last-child { border-bottom: 0; }
+    .seal {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--signal-live);
+    }
+
+    /* FAQ */
+    .faq {
+      padding: 0 0 var(--section-y);
+    }
+    .faq-grid {
+      display: grid;
+      gap: 2.5rem;
+    }
+    .faq-intro h2 {
+      margin: 12px 0 0;
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+    .faq-intro p {
+      margin: 12px 0 0;
+      color: var(--text-secondary);
+      max-width: 32ch;
+    }
+    .faq-list { border-top: 1px solid var(--border-default); }
+    .faq-item { border-bottom: 1px solid var(--border-default); }
+    .faq-item button {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      min-height: 64px;
+      padding: 16px 0;
+      font-size: 16px;
+      color: var(--text-primary);
+    }
+    .faq-item button .plus {
+      flex: 0 0 auto;
+      width: 14px;
+      height: 14px;
+      position: relative;
+    }
+    .faq-item button .plus::before,
+    .faq-item button .plus::after {
+      content: "";
+      position: absolute;
+      background: var(--text-faint);
+      border-radius: 1px;
+    }
+    .faq-item button .plus::before { left: 6px; top: 1px; width: 1.5px; height: 12px; }
+    .faq-item button .plus::after { left: 1px; top: 6px; width: 12px; height: 1.5px; }
+    .faq-item.is-open button .plus { transform: rotate(45deg); }
+    .faq-item button .plus {
+      transition: transform var(--dur) var(--ease);
+    }
+    .faq-item .ans {
+      display: none;
+      padding: 0 0 18px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 62ch;
+    }
+    .faq-item.is-open .ans { display: block; }
+
+    /* Footer */
+    .foot {
+      background: var(--surface-ink);
+      padding: var(--section-y) 0 2rem;
+      text-align: center;
+    }
+    .emblem {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+    }
+    .emblem .mark { width: 22px; height: 36px; gap: 7px; }
+    .foot h2 {
+      margin: 2.25rem auto 0;
+      max-width: 16ch;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+    }
+    .foot .lead {
+      margin: 1.35rem auto 0;
+      max-width: 40ch;
+      color: var(--text-secondary);
+    }
+    .foot .btn { margin-top: 1.5rem; }
+    .wordmark {
+      position: relative;
+      margin: 5rem 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 22vw, 14rem);
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      user-select: none;
+    }
+    .wordmark-base {
+      color: transparent;
+      background: linear-gradient(180deg, rgba(242, 237, 228, 0.55) 0%, rgba(242, 237, 228, 0.08) 72%, rgba(242, 237, 228, 0) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 22px;
+      margin-top: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .meta a { text-decoration: none; }
+    .meta a:hover { color: var(--text-secondary); }
+
+    @media (min-width: 720px) {
+      .island-links { display: flex; }
+      .menu-btn { display: none; }
+      .login,
+      .island-cta .btn-primary { display: inline-flex; }
+      .notes {
+        grid-template-columns: 1fr 1fr;
+        justify-content: space-between;
+      }
+      .notes .right { text-align: right; justify-self: end; }
+      .axis span:nth-child(even) { display: inline; }
+    }
+    @media (min-width: 1040px) {
+      .notes {
+        position: absolute;
+        top: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1180px, 100% - 3rem);
+        pointer-events: none;
+        padding-top: 0;
+      }
+      .notes .right .note-line { margin-left: auto; }
+      .pair { grid-template-columns: 1fr 1fr; }
+      .faq-grid { grid-template-columns: 0.8fr 1.2fr; align-items: start; }
+    }
+
+    .chart-line {
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+    }
+    .chart.in-view .chart-line {
+      animation: chart-draw 1.4s var(--ease) 0.15s forwards;
+    }
+    .wordmark-glow {
+      position: absolute;
+      inset: 0;
+      color: rgba(242, 237, 228, 0.08);
+      -webkit-text-stroke: 0.75px rgba(242, 237, 228, 0.22);
+      opacity: 0;
+      transition: opacity 0.6s var(--ease);
+      pointer-events: none;
+    }
+    .wordmark:hover .wordmark-glow { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-track { height: auto; }
+      .hero-canvas { position: relative; height: auto; min-height: 100svh; }
+      .spin-cw, .spin-ccw, .beam, .note-line, .hero h1 span,
+      .hero-lead, .hero-cta, .more, .island, .chart-line {
+        animation: none !important;
+      }
+      .note-line { clip-path: none; }
+      .hero-stagger, .notes, .hero-essay {
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto;
+      }
+      .hero-essay { position: relative; mask-image: none; -webkit-mask-image: none; padding: var(--section-y) 1.15rem; }
+      .btn, .faq-item button .plus { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-slot">
+    <header class="island">
+      <a class="brand" href="#top">
+        <span class="mark" aria-hidden="true"><i></i><i></i></span>
+        Kerf
+      </a>
+      <nav class="island-links" aria-label="Primary">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#practice">In practice</a>
+        <a href="#faq">FAQ</a>
+        <a href="#walkthrough">Walkthrough</a>
+      </nav>
+      <div class="island-cta">
+        <a class="btn btn-ghost login" href="#walkthrough">Log in</a>
+        <a class="btn btn-primary" href="#walkthrough">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M5.75 3.25V1.25M12.25 3.25V1.25M2.25 6.75h13.5M4.25 3.25h9.5A2 2 0 0 1 15.75 5.25v8.5a2 2 0 0 1-2 2H4.25a2 2 0 0 1-2-2v-8.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Book a walkthrough
+        </a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" data-menu>
+          <span class="bars" aria-hidden="true"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+      </div>
+    </header>
+    <div class="drawer" id="drawer">
+      <a href="#manifesto">Manifesto</a>
+      <a href="#practice">In practice</a>
+      <a href="#faq">FAQ</a>
+      <a href="#walkthrough">Log in</a>
+      <a href="#walkthrough">Book a walkthrough</a>
+    </div>
+  </div>
+
+  <main id="top">
+    <div class="hero-track">
+      <section class="hero hero-canvas" id="hero-canvas">
+        <div class="shapes" aria-hidden="true">
+          <svg viewBox="0 0 1709 1709" fill="none">
+            <g class="spin-cw" style="animation-duration:340s"><path d="M854.50 134.50L1363.62 345.38L1574.50 854.50L1363.62 1363.62L854.50 1574.50L345.38 1363.62L134.50 854.50L345.38 345.38Z" stroke="currentColor" stroke-opacity="0.4" stroke-width="0.9"/></g>
+            <g class="spin-ccw" style="animation-duration:280s"><path d="M965.75 305.66L1321.26 545.08L1403.34 965.75L1163.92 1321.26L743.25 1403.34L387.74 1163.92L305.66 743.25L545.08 387.74Z" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9"/></g>
+            <g class="spin-cw" style="animation-duration:230s"><path d="M854.50 384.50L1186.84 522.16L1324.50 854.50L1186.84 1186.84L854.50 1324.50L522.16 1186.84L384.50 854.50L522.16 522.16Z" stroke="currentColor" stroke-opacity="0.4" stroke-width="0.9"/></g>
+            <g class="spin-ccw" style="animation-duration:190s"><path d="M854.50 474.50L1183.59 664.50L1183.59 1044.50L854.50 1234.50L525.41 1044.50L525.41 664.50Z" stroke="currentColor" stroke-opacity="0.32" stroke-width="0.9"/></g>
+            <g class="spin-cw" style="animation-duration:150s"><path d="M886.82 586.44L1066.90 687.81L1122.56 886.82L1021.19 1066.90L822.18 1122.56L642.10 1021.19L586.44 822.18L687.81 642.10Z" stroke="currentColor" stroke-opacity="0.32" stroke-width="0.9"/></g>
+            <g class="spin-ccw" style="animation-duration:120s"><path d="M854.50 679.50L1006.05 767.00L1006.05 942.00L854.50 1029.50L702.95 942.00L702.95 767.00Z" stroke="currentColor" stroke-opacity="0.34" stroke-width="0.9"/></g>
+            <g class="spin-cw" style="animation-duration:90s"><path d="M854.50 759.50L921.68 787.32L949.50 854.50L921.68 921.68L854.50 949.50L787.32 921.68L759.50 854.50L787.32 787.32Z" stroke="currentColor" stroke-opacity="0.36" stroke-width="0.9"/></g>
+            <g>
+              <line class="beam" x1="937.9" y1="888.2" x2="1429.4" y2="1086.8" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:470;--beam-seg:212;stroke-dasharray:212 682;stroke-dashoffset:212;animation-delay:0s;animation-duration:13s"/>
+              <line class="beam" x1="888.2" y1="937.9" x2="1086.8" y2="1429.4" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:550;--beam-seg:248;stroke-dasharray:248 798;stroke-dashoffset:248;animation-delay:3.2s;animation-duration:15s"/>
+              <line class="beam" x1="817.9" y1="936.7" x2="602.3" y2="1420.9" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:410;--beam-seg:185;stroke-dasharray:185 595;stroke-dashoffset:185;animation-delay:5.6s;animation-duration:12s"/>
+              <line class="beam" x1="764.5" y1="854.5" x2="234.5" y2="854.5" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:610;--beam-seg:275;stroke-dasharray:275 885;stroke-dashoffset:275;animation-delay:8.1s;animation-duration:16s"/>
+              <line class="beam" x1="796.6" y1="785.6" x2="456.0" y2="379.6" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:330;--beam-seg:149;stroke-dasharray:149 479;stroke-dashoffset:149;animation-delay:10.4s;animation-duration:13s"/>
+              <line class="beam" x1="854.5" y1="764.5" x2="854.5" y2="234.5" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:530;--beam-seg:239;stroke-dasharray:239 769;stroke-dashoffset:239;animation-delay:12.7s;animation-duration:15s"/>
+              <line class="beam" x1="918.1" y1="790.9" x2="1292.9" y2="416.1" stroke="currentColor" stroke-opacity="0.42" stroke-width="0.9" style="--beam-len:450;--beam-seg:203;stroke-dasharray:203 653;stroke-dashoffset:203;animation-delay:15.3s;animation-duration:14s"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="notes" aria-hidden="true">
+          <div class="left">
+            <span class="note-line live" style="--n:26;animation-delay:0ms">// kerf agent · live pass</span>
+            <span class="note-line" style="--n:17;animation-delay:420ms">read 318 accounts</span>
+            <span class="note-line" style="--n:16;animation-delay:840ms">wrote 891 fields</span>
+            <span class="note-line" style="--n:16;animation-delay:1260ms">queued 176 notes</span>
+            <span class="note-line" style="--n:12;animation-delay:1680ms">set 64 rooms</span>
+            <span class="note-line" style="--n:32;animation-delay:2100ms">// day 11 of 18 · still cutting</span>
+          </div>
+          <div class="right">
+            <span class="note-line live" style="--n:21;animation-delay:0ms">// yield · live pass</span>
+            <span class="note-line" style="--n:19;animation-delay:420ms">offered 186 actions</span>
+            <span class="note-line" style="--n:24;animation-delay:840ms">kept 171 · sent back 15</span>
+            <span class="note-line" style="--n:18;animation-delay:1260ms">each call = 1 kerf</span>
+            <span class="note-line" style="--n:21;animation-delay:1680ms">model recut 171 times</span>
+            <span class="note-line" style="--n:16;animation-delay:2100ms">the groove holds</span>
+          </div>
+        </div>
+
+        <div class="hero-stagger">
+          <h1>
+            <span>The cut</span>
+            <span>that stays</span>
+          </h1>
+          <p class="hero-lead">Systems that keep how your team decides, then run that judgment on every account.</p>
+          <a class="btn btn-primary hero-cta" href="#walkthrough">Book a walkthrough</a>
+        </div>
+        <a class="more" href="#manifesto">
+          <span>Read the thesis</span>
+          <span class="dots-v"></span>
+        </a>
+      </section>
+    </div>
+
+    <section class="manifesto-band" id="manifesto">
+      <div class="manifesto">
+        <p>Companies are good at keeping what happened. Stages move. Rooms are logged. Notes are filed. The part that almost never survives is the reasoning — why this account, why this exception, why the team turned.</p>
+        <p class="pull">Outcomes get archived. Judgment walks out.</p>
+        <p>That is a strange loss. The best people on a revenue team are not valuable because they type faster. They are valuable because they can feel a stall two weeks early, or refuse a discount that would have closed a bad book. When they leave, the spreadsheet stays. The cut they made does not.</p>
+        <p>A system can learn from more than documents. It can learn from decisions, if those decisions happen every day, if the result can be measured, and if someone is willing to correct the next move. Revenue is one of the few rooms that already has all three.</p>
+        <p>Kerf Yield is the first product. It sits on every account, proposes the next cut, and waits. Approve it, edit it, or send it back. Each of those calls is a kerf — a groove left in the model. The model lives in your tenant. It is trained on your team, for your team, and it does not leave with anyone.</p>
+        <p>We do not think judgment becomes useful by making a larger model. We think it becomes useful when the best calls a company already makes are allowed to remain, and then to run while people sleep.</p>
+        <p class="pull">The world’s best judgment should not be limited to the people who hold it today.</p>
+        <div class="close-cta" id="walkthrough">
+          <p>Ready to see the groove?</p>
+          <a class="btn btn-primary" href="mailto:walkthrough@kerf.example">Book a walkthrough</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="practice" id="practice">
+      <div class="wrap">
+        <div class="practice-head">
+          <span class="kicker">In practice</span>
+          <h2>Measured work. Sealed tenant.</h2>
+          <p>See how Kerf Yield takes on account work over a year — and how the judgment that trains it never leaves the building.</p>
+        </div>
+        <div class="pair">
+          <article class="plate">
+            <span class="kicker">Yield</span>
+            <h3>Agents now carry more than half the account work.</h3>
+            <ul class="facts">
+              <li><i></i><span><span class="num">3.8M</span> actions completed</span></li>
+              <li><i></i><span><span class="num">$540M</span> pipeline watched</span></li>
+              <li><i></i><span><span class="num">53%</span> of work handled by agents</span></li>
+            </ul>
+            <a class="btn btn-primary" href="#walkthrough">Book a walkthrough</a>
+            <div class="chart" aria-hidden="true">
+              <div class="legend">
+                <span><i class="swatch agent"></i>Agent work</span>
+                <span><i class="swatch human"></i>Human work</span>
+              </div>
+              <svg viewBox="0 0 520 168" role="img">
+                <title>Share of account work by month</title>
+                <defs>
+                  <linearGradient id="gAgent" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#f2ede4" stop-opacity="0.95"/>
+                    <stop offset="1" stop-color="#f2ede4" stop-opacity="0.55"/>
+                  </linearGradient>
+                </defs>
+                <!-- human field -->
+                <path d="M0,8 L520,8 L520,148 L0,148 Z" fill="#3d3a36"/>
+                <!-- agent share growing: 0.8,1.3,2.1,3.4,5.2,13,21,26,32,38,43,47,53 of 140px -->
+                <path d="M0,147
+                  L43.3,145.2
+                  L86.6,144
+                  L129.9,141.6
+                  L173.2,137.8
+                  L216.5,129.8
+                  L259.8,118.6
+                  L303.1,111.6
+                  L346.4,103.2
+                  L389.7,94.8
+                  L433,87.8
+                  L476.3,82.2
+                  L520,73.8
+                  L520,148 L0,148 Z" fill="url(#gAgent)"/>
+                <path class="chart-line" d="M0,147
+                  L43.3,145.2
+                  L86.6,144
+                  L129.9,141.6
+                  L173.2,137.8
+                  L216.5,129.8
+                  L259.8,118.6
+                  L303.1,111.6
+                  L346.4,103.2
+                  L389.7,94.8
+                  L433,87.8
+                  L476.3,82.2
+                  L520,73.8" fill="none" stroke="#f2ede4" stroke-width="1.25"/>
+              </svg>
+              <div class="axis">
+                <span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="plate">
+            <span class="kicker">Vault</span>
+            <h3>Your judgment trains your agents. Your data stays put.</h3>
+            <ul class="facts">
+              <li><i></i><span>Zero shared-model training</span></li>
+              <li><i></i><span>Audit line on every action</span></li>
+              <li><i></i><span>Sealed in the tenant, end to end</span></li>
+            </ul>
+            <a class="btn btn-primary" href="#walkthrough">Book a walkthrough</a>
+            <div class="vault">
+              <ul>
+                <li><span>Tenant-local model</span><span class="seal">Held</span></li>
+                <li><span>Decision traces</span><span class="seal">Yours</span></li>
+                <li><span>Action log</span><span class="seal">Complete</span></li>
+                <li><span>Export on exit</span><span class="seal">Intact</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="wrap faq-grid">
+        <div class="faq-intro">
+          <span class="kicker">FAQ</span>
+          <h2>Questions we hear before the first cut.</h2>
+          <p>Ownership, coverage, and how the system learns without pooling anyone else’s book.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item is-open">
+            <button type="button" aria-expanded="true">How can it learn from us without training on our data?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">Your book is never folded into a shared model and never used to improve anyone else’s agents. Kerf post-trains a model on your team’s decisions, in your tenant, for your tenant. The traces, the corrections, and the model they built stay with you.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">What does an agent on every account actually do?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">Each account has a dedicated agent that watches the thread, proposes the next action, and waits. A person keeps, edits, or sends it back. The outcome is written as a kerf. Coverage is no longer limited to the accounts a human had time to open today.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">Is this just another outbound sender?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">No. Point tools sit beside the stack and push one slice of the funnel. Kerf Yield connects to the systems your team already runs and works every stage of an account. The difference that matters is the signal: every keep, edit, and reject becomes how the agent acts tomorrow. One product sends more mail. The other keeps how you win.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">Does this replace the desk?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">No. Agents take the repetitive account work. People stay on the calls that need judgment. The loop is built around approval, so the best people spend the day on the cut, not the filing.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">What happens when a great rep leaves?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">The groove stays. Today their instincts walk out with them. Kerf keeps how they decided and keeps running it. A new hire inherits that cut on day one instead of spending a year reconstructing it.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">How fast does it show a mark?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">Kerf attaches to the tools you already use, under the access rules you set. There is no rip-and-replace. Most teams see proposed actions within days, not a quarter.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">Who owns the model?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">You do. The traces, the decisions, the post-trained model, and everything it learned stay inside your environment. If you leave, you take what you built.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" aria-expanded="false">How is this different from a general assistant?<span class="plus" aria-hidden="true"></span></button>
+            <div class="ans">A general assistant is driven task by task and starts cold. Kerf Yield is already on every account. It remembers the book, the team, and the outcomes. You do not prompt it to begin. It is already cutting, and it gets sharper with every call you keep.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="emblem" aria-hidden="true"><span class="mark"><i></i><i></i></span></div>
+      <h2>The best judgment should keep cutting.</h2>
+      <p class="lead">Kerf turns the calls your team already makes into intelligence that can be kept, shared, and recut.</p>
+      <a class="btn btn-primary" href="mailto:walkthrough@kerf.example">Book a walkthrough</a>
+      <div class="wordmark" aria-hidden="true">
+        <span class="wordmark-base">Kerf</span>
+        <span class="wordmark-glow">Kerf</span>
+      </div>
+      <div class="dots-h" style="margin-top: 28px;"></div>
+      <div class="meta">
+        <a href="mailto:hello@kerf.example">hello@kerf.example</a>
+        <span>© Kerf Systems · 2026</span>
+        <a href="#faq">Terms</a>
+        <a href="#faq">Privacy</a>
+        <span>Sample template</span>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+  </style>
+  <script>
+    (() => {
+      const menu = document.querySelector("[data-menu]");
+      const drawer = document.getElementById("drawer");
+      if (menu && drawer) {
+        menu.addEventListener("click", () => {
+          const open = drawer.classList.toggle("is-open");
+          menu.setAttribute("aria-expanded", String(open));
+        });
+        drawer.querySelectorAll("a").forEach((a) => {
+          a.addEventListener("click", () => {
+            drawer.classList.remove("is-open");
+            menu.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      document.querySelectorAll(".faq-item button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+          const open = !item.classList.contains("is-open");
+          document.querySelectorAll(".faq-item").forEach((el) => {
+            el.classList.remove("is-open");
+            el.querySelector("button").setAttribute("aria-expanded", "false");
+          });
+          if (open) {
+            item.classList.add("is-open");
+            btn.setAttribute("aria-expanded", "true");
+          }
+        });
+      });
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const canvas = document.getElementById("hero-canvas");
+      const track = document.querySelector(".hero-track");
+      if (!reduce && canvas && track) {
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const rect = track.getBoundingClientRect();
+          const total = Math.max(1, rect.height - window.innerHeight);
+          const hx = Math.min(1, Math.max(0, -rect.top / total));
+          canvas.style.setProperty("--hx", hx.toFixed(4));
+          canvas.classList.toggle("hx-live", hx > 0.28);
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        update();
+      }
+
+      const chart = document.querySelector(".chart");
+      if (chart && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) chart.classList.add("in-view");
+          });
+        }, { threshold: 0.35 });
+        io.observe(chart);
+      }
+    })();
+  </script>
+</body>
+</html>

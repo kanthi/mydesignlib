@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hexdock — Floating Capsule Navigation Web Component</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --font-main: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+
+      /* Reference Colors */
+      --bg-studio: #F5F5F7;
+      --dock-shell: #0E0E10;
+      --dock-button-disc: #1F2024;
+      --dock-button-disc-hover: #292A30;
+
+      --lime-active: #B4FF39;
+      --lime-active-hover: #A5F526;
+      --lime-dark-icon: #0E0E10;
+
+      --icon-inactive: rgba(255, 255, 255, 0.72);
+      --icon-inactive-hover: #FFFFFF;
+
+      --tooltip-bg: #D8D8DC;
+      --tooltip-text: #262628;
+
+      --guide-line: rgba(0, 0, 0, 0.28);
+      --guide-label: #3A3D42;
+
+      --dur: 280ms;
+      --ease-spring: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-studio);
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color var(--dur) ease;
+    }
+
+    body.dark-mode {
+      --bg-studio: #0B0C0E;
+      --guide-line: rgba(255, 255, 255, 0.24);
+      --guide-label: #9CA3AF;
+      --tooltip-bg: #E4E4E8;
+      --tooltip-text: #111;
+    }
+
+    /* Master Showcase Stage (Matches the 900x675 Reference Proportions) */
+    .showcase-stage {
+      position: relative;
+      width: 900px;
+      height: 675px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 1300px) {
+      .showcase-stage {
+        transform: scale(1.3);
+        transform-origin: center center;
+      }
+    }
+
+    @media (max-width: 950px) {
+      .showcase-stage {
+        transform: scale(0.82);
+        transform-origin: center center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .showcase-stage {
+        transform: scale(0.58);
+        transform-origin: center center;
+      }
+    }
+
+    /* Top Brand Lockup */
+    .top-brand-lockup {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 20;
+    }
+
+    .brand-icon-box {
+      width: 34px;
+      height: 34px;
+      background-color: #0E0E10;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-icon-glyph {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #262628;
+      letter-spacing: -0.01em;
+    }
+
+    body.dark-mode .brand-title {
+      color: #E2E8F0;
+    }
+
+    /* ==========================================================================
+       THE CORE FLOATING DOCK COMPONENT
+       ========================================================================== */
+    .dock-container {
+      position: absolute;
+      top: 336px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 30;
+      transition: top 350ms var(--ease-spring), transform 350ms var(--ease-spring);
+    }
+
+    .dock-container.fixed-bottom {
+      top: calc(100% - 60px);
+    }
+
+    .dock-bar {
+      position: relative;
+      background-color: var(--dock-shell);
+      border-radius: 9999px;
+      height: 64px;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.45), 0 8px 18px -4px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Active Sliding Pill Backdrop */
+    .dock-active-indicator {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      height: 52px;
+      width: 126px;
+      background-color: var(--lime-active);
+      border-radius: 9999px;
+      box-shadow: 0 2px 10px rgba(180, 255, 57, 0.35);
+      transition: transform var(--dur) var(--ease-spring), width var(--dur) var(--ease-spring);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Individual Item Buttons */
+    .dock-button {
+      position: relative;
+      background-color: var(--dock-button-disc);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background-color var(--dur) ease, color var(--dur) ease, transform 180ms ease;
+    }
+
+    /* Inactive Circular Discs */
+    .dock-button.disc {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      color: var(--icon-inactive);
+    }
+
+    .dock-button.disc:hover {
+      background-color: var(--dock-button-disc-hover);
+      color: var(--icon-inactive-hover);
+      transform: scale(1.04);
+    }
+
+    /* Active Pill Item */
+    .dock-button.active {
+      width: 126px;
+      height: 52px;
+      border-radius: 9999px;
+      background-color: transparent; /* Underlaid by .dock-active-indicator */
+      color: var(--lime-dark-icon);
+      transform: none;
+    }
+
+    .dock-button svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.8;
+      pointer-events: none;
+      transition: stroke 200ms ease;
+    }
+
+    .dock-button.active svg {
+      stroke: var(--lime-dark-icon);
+    }
+
+    /* Tooltip Hover Overlay */
+    .dynamic-tooltip {
+      position: absolute;
+      bottom: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background-color: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .dock-button:hover .dynamic-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Fixed FAQ Tooltip Badge and Custom Cursor (Exact to Reference Image) */
+    .faq-callout-anchor {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 40;
+      transition: opacity var(--dur) ease;
+    }
+
+    .faq-tooltip-badge {
+      background-color: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      white-space: nowrap;
+    }
+
+    .faq-hover-cursor {
+      position: absolute;
+      top: 14px;
+      left: -18px;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      z-index: 50;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    /* ==========================================================================
+       SVG DASHED ANNOTATION GUIDES LAYER (PIXEL-PERFECT REPLICA)
+       ========================================================================== */
+    .guides-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      transition: opacity var(--dur) ease;
+    }
+
+    .guides-layer.hidden {
+      opacity: 0;
+    }
+
+    .guide-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .guide-text {
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 600;
+      fill: var(--guide-label);
+      user-select: none;
+    }
+
+    /* ==========================================================================
+       FLOATING ACTIONS & CONTROLS TOOLBAR
+       ========================================================================== */
+    .bottom-toolbar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 8px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      z-index: 100;
+    }
+
+    body.dark-mode .bottom-toolbar {
+      background: rgba(22, 24, 28, 0.88);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .toolbar-btn {
+      font-family: var(--font-main);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #555;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 180ms ease;
+    }
+
+    body.dark-mode .toolbar-btn {
+      color: #AAA;
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #111;
+    }
+
+    body.dark-mode .toolbar-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+    }
+
+    .toolbar-btn.active {
+      background: #111;
+      color: #FFF;
+    }
+
+    body.dark-mode .toolbar-btn.active {
+      background: #FFF;
+      color: #111;
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 18px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .toolbar-divider {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Back Link */
+    .back-corner {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #666;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 100;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    body.dark-mode .back-corner {
+      color: #AAA;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Toast Notification */
+    .copy-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: #111;
+      color: #FFF;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: all 240ms ease;
+      z-index: 1000;
+    }
+
+    .copy-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top-left Back Navigation -->
+  <a href="../../" class="back-corner">&larr; Library</a>
+
+  <!-- ==========================================================================
+       MASTER SHOWCASE STAGE (EXACT REPLICA OF THE 900x675 REFERENCE)
+       ========================================================================== -->
+  <main class="showcase-stage" id="showcaseStage">
+
+    <!-- Top Brand Lockup -->
+    <header class="top-brand-lockup">
+      <div class="brand-icon-box">
+        <!-- Neon Lime Hex/Loop Glyph -->
+        <svg class="brand-icon-glyph" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3C8.5 3 6 5.5 6 9C6 11.2 7.2 13 9 14.1V18C9 19.7 10.3 21 12 21C13.7 21 15 19.7 15 18V14.1C16.8 13 18 11.2 18 9C18 5.5 15.5 3 12 3Z" stroke="#B4FF39" stroke-width="2.4" stroke-linejoin="round"/>
+          <circle cx="12" cy="9" r="2.2" fill="#B4FF39"/>
+        </svg>
+      </div>
+      <span class="brand-title">Hexdock</span>
+    </header>
+
+    <!-- ==========================================================================
+         SVG DASHED ANNOTATION CONNECTOR LINES
+         ========================================================================== -->
+    <div class="guides-layer" id="guidesLayer">
+      <svg class="guide-svg" viewBox="0 0 900 675" fill="none">
+        <defs>
+          <marker id="guideArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="rgba(0, 0, 0, 0.38)"/>
+          </marker>
+        </defs>
+
+        <!-- Home Guide: Label -> Down -> Right -> Into Lime Pill -->
+        <text x="145" y="210" class="guide-text">Home</text>
+        <path d="M 158 226 V 336 H 202" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+
+        <!-- Services Guide: Label -> Right -> Up -> Into Services Disc -->
+        <text x="270" y="426" class="guide-text">Services</text>
+        <path d="M 334 422 H 378 V 378" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+
+        <!-- Portfolio Guide: Label -> Right -> Down -> Into Portfolio Disc -->
+        <text x="330" y="238" class="guide-text">Portfolio</text>
+        <path d="M 390 234 H 434 V 294" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+
+        <!-- Pricing Guide: Label -> Left -> Up -> Into Pricing Disc -->
+        <text x="565" y="465" class="guide-text">Pricing</text>
+        <path d="M 552 461 H 490 V 378" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+
+        <!-- Blog Guide: From Blog Disc -> Up -> Right -> Into Label -->
+        <text x="664" y="238" class="guide-text">Blog</text>
+        <path d="M 602 294 V 234 H 652" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+
+        <!-- Contact Guide: Straight Right from Contact Disc to Label -->
+        <text x="775" y="340" class="guide-text">Contact</text>
+        <path d="M 696 336 H 762" stroke="rgba(0,0,0,0.3)" stroke-width="1.2" stroke-dasharray="3.5 3.5" marker-end="url(#guideArrow)"/>
+      </svg>
+    </div>
+
+    <!-- ==========================================================================
+         THE DOCK CAPSULE
+         ========================================================================== -->
+    <div class="dock-container" id="dockContainer">
+      <nav class="dock-bar" id="dockBar" role="navigation" aria-label="Hexdock Navigation">
+        
+        <!-- Animated Active Indicator Pill -->
+        <div class="dock-active-indicator" id="dockIndicator"></div>
+
+        <!-- 1. HOME (Active Pill Default) -->
+        <button class="dock-button active" id="btn-home" onclick="setActiveButton('home', 0, this)" aria-label="Home">
+          <!-- House Icon with horizontal shelf slit line -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3.5 10.2L12 3.5L20.5 10.2V19.5C20.5 20.05 20.05 20.5 19.5 20.5H4.5C3.95 20.5 3.5 20.05 3.5 19.5V10.2Z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 16.5H15" stroke-linecap="round"/>
+          </svg>
+          <span class="dynamic-tooltip">Home</span>
+        </button>
+
+        <!-- 2. SERVICES (⌘ Command Disc) -->
+        <button class="dock-button disc" id="btn-services" onclick="setActiveButton('services', 1, this)" aria-label="Services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 9C19.6569 9 21 7.65685 21 6C21 4.34315 19.6569 3 18 3C16.3431 3 15 4.34315 15 6V18C15 19.6569 16.3431 21 18 21C19.6569 21 21 19.6569 21 18C21 16.3431 19.6569 15 18 15H6C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21C7.65685 21 9 19.6569 9 18V6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6C3 7.65685 4.34315 9 6 9H18Z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dynamic-tooltip">Services</span>
+        </button>
+
+        <!-- 3. PORTFOLIO (3 Overlapping Venn Rings) -->
+        <button class="dock-button disc" id="btn-portfolio" onclick="setActiveButton('portfolio', 2, this)" aria-label="Portfolio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="8.2" r="4.2" stroke-linecap="round"/>
+            <circle cx="8" cy="15" r="4.2" stroke-linecap="round"/>
+            <circle cx="16" cy="15" r="4.2" stroke-linecap="round"/>
+          </svg>
+          <span class="dynamic-tooltip">Portfolio</span>
+        </button>
+
+        <!-- 4. PRICING (Wallet Pouch Disc) -->
+        <button class="dock-button disc" id="btn-pricing" onclick="setActiveButton('pricing', 3, this)" aria-label="Pricing">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M3 8C3 6.9 3.9 6 5 6H19C20.1 6 21 6.9 21 8V18C21 19.1 20.1 20 19 20H5C3.9 20 3 19.1 3 18V8Z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 10H21" stroke-linecap="round"/>
+            <circle cx="16.5" cy="15" r="1.5" fill="currentColor"/>
+          </svg>
+          <span class="dynamic-tooltip">Pricing</span>
+        </button>
+
+        <!-- 5. FAQ (Chat Bubble Disc with Anchor for FAQ Tooltip & Lime-Tipped Cursor) -->
+        <button class="dock-button disc" id="btn-faq" onclick="setActiveButton('faq', 4, this)" aria-label="FAQ">
+          
+          <!-- Static Reference Callout: FAQ Pill Tooltip and Lime Cursor -->
+          <div class="faq-callout-anchor" id="faqCallout">
+            <div class="faq-tooltip-badge">FAQ</div>
+            <svg class="faq-hover-cursor" viewBox="0 0 24 24" fill="none">
+              <!-- Black Body Cursor with Lime Edge -->
+              <path d="M3.5 2L18.5 10.5L11 12.5L8 20.5L3.5 2Z" fill="#0E0E10" stroke="#B4FF39" stroke-width="2.2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V15C20 16.1 19.1 17 18 17H8.5L4 21V6Z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 9.5H16M8 13H13" stroke-linecap="round"/>
+          </svg>
+          <span class="dynamic-tooltip">FAQ</span>
+        </button>
+
+        <!-- 6. BLOG (Pencil Disc) -->
+        <button class="dock-button disc" id="btn-blog" onclick="setActiveButton('blog', 5, this)" aria-label="Blog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18.5 2.5L21.5 5.5L7 20H3.5V16.5L18.5 2.5Z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 6L18 9" stroke-linecap="round"/>
+          </svg>
+          <span class="dynamic-tooltip">Blog</span>
+        </button>
+
+        <!-- 7. CONTACT (Tray / Inbox Disc) -->
+        <button class="dock-button disc" id="btn-contact" onclick="setActiveButton('contact', 6, this)" aria-label="Contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 4.5H20L22 13V19C22 19.55 21.55 20 21 20H3C2.45 20 2 19.55 2 19V13L4 4.5Z" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2.5 13.5H7.5L9.5 16.5H14.5L16.5 13.5H21.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dynamic-tooltip">Contact</span>
+        </button>
+
+      </nav>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       BOTTOM INTERACTIVE CONTROLS TOOLBAR
+       ========================================================================== -->
+  <footer class="bottom-toolbar">
+    <button class="toolbar-btn active" id="btnGuides" onclick="toggleGuides()">
+      <span>Guide Callouts</span>
+    </button>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn" id="btnPosition" onclick="togglePosition()">
+      <span>Dock: Center</span>
+    </button>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn" id="btnTheme" onclick="toggleTheme()">
+      <span>Dark Mode</span>
+    </button>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn" onclick="copyComponentCode()">
+      <span>Copy Snippet</span>
+    </button>
+  </footer>
+
+  <!-- Toast Confirmation -->
+  <div class="copy-toast" id="copyToast">&#10003; Hexdock Web Component snippet copied!</div>
+
+  <!-- Interactive Logic -->
+  <script>
+    const dockIndicator = document.getElementById('dockIndicator');
+    const buttons = document.querySelectorAll('.dock-button');
+    const faqCallout = document.getElementById('faqCallout');
+
+    function setActiveButton(id, index, element) {
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.add('disc');
+      });
+
+      element.classList.remove('disc');
+      element.classList.add('active');
+
+      // Animate the active indicator pill
+      const leftOffset = element.offsetLeft;
+      dockIndicator.style.transform = `translateX(${leftOffset - 6}px)`;
+
+      // Hide static FAQ reference cursor if user activates another item
+      if (id !== 'faq') {
+        faqCallout.style.opacity = '0';
+      } else {
+        faqCallout.style.opacity = '1';
+      }
+    }
+
+    function toggleGuides() {
+      const layer = document.getElementById('guidesLayer');
+      const btn = document.getElementById('btnGuides');
+      layer.classList.toggle('hidden');
+      btn.classList.toggle('active');
+    }
+
+    function togglePosition() {
+      const container = document.getElementById('dockContainer');
+      const btn = document.getElementById('btnPosition');
+      const isFixed = container.classList.toggle('fixed-bottom');
+      btn.textContent = isFixed ? 'Dock: Bottom' : 'Dock: Center';
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      const btn = document.getElementById('btnTheme');
+      btn.classList.toggle('active');
+      btn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    }
+
+    function copyComponentCode() {
+      const code = `<!-- Hexdock Floating Capsule Navigation -->
+<nav class="dock-bar" style="background:#0E0E10;border-radius:9999px;padding:6px;display:inline-flex;gap:6px;box-shadow:0 20px 48px rgba(0,0,0,0.45);">
+  <a href="#home" class="dock-btn active" style="background:#B4FF39;width:126px;height:52px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#0E0E10;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 10.2L12 3.5L20.5 10.2V19.5C20.5 20.05 20.05 20.5 19.5 20.5H4.5C3.95 20.5 3.5 20.05 3.5 19.5V10.2Z"/><path d="M9 16.5H15"/></svg>
+  </a>
+  <a href="#services" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 9C19.6569 9 21 7.65685 21 6C21 4.34315 19.6569 3 18 3C16.3431 3 15 4.34315 15 6V18C15 19.6569 16.3431 21 18 21C19.6569 21 21 19.6569 21 18C21 16.3431 19.6569 15 18 15H6C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21C7.65685 21 9 19.6569 9 18V6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6C3 7.65685 4.34315 9 6 9H18Z"/></svg>
+  </a>
+  <a href="#portfolio" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8.2" r="4.2"/><circle cx="8" cy="15" r="4.2"/><circle cx="16" cy="15" r="4.2"/></svg>
+  </a>
+  <a href="#pricing" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8C3 6.9 3.9 6 5 6H19C20.1 6 21 6.9 21 8V18C21 19.1 20.1 20 19 20H5C3.9 20 3 19.1 3 18V8Z"/><path d="M3 10H21"/><circle cx="16.5" cy="15" r="1.5" fill="currentColor"/></svg>
+  </a>
+  <a href="#faq" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6V15C20 16.1 19.1 17 18 17H8.5L4 21V6Z"/><path d="M8 9.5H16M8 13H13"/></svg>
+  </a>
+  <a href="#blog" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18.5 2.5L21.5 5.5L7 20H3.5V16.5L18.5 2.5Z"/><path d="M15 6L18 9"/></svg>
+  </a>
+  <a href="#contact" class="dock-btn" style="background:#1F2024;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.72);">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4.5H20L22 13V19C22 19.55 21.55 20 21 20H3C2.45 20 2 19.55 2 19V13L4 4.5Z"/><path d="M2.5 13.5H7.5L9.5 16.5H14.5L16.5 13.5H21.5"/></svg>
+  </a>
+</nav>`;
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2400);
+      });
+    }
+  </script>
+</body>
+</html>

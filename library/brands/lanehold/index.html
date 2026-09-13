@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lanehold — Brand identity system</title>
+  <meta name="description" content="Fictional freight identity. Lime theses on charcoal, clasp mark, ribbon bands, forest lanes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-ink: #0C1612;
+      --surface-deep: #0F2E24;
+      --surface-forest: #145C3C;
+      --surface-lime: #3DDB6A;
+      --surface-mist: #C5D4CC;
+      --surface-paper: #F2F4F2;
+      --text-primary: #0C1612;
+      --text-on-dark: #E8F5EC;
+      --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --font-body: "IBM Plex Sans", system-ui, sans-serif;
+      --text-display: clamp(2.2rem, 5vw, 3.6rem);
+      --text-slide: clamp(1.6rem, 3.2vw, 2.4rem);
+      --text-base: 1rem;
+      --text-xs: 0.72rem;
+      --section-y: clamp(2.5rem, 5vw, 4rem);
+      --wrap: min(1120px, 100% - 2.4rem);
+      --board: min(1180px, 100% - 1.6rem);
+      --radius: 4px;
+      --deck-gap: 12px;
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: var(--surface-paper);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible {
+      outline: 2px solid var(--surface-lime);
+      outline-offset: 3px;
+    }
+
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .board-wrap { width: var(--board); margin-inline: auto; }
+    .mark { width: 1em; height: 1em; display: block; flex-shrink: 0; }
+
+    /* —— Nav —— */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-paper) 90%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+    }
+    .nav {
+      display: flex; align-items: center; gap: 1rem;
+      min-height: 64px; padding: 0.45rem 0;
+    }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; font-size: 1.15rem;
+    }
+    .nav-brand .mark { width: 26px; height: 26px; }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 0.15rem 1.15rem;
+      margin-left: 1rem; font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: color-mix(in srgb, var(--text-primary) 55%, transparent);
+    }
+    .nav-links a { min-height: 44px; display: inline-flex; align-items: center; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 0.45rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0.5rem 1rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.8rem;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--surface-lime); color: var(--surface-ink); }
+    .btn-ghost { border: 1px solid color-mix(in srgb, var(--text-primary) 22%, transparent); }
+    .menu-toggle {
+      display: none; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    }
+    .menu-toggle span {
+      width: 16px; height: 1.5px; background: var(--text-primary);
+      transition: transform var(--dur) var(--ease), opacity var(--dur);
+    }
+    .nav.is-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.is-open .menu-toggle span:nth-child(2) { opacity: 0; }
+    .nav.is-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* —— Intro —— */
+    .intro { padding: clamp(2rem, 4.5vw, 3.2rem) 0 1.4rem; }
+    .kicker {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--surface-forest); margin-bottom: 0.6rem;
+    }
+    .intro h1 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-display); letter-spacing: 0.02em;
+      text-transform: uppercase; line-height: 1.05; margin-bottom: 0.55rem;
+    }
+    .intro .lead { max-width: 48ch; color: color-mix(in srgb, var(--text-primary) 62%, transparent); }
+
+    /* —— Deck —— */
+    .deck-section { padding-bottom: var(--section-y); }
+    .deck {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--deck-gap);
+      box-shadow: 0 18px 40px rgba(12, 22, 18, 0.12);
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+      padding: var(--deck-gap);
+    }
+    .slide {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      min-height: 280px;
+    }
+    .slide-head {
+      position: absolute; top: 0.85rem; left: 1rem; right: 1rem;
+      display: flex; justify-content: space-between; gap: 0.6rem;
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; z-index: 2;
+    }
+    .on-ink { color: var(--text-on-dark); background: var(--surface-ink); }
+    .on-deep { color: var(--text-on-dark); background: var(--surface-deep); }
+    .on-forest { color: var(--text-on-dark); background: var(--surface-forest); }
+    .on-paper { color: var(--text-primary); background: var(--surface-paper); }
+    .on-ink .slide-head, .on-deep .slide-head, .on-forest .slide-head {
+      color: color-mix(in srgb, var(--surface-mist) 80%, transparent);
+    }
+
+    .cover {
+      min-height: 340px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.4rem 1.4rem 1.5rem;
+    }
+    .cover .ribbon { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .cover .lock {
+      position: relative; z-index: 1;
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.95rem;
+      color: var(--surface-lime); margin-bottom: auto;
+    }
+    .cover .lock .mark { width: 22px; height: 22px; }
+    .cover h2 {
+      position: relative; z-index: 1;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.4rem, 4.8vw, 3.5rem);
+      letter-spacing: 0.01em; text-transform: uppercase;
+      line-height: 0.92; color: #fff;
+    }
+    .cover .issued {
+      position: relative; z-index: 1; margin-top: 0.85rem;
+      font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--surface-mist);
+    }
+
+    .toc {
+      list-style: none; padding: 3.2rem 1.3rem 1.2rem; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; gap: 0;
+    }
+    .toc a {
+      display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center;
+      gap: 0.6rem; padding: 0.72rem 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--surface-mist) 18%, transparent);
+      font-size: 0.92rem; font-weight: 500; min-height: 44px;
+    }
+    .toc a:hover { color: var(--surface-lime); }
+    .toc .n { font-variant-numeric: tabular-nums; color: var(--surface-mist); font-size: 0.78rem; }
+    .chev {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--surface-mist) 45%, transparent);
+      display: grid; place-items: center; font-size: 0.7rem;
+    }
+
+    .divider {
+      min-height: 340px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.3rem;
+    }
+    .divider .ribbon { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .divider h3 {
+      position: relative; z-index: 1;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: 0.04em; text-transform: uppercase; line-height: 1;
+      color: #fff;
+    }
+
+    .thesis {
+      display: grid; place-items: center; text-align: center; padding: 2rem 1.6rem;
+    }
+    .thesis h3 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-slide); letter-spacing: 0.02em;
+      text-transform: uppercase; line-height: 1.05;
+      color: var(--surface-lime); text-wrap: balance; max-width: 16ch;
+    }
+    .thesis.left { place-items: end start; text-align: left; }
+    .thesis.left h3 { max-width: 18ch; }
+
+    .mission { padding: 3.2rem 1.4rem 1.3rem; display: flex; flex-direction: column; }
+    .mission h3 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1.5rem, 2.8vw, 2.05rem);
+      letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.05;
+      color: var(--surface-lime); max-width: 18ch; margin-bottom: auto;
+    }
+    .mission p {
+      margin-top: 1.4rem; max-width: 52ch;
+      font-size: 0.82rem; color: var(--surface-mist); border-top: 1px solid color-mix(in srgb, var(--surface-mist) 22%, transparent);
+      padding-top: 0.85rem;
+    }
+
+    .idea {
+      padding: 3.2rem 1.4rem 1.3rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; align-items: end;
+    }
+    .idea h3 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: 0.03em; text-transform: uppercase; line-height: 1;
+      color: var(--surface-lime);
+    }
+    .idea ul { list-style: none; font-size: 0.82rem; color: var(--surface-mist); }
+    .idea li {
+      padding: 0.45rem 0 0.45rem 0.85rem;
+      border-left: 1px solid color-mix(in srgb, var(--surface-mist) 28%, transparent);
+    }
+
+    .values { padding: 3rem 1.4rem 1.2rem; }
+    .values article {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+    }
+    .values h4 {
+      font-size: 0.92rem; font-weight: 600; margin-bottom: 0.15rem;
+    }
+    .values p { font-size: 0.8rem; color: color-mix(in srgb, var(--text-primary) 58%, transparent); }
+
+    /* —— System —— */
+    section.system { padding: var(--section-y) 0; }
+    section.system.alt {
+      background: color-mix(in srgb, var(--surface-mist) 22%, var(--surface-paper));
+      border-block: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .label {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--surface-forest); margin-bottom: 0.4rem;
+    }
+    .title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+      letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.05;
+      margin-bottom: 0.4rem;
+    }
+    .sub { max-width: 50ch; color: color-mix(in srgb, var(--text-primary) 58%, transparent); margin-bottom: 1.5rem; }
+
+    .mark-grid { display: grid; grid-template-columns: 1.1fr 0.9fr 1fr; gap: 0.75rem; }
+    .mark-tile {
+      min-height: 220px; border-radius: var(--radius);
+      display: grid; place-items: center;
+    }
+    .mark-tile .mark { width: 92px; height: 92px; }
+    .lock-tile {
+      display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    }
+    .lock-tile .mark { width: 42px; height: 42px; }
+    .clearance {
+      background: #fff; border-radius: var(--radius); padding: 1.2rem 1.3rem;
+      border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .clearance h3 {
+      font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase;
+      color: color-mix(in srgb, var(--text-primary) 50%, transparent); margin-bottom: 0.55rem;
+    }
+    .clearance ul { padding-left: 1.1rem; font-size: 0.88rem; color: color-mix(in srgb, var(--text-primary) 62%, transparent); }
+    .clearance li { margin-bottom: 0.3rem; }
+
+    .color-rows { display: grid; gap: 0.5rem; }
+    .color-row {
+      display: grid; grid-template-columns: 140px 1fr auto; align-items: center; gap: 1rem;
+      background: #fff; border-radius: var(--radius); overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .color-chip { height: 64px; }
+    .color-row strong { font-size: 0.95rem; }
+    .color-row span { display: block; font-size: 0.78rem; color: color-mix(in srgb, var(--text-primary) 52%, transparent); }
+    .color-row code {
+      font-family: var(--font-body); font-size: 0.78rem; font-variant-numeric: tabular-nums;
+      padding-right: 1rem; color: color-mix(in srgb, var(--text-primary) 52%, transparent);
+    }
+
+    .type-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 0.75rem; }
+    .type-card {
+      background: #fff; border-radius: var(--radius); padding: 1.3rem;
+      border: 1px solid color-mix(in srgb, var(--text-primary) 8%, transparent);
+    }
+    .type-card .tag {
+      font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase;
+      color: color-mix(in srgb, var(--text-primary) 50%, transparent); margin-bottom: 0.7rem;
+    }
+    .specimen-display {
+      font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    }
+    .specimen-body { font-size: 1.02rem; max-width: 46ch; }
+
+    .photo-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .photo {
+      position: relative; border-radius: var(--radius); overflow: hidden; min-height: 200px;
+    }
+    .photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .photo.tall { grid-row: 1 / span 2; min-height: 420px; }
+    .photo figcaption {
+      position: absolute; left: 0.8rem; bottom: 0.7rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+    }
+
+    .apps { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 0.75rem; }
+    .app {
+      position: relative; border-radius: var(--radius); overflow: hidden; min-height: 260px;
+    }
+    .app img.fill { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .app-stack { display: grid; gap: 0.75rem; }
+    .billboard {
+      background: var(--surface-ink); min-height: 220px; padding: 1.2rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .billboard .lock {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--surface-lime); font-size: 0.85rem;
+    }
+    .billboard p {
+      font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05;
+      font-size: clamp(1.4rem, 2.4vw, 1.85rem); color: var(--surface-lime);
+    }
+    .phone {
+      background: #111; border-radius: 22px; padding: 0.7rem; min-height: 220px;
+      box-shadow: 0 16px 32px rgba(12,22,18,0.18);
+      display: flex; flex-direction: column;
+    }
+    .phone-screen {
+      flex: 1; background: var(--surface-forest); border-radius: 14px;
+      padding: 1rem; display: flex; flex-direction: column; color: var(--text-on-dark);
+    }
+    .phone-screen .lock {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: var(--font-display); font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; font-size: 0.78rem; color: var(--surface-lime);
+    }
+    .phone-screen h3 {
+      margin-top: auto; font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05;
+      font-size: 1.35rem; color: var(--surface-lime);
+    }
+    .truck-lock {
+      position: absolute; left: 8%; top: 42%;
+      display: flex; align-items: center; gap: 0.4rem;
+      color: var(--surface-lime);
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    .kit-lock {
+      position: absolute; left: 18%; top: 38%;
+      color: var(--surface-lime); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+    }
+    .kit-lock .mark { width: 36px; height: 36px; }
+
+    footer {
+      padding: 2.2rem 0;
+      border-top: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+      color: color-mix(in srgb, var(--text-primary) 55%, transparent); font-size: 0.86rem;
+    }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+    .footer-brand {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--text-primary);
+      font-family: var(--font-display); font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; font-size: 1.05rem;
+    }
+
+    @media (max-width: 1100px) {
+      .mark-grid { grid-template-columns: 1fr 1fr; }
+      .mark-grid .clearance { grid-column: 1 / -1; }
+      .photo-grid { grid-template-columns: 1fr 1fr; }
+      .photo.tall { grid-row: auto; min-height: 240px; }
+      .apps { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      :root { --wrap: min(1120px, 100% - 1.5rem); --board: min(1180px, 100% - 0.9rem); }
+      .deck, .idea, .type-grid, .mark-grid, .photo-grid, .apps { grid-template-columns: 1fr; }
+      .photo.tall { min-height: 220px; }
+      .color-row { grid-template-columns: 88px 1fr; }
+      .color-row code { grid-column: 2; padding: 0 1rem 0.7rem; }
+      .nav-panel {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface-paper);
+        border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+        padding: 0.75rem 1rem 1rem; flex-direction: column;
+        box-shadow: 0 16px 28px rgba(12,22,18,0.08);
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links { flex-direction: column; margin: 0; }
+      .nav-links a { display: block; padding: 0.7rem 0.4rem; color: var(--text-primary); }
+      .menu-toggle { display: flex; }
+      .site-header .wrap { position: relative; }
+      .nav-actions .btn { display: none; }
+      .cover, .divider { min-height: 260px; }
+      .chev { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .menu-toggle span { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <symbol id="clasp" viewBox="0 0 64 64">
+        <path fill="currentColor" d="M22 6C10.4 10.2 4 20.2 4 32s6.4 21.8 18 26l4.4-9.6C18.6 45.4 14 39.2 14 32s4.6-13.4 12.4-16.4L22 6zm20 0-4.4 9.6C45.4 18.6 50 24.8 50 32s-4.6 13.4-12.4 16.4L42 58c11.6-4.2 18-14.2 18-26S53.6 10.2 42 6z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+          Lanehold
+        </a>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#definition">Definition</a>
+            <a href="#mark">Mark</a>
+            <a href="#color">Color</a>
+            <a href="#type">Type</a>
+            <a href="#photo">Photo</a>
+            <a href="#apply">Apply</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#definition">Read the theses</a>
+          <a class="btn btn-primary" href="mailto:desk@lanehold.example">Request the kit</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="wrap">
+        <p class="kicker">Brand identity system · freight desk</p>
+        <h1>Words first.<br />Then the clasp.</h1>
+        <p class="lead">
+          Lanehold is a fictional transporter and forwarder in one desk.
+          The written brand was finished before the mark existed.
+        </p>
+      </div>
+    </section>
+
+    <section class="deck-section" id="definition">
+      <div class="board-wrap">
+        <div class="deck" aria-label="Lanehold brand guidelines deck">
+
+          <article class="slide on-ink cover">
+            <svg class="ribbon" viewBox="0 0 800 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <path d="M-60 300C180 40 430 30 860 270" fill="none" stroke="#3DDB6A" stroke-width="86"/>
+              <path d="M-60 348C200 88 450 78 860 318" fill="none" stroke="#C5D4CC" stroke-width="54"/>
+              <path d="M-60 392C220 132 470 122 860 362" fill="none" stroke="#145C3C" stroke-width="42"/>
+            </svg>
+            <div class="lock">
+              <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+              Lanehold
+            </div>
+            <h2>Brand<br />Guidelines</h2>
+            <p class="issued">Issued for the desk · lanehold.example</p>
+          </article>
+
+          <article class="slide on-ink">
+            <div class="slide-head"><span>Brand guidelines</span><span>Contents</span></div>
+            <ol class="toc">
+              <li><a href="#definition"><span class="n">01</span> Definition of the brand <span class="chev" aria-hidden="true">›</span></a></li>
+              <li><a href="#mark"><span class="n">02</span> Clasp mark <span class="chev" aria-hidden="true">›</span></a></li>
+              <li><a href="#color"><span class="n">03</span> Color <span class="chev" aria-hidden="true">›</span></a></li>
+              <li><a href="#type"><span class="n">04</span> Type <span class="chev" aria-hidden="true">›</span></a></li>
+              <li><a href="#photo"><span class="n">05</span> Photo <span class="chev" aria-hidden="true">›</span></a></li>
+              <li><a href="#apply"><span class="n">06</span> Applications <span class="chev" aria-hidden="true">›</span></a></li>
+            </ol>
+          </article>
+
+          <article class="slide on-deep divider">
+            <svg class="ribbon" viewBox="0 0 800 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <path d="M-80 80C260 220 420 40 900 200" fill="none" stroke="#3DDB6A" stroke-width="92"/>
+              <path d="M-80 140C280 280 440 100 900 260" fill="none" stroke="#C5D4CC" stroke-width="58"/>
+              <path d="M-80 196C300 336 460 156 900 316" fill="none" stroke="#0C1612" stroke-width="46"/>
+            </svg>
+            <div class="slide-head"><span>Brand guidelines</span><span>01</span></div>
+            <h3>01. Definition<br />of the brand</h3>
+          </article>
+
+          <article class="slide on-ink thesis">
+            <div class="slide-head"><span>Brand guidelines</span><span>Vision</span></div>
+            <h3>The lane holds. The load moves.</h3>
+          </article>
+
+          <article class="slide on-forest mission">
+            <div class="slide-head"><span>Brand guidelines</span><span>Mission</span></div>
+            <h3>We run the truck and the paper from one desk.</h3>
+            <p>
+              A transporter’s yard and a forwarder’s booking share a number.
+              We open a lane, hold it, and close it — the load is not handed
+              between three vendors at the gate.
+            </p>
+          </article>
+
+          <article class="slide on-ink thesis">
+            <div class="slide-head"><span>Brand guidelines</span><span>Promise</span></div>
+            <h3>Your cargo meets a quiet lane.</h3>
+          </article>
+
+          <article class="slide on-forest idea">
+            <div class="slide-head"><span>Brand guidelines</span><span>Idea</span></div>
+            <h3>The hold between modes</h3>
+            <ul>
+              <li>between yard and gate</li>
+              <li>between truck and booking</li>
+              <li>between forest and freight</li>
+              <li>between clock and weather</li>
+              <li>between shipper and dock</li>
+            </ul>
+          </article>
+
+          <article class="slide on-paper values">
+            <div class="slide-head"><span>Brand guidelines</span><span>Hold</span></div>
+            <article>
+              <h4>Hold the lane</h4>
+              <p>We do not drop a booking to chase a prettier one.</p>
+            </article>
+            <article>
+              <h4>One desk</h4>
+              <p>Transporter and forwarder share a number, not a ticket queue.</p>
+            </article>
+            <article>
+              <h4>Forest first</h4>
+              <p>Fewer empty miles. A poster is not a climate plan.</p>
+            </article>
+            <article>
+              <h4>Fair weight</h4>
+              <p>The quote is the invoice. Weather is not a surprise.</p>
+            </article>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="mark">
+      <div class="wrap">
+        <p class="label">02 · Mark</p>
+        <h2 class="title">Two arcs that couple</h2>
+        <p class="sub">
+          The clasp is a hold, not a wheel. Two arcs meet the way a truck
+          meets a booking — they lock, they do not spin.
+        </p>
+        <div class="mark-grid">
+          <div class="mark-tile on-ink" style="color: var(--surface-lime)">
+            <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+          </div>
+          <div class="mark-tile" style="background: var(--surface-lime); color: var(--surface-ink)">
+            <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+          </div>
+          <div class="mark-tile lock-tile on-ink" style="color: var(--surface-lime)">
+            <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+            Lanehold
+          </div>
+          <div class="mark-tile lock-tile on-paper" style="border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)">
+            <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+            Lanehold
+          </div>
+          <div class="mark-tile lock-tile on-forest" style="color: var(--surface-lime)">
+            <svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg>
+            Lanehold
+          </div>
+          <div class="clearance">
+            <h3>Clearance</h3>
+            <ul>
+              <li>Keep a clasp-width of empty field on every side.</li>
+              <li>Lime on ink, ink on lime, ink on paper. Never lime on forest for small sizes.</li>
+              <li>Do not add a fourth petal, a wheel hub, or a road stripe through the gap.</li>
+              <li>Do not outline the mark. Do not drop a shadow.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system alt" id="color">
+      <div class="wrap">
+        <p class="label">03 · Color</p>
+        <h2 class="title">Lime is type. Forest is a field.</h2>
+        <p class="sub">
+          Lime never fills a page. It writes the thesis, paints the ribbon,
+          and sits as the mark. Forest holds the mission. Ink holds the cover.
+        </p>
+        <div class="color-rows">
+          <div class="color-row">
+            <div class="color-chip" style="background:#0C1612"></div>
+            <div><strong>Ink</strong><span>Cover, dark slides, primary button type</span></div>
+            <code>#0C1612</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#0F2E24"></div>
+            <div><strong>Deep</strong><span>Definition fields, ribbon shadow</span></div>
+            <code>#0F2E24</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#145C3C"></div>
+            <div><strong>Forest</strong><span>Mission and idea slides — never body text on paper</span></div>
+            <code>#145C3C</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#3DDB6A"></div>
+            <div><strong>Lime</strong><span>Theses, mark, ribbon, primary action</span></div>
+            <code>#3DDB6A</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#C5D4CC"></div>
+            <div><strong>Mist</strong><span>Ribbon mid-band, captions on dark</span></div>
+            <code>#C5D4CC</code>
+          </div>
+          <div class="color-row">
+            <div class="color-chip" style="background:#F2F4F2; border-right: 1px solid #ddd"></div>
+            <div><strong>Paper</strong><span>Page chrome, values slide</span></div>
+            <code>#F2F4F2</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="type">
+      <div class="wrap">
+        <p class="label">04 · Type</p>
+        <h2 class="title">Condensed theses. Quiet body.</h2>
+        <p class="sub">
+          Barlow Condensed carries every all-caps line. IBM Plex Sans explains
+          once, then stops. Tracking on theses is 0.02em — not a shout.
+        </p>
+        <div class="type-grid">
+          <article class="type-card on-ink">
+            <p class="tag" style="color: var(--surface-mist)">Display · Barlow Condensed 700</p>
+            <p class="specimen-display" style="color: var(--surface-lime)">The lane holds. The load moves.</p>
+          </article>
+          <article class="type-card">
+            <p class="tag">Body · IBM Plex Sans 400</p>
+            <p class="specimen-body">
+              A lane is opened, held, and closed from one desk. Measure stays
+              under fifty-two characters. We do not write “seamless logistics.”
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system alt" id="photo">
+      <div class="wrap">
+        <p class="label">05 · Photo</p>
+        <h2 class="title">Lanes, yards, canopy</h2>
+        <p class="sub">
+          Shoot the hold: wet yards at dusk, empty highways through trees,
+          overhead canopy. No stock smiles. People, if present, are working.
+        </p>
+        <div class="photo-grid">
+          <figure class="photo tall">
+            <img src="lane.jpg" alt="Empty highway cutting through forest at dusk" />
+            <figcaption>Lane</figcaption>
+          </figure>
+          <figure class="photo">
+            <img src="canopy.jpg" alt="Overhead pine canopy with morning mist" />
+            <figcaption>Canopy</figcaption>
+          </figure>
+          <figure class="photo">
+            <img src="yard.jpg" alt="Container stacks in a mountain freight yard at sunset" />
+            <figcaption>Yard</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="apply">
+      <div class="wrap">
+        <p class="label">06 · Applications</p>
+        <h2 class="title">The clasp rides the lane</h2>
+        <p class="sub">
+          Ribbon is decoration, not an icon. Put the lockup on ink, lime, or
+          a veiled photograph. Leave the trailer quiet.
+        </p>
+        <div class="apps">
+          <article class="app" style="min-height: 340px">
+            <img class="fill" src="truck.jpg" alt="Forest-green truck at a dusk yard" />
+            <div class="truck-lock">
+              <svg class="mark" style="width:28px;height:28px" aria-hidden="true"><use href="#clasp"></use></svg>
+              Lanehold
+            </div>
+          </article>
+          <div class="app-stack">
+            <article class="app billboard">
+              <div class="lock">
+                <svg class="mark" style="width:18px;height:18px" aria-hidden="true"><use href="#clasp"></use></svg>
+                Lanehold
+              </div>
+              <p>Your cargo meets a quiet lane.</p>
+            </article>
+            <article class="phone" aria-label="Lanehold phone mock">
+              <div class="phone-screen">
+                <div class="lock">
+                  <svg class="mark" style="width:16px;height:16px" aria-hidden="true"><use href="#clasp"></use></svg>
+                  Lanehold
+                </div>
+                <h3>Open a lane from the desk.</h3>
+              </div>
+            </article>
+          </div>
+          <article class="app" style="min-height: 280px">
+            <img class="fill" src="kit.jpg" alt="Forest-green tote and cap on concrete" />
+            <div class="kit-lock"><svg class="mark" aria-hidden="true"><use href="#clasp"></use></svg></div>
+          </article>
+          <article class="app" style="min-height: 280px">
+            <img class="fill" src="hold.jpg" alt="Empty warehouse aisle under green light" />
+            <div class="truck-lock" style="top:auto;bottom:12%;left:8%">
+              <svg class="mark" style="width:24px;height:24px" aria-hidden="true"><use href="#clasp"></use></svg>
+              Hold
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="footer-brand" href="#top">
+        <svg class="mark" style="width:20px;height:20px" aria-hidden="true"><use href="#clasp"></use></svg>
+        Lanehold
+      </a>
+      <p>Sample template · desk@lanehold.example · fictional freight identity</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      var btn = document.getElementById("menuToggle");
+      var panel = document.getElementById("navPanel");
+      if (!nav || !btn) return;
+      btn.addEventListener("click", function () {
+        var open = nav.classList.toggle("is-open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      });
+      panel && panel.addEventListener("click", function (e) {
+        if (e.target.tagName === "A") {
+          nav.classList.remove("is-open");
+          btn.setAttribute("aria-expanded", "false");
+          btn.setAttribute("aria-label", "Open menu");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

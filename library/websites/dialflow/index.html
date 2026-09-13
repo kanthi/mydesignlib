@@ -1,0 +1,3673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dialflow — No-Code AI Voice Agents & Telephony Workflow Automation</title>
+  
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM TOKENS & RESET
+       ========================================================================== */
+    :root {
+      /* Surface Depths */
+      --bg-page: #f8faf9;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #ffffff;
+      --bg-surface-subtle: #f1f5f3;
+      --bg-surface-dark: #071e16;
+      --bg-surface-dark-card: #0c2d22;
+      --bg-glass: rgba(255, 255, 255, 0.88);
+      --bg-glass-dark: rgba(7, 30, 22, 0.92);
+
+      /* Brand Accents */
+      --emerald-primary: #00d26a;
+      --emerald-hover: #00ba5e;
+      --emerald-dark: #064e3b;
+      --emerald-forest: #083b2d;
+      --emerald-surface: #e8f9f0;
+      --emerald-glow: rgba(0, 210, 106, 0.28);
+      --mint-light: #d1fae5;
+      --mint-badge: #a7f3d0;
+      --lavender-tint: #f3e8ff;
+
+      /* Borders & Dividers */
+      --border-subtle: rgba(15, 23, 42, 0.06);
+      --border-standard: rgba(15, 23, 42, 0.1);
+      --border-card: rgba(0, 210, 106, 0.15);
+      --border-accent: rgba(0, 210, 106, 0.4);
+      --border-dark: rgba(255, 255, 255, 0.12);
+
+      /* Typography & Colors */
+      --text-heading: #0f172a;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-faint: #94a3b8;
+      --text-on-dark: #ffffff;
+      --text-on-dark-muted: #a7f3d0;
+      --text-emerald: #059669;
+
+      /* Semantic Status */
+      --status-active: #10b981;
+      --status-pending: #f59e0b;
+      --status-alert: #ef4444;
+      --status-info: #3b82f6;
+
+      /* Typography */
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+      /* Spacing Scale */
+      --space-2xs: 0.25rem;
+      --space-xs: 0.5rem;
+      --space-sm: 0.75rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --space-3xl: 4.5rem;
+      --space-4xl: 6rem;
+
+      /* Border Radii */
+      --radius-xs: 6px;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-subtle: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.02);
+      --shadow-elevated: 0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 8px 20px -4px rgba(15, 23, 42, 0.04);
+      --shadow-glow: 0 12px 35px -5px rgba(0, 210, 106, 0.32);
+      --shadow-dark: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+
+      /* Layout */
+      --container-max: 1240px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Lighting Background */
+    .ambient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-glow-mint {
+      position: absolute;
+      top: -10%;
+      left: -5%;
+      width: 55vw;
+      height: 55vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 210, 106, 0.14) 0%, rgba(209, 250, 229, 0.03) 60%, transparent 80%);
+      filter: blur(60px);
+    }
+
+    .ambient-glow-lavender {
+      position: absolute;
+      top: 5%;
+      right: -10%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216, 180, 254, 0.18) 0%, rgba(243, 232, 255, 0.04) 60%, transparent 80%);
+      filter: blur(70px);
+    }
+
+    .ambient-glow-center {
+      position: absolute;
+      top: 35%;
+      left: 20%;
+      width: 60vw;
+      height: 60vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 210, 106, 0.06) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    .ambient-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Layout Containers */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(1rem, 4vw, 2.5rem);
+      padding-right: clamp(1rem, 4vw, 2.5rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background-color: rgba(248, 250, 249, 0.82);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.25s ease;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+      color: var(--text-heading);
+      font-weight: 800;
+      font-size: 1.3125rem;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-badge {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #00d26a 0%, #064e3b 100%);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 210, 106, 0.35);
+      position: relative;
+    }
+
+    .logo-badge svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s ease;
+      padding: 0.5rem 0;
+    }
+
+    .nav-link:hover {
+      color: var(--text-heading);
+    }
+
+    .nav-link svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item:hover .nav-link svg {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      width: 260px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-elevated);
+      padding: 0.625rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      z-index: 120;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      border-radius: var(--radius-xs);
+      transition: all 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--bg-surface-subtle);
+      color: var(--text-heading);
+    }
+
+    .dropdown-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--emerald-surface);
+      color: var(--emerald-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .login-link {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .login-link:hover {
+      opacity: 0.75;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6875rem 1.375rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      line-height: 1.2;
+      font-family: inherit;
+    }
+
+    .btn-primary-dark {
+      background-color: var(--emerald-forest);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 14px rgba(6, 78, 59, 0.25);
+    }
+
+    .btn-primary-dark:hover {
+      background-color: #062f24;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(6, 78, 59, 0.35);
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-surface);
+      color: var(--text-heading);
+      border-color: var(--border-standard);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface-subtle);
+      border-color: rgba(15, 23, 42, 0.2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .btn-emerald {
+      background-color: var(--emerald-primary);
+      color: var(--emerald-forest);
+      font-weight: 700;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-emerald:hover {
+      background-color: var(--emerald-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px -5px rgba(0, 210, 106, 0.45);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Mobile Nav Toggle */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-heading);
+      padding: 0.5rem;
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding-top: clamp(3rem, 6vw, 5rem);
+      padding-bottom: clamp(3rem, 6vw, 5.5rem);
+      position: relative;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Pill Badge */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.875rem;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 210, 106, 0.35);
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 15px rgba(0, 210, 106, 0.12);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 1.75rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .pill-badge-tag {
+      background-color: var(--emerald-surface);
+      color: var(--emerald-dark);
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--emerald-primary);
+      box-shadow: 0 0 0 0 rgba(0, 210, 106, 0.7);
+      animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.2, 1);
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 210, 106, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(0, 210, 106, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 210, 106, 0);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.35rem, 5vw, 3.85rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      color: var(--text-heading);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-title span.gradient-text {
+      background: linear-gradient(135deg, #0f172a 30%, #064e3b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 2rem;
+    }
+
+    /* Hero Category Interactive Pills */
+    .hero-feature-pills {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.25rem;
+    }
+
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-full);
+      font-size: 0.84375rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .feature-pill:hover, .feature-pill.active {
+      background: var(--emerald-surface);
+      border-color: rgba(0, 210, 106, 0.5);
+      color: var(--emerald-dark);
+      transform: translateY(-1px);
+    }
+
+    .feature-pill-icon {
+      font-size: 0.95rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Hero Floating Badges / Left and Right Mockups */
+    .hero-stage {
+      position: relative;
+      margin-top: 1rem;
+    }
+
+    .hero-floating-card-left {
+      position: absolute;
+      left: -20px;
+      top: 80px;
+      width: 250px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-lg);
+      padding: 1.125rem;
+      box-shadow: var(--shadow-elevated);
+      z-index: 10;
+      animation: float-slow-1 6s ease-in-out infinite;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-floating-card-right {
+      position: absolute;
+      right: -20px;
+      top: 60px;
+      width: 240px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-lg);
+      padding: 1.125rem;
+      box-shadow: var(--shadow-elevated);
+      z-index: 10;
+      animation: float-slow-2 7s ease-in-out infinite;
+      backdrop-filter: blur(12px);
+    }
+
+    @keyframes float-slow-1 {
+      0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+      50% { transform: translateY(-12px) rotate(-0.5deg); }
+    }
+
+    @keyframes float-slow-2 {
+      0%, 100% { transform: translateY(0px) rotate(1.5deg); }
+      50% { transform: translateY(-14px) rotate(2.5deg); }
+    }
+
+    /* Left Call Widget */
+    .call-widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .call-widget-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .call-live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      color: var(--emerald-dark);
+      font-weight: 600;
+    }
+
+    .call-waveform-visual {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3px;
+      padding: 0.25rem 0;
+      margin-bottom: 0.75rem;
+    }
+
+    .wave-bar {
+      flex: 1;
+      background: linear-gradient(to top, #00d26a, #064e3b);
+      border-radius: 4px;
+      height: 40%;
+      animation: wave-anim 1.2s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; height: 75%; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; height: 90%; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; height: 50%; }
+    .wave-bar:nth-child(5) { animation-delay: 0.2s; height: 85%; }
+    .wave-bar:nth-child(6) { animation-delay: 0.35s; height: 60%; }
+    .wave-bar:nth-child(7) { animation-delay: 0.5s; height: 95%; }
+    .wave-bar:nth-child(8) { animation-delay: 0.1s; height: 45%; }
+    .wave-bar:nth-child(9) { animation-delay: 0.25s; height: 70%; }
+    .wave-bar:nth-child(10) { animation-delay: 0.4s; height: 80%; }
+
+    @keyframes wave-anim {
+      0% { height: 25%; }
+      100% { height: 100%; }
+    }
+
+    .call-widget-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .caller-info {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .call-phone-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--emerald-primary);
+      color: #064e3b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Right Growth Stats Widget */
+    .stat-badge-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-badge-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-badge-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      line-height: 1.1;
+    }
+
+    .stat-badge-pill {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      background: var(--emerald-surface);
+      color: var(--emerald-dark);
+      padding: 0.15rem 0.4rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-avatars-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid white;
+      margin-left: -6px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .stat-avatar:first-child { margin-left: 0; }
+
+    .stat-metrics-split {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
+    }
+
+    .stat-split-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-split-title {
+      color: var(--text-muted);
+      font-size: 0.6875rem;
+    }
+
+    .stat-split-number {
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    /* ==========================================================================
+       WORKFLOW BUILDER STUDIO (HERO CANVAS PREVIEW)
+       ========================================================================== */
+    .studio-canvas-card {
+      background: var(--bg-surface);
+      border: 1px solid rgba(15, 23, 42, 0.09);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 30px 70px -15px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(0, 210, 106, 0.1);
+      overflow: hidden;
+      position: relative;
+      z-index: 3;
+    }
+
+    .studio-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1.5rem;
+      background: #fafbfb;
+      border-bottom: 1px solid var(--border-standard);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .studio-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .studio-flow-tag {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      background: var(--emerald-surface);
+      color: var(--emerald-dark);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+
+    .studio-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .studio-btn-sm {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.8125rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      border: 1px solid var(--border-standard);
+      background: white;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+
+    .studio-btn-sm:hover {
+      color: var(--text-heading);
+      border-color: rgba(15, 23, 42, 0.25);
+    }
+
+    .studio-btn-run {
+      background: var(--emerald-forest);
+      color: white;
+      border-color: var(--emerald-forest);
+    }
+
+    .studio-btn-run:hover {
+      background: #053b2d;
+      color: white;
+    }
+
+    /* Main Studio Work Area */
+    .studio-main-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr 300px;
+      min-height: 480px;
+      background: #fdfdfd;
+      position: relative;
+    }
+
+    /* Left Sidebar Tool Palette */
+    .studio-palette {
+      background: #f8faf9;
+      border-right: 1px solid var(--border-standard);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .palette-group-title {
+      font-size: 0.71875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .palette-item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .palette-item {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.5625rem 0.75rem;
+      background: white;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      cursor: grab;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .palette-item:hover {
+      border-color: var(--emerald-primary);
+      box-shadow: 0 4px 10px rgba(0, 210, 106, 0.15);
+      transform: translateX(3px);
+    }
+
+    .palette-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .icon-form { background: #e0f2fe; color: #0284c7; }
+    .icon-voice { background: #dcfce7; color: #15803d; }
+    .icon-crm { background: #fef3c7; color: #b45309; }
+    .icon-logic { background: #f3e8ff; color: #7e22ce; }
+
+    /* Canvas Central Area */
+    .studio-canvas {
+      position: relative;
+      padding: 2rem 1.5rem;
+      overflow: hidden;
+      background: 
+        radial-gradient(#e2e8f0 1.2px, transparent 1.2px),
+        linear-gradient(to bottom, #fcfdfc, #f8faf9);
+      background-size: 24px 24px, 100% 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Node Graph */
+    .nodes-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.25rem;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .flow-wire {
+      position: absolute;
+      width: 2px;
+      background: #cbd5e1;
+      top: 50px;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .flow-wire-pulse {
+      position: absolute;
+      width: 6px;
+      height: 18px;
+      background: var(--emerald-primary);
+      border-radius: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px var(--emerald-primary);
+      animation: pulse-flow 3.5s linear infinite;
+    }
+
+    @keyframes pulse-flow {
+      0% { top: 10%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 90%; opacity: 0; }
+    }
+
+    /* Canvas Node Cards */
+    .canvas-node {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 3;
+    }
+
+    .canvas-node.active {
+      border-color: var(--emerald-primary);
+      box-shadow: 0 0 0 3px rgba(0, 210, 106, 0.2), var(--shadow-card);
+    }
+
+    .canvas-node:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .node-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .node-tag {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-xs);
+      background: #f1f5f9;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .node-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .node-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--status-active);
+    }
+
+    .node-desc {
+      font-size: 0.78125rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .node-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.625rem;
+      font-size: 0.71875rem;
+      color: var(--text-muted);
+    }
+
+    .node-badge-chip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+    }
+
+    /* Right Inspector Drawer */
+    .studio-inspector {
+      background: #ffffff;
+      border-left: 1px solid var(--border-standard);
+      padding: 1.25rem 1.125rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .inspector-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .inspector-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .inspector-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .inspector-input, .inspector-select {
+      width: 100%;
+      padding: 0.5rem 0.65rem;
+      font-size: 0.8125rem;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-xs);
+      background: #f8fafc;
+      color: var(--text-heading);
+      font-family: inherit;
+    }
+
+    .inspector-input:focus, .inspector-select:focus {
+      outline: none;
+      border-color: var(--emerald-primary);
+      background: white;
+    }
+
+    .inspector-hint {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* 4-Feature Highlights Bar directly below Studio */
+    .studio-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: #ffffff;
+      border-top: 1px solid var(--border-standard);
+    }
+
+    .studio-highlight-item {
+      padding: 1.5rem 1.25rem;
+      border-right: 1px solid var(--border-standard);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .studio-highlight-item:last-child {
+      border-right: none;
+    }
+
+    .highlight-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .highlight-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--emerald-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .highlight-desc {
+      font-size: 0.78125rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* ==========================================================================
+       CLIENT LOGOS TICKER
+       ========================================================================== */
+    .social-proof-section {
+      padding: 3.5rem 0;
+      text-align: center;
+    }
+
+    .social-proof-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+      flex-wrap: wrap;
+      opacity: 0.75;
+    }
+
+    .logo-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.125rem;
+      letter-spacing: -0.02em;
+      color: #334155;
+      filter: grayscale(100%);
+      transition: all 0.2s ease;
+    }
+
+    .logo-item:hover {
+      filter: grayscale(0%);
+      opacity: 1;
+      color: var(--text-heading);
+      transform: translateY(-2px);
+    }
+
+    .logo-item svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* ==========================================================================
+       BENTO GRID SECTION ("Powering teamwork simplify")
+       ========================================================================== */
+    .bento-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.78125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--emerald-dark);
+      background: var(--emerald-surface);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.8vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.0625rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* Bento Grid Layout */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .bento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-elevated);
+      border-color: rgba(0, 210, 106, 0.3);
+    }
+
+    .bento-card-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .bento-card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .bento-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .bento-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--emerald-surface);
+      color: var(--emerald-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .bento-card-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Bento Card Mockups */
+    .mockup-automation {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mockup-step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.71875rem;
+      font-weight: 700;
+      color: var(--emerald-dark);
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .mockup-node-small {
+      background: white;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Integration Mockup */
+    .mockup-integrations {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.125rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .integration-tile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 0.625rem 0.875rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .integration-name-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.84375rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .integration-tag-connected {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #047857;
+      background: #d1fae5;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+    }
+
+    /* Sandbox Profile Mockup */
+    .mockup-assistant-card {
+      background: white;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      text-align: center;
+    }
+
+    .assistant-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a7f3d0 0%, #064e3b 100%);
+      margin: 0 auto 0.625rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .assistant-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .assistant-id {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-bottom: 0.25rem;
+    }
+
+    .assistant-phone {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--emerald-dark);
+      margin-bottom: 1rem;
+    }
+
+    .btn-test-assistant {
+      width: 100%;
+      padding: 0.625rem;
+      background: var(--emerald-forest);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.84375rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn-test-assistant:hover {
+      background: #042e23;
+    }
+
+    /* Bento Row 2 */
+    .bento-card-span-2 {
+      grid-column: span 2;
+    }
+
+    /* Analytics Chart Card */
+    .mockup-analytics {
+      background: #fafbfb;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .analytics-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .analytics-total-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .analytics-chart-svg {
+      width: 100%;
+      height: 100px;
+      overflow: visible;
+    }
+
+    .analytics-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .analytics-chip-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .chip-dot-green { width: 8px; height: 8px; border-radius: 50%; background: #00d26a; }
+    .chip-dot-blue { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; }
+    .chip-dot-purple { width: 8px; height: 8px; border-radius: 50%; background: #a855f7; }
+
+    /* Client Management Table Card */
+    .mockup-table {
+      background: white;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 32px 1fr 80px 48px;
+      align-items: center;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.78125rem;
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .table-num {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.71875rem;
+    }
+
+    .table-name {
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d26a, #064e3b);
+      border-radius: 999px;
+    }
+
+    .table-pct {
+      text-align: right;
+      font-weight: 700;
+      color: var(--text-heading);
+      font-size: 0.75rem;
+    }
+
+    /* ==========================================================================
+       FEATURE MATRIX ("Explore smart tools for your success")
+       ========================================================================== */
+    .features-matrix-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .features-8-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-item-card {
+      padding: 1.75rem 1.5rem;
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-lg);
+      background: var(--bg-page);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .feature-item-card:hover {
+      background: white;
+      border-color: var(--emerald-primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .feature-icon-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: white;
+      border: 1px solid var(--border-standard);
+      color: var(--emerald-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       INDUSTRY SOLUTIONS & AUDIO DEMO SHOWCASE
+       ========================================================================== */
+    .showcase-player-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+      position: relative;
+    }
+
+    .industry-filter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.75rem;
+    }
+
+    .industry-tab-btn {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-standard);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .industry-tab-btn:hover {
+      color: var(--text-heading);
+      border-color: rgba(15, 23, 42, 0.25);
+    }
+
+    .industry-tab-btn.active {
+      background: var(--emerald-forest);
+      color: white;
+      border-color: var(--emerald-forest);
+      box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+    }
+
+    /* Big Player Visual Card */
+    .player-showcase-container {
+      background: var(--bg-surface-dark);
+      border-radius: var(--radius-2xl);
+      border: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-dark);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .player-left-stage {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .player-banner-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--emerald-primary);
+      background: rgba(0, 210, 106, 0.15);
+      border: 1px solid rgba(0, 210, 106, 0.3);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      width: fit-content;
+      margin-bottom: 1.5rem;
+    }
+
+    .player-headline {
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .player-headline span {
+      color: var(--emerald-primary);
+    }
+
+    .player-subtext {
+      font-size: 0.95rem;
+      color: #a7f3d0;
+      line-height: 1.55;
+      margin-bottom: 2rem;
+    }
+
+    /* Live Interactive Audio Control Bar */
+    .audio-player-widget {
+      background: var(--bg-surface-dark-card);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .audio-player-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .agent-persona-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .persona-avatar-mini {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d26a, #047857);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+
+    .persona-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .persona-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .persona-role {
+      font-size: 0.71875rem;
+      color: #94a3b8;
+    }
+
+    .play-trigger-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--emerald-primary);
+      color: #064e3b;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 210, 106, 0.4);
+    }
+
+    .play-trigger-btn:hover {
+      transform: scale(1.06);
+      background: #00e876;
+    }
+
+    /* Waveform Canvas */
+    .audio-canvas-box {
+      width: 100%;
+      height: 44px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+    }
+
+    #liveWaveformCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Player Right Visual: Live Real-time Conversation Feed */
+    .player-right-feed {
+      background: #051610;
+      border-left: 1px solid var(--border-dark);
+      padding: clamp(2rem, 3.5vw, 3rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .feed-header-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .latency-pill {
+      font-family: var(--font-mono);
+      font-size: 0.71875rem;
+      color: var(--emerald-primary);
+      background: rgba(0, 210, 106, 0.12);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .dialogue-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 1.125rem;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .chat-bubble {
+      padding: 0.875rem 1.125rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      line-height: 1.45;
+      max-width: 90%;
+    }
+
+    .chat-user {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .chat-agent {
+      align-self: flex-end;
+      background: rgba(0, 210, 106, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(0, 210, 106, 0.3);
+    }
+
+    .chat-speaker-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+
+    .chat-agent .chat-speaker-label {
+      color: var(--emerald-primary);
+    }
+
+    /* ==========================================================================
+       INTERACTIVE ROI & COST SAVINGS CALCULATOR
+       ========================================================================== */
+    .calculator-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+    }
+
+    .calc-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-2xl);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .calc-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slider-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .slider-value-display {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--emerald-dark);
+    }
+
+    .custom-range-slider {
+      width: 100%;
+      height: 8px;
+      -webkit-appearance: none;
+      background: #e2e8f0;
+      border-radius: 999px;
+      outline: none;
+    }
+
+    .custom-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--emerald-primary);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    .calc-savings-box {
+      background: linear-gradient(135deg, #071e16 0%, #0d382b 100%);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .savings-stat-title {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #a7f3d0;
+      font-weight: 700;
+    }
+
+    .savings-big-number {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 800;
+      color: #00d26a;
+      line-height: 1;
+    }
+
+    .savings-sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .savings-sub-item-val {
+      font-size: 1.1875rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .savings-sub-item-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    /* ==========================================================================
+       PRICING SECTION
+       ========================================================================== */
+    .pricing-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+      background: #fafbfb;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .pricing-toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .toggle-label {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      width: 52px;
+      height: 28px;
+      background: #cbd5e1;
+      border-radius: 999px;
+      padding: 3px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-switch.active {
+      background: var(--emerald-primary);
+    }
+
+    .toggle-knob {
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .toggle-switch.active .toggle-knob {
+      transform: translateX(24px);
+    }
+
+    .pricing-discount-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--emerald-surface);
+      color: var(--emerald-dark);
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+    }
+
+    .pricing-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .pricing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem 2rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .pricing-card.popular {
+      border-color: var(--emerald-primary);
+      box-shadow: 0 20px 45px -10px rgba(0, 210, 106, 0.22), var(--shadow-card);
+      transform: scale(1.03);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--emerald-forest);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .pricing-plan-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .pricing-plan-desc {
+      font-size: 0.84375rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      min-height: 42px;
+    }
+
+    .pricing-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .price-currency {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .price-amount {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      line-height: 1;
+    }
+
+    .price-period {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .pricing-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-check-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--emerald-dark);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       FAQ SECTION
+       ========================================================================== */
+    .faq-section {
+      padding: clamp(4rem, 7vw, 6.5rem) 0;
+    }
+
+    .faq-accordion {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .faq-question-btn {
+      width: 100%;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .faq-toggle-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+      color: var(--text-muted);
+    }
+
+    .faq-item.open .faq-toggle-icon {
+      transform: rotate(180deg);
+      color: var(--emerald-dark);
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem 1.25rem 1.5rem;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ==========================================================================
+       GLOBAL CTA & FOOTER
+       ========================================================================== */
+    .cta-banner-section {
+      padding-bottom: clamp(4rem, 7vw, 6.5rem);
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, #071e16 0%, #0b3427 100%);
+      border-radius: var(--radius-2xl);
+      padding: clamp(2.5rem, 5vw, 4.5rem);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-dark);
+    }
+
+    .cta-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .cta-desc {
+      font-size: 1.125rem;
+      color: #a7f3d0;
+      max-width: 600px;
+      margin: 0 auto 2.25rem;
+    }
+
+    .cta-form-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 0 auto 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-input {
+      flex: 1;
+      min-width: 240px;
+      padding: 0.8125rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      font-size: 0.9375rem;
+      outline: none;
+    }
+
+    .cta-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border-standard);
+      padding: 4.5rem 0 2.5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .footer-brand-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      max-width: 320px;
+      line-height: 1.55;
+    }
+
+    .footer-col-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1.125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .footer-link {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--emerald-dark);
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE ADAPTATIONS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .studio-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .studio-palette {
+        display: none;
+      }
+      .studio-inspector {
+        display: none;
+      }
+      .studio-highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card-span-2 {
+        grid-column: span 1;
+      }
+      .features-8-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .player-showcase-container {
+        grid-template-columns: 1fr;
+      }
+      .calc-card {
+        grid-template-columns: 1fr;
+      }
+      .pricing-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero-floating-card-left, .hero-floating-card-right {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .header-actions {
+        display: none;
+      }
+      .mobile-toggle {
+        display: block;
+      }
+      .studio-highlights-grid {
+        grid-template-columns: 1fr;
+      }
+      .features-8-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Effects -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-mint"></div>
+    <div class="ambient-glow-lavender"></div>
+    <div class="ambient-glow-center"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="logo-lockup">
+        <div class="logo-badge">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+          </svg>
+        </div>
+        <span>Dialflow</span>
+      </a>
+
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="#solutions" class="nav-link">
+            Solution
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#solutions" class="dropdown-item">
+              <span class="dropdown-icon">📞</span>
+              <div>
+                <strong>Inbound Call Routing</strong>
+                <p style="font-size:0.75rem; color:#64748b;">Instant 24/7 lead capture</p>
+              </div>
+            </a>
+            <a href="#solutions" class="dropdown-item">
+              <span class="dropdown-icon">⚡</span>
+              <div>
+                <strong>Outbound Lead Qualification</strong>
+                <p style="font-size:0.75rem; color:#64748b;">Automated high-intent follow-up</p>
+              </div>
+            </a>
+            <a href="#solutions" class="dropdown-item">
+              <span class="dropdown-icon">🗓️</span>
+              <div>
+                <strong>Appointment Scheduling</strong>
+                <p style="font-size:0.75rem; color:#64748b;">Direct calendar synchronization</p>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="#builder" class="nav-link">Workflow Builder</a></li>
+        <li class="nav-item"><a href="#integrations" class="nav-link">Integrations</a></li>
+        <li class="nav-item"><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li class="nav-item"><a href="#faq" class="nav-link">Resources</a></li>
+      </ul>
+
+      <div class="header-actions">
+        <a href="#login" class="login-link">Login</a>
+        <a href="#builder" class="btn btn-primary-dark">Free Trial</a>
+      </div>
+
+      <button class="mobile-toggle" aria-label="Toggle mobile navigation">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <!-- Status Pill -->
+          <div class="pill-badge">
+            <span class="pill-badge-tag">New</span>
+            <span class="pill-pulse-dot"></span>
+            <span>Smart AI Voice Features v3.4</span>
+          </div>
+
+          <h1 class="hero-title">
+            Seamless, intelligent, and <br/>
+            <span class="gradient-text">human-like AI calls</span> Experience
+          </h1>
+
+          <p class="hero-subtitle">
+            Build a no-code AI phone call system with our autonomous voice agents: stop missing calls, automate qualifications, and connect directly to your CRM.
+          </p>
+
+          <!-- Interactive Category Filter Pills -->
+          <div class="hero-feature-pills">
+            <button class="feature-pill active" data-flow="assistant">
+              <span class="feature-pill-icon">🎙️</span> AI Assistant
+            </button>
+            <button class="feature-pill" data-flow="automation">
+              <span class="feature-pill-icon">🔀</span> Automation
+            </button>
+            <button class="feature-pill" data-flow="integrations">
+              <span class="feature-pill-icon">🔗</span> Integrations
+            </button>
+          </div>
+
+          <!-- CTAs -->
+          <div class="hero-cta-group">
+            <a href="#builder" class="btn btn-secondary">
+              Get Started
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+            <a href="#demo-modal" id="scheduleDemoBtn" class="btn btn-primary-dark">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Schedule a Demo
+            </a>
+          </div>
+        </div>
+
+        <!-- Floating Mockup Widgets + Visual Studio Canvas -->
+        <div class="hero-stage" id="builder">
+          <!-- Left Floating Widget: Test Call Softphone -->
+          <div class="hero-floating-card-left" id="heroTestCallCard">
+            <div class="call-widget-header">
+              <span class="call-widget-title">Test Call</span>
+              <span class="call-live-indicator">
+                <span class="pill-pulse-dot"></span> Live
+              </span>
+            </div>
+            <div class="call-waveform-visual" id="heroWaveformBars">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+            <div class="call-widget-footer">
+              <div>
+                <div class="caller-info">+1 (470) 504-3155</div>
+                <div style="font-size:0.6875rem; color:#64748b;">Duration: 01:24</div>
+              </div>
+              <button class="call-phone-btn" title="Simulate Active Call">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Floating Widget: Active Growth Metrics -->
+          <div class="hero-floating-card-right">
+            <div class="stat-badge-top">
+              <div>
+                <div class="stat-badge-label">Total Active Calls</div>
+                <div class="stat-badge-val">150K+</div>
+              </div>
+              <span class="stat-badge-pill">+16.2% ↗</span>
+            </div>
+            <div class="stat-avatars-row">
+              <div class="stat-avatar" style="background:#059669;"></div>
+              <div class="stat-avatar" style="background:#0284c7;"></div>
+              <div class="stat-avatar" style="background:#7c3aed;"></div>
+              <div class="stat-avatar" style="background:#ea580c;"></div>
+            </div>
+            <div class="stat-metrics-split">
+              <div class="stat-split-col">
+                <span class="stat-split-title">Digital Leads</span>
+                <span class="stat-split-number">5,490</span>
+              </div>
+              <div class="stat-split-col">
+                <span class="stat-split-title">Voice Qualified</span>
+                <span class="stat-split-number">8,720</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Studio Workflow Canvas -->
+          <div class="studio-canvas-card">
+            <!-- Studio Topbar -->
+            <div class="studio-topbar">
+              <div class="studio-breadcrumb">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Workflow: Form to Call — Outbound Lead Pipeline</span>
+                <span class="studio-flow-tag">Published</span>
+              </div>
+              <div class="studio-top-actions">
+                <button class="studio-btn-sm" id="btnZoomToggle">
+                  <span>Zoom: 100%</span>
+                </button>
+                <button class="studio-btn-sm studio-btn-run" id="btnRunTestPulse">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>Test Run Flow</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Studio Main Grid -->
+            <div class="studio-main-grid">
+              <!-- Left Palette -->
+              <div class="studio-palette">
+                <div>
+                  <div class="palette-group-title">Triggers</div>
+                  <div class="palette-item-list">
+                    <div class="palette-item">
+                      <div class="palette-icon icon-form">📄</div>
+                      <span>Web Form Submission</span>
+                    </div>
+                    <div class="palette-item">
+                      <div class="palette-icon icon-crm">⚡</div>
+                      <span>CRM Webhook Ping</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="palette-group-title">Voice Actions</div>
+                  <div class="palette-item-list">
+                    <div class="palette-item">
+                      <div class="palette-icon icon-voice">📞</div>
+                      <span>Make AI Voice Call</span>
+                    </div>
+                    <div class="palette-item">
+                      <div class="palette-icon icon-logic">🔀</div>
+                      <span>Sentiment Routing</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Center Interactive Canvas -->
+              <div class="studio-canvas">
+                <div class="nodes-container">
+                  <div class="flow-wire"></div>
+                  <div class="flow-wire-pulse" id="flowWirePulse"></div>
+
+                  <!-- Node 1 -->
+                  <div class="canvas-node active" data-node="form" id="nodeForm">
+                    <div class="node-header">
+                      <div class="node-title-group">
+                        <span class="node-tag">Trigger</span>
+                        <h4 class="node-title">Published Form Input (Web Form)</h4>
+                      </div>
+                      <span class="node-status-dot"></span>
+                    </div>
+                    <p class="node-desc">Captures inbound contact submissions from website landing page.</p>
+                    <div class="node-badge-row">
+                      <span class="node-badge-chip">url: /api/lead-capture</span>
+                      <span class="node-badge-chip">type: JSON</span>
+                    </div>
+                  </div>
+
+                  <!-- Node 2 -->
+                  <div class="canvas-node" data-node="voice" id="nodeVoice">
+                    <div class="node-header">
+                      <div class="node-title-group">
+                        <span class="node-tag" style="background:#dcfce7; color:#15803d;">Voice Agent</span>
+                        <h4 class="node-title">Make Phone Call via AI Agent</h4>
+                      </div>
+                      <span class="node-status-dot"></span>
+                    </div>
+                    <p class="node-desc">Initiates ultra-low latency conversational voice qualification call.</p>
+                    <div class="node-badge-row">
+                      <span class="node-badge-chip">model: Cartesia Sonic 2.4</span>
+                      <span class="node-badge-chip">latency: &lt;240ms</span>
+                    </div>
+                  </div>
+
+                  <!-- Node 3 -->
+                  <div class="canvas-node" data-node="crm" id="nodeCrm">
+                    <div class="node-header">
+                      <div class="node-title-group">
+                        <span class="node-tag" style="background:#fef3c7; color:#b45309;">CRM Sync</span>
+                        <h4 class="node-title">HubSpot & Calendar Booking</h4>
+                      </div>
+                      <span class="node-status-dot"></span>
+                    </div>
+                    <p class="node-desc">Updates deal status and invites calendar slot when interest is validated.</p>
+                    <div class="node-badge-row">
+                      <span class="node-badge-chip">status: Synchronized</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Inspector -->
+              <div class="studio-inspector" id="studioInspector">
+                <div class="inspector-title">
+                  <span id="inspectorNodeTitle">Node Inspector</span>
+                  <span class="node-tag">Active</span>
+                </div>
+
+                <div class="inspector-field-group">
+                  <label class="inspector-label">Selected Voice Persona</label>
+                  <select class="inspector-select" id="inspectorVoiceSelect">
+                    <option value="sarah">Sarah — Professional SDR (Warm / Fast)</option>
+                    <option value="marcus">Marcus — Real Estate Qualifier (Authoritative)</option>
+                    <option value="elena">Elena — Dental Clinic Receptionist (Gentle)</option>
+                  </select>
+                </div>
+
+                <div class="inspector-field-group">
+                  <label class="inspector-label">Latency Optimization Mode</label>
+                  <select class="inspector-select">
+                    <option>Turbo Stream (190ms - 240ms)</option>
+                    <option>Balanced Fidelity (280ms)</option>
+                  </select>
+                </div>
+
+                <div class="inspector-field-group">
+                  <label class="inspector-label">Fallback Forwarding Phone</label>
+                  <input type="text" class="inspector-input" value="+1 (415) 890-3412" />
+                  <span class="inspector-hint">Automatically escalates to human rep if sentiment drops below 60%.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom 4 Feature Highlights Grid -->
+            <div class="studio-highlights-grid">
+              <div class="studio-highlight-item">
+                <div class="highlight-icon-title">
+                  <span class="highlight-icon">🔀</span>
+                  <span>Call Routing & Escalation</span>
+                </div>
+                <p class="highlight-desc">Route complex queries to human agents when sentiment or context demands it.</p>
+              </div>
+
+              <div class="studio-highlight-item">
+                <div class="highlight-icon-title">
+                  <span class="highlight-icon">⚡</span>
+                  <span>Visual Automation</span>
+                </div>
+                <p class="highlight-desc">Workflow automation streamlines tasks, boosts efficiency, and eliminates busywork.</p>
+              </div>
+
+              <div class="studio-highlight-item">
+                <div class="highlight-icon-title">
+                  <span class="highlight-icon">🎙️</span>
+                  <span>No-Code Voice Builder</span>
+                </div>
+                <p class="highlight-desc">Create custom conversational AI voice agents effortlessly without code.</p>
+              </div>
+
+              <div class="studio-highlight-item">
+                <div class="highlight-icon-title">
+                  <span class="highlight-icon">📦</span>
+                  <span>Prebuilt Templates</span>
+                </div>
+                <p class="highlight-desc">Launch in minutes with ready-made agent flows for sales, support, and booking.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof Client Ticker -->
+    <section class="social-proof-section">
+      <div class="container">
+        <p class="social-proof-title">Trusted by 9,000+ high-growth businesses and modern teams worldwide</p>
+        <div class="logos-row">
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span>ZENITH</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            <span>KLARITY</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+            <span>KRAFT</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>SYNERGY</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z"/></svg>
+            <span>NOVAWEB</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+            <span>TASKFLOW</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Section: "Powering teamwork simplify" -->
+    <section class="bento-section" id="solutions">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Valuable Features</span>
+          <h2 class="section-title">Powering teamwork simplify</h2>
+          <p class="section-subtitle">
+            Build a no-code AI phone call system with our AI voice agents: stop missing calls and start converting more leads with automated workflows.
+          </p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Card 1: Automation Flow -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <div class="bento-card-top-row">
+                <h3 class="bento-card-title">Automation</h3>
+                <span class="bento-card-icon">🔀</span>
+              </div>
+              <p class="bento-card-desc">Workflow automation streamlines tasks, boosts efficiency, and triggers calls instantly on web form fills.</p>
+            </div>
+            <div class="mockup-automation">
+              <span class="mockup-step-pill">✓ Complete 2 steps</span>
+              <div class="mockup-node-small">
+                <span>1. Web Form Input</span>
+                <span style="color:#059669;">● Ready</span>
+              </div>
+              <div class="mockup-node-small">
+                <span>2. AI Voice Outbound Call</span>
+                <span style="color:#059669;">● Armed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Integrations -->
+          <div class="bento-card" id="integrations">
+            <div class="bento-card-header">
+              <div class="bento-card-top-row">
+                <h3 class="bento-card-title">Integrations</h3>
+                <span class="bento-card-icon">🔗</span>
+              </div>
+              <p class="bento-card-desc">Third-party integrations streamline tasks, boosting workflow efficiency with zero custom code.</p>
+            </div>
+            <div class="mockup-integrations">
+              <div class="integration-tile">
+                <div class="integration-name-group">
+                  <span style="color:#ef4444;">🔴</span>
+                  <span>Twilio SIP Trunk</span>
+                </div>
+                <span class="integration-tag-connected">Connected</span>
+              </div>
+              <div class="integration-tile">
+                <div class="integration-name-group">
+                  <span style="color:#3b82f6;">🔷</span>
+                  <span>HubSpot CRM</span>
+                </div>
+                <span class="integration-tag-connected">Synced</span>
+              </div>
+              <div class="integration-tile">
+                <div class="integration-name-group">
+                  <span style="color:#f59e0b;">⚡</span>
+                  <span>Zapier / Webhooks</span>
+                </div>
+                <span class="integration-tag-connected">Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Invite Members / Assistant Sandbox -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <div class="bento-card-top-row">
+                <h3 class="bento-card-title">Live Voice Agent</h3>
+                <span class="bento-card-icon">📞</span>
+              </div>
+              <p class="bento-card-desc">Deploy and test pre-trained voice agents directly from your browser in seconds.</p>
+            </div>
+            <div class="mockup-assistant-card">
+              <div class="assistant-avatar">OA</div>
+              <div class="assistant-name">Outbound Assistant</div>
+              <div class="assistant-id">ID: 23569842</div>
+              <div class="assistant-phone">Mob: +1 470 504 3155</div>
+              <button class="btn-test-assistant" id="btnTestAssistantCard">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Test Assistant
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4: Analytics Dashboard (Span 2) -->
+          <div class="bento-card bento-card-span-2">
+            <div class="bento-card-header">
+              <div class="bento-card-top-row">
+                <h3 class="bento-card-title">Analytics Dashboard</h3>
+                <span class="bento-card-icon">📊</span>
+              </div>
+              <p class="bento-card-desc">Track performance, conversion rates, call durations, and conversational sentiment in real-time.</p>
+            </div>
+            <div class="mockup-analytics">
+              <div class="analytics-top-row">
+                <div>
+                  <div style="font-size:0.75rem; color:#64748b; font-weight:600;">Total Call Analysis</div>
+                  <div class="analytics-total-val">5,425 Calls</div>
+                </div>
+                <div class="stat-badge-pill" style="font-size:0.75rem;">+28.4% this week</div>
+              </div>
+              <!-- Smooth SVG Area/Line Chart -->
+              <svg class="analytics-chart-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00d26a" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#00d26a" stop-opacity="0.0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,80 Q75,30 150,55 T300,25 T400,45 T500,15 L500,100 L0,100 Z" fill="url(#chartGrad)"/>
+                <path d="M0,80 Q75,30 150,55 T300,25 T400,45 T500,15" fill="none" stroke="#00d26a" stroke-width="3"/>
+                <circle cx="300" cy="25" r="4" fill="#064e3b" stroke="#00d26a" stroke-width="2"/>
+                <circle cx="500" cy="15" r="4" fill="#064e3b" stroke="#00d26a" stroke-width="2"/>
+              </svg>
+              <div class="analytics-chips-row">
+                <div class="analytics-chip-item">
+                  <span class="chip-dot-green"></span>
+                  <span><strong>425</strong> Qualified Leads</span>
+                </div>
+                <div class="analytics-chip-item">
+                  <span class="chip-dot-blue"></span>
+                  <span><strong>1,253 min</strong> Talk Time</span>
+                </div>
+                <div class="analytics-chip-item">
+                  <span class="chip-dot-purple"></span>
+                  <span><strong>1.05s</strong> Avg Response</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Client Management -->
+          <div class="bento-card">
+            <div class="bento-card-header">
+              <div class="bento-card-top-row">
+                <h3 class="bento-card-title">Data in Palm of Hand</h3>
+                <span class="bento-card-icon">📱</span>
+              </div>
+              <p class="bento-card-desc">Keep your client data and pipeline stage progression organized automatically.</p>
+            </div>
+            <div class="mockup-table">
+              <div class="table-row">
+                <span class="table-num">01</span>
+                <span class="table-name">Sales Discovery</span>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 88%;"></div></div>
+                <span class="table-pct">88%</span>
+              </div>
+              <div class="table-row">
+                <span class="table-num">02</span>
+                <span class="table-name">Demo Booking</span>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 70%;"></div></div>
+                <span class="table-pct">70%</span>
+              </div>
+              <div class="table-row">
+                <span class="table-num">03</span>
+                <span class="table-name">Follow-up Call</span>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 56%;"></div></div>
+                <span class="table-pct">56%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8-Feature Grid ("Explore smart tools for your success") -->
+    <section class="features-matrix-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Capabilities</span>
+          <h2 class="section-title">Explore smart tools for your success</h2>
+          <p class="section-subtitle">
+            Explore smart tools designed to boost productivity, simplify tasks, and ensure seamless telephone automation.
+          </p>
+        </div>
+
+        <div class="features-8-grid">
+          <!-- Item 1 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">💻</div>
+            <h3 class="feature-title">No-Code AI Voice</h3>
+            <p class="feature-desc">Create custom AI voice agents effortlessly without writing a single line of backend code.</p>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">✨</div>
+            <h3 class="feature-title">Real-Time Voice AI</h3>
+            <p class="feature-desc">Human-like conversational pacing with ultra-low latency sub-240ms speech synthesis.</p>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">📞</div>
+            <h3 class="feature-title">Inbound & Outbound</h3>
+            <p class="feature-desc">Automate support triage calls and run hyper-personalized outbound reactivation campaigns.</p>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">⚙️</div>
+            <h3 class="feature-title">CRM Integration</h3>
+            <p class="feature-desc">Sync conversations, sentiment scores, and customer data directly into HubSpot, Salesforce, or Zoho.</p>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">🔄</div>
+            <h3 class="feature-title">Call Escalation</h3>
+            <p class="feature-desc">Route complex queries or agitated callers to human agents with full conversation summaries.</p>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">📊</div>
+            <h3 class="feature-title">Analytics Dashboard</h3>
+            <p class="feature-desc">Track performance, resolution rates, talk time, and agent sentiment scores on a single dashboard.</p>
+          </div>
+
+          <!-- Item 7 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">🌐</div>
+            <h3 class="feature-title">Multilingual Support</h3>
+            <p class="feature-desc">Speak fluently with customers in 50+ languages with regional accents and localized idioms.</p>
+          </div>
+
+          <!-- Item 8 -->
+          <div class="feature-item-card">
+            <div class="feature-icon-wrapper">📋</div>
+            <h3 class="feature-title">Prebuilt Templates</h3>
+            <p class="feature-desc">Launch faster with ready-made agent workflows for appointment booking, real estate, and triage.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industry Solutions Showcase & Live Audio Demo Player -->
+    <section class="showcase-player-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">All In One Solution</span>
+          <h2 class="section-title">Automate phone calls with the help of AI</h2>
+          <p class="section-subtitle">
+            Tailored voice playbooks designed for high-conversion industries. Listen to real conversational audio below.
+          </p>
+        </div>
+
+        <!-- Industry Tabs -->
+        <div class="industry-filter-nav">
+          <button class="industry-tab-btn active" data-industry="agencies">Agencies</button>
+          <button class="industry-tab-btn" data-industry="realestate">Real Estate</button>
+          <button class="industry-tab-btn" data-industry="ecommerce">E-Commerce</button>
+          <button class="industry-tab-btn" data-industry="education">Education</button>
+          <button class="industry-tab-btn" data-industry="finance">Finance</button>
+        </div>
+
+        <!-- Big Visual Player Card -->
+        <div class="player-showcase-container">
+          <!-- Left: Player Control & Waveform -->
+          <div class="player-left-stage">
+            <div>
+              <span class="player-banner-tag">Live Audio Experience</span>
+              <h3 class="player-headline" id="playerHeadline">
+                Automate <span>Client Discovery</span> in seconds.
+              </h3>
+              <p class="player-subtext" id="playerSubtext">
+                Experience natural turn-taking, interruption handling, and instant intent qualification without robotic delays.
+              </p>
+            </div>
+
+            <!-- Audio Player Widget -->
+            <div class="audio-player-widget">
+              <div class="audio-player-top">
+                <div class="agent-persona-info">
+                  <div class="persona-avatar-mini" id="personaMiniAvatar">S</div>
+                  <div class="persona-meta">
+                    <span class="persona-name" id="personaName">Sarah — Growth SDR</span>
+                    <span class="persona-role" id="personaRole">Dialflow Inbound Engine</span>
+                  </div>
+                </div>
+                <button class="play-trigger-btn" id="btnAudioPlayPause" title="Play simulated audio sample">
+                  <svg id="playIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <svg id="pauseIcon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+              </div>
+
+              <!-- Animated Sine Waveform Canvas -->
+              <div class="audio-canvas-box">
+                <canvas id="liveWaveformCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live Synchronized Dialogue Feed -->
+          <div class="player-right-feed">
+            <div class="feed-header">
+              <span class="feed-header-title">Real-Time Call Transcript</span>
+              <span class="latency-pill">Latency: 218ms</span>
+            </div>
+
+            <div class="dialogue-stream" id="dialogueStream">
+              <div class="chat-bubble chat-user">
+                <div class="chat-speaker-label">Inbound Prospect</div>
+                <p>Hi, I just submitted the form on your site. We need to handle around 10,000 qualification calls per month.</p>
+              </div>
+              <div class="chat-bubble chat-agent">
+                <div class="chat-speaker-label">Dialflow Agent (Sarah)</div>
+                <p>Hello! Thanks for reaching out. Yes, Dialflow easily scales to 10,000+ monthly calls with sub-250ms latency. Would you like to schedule a 15-minute technical demo tomorrow at 2 PM EST?</p>
+              </div>
+              <div class="chat-bubble chat-user">
+                <div class="chat-speaker-label">Inbound Prospect</div>
+                <p>Tomorrow at 2 PM works great. Can you send the calendar invite to my email?</p>
+              </div>
+              <div class="chat-bubble chat-agent">
+                <div class="chat-speaker-label">Dialflow Agent (Sarah)</div>
+                <p>Done! I just synced your contact details to HubSpot and sent the Google Calendar invite. Have a wonderful day!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive ROI / Cost Calculator -->
+    <section class="calculator-section">
+      <div class="container">
+        <div class="calc-card">
+          <div class="calc-input-group">
+            <div>
+              <span class="section-tag">ROI Estimator</span>
+              <h2 style="font-size:2.125rem; font-weight:800; color:#0f172a; line-height:1.2; margin-top:0.5rem;">
+                Calculate your monthly voice savings
+              </h2>
+              <p style="font-size:0.9375rem; color:#475569; margin-top:0.5rem;">
+                Traditional call centers charge $1.85 to $2.40 per minute. Dialflow delivers human-quality voice at just $0.09/min.
+              </p>
+            </div>
+
+            <div>
+              <div class="slider-header">
+                <span class="slider-title">Monthly Call Volume</span>
+                <span class="slider-value-display" id="sliderValDisplay">5,000 calls</span>
+              </div>
+              <input type="range" class="custom-range-slider" id="callVolumeSlider" min="500" max="25000" step="500" value="5000" style="margin-top:1rem;" />
+              <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#64748b; margin-top:0.4rem;">
+                <span>500 calls</span>
+                <span>25,000 calls</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Savings Summary Box -->
+          <div class="calc-savings-box">
+            <div>
+              <div class="savings-stat-title">Estimated Annual Savings</div>
+              <div class="savings-big-number" id="savingsAmount">$47,700</div>
+            </div>
+
+            <div class="savings-sub-grid">
+              <div>
+                <div class="savings-sub-item-val" id="hoursSavedVal">840 hrs</div>
+                <div class="savings-sub-item-label">Rep Hours Automated</div>
+              </div>
+              <div>
+                <div class="savings-sub-item-val" id="speedImprovement">12x Faster</div>
+                <div class="savings-sub-item-label">Lead Response Time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Transparent Pricing</span>
+          <h2 class="section-title">Simple, predictable plans for every team</h2>
+          <p class="section-subtitle">Start with a 14-day free trial. No credit card required.</p>
+        </div>
+
+        <div class="pricing-toggle-wrap">
+          <span class="toggle-label" id="labelMonthly">Monthly Billing</span>
+          <div class="toggle-switch" id="pricingToggle">
+            <div class="toggle-knob"></div>
+          </div>
+          <span class="toggle-label" id="labelAnnual">Annual Billing</span>
+          <span class="pricing-discount-badge">Save 20%</span>
+        </div>
+
+        <div class="pricing-cards-grid">
+          <!-- Starter -->
+          <div class="pricing-card">
+            <div>
+              <h3 class="pricing-plan-name">Starter</h3>
+              <p class="pricing-plan-desc">For small teams testing conversational voice automation.</p>
+              <div class="pricing-price-wrap">
+                <span class="price-currency">$</span>
+                <span class="price-amount" data-monthly="49" data-annual="39">49</span>
+                <span class="price-period">/ month</span>
+              </div>
+              <ul class="pricing-features-list">
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>500 call minutes / month</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>2 concurrent lines</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>3 custom voice personas</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Web form & Zapier trigger</span>
+                </li>
+              </ul>
+            </div>
+            <a href="#builder" class="btn btn-secondary" style="width:100%;">Start Free Trial</a>
+          </div>
+
+          <!-- Growth (Popular) -->
+          <div class="pricing-card popular">
+            <span class="popular-tag">Most Popular</span>
+            <div>
+              <h3 class="pricing-plan-name">Growth</h3>
+              <p class="pricing-plan-desc">For fast-scaling sales & customer service teams.</p>
+              <div class="pricing-price-wrap">
+                <span class="price-currency">$</span>
+                <span class="price-amount" data-monthly="149" data-annual="119">149</span>
+                <span class="price-period">/ month</span>
+              </div>
+              <ul class="pricing-features-list">
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>2,500</strong> call minutes / month</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>10</strong> concurrent lines</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Sub-240ms latency engine</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>HubSpot & Salesforce native sync</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Human transfer escalation</span>
+                </li>
+              </ul>
+            </div>
+            <a href="#builder" class="btn btn-emerald" style="width:100%;">Get Started with Growth</a>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="pricing-card">
+            <div>
+              <h3 class="pricing-plan-name">Enterprise</h3>
+              <p class="pricing-plan-desc">For high-volume operations requiring dedicated telephony infrastructure.</p>
+              <div class="pricing-price-wrap">
+                <span class="price-currency">$</span>
+                <span class="price-amount" data-monthly="499" data-annual="399">499</span>
+                <span class="price-period">/ month</span>
+              </div>
+              <ul class="pricing-features-list">
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Unlimited minutes volume pool</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Dedicated SIP Trunks & Custom Numbers</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Custom Fine-Tuned Voice Models</span>
+                </li>
+                <li class="pricing-feature-item">
+                  <svg class="feature-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>SOC2 Type II & HIPAA Compliance</span>
+                </li>
+              </ul>
+            </div>
+            <a href="#demo-modal" class="btn btn-secondary" style="width:100%;">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Got Questions?</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Everything you need to know about Dialflow AI voice agents.</p>
+        </div>
+
+        <div class="faq-accordion">
+          <!-- Q1 -->
+          <div class="faq-item open">
+            <button class="faq-question-btn">
+              <span>How fast does the voice agent respond during a phone call?</span>
+              <svg class="faq-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">
+              Dialflow features a sub-240ms speech-to-speech inference pipeline. Conversations feel completely natural, with realistic breath pauses, turn-taking, and instantaneous response times that mimic a human sales representative.
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="faq-item">
+            <button class="faq-question-btn">
+              <span>Can the AI handle interruptions when a customer speaks over it?</span>
+              <svg class="faq-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">
+              Yes. Dialflow utilizes bidirectional streaming audio with active voice activity detection (VAD). If the customer interrupts at any point, the AI immediately stops speaking, listens to the new prompt, and smoothly answers without missing a beat.
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="faq-item">
+            <button class="faq-question-btn">
+              <span>Can I connect my existing phone numbers or Twilio SIP trunk?</span>
+              <svg class="faq-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">
+              Yes. You can instantly provision local or toll-free numbers in 120+ countries directly within Dialflow, or bring your existing Twilio, Telnyx, or Plivo SIP credentials with zero downtime.
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="faq-item">
+            <button class="faq-question-btn">
+              <span>How does Dialflow sync qualified lead data into my CRM?</span>
+              <svg class="faq-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">
+              After each call concludes, Dialflow extracts structured key-value parameters (such as budget, timeline, interest level, and email) and posts them directly to HubSpot, Salesforce, Zoho, or any custom webhook in real-time.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Global CTA Banner -->
+    <section class="cta-banner-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2 class="cta-title">Start automating phone calls with AI today</h2>
+          <p class="cta-desc">
+            Join 9,000+ businesses converting more leads, reducing call center costs, and delighting customers 24/7.
+          </p>
+          <div class="cta-form-row">
+            <input type="email" class="cta-input" placeholder="Enter your work email..." />
+            <button class="btn btn-emerald">Get Started Free ↗</button>
+          </div>
+          <div style="font-size:0.75rem; color:#a7f3d0;">No credit card required · 14-day free trial · 5-minute setup</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="#" class="logo-lockup">
+            <div class="logo-badge">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+              </svg>
+            </div>
+            <span>Dialflow</span>
+          </a>
+          <p class="footer-brand-desc">
+            No-code AI telephony and voice workflow automation platform for high-growth modern teams.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Product</h4>
+          <ul class="footer-links">
+            <li><a href="#builder" class="footer-link">Workflow Studio</a></li>
+            <li><a href="#solutions" class="footer-link">Voice Personas</a></li>
+            <li><a href="#integrations" class="footer-link">SIP Trunking</a></li>
+            <li><a href="#pricing" class="footer-link">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Solutions</h4>
+          <ul class="footer-links">
+            <li><a href="#solutions" class="footer-link">Lead Qualification</a></li>
+            <li><a href="#solutions" class="footer-link">Support Triage</a></li>
+            <li><a href="#solutions" class="footer-link">Appointment Booking</a></li>
+            <li><a href="#solutions" class="footer-link">Survey Automation</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#faq" class="footer-link">Documentation</a></li>
+            <li><a href="#faq" class="footer-link">API Reference</a></li>
+            <li><a href="#faq" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#faq" class="footer-link">Security & Trust</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <span>&copy; 2026 Dialflow Technologies Inc. All rights reserved.</span>
+        <span>Built for high-performance conversational telemetry.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       INTERACTIVE JAVASCRIPT
+       ========================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Studio Canvas Node Selection
+      const nodes = document.querySelectorAll('.canvas-node');
+      const inspectorTitle = document.getElementById('inspectorNodeTitle');
+
+      nodes.forEach(node => {
+        node.addEventListener('click', () => {
+          nodes.forEach(n => n.classList.remove('active'));
+          node.classList.add('active');
+          const nodeType = node.getAttribute('data-node');
+          if (nodeType === 'form') {
+            inspectorTitle.textContent = 'Web Form Trigger Settings';
+          } else if (nodeType === 'voice') {
+            inspectorTitle.textContent = 'AI Voice Agent Settings';
+          } else if (nodeType === 'crm') {
+            inspectorTitle.textContent = 'CRM & Webhook Settings';
+          }
+        });
+      });
+
+      // 2. Pulse Flow Run Animation
+      const btnRunPulse = document.getElementById('btnRunTestPulse');
+      const pulseWire = document.getElementById('flowWirePulse');
+
+      if (btnRunPulse && pulseWire) {
+        btnRunPulse.addEventListener('click', () => {
+          pulseWire.style.animation = 'none';
+          void pulseWire.offsetWidth; // trigger reflow
+          pulseWire.style.animation = 'pulse-flow 2s linear 3';
+          
+          btnRunPulse.innerHTML = '<span style="color:#00d26a;">● Executing Flow...</span>';
+          setTimeout(() => {
+            btnRunPulse.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Test Run Flow</span>';
+          }, 3000);
+        });
+      }
+
+      // 3. Audio Player Canvas Waveform Animation
+      const canvas = document.getElementById('liveWaveformCanvas');
+      let isPlaying = false;
+      let animationFrameId;
+
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+          canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
+          canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
+          ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let step = 0;
+        function drawSineWave() {
+          const width = canvas.parentElement.clientWidth;
+          const height = canvas.parentElement.clientHeight;
+          ctx.clearRect(0, 0, width, height);
+
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#00d26a';
+          ctx.beginPath();
+
+          const amplitude = isPlaying ? 14 : 4;
+          const frequency = isPlaying ? 0.04 : 0.015;
+
+          for (let x = 0; x < width; x++) {
+            const y = height / 2 + Math.sin(x * frequency + step) * amplitude * Math.sin(x / width * Math.PI);
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.stroke();
+
+          // Second subtle harmonic wave
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(167, 243, 208, 0.4)';
+          ctx.beginPath();
+          for (let x = 0; x < width; x++) {
+            const y = height / 2 + Math.cos(x * (frequency * 1.5) - step) * (amplitude * 0.6) * Math.sin(x / width * Math.PI);
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.stroke();
+
+          step += isPlaying ? 0.12 : 0.02;
+          animationFrameId = requestAnimationFrame(drawSineWave);
+        }
+
+        drawSineWave();
+
+        // Audio Play/Pause Trigger
+        const btnPlay = document.getElementById('btnAudioPlayPause');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+
+        if (btnPlay) {
+          btnPlay.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+              playIcon.style.display = 'none';
+              pauseIcon.style.display = 'block';
+            } else {
+              playIcon.style.display = 'block';
+              pauseIcon.style.display = 'none';
+            }
+          });
+        }
+      }
+
+      // 4. Industry Tab Switching
+      const industryTabs = document.querySelectorAll('.industry-tab-btn');
+      const playerHeadline = document.getElementById('playerHeadline');
+      const personaName = document.getElementById('personaName');
+      const personaRole = document.getElementById('personaRole');
+      const personaMiniAvatar = document.getElementById('personaMiniAvatar');
+
+      const industryData = {
+        agencies: {
+          headline: 'Automate <span>Client Discovery</span> in seconds.',
+          name: 'Sarah — Growth SDR',
+          role: 'Agency Inbound Lead Engine',
+          avatar: 'S'
+        },
+        realestate: {
+          headline: 'Qualify <span>Property Buyers</span> around the clock.',
+          name: 'Marcus — Property Specialist',
+          role: 'Real Estate Triage Agent',
+          avatar: 'M'
+        },
+        ecommerce: {
+          headline: 'Handle <span>Returns & Tracking</span> instantly.',
+          name: 'Elena — Support Assistant',
+          role: 'E-Commerce Concierge',
+          avatar: 'E'
+        },
+        education: {
+          headline: 'Guide <span>Student Inquiries</span> with ease.',
+          name: 'David — Admissions Counselor',
+          role: 'University Enrollment Voice',
+          avatar: 'D'
+        },
+        finance: {
+          headline: 'Accelerate <span>Loan Screening</span> compliantly.',
+          name: 'Victoria — Lending Analyst',
+          role: 'Fintech Voice Underwriter',
+          avatar: 'V'
+        }
+      };
+
+      industryTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          industryTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const key = tab.getAttribute('data-industry');
+          if (industryData[key]) {
+            playerHeadline.innerHTML = industryData[key].headline;
+            personaName.textContent = industryData[key].name;
+            personaRole.textContent = industryData[key].role;
+            personaMiniAvatar.textContent = industryData[key].avatar;
+          }
+        });
+      });
+
+      // 5. Interactive ROI Calculator Slider
+      const slider = document.getElementById('callVolumeSlider');
+      const sliderValDisplay = document.getElementById('sliderValDisplay');
+      const savingsAmount = document.getElementById('savingsAmount');
+      const hoursSavedVal = document.getElementById('hoursSavedVal');
+
+      if (slider) {
+        slider.addEventListener('input', (e) => {
+          const calls = parseInt(e.target.value, 10);
+          sliderValDisplay.textContent = calls.toLocaleString() + ' calls';
+
+          // Calculations (Assuming 3 min average call, Human $2.10/min, AI $0.09/min)
+          const humanCost = calls * 3 * 2.10;
+          const aiCost = calls * 3 * 0.09;
+          const annualSavings = Math.round((humanCost - aiCost) * 12);
+          const hoursSaved = Math.round((calls * 3 * 12) / 60);
+
+          savingsAmount.textContent = '$' + annualSavings.toLocaleString();
+          hoursSavedVal.textContent = hoursSaved.toLocaleString() + ' hrs';
+        });
+      }
+
+      // 6. Pricing Monthly / Annual Toggle
+      const pricingToggle = document.getElementById('pricingToggle');
+      const priceAmounts = document.querySelectorAll('.price-amount');
+      let isAnnual = false;
+
+      if (pricingToggle) {
+        pricingToggle.addEventListener('click', () => {
+          isAnnual = !isAnnual;
+          pricingToggle.classList.toggle('active', isAnnual);
+          priceAmounts.forEach(el => {
+            const val = isAnnual ? el.getAttribute('data-annual') : el.getAttribute('data-monthly');
+            el.textContent = val;
+          });
+        });
+      }
+
+      // 7. FAQ Accordion Toggle
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const btn = item.querySelector('.faq-question-btn');
+        btn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+          faqItems.forEach(i => i.classList.remove('open'));
+          if (!isOpen) {
+            item.classList.add('open');
+          }
+        });
+      });
+
+      // 8. Test Assistant Button Trigger
+      const btnTestAssistant = document.getElementById('btnTestAssistantCard');
+      if (btnTestAssistant) {
+        btnTestAssistant.addEventListener('click', () => {
+          btnTestAssistant.innerHTML = '<span style="color:#a7f3d0;">● Connecting Call...</span>';
+          setTimeout(() => {
+            btnTestAssistant.innerHTML = '<span style="color:#00d26a;">✓ Connected (+1 470 504 3155)</span>';
+          }, 1200);
+          setTimeout(() => {
+            btnTestAssistant.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Test Assistant';
+          }, 4500);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

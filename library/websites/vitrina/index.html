@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vitrina — Where art meets market</title>
+  <meta
+    name="description"
+    content="Fictional art marketplace sample. Hero portrait carousel, scatter album tiles, icon row, community arcs — scroll-driven motion with GSAP + Lenis."
+  />
+  <!--
+    Motion / graphics stack (free):
+    - GSAP 3 + ScrollTrigger — https://github.com/greensock/GSAP
+    - Lenis smooth scroll — https://github.com/darkroomengineering/lenis
+    - CSS + SVG icons (no proprietary Framer components)
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css"
+  />
+  <style>
+    :root {
+      --bg: #eceef2;
+      --shell: #f7f8fa;
+      --card: #ffffff;
+      --ink: #111118;
+      --muted: #8b8f9a;
+      --soft: #c4c7d0;
+      --line: rgba(17, 17, 24, 0.08);
+      --accent: #ff6b4a;
+      --accent-soft: #f2d6cf;
+      --pill: #ffffff;
+      --shadow: 0 24px 60px rgba(20, 24, 40, 0.08);
+      --shadow-lg: 0 40px 100px rgba(20, 24, 40, 0.12);
+      --radius: 28px;
+      --radius-sm: 16px;
+      --font: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .page {
+      min-height: 100vh;
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+    }
+
+    .shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      background: var(--shell);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: clip;
+      position: relative;
+    }
+
+    /* —— Nav —— */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(247, 248, 250, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 0.95rem;
+      background: var(--pill);
+      border-radius: 999px;
+      box-shadow: 0 6px 20px rgba(20, 24, 40, 0.06);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+    .logo-mark {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      background:
+        linear-gradient(135deg, #ff8a6b 0%, #ff6b4a 45%, #6b8cff 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem 1.1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #3a3d48;
+    }
+    .nav-links a {
+      opacity: 0.72;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      display: inline-block;
+      margin-right: 0.35rem;
+      vertical-align: middle;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--card);
+      box-shadow: 0 4px 14px rgba(20,24,40,0.06);
+      display: grid;
+      place-items: center;
+      color: #3a3d48;
+    }
+    .icon-btn svg { width: 16px; height: 16px; }
+
+    .menu-toggle {
+      display: none;
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--card);
+      box-shadow: 0 4px 14px rgba(20,24,40,0.06);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 16px; height: 1.5px;
+      background: var(--ink);
+      border-radius: 2px;
+    }
+
+    /* —— Sections —— */
+    section {
+      position: relative;
+      padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+    .h1 .fade { color: var(--soft); }
+    .h1 .rose { color: #c48b82; font-style: italic; font-weight: 600; }
+
+    .h2 {
+      font-size: clamp(1.9rem, 4.2vw, 2.85rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 0.98rem;
+      max-width: 34ch;
+      margin-top: 0.85rem;
+    }
+
+    .link-quiet {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #4a4e5a;
+      border-bottom: 1px solid rgba(17,17,24,0.15);
+      padding-bottom: 2px;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+    }
+    .hero-head {
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 1.5rem;
+      max-width: 22ch;
+    }
+    .hero-head .eyebrow { margin-bottom: 0.2rem; }
+    .hero-title {
+      font-size: clamp(2.6rem, 7vw, 4.4rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+    }
+    .hero-title .to {
+      color: var(--soft);
+      font-weight: 500;
+      margin-left: 0.25em;
+    }
+
+    .carousel {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      aspect-ratio: 21 / 9;
+      min-height: 240px;
+      background: #ff6b4a;
+      box-shadow: var(--shadow);
+    }
+    .carousel-track {
+      position: absolute;
+      inset: 0;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 0.7s var(--ease), transform 0.9s var(--ease);
+    }
+    .slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 1;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+    }
+
+    .carousel-ui {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 1rem 1.1rem;
+    }
+    .carousel-ui > * { pointer-events: auto; }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      color: var(--ink);
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transition: transform 0.2s var(--ease);
+    }
+    .btn-pill:hover { transform: translateY(-1px); }
+
+    .carousel-arrows {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .carousel-arrows button {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .carousel-arrows svg { width: 16px; height: 16px; }
+
+    .carousel-dots {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 2;
+      display: flex;
+      gap: 0.35rem;
+    }
+    .carousel-dots span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transition: background 0.25s, transform 0.25s;
+    }
+    .carousel-dots span.is-active {
+      background: #fff;
+      transform: scale(1.15);
+    }
+
+    /* —— Trusted —— */
+    .trusted {
+      padding-top: 1rem;
+      padding-bottom: 2.5rem;
+      text-align: center;
+    }
+    .trusted h3 {
+      font-size: 1.65rem;
+      font-weight: 600;
+      color: #b0b4be;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+    }
+    .logo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem 2.25rem;
+      opacity: 0.55;
+    }
+    .logo-row .brand-logo {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #5a5e6a;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+    .brand-logo i {
+      display: inline-grid;
+      place-items: center;
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      background: #e4e6ec;
+      font-style: normal;
+      font-size: 0.62rem;
+      font-weight: 800;
+    }
+
+    /* —— Showcase —— */
+    .showcase {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      min-height: 52vh;
+    }
+    .showcase .h1 { max-width: 10ch; }
+    .fan {
+      position: relative;
+      height: 280px;
+      perspective: 900px;
+    }
+    .fan-card {
+      position: absolute;
+      width: min(148px, 28vw);
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(20,24,40,0.16);
+      left: 50%;
+      top: 50%;
+      transform-origin: center bottom;
+      will-change: transform;
+      background: #ddd;
+    }
+    .fan-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* —— Masterpiece —— */
+    .masterpiece {
+      text-align: center;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .masterpiece .h2 {
+      max-width: 14ch;
+      margin-inline: auto;
+    }
+    .fan-wide {
+      position: relative;
+      width: min(720px, 100%);
+      height: 220px;
+      margin: 0.5rem auto 0;
+    }
+    .fan-wide .fan-card {
+      width: min(120px, 22vw);
+    }
+    .artist-count {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .artist-count strong {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .scroll-hint {
+      width: 42px; height: 6px;
+      border-radius: 999px;
+      background: #d8dae2;
+      margin-top: 0.5rem;
+    }
+
+    /* —— Connect —— */
+    .connect {
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .connect-stage {
+      position: relative;
+      width: min(720px, 100%);
+      min-height: 320px;
+      display: grid;
+      place-items: center;
+    }
+    .connect-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 28ch;
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: #2a2d38;
+    }
+    .connect-copy .dim { color: var(--soft); }
+    .stack {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+    .stack-card {
+      position: absolute;
+      width: min(150px, 30vw);
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 22px 50px rgba(20,24,40,0.18);
+      will-change: transform;
+    }
+    .stack-card img { width: 100%; height: 100%; object-fit: cover; }
+    .bubble {
+      position: absolute;
+      z-index: 3;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(20,24,40,0.15);
+      white-space: nowrap;
+    }
+    .bubble.left {
+      left: 6%;
+      top: 42%;
+      background: #1f2430;
+    }
+    .bubble.right {
+      right: 6%;
+      top: 48%;
+      background: #3d6bff;
+    }
+
+    /* —— Market scatter —— */
+    .market {
+      min-height: 80vh;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .market-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 1.35rem 1.4rem;
+      box-shadow: var(--shadow);
+      max-width: 300px;
+      position: relative;
+      z-index: 2;
+    }
+    .market-card .thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      background: #eee;
+    }
+    .market-card .thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .market-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.45rem;
+    }
+    .market-card p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .market-card .chip {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 0.7rem;
+    }
+
+    .scatter {
+      position: relative;
+      height: min(420px, 58vw);
+      min-height: 280px;
+    }
+    .scatter-card {
+      position: absolute;
+      width: min(128px, 24vw);
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(20,24,40,0.14);
+      will-change: transform;
+    }
+    .scatter-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* —— Vision —— */
+    .vision {
+      display: grid;
+      grid-template-columns: 0.95fr 1.15fr;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      align-items: center;
+    }
+    .vision-copy .h2 { max-width: 14ch; }
+    .icon-constellation {
+      position: relative;
+      width: 200px;
+      height: 160px;
+      margin-top: 1.75rem;
+    }
+    .icon-constellation .ic {
+      position: absolute;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid #d0d3dc;
+      background: var(--card);
+      display: grid;
+      place-items: center;
+      color: #2a2d38;
+      box-shadow: 0 6px 16px rgba(20,24,40,0.05);
+    }
+    .icon-constellation .ic svg {
+      width: 15px; height: 15px;
+    }
+
+    .gallery-panel {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 0.85rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .gallery-tabs {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      padding: 0 0.35rem;
+      margin-bottom: 0.65rem;
+    }
+    .gallery-tabs .tab {
+      padding: 0.55rem 1.1rem 0.65rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      border-radius: 12px 12px 0 0;
+      position: relative;
+    }
+    .gallery-tabs .tab.is-active {
+      color: #fff;
+      background: #15171e;
+    }
+    .gallery-tabs .create {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #3a3d48;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: #f0f1f5;
+    }
+    .gallery-tabs .create i {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      font-size: 0.65rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      background: #15171e;
+      border-radius: 14px;
+      padding: 0.65rem;
+    }
+    .gallery-grid figure {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #2a2d38;
+    }
+    .gallery-grid img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease);
+    }
+    .gallery-grid figure:hover img {
+      transform: scale(1.05);
+    }
+
+    /* —— Community —— */
+    .community {
+      text-align: center;
+      padding-top: 3rem;
+      padding-bottom: 4rem;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .community .mark {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff8a6b, #6b8cff);
+      margin: 0 auto 1rem;
+      opacity: 0.85;
+    }
+    .community .h2 { max-width: 14ch; margin-inline: auto; }
+    .community .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 36ch;
+      margin: 0.75rem auto 0;
+    }
+
+    .arc-wrap {
+      position: relative;
+      width: 100%;
+      margin: 2.5rem 0;
+      height: 280px;
+    }
+    .arc {
+      position: absolute;
+      left: 50%;
+      display: flex;
+      gap: 0.65rem;
+      will-change: transform;
+    }
+    .arc-top {
+      top: 0;
+      transform: translateX(-50%);
+    }
+    .arc-bottom {
+      bottom: 0;
+      transform: translateX(-50%);
+    }
+    .arc .av {
+      width: 58px; height: 58px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 24px rgba(20,24,40,0.1);
+      background: #e8eaef;
+    }
+    .arc .av img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .arc .av:nth-child(odd) { transform: translateY(10px); }
+    .arc .av:nth-child(3n) { transform: translateY(-8px); }
+    .arc .av:nth-child(4n) { transform: translateY(14px); }
+    .arc-top .av:nth-child(even) { transform: translateY(-12px); }
+    .arc-bottom .av:nth-child(even) { transform: translateY(12px); }
+
+    .community-copy {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(247,248,250,0.75) 20%,
+        rgba(247,248,250,0.95) 50%,
+        rgba(247,248,250,0.75) 80%,
+        transparent 100%
+      );
+      padding: 1.5rem 1rem;
+    }
+
+    /* —— CTA / Footer —— */
+    .cta {
+      margin: 0 1.25rem 1.25rem;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #171920 0%, #2a2230 100%);
+      color: #f4f5f8;
+      padding: clamp(2rem, 5vw, 3rem);
+      display: grid;
+      grid-template-columns: 1.2fr auto;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .cta h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 16ch;
+    }
+    .cta p {
+      color: rgba(244,245,248,0.62);
+      margin-top: 0.6rem;
+      font-size: 0.92rem;
+      max-width: 36ch;
+    }
+    .cta .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.85rem 1.35rem;
+      border-radius: 999px;
+      background: #fff;
+      color: #111;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      transition: transform 0.2s var(--ease);
+    }
+    .cta .btn-primary:hover { transform: translateY(-2px); }
+
+    .footer {
+      padding: 0 1.5rem 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .footer a:hover { color: var(--ink); }
+
+    /* —— Mobile —— */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+      .nav.is-open .nav-links {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        right: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        background: var(--card);
+        padding: 1rem 1.15rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        gap: 0.85rem;
+      }
+      .showcase,
+      .market,
+      .vision {
+        grid-template-columns: 1fr;
+      }
+      .showcase { text-align: center; }
+      .showcase .h1 { margin-inline: auto; }
+      .market-card { margin-inline: auto; }
+      .vision-copy { text-align: center; }
+      .vision-copy .h2,
+      .vision-copy .lead { margin-inline: auto; }
+      .icon-constellation { margin-inline: auto; }
+      .cta {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .cta p { margin-inline: auto; }
+      .cta .btn-primary { justify-self: center; }
+      .arc .av { width: 46px; height: 46px; border-radius: 12px; }
+      .arc-wrap { height: 240px; }
+      .carousel { aspect-ratio: 16 / 10; }
+    }
+
+    @media (max-width: 560px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid figure:nth-child(n+5) { display: none; }
+      .logo-row { gap: 1rem 1.25rem; }
+      .fan { height: 220px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .slide { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <header class="nav" id="nav">
+        <a class="logo" href="#top" aria-label="Vitrina home">
+          <span class="logo-mark" aria-hidden="true"></span>
+          VITRINA
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#get-started">Get Started</a>
+          <a href="#strategy"><span class="dot"></span>Create strategy</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+          <a href="#solution">Solution</a>
+          <a href="#commerce">Commerce</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn" aria-label="Account" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 19.5c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+          </button>
+          <button class="icon-btn" aria-label="Settings" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>
+          </button>
+          <button class="menu-toggle" id="menuToggle" aria-label="Menu" type="button">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- HERO CAROUSEL -->
+      <section class="hero" id="top">
+        <div class="hero-head">
+          <p class="eyebrow">Class by Mira Solen</p>
+          <h1 class="hero-title">Gateway<span class="to">to</span></h1>
+        </div>
+
+        <div class="carousel" id="carousel" data-autoplay="5200">
+          <div class="carousel-dots" id="carouselDots" aria-hidden="true"></div>
+          <div class="carousel-track">
+            <div class="slide is-active"><img src="hero-1.jpg" alt="Fashion portrait on coral" /></div>
+            <div class="slide"><img src="hero-2.jpg" alt="Editorial portrait with clear frames" /></div>
+            <div class="slide"><img src="hero-3.jpg" alt="Editorial portrait in plum light" /></div>
+          </div>
+          <div class="carousel-ui">
+            <button class="btn-pill" type="button" id="watchBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Watch
+            </button>
+            <div class="carousel-arrows">
+              <button type="button" id="prevSlide" aria-label="Previous">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+              </button>
+              <button type="button" id="nextSlide" aria-label="Next">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRUSTED -->
+      <section class="trusted" id="get-started">
+        <h3>Trusted</h3>
+        <div class="logo-row" aria-label="Fictional partner marks">
+          <span class="brand-logo"><i>R</i> remote field</span>
+          <span class="brand-logo"><i>B</i> basalt</span>
+          <span class="brand-logo"><i>Q</i> quartzline</span>
+          <span class="brand-logo"><i>L</i> lumenfold</span>
+          <span class="brand-logo"><i>C</i> cirrus</span>
+          <span class="brand-logo"><i>M</i> mercora</span>
+        </div>
+      </section>
+
+      <!-- SHOWCASE / SELL -->
+      <section class="showcase" id="commerce">
+        <div>
+          <p class="eyebrow">Commerce</p>
+          <h2 class="h1">
+            Showcase, Sell,<br />
+            <span class="rose">&amp; acquire</span><br />
+            <span class="fade">ours</span>
+          </h2>
+          <p class="lead">List editions, drop collections, and place works in front of collectors who already care about craft.</p>
+        </div>
+        <div class="fan" id="fanShowcase" aria-hidden="true">
+          <div class="fan-card" style="--i:0"><img src="album-7.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:1"><img src="album-1.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:2"><img src="album-5.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:3"><img src="album-4.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:4"><img src="album-2.jpg" alt="" /></div>
+        </div>
+      </section>
+
+      <!-- MASTERPIECE -->
+      <section class="masterpiece" id="strategy">
+        <h2 class="h2">A place to display your masterpiece.</h2>
+        <div class="fan-wide" id="fanMaster" aria-hidden="true">
+          <div class="fan-card" style="--i:0"><img src="album-1.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:1"><img src="album-2.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:2"><img src="album-4.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:3"><img src="album-5.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:4"><img src="album-3.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:5"><img src="album-6.jpg" alt="" /></div>
+          <div class="fan-card" style="--i:6"><img src="album-7.jpg" alt="" /></div>
+        </div>
+        <p class="artist-count">Artists can display · <strong id="artistCount">12,480</strong></p>
+        <div class="scroll-hint" aria-hidden="true"></div>
+      </section>
+
+      <!-- CONNECT -->
+      <section class="connect" id="solution">
+        <div class="connect-stage">
+          <span class="bubble left">@mira</span>
+          <span class="bubble right">@andreas</span>
+          <div class="stack" id="cardStack" aria-hidden="true">
+            <div class="stack-card" style="--i:0"><img src="album-1.jpg" alt="" /></div>
+            <div class="stack-card" style="--i:1"><img src="album-3.jpg" alt="" /></div>
+            <div class="stack-card" style="--i:2"><img src="album-5.jpg" alt="" /></div>
+            <div class="stack-card" style="--i:3"><img src="album-4.jpg" alt="" /></div>
+            <div class="stack-card" style="--i:4"><img src="album-6.jpg" alt="" /></div>
+          </div>
+          <p class="connect-copy">
+            Whether you’re an artist looking to sell your work
+            <span class="dim">/ or a buyer seeking unique pieces — Vitrina connects</span>
+            you to a world of craft.
+          </p>
+        </div>
+      </section>
+
+      <!-- MARKET SCATTER -->
+      <section class="market" id="pricing">
+        <article class="market-card">
+          <div class="thumb"><img src="album-1.jpg" alt="Featured drop" /></div>
+          <span class="chip" aria-hidden="true">↗</span>
+          <h3>Where art meets market</h3>
+          <p>Allowing artists to showcase their work and buyers to find unique, inspiring pieces — without the noise of a generic marketplace.</p>
+        </article>
+        <div class="scatter" id="scatter" aria-hidden="true">
+          <div class="scatter-card" data-x="8" data-y="12" data-r="-14"><img src="album-2.jpg" alt="" /></div>
+          <div class="scatter-card" data-x="28" data-y="38" data-r="-6"><img src="album-3.jpg" alt="" /></div>
+          <div class="scatter-card" data-x="48" data-y="18" data-r="8"><img src="album-4.jpg" alt="" /></div>
+          <div class="scatter-card" data-x="62" data-y="48" data-r="12"><img src="album-5.jpg" alt="" /></div>
+          <div class="scatter-card" data-x="78" data-y="22" data-r="-8"><img src="album-6.jpg" alt="" /></div>
+          <div class="scatter-card" data-x="42" data-y="62" data-r="4"><img src="album-7.jpg" alt="" /></div>
+        </div>
+      </section>
+
+      <!-- VISION -->
+      <section class="vision">
+        <div class="vision-copy">
+          <p class="eyebrow">Platform</p>
+          <h2 class="h2">Our vision for any art technology.</h2>
+          <p class="lead">Every piece of art tells a story. Vitrina lets artists stage personal journeys — and collectors follow the ones that move them.</p>
+          <a class="link-quiet" href="#contact">Read more →</a>
+          <div class="icon-constellation" id="iconRow" aria-hidden="true">
+            <span class="ic" style="left:8%;top:42%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg></span>
+            <span class="ic" style="left:28%;top:12%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20l6-16 4 8 6-4"/><circle cx="18" cy="6" r="1.5" fill="currentColor"/></svg></span>
+            <span class="ic" style="left:48%;top:38%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="10" r="3"/><circle cx="16" cy="10" r="3"/><circle cx="12" cy="16" r="3"/></svg></span>
+            <span class="ic" style="left:68%;top:10%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 7h14v10H5z"/><path d="M9 7V5h6v2"/></svg></span>
+            <span class="ic" style="left:18%;top:72%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 18V8l6-3 6 3v10"/><path d="M10 18v-5h4v5"/></svg></span>
+            <span class="ic" style="left:42%;top:78%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M7 7v12h10V7"/><path d="M9 11h6M9 15h4"/></svg></span>
+            <span class="ic" style="left:62%;top:58%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 4l2.2 4.5L19 9.2l-3.5 3.4.8 4.9L12 15.2 7.7 17.5l.8-4.9L5 9.2l4.8-.7z"/></svg></span>
+            <span class="ic" style="left:82%;top:36%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M7 8l5-3 5 3M7 16l5 3 5-3"/></svg></span>
+          </div>
+        </div>
+
+        <div class="gallery-panel">
+          <div class="gallery-tabs">
+            <button class="tab" type="button" data-tab="business">Business</button>
+            <button class="tab is-active" type="button" data-tab="personal">Personal</button>
+            <button class="create" type="button"><i>+</i> Create</button>
+          </div>
+          <div class="gallery-grid" id="galleryGrid">
+            <figure><img src="album-2.jpg" alt="Staff collection" /></figure>
+            <figure><img src="album-3.jpg" alt="Field ride" /></figure>
+            <figure><img src="album-4.jpg" alt="Yellow mark" /></figure>
+            <figure><img src="album-1.jpg" alt="Violet vessel" /></figure>
+            <figure><img src="album-5.jpg" alt="Duo edition" /></figure>
+            <figure><img src="album-6.jpg" alt="Cloud study" /></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY -->
+      <section class="community" id="contact">
+        <div class="arc-wrap" aria-hidden="true">
+          <div class="arc arc-top" id="arcTop">
+            <div class="av"><img src="avatars/01.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/02.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/03.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/04.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/05.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/06.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/07.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/08.jpg" alt="" /></div>
+            <div class="av"><img src="album-2.jpg" alt="" /></div>
+            <div class="av"><img src="album-6.jpg" alt="" /></div>
+            <div class="av"><img src="album-4.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/09.jpg" alt="" /></div>
+          </div>
+          <div class="community-copy">
+            <div class="mark" aria-hidden="true"></div>
+            <h2 class="h2">You will find yourself among us</h2>
+            <p class="sub">Dive into a dynamic community where artists and buyers merge without friction.</p>
+          </div>
+          <div class="arc arc-bottom" id="arcBottom">
+            <div class="av"><img src="avatars/10.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/11.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/12.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/01.jpg" alt="" /></div>
+            <div class="av"><img src="album-5.jpg" alt="" /></div>
+            <div class="av"><img src="album-3.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/04.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/06.jpg" alt="" /></div>
+            <div class="av"><img src="album-7.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/08.jpg" alt="" /></div>
+            <div class="av"><img src="avatars/02.jpg" alt="" /></div>
+            <div class="av"><img src="album-1.jpg" alt="" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta" id="cta">
+        <div>
+          <h2>Open your vitrine. Let the right people find the work.</h2>
+          <p>Sample template for an art commerce marketing site — fictional brand, original assets.</p>
+        </div>
+        <a class="btn-primary" href="mailto:hello@vitrina.example">Start free →</a>
+      </section>
+
+      <footer class="footer">
+        <span>Vitrina · Sample template</span>
+        <span>hello@vitrina.example</span>
+        <span>© 2026 Fictional brand</span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script>
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* —— Mobile nav —— */
+      const nav = document.getElementById("nav");
+      document.getElementById("menuToggle").addEventListener("click", () => {
+        nav.classList.toggle("is-open");
+      });
+      nav.querySelectorAll(".nav-links a").forEach((a) => {
+        a.addEventListener("click", () => nav.classList.remove("is-open"));
+      });
+
+      /* —— Carousel —— */
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsEl = document.getElementById("carouselDots");
+      let idx = 0;
+      let timer;
+
+      slides.forEach((_, i) => {
+        const d = document.createElement("span");
+        if (i === 0) d.classList.add("is-active");
+        d.addEventListener("click", () => go(i));
+        dotsEl.appendChild(d);
+      });
+      const dots = Array.from(dotsEl.children);
+
+      function go(n) {
+        idx = (n + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle("is-active", i === idx));
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === idx));
+        restart();
+      }
+      function restart() {
+        clearInterval(timer);
+        if (reduce) return;
+        timer = setInterval(() => go(idx + 1), 5200);
+      }
+      document.getElementById("prevSlide").addEventListener("click", () => go(idx - 1));
+      document.getElementById("nextSlide").addEventListener("click", () => go(idx + 1));
+      document.getElementById("watchBtn").addEventListener("click", () => go(idx + 1));
+      restart();
+
+      /* —— Artist counter —— */
+      const countEl = document.getElementById("artistCount");
+      const targetCount = 12480;
+
+      /* —— Scatter layout —— */
+      document.querySelectorAll(".scatter-card").forEach((card) => {
+        const x = card.dataset.x || 50;
+        const y = card.dataset.y || 50;
+        const r = card.dataset.r || 0;
+        card.style.left = x + "%";
+        card.style.top = y + "%";
+        card.style.transform = `translate(-50%, -50%) rotate(${r}deg)`;
+      });
+
+      /* —— Gallery tabs (visual only) —— */
+      document.querySelectorAll(".gallery-tabs .tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".gallery-tabs .tab").forEach((t) => t.classList.remove("is-active"));
+          tab.classList.add("is-active");
+        });
+      });
+
+      /* —— Initial fan poses (static fallback) —— */
+      function poseFan(root, spread, lift) {
+        const cards = root.querySelectorAll(".fan-card");
+        const n = cards.length;
+        const mid = (n - 1) / 2;
+        cards.forEach((card, i) => {
+          const t = i - mid;
+          const rot = t * spread;
+          const x = t * 42;
+          const y = Math.abs(t) * lift;
+          card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${rot}deg)`;
+          card.style.zIndex = String(10 + i);
+        });
+      }
+      poseFan(document.getElementById("fanShowcase"), 11, 6);
+      poseFan(document.getElementById("fanMaster"), 9, 5);
+
+      document.querySelectorAll(".stack-card").forEach((card, i, arr) => {
+        const mid = (arr.length - 1) / 2;
+        const t = i - mid;
+        card.style.transform = `translate(${t * 18}px, ${t * -10}px) rotate(${t * 6}deg)`;
+        card.style.zIndex = String(i + 1);
+      });
+
+      if (reduce || typeof gsap === "undefined") {
+        /* still animate count simply */
+        if (countEl) countEl.textContent = targetCount.toLocaleString();
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* —— Lenis + GSAP —— */
+      let lenis;
+      if (typeof Lenis !== "undefined") {
+        lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      /* Hero entrance */
+      gsap.from(".hero-head", { y: 28, opacity: 0, duration: 0.9, ease: "power3.out" });
+      gsap.from(".carousel", { y: 40, opacity: 0, duration: 1, delay: 0.12, ease: "power3.out" });
+
+      /* Trusted logos */
+      gsap.from(".logo-row .brand-logo", {
+        scrollTrigger: { trigger: ".trusted", start: "top 80%" },
+        y: 16, opacity: 0, stagger: 0.06, duration: 0.55, ease: "power2.out",
+      });
+
+      /* Showcase fan — expand on scroll */
+      (function () {
+        const root = document.getElementById("fanShowcase");
+        const cards = root.querySelectorAll(".fan-card");
+        const mid = (cards.length - 1) / 2;
+        gsap.fromTo(
+          cards,
+          {
+            x: 0, y: 40, rotation: 0, rotate: 0,
+            xPercent: -50, yPercent: -50,
+          },
+          {
+            scrollTrigger: { trigger: ".showcase", start: "top 70%", end: "top 25%", scrub: 0.8 },
+            x: (i) => (i - mid) * 52,
+            y: (i) => Math.abs(i - mid) * 8,
+            rotate: (i) => (i - mid) * 12,
+            opacity: 1,
+            stagger: 0.04,
+            ease: "none",
+          }
+        );
+        gsap.from(".showcase .h1, .showcase .lead", {
+          scrollTrigger: { trigger: ".showcase", start: "top 75%" },
+          y: 30, opacity: 0, duration: 0.75, stagger: 0.08, ease: "power3.out",
+        });
+      })();
+
+      /* Masterpiece fan */
+      (function () {
+        const root = document.getElementById("fanMaster");
+        const cards = root.querySelectorAll(".fan-card");
+        const mid = (cards.length - 1) / 2;
+        gsap.fromTo(
+          cards,
+          { x: 0, y: 50, rotate: 0, opacity: 0, xPercent: -50, yPercent: -50 },
+          {
+            scrollTrigger: { trigger: ".masterpiece", start: "top 75%", end: "top 30%", scrub: 0.9 },
+            x: (i) => (i - mid) * 48,
+            y: (i) => Math.abs(i - mid) * 6,
+            rotate: (i) => (i - mid) * 9,
+            opacity: 1,
+            ease: "none",
+          }
+        );
+        gsap.from(".masterpiece .h2", {
+          scrollTrigger: { trigger: ".masterpiece", start: "top 80%" },
+          y: 36, opacity: 0, duration: 0.8, ease: "power3.out",
+        });
+
+        ScrollTrigger.create({
+          trigger: ".masterpiece",
+          start: "top 65%",
+          once: true,
+          onEnter: () => {
+            const obj = { n: 9800 };
+            gsap.to(obj, {
+              n: targetCount,
+              duration: 1.6,
+              ease: "power2.out",
+              onUpdate: () => {
+                countEl.textContent = Math.floor(obj.n).toLocaleString();
+              },
+            });
+          },
+        });
+      })();
+
+      /* Connect stack */
+      (function () {
+        const cards = document.querySelectorAll(".stack-card");
+        const mid = (cards.length - 1) / 2;
+        gsap.fromTo(
+          cards,
+          { x: 0, y: 80, rotate: 0, opacity: 0, scale: 0.85 },
+          {
+            scrollTrigger: { trigger: ".connect", start: "top 70%", end: "top 25%", scrub: 0.85 },
+            x: (i) => (i - mid) * 22,
+            y: (i) => (i - mid) * -12,
+            rotate: (i) => (i - mid) * 7,
+            opacity: 1,
+            scale: 1,
+            ease: "none",
+          }
+        );
+        gsap.from(".connect-copy", {
+          scrollTrigger: { trigger: ".connect", start: "top 70%" },
+          y: 24, opacity: 0, duration: 0.8, ease: "power3.out",
+        });
+        gsap.from(".bubble", {
+          scrollTrigger: { trigger: ".connect", start: "top 60%" },
+          scale: 0.6, opacity: 0, duration: 0.55, stagger: 0.12, ease: "back.out(1.6)",
+        });
+      })();
+
+      /* Market scatter */
+      gsap.from(".scatter-card", {
+        scrollTrigger: { trigger: ".market", start: "top 70%", end: "top 30%", scrub: 0.9 },
+        y: 80,
+        opacity: 0,
+        scale: 0.7,
+        stagger: 0.06,
+        ease: "none",
+      });
+      gsap.from(".market-card", {
+        scrollTrigger: { trigger: ".market", start: "top 75%" },
+        x: -40, opacity: 0, duration: 0.85, ease: "power3.out",
+      });
+
+      /* Vision icons + gallery */
+      gsap.from("#iconRow .ic", {
+        scrollTrigger: { trigger: ".vision", start: "top 70%" },
+        scale: 0, opacity: 0, stagger: 0.05, duration: 0.45, ease: "back.out(1.7)",
+      });
+      gsap.from(".gallery-panel", {
+        scrollTrigger: { trigger: ".vision", start: "top 70%" },
+        y: 40, opacity: 0, duration: 0.9, ease: "power3.out",
+      });
+      gsap.from(".gallery-grid figure", {
+        scrollTrigger: { trigger: ".gallery-panel", start: "top 80%" },
+        scale: 0.85, opacity: 0, stagger: 0.05, duration: 0.5, ease: "power2.out",
+      });
+
+      /* Community arcs — horizontal drift */
+      gsap.fromTo(
+        "#arcTop",
+        { xPercent: -8 },
+        {
+          xPercent: 8,
+          ease: "none",
+          scrollTrigger: { trigger: ".community", start: "top bottom", end: "bottom top", scrub: true },
+        }
+      );
+      gsap.fromTo(
+        "#arcBottom",
+        { xPercent: 8 },
+        {
+          xPercent: -8,
+          ease: "none",
+          scrollTrigger: { trigger: ".community", start: "top bottom", end: "bottom top", scrub: true },
+        }
+      );
+      gsap.from(".arc .av", {
+        scrollTrigger: { trigger: ".community", start: "top 75%" },
+        scale: 0.5, opacity: 0, stagger: 0.025, duration: 0.45, ease: "power2.out",
+      });
+      gsap.from(".community-copy", {
+        scrollTrigger: { trigger: ".community", start: "top 70%" },
+        y: 28, opacity: 0, duration: 0.8, ease: "power3.out",
+      });
+
+      gsap.from(".cta", {
+        scrollTrigger: { trigger: ".cta", start: "top 85%" },
+        y: 36, opacity: 0, duration: 0.8, ease: "power3.out",
+      });
+    })();
+  </script>
+</body>
+</html>

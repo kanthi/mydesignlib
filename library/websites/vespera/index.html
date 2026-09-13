@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Z97ZD3EVSF');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vespera — See the shift coming</title>
+  <meta name="description" content="Fictional dusk-watch analytics. Live boards, shared rooms, no warehouse ticket." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Epilogue", system-ui, sans-serif;
+      --font-body: "Source Sans 3", system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --surface-page: #07080c;
+      --surface-plate: #0c0e16;
+      --surface-glass: rgba(14, 18, 28, 0.72);
+      --text-primary: #f3efe6;
+      --text-secondary: #9aa3b5;
+      --text-faint: #6b7384;
+      --border-default: rgba(243, 239, 230, 0.10);
+      --ice: #3ba7ff;
+      --ember: #e8923a;
+      --action-primary: #e8923a;
+      --on-action: #1a1006;
+      --status-danger: #e25a4a;
+      --text-display: clamp(2.15rem, 5.6vw, 4.15rem);
+      --text-3xl: clamp(1.85rem, 3.4vw, 2.65rem);
+      --text-xl: 1.25rem;
+      --text-lg: 1.0625rem;
+      --text-base: 1rem;
+      --text-sm: 0.875rem;
+      --text-xs: 0.72rem;
+      --leading-display: 1.02;
+      --leading-body: 1.6;
+      --track-display: -0.038em;
+      --section-y: clamp(4.5rem, 9vw, 7.25rem);
+      --wrap: 1120px;
+      --page-pad: 1.25rem;
+      --radius-plate: 20px;
+      --radius-glass: 18px;
+      --radius-inner: 14px;
+      --radius-btn: 10px;
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--surface-page);
+      color: var(--text-primary);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    :focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; }
+    .skip {
+      position: absolute; left: 1rem; top: -3rem; z-index: 80;
+      padding: 0.55rem 0.8rem; background: var(--ember); color: var(--on-action);
+      border-radius: var(--radius-btn); font-weight: 600;
+    }
+    .skip:focus { top: 1rem; }
+
+    /* ——— Header ——— */
+    .site-head {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem;
+      width: auto;
+      margin: 0 auto;
+      padding: 1.15rem 1.25rem 0;
+      max-width: 1240px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.55rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+    .brand-mark { width: 22px; height: 22px; flex-shrink: 0; display: block; }
+    .nav-pill {
+      display: flex; align-items: center; gap: 0.15rem;
+      padding: 0.28rem;
+      background: rgba(7, 8, 12, 0.45);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      backdrop-filter: blur(16px);
+    }
+    .nav-pill a {
+      padding: 0.48rem 0.95rem;
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-radius: var(--radius-pill);
+      min-height: 40px;
+      display: inline-flex; align-items: center;
+      transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .nav-pill a:hover { color: var(--text-primary); background: rgba(243, 239, 230, 0.06); }
+    .nav-pill [data-open-login] { display: none; }
+    .head-actions { display: flex; align-items: center; gap: 0.5rem; }
+    .btn-login {
+      min-height: 40px; padding: 0 0.95rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-btn);
+      font-size: var(--text-sm); font-weight: 600;
+      color: var(--text-primary);
+      transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .btn-login:hover { background: rgba(243, 239, 230, 0.06); border-color: rgba(243, 239, 230, 0.2); }
+    .menu-btn {
+      display: none;
+      width: 44px; height: 44px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-btn);
+      place-items: center;
+    }
+    .menu-btn span, .menu-btn span::before, .menu-btn span::after {
+      display: block; width: 16px; height: 1.5px; background: var(--text-primary); position: relative;
+    }
+    .menu-btn span::before, .menu-btn span::after {
+      content: ""; position: absolute; left: 0;
+    }
+    .menu-btn span::before { top: -5px; }
+    .menu-btn span::after { top: 5px; }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative;
+      min-height: min(100svh, 920px);
+      padding: 7.25rem 0 3.5rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-bloom {
+      position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(70% 78% at 4% 78%, rgba(59, 167, 255, 0.52), transparent 58%),
+        radial-gradient(72% 80% at 98% 76%, rgba(232, 146, 58, 0.56), transparent 58%),
+        radial-gradient(50% 40% at 50% 100%, rgba(7, 8, 12, 0.2), transparent 70%),
+        #05070c;
+    }
+    .hero-bloom::after {
+      content: "";
+      position: absolute; inset: auto 0 0;
+      height: 28%;
+      background: linear-gradient(to bottom, transparent, var(--surface-page));
+    }
+    .hero-inner {
+      width: min(var(--wrap), 100%);
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 var(--page-pad);
+    }
+    .desk-break { display: none; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.32rem 0.75rem 0.32rem 0.45rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      background: rgba(7, 8, 12, 0.4);
+      backdrop-filter: blur(12px);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.02em;
+      color: var(--text-secondary);
+    }
+    .badge-star { width: 16px; height: 16px; display: grid; place-items: center; }
+    .badge-star svg { width: 12px; height: 12px; }
+    .hero h1 {
+      margin: 1.35rem auto 0;
+      max-width: 18ch;
+      font-family: var(--font-display);
+      font-size: var(--text-display);
+      font-weight: 600;
+      line-height: var(--leading-display);
+      letter-spacing: var(--track-display);
+      text-wrap: balance;
+    }
+    .lede {
+      margin: 1.15rem auto 0;
+      max-width: min(38rem, 100%);
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+      overflow-wrap: break-word;
+    }
+    .hero-cta {
+      display: flex; justify-content: center; gap: 0.7rem;
+      margin-top: 1.75rem; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0 1.2rem;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--action-primary);
+      color: var(--on-action);
+      box-shadow: 0 0 0 1px rgba(232, 146, 58, 0.35), 0 10px 28px rgba(232, 146, 58, 0.28);
+    }
+    .btn-primary:hover { background: #f0a04c; box-shadow: 0 0 0 1px rgba(232, 146, 58, 0.5), 0 12px 32px rgba(232, 146, 58, 0.36); }
+    .btn-ghost {
+      background: rgba(7, 8, 12, 0.5);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      backdrop-filter: blur(10px);
+    }
+    .btn-ghost:hover { background: rgba(243, 239, 230, 0.06); border-color: rgba(243, 239, 230, 0.22); }
+
+    /* Hero boards */
+    .boards {
+      position: relative;
+      width: min(980px, 100%);
+      margin: 3.1rem auto 0;
+      height: 400px;
+      padding: 0 var(--page-pad);
+    }
+    .board {
+      position: absolute;
+      background: var(--surface-glass);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-glass);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(18px);
+      padding: 1.05rem 1.15rem 1.15rem;
+      color: var(--text-primary);
+    }
+    .board-left {
+      left: 2%; top: 56px; width: 31%;
+      transform: rotate(-3.5deg);
+      z-index: 1;
+    }
+    .board-mid {
+      left: 50%; top: 0; width: 42%;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+    .board-right {
+      right: 2%; top: 64px; width: 31%;
+      transform: rotate(4deg);
+      z-index: 2;
+    }
+    .board-kicker {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .board-metric {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    .gauge-row {
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: end; gap: 0.6rem; margin-top: 0.85rem;
+    }
+    .board-metric.lg { font-size: 1.55rem; }
+    .board-metric.xl { font-size: clamp(1.8rem, 3vw, 2.15rem); margin-top: 0.25rem; }
+    .board-note { font-size: var(--text-xs); color: var(--text-faint); margin-top: 0.15rem; }
+    .delta { color: #7dcea0; font-family: var(--font-mono); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+    .board-head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;
+    }
+    .chip-dl {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.28rem 0.55rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-size: 0.62rem;
+      color: var(--text-secondary);
+      background: rgba(7, 8, 12, 0.35);
+    }
+    .chart { display: block; width: 100%; height: auto; margin-top: 0.85rem; }
+    .bars {
+      display: flex; align-items: flex-end; gap: 6px;
+      height: 92px; margin-top: 1rem;
+    }
+    .bars i {
+      flex: 1; display: block; border-radius: 3px 3px 0 0;
+      background: linear-gradient(to top, var(--ice), var(--ember));
+      opacity: 0.85;
+    }
+
+    /* ——— Shared sections ——— */
+    section { padding: var(--section-y) 0; }
+    .wrap {
+      width: min(var(--wrap), 100%);
+      margin: 0 auto;
+      padding: 0 var(--page-pad);
+    }
+    .sec-head {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem; align-items: end;
+      margin-bottom: 2.4rem;
+    }
+    .sec-head h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      text-wrap: balance;
+    }
+    .sec-head p { color: var(--text-secondary); max-width: 34rem; justify-self: end; }
+
+    /* Feature plates */
+    .plates {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .plate {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-plate);
+      background:
+        linear-gradient(var(--surface-plate), var(--surface-plate)) padding-box,
+        linear-gradient(135deg, rgba(232, 146, 58, 0.55), rgba(59, 167, 255, 0.12) 46%, rgba(59, 167, 255, 0.5)) border-box;
+      border: 1px solid transparent;
+      padding: 0 0 1.35rem;
+    }
+    .plate::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(232, 146, 58, 0.38) 1px, transparent 1.2px);
+      background-size: 9px 9px;
+      mask-image: radial-gradient(ellipse 55% 50% at 6% 8%, #000 0%, transparent 72%);
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .plate:nth-child(2)::before,
+    .plate:nth-child(4)::before {
+      background-image: radial-gradient(rgba(59, 167, 255, 0.34) 1px, transparent 1.2px);
+      mask-image: radial-gradient(ellipse 55% 50% at 94% 8%, #000 0%, transparent 72%);
+    }
+    .plate-media {
+      position: relative;
+      height: 230px;
+      display: grid; place-items: center;
+    }
+    .plate-copy { position: relative; padding: 0 1.4rem; }
+    .plate-copy h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .plate-copy p { margin-top: 0.35rem; color: var(--text-secondary); font-size: var(--text-sm); max-width: 36rem; }
+
+    /* Constellation */
+    .constellation { width: min(280px, 80%); }
+    .glass-stack { position: relative; width: 220px; height: 160px; }
+    .glass-stack .g {
+      position: absolute; border-radius: 12px;
+      background: rgba(16, 20, 32, 0.75);
+      border: 1px solid var(--border-default);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+    .g-a { width: 150px; height: 96px; left: 36px; top: 8px; }
+    .g-b { width: 72px; height: 72px; left: 18px; top: 58px; display: grid; place-items: center; z-index: 2; }
+    .g-c { width: 88px; height: 88px; right: 8px; top: 42px; display: grid; place-items: center; }
+    .mini-chart { width: min(86%, 340px); }
+    .room-card {
+      width: 210px;
+      background: rgba(16, 20, 32, 0.75);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-inner);
+      padding: 1rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+    .room-people { display: flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; }
+    .avatars { display: flex; }
+    .avatars b {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 1.5px solid #0c0e16;
+      margin-left: -6px;
+    }
+    .avatars b:first-child { margin-left: 0; }
+    .join {
+      margin-left: auto;
+      font-size: var(--text-xs);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* Process */
+    .dusk {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      position: relative;
+      list-style: none;
+      padding: 0;
+    }
+    .dusk::before {
+      content: "";
+      position: absolute; left: 4%; right: 4%; top: 17px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--ice), var(--ember));
+      opacity: 0.45;
+    }
+    .station { position: relative; }
+    .station-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--surface-page);
+      border: 2px solid var(--ice);
+      margin-bottom: 1.1rem;
+    }
+    .station:nth-child(2) .station-dot { border-color: #79b8ee; }
+    .station:nth-child(3) .station-dot { border-color: #c9a066; }
+    .station:nth-child(4) .station-dot { border-color: var(--ember); }
+    .station-idx {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+    .station h3 {
+      margin-top: 0.3rem;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+    .station p { margin-top: 0.4rem; color: var(--text-secondary); font-size: var(--text-sm); }
+
+    /* Integrations */
+    .sources {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    .source {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      background: var(--surface-plate);
+      border: 1px solid var(--border-default);
+      border-radius: 14px;
+      min-height: 64px;
+      transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .source:hover { border-color: rgba(243, 239, 230, 0.22); transform: translateY(-2px); }
+    .source-mark {
+      width: 36px; height: 36px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: 9px;
+      background: rgba(243, 239, 230, 0.04);
+      border: 1px solid var(--border-default);
+    }
+    .source-mark svg { width: 18px; height: 18px; }
+    .source strong { display: block; font-size: var(--text-sm); font-weight: 600; }
+    .source span { display: block; font-size: var(--text-xs); color: var(--text-faint); }
+
+    /* Pricing */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      align-items: stretch;
+    }
+    .plan {
+      background: var(--surface-plate);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-plate);
+      padding: 1.4rem 1.35rem 1.35rem;
+      display: flex; flex-direction: column;
+    }
+    .plan-floor {
+      border-color: rgba(232, 146, 58, 0.45);
+      box-shadow: 0 0 0 1px rgba(232, 146, 58, 0.12), 0 20px 50px rgba(0, 0, 0, 0.28);
+      transform: translateY(-6px);
+    }
+    .plan-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .plan-price {
+      margin-top: 0.7rem;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 1.85rem;
+      letter-spacing: -0.04em;
+    }
+    .plan-price small { font-size: var(--text-xs); color: var(--text-faint); letter-spacing: 0; }
+    .plan ul {
+      margin: 1.1rem 0 1.4rem;
+      padding: 0; list-style: none;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      flex: 1;
+    }
+    .plan li { padding: 0.28rem 0 0.28rem 1rem; position: relative; }
+    .plan li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.72rem;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ember);
+      opacity: 0.7;
+    }
+    .plan .btn { width: 100%; }
+
+    /* Close */
+    .close {
+      text-align: center;
+      padding-bottom: calc(var(--section-y) + 0.5rem);
+    }
+    .close h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+      max-width: 16ch;
+      margin: 0 auto;
+    }
+    .close p { margin: 0.85rem auto 1.5rem; max-width: 32rem; color: var(--text-secondary); }
+    form.ask {
+      width: min(480px, 100%);
+      margin: 0 auto;
+      display: grid; gap: 0.65rem; text-align: left;
+    }
+    label { font-size: var(--text-xs); color: var(--text-faint); display: block; margin-bottom: 0.28rem; }
+    input, textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 0.65rem 0.8rem;
+      border-radius: var(--radius-btn);
+      border: 1px solid var(--border-default);
+      background: var(--surface-plate);
+      color: var(--text-primary);
+      font: inherit;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, textarea:focus { outline: 2px solid var(--ice); outline-offset: 1px; }
+
+    footer {
+      border-top: 1px solid var(--border-default);
+      padding: 1.4rem 0 2rem;
+      color: var(--text-faint);
+      font-size: var(--text-sm);
+    }
+    .foot {
+      width: min(var(--wrap), 100%);
+      margin: 0 auto;
+      padding: 0 var(--page-pad);
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .foot a:hover { color: var(--text-primary); }
+
+    dialog {
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+      background: #0d1018;
+      color: var(--text-primary);
+      padding: 1.4rem;
+      width: min(380px, calc(100% - 2rem));
+    }
+    dialog::backdrop { background: rgba(0, 0, 0, 0.62); }
+    dialog h2 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.85rem; }
+    dialog .row { margin-bottom: 0.7rem; }
+    dialog menu { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.9rem; }
+
+    .reveal { opacity: 0; transform: translateY(16px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity 520ms var(--ease), transform 520ms var(--ease); }
+
+    @media (min-width: 1101px) {
+      .desk-break { display: block; }
+    }
+    @media (max-width: 1100px) {
+      .nav-pill { display: none; }
+      .menu-btn { display: grid; }
+      .btn-login { display: none; }
+      .nav-pill.open {
+        display: flex; flex-direction: column; align-items: stretch;
+        position: absolute; top: 4.4rem; left: 50%; transform: translateX(-50%);
+        width: min(320px, calc(100% - 2rem));
+        padding: 0.5rem;
+        z-index: 30;
+      }
+      .nav-pill.open [data-open-login] { display: flex; }
+      .board-left, .board-right { width: 34%; }
+    }
+    @media (max-width: 720px) {
+      :root { --page-pad: 1.15rem; }
+      .hero { padding: 6.2rem 0 2.4rem; min-height: 0; }
+      .hero h1 {
+        max-width: 12ch;
+        font-size: clamp(1.85rem, 8vw, 2.25rem);
+        overflow-wrap: anywhere;
+      }
+      .lede { font-size: 0.98rem; max-width: 16.5rem; }
+      .hero-cta { flex-direction: column-reverse; align-items: stretch; }
+      .hero-cta .btn { width: 100%; }
+      .boards { height: auto; display: grid; gap: 0.75rem; margin-top: 2.2rem; width: 100%; }
+      .board { position: static; width: 100% !important; transform: none !important; }
+      .sec-head { grid-template-columns: 1fr; gap: 0.75rem; }
+      .sec-head p { justify-self: start; }
+      .plates, .dusk, .sources, .plans { grid-template-columns: 1fr; }
+      .dusk::before { display: none; }
+      .plan-floor { transform: none; }
+      .plate-media { height: 200px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+      .reveal.in { transition: none; }
+      .btn, .source, .btn-login, .nav-pill a { transition: none; }
+      .chart-draw { stroke-dasharray: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-head">
+    <a class="brand" href="#top" aria-label="Vespera home">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <linearGradient id="mk" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3ba7ff"/>
+            <stop offset="1" stop-color="#e8923a"/>
+          </linearGradient>
+        </defs>
+        <path d="M3 17.5h18" stroke="url(#mk)" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M12 3.6l1.25 5.6 5.65 1.2-5.65 1.2L12 17.2l-1.25-5.6-5.65-1.2 5.65-1.2L12 3.6z" fill="url(#mk)"/>
+      </svg>
+      Vespera
+    </a>
+    <nav class="nav-pill" id="nav" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#integrations">Sources</a>
+      <a href="#contact">Contact</a>
+      <a href="#login-anchor" data-open-login>Log in</a>
+    </nav>
+    <div class="head-actions">
+      <button class="btn-login" type="button" data-open-login>Log in</button>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-bloom" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="badge">
+          <span class="badge-star" aria-hidden="true">
+            <svg viewBox="0 0 12 12"><path d="M6 1l.85 3.7L11 5.5 6.85 6.3 6 10 5.15 6.3 1 5.5l4.15-.8L6 1z" fill="#e8923a"/></svg>
+          </span>
+          First light to last lamp.
+        </p>
+        <h1>See the shift coming.<br class="desk-break" /> Move before it lands.</h1>
+        <p class="lede">Vespera connects the sources you already keep and draws a live board — no warehouse ticket, no Friday deploy.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contact">Open a board</a>
+          <a class="btn btn-ghost" href="#pricing">See plans</a>
+        </div>
+      </div>
+
+      <div class="boards" aria-hidden="false">
+        <article class="board board-left">
+          <p class="board-kicker">Intake</p>
+          <div class="gauge-row">
+            <div>
+              <p class="board-metric lg">$24,180</p>
+              <p class="board-note">Settled this watch</p>
+            </div>
+            <svg width="78" height="78" viewBox="0 0 78 78" aria-hidden="true">
+              <circle cx="39" cy="39" r="30" fill="none" stroke="rgba(243,239,230,.08)" stroke-width="7"/>
+              <circle cx="39" cy="39" r="30" fill="none" stroke="#e8923a" stroke-width="7" stroke-linecap="round"
+                stroke-dasharray="188.5" stroke-dashoffset="62" transform="rotate(-90 39 39)"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="board board-mid">
+          <div class="board-head">
+            <div>
+              <p class="board-metric xl">78.32%</p>
+              <p class="delta">+41.6% vs last dusk</p>
+            </div>
+            <span class="chip-dl">
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.2v5.4M2.6 4.8 5 7.2 7.4 4.8M1.5 8.6h7" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+              Pull report
+            </span>
+          </div>
+          <svg class="chart" viewBox="0 0 360 110" role="img" aria-label="Board completion over fourteen dusks">
+            <defs>
+              <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#3ba7ff"/>
+                <stop offset="1" stop-color="#e8923a"/>
+              </linearGradient>
+              <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#e8923a" stop-opacity="0.28"/>
+                <stop offset="1" stop-color="#e8923a" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 88 C30 84 48 70 72 74 C96 78 108 52 138 48 C168 44 186 62 210 40 C234 18 258 28 282 22 C306 16 330 10 360 8 L360 110 L0 110 Z" fill="url(#fill)"/>
+            <path class="chart-draw" d="M0 88 C30 84 48 70 72 74 C96 78 108 52 138 48 C168 44 186 62 210 40 C234 18 258 28 282 22 C306 16 330 10 360 8" fill="none" stroke="url(#line)" stroke-width="2.2" stroke-linecap="round"/>
+            <g fill="#f3efe6" font-family="IBM Plex Mono, monospace" font-size="9" opacity="0.55">
+              <text x="128" y="40">36.4</text>
+              <text x="204" y="32">41.2</text>
+              <text x="270" y="16">62.8</text>
+            </g>
+          </svg>
+        </article>
+
+        <article class="board board-right">
+          <p class="board-kicker">Due this watch</p>
+          <p class="board-metric lg" style="margin-top:.45rem">14 rooms</p>
+          <p class="board-note">Open on the floor</p>
+          <div class="bars" aria-hidden="true">
+            <i style="height:38%"></i><i style="height:56%"></i><i style="height:44%"></i>
+            <i style="height:78%"></i><i style="height:62%"></i><i style="height:90%"></i>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <h2>Built for rooms that think in numbers</h2>
+          <p>Vespera gives the floor one board to watch, shape, and hand off — without waiting on a queue or exporting a Friday CSV.</p>
+        </div>
+
+        <div class="plates">
+          <article class="plate reveal">
+            <div class="plate-media">
+              <svg class="constellation" viewBox="0 0 280 180" role="img" aria-label="Source nodes linked to a centre board">
+                <g stroke="rgba(243,239,230,.18)" stroke-width="1.2" fill="none">
+                  <path d="M140 90 L52 38"/><path d="M140 90 L228 36"/><path d="M140 90 L46 128"/><path d="M140 90 L232 138"/><path d="M140 90 L140 28"/>
+                </g>
+                <g>
+                  <rect x="122" y="72" width="36" height="36" rx="8" fill="#121622" stroke="#e8923a" stroke-width="1.4"/>
+                  <rect x="128" y="78" width="10" height="10" rx="2" fill="#e8923a"/>
+                  <rect x="142" y="78" width="10" height="10" rx="2" fill="#3ba7ff"/>
+                </g>
+                <circle cx="52" cy="38" r="11" fill="#121622" stroke="rgba(243,239,230,.25)"/>
+                <rect x="46" y="32" width="12" height="12" rx="3" fill="none" stroke="#9aa3b5" stroke-width="1.2"/>
+                <circle cx="228" cy="36" r="11" fill="#121622" stroke="rgba(243,239,230,.25)"/>
+                <path d="M228 31v10M223 36h10" stroke="#9aa3b5" stroke-width="1.2"/>
+                <circle cx="46" cy="128" r="11" fill="#121622" stroke="rgba(243,239,230,.25)"/>
+                <circle cx="46" cy="128" r="3.5" fill="#3ba7ff"/>
+                <circle cx="232" cy="138" r="11" fill="#121622" stroke="rgba(243,239,230,.25)"/>
+                <rect x="226" y="132" width="12" height="12" rx="2" fill="none" stroke="#e8923a" stroke-width="1.2"/>
+                <circle cx="140" cy="28" r="9" fill="#121622" stroke="rgba(243,239,230,.25)"/>
+              </svg>
+            </div>
+            <div class="plate-copy">
+              <h3>Connect anything — instantly</h3>
+              <p>Plug Gridbook, a warehouse, a webhook, or a CSV. The board lights when the source does.</p>
+            </div>
+          </article>
+
+          <article class="plate reveal">
+            <div class="plate-media">
+              <div class="glass-stack" aria-hidden="true">
+                <div class="g g-a">
+                  <svg viewBox="0 0 150 96" width="150" height="96">
+                    <path d="M12 70 C32 66 40 40 62 42 C84 44 90 22 118 18" fill="none" stroke="#e8923a" stroke-width="2"/>
+                    <rect x="108" y="14" width="22" height="14" rx="3" fill="#e8923a"/>
+                  </svg>
+                </div>
+                <div class="g g-b">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <rect x="4" y="4" width="7" height="7" rx="1.5" fill="#e8923a"/>
+                    <rect x="13" y="4" width="7" height="7" rx="1.5" fill="#3ba7ff"/>
+                  </svg>
+                </div>
+                <div class="g g-c">
+                  <svg viewBox="0 0 72 72" width="56" height="56">
+                    <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(243,239,230,.1)" stroke-width="6"/>
+                    <circle cx="36" cy="36" r="22" fill="none" stroke="#3ba7ff" stroke-width="6" stroke-linecap="round"
+                      stroke-dasharray="138" stroke-dashoffset="48" transform="rotate(-90 36 36)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="plate-copy">
+              <h3>Drag the board</h3>
+              <p>Tiles snap. Fields bind. A chart is a tile you place, not a ticket you file.</p>
+            </div>
+          </article>
+
+          <article class="plate reveal">
+            <div class="plate-media">
+              <svg class="mini-chart" viewBox="0 0 340 150" role="img" aria-label="Bars and a spark on one plate">
+                <g fill="url(#barg)" opacity="0.95">
+                  <defs>
+                    <linearGradient id="barg" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0" stop-color="#3ba7ff"/><stop offset="1" stop-color="#e8923a"/>
+                    </linearGradient>
+                  </defs>
+                  <rect x="18" y="78" width="22" height="52" rx="3"/>
+                  <rect x="48" y="54" width="22" height="76" rx="3"/>
+                  <rect x="78" y="66" width="22" height="64" rx="3"/>
+                  <rect x="108" y="32" width="22" height="98" rx="3"/>
+                </g>
+                <path d="M168 108 C196 100 210 70 236 66 C262 62 278 84 322 40" fill="none" stroke="#3ba7ff" stroke-width="2"/>
+                <circle cx="322" cy="40" r="3.5" fill="#e8923a"/>
+              </svg>
+            </div>
+            <div class="plate-copy">
+              <h3>Chart the night</h3>
+              <p>Bars, sparks, and gauges on the same plate. Thresholds go ember when they break.</p>
+            </div>
+          </article>
+
+          <article class="plate reveal">
+            <div class="plate-media">
+              <div class="room-card">
+                <p style="font-size:.72rem;color:var(--text-faint)">Floor · West desk</p>
+                <p style="font-family:var(--font-mono);font-variant-numeric:tabular-nums;margin-top:.35rem">23 on the board</p>
+                <div class="room-people">
+                  <div class="avatars" aria-hidden="true">
+                    <b style="background:#3ba7ff"></b>
+                    <b style="background:#e8923a"></b>
+                    <b style="background:#7dcea0"></b>
+                    <b style="background:#8b93a8"></b>
+                  </div>
+                  <span class="join">Join</span>
+                </div>
+              </div>
+            </div>
+            <div class="plate-copy">
+              <h3>Share the room</h3>
+              <p>One link. The floor watches the same dusk. Comments sit on the number they mean.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <h2>Four stations from first light</h2>
+          <p>Not a funnel. A watch. Source, shape, stay with the board, then hand the room — in that order, because the night only runs one way.</p>
+        </div>
+        <ol class="dusk reveal">
+          <li class="station">
+            <div class="station-dot" aria-hidden="true"></div>
+            <p class="station-idx">01 · Source</p>
+            <h3>Plug the pipes</h3>
+            <p>Gridbook, Relic, a webhook, a dropped CSV. The board is dark until a source speaks.</p>
+          </li>
+          <li class="station">
+            <div class="station-dot" aria-hidden="true"></div>
+            <p class="station-idx">02 · Shape</p>
+            <h3>Lay the tiles</h3>
+            <p>Drag a gauge onto intake. Bind a spark to last dusk. Nothing compiles. Nothing waits.</p>
+          </li>
+          <li class="station">
+            <div class="station-dot" aria-hidden="true"></div>
+            <p class="station-idx">03 · Watch</p>
+            <h3>Stay after hours</h3>
+            <p>Thresholds hold. Ember if they break. The board does not sleep when the floor does.</p>
+          </li>
+          <li class="station">
+            <div class="station-dot" aria-hidden="true"></div>
+            <p class="station-idx">04 · Hand</p>
+            <h3>Send the room</h3>
+            <p>A link, not a screenshot. Fourteen people, one number, comments pinned to the point they saw.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="integrations">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <h2>Sources the board already knows</h2>
+          <p>Fictional pipes, real shape. Bring a sheet, a warehouse, a hook, or a file. We do not badge other people’s marks.</p>
+        </div>
+        <div class="sources reveal">
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M2 7h14M7 2v14"/></svg>
+            </span>
+            <p><strong>Gridbook</strong><span>Live sheet</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 14V4h5l2 3h5v7H3z"/></svg>
+            </span>
+            <p><strong>Relic SQL</strong><span>Warehouse</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9h5l2-3 3 6 2-3h3"/></svg>
+            </span>
+            <p><strong>Webhooks</strong><span>Event in</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 3h6l4 4v8H5z"/><path d="M11 3v4h4"/></svg>
+            </span>
+            <p><strong>Tide CSV</strong><span>File drop</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 13V5l6 4 6-4v8"/></svg>
+            </span>
+            <p><strong>Relay</strong><span>Room chat</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="12" height="12" rx="2"/><path d="M6 7h6M6 10h4"/></svg>
+            </span>
+            <p><strong>Folio</strong><span>Notes</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="14" height="10" rx="2"/><path d="M2 8h14"/></svg>
+            </span>
+            <p><strong>Northmail</strong><span>Digest</span></p>
+          </div>
+          <div class="source">
+            <span class="source-mark" aria-hidden="true">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 8V6a4 4 0 0 1 8 0v2"/><rect x="4" y="8" width="10" height="7" rx="1.5"/></svg>
+            </span>
+            <p><strong>Vaultfile</strong><span>Locked store</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <h2>A desk, a floor, or the hall</h2>
+          <p>Start on a desk. Move to the floor when the room is real. Hall is for campuses that need a lock on the door.</p>
+        </div>
+        <div class="plans">
+          <article class="plan reveal">
+            <p class="plan-name">Desk</p>
+            <p class="plan-price">$0 <small>/ forever</small></p>
+            <ul>
+              <li>Two boards</li>
+              <li>One room</li>
+              <li>Seven-day history</li>
+              <li>Gridbook and CSV</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Start on a desk</a>
+          </article>
+          <article class="plan plan-floor reveal">
+            <p class="plan-name">Floor</p>
+            <p class="plan-price">$48 <small>/ seat · month</small></p>
+            <ul>
+              <li>Unlimited boards</li>
+              <li>Twelve rooms</li>
+              <li>Live ember alerts</li>
+              <li>Relic + webhooks</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Open a board</a>
+          </article>
+          <article class="plan reveal">
+            <p class="plan-name">Hall</p>
+            <p class="plan-price">$160 <small>/ seat · month</small></p>
+            <ul>
+              <li>Everything on Floor</li>
+              <li>SSO and audit log</li>
+              <li>Warehouse sync</li>
+              <li>Named watch hours</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Talk to the hall</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" id="contact">
+      <div class="wrap reveal">
+        <h2>The board is already dark. Open one.</h2>
+        <p>Tell us the room and the first source. We light a desk the same day — sample template, not a live queue.</p>
+        <form class="ask" action="#contact" method="get">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@team.example" />
+          </div>
+          <div>
+            <label for="note">First source and room</label>
+            <textarea id="note" name="note" placeholder="Relic on the west desk, intake + late orders."></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Open a board</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <p>Vespera · Sample template</p>
+      <p><a href="mailto:hello@vespera.example">hello@vespera.example</a></p>
+    </div>
+  </footer>
+
+  <dialog id="login" aria-labelledby="login-title">
+    <h2 id="login-title">Log in to the floor</h2>
+    <form method="dialog">
+      <div class="row">
+        <label for="lemail">Email</label>
+        <input id="lemail" type="email" autocomplete="username" />
+      </div>
+      <div class="row">
+        <label for="lpass">Password</label>
+        <input id="lpass" type="password" autocomplete="current-password" />
+      </div>
+      <menu>
+        <button class="btn btn-ghost" value="cancel" type="submit">Close</button>
+        <button class="btn btn-primary" value="ok" type="submit">Enter</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script>
+    (function () {
+      var nav = document.getElementById("nav");
+      var menu = document.querySelector(".menu-btn");
+      if (menu && nav) {
+        menu.addEventListener("click", function () {
+          var open = nav.classList.toggle("open");
+          menu.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        nav.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
+            nav.classList.remove("open");
+            menu.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      var login = document.getElementById("login");
+      document.querySelectorAll("[data-open-login]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (login && login.showModal) login.showModal();
+        });
+      });
+
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.16 });
+        document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+      }
+    })();
+  </script>
+</body>
+</html>

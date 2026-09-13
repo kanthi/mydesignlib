@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcopolis — We Build the Future of Architecture & Masterplanning</title>
+  
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       ARCOPOLIS TOKENS & RESET
+       ========================================================================== */
+    :root {
+      --bg-canvas: #02040a;
+      --bg-surface-glass: rgba(6, 11, 25, 0.75);
+      --bg-surface-elevated: rgba(10, 18, 38, 0.88);
+      --bg-card: rgba(8, 14, 30, 0.7);
+
+      --cyan-laser: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.45);
+      --cyan-faint: rgba(0, 240, 255, 0.12);
+      --blue-electric: #38bdf8;
+      --blue-sapphire: #2563eb;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-standard: rgba(255, 255, 255, 0.14);
+      --border-cyan: rgba(0, 240, 255, 0.45);
+
+      --text-heading: #f8fafc;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-cyan: #00f0ff;
+
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Space Grotesk', var(--font-sans);
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+
+      --shadow-hud: 0 10px 30px -5px rgba(0, 0, 0, 0.8), 0 0 1px rgba(0, 240, 255, 0.3);
+      --shadow-glow: 0 0 25px rgba(0, 240, 255, 0.4);
+      --container-max: 1280px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-color: var(--bg-canvas);
+    }
+
+    /* Fixed Background WebGL 3D Canvas */
+    #webglCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+      outline: none;
+    }
+
+    body.free-orbit-active #webglCanvas {
+      pointer-events: auto;
+      cursor: grab;
+    }
+
+    body.free-orbit-active #webglCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Cinematic Vignette Overlay */
+    .cinematic-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(2, 4, 10, 0.75) 100%),
+                  linear-gradient(to bottom, rgba(2, 4, 10, 0.6) 0%, transparent 12%, transparent 88%, rgba(2, 4, 10, 0.85) 100%);
+    }
+
+    /* HUD Decorative Framing Hairlines */
+    .hud-frame-top, .hud-frame-bottom {
+      position: fixed;
+      left: clamp(1rem, 3vw, 2.5rem);
+      right: clamp(1rem, 3vw, 2.5rem);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3) 15%, rgba(0, 240, 255, 0.3) 85%, transparent);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .hud-frame-top { top: 76px; }
+    .hud-frame-bottom { bottom: 64px; }
+
+    /* ==========================================================================
+       TOP NAVIGATION & HEADER
+       ========================================================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 76px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+      background: linear-gradient(to bottom, rgba(2, 4, 10, 0.95), rgba(2, 4, 10, 0));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .logo-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .logo-glyph {
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid var(--cyan-laser);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .logo-glyph::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background-color: var(--cyan-laser);
+      box-shadow: 0 0 8px var(--cyan-laser);
+    }
+
+    .nav-items {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem, 2.5vw, 2.25rem);
+      list-style: none;
+    }
+
+    .nav-item-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-item-link:hover {
+      color: var(--cyan-laser);
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.125rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-xs);
+      color: #ffffff;
+      font-size: 0.78125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-login:hover {
+      border-color: var(--cyan-laser);
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-menu {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1.125rem;
+      background: #ffffff;
+      color: #02040a;
+      border: none;
+      border-radius: var(--radius-xs);
+      font-size: 0.78125rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-menu:hover {
+      background: var(--cyan-laser);
+      box-shadow: 0 0 18px var(--cyan-laser);
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       LEFT CHAPTER NAVIGATION (HUD PROGRESSION INDEX)
+       ========================================================================== */
+    .chapter-nav-left {
+      position: fixed;
+      left: clamp(1.5rem, 3vw, 3rem);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .chapter-step-btn {
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      font-family: var(--font-mono);
+      font-size: 0.71875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: left;
+      padding: 0.25rem 0;
+    }
+
+    .chapter-step-marker {
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .chapter-step-btn:hover {
+      color: #ffffff;
+    }
+
+    .chapter-step-btn:hover .chapter-step-marker {
+      border-color: var(--cyan-laser);
+    }
+
+    .chapter-step-btn.active {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .chapter-step-btn.active .chapter-step-marker {
+      background-color: var(--cyan-laser);
+      border-color: var(--cyan-laser);
+      box-shadow: 0 0 10px var(--cyan-laser);
+      transform: scale(1.2);
+    }
+
+    /* Audio Enable 3D Floating Callout */
+    .audio-3d-callout {
+      position: fixed;
+      top: 38%;
+      left: 54%;
+      transform: translate(-50%, -50%);
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: rgba(2, 4, 10, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-xs);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .audio-3d-callout:hover {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan-laser);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    }
+
+    /* ==========================================================================
+       SCROLLABLE NARRATIVE HERO CHAPTERS
+       ========================================================================== */
+    .narrative-scroll-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .chapter-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: clamp(6rem, 12vh, 8.5rem);
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .chapter-content-card {
+      max-width: 860px;
+      margin: 0 auto;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .chapter-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.125rem;
+      text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
+    }
+
+    .chapter-title span.glow-cyan {
+      color: var(--cyan-laser);
+      text-shadow: 0 0 22px rgba(0, 240, 255, 0.75);
+    }
+
+    .chapter-desc {
+      font-size: clamp(0.9rem, 1.4vw, 1.0625rem);
+      color: rgba(226, 232, 240, 0.85);
+      line-height: 1.6;
+      max-width: 650px;
+      margin: 0 auto 1.75rem auto;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .chapter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-narrative-primary {
+      padding: 0.6875rem 1.5rem;
+      background: rgba(6, 11, 25, 0.85);
+      border: 1px solid var(--cyan-laser);
+      color: #ffffff;
+      font-size: 0.78125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-radius: var(--radius-xs);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+    }
+
+    .btn-narrative-primary:hover {
+      background: var(--cyan-laser);
+      color: #02040a;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-narrative-secondary {
+      padding: 0.6875rem 1.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-standard);
+      color: var(--text-secondary);
+      font-size: 0.78125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: var(--radius-xs);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-narrative-secondary:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ==========================================================================
+       CONTENT SECTIONS (PORTFOLIO, SUSTAINABILITY, TELEMETRY)
+       ========================================================================== */
+    .content-deepdive-section {
+      position: relative;
+      z-index: 10;
+      padding: clamp(5rem, 8vw, 7.5rem) 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(2, 4, 10, 0.95) 15%, rgba(2, 4, 10, 0.98) 100%);
+      border-top: 1px solid var(--border-cyan);
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    .section-header-wrap {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .section-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan-laser);
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 0.3rem 0.85rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1.25rem;
+    }
+
+    .section-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.85rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .section-main-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Portfolio Cards */
+    .showcase-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .masterplan-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .masterplan-card:hover {
+      border-color: var(--cyan-laser);
+      transform: translateY(-4px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25), 0 20px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .card-top-tag {
+      font-family: var(--font-mono);
+      font-size: 0.71875rem;
+      color: var(--cyan-laser);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .card-project-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .card-project-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .card-specs-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    .spec-item strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Telemetry Stats Grid */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .telemetry-box {
+      background: rgba(4, 8, 20, 0.8);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-sm);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .telemetry-num {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 800;
+      color: var(--cyan-laser);
+      line-height: 1;
+    }
+
+    .telemetry-label {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Consultation Terminal & Footer */
+    .consultation-cta-card {
+      background: linear-gradient(135deg, rgba(6, 15, 35, 0.9) 0%, rgba(2, 4, 10, 0.95) 100%);
+      border: 1px solid var(--cyan-laser);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.5rem, 5vw, 4rem);
+      text-align: center;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.2);
+      margin-bottom: 5rem;
+    }
+
+    .cta-form-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      max-width: 500px;
+      margin: 2rem auto 1rem auto;
+      flex-wrap: wrap;
+    }
+
+    .cta-input {
+      flex: 1;
+      min-width: 260px;
+      padding: 0.8125rem 1.25rem;
+      background: rgba(2, 4, 10, 0.8);
+      border: 1px solid var(--border-standard);
+      border-radius: var(--radius-xs);
+      color: #ffffff;
+      font-size: 0.875rem;
+      outline: none;
+    }
+
+    .cta-input:focus {
+      border-color: var(--cyan-laser);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+    }
+
+    .footer-bar {
+      border-top: 1px solid var(--border-subtle);
+      padding: 2.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       BOTTOM HUD BAR
+       ========================================================================== */
+    .bottom-hud {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+      background: linear-gradient(to top, rgba(2, 4, 10, 0.95), rgba(2, 4, 10, 0));
+      font-family: var(--font-mono);
+      font-size: 0.71875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+
+    .bottom-hud > * {
+      pointer-events: auto;
+    }
+
+    .hud-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .sound-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      transition: color 0.2s ease;
+    }
+
+    .sound-toggle-btn:hover, .sound-toggle-btn.active {
+      color: var(--cyan-laser);
+    }
+
+    .hud-center-scroll {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .scroll-indicator-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--cyan-laser);
+      border-radius: 50%;
+      animation: pulse-scroll 1.6s infinite ease-in-out;
+    }
+
+    @keyframes pulse-scroll {
+      0%, 100% { opacity: 0.2; transform: translateY(-2px); }
+      50% { opacity: 1; transform: translateY(3px); box-shadow: 0 0 8px var(--cyan-laser); }
+    }
+
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .chat-btn {
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .chat-btn:hover {
+      color: #ffffff;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 4, 10, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 840px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-cyan);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-glow), 0 30px 60px rgba(0, 0, 0, 0.9);
+      padding: clamp(1.75rem, 4vw, 3rem);
+      position: relative;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-standard);
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--cyan-laser);
+      color: #02040a;
+      border-color: var(--cyan-laser);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .nav-items { display: none; }
+      .showcase-grid-4 { grid-template-columns: 1fr; }
+      .telemetry-grid { grid-template-columns: repeat(2, 1fr); }
+      .chapter-nav-left { display: none; }
+      .audio-3d-callout { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed WebGL 3D Background Canvas -->
+  <canvas id="webglCanvas"></canvas>
+
+  <!-- Cinematic Vignette Filter -->
+  <div class="cinematic-vignette" aria-hidden="true"></div>
+
+  <!-- HUD Framing Hairlines -->
+  <div class="hud-frame-top" aria-hidden="true"></div>
+  <div class="hud-frame-bottom" aria-hidden="true"></div>
+
+  <!-- Top Header Navigation -->
+  <header class="header">
+    <a href="#" class="logo-lockup">
+      <div class="logo-glyph"></div>
+      <span>Arcopolis</span>
+    </a>
+
+    <ul class="nav-items">
+      <li><a class="nav-item-link" data-goto="0">Future</a></li>
+      <li><a class="nav-item-link" data-goto="1">Innovation</a></li>
+      <li><a class="nav-item-link" data-goto="2">Collaboration</a></li>
+      <li><a class="nav-item-link" data-goto="3">Purpose</a></li>
+      <li><a class="nav-item-link" data-goto="4">Masterplan</a></li>
+      <li><a class="nav-item-link" href="#portfolio">Portfolio</a></li>
+    </ul>
+
+    <div class="header-actions">
+      <button class="btn-login" id="btnLoginTrigger">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Login</span>
+      </button>
+      <button class="btn-menu" id="btnMenuTrigger">
+        <span>:: Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Left Chapter Progression HUD -->
+  <nav class="chapter-nav-left" aria-label="Chapter progression">
+    <button class="chapter-step-btn active" data-goto="0">
+      <span class="chapter-step-marker"></span>
+      <span>Future</span>
+    </button>
+    <button class="chapter-step-btn" data-goto="1">
+      <span class="chapter-step-marker"></span>
+      <span>Innovation</span>
+    </button>
+    <button class="chapter-step-btn" data-goto="2">
+      <span class="chapter-step-marker"></span>
+      <span>Collaboration</span>
+    </button>
+    <button class="chapter-step-btn" data-goto="3">
+      <span class="chapter-step-marker"></span>
+      <span>Purpose</span>
+    </button>
+    <button class="chapter-step-btn" data-goto="4">
+      <span class="chapter-step-marker"></span>
+      <span>Masterplan</span>
+    </button>
+  </nav>
+
+  <!-- Audio Enable 3D Floating Callout -->
+  <div class="audio-3d-callout" id="calloutAudio">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    <span>Click to Enable Audio</span>
+  </div>
+
+  <!-- Scrollable Narrative Stages (5 Fluid Fullscreen Chapters) -->
+  <main class="narrative-scroll-wrapper">
+    <!-- Chapter 0: FUTURE -->
+    <section class="chapter-section" id="chapter-0">
+      <div class="chapter-content-card">
+        <h1 class="chapter-title">
+          We build the <span class="glow-cyan">future</span> of architecture
+        </h1>
+        <p class="chapter-desc">
+          For over 40 years, Arcopolis has pioneered carbon-negative masterplanned communities, iconic high-altitude mega-structures, and sustainable urban living.
+        </p>
+        <div class="chapter-actions">
+          <a href="#portfolio" class="btn-narrative-primary">
+            <span>Explore Projects</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button class="btn-narrative-secondary" id="btnToggleFreeOrbit">
+            <span>Free Orbit 3D</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 1: INNOVATION -->
+    <section class="chapter-section" id="chapter-1">
+      <div class="chapter-content-card">
+        <h2 class="chapter-title">
+          Reimagining the <span class="glow-cyan">contours</span> of light
+        </h2>
+        <p class="chapter-desc">
+          Our dynamic infrastructure networks weave seamlessly across rugged natural topographies, channeling renewable energy along illuminated conduits.
+        </p>
+        <div class="chapter-actions">
+          <button class="btn-narrative-primary" data-goto="2">
+            <span>Next: Collaboration ▾</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 2: COLLABORATION -->
+    <section class="chapter-section" id="chapter-2">
+      <div class="chapter-content-card">
+        <h2 class="chapter-title">
+          We work with a <span class="glow-cyan">network</span> of visionaries
+        </h2>
+        <p class="chapter-desc">
+          Architects, bio-engineers, urban planners, and digital sculptors converging to build living structural ecosystems for generations to come.
+        </p>
+        <div class="chapter-actions">
+          <button class="btn-narrative-primary" data-goto="3">
+            <span>Next: Purpose ▾</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 3: PURPOSE -->
+    <section class="chapter-section" id="chapter-3">
+      <div class="chapter-content-card">
+        <h2 class="chapter-title">
+          Shaping spaces with <span class="glow-cyan">bold purpose</span>
+        </h2>
+        <p class="chapter-desc">
+          Every arc and luminous canopy is mathematically optimized for natural climate moderation, solar capture, and human wellness.
+        </p>
+        <div class="chapter-actions">
+          <button class="btn-narrative-primary" data-goto="4">
+            <span>View Masterplan ▾</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 4: MASTERPLAN -->
+    <section class="chapter-section" id="chapter-4">
+      <div class="chapter-content-card">
+        <h2 class="chapter-title">
+          And define <span class="glow-cyan">tomorrow's landscape</span>
+        </h2>
+        <p class="chapter-desc">
+          A planetary network of connected autonomous masterplans transforming real estate into self-healing, intelligent urban habitats.
+        </p>
+        <div class="chapter-actions">
+          <a href="#portfolio" class="btn-narrative-primary">
+            <span>Inspect Portfolio Database ▾</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Section: Masterplan Portfolio & Sustainability -->
+    <section class="content-deepdive-section" id="portfolio">
+      <div class="container">
+        <div class="section-header-wrap">
+          <span class="section-badge">Masterplan Portfolio</span>
+          <h2 class="section-main-title">Pioneering Next-Gen Developments</h2>
+          <p class="section-main-subtitle">
+            Iconic mixed-use mega-structures engineered for radical sustainability and biometric harmony.
+          </p>
+        </div>
+
+        <!-- 4 Project Cards -->
+        <div class="showcase-grid-4">
+          <div class="masterplan-card">
+            <div>
+              <span class="card-top-tag">01 · Sustainable Residential</span>
+              <h3 class="card-project-title">The Lumina Monolith</h3>
+              <p class="card-project-desc">A 420-meter vertical forest biophilic residence generating 100% of its thermal and electrical power on-site.</p>
+            </div>
+            <div class="card-specs-row">
+              <div class="spec-item">Height: <strong>420m</strong></div>
+              <div class="spec-item">Area: <strong>240,000 m²</strong></div>
+              <div class="spec-item">Rating: <strong style="color:var(--cyan-laser);">LEED Platinum</strong></div>
+            </div>
+          </div>
+
+          <div class="masterplan-card">
+            <div>
+              <span class="card-top-tag">02 · Coastal Infrastructure</span>
+              <h3 class="card-project-title">Neo-Arcadia Waterfront</h3>
+              <p class="card-project-desc">A climate-resilient floating coastal district integrating artificial coral reefs and wave energy conduits.</p>
+            </div>
+            <div class="card-specs-row">
+              <div class="spec-item">Scale: <strong>1,200 Ha</strong></div>
+              <div class="spec-item">Capacity: <strong>45,000 Res</strong></div>
+              <div class="spec-item">Energy: <strong style="color:var(--cyan-laser);">Net Negative</strong></div>
+            </div>
+          </div>
+
+          <div class="masterplan-card">
+            <div>
+              <span class="card-top-tag">03 · Subterranean Science</span>
+              <h3 class="card-project-title">Stratacore Innovation Hub</h3>
+              <p class="card-project-desc">A subterranean quantum computing and advanced aerospace engineering center sheltered within monolithic basalt strata.</p>
+            </div>
+            <div class="card-specs-row">
+              <div class="spec-item">Depth: <strong>80m</strong></div>
+              <div class="spec-item">Laboratories: <strong>64 Pods</strong></div>
+              <div class="spec-item">Shielding: <strong style="color:var(--cyan-laser);">EMP-Hardened</strong></div>
+            </div>
+          </div>
+
+          <div class="masterplan-card">
+            <div>
+              <span class="card-top-tag">04 · Alpine Eco-District</span>
+              <h3 class="card-project-title">Elysian Central Valley</h3>
+              <p class="card-project-desc">A 5,000-acre zero-emission mixed-use masterplan linking autonomous high-speed transit with alpine conservation corridors.</p>
+            </div>
+            <div class="card-specs-row">
+              <div class="spec-item">Footprint: <strong>5,000 Acres</strong></div>
+              <div class="spec-item">Transit: <strong>Autonomous Pods</strong></div>
+              <div class="spec-item">Flora: <strong style="color:var(--cyan-laser);">92% Canopy</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Numbers -->
+        <div class="telemetry-grid">
+          <div class="telemetry-box">
+            <div class="telemetry-num">40+</div>
+            <div class="telemetry-label">Years of Innovation</div>
+          </div>
+          <div class="telemetry-box">
+            <div class="telemetry-num">100%</div>
+            <div class="telemetry-label">Renewable Energy</div>
+          </div>
+          <div class="telemetry-box">
+            <div class="telemetry-num">-42%</div>
+            <div class="telemetry-label">Embodied Carbon</div>
+          </div>
+          <div class="telemetry-box">
+            <div class="telemetry-num">850K</div>
+            <div class="telemetry-label">m² Bio-Facades</div>
+          </div>
+        </div>
+
+        <!-- Consultation Banner -->
+        <div class="consultation-cta-card">
+          <h2 class="section-main-title">Build with Arcopolis</h2>
+          <p style="color:var(--text-secondary); max-width:600px; margin:0 auto;">
+            Connect with our principal architects and masterplanning engineers to conceptualize your next development.
+          </p>
+          <form class="cta-form-row" onsubmit="event.preventDefault(); alert('Inquiry transmitted to Arcopolis Advisory.');">
+            <input type="email" class="cta-input" placeholder="Enter corporate email..." required />
+            <button type="submit" class="btn-narrative-primary">
+              <span>Transmit Brief</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-bar">
+          <span>&copy; 2026 Arcopolis Masterplanning Corp. All rights reserved.</span>
+          <span>Architectural telemetry & WebGL spatial computing.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom HUD Bar -->
+  <footer class="bottom-hud">
+    <div class="hud-left">
+      <button class="sound-toggle-btn" id="btnSoundToggle">
+        <svg id="soundIconOff" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg id="soundIconOn" style="display:none;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span id="soundStatusText">Sound Off</span>
+      </button>
+      <span style="color:#475569;">|</span>
+      <span style="color:#64748b;">FPS: <span id="fpsCounter">60</span></span>
+    </div>
+
+    <div class="hud-center-scroll">
+      <div class="scroll-indicator-dot"></div>
+      <span>Scroll to Fly Through 3D Scene</span>
+    </div>
+
+    <div class="hud-right">
+      <a class="chat-btn" id="btnConsultationTrigger">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Consult Principal</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Modal: Direct Inquiry Terminal -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="closeContactModal">&times;</button>
+      <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--cyan-laser); text-transform:uppercase; margin-bottom:0.5rem;">Direct Advisory</div>
+      <h2 style="font-family:var(--font-display); font-size:1.75rem; color:#fff; margin-bottom:1.25rem;">Architect Consultation</h2>
+      <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1.5rem;">
+        Speak directly with our spatial engineering and urban sustainability partners.
+      </p>
+
+      <form onsubmit="event.preventDefault(); alert('Inquiry recorded.'); document.getElementById('contactModal').classList.remove('active');">
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+          <input type="text" class="cta-input" placeholder="Full Name" required />
+          <input type="email" class="cta-input" placeholder="Corporate Email" required />
+          <input type="text" class="cta-input" placeholder="Development Location (e.g. Zurich / Tokyo)" />
+          <textarea class="cta-input" rows="4" placeholder="Brief project scope..."></textarea>
+          <button type="submit" class="btn-narrative-primary" style="justify-content:center;">
+            <span>Transmit Consultation Request</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       THREE.JS WEBGL ENGINE & CONTINUOUS SCROLL BINDING
+       ========================================================================== -->
+  <script>
+    // Chapter Camera Checkpoints along 3D Flight Path
+    const cameraKeypoints = [
+      { t: 0.0, pos: new THREE.Vector3(0, 7.5, 22), look: new THREE.Vector3(0, 2.5, 0) },      // Chapter 0 (FUTURE - High monolith)
+      { t: 0.25, pos: new THREE.Vector3(-14, 2.8, 9), look: new THREE.Vector3(0, 0.8, -4) },    // Chapter 1 (INNOVATION - Valley light dive)
+      { t: 0.50, pos: new THREE.Vector3(0, 1.2, 7.5), look: new THREE.Vector3(0, 10, -3) },     // Chapter 2 (COLLABORATION - Sky helix strands)
+      { t: 0.75, pos: new THREE.Vector3(15, 4.5, 11), look: new THREE.Vector3(-2, 1.8, -2) },   // Chapter 3 (PURPOSE - Orbital arcs)
+      { t: 1.0, pos: new THREE.Vector3(0, 26, 16), look: new THREE.Vector3(0, 0, -4) }         // Chapter 4 (MASTERPLAN - City grid overview)
+    ];
+
+    // Spline curve for smooth continuous interpolation
+    const cameraPosSpline = new THREE.CatmullRomCurve3(cameraKeypoints.map(k => k.pos));
+    const cameraLookSpline = new THREE.CatmullRomCurve3(cameraKeypoints.map(k => k.look));
+
+    let scene, camera, renderer;
+    let terrainMesh, wireframeMesh, monolithMesh, monolithCore;
+    let splineRibbonMesh, ribbonUniforms;
+    let particleSystem, particlePositions, particleVelocities;
+    let masterplanNodesGroup;
+    let mouseX = 0, mouseY = 0;
+    let isFreeOrbit = false;
+    let scrollFraction = 0;
+    let targetLookAt = new THREE.Vector3(0, 2.5, 0);
+    let currentLookAt = new THREE.Vector3(0, 2.5, 0);
+
+    // Web Audio Synthesizer
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let masterGain = null;
+
+    function initAudio() {
+      if (audioCtx) return;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(360, audioCtx.currentTime);
+      filter.Q.setValueAtTime(3.5, audioCtx.currentTime);
+
+      const osc1 = audioCtx.createOscillator();
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(54, audioCtx.currentTime);
+
+      const osc2 = audioCtx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(108, audioCtx.currentTime);
+
+      const sub = audioCtx.createOscillator();
+      sub.type = 'triangle';
+      sub.frequency.setValueAtTime(27, audioCtx.currentTime);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      sub.connect(filter);
+      filter.connect(masterGain);
+      masterGain.connect(audioCtx.destination);
+
+      osc1.start();
+      osc2.start();
+      sub.start();
+    }
+
+    function toggleAudio(enable) {
+      if (!audioCtx) initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      isAudioPlaying = (enable !== undefined) ? enable : !isAudioPlaying;
+
+      const soundBtn = document.getElementById('btnSoundToggle');
+      const soundIconOff = document.getElementById('soundIconOff');
+      const soundIconOn = document.getElementById('soundIconOn');
+      const soundStatusText = document.getElementById('soundStatusText');
+
+      if (isAudioPlaying) {
+        masterGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 1.2);
+        soundIconOff.style.display = 'none';
+        soundIconOn.style.display = 'block';
+        soundStatusText.textContent = 'Sound On';
+        soundBtn.classList.add('active');
+      } else {
+        masterGain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
+        soundIconOff.style.display = 'block';
+        soundIconOn.style.display = 'none';
+        soundStatusText.textContent = 'Sound Off';
+        soundBtn.classList.remove('active');
+      }
+    }
+
+    // Initialize 3D Scene
+    function initThreeScene() {
+      const canvas = document.getElementById('webglCanvas');
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x02040a);
+      scene.fog = new THREE.FogExp2(0x02040a, 0.026);
+
+      camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.copy(cameraKeypoints[0].pos);
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x0a1832, 1.8);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0x00f0ff, 1.6);
+      dirLight.position.set(12, 22, 12);
+      scene.add(dirLight);
+
+      const bluePoint = new THREE.PointLight(0x2563eb, 3.5, 45);
+      bluePoint.position.set(0, 4, 0);
+      scene.add(bluePoint);
+
+      // 1. Procedural Terrain with Contours
+      const terrainGeo = new THREE.PlaneGeometry(120, 120, 90, 90);
+      terrainGeo.rotateX(-Math.PI / 2);
+
+      const pos = terrainGeo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i);
+        const z = pos.getZ(i);
+        let y = Math.sin(x * 0.08) * Math.cos(z * 0.08) * 3.5;
+        y += Math.sin(x * 0.18 + 1.2) * Math.cos(z * 0.15) * 1.8;
+        y += Math.cos(Math.sqrt(x*x + z*z) * 0.1) * 2.0;
+
+        const distCenter = Math.sqrt(x*x + z*z);
+        if (distCenter < 12) {
+          y *= (distCenter / 12);
+        }
+        pos.setY(i, y - 2.5);
+      }
+      terrainGeo.computeVertexNormals();
+
+      const terrainMat = new THREE.MeshStandardMaterial({
+        color: 0x050c1e,
+        roughness: 0.85,
+        metalness: 0.2,
+        flatShading: true
+      });
+      terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+      scene.add(terrainMesh);
+
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.12
+      });
+      wireframeMesh = new THREE.Mesh(terrainGeo, wireMat);
+      wireframeMesh.position.y += 0.02;
+      scene.add(wireframeMesh);
+
+      // 2. Monolith Structure
+      const monolithGeo = new THREE.BoxGeometry(3.5, 9.0, 3.5);
+      const monolithMat = new THREE.MeshPhysicalMaterial({
+        color: 0x031224,
+        emissive: 0x002b4d,
+        roughness: 0.1,
+        metalness: 0.9,
+        transmission: 0.7,
+        opacity: 0.85,
+        transparent: true
+      });
+      monolithMesh = new THREE.Mesh(monolithGeo, monolithMat);
+      monolithMesh.position.set(0, 2.0, 0);
+      scene.add(monolithMesh);
+
+      const coreGeo = new THREE.BoxGeometry(1.6, 7.0, 1.6);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8
+      });
+      monolithCore = new THREE.Mesh(coreGeo, coreMat);
+      monolithMesh.add(monolithCore);
+
+      const ringGeo = new THREE.RingGeometry(3.5, 5.2, 48);
+      ringGeo.rotateX(-Math.PI / 2);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.4
+      });
+      const haloRing = new THREE.Mesh(ringGeo, ringMat);
+      haloRing.position.set(0, -2.4, 0);
+      scene.add(haloRing);
+
+      // 3. Spline Light Ribbons
+      const curvePoints = [
+        new THREE.Vector3(-25, 1.5, -20),
+        new THREE.Vector3(-15, 2.8, -10),
+        new THREE.Vector3(-6, 0.5, -4),
+        new THREE.Vector3(0, -0.5, 0),
+        new THREE.Vector3(8, 2.0, 6),
+        new THREE.Vector3(16, 4.5, 14),
+        new THREE.Vector3(26, 6.0, 24)
+      ];
+      const curve = new THREE.CatmullRomCurve3(curvePoints);
+      const tubeGeo = new THREE.TubeGeometry(curve, 160, 0.45, 12, false);
+
+      ribbonUniforms = {
+        time: { value: 0 },
+        cyanColor: { value: new THREE.Color(0x00f0ff) },
+        blueColor: { value: new THREE.Color(0x2563eb) }
+      };
+
+      const ribbonMat = new THREE.ShaderMaterial({
+        uniforms: ribbonUniforms,
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float time;
+          uniform vec3 cyanColor;
+          uniform vec3 blueColor;
+          varying vec2 vUv;
+          void main() {
+            float pulse = sin(vUv.x * 35.0 - time * 6.0) * 0.5 + 0.5;
+            float streak = pow(pulse, 4.0) * 1.8;
+            vec3 col = mix(blueColor, cyanColor, streak);
+            float edgeFade = smoothstep(0.0, 0.4, vUv.y) * smoothstep(1.0, 0.6, vUv.y);
+            gl_FragColor = vec4(col * (1.2 + streak), 0.85 * edgeFade);
+          }
+        `,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide
+      });
+
+      splineRibbonMesh = new THREE.Mesh(tubeGeo, ribbonMat);
+      scene.add(splineRibbonMesh);
+
+      const helixCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-18, 0.5, 12),
+        new THREE.Vector3(-8, 3.5, 4),
+        new THREE.Vector3(2, 6.5, -2),
+        new THREE.Vector3(12, 10.0, -8),
+        new THREE.Vector3(22, 14.5, -15)
+      ]);
+      const helixGeo = new THREE.TubeGeometry(helixCurve, 120, 0.25, 8, false);
+      const helixMesh = new THREE.Mesh(helixGeo, ribbonMat);
+      scene.add(helixMesh);
+
+      // 4. Cosmic Particle Cosmos
+      const particleCount = 1400;
+      const pGeo = new THREE.BufferGeometry();
+      particlePositions = new Float32Array(particleCount * 3);
+      particleVelocities = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 60;
+        particlePositions[i * 3 + 1] = Math.random() * 25 - 2;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 60;
+
+        particleVelocities.push({
+          y: Math.random() * 0.015 + 0.005,
+          orbitSpeed: (Math.random() - 0.5) * 0.008
+        });
+      }
+
+      pGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0x00f0ff,
+        size: 0.16,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      });
+      particleSystem = new THREE.Points(pGeo, pMat);
+      scene.add(particleSystem);
+
+      // 5. Masterplan Nodes Network
+      masterplanNodesGroup = new THREE.Group();
+      const nodeCount = 55;
+      const nodeGeo = new THREE.SphereGeometry(0.22, 8, 8);
+      const nodeMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+
+      const nodeCoords = [];
+      for (let i = 0; i < nodeCount; i++) {
+        const x = (Math.random() - 0.5) * 45;
+        const z = (Math.random() - 0.5) * 45;
+        const y = -1.5 + Math.random() * 1.5;
+
+        const node = new THREE.Mesh(nodeGeo, nodeMat);
+        node.position.set(x, y, z);
+        masterplanNodesGroup.add(node);
+        nodeCoords.push(new THREE.Vector3(x, y, z));
+      }
+
+      const linePositions = [];
+      for (let i = 0; i < nodeCoords.length; i++) {
+        for (let j = i + 1; j < nodeCoords.length; j++) {
+          if (nodeCoords[i].distanceTo(nodeCoords[j]) < 9.5) {
+            linePositions.push(nodeCoords[i].x, nodeCoords[i].y, nodeCoords[i].z);
+            linePositions.push(nodeCoords[j].x, nodeCoords[j].y, nodeCoords[j].z);
+          }
+        }
+      }
+
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.28
+      });
+      const networkLines = new THREE.LineSegments(lineGeo, lineMat);
+      masterplanNodesGroup.add(networkLines);
+      scene.add(masterplanNodesGroup);
+
+      // Listeners
+      window.addEventListener('resize', onWindowResize);
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('scroll', onPageScroll);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function onMouseMove(e) {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }
+
+    // Scroll Handler — calculates continuous scroll progress (0.0 to 1.0)
+    function onPageScroll() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const narrativeEnd = document.getElementById('chapter-4').offsetTop;
+      const maxScroll = narrativeEnd > 0 ? narrativeEnd : window.innerHeight * 4;
+
+      scrollFraction = Math.min(Math.max(scrollY / maxScroll, 0), 1.0);
+
+      // Determine active chapter for Left Nav HUD
+      const currentChapterIdx = Math.min(Math.floor(scrollFraction * 4.99), 4);
+      document.querySelectorAll('.chapter-step-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === currentChapterIdx);
+      });
+    }
+
+    // Animation Loop
+    let clock = new THREE.Clock();
+    let frameCount = 0;
+    let lastFpsUpdate = 0;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+      const elapsedTime = clock.getElapsedTime();
+
+      // FPS
+      frameCount++;
+      if (performance.now() - lastFpsUpdate > 1000) {
+        document.getElementById('fpsCounter').textContent = frameCount;
+        frameCount = 0;
+        lastFpsUpdate = performance.now();
+      }
+
+      // 1. Camera Flight Interpolation from Continuous Scroll
+      if (!isFreeOrbit) {
+        const splinePos = cameraPosSpline.getPoint(scrollFraction);
+        const splineLook = cameraLookSpline.getPoint(scrollFraction);
+
+        const parallaxX = mouseX * 1.2;
+        const parallaxY = mouseY * 0.6;
+
+        camera.position.x += (splinePos.x + parallaxX - camera.position.x) * 0.06;
+        camera.position.y += (splinePos.y - parallaxY - camera.position.y) * 0.06;
+        camera.position.z += (splinePos.z - camera.position.z) * 0.06;
+
+        currentLookAt.lerp(splineLook, 0.06);
+        camera.lookAt(currentLookAt);
+      } else {
+        // Free Orbit Mode
+        camera.position.x = Math.sin(elapsedTime * 0.25) * 22;
+        camera.position.z = Math.cos(elapsedTime * 0.25) * 22;
+        camera.position.y = 8 + Math.sin(elapsedTime * 0.12) * 3;
+        camera.lookAt(0, 2, 0);
+      }
+
+      // 2. Monolith Rotation & Core Breathing
+      if (monolithMesh) {
+        monolithMesh.rotation.y = elapsedTime * 0.15;
+        monolithCore.scale.setScalar(0.9 + Math.sin(elapsedTime * 2.5) * 0.12);
+      }
+
+      // 3. Ribbon Flow Time
+      if (ribbonUniforms) {
+        ribbonUniforms.time.value = elapsedTime;
+      }
+
+      // 4. Stardust Particles Upward Drift
+      if (particleSystem) {
+        const positions = particleSystem.geometry.attributes.position.array;
+        for (let i = 0; i < particleVelocities.length; i++) {
+          positions[i * 3 + 1] += particleVelocities[i].y;
+          if (positions[i * 3 + 1] > 24) positions[i * 3 + 1] = -2;
+        }
+        particleSystem.geometry.attributes.position.needsUpdate = true;
+        particleSystem.rotation.y = elapsedTime * 0.02;
+      }
+
+      // 5. Masterplan Beacons Pulse
+      if (masterplanNodesGroup) {
+        masterplanNodesGroup.children.forEach((child, i) => {
+          if (child.isMesh) {
+            const s = 1.0 + Math.sin(elapsedTime * 3.0 + i) * 0.35;
+            child.scale.set(s, s, s);
+          }
+        });
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    // Event Wireup
+    document.addEventListener('DOMContentLoaded', () => {
+      initThreeScene();
+      animate();
+      onPageScroll();
+
+      // Chapter Click Smooth Scrolling
+      document.querySelectorAll('[data-goto]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetChapter = parseInt(el.getAttribute('data-goto'), 10);
+          const targetEl = document.getElementById(`chapter-${targetChapter}`);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Free Orbit Toggle
+      const btnOrbit = document.getElementById('btnToggleFreeOrbit');
+      btnOrbit.addEventListener('click', () => {
+        isFreeOrbit = !isFreeOrbit;
+        document.body.classList.toggle('free-orbit-active', isFreeOrbit);
+        btnOrbit.querySelector('span').textContent = isFreeOrbit ? 'Exit 3D Orbit' : 'Free Orbit 3D';
+      });
+
+      // Audio Toggles
+      document.getElementById('btnSoundToggle').addEventListener('click', () => {
+        toggleAudio();
+      });
+
+      document.getElementById('calloutAudio').addEventListener('click', () => {
+        toggleAudio(true);
+        document.getElementById('calloutAudio').style.display = 'none';
+      });
+
+      // Consultation Modal
+      const contactModal = document.getElementById('contactModal');
+      document.getElementById('btnConsultationTrigger').addEventListener('click', () => {
+        contactModal.classList.add('active');
+      });
+      document.getElementById('btnLoginTrigger').addEventListener('click', () => {
+        contactModal.classList.add('active');
+      });
+      document.getElementById('btnMenuTrigger').addEventListener('click', () => {
+        contactModal.classList.add('active');
+      });
+      document.getElementById('closeContactModal').addEventListener('click', () => {
+        contactModal.classList.remove('active');
+      });
+      contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) contactModal.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
