@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Somna — Better sleep for growing minds</title>
+  <meta name="description" content="Somna tracks sleep, biosignals, and bedroom environment for children and teens ages 4-18 with no cameras, wearables, or disruption to their routine." />
+
+  <!-- No search indexing (Repository requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Newsreader (Editorial Serif), Plus Jakarta Sans (Operational Sans), Space Mono (Telemetry) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-canvas: #FAF9F5;
+      --color-card: #FFFFFF;
+      --color-card-subtle: #F3F1EC;
+      --color-card-dark: #12161A;
+      --color-card-dark-subtle: #1A2127;
+      --color-ink-primary: #15191E;
+      --color-ink-secondary: #56616C;
+      --color-ink-muted: #8E9AA5;
+      --color-ink-light: #F5F7FA;
+      --color-ink-light-muted: #9BA6B2;
+      --color-border: #E8E6DF;
+      --color-border-dark: #27313A;
+      --color-sage: #2C6E49;
+      --color-sage-light: #EBF5EF;
+      --color-amber: #D97706;
+      --color-amber-light: #FEF3C7;
+      --color-blue-soft: #2563EB;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(21, 25, 30, 0.05);
+      --shadow-md: 0 10px 30px -10px rgba(21, 25, 30, 0.08);
+      --shadow-lg: 0 20px 40px -15px rgba(21, 25, 30, 0.12);
+      --max-width: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--color-canvas);
+      color: var(--color-ink-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* =========================================================
+       Navigation Header
+       ========================================================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 249, 245, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(232, 230, 223, 0.8);
+      transition: all 0.25s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--color-ink-primary);
+    }
+
+    .brand-mark-svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      transition: color 0.15s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--color-ink-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .currency-selector {
+      display: flex;
+      align-items: center;
+      background: rgba(21, 25, 30, 0.05);
+      border-radius: var(--radius-full);
+      padding: 4px 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .currency-btn {
+      padding: 4px 8px;
+      border-radius: var(--radius-full);
+      color: var(--color-ink-secondary);
+      transition: all 0.15s ease;
+      font-size: 12px;
+    }
+
+    .currency-btn.active {
+      background: #FFFFFF;
+      color: var(--color-ink-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--color-ink-primary);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: #2A323A;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(21, 25, 30, 0.18);
+    }
+
+    .cart-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(21, 25, 30, 0.05);
+      position: relative;
+      color: var(--color-ink-primary);
+      transition: background 0.15s ease;
+    }
+
+    .cart-trigger:hover {
+      background: rgba(21, 25, 30, 0.09);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: var(--color-sage);
+      color: #FFFFFF;
+      font-size: 10.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 38px;
+      height: 38px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .menu-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--color-ink-primary);
+      border-radius: 2px;
+      transition: 0.2s;
+    }
+
+    /* =========================================================
+       Hero Section
+       ========================================================= */
+    .hero-section {
+      padding: 32px 0 60px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .hero-content {
+      max-width: 820px;
+    }
+
+    .badge-founder {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      background: rgba(44, 110, 73, 0.09);
+      color: var(--color-sage);
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-sage);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 5.2vw, 68px);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+      color: var(--color-ink-primary);
+      margin-bottom: 16px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-description {
+      font-size: clamp(16px, 1.6vw, 18.5px);
+      line-height: 1.55;
+      color: var(--color-ink-secondary);
+      max-width: 680px;
+      margin-bottom: 22px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hero-cta-btn {
+      align-self: flex-start;
+      padding: 13px 28px;
+      font-size: 15px;
+    }
+
+    .hero-subcaption {
+      font-size: 12.5px;
+      color: var(--color-ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-media-wrapper {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      background: #EDEAE1;
+      aspect-ratio: 16 / 9;
+    }
+
+    .hero-media-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-media-wrapper:hover .hero-media-img {
+      transform: scale(1.02);
+    }
+
+    /* Floating Telemetry Widgets on Hero */
+    .telemetry-card {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      box-shadow: 0 16px 32px rgba(21, 25, 30, 0.12);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .telemetry-card-top {
+      top: 24px;
+      right: 24px;
+    }
+
+    .telemetry-card-bottom {
+      bottom: 24px;
+      left: 24px;
+    }
+
+    .telemetry-icon-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-sage-light);
+      color: var(--color-sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .telemetry-meta h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .telemetry-meta p {
+      font-size: 12.5px;
+      color: var(--color-ink-secondary);
+      font-family: var(--font-mono);
+    }
+
+    /* =========================================================
+       Credibility Ribbon
+       ========================================================= */
+    .trust-strip {
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 24px 0;
+      background: rgba(243, 241, 236, 0.5);
+    }
+
+    .trust-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+    }
+
+    .trust-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--color-sage);
+    }
+
+    /* =========================================================
+       The Problem & Insight ("You can't improve what you can't see")
+       ========================================================= */
+    .insight-section {
+      padding: 100px 0;
+    }
+
+    .section-header-split {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: flex-end;
+      margin-bottom: 64px;
+    }
+
+    .section-heading-serif {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 4.4vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-ink-primary);
+    }
+
+    .section-lead-body {
+      font-size: 16.5px;
+      line-height: 1.65;
+      color: var(--color-ink-secondary);
+    }
+
+    .triptych-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .triptych-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .triptych-media {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #EDEAE1;
+      aspect-ratio: 4 / 3.6;
+      position: relative;
+    }
+
+    .triptych-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .triptych-card:hover .triptych-img {
+      transform: scale(1.03);
+    }
+
+    .triptych-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--color-ink-primary);
+    }
+
+    .triptych-card p {
+      font-size: 14.5px;
+      color: var(--color-ink-secondary);
+      line-height: 1.55;
+    }
+
+    /* App UI Live Mockup inside Triptych Card */
+    .app-mockup-frame {
+      width: 100%;
+      height: 100%;
+      background: #0E1317;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+    }
+
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 10px;
+    }
+
+    .mockup-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8C9CAE;
+    }
+
+    .mockup-status-dot {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #34D399;
+    }
+
+    .mockup-status-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #34D399;
+    }
+
+    .mockup-body {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+
+    .mockup-week-tag {
+      font-size: 11px;
+      color: #94A3B8;
+      margin-bottom: 4px;
+    }
+
+    .mockup-big-stat {
+      font-size: 20px;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .mockup-trend-badge {
+      display: inline-block;
+      background: rgba(52, 211, 153, 0.12);
+      color: #34D399;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .mockup-chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 48px;
+      padding-top: 10px;
+    }
+
+    .chart-bar {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      transition: height 0.3s ease;
+    }
+
+    .chart-bar.active {
+      background: #34D399;
+    }
+
+    /* =========================================================
+       E-Commerce Product Detail Showcase (Store Section)
+       ========================================================= */
+    .product-section {
+      padding: 80px 0 110px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 60px;
+      align-items: flex-start;
+    }
+
+    .product-gallery-sticky {
+      position: sticky;
+      top: 100px;
+    }
+
+    .product-main-view {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #F3F1EC;
+      aspect-ratio: 4 / 3;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .product-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.25s ease, transform 0.4s ease;
+    }
+
+    .product-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .thumb-btn {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      aspect-ratio: 1;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+      background: #F3F1EC;
+    }
+
+    .thumb-btn.active {
+      border-color: var(--color-ink-primary);
+      transform: translateY(-2px);
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Product Configurator / Purchase Info */
+    .product-info-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 3.5vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--color-ink-primary);
+      margin-bottom: 16px;
+    }
+
+    .product-sublead {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+      margin-bottom: 28px;
+    }
+
+    .product-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 32px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .product-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .feature-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-card-subtle);
+      color: var(--color-ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feature-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .feature-text p {
+      font-size: 13.5px;
+      color: var(--color-ink-secondary);
+    }
+
+    .founder-status-banner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-sage);
+      margin-bottom: 16px;
+    }
+
+    .pricing-box {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .price-current {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--color-ink-primary);
+      font-family: var(--font-sans);
+    }
+
+    .price-strike {
+      font-size: 18px;
+      color: var(--color-ink-muted);
+      text-decoration: line-through;
+    }
+
+    .price-badge-save {
+      background: var(--color-sage-light);
+      color: var(--color-sage);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .buy-cta-btn {
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 16px;
+      border-radius: var(--radius-full);
+      margin-bottom: 14px;
+    }
+
+    .founder-guarantee-note {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--color-ink-secondary);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .founder-guarantee-note strong {
+      color: var(--color-ink-primary);
+    }
+
+    .trust-badges-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--color-ink-secondary);
+      padding: 14px 0;
+      border-top: 1px dashed var(--color-border);
+      border-bottom: 1px dashed var(--color-border);
+      margin-bottom: 24px;
+    }
+
+    .trust-badge-unit {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .payment-icons-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      opacity: 0.7;
+    }
+
+    .payment-chip {
+      padding: 4px 8px;
+      background: var(--color-card-subtle);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-ink-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    /* Accordion in Product Section */
+    .specs-accordion {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .accordion-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+      text-align: left;
+    }
+
+    .accordion-header:hover {
+      color: var(--color-sage);
+    }
+
+    .accordion-icon {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.25s ease;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+      color: var(--color-ink-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .accordion-content-inner {
+      padding-bottom: 18px;
+    }
+
+    /* =========================================================
+       Nocturnal Dark Atmosphere Section
+       ========================================================= */
+    .nocturnal-section {
+      background: var(--color-card-dark);
+      color: #FFFFFF;
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .nocturnal-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .nocturnal-media-box {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nocturnal-media-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nocturnal-overlay-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(18, 22, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pulse-amber {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #F59E0B;
+      box-shadow: 0 0 12px #F59E0B;
+      animation: pulseDot 2s infinite;
+    }
+
+    .nocturnal-overlay-text {
+      font-size: 13px;
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    .nocturnal-content h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+    }
+
+    .nocturnal-content p.lead {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--color-ink-light-muted);
+      margin-bottom: 36px;
+    }
+
+    .nocturnal-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .nocturnal-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .nocturnal-bullet-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: #34D399;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nocturnal-bullet-text h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .nocturnal-bullet-text p {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* =========================================================
+       Three Simple Steps Section
+       ========================================================= */
+    .steps-section {
+      padding: 110px 0;
+    }
+
+    .steps-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 64px;
+    }
+
+    .steps-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 4.5vw, 54px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .steps-header p {
+      font-size: 17px;
+      color: var(--color-ink-secondary);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .step-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 36px 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-sage);
+      margin-bottom: 24px;
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--color-sage-light);
+      border-radius: var(--radius-full);
+      width: fit-content;
+    }
+
+    .step-card h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--color-ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .step-card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+    }
+
+    /* =========================================================
+       Scientific Advisors & Rigor
+       ========================================================= */
+    .science-section {
+      padding: 100px 0;
+      background: var(--color-card-subtle);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .science-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .science-media-frame {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      aspect-ratio: 4 / 3;
+    }
+
+    .science-media-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .science-content h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 3.8vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--color-ink-primary);
+      margin-bottom: 18px;
+    }
+
+    .science-content p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+      margin-bottom: 28px;
+    }
+
+    .advisors-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .advisor-pill-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .advisor-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-card-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--color-sage);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .advisor-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .advisor-info p {
+      font-size: 13px;
+      color: var(--color-ink-secondary);
+      margin-bottom: 0;
+    }
+
+    /* =========================================================
+       FAQ Section
+       ========================================================= */
+    .faq-section {
+      padding: 100px 0;
+    }
+
+    .faq-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 56px;
+    }
+
+    .faq-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 4vw, 48px);
+      letter-spacing: -0.03em;
+      color: var(--color-ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .faq-container-narrow {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       Final Founder's CTA Banner
+       ========================================================= */
+    .closing-cta {
+      padding: 80px 0 120px;
+    }
+
+    .cta-banner-box {
+      background: var(--color-card-dark);
+      color: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 72px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner-box h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 4.8vw, 60px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .cta-banner-box p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--color-ink-light-muted);
+      max-width: 620px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-inventory-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #34D399;
+      background: rgba(52, 211, 153, 0.12);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      margin-bottom: 24px;
+    }
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+    .site-footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--color-border);
+      padding: 72px 0 40px;
+      font-size: 14px;
+      color: var(--color-ink-secondary);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand p {
+      margin-top: 14px;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .footer-col h5 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col a:hover {
+      color: var(--color-ink-primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--color-border);
+      padding-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12.5px;
+      color: var(--color-ink-muted);
+    }
+
+    /* =========================================================
+       Slide-Over Cart Drawer
+       ========================================================= */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 440px;
+      height: 100vh;
+      background: #FFFFFF;
+      z-index: 1001;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+    }
+
+    .drawer-overlay.open .cart-drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .drawer-close {
+      font-size: 24px;
+      line-height: 1;
+      color: var(--color-ink-secondary);
+      padding: 4px;
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .cart-item-card {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .cart-item-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-sm);
+      background: var(--color-card-subtle);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-details h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cart-item-bonus {
+      font-size: 12px;
+      color: var(--color-sage);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .cart-item-price {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .drawer-footer {
+      padding: 24px;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-canvas);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--color-ink-secondary);
+      margin-bottom: 10px;
+    }
+
+    .summary-row.total {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      margin-top: 18px;
+    }
+
+    /* =========================================================
+       Responsive Media Queries
+       ========================================================= */
+    @media (max-width: 960px) {
+      .section-header-split {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .triptych-grid {
+        grid-template-columns: 1fr;
+      }
+      .product-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .product-gallery-sticky {
+        position: static;
+      }
+      .nocturnal-grid {
+        grid-template-columns: 1fr;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+      .science-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .telemetry-card {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-inner {
+        height: 64px;
+      }
+      .hero-title {
+        font-size: 38px;
+      }
+      .pricing-box {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       Site Navigation Bar
+       ========================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="nav-inner">
+        <!-- Logo Lockup -->
+        <a href="#hero" class="brand-logo" aria-label="Somna Home">
+          <svg class="brand-mark-svg" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 4C9.37 4 4 9.37 4 16s5.37 12 12 12c5.96 0 10.93-4.35 11.83-10.08-.27.05-.55.08-.83.08-3.31 0-6-2.69-6-6 0-2.42 1.44-4.51 3.51-5.46C22.68 4.88 19.5 4 16 4z" />
+            <circle cx="23" cy="11" r="2.5" fill="currentColor" stroke="none" />
+          </svg>
+          <span>somna</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav aria-label="Primary Navigation">
+          <ul class="nav-links">
+            <li><a href="#product" class="nav-link">Store</a></li>
+            <li><a href="#insights" class="nav-link">Science</a></li>
+            <li><a href="#night" class="nav-link">Technology</a></li>
+            <li><a href="#steps" class="nav-link">How it Works</a></li>
+            <li><a href="#advisors" class="nav-link">Advisors</a></li>
+            <li><a href="#faq" class="nav-link">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <!-- Right Actions -->
+        <div class="nav-actions">
+          <!-- Currency Switcher -->
+          <div class="currency-selector" role="group" aria-label="Currency Selector">
+            <button type="button" class="currency-btn active" data-cur="EUR">EUR €</button>
+            <button type="button" class="currency-btn" data-cur="USD">USD $</button>
+            <button type="button" class="currency-btn" data-cur="GBP">GBP £</button>
+          </div>
+
+          <!-- Cart Trigger -->
+          <button type="button" class="cart-trigger" id="cartOpenBtn" aria-label="View Cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="cart-badge" id="navCartCount">1</span>
+          </button>
+
+          <!-- Primary CTA Button -->
+          <a href="#product" class="btn-pill btn-primary">Join the Founder's Series</a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button type="button" class="menu-toggle" id="menuToggleBtn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         Hero Section
+         ========================================================= -->
+    <section class="hero-section" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="badge-founder">
+              <span class="badge-dot"></span>
+              <span>Join the Founder's Series · Lifetime App Included</span>
+            </div>
+            <h1 class="hero-title">
+              Better sleep for <em>growing minds</em>
+            </h1>
+            <p class="hero-description">
+              Somna tracks sleep, biosignals, and bedroom environment for children and teens ages 4–18. No cameras, no wearables, nothing to charge. Backed by pioneers in nocturnal biosignal technology and pediatric sleep research.
+            </p>
+            <div class="hero-cta-group">
+              <a href="#product" class="btn-pill btn-primary hero-cta-btn">
+                Join the Founder's Series
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <span class="hero-subcaption">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                Includes free lifetime app subscription, a benefit exclusive to Founder's Series.
+              </span>
+            </div>
+          </div>
+
+          <!-- Hero Media Box -->
+          <div class="hero-media-wrapper">
+            <img src="assets/hero-sleep.jpg" alt="Child sleeping peacefully under linen bedding with Somna wooden sensor puck nearby" class="hero-media-img" loading="eager" />
+
+            <!-- Telemetry Widget 1 -->
+            <div class="telemetry-card telemetry-card-top">
+              <div class="telemetry-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="telemetry-meta">
+                <h4>Nocturnal Rest Score: 94%</h4>
+                <p>9h 14m Total · 2h 45m Deep Sleep</p>
+              </div>
+            </div>
+
+            <!-- Telemetry Widget 2 -->
+            <div class="telemetry-card telemetry-card-bottom">
+              <div class="telemetry-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <path d="M7 15h0"></path>
+                  <path d="M2 9.5h20"></path>
+                </svg>
+              </div>
+              <div class="telemetry-meta">
+                <h4>Under-Mattress Ballistocardiography</h4>
+                <p>100% Non-Invasive · Zero Wearables</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Trust & Credibility Strip
+         ========================================================= -->
+    <div class="trust-strip">
+      <div class="container">
+        <div class="trust-strip-inner">
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Nordic Pediatric Lab Validated</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>Zero Cameras · Zero Microphones</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Sub-Mattress Acoustic Wave Sensor</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+            </svg>
+            <span>Backed by Biosignal & Sensor Pioneers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         The Dilemma & Insight ("You can't improve what you can't see")
+         ========================================================= -->
+    <section class="insight-section" id="insights">
+      <div class="container">
+        <div class="section-header-split">
+          <h2 class="section-heading-serif">
+            You can't improve what you can't see.
+          </h2>
+          <p class="section-lead-body">
+            Up to 45% of school-aged kids struggle with sleep. While adult sleep tracking has evolved for years, children's sleep has remained a mystery, until now. Somna helps parents understand what happens overnight with real clinical data, not guesswork.
+          </p>
+        </div>
+
+        <div class="triptych-grid">
+          <!-- Card 1: App UI Mobile Telemetry Mockup -->
+          <div class="triptych-card">
+            <div class="triptych-media">
+              <div class="app-mockup-frame">
+                <div class="mockup-header">
+                  <span class="mockup-title">Somna Weekly Brief</span>
+                  <span class="mockup-status-dot">Live Edge Sync</span>
+                </div>
+                <div class="mockup-body">
+                  <p class="mockup-week-tag">The family's week in five minutes</p>
+                  <div class="mockup-big-stat">88 Rest Score</div>
+                  <span class="mockup-trend-badge">Evenings are getting calmer</span>
+                  <p style="font-size: 11.5px; color: #94A3B8; line-height: 1.4; margin-bottom: 8px;">
+                    Bedtime settled 24 mins earlier over three weeks. Sleep onset latency reduced by 40%.
+                  </p>
+                  <div class="mockup-chart-bars">
+                    <div class="chart-bar" style="height: 60%"></div>
+                    <div class="chart-bar" style="height: 75%"></div>
+                    <div class="chart-bar" style="height: 82%"></div>
+                    <div class="chart-bar" style="height: 70%"></div>
+                    <div class="chart-bar active" style="height: 94%"></div>
+                    <div class="chart-bar active" style="height: 90%"></div>
+                    <div class="chart-bar active" style="height: 96%"></div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748B;">
+                  <span>Deep Sleep 2h 45m</span>
+                  <span>Wake-ups: 0</span>
+                </div>
+              </div>
+            </div>
+            <h3>Hidden sleep patterns</h3>
+            <p>Discover the subtle biological signals behind restless nights, daytime mood swings, and cognitive energy reserve.</p>
+          </div>
+
+          <!-- Card 2: Parent and Child Lifestyle -->
+          <div class="triptych-card">
+            <div class="triptych-media">
+              <img src="assets/parent-child.jpg" alt="Mother and young child looking happily at sleep insights on phone" class="triptych-img" />
+            </div>
+            <h3>From guessing to knowing</h3>
+            <p>Understand your child's sleep through objective insights — without interrogations, bedtime arguments, or intrusive cameras.</p>
+          </div>
+
+          <!-- Card 3: Healthy Active Child -->
+          <div class="triptych-card">
+            <div class="triptych-media">
+              <img src="assets/child-energy.jpg" alt="Energetic smiling child enjoying daytime focus and play" class="triptych-img" />
+            </div>
+            <h3>Designed for growing minds</h3>
+            <p>Science-backed biosignal monitoring engineered specifically for pediatric physiology and teens aged 4 to 18.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Product Detail Showcase / E-Commerce Purchase Section
+         ========================================================= -->
+    <section class="product-section" id="product">
+      <div class="container">
+        <div class="product-grid">
+          <!-- Gallery Column -->
+          <div class="product-gallery-sticky">
+            <div class="product-main-view">
+              <img id="mainProductImage" src="assets/product-suite.jpg" alt="Somna under-mattress acoustic sleep pad and bedside hub" class="product-main-img" />
+            </div>
+            <div class="product-thumbnails" role="tablist" aria-label="Product views">
+              <button type="button" class="thumb-btn active" data-src="assets/product-suite.jpg" aria-label="Product Suite view">
+                <img src="assets/product-suite.jpg" alt="Complete suite" />
+              </button>
+              <button type="button" class="thumb-btn" data-src="assets/hero-sleep.jpg" aria-label="Child sleeping with puck view">
+                <img src="assets/hero-sleep.jpg" alt="Bed placement" />
+              </button>
+              <button type="button" class="thumb-btn" data-src="assets/nocturnal-sleep.jpg" aria-label="Nocturnal sleep view">
+                <img src="assets/nocturnal-sleep.jpg" alt="Nocturnal mode" />
+              </button>
+              <button type="button" class="thumb-btn" data-src="assets/parent-child.jpg" aria-label="Family insights view">
+                <img src="assets/parent-child.jpg" alt="Family app" />
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Details & Purchase Form -->
+          <div class="product-info-col">
+            <h2 class="product-headline">
+              Understand your child's sleep, without disturbing it.
+            </h2>
+            <p class="product-sublead">
+              Somna tracks sleep, biosignals, and bedroom environment for children and teens ages 4–18 with no cameras, wearables, or disruption to their routine.
+            </p>
+
+            <!-- Feature Bullet List -->
+            <ul class="product-features-list">
+              <li class="product-feature-item">
+                <div class="feature-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>Understand wake-ups</h4>
+                  <p>Slices under mattress topper or bed sheet completely out of sight.</p>
+                </div>
+              </li>
+              <li class="product-feature-item">
+                <div class="feature-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>Smart bedside hub</h4>
+                  <p>Processes sleep signals securely on-device with zero cloud latency.</p>
+                </div>
+              </li>
+              <li class="product-feature-item">
+                <div class="feature-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>Personalized sleep insights</h4>
+                  <p>Age-specific, plain-language guidance crafted by pediatric sleep doctors.</p>
+                </div>
+              </li>
+              <li class="product-feature-item">
+                <div class="feature-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>Privacy by design</h4>
+                  <p>No cameras. No wearables. Nothing attached to your child.</p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Pricing & Checkout Actions -->
+            <div class="founder-status-banner">
+              <span class="badge-dot"></span>
+              <span>Now accepting Founder's Series reservations</span>
+            </div>
+
+            <div class="pricing-box">
+              <span class="price-current" id="storePrice" data-eur="€299,00" data-usd="$329.00" data-gbp="£269.00">€299,00</span>
+              <span class="price-strike" id="retailStrike" data-eur="€399,00" data-usd="$429.00" data-gbp="£349.00">€399,00</span>
+              <span class="price-badge-save">Save €100</span>
+            </div>
+
+            <button type="button" class="btn-pill btn-primary buy-cta-btn" id="addToCartBtn">
+              Join the Founder's Series
+            </button>
+
+            <p class="founder-guarantee-note">
+              <strong>Founder's Series:</strong> Lifetime app access included, free. Later customers will pay a subscription (€9.99/mo) — Founders never will.
+            </p>
+
+            <!-- Trust Badges -->
+            <div class="trust-badges-row">
+              <div class="trust-badge-unit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg>
+                <span>30-Day Money-Back Guarantee</span>
+              </div>
+              <div class="trust-badge-unit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <span>Free Express Shipping (EU & UK)</span>
+              </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-icons-strip">
+              <span class="payment-chip">Apple Pay</span>
+              <span class="payment-chip">Google Pay</span>
+              <span class="payment-chip">Klarna</span>
+              <span class="payment-chip">Visa</span>
+              <span class="payment-chip">Mastercard</span>
+              <span class="payment-chip">Shop Pay</span>
+            </div>
+
+            <!-- Interactive Accordion Details -->
+            <div class="specs-accordion">
+              <div class="accordion-item active">
+                <button type="button" class="accordion-header">
+                  <span>How Somna Works</span>
+                  <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="accordion-content" style="max-height: 200px;">
+                  <div class="accordion-content-inner">
+                    Somna uses high-sensitivity acoustic ballistocardiography sensors that slip beneath your mattress topper. The sensors register microscopic mechanical vibrations generated by heart contraction, pulmonary airflow, and body twitches without direct skin contact.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <button type="button" class="accordion-header">
+                  <span>What's Included</span>
+                  <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="accordion-content-inner">
+                    The Founder's Series package includes the under-mattress ultra-thin sensor mat, bedside processing hub (ash wood finish), power adapter with braided cable, iOS & Android companion app, and free Lifetime Founder subscription access.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <button type="button" class="accordion-header">
+                  <span>Dimensions & Power</span>
+                  <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="accordion-content-inner">
+                    Sensor Mat: 85 cm × 55 cm × 2.8 mm thin (imperceptible beneath standard sheets). Hub: 110 mm × 110 mm × 32 mm. Operates on 5V low-voltage USB-C power with ultra-low EMF emission shielded cabling.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <button type="button" class="accordion-header">
+                  <span>Shipping & Returns</span>
+                  <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="accordion-content-inner">
+                    Dispatched from our Helsinki fulfillment center within 48 business hours. Test Somna risk-free for 30 consecutive nights; if sleep does not measurably improve, return for a 100% full refund with prepaid shipping label.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <button type="button" class="accordion-header">
+                  <span>Privacy & Security</span>
+                  <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="accordion-content-inner">
+                    Strict adherence to GDPR and EU health privacy standards. No audio or video recording hardware exists in the device. All physiological metrics are encrypted at rest with AES-256 and never monetized or shared with third parties.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Nocturnal Dark Atmosphere Section
+         ========================================================= -->
+    <section class="nocturnal-section" id="night">
+      <div class="container">
+        <div class="nocturnal-grid">
+          <div class="nocturnal-media-box">
+            <img src="assets/nocturnal-sleep.jpg" alt="Child sleeping serenely in ambient nighttime bedroom" />
+            <div class="nocturnal-overlay-badge">
+              <span class="pulse-amber"></span>
+              <span class="nocturnal-overlay-text">Sub-Mattress Sensor Active · 0 Disturbances</span>
+            </div>
+          </div>
+
+          <div class="nocturnal-content">
+            <h2>Silent observation. Restful every night.</h2>
+            <p class="lead">
+              Placed under the mattress, Somna turns ambient micro-movements into clinical sleep cycles — without wearables, cameras, or bedtime friction.
+            </p>
+
+            <div class="nocturnal-bullets">
+              <div class="nocturnal-bullet-item">
+                <div class="nocturnal-bullet-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </div>
+                <div class="nocturnal-bullet-text">
+                  <h4>See what happens at night</h4>
+                  <p>Understand wake-ups, sleep cycles, and overnight patterns with meaningful biological metrics.</p>
+                </div>
+              </div>
+
+              <div class="nocturnal-bullet-item">
+                <div class="nocturnal-bullet-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <div class="nocturnal-bullet-text">
+                  <h4>Personalized sleep insights</h4>
+                  <p>Receive clear reports that help you recognize triggers and establish healthier evening wind-down rituals.</p>
+                </div>
+              </div>
+
+              <div class="nocturnal-bullet-item">
+                <div class="nocturnal-bullet-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="nocturnal-bullet-text">
+                  <h4>Completely non-invasive</h4>
+                  <p>Placed under the mattress, Somna works silently while your child sleeps naturally without itchy wristbands.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         How Somna Works (3 Simple Steps)
+         ========================================================= -->
+    <section class="steps-section" id="steps">
+      <div class="container">
+        <div class="steps-header">
+          <h2>How Somna supports better sleep</h2>
+          <p>Three simple steps from unboxing to restorative nights.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div>
+              <span class="step-num">Step 01</span>
+              <h3>Sense</h3>
+              <p>Somna automatically tracks your child's sleep when they get into bed along with bedroom environment. No recharging, no pairing routines, or daily activation required.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div>
+              <span class="step-num">Step 02</span>
+              <h3>Analyze</h3>
+              <p>Continuous ballistocardiography processes micro-vibrations of heart rate variability, respiration cycles, and toss-and-turn frequency right on the bedside edge hub.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div>
+              <span class="step-num">Step 03</span>
+              <h3>Thrive</h3>
+              <p>Parents receive plain-language morning briefings explaining sleep quality and actionable suggestions for evening routines, bedroom humidity, and bedtime consistency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Scientific Advisors & Leadership
+         ========================================================= -->
+    <section class="science-section" id="advisors">
+      <div class="container">
+        <div class="science-grid">
+          <div class="science-media-frame">
+            <img src="assets/team-advisors.jpg" alt="Somna pediatric research and engineering team in collaborative studio" />
+          </div>
+
+          <div class="science-content">
+            <h2>Built with the minds behind the world's leading wellness technology.</h2>
+            <p>
+              Somna brings together pediatric sleep scientists, biosignal processing engineers, and hardware pioneers behind products trusted by millions of families globally.
+            </p>
+
+            <div class="advisors-list">
+              <div class="advisor-pill-card">
+                <div class="advisor-avatar">AL</div>
+                <div class="advisor-info">
+                  <h4>Dr. Astrid Lindström, MD, PhD</h4>
+                  <p>Pediatric Neurologist & Director of Child Sleep Medicine, Karolinska Institute</p>
+                </div>
+              </div>
+
+              <div class="advisor-pill-card">
+                <div class="advisor-avatar">HV</div>
+                <div class="advisor-info">
+                  <h4>Prof. Henrik Väänänen</h4>
+                  <p>Acoustic Ballistocardiography Pioneer & Biosignal Engineering Fellow</p>
+                </div>
+              </div>
+
+              <div class="advisor-pill-card">
+                <div class="advisor-avatar">ER</div>
+                <div class="advisor-info">
+                  <h4>Dr. Elena Rostova</h4>
+                  <p>Specialist in Adolescent Cognitive Development & Circadian Rhythms</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FAQ Section
+         ========================================================= -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="faq-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Everything you need to know about Somna's non-invasive pediatric sleep tracker.</p>
+        </div>
+
+        <div class="faq-container-narrow specs-accordion">
+          <div class="accordion-item">
+            <button type="button" class="accordion-header">
+              <span>What age range is Somna designed for?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-content-inner">
+                Somna's ballistocardiography algorithms and clinical guidance are specifically calibrated for children and teens ages 4 through 18. The developmental sleep models adapt automatically as your child grows.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button type="button" class="accordion-header">
+              <span>Does it work with thick spring or memory foam mattresses?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-content-inner">
+                Yes. Somna is tested through up to 40 cm (16 inches) of dense memory foam, latex, and pocket sprung mattresses. For optimal signal fidelity, place the sensor pad between your mattress and topper, or directly beneath a standard fitted mattress protector.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button type="button" class="accordion-header">
+              <span>What if my child shares a bed or pets jump on the bed?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-content-inner">
+                Our multi-zone spatial sensor array isolates the distinct biometric frequency profile of your child's resting cardiac cycle, effectively filtering out transient interruptions or bed-sharing disturbances.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button type="button" class="accordion-header">
+              <span>Is there any electromagnetic radiation near my child?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-content-inner">
+                Zero. The in-bed mat contains purely passive acoustic piezoelectric sensors with no Bluetooth or Wi-Fi radio transmitters in the bed. High-frequency wireless radios exist solely inside the bedside hub across the room.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Closing Founder's Call to Action Banner
+         ========================================================= -->
+    <section class="closing-cta">
+      <div class="container">
+        <div class="cta-banner-box">
+          <div class="cta-inventory-status">
+            <span class="badge-dot"></span>
+            <span>Founder's Series: 382 / 500 Reservations Claimed</span>
+          </div>
+          <h2>Give your child the gift of restful, restorative sleep.</h2>
+          <p>
+            Secure the Somna suite today with our 30-night money-back guarantee and lock in free lifetime app access before subscriptions begin.
+          </p>
+          <a href="#product" class="btn-pill btn-primary hero-cta-btn" style="background: #FFFFFF; color: #111518; margin: 0 auto;">
+            Claim Founder's Series Package
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       Site Footer
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#hero" class="brand-logo">
+            <svg class="brand-mark-svg" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M16 4C9.37 4 4 9.37 4 16s5.37 12 12 12c5.96 0 10.93-4.35 11.83-10.08-.27.05-.55.08-.83.08-3.31 0-6-2.69-6-6 0-2.42 1.44-4.51 3.51-5.46C22.68 4.88 19.5 4 16 4z" />
+              <circle cx="23" cy="11" r="2.5" fill="currentColor" stroke="none" />
+            </svg>
+            <span>somna</span>
+          </a>
+          <p>
+            Pediatric nocturnal biosignal intelligence and sleep tracking designed with empathy, scientific validation, and uncompromising privacy.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#product">Founder's Series</a></li>
+            <li><a href="#night">Acoustic Sensor Mat</a></li>
+            <li><a href="#product">Bedside Hub</a></li>
+            <li><a href="#insights">Somna App</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Science</h5>
+          <ul>
+            <li><a href="#insights">Ballistocardiography</a></li>
+            <li><a href="#advisors">Advisory Board</a></li>
+            <li><a href="#insights">Pediatric Sleep Studies</a></li>
+            <li><a href="#night">EMF Safety Reports</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#hero">About Somna</a></li>
+            <li><a href="#faq">Support & Returns</a></li>
+            <li><a href="#faq">Privacy Policy</a></li>
+            <li><a href="mailto:hello@somna.example">hello@somna.example</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Somna Health Technologies Oy. All rights reserved. Sample template.
+        </div>
+        <div>
+          <span>Non-invasive pediatric wellness device. Not intended for direct clinical diagnostic treatment.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       Interactive Cart Slide-Over Drawer Modal
+       ========================================================= -->
+  <div class="drawer-overlay" id="drawerOverlay">
+    <div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartHeading">
+      <div class="drawer-header">
+        <h3 id="cartHeading">Your Cart (1)</h3>
+        <button type="button" class="drawer-close" id="drawerCloseBtn" aria-label="Close cart">&times;</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="cart-item-card">
+          <div class="cart-item-thumb">
+            <img src="assets/product-suite.jpg" alt="Somna Pediatric Sleep Suite" />
+          </div>
+          <div class="cart-item-details">
+            <h4>Somna Pediatric Sleep Suite</h4>
+            <p class="cart-item-bonus">✓ Founder's Series Lifetime App Included</p>
+            <div class="cart-item-price" id="cartItemPrice">€299,00</div>
+          </div>
+        </div>
+
+        <div style="background: var(--color-sage-light); border-radius: var(--radius-sm); padding: 14px; font-size: 13px; color: var(--color-sage); line-height: 1.5; margin-bottom: 20px;">
+          <strong>Founder's Privilege Applied:</strong> You will never be charged a monthly or annual software fee for the lifetime of your hardware.
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">€299,00</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping (Express EU/UK)</span>
+          <span style="color: var(--color-sage); font-weight: 600;">Free</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="cartTotal">€299,00</span>
+        </div>
+
+        <button type="button" class="btn-pill btn-primary btn-checkout" id="checkoutBtn">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Interactive JavaScript
+       ========================================================= -->
+  <script>
+    // 1. Currency Switcher Logic
+    const currencyRates = {
+      EUR: { symbol: '€', price: '299,00', strike: '399,00', save: 'Save €100' },
+      USD: { symbol: '$', price: '329.00', strike: '429.00', save: 'Save $100' },
+      GBP: { symbol: '£', price: '269.00', strike: '349.00', save: 'Save £80' }
+    };
+
+    let currentCur = 'EUR';
+
+    document.querySelectorAll('.currency-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCur = btn.dataset.cur;
+        updatePricing();
+      });
+    });
+
+    function updatePricing() {
+      const data = currencyRates[currentCur];
+      const storePrice = document.getElementById('storePrice');
+      const retailStrike = document.getElementById('retailStrike');
+      const cartItemPrice = document.getElementById('cartItemPrice');
+      const cartSubtotal = document.getElementById('cartSubtotal');
+      const cartTotal = document.getElementById('cartTotal');
+
+      if (storePrice) storePrice.textContent = (currentCur === 'EUR' ? '€' : data.symbol) + data.price;
+      if (retailStrike) retailStrike.textContent = (currentCur === 'EUR' ? '€' : data.symbol) + data.strike;
+      if (cartItemPrice) cartItemPrice.textContent = (currentCur === 'EUR' ? '€' : data.symbol) + data.price;
+      if (cartSubtotal) cartSubtotal.textContent = (currentCur === 'EUR' ? '€' : data.symbol) + data.price;
+      if (cartTotal) cartTotal.textContent = (currentCur === 'EUR' ? '€' : data.symbol) + data.price;
+    }
+
+    // 2. Product Gallery Thumbnail Switcher
+    const mainImg = document.getElementById('mainProductImage');
+    const thumbBtns = document.querySelectorAll('.thumb-btn');
+
+    thumbBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        thumbBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const newSrc = btn.dataset.src;
+        if (mainImg) {
+          mainImg.style.opacity = '0.5';
+          setTimeout(() => {
+            mainImg.src = newSrc;
+            mainImg.style.opacity = '1';
+          }, 120);
+        }
+      });
+    });
+
+    // 3. Accordions
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const isActive = item.classList.contains('active');
+        const content = item.querySelector('.accordion-content');
+
+        // Optional: close other items in the same container
+        const siblings = item.parentElement.querySelectorAll('.accordion-item');
+        siblings.forEach(sib => {
+          if (sib !== item) {
+            sib.classList.remove('active');
+            const sibContent = sib.querySelector('.accordion-content');
+            if (sibContent) sibContent.style.maxHeight = null;
+          }
+        });
+
+        if (!isActive) {
+          item.classList.add('active');
+          content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+          item.classList.remove('active');
+          content.style.maxHeight = null;
+        }
+      });
+    });
+
+    // 4. Cart Drawer Toggle & Checkout Simulation
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const cartOpenBtn = document.getElementById('cartOpenBtn');
+    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    function openCart() {
+      drawerOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+      drawerOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    if (cartOpenBtn) cartOpenBtn.addEventListener('click', openCart);
+    if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeCart);
+    if (addToCartBtn) addToCartBtn.addEventListener('click', openCart);
+
+    drawerOverlay.addEventListener('click', (e) => {
+      if (e.target === drawerOverlay) closeCart();
+    });
+
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', () => {
+        checkoutBtn.textContent = 'Redirecting to Secure Checkout...';
+        checkoutBtn.style.opacity = '0.75';
+        setTimeout(() => {
+          alert('Founder’s Series Order Confirmed! (Fictional demonstration store)');
+          checkoutBtn.textContent = 'Proceed to Checkout';
+          checkoutBtn.style.opacity = '1';
+          closeCart();
+        }, 800);
+      });
+    }
+
+    // 5. Mobile Menu Toggle
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    if (menuToggleBtn) {
+      menuToggleBtn.addEventListener('click', () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+          const isVisible = navLinks.style.display === 'flex';
+          navLinks.style.display = isVisible ? 'none' : 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '72px';
+          navLinks.style.left = '0';
+          navLinks.style.width = '100%';
+          navLinks.style.background = '#FAF9F5';
+          navLinks.style.padding = '24px';
+          navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
