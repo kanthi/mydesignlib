@@ -20,6 +20,7 @@ Former repo name: **mytemplate** (same product).
 8. **HTTP verify.** Local site is already served by **Caddy** (do **not** start `python3 -m http.server`). Resolve base URL with `~/.config/mydesignlib-portal/serve.sh --url`, then confirm `200` for `index.html`, `preview.jpg`, and key assets. Details: `docs/OPERATIONS.md` § Local preview.
 9. **One complete deliverable per reference URL** unless the user asks otherwise. Finish registration + audit + verify in the same turn when possible.
 10. **Ship to live when asked.** Site-facing changes: commit, push `main`. Pages is currently **paused** (workflow disabled); re-enable per `docs/OPERATIONS.md` § “Pages paused” before expecting a live deploy.
+11. **Complete website with full motion & assets.** Whenever reference material is provided, build a complete, production-grade website deliverable — including smooth scroll, section transitions, micro-interactions, scroll-driven motion (GSAP/ScrollTrigger/Lenis/CSS keyframes), responsive breakpoints, and rich original high-fidelity imagery/mockups rather than static shells or placeholder sections.
 
 ## Library layout
 
