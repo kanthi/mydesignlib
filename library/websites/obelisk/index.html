@@ -27,14 +27,18 @@
   <style>
     :root {
       --color-bg: #ECECE7;
+      --color-bg-subtle: #E4E4DF;
       --color-grid: rgba(0, 0, 0, 0.08);
+      --color-grid-dark: rgba(0, 0, 0, 0.15);
       --color-crosshair: rgba(0, 0, 0, 0.35);
       --color-ink: #111315;
       --color-ink-muted: #55575A;
+      --color-ink-light: #888A8D;
       --color-white: #FFFFFF;
       --font-serif: 'Newsreader', Georgia, serif;
       --font-mono: 'Space Mono', monospace;
       --ease-aperture: cubic-bezier(0.19, 1, 0.22, 1);
+      --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -43,35 +47,132 @@
       padding: 0;
     }
 
-    html, body {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
       background-color: var(--color-bg);
       color: var(--color-ink);
       font-family: var(--font-mono);
       -webkit-font-smoothing: antialiased;
-      user-select: none;
+    }
+
+    ::selection {
+      background: var(--color-ink);
+      color: var(--color-white);
     }
 
     /* =========================================================
-       Cartesian Crosshair Grid Canvas
+       Sticky Minimal HUD Bar (Visible on Scroll)
        ========================================================= */
-    .grid-viewport {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
+    .sticky-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 12px 32px;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
-      padding: 36px 48px;
-      z-index: 1;
+      align-items: center;
+      background: rgba(236, 236, 231, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--color-grid);
+      z-index: 40;
+      transform: translateY(-100%);
+      transition: transform 0.4s var(--ease-standard);
+      font-size: 10px;
+      letter-spacing: 0.08em;
     }
 
-    /* Repeating Hairline Grid Overlay */
+    .sticky-hud.is-visible {
+      transform: translateY(0);
+    }
+
+    .hud-brand {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hud-coords {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-ink-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .hud-nav {
+      display: flex;
+      gap: 20px;
+      text-transform: uppercase;
+    }
+
+    .hud-nav a {
+      color: var(--color-ink);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .hud-nav a:hover {
+      opacity: 0.5;
+    }
+
+    .hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hud-btn-pill {
+      padding: 6px 14px;
+      background: var(--color-ink);
+      color: var(--color-white);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .hud-btn-pill:hover {
+      background: #000;
+      transform: translateY(-1px);
+    }
+
+    .hud-cart-indicator {
+      cursor: pointer;
+      color: var(--color-ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       Cartesian Grid Overlay & Hairlines
+       ========================================================= */
     .grid-lines-overlay {
-      position: fixed;
-      inset: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
       pointer-events: none;
       z-index: 2;
       background-image:
@@ -80,10 +181,12 @@
       background-size: 12.5vw 16.666vh;
     }
 
-    /* Crosshair Plus Signs Generated across Viewport */
     .crosshairs-container {
-      position: fixed;
-      inset: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
       pointer-events: none;
       z-index: 3;
     }
@@ -103,8 +206,20 @@
     }
 
     /* =========================================================
-       Top Header Bar
+       Section: Hero Viewport
        ========================================================= */
+    .hero-viewport {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px 48px;
+      z-index: 10;
+      border-bottom: 1px solid var(--color-grid-dark);
+    }
+
     .header-bar {
       display: flex;
       justify-content: space-between;
@@ -116,7 +231,7 @@
     .nav-links-block {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
       font-size: 11px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -127,26 +242,37 @@
       text-decoration: none;
       transition: opacity 0.2s ease;
       width: fit-content;
+      position: relative;
     }
 
-    .nav-links-block a:hover {
-      opacity: 0.5;
+    .nav-links-block a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--color-ink);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links-block a:hover::after {
+      width: 100%;
     }
 
     .brand-title {
       font-family: var(--font-serif);
-      font-size: clamp(48px, 6.8vw, 102px);
+      font-size: clamp(52px, 7.8vw, 110px);
       font-weight: 400;
       letter-spacing: -0.04em;
       line-height: 0.85;
       text-transform: uppercase;
       color: var(--color-ink);
       margin-top: -8px;
+      user-select: none;
     }
 
-    /* =========================================================
-       Editorial Surveillance Microcopy
-       ========================================================= */
+    /* Editorial Surveillance Microcopy */
     .memo-note {
       font-size: 9.5px;
       line-height: 1.5;
@@ -170,11 +296,44 @@
       margin-bottom: 8px;
     }
 
+    .hero-footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .scroll-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .scroll-indicator:hover {
+      color: var(--color-ink);
+    }
+
+    .scroll-indicator svg {
+      animation: bounceDown 1.8s infinite;
+    }
+
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
     /* =========================================================
        Center Kinetic Aperture & Slit Mechanism
        ========================================================= */
     .aperture-anchor {
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -199,7 +358,6 @@
       transition: opacity 0.3s ease;
     }
 
-    /* The Slit Unit in Rest State */
     .aperture-slit-box {
       width: 100%;
       height: 6px;
@@ -212,8 +370,8 @@
     }
 
     .aperture-slit-box:hover {
-      height: 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      height: 18px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
     }
 
     .slit-preview-img {
@@ -225,7 +383,6 @@
       display: none;
     }
 
-    /* The "Break Free" Trigger Button */
     .break-free-btn {
       margin-top: 14px;
       background: var(--color-white);
@@ -249,16 +406,16 @@
       background: var(--color-ink);
       color: var(--color-white);
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
     }
 
     /* =========================================================
-       Full-Bleed Expanded Immersion Overlay
+       Full-Bleed Expanded Immersion Overlay (Active State)
        ========================================================= */
     .immersion-stage {
       position: fixed;
       inset: 0;
-      z-index: 50;
+      z-index: 60;
       pointer-events: none;
       opacity: 0;
       clip-path: inset(49.7% 37.5% 49.7% 37.5%);
@@ -276,7 +433,6 @@
       clip-path: inset(0% 0% 0% 0%);
     }
 
-    /* Background Architectural Photo (Full Screen) */
     .immersion-bg-photo {
       position: absolute;
       inset: 0;
@@ -292,35 +448,20 @@
       transform: scale(1);
     }
 
-    /* Left & Right Cinematic Slit Crop Curtains */
-    .immersion-stage::before, .immersion-stage::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 25vw;
-      background: rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(2px);
-      pointer-events: none;
-      z-index: 55;
-      display: none;
-    }
-
-    /* Center Floating Specimen Card */
     .specimen-card {
       position: relative;
-      z-index: 60;
+      z-index: 70;
       width: 90vw;
-      max-width: 480px;
-      height: 82vh;
-      max-height: 720px;
+      max-width: 500px;
+      height: 84vh;
+      max-height: 740px;
       background: var(--color-white);
       color: var(--color-ink);
       padding: 36px 36px 42px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.8);
       transform: translateY(30px) scale(0.96);
       opacity: 0;
@@ -332,7 +473,6 @@
       opacity: 1;
     }
 
-    /* Card Top Counter & Close Trigger */
     .card-top-bar {
       display: flex;
       justify-content: space-between;
@@ -349,7 +489,7 @@
       font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.1em;
-      padding: 4px 8px;
+      padding: 5px 10px;
       border: 1px solid rgba(0, 0, 0, 0.15);
       background: rgba(0, 0, 0, 0.03);
       transition: all 0.2s ease;
@@ -360,16 +500,15 @@
       color: var(--color-white);
     }
 
-    /* Card Center 3-Thumbnail Strip */
     .card-thumb-strip {
-      display: flex;
-      gap: 12px;
-      margin: 28px 0;
-      height: 140px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 24px 0;
+      height: 130px;
     }
 
     .thumb-cell {
-      flex: 1;
       height: 100%;
       border: 2px solid transparent;
       overflow: hidden;
@@ -409,20 +548,18 @@
       box-shadow: 0 0 4px rgba(0,0,0,0.8);
     }
 
-    /* Card Narrative Note */
     .card-narrative {
       font-size: 9.5px;
       line-height: 1.6;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: var(--color-ink-muted);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
-    /* Card Towering Title */
     .card-specimen-title {
       font-family: var(--font-serif);
-      font-size: clamp(38px, 4.6vw, 56px);
+      font-size: clamp(36px, 4.4vw, 54px);
       line-height: 0.95;
       font-weight: 400;
       letter-spacing: -0.035em;
@@ -430,17 +567,16 @@
       color: var(--color-ink);
     }
 
-    /* Keyboard navigation pill at bottom of expanded view */
     .immersion-footer-hints {
       position: absolute;
       bottom: 24px;
       display: flex;
-      gap: 20px;
+      gap: 16px;
       font-size: 10px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.75);
-      z-index: 60;
+      z-index: 70;
     }
 
     .immersion-footer-hints span {
@@ -451,24 +587,926 @@
     }
 
     /* =========================================================
-       Responsive Adjustments
+       Common Section System & Cartesian Layout
        ========================================================= */
-    @media (max-width: 768px) {
-      .grid-viewport {
+    .content-section {
+      position: relative;
+      width: 100%;
+      padding: 96px 48px;
+      border-bottom: 1px solid var(--color-grid-dark);
+      background: var(--color-bg);
+    }
+
+    .content-section::before {
+      content: '+';
+      position: absolute;
+      top: -6px;
+      left: 48px;
+      font-size: 12px;
+      color: var(--color-crosshair);
+      font-family: var(--font-mono);
+      line-height: 12px;
+    }
+
+    .content-section::after {
+      content: '+';
+      position: absolute;
+      top: -6px;
+      right: 48px;
+      font-size: 12px;
+      color: var(--color-crosshair);
+      font-family: var(--font-mono);
+      line-height: 12px;
+    }
+
+    .section-header-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 56px;
+      border-bottom: 1px solid var(--color-grid);
+      padding-bottom: 24px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--color-ink);
+    }
+
+    .section-title-large {
+      font-family: var(--font-serif);
+      font-size: clamp(38px, 5.2vw, 76px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    .section-counter {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--color-ink-muted);
+    }
+
+    /* =========================================================
+       Section 1: Selected Commissions & Spatial Works
+       ========================================================= */
+    .commissions-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 32px 24px;
+    }
+
+    .commission-card {
+      grid-column: span 6;
+      border-top: 1px solid var(--color-grid-dark);
+      padding-top: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      group: card;
+    }
+
+    .commission-card.featured {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .commission-img-wrap {
+      width: 100%;
+      height: 420px;
+      overflow: hidden;
+      background: #D8D8D3;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .commission-card.featured .commission-img-wrap {
+      height: 520px;
+      margin-bottom: 0;
+    }
+
+    .commission-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(120%);
+      transition: transform 0.7s var(--ease-standard), filter 0.5s ease;
+    }
+
+    .commission-card:hover .commission-img-wrap img {
+      transform: scale(1.04);
+      filter: grayscale(100%) contrast(140%);
+    }
+
+    .commission-img-tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(17, 19, 21, 0.85);
+      color: var(--color-white);
+      padding: 4px 10px;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+    }
+
+    .commission-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--color-ink-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .commission-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 2.6vw, 36px);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--color-ink);
+    }
+
+    .commission-desc {
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--color-ink-muted);
+      margin-bottom: 20px;
+      max-width: 480px;
+    }
+
+    .commission-specs-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 16px;
+      font-size: 9.5px;
+      border-top: 1px solid var(--color-grid);
+      padding-top: 16px;
+      margin-top: auto;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .spec-label {
+      color: var(--color-ink-light);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .spec-value {
+      color: var(--color-ink);
+      font-weight: 700;
+    }
+
+    .commission-aperture-trigger {
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      background: transparent;
+      border: 1px solid var(--color-ink);
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: fit-content;
+    }
+
+    .commission-aperture-trigger:hover {
+      background: var(--color-ink);
+      color: var(--color-white);
+    }
+
+    /* Spatial Disciplines Grid */
+    .disciplines-strip {
+      margin-top: 64px;
+      border-top: 1px solid var(--color-grid-dark);
+      padding-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .discipline-box {
+      border-left: 1px solid var(--color-grid-dark);
+      padding-left: 20px;
+    }
+
+    .discipline-idx {
+      font-size: 11px;
+      color: var(--color-ink-light);
+      margin-bottom: 8px;
+    }
+
+    .discipline-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .discipline-desc {
+      font-size: 10px;
+      line-height: 1.6;
+      color: var(--color-ink-muted);
+    }
+
+    /* =========================================================
+       Section 2: Shop & Physical Serial Editions
+       ========================================================= */
+    .editions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .edition-card {
+      border: 1px solid var(--color-grid-dark);
+      background: var(--color-white);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .edition-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    .edition-visual {
+      height: 240px;
+      background: #F1F1EC;
+      border-bottom: 1px solid var(--color-grid);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edition-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(120%);
+      transition: transform 0.5s ease;
+    }
+
+    .edition-card:hover .edition-visual img {
+      transform: scale(1.06);
+    }
+
+    .edition-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--color-ink);
+      color: var(--color-white);
+      font-size: 8.5px;
+      padding: 3px 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .edition-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .edition-id-tag {
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      color: var(--color-ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .edition-name {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: var(--color-ink);
+    }
+
+    .edition-materials {
+      font-size: 10px;
+      line-height: 1.5;
+      color: var(--color-ink-muted);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .edition-pricing-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--color-grid);
+      padding-top: 16px;
+      margin-top: auto;
+    }
+
+    .edition-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+
+    .acquire-btn {
+      background: var(--color-ink);
+      color: var(--color-white);
+      border: 1px solid var(--color-ink);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      padding: 8px 14px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .acquire-btn:hover {
+      background: var(--color-white);
+      color: var(--color-ink);
+    }
+
+    /* Cart / Acquisition Drawer */
+    .cart-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .cart-drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 420px;
+      max-width: 90vw;
+      height: 100vh;
+      background: var(--color-white);
+      border-left: 1px solid var(--color-grid-dark);
+      z-index: 110;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.4s var(--ease-standard);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .cart-drawer-overlay.open .cart-drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--color-grid);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .drawer-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      text-transform: uppercase;
+    }
+
+    .drawer-close {
+      background: none;
+      border: 1px solid var(--color-grid-dark);
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+    }
+
+    .drawer-items-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .drawer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--color-grid);
+      padding-bottom: 16px;
+    }
+
+    .drawer-item-info h4 {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .drawer-item-info p {
+      font-size: 10px;
+      color: var(--color-ink-muted);
+    }
+
+    .drawer-footer {
+      border-top: 1px solid var(--color-grid);
+      padding-top: 24px;
+      margin-top: 24px;
+    }
+
+    .drawer-subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--color-ink);
+      color: var(--color-white);
+      border: none;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .checkout-btn:hover {
+      background: #000;
+    }
+
+    /* =========================================================
+       Section 3: Studio Manifesto & Materials Matrix
+       ========================================================= */
+    .manifesto-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--color-ink);
+      max-width: 1100px;
+      margin-bottom: 64px;
+    }
+
+    .materials-matrix-block {
+      border: 1px solid var(--color-grid-dark);
+      background: var(--color-white);
+      padding: 40px;
+      margin-bottom: 64px;
+    }
+
+    .matrix-nav {
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid var(--color-grid);
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+
+    .matrix-tab {
+      background: none;
+      border: 1px solid var(--color-grid-dark);
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--color-ink);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .matrix-tab.active, .matrix-tab:hover {
+      background: var(--color-ink);
+      color: var(--color-white);
+    }
+
+    .matrix-content-display {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 48px;
+    }
+
+    .mat-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .mat-desc {
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--color-ink-muted);
+      margin-bottom: 24px;
+    }
+
+    .mat-metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+
+    .mat-metrics-table tr {
+      border-bottom: 1px solid var(--color-grid);
+    }
+
+    .mat-metrics-table td {
+      padding: 10px 0;
+    }
+
+    .mat-metrics-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      border-top: 1px solid var(--color-grid-dark);
+      padding-top: 48px;
+    }
+
+    .partner-card {
+      border-left: 1px solid var(--color-grid-dark);
+      padding-left: 20px;
+    }
+
+    .partner-role {
+      font-size: 9.5px;
+      color: var(--color-ink-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .partner-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .partner-bio {
+      font-size: 10px;
+      line-height: 1.6;
+      color: var(--color-ink-muted);
+    }
+
+    /* =========================================================
+       Section 4: Spatial Transmission Terminal & Inquiries
+       ========================================================= */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 64px;
+    }
+
+    .transmission-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      background: var(--color-white);
+      padding: 40px;
+      border: 1px solid var(--color-grid-dark);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+    }
+
+    .typology-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .type-pill {
+      border: 1px solid var(--color-grid-dark);
+      background: transparent;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .type-pill.selected {
+      background: var(--color-ink);
+      color: var(--color-white);
+      border-color: var(--color-ink);
+    }
+
+    .form-input {
+      background: #FAFAFA;
+      border: 1px solid var(--color-grid-dark);
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-ink);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--color-ink);
+      background: var(--color-white);
+    }
+
+    .form-submit-btn {
+      background: var(--color-ink);
+      color: var(--color-white);
+      border: none;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-submit-btn:hover {
+      background: #000;
+      transform: translateY(-1px);
+    }
+
+    .form-feedback-terminal {
+      font-size: 9.5px;
+      line-height: 1.6;
+      color: #1A8754;
+      border-top: 1px dashed var(--color-grid);
+      padding-top: 12px;
+      display: none;
+    }
+
+    .contact-bureaus-column {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .bureau-card {
+      border-top: 1px solid var(--color-grid-dark);
+      padding-top: 16px;
+    }
+
+    .bureau-city {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .bureau-coords {
+      font-size: 9.5px;
+      color: var(--color-ink-light);
+      margin-bottom: 8px;
+    }
+
+    .bureau-addr {
+      font-size: 10.5px;
+      color: var(--color-ink-muted);
+      line-height: 1.5;
+    }
+
+    .direct-transmission-box {
+      border: 1px solid var(--color-grid-dark);
+      background: var(--color-bg-subtle);
+      padding: 24px;
+      margin-top: auto;
+    }
+
+    .copy-email-btn {
+      background: var(--color-ink);
+      color: var(--color-white);
+      border: none;
+      padding: 10px 18px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: opacity 0.2s ease;
+    }
+
+    .copy-email-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--color-ink);
+      color: var(--color-white);
+      padding: 10px 20px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s var(--ease-standard);
+      border-radius: 2px;
+    }
+
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================================================
+       Colophon & Global Footer
+       ========================================================= */
+    .site-footer {
+      padding: 48px;
+      border-top: 1px solid var(--color-grid-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      background: var(--color-bg);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-back-to-top {
+      color: var(--color-ink);
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-back-to-top:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================================================
+       Responsive Breakpoints
+       ========================================================= */
+    @media (max-width: 1024px) {
+      .hero-viewport {
+        padding: 28px 32px;
+      }
+      .content-section {
+        padding: 64px 32px;
+      }
+      .commissions-grid {
+        gap: 24px;
+      }
+      .commission-card {
+        grid-column: span 12;
+      }
+      .commission-card.featured {
+        grid-template-columns: 1fr;
+      }
+      .disciplines-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+      .editions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .materials-matrix-block {
         padding: 24px;
       }
+      .matrix-content-display {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .partners-grid {
+        grid-template-columns: 1fr;
+      }
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-viewport {
+        padding: 20px;
+      }
       .brand-title {
-        font-size: 48px;
+        font-size: 42px;
       }
       .memo-note {
         display: none;
       }
-      .specimen-card {
-        padding: 24px;
-        height: 75vh;
+      .aperture-anchor {
+        width: 80vw;
       }
-      .card-specimen-title {
-        font-size: 36px;
+      .content-section {
+        padding: 48px 20px;
+      }
+      .editions-grid {
+        grid-template-columns: 1fr;
+      }
+      .disciplines-strip {
+        grid-template-columns: 1fr;
+      }
+      .specimen-card {
+        padding: 20px;
+        height: 80vh;
+      }
+      .card-thumb-strip {
+        gap: 6px;
+        height: 90px;
+      }
+      .site-footer {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 32px 20px;
+      }
+      .footer-left {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .sticky-hud {
+        padding: 10px 16px;
+      }
+      .hud-nav {
+        display: none;
       }
     }
   </style>
@@ -476,16 +1514,38 @@
 <body>
 
   <!-- =========================================================
-       Cartesian Hairlines and Crosshair Overlay
+       Sticky Minimal HUD Bar (Reveals on Scroll)
        ========================================================= -->
-  <div class="grid-lines-overlay"></div>
-  <div class="crosshairs-container" id="crosshairsContainer"></div>
+  <header class="sticky-hud" id="stickyHud" aria-label="Persistent Header">
+    <a href="#hero" class="hud-brand">
+      <span>OBELISK</span>
+      <span class="hud-coords">[41.8955°N 12.4674°E]</span>
+    </a>
+    <nav class="hud-nav" aria-label="Quick Section Navigation">
+      <a href="#services">SERVICES</a>
+      <a href="#shop">SHOP</a>
+      <a href="#about">ABOUT US</a>
+      <a href="#contact">CONTACT US</a>
+    </nav>
+    <div class="hud-actions">
+      <button type="button" class="hud-btn-pill" id="hudApertureBtn" aria-label="Open full aperture view">
+        APERTURE [01/04]
+      </button>
+      <a href="#shop" class="hud-cart-indicator" id="hudCartIndicator" aria-label="View acquisitions bag">
+        BAG (<span id="cartCount">0</span>)
+      </a>
+    </div>
+  </header>
 
   <!-- =========================================================
-       Main Grid Viewport (Rest State)
+       Section: Hero Viewport (Rest State)
        ========================================================= -->
-  <div class="grid-viewport" id="gridViewport">
-    <!-- Top Header -->
+  <section class="hero-viewport" id="hero" aria-label="Monumental Aperture Viewport">
+    <!-- Repeating Cartesian Hairlines & Crosshairs in Hero -->
+    <div class="grid-lines-overlay"></div>
+    <div class="crosshairs-container" id="crosshairsContainer"></div>
+
+    <!-- Top Navigation Header -->
     <header class="header-bar">
       <nav class="nav-links-block" aria-label="Main Navigation">
         <a href="#services">SERVICES</a>
@@ -509,7 +1569,7 @@
         <span id="labelIndexRight">[04]</span>
       </div>
 
-      <div class="aperture-slit-box" id="apertureSlit" role="button" aria-label="Expand architectural aperture">
+      <div class="aperture-slit-box" id="apertureSlit" role="button" aria-label="Expand architectural aperture" tabindex="0">
         <img src="assets/monolith-pillars.jpg" alt="Aperture preview slit" class="slit-preview-img" id="slitThumb" />
       </div>
 
@@ -524,11 +1584,522 @@
       </button>
     </div>
 
-    <!-- Bottom-Left Asymmetric Surveillance Note -->
-    <div class="memo-note memo-bottom-left">
-      SOMETHING ABOUT WHAT I WANT TO TELL BUT I CAN'T BECAUSE IT IS FORBIDDEN. YOU WILL NEVER FIND OUT TRUTH OF THIS SITUATION. FORGET ABOUT IT
+    <!-- Hero Bottom Bar -->
+    <div class="hero-footer-bar">
+      <!-- Bottom-Left Asymmetric Surveillance Note -->
+      <div class="memo-note memo-bottom-left">
+        SOMETHING ABOUT WHAT I WANT TO TELL BUT I CAN'T BECAUSE IT IS FORBIDDEN. YOU WILL NEVER FIND OUT TRUTH OF THIS SITUATION. FORGET ABOUT IT
+      </div>
+
+      <a href="#services" class="scroll-indicator" aria-label="Scroll to services and selected works">
+        <span>ARCHIVE & COMMISSIONS</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
     </div>
-  </div>
+  </section>
+
+  <!-- =========================================================
+       Section 1: Services & Selected Commissions Archive
+       ========================================================= -->
+  <section class="content-section" id="services" aria-label="Selected Commissions and Architectural Works">
+    <div class="section-header-block">
+      <div>
+        <span class="section-tag">COMMISSIONS ARCHIVE 2021—2026</span>
+        <h2 class="section-title-large">SPATIAL COMMISSIONS</h2>
+      </div>
+      <div class="section-counter">[01 // 05]</div>
+    </div>
+
+    <div class="commissions-grid">
+      <!-- Featured Commission: Specimen 02 -->
+      <article class="commission-card featured" onclick="triggerSpecimenFromCommission(1)">
+        <div class="commission-img-wrap">
+          <span class="commission-img-tag">SPECIMEN 02 // CIVIC PAVILION</span>
+          <img src="assets/colonnade-hall.jpg" alt="Travertine Colonnade with Raking Solstice Sunlight" />
+        </div>
+        <div>
+          <div class="commission-meta">
+            <span>ROME, ITALY</span>
+            <span>41.8955° N, 12.4674° E</span>
+          </div>
+          <h3 class="commission-heading">SUNRISE DAWN — TRAVERTINE COLONNADE</h3>
+          <p class="commission-desc">
+            A monumental colonnade constructed from monolithic blocks of Roman porous travertine. The axial spacing of the piers is engineered to align with raking solstice light, casting elongated rhythmic shadows across the polished aggregate floor.
+          </p>
+          <div class="commission-specs-list">
+            <div class="spec-item">
+              <span class="spec-label">Area / Volume</span>
+              <span class="spec-value">3,800 m² / 24,000 m³</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Primary Material</span>
+              <span class="spec-value">Honed Roman Travertine</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Acoustic Decay</span>
+              <span class="spec-value">2.4 seconds</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Thermal Mass</span>
+              <span class="spec-value">500-Year Cycle</span>
+            </div>
+          </div>
+          <button type="button" class="commission-aperture-trigger" onclick="event.stopPropagation(); triggerSpecimenFromCommission(1)">
+            VIEW IN APERTURE [02]
+          </button>
+        </div>
+      </article>
+
+      <!-- Commission 01 -->
+      <article class="commission-card" onclick="triggerSpecimenFromCommission(0)">
+        <div class="commission-img-wrap">
+          <span class="commission-img-tag">SPECIMEN 01 // SANCTUARY</span>
+          <img src="assets/monolith-pillars.jpg" alt="Monolith Pillars in Alpine Still Water" />
+        </div>
+        <div class="commission-meta">
+          <span>VALS, SWITZERLAND</span>
+          <span>46.6186° N, 9.1812° E</span>
+        </div>
+        <h3 class="commission-heading">MONOLITH I — ALPINE REFLECTOR</h3>
+        <p class="commission-desc">
+          Twin granite monoliths rising from an alpine reflection basin. Designed to anchor zero-turbulence sound reflection and endure glacial temperature swings without expansion joints.
+        </p>
+        <div class="commission-specs-list">
+          <div class="spec-item">
+            <span class="spec-label">Elevation</span>
+            <span class="spec-value">2,140 m MSL</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Substrate</span>
+            <span class="spec-value">Bedrock Gneiss</span>
+          </div>
+        </div>
+        <button type="button" class="commission-aperture-trigger" onclick="event.stopPropagation(); triggerSpecimenFromCommission(0)">
+          VIEW IN APERTURE [01]
+        </button>
+      </article>
+
+      <!-- Commission 03 -->
+      <article class="commission-card" onclick="triggerSpecimenFromCommission(2)">
+        <div class="commission-img-wrap">
+          <span class="commission-img-tag">SPECIMEN 03 // FACADE SYSTEM</span>
+          <img src="assets/facade-geometry.jpg" alt="Geometric Glass Facade and Structural Louvers" />
+        </div>
+        <div class="commission-meta">
+          <span>TOKYO, JAPAN</span>
+          <span>35.6652° N, 139.7188° E</span>
+        </div>
+        <h3 class="commission-heading">PRISM GEOMETRY — SKYWAY SYSTEM</h3>
+        <p class="commission-desc">
+          Precision structural glazing suspended on stainless steel tension cables. Low-iron optical panels calibrated with microscopic ceramic fritting for zero-distortion interior daylighting.
+        </p>
+        <div class="commission-specs-list">
+          <div class="spec-item">
+            <span class="spec-label">Wind Load Spec</span>
+            <span class="spec-value">3.8 kPa Dynamic</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Glass Clarification</span>
+            <span class="spec-value">91.5% Low-Iron Transmittance</span>
+          </div>
+        </div>
+        <button type="button" class="commission-aperture-trigger" onclick="event.stopPropagation(); triggerSpecimenFromCommission(2)">
+          VIEW IN APERTURE [03]
+        </button>
+      </article>
+
+      <!-- Commission 04 -->
+      <article class="commission-card" onclick="triggerSpecimenFromCommission(3)">
+        <div class="commission-img-wrap">
+          <span class="commission-img-tag">SPECIMEN 04 // INTERIOR CHAMBER</span>
+          <img src="assets/interior-lamp-structure.jpg" alt="Steel Window Trusses and Pendant Lamp" />
+        </div>
+        <div class="commission-meta">
+          <span>BERLIN, GERMANY</span>
+          <span>52.5200° N, 13.4050° E</span>
+        </div>
+        <h3 class="commission-heading">CATHEDRAL LIGHT — STEEL CLERESTORY</h3>
+        <p class="commission-desc">
+          Subtractive volume chamber sculpted beneath towering industrial steel window trusses. A single cast-bronze counterweight fixture balances raking northern sky illumination.
+        </p>
+        <div class="commission-specs-list">
+          <div class="spec-item">
+            <span class="spec-label">Louver Span</span>
+            <span class="spec-value">18.5 Meters</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Steel Alloy</span>
+            <span class="spec-value">Hot-Rolled S355JR</span>
+          </div>
+        </div>
+        <button type="button" class="commission-aperture-trigger" onclick="event.stopPropagation(); triggerSpecimenFromCommission(3)">
+          VIEW IN APERTURE [04]
+        </button>
+      </article>
+
+      <!-- Commission 05 -->
+      <article class="commission-card" onclick="triggerSpecimenFromCommission(1)">
+        <div class="commission-img-wrap">
+          <span class="commission-img-tag">SPECIMEN 05 // CIVIC PORTAL</span>
+          <img src="assets/brutalist-monument.jpg" alt="Brutalist Arch & Stairs Monument" />
+        </div>
+        <div class="commission-meta">
+          <span>OSLO, NORWAY</span>
+          <span>59.9139° N, 10.7522° E</span>
+        </div>
+        <h3 class="commission-heading">TITANIC ARCH — GEOMETRIC ASCENT</h3>
+        <p class="commission-desc">
+          Board-formed monolithic concrete stairs leading through a dual-cantilever portal. Designed as an astronomical sundial measuring solar zenith throughout the Nordic winter solstice.
+        </p>
+        <div class="commission-specs-list">
+          <div class="spec-item">
+            <span class="spec-label">Concrete Mix</span>
+            <span class="spec-value">Titanium White C50/60</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Cantilever Reach</span>
+            <span class="spec-value">14.2 Meters Unsupported</span>
+          </div>
+        </div>
+        <button type="button" class="commission-aperture-trigger" onclick="event.stopPropagation(); triggerSpecimenFromCommission(1)">
+          VIEW IN APERTURE [02]
+        </button>
+      </article>
+    </div>
+
+    <!-- 4 Spatial Disciplines Grid -->
+    <div class="disciplines-strip">
+      <div class="discipline-box">
+        <div class="discipline-idx">[DISCIPLINE 01]</div>
+        <h4 class="discipline-title">MONUMENTAL INFRASTRUCTURE</h4>
+        <p class="discipline-desc">
+          Public squares, museum pavilions, and civic observatories built to weather geological weathering cycles without maintenance overhead.
+        </p>
+      </div>
+      <div class="discipline-box">
+        <div class="discipline-idx">[DISCIPLINE 02]</div>
+        <h4 class="discipline-title">SUBTERRANEAN CHAMBERS</h4>
+        <p class="discipline-desc">
+          Acoustically isolated archival vaults and quiet reliquaries bored directly into bedrock with micro-calibrated clerestory light shafts.
+        </p>
+      </div>
+      <div class="discipline-box">
+        <div class="discipline-idx">[DISCIPLINE 03]</div>
+        <h4 class="discipline-title">PRECISION FACADES</h4>
+        <p class="discipline-desc">
+          High-performance low-iron optical curtain walls utilizing bespoke bronze mullions and seismic stainless steel tension anchors.
+        </p>
+      </div>
+      <div class="discipline-box">
+        <div class="discipline-idx">[DISCIPLINE 04]</div>
+        <h4 class="discipline-title">SOLAR ALIGNMENT</h4>
+        <p class="discipline-desc">
+          Astronomical architecture calculating seasonal declination to produce sharp chiaroscuro apertures at equinoxes and solstices.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Section 2: Limited Physical Editions Shop
+       ========================================================= */
+  ========================================================= -->
+  <section class="content-section" id="shop" aria-label="Limited Physical Editions and Architectural Casts">
+    <div class="section-header-block">
+      <div>
+        <span class="section-tag">PHYSICAL ARTIFACTS // SERIAL CATALOG</span>
+        <h2 class="section-title-large">MINERAL EDITIONS & CASTS</h2>
+      </div>
+      <div class="section-counter">[4 EDITIONS]</div>
+    </div>
+
+    <div class="editions-grid">
+      <!-- Edition 01 -->
+      <article class="edition-card">
+        <div class="edition-visual">
+          <img src="assets/colonnade-hall.jpg" alt="Travertine Horizon Block" />
+          <span class="edition-badge">EDITION OF 25</span>
+        </div>
+        <div class="edition-body">
+          <div class="edition-id-tag">EDITION 01 // 1:100 SCALE</div>
+          <h3 class="edition-name">TRAVERTINE HORIZON BLOCK</h3>
+          <p class="edition-materials">
+            Honed Roman porous travertine block. Precision CNC milled to 1:100 scale of the Colonnade pier with laser-etched Cartesian grid crosshairs.
+          </p>
+          <div class="edition-pricing-bar">
+            <span class="edition-price">$480 USD</span>
+            <button type="button" class="acquire-btn" onclick="addToAcquisitions('Travertine Horizon Block', 480)">
+              ACQUIRE [01]
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Edition 02 -->
+      <article class="edition-card">
+        <div class="edition-visual">
+          <img src="assets/monolith-pillars.jpg" alt="Monolith I Shadow Lithograph" />
+          <span class="edition-badge">EDITION OF 50</span>
+        </div>
+        <div class="edition-body">
+          <div class="edition-id-tag">EDITION 02 // PRINT</div>
+          <h3 class="edition-name">MONOLITH SHADOW LITHOGRAPH</h3>
+          <p class="edition-materials">
+            70×100 cm dual-pass silver-halide photogravure printed on 320 gsm Hahnemühle cotton rag. Numbered, stamped, and blind-debossed.
+          </p>
+          <div class="edition-pricing-bar">
+            <span class="edition-price">$340 USD</span>
+            <button type="button" class="acquire-btn" onclick="addToAcquisitions('Monolith Shadow Lithograph', 340)">
+              ACQUIRE [02]
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Edition 03 -->
+      <article class="edition-card">
+        <div class="edition-visual">
+          <img src="assets/facade-geometry.jpg" alt="The Obelisk Monograph Volumes I-III" />
+          <span class="edition-badge">LIMITED RUN</span>
+        </div>
+        <div class="edition-body">
+          <div class="edition-id-tag">EDITION 03 // PUBLICATIONS</div>
+          <h3 class="edition-name">OBELISK MONOGRAPH (I—III)</h3>
+          <p class="edition-materials">
+            Three-volume clothbound trilogy bound in Belgian linen and housed in an anodized aluminum slipcase. 540 pages with duotone blueprints.
+          </p>
+          <div class="edition-pricing-bar">
+            <span class="edition-price">$190 USD</span>
+            <button type="button" class="acquire-btn" onclick="addToAcquisitions('Obelisk Monograph (I—III)', 190)">
+              ACQUIRE [03]
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Edition 04 -->
+      <article class="edition-card">
+        <div class="edition-visual">
+          <img src="assets/interior-lamp-structure.jpg" alt="Cast Bronze Kinetic Slit Weight" />
+          <span class="edition-badge">EDITION OF 30</span>
+        </div>
+        <div class="edition-body">
+          <div class="edition-id-tag">EDITION 04 // BRONZE</div>
+          <h3 class="edition-name">KINETIC APERTURE WEIGHT</h3>
+          <p class="edition-materials">
+            1.8 kg solid lost-wax patinated bronze paperweight recreating the 6mm kinetic aperture slit with micro-milled index markers.
+          </p>
+          <div class="edition-pricing-bar">
+            <span class="edition-price">$260 USD</span>
+            <button type="button" class="acquire-btn" onclick="addToAcquisitions('Kinetic Aperture Weight', 260)">
+              ACQUIRE [04]
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Section 3: Studio Manifesto & Materials Matrix
+       ========================================================= -->
+  <section class="content-section" id="about" aria-label="Studio Manifesto, Philosophy and Materials Matrix">
+    <div class="section-header-block">
+      <div>
+        <span class="section-tag">PHILOSOPHY // 500-YEAR LIFESPAN</span>
+        <h2 class="section-title-large">THE DISCIPLINE OF PERMANENCE</h2>
+      </div>
+      <div class="section-counter">[MANIFESTO]</div>
+    </div>
+
+    <p class="manifesto-lead">
+      “We do not design for temporary attention, quarterly lease cycles, or digital ephemera. We calculate the deflection of basalt, the crystallization of travertine, and the path of midday solstice light for the next five centuries.”
+    </p>
+
+    <!-- Interactive Materials Matrix -->
+    <div class="materials-matrix-block">
+      <div class="section-tag" style="margin-bottom: 16px;">TACTILE MATRICES & MINERAL SPECIFICATION</div>
+      <div class="matrix-nav" role="tablist">
+        <button type="button" class="matrix-tab active" onclick="switchMaterial(0)" role="tab">01 / ROMAN TRAVERTINE</button>
+        <button type="button" class="matrix-tab" onclick="switchMaterial(1)" role="tab">02 / NORDIC BASALT</button>
+        <button type="button" class="matrix-tab" onclick="switchMaterial(2)" role="tab">03 / LOW-IRON OPTICAL GLASS</button>
+        <button type="button" class="matrix-tab" onclick="switchMaterial(3)" role="tab">04 / WEATHERING CORTEN</button>
+        <button type="button" class="matrix-tab" onclick="switchMaterial(4)" role="tab">05 / LOST-WAX BRONZE</button>
+      </div>
+
+      <div class="matrix-content-display" id="matrixDisplay">
+        <div>
+          <h3 class="mat-title" id="matTitle">ROMAN TRAVERTINE</h3>
+          <p class="mat-desc" id="matDesc">
+            Sedimentary calcium carbonate extracted from deep quarries in Tivoli. Calibrated with open cellular pores that swallow specular acoustic flutter while allowing thermal mass stabilization through diurnal heat absorption.
+          </p>
+        </div>
+        <div>
+          <table class="mat-metrics-table">
+            <tbody>
+              <tr>
+                <td>Bulk Density</td>
+                <td id="matDensity">2,710 kg/m³</td>
+              </tr>
+              <tr>
+                <td>Compressive Strength</td>
+                <td id="matStrength">112 MPa</td>
+              </tr>
+              <tr>
+                <td>Water Absorption / Porosity</td>
+                <td id="matPorosity">4.2% Volumetric</td>
+              </tr>
+              <tr>
+                <td>Projected Surface Epoch</td>
+                <td id="matEpoch">850+ Years</td>
+              </tr>
+              <tr>
+                <td>Sound Reflection Index</td>
+                <td id="matSound">NRC 0.35 (Honed)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Principal Architects / Studio Leadership -->
+    <div class="partners-grid">
+      <div class="partner-card">
+        <div class="partner-role">PRINCIPAL PARTNER // ZURICH</div>
+        <h4 class="partner-name">VESPERA VANCE</h4>
+        <p class="partner-bio">
+          Educated at ETH Zürich and the Accademia di Architettura Mendrisio. Directs structural geometry, Cartesian coordinate grids, and raw mineral sourcing.
+        </p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-role">TECHNICAL DIRECTOR // STOCKHOLM</div>
+        <h4 class="partner-name">MARCUS LINDQVIST</h4>
+        <p class="partner-bio">
+          Pioneered sub-zero thermal retention and seismic steel tension networks for extreme latitude civic infrastructure and vaulting.
+        </p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-role">DIRECTOR OF ACOUSTICS // KYOTO</div>
+        <h4 class="partner-name">ELENA KAEL</h4>
+        <p class="partner-bio">
+          Specializes in subtractive void modeling, acoustic dampening resonance, and precision solar angle apertures for civic monuments.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Section 4: Spatial Transmission Terminal & Inquiries
+       ========================================================= -->
+  <section class="content-section" id="contact" aria-label="Commission Inquiries and Spatial Transmission Terminal">
+    <div class="section-header-block">
+      <div>
+        <span class="section-tag">TRANSMISSION TERMINAL // INQUIRIES</span>
+        <h2 class="section-title-large">INITIATE COMMISSION</h2>
+      </div>
+      <div class="section-counter">[ENCRYPTED]</div>
+    </div>
+
+    <div class="contact-layout">
+      <!-- Interactive Form -->
+      <form class="transmission-form" id="commissionForm" onsubmit="handleFormSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">SELECT COMMISSION TYPOLOGY</label>
+          <div class="typology-selector" id="typologySelector">
+            <button type="button" class="type-pill selected" onclick="toggleTypePill(this)">CIVIC MONUMENT</button>
+            <button type="button" class="type-pill" onclick="toggleTypePill(this)">SACRED SANCTUARY</button>
+            <button type="button" class="type-pill" onclick="toggleTypePill(this)">CULTURAL PAVILION</button>
+            <button type="button" class="type-pill" onclick="toggleTypePill(this)">SUBTERRANEAN ARCHIVE</button>
+            <button type="button" class="type-pill" onclick="toggleTypePill(this)">PRIVATE RESIDENCE</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="clientName" class="form-label">COMMISSIONING BODY / REPRESENTATIVE</label>
+          <input type="text" id="clientName" class="form-input" placeholder="e.g. Fondazione Civica di Roma / Dr. A. Sterling" required />
+        </div>
+
+        <div class="form-group">
+          <label for="clientEmail" class="form-label">ENCRYPTED RETURN DISPATCH (EMAIL)</label>
+          <input type="email" id="clientEmail" class="form-input" placeholder="client@institution.org" required />
+        </div>
+
+        <div class="form-group">
+          <label for="siteLocation" class="form-label">PROPOSED SITE COORDINATES OR MUNICIPALITY</label>
+          <input type="text" id="siteLocation" class="form-input" placeholder="e.g. 46.2044° N, 6.1432° E (Lake Geneva basin)" />
+        </div>
+
+        <div class="form-group">
+          <label for="scaleVolume" class="form-label">ESTIMATED SPATIAL VOLUME / FOOTPRINT</label>
+          <input type="text" id="scaleVolume" class="form-input" placeholder="e.g. 2,500 m² footprint / 18,000 m³ volume" />
+        </div>
+
+        <button type="submit" class="form-submit-btn">
+          <span>TRANSMIT SPECIFICATION DOSSIER</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+
+        <div class="form-feedback-terminal" id="formTerminalFeedback">
+          > TRANSMISSION RECORDED. ENCRYPTED PACKET DISPATCHED TO COMMISSIONS DESK.<br/>
+          > REFERENCE HASH: #OBK-8492-SPATIAL. OUR PARTNERS WILL INITIATE FEASIBILITY ANALYSIS WITHIN 48 HOURS.
+        </div>
+      </form>
+
+      <!-- Bureaus and Direct Channel -->
+      <div class="contact-bureaus-column">
+        <div class="bureau-card">
+          <h3 class="bureau-city">ROME ATELIER</h3>
+          <div class="bureau-coords">41.8955° N, 12.4674° E // PALAZZO SACCHETTI</div>
+          <p class="bureau-addr">
+            Via Giulia 42, 00186 Roma, Italia<br />
+            Consultations by appointment only for institutional patrons.
+          </p>
+        </div>
+
+        <div class="bureau-card">
+          <h3 class="bureau-city">ZÜRICH WORKSHOP</h3>
+          <div class="bureau-coords">47.3826° N, 8.5285° E // INDUSTRIEQUARTIER</div>
+          <p class="bureau-addr">
+            Neugasse 29, 8005 Zürich, Schweiz<br />
+            Material stress-testing lab and stone fabrication yard.
+          </p>
+        </div>
+
+        <div class="direct-transmission-box">
+          <div class="section-tag" style="margin-bottom: 8px;">DIRECT CORRESPONDENCE</div>
+          <p style="font-size: 11px; line-height: 1.6; color: var(--color-ink-muted);">
+            For immediate curatorial, academic, or high-security inquiries:
+          </p>
+          <button type="button" class="copy-email-btn" onclick="copyStudioEmail()">
+            COPY COMMISSIONS@OBELISK.STUDIO
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Colophon & Global Footer
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span>OBELISK ARCHITECTURAL STUDIO © 2026</span>
+      <span>ALL RIGHTS RESERVED</span>
+      <span>CARTESIAN PROTOCOL V4.2</span>
+    </div>
+    <a href="#hero" class="footer-back-to-top" aria-label="Return to top of page">
+      <span>RETURN TO ZENITH</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </a>
+  </footer>
 
   <!-- =========================================================
        Full-Bleed Expanded Immersion Overlay (Active State)
@@ -546,18 +2117,18 @@
         </button>
       </div>
 
-      <!-- 3-Thumbnail Strip to switch architectural specimens -->
+      <!-- 4-Thumbnail Strip to switch architectural specimens -->
       <div class="card-thumb-strip" role="tablist" aria-label="Architectural specimens">
-        <div class="thumb-cell active" data-index="0" role="tab" aria-selected="true" tabindex="0">
+        <div class="thumb-cell" data-index="0" role="tab" aria-selected="false" tabindex="0" title="Specimen 01: MONOLITH I">
           <img src="assets/monolith-pillars.jpg" alt="Monolith Pillars in Still Water" />
         </div>
-        <div class="thumb-cell" data-index="1" role="tab" aria-selected="false" tabindex="0">
+        <div class="thumb-cell active" data-index="1" role="tab" aria-selected="true" tabindex="0" title="Specimen 02: SUNRISE DAWN">
           <img src="assets/colonnade-hall.jpg" alt="Travertine Colonnade Hall" />
         </div>
-        <div class="thumb-cell" data-index="2" role="tab" aria-selected="false" tabindex="0">
+        <div class="thumb-cell" data-index="2" role="tab" aria-selected="false" tabindex="0" title="Specimen 03: PRISM GEOMETRY">
           <img src="assets/facade-geometry.jpg" alt="Geometric Glass Facade" />
         </div>
-        <div class="thumb-cell" data-index="3" role="tab" aria-selected="false" tabindex="0">
+        <div class="thumb-cell" data-index="3" role="tab" aria-selected="false" tabindex="0" title="Specimen 04: CATHEDRAL LIGHT">
           <img src="assets/interior-lamp-structure.jpg" alt="Steel Window Trusses and Pendant Lamp" />
         </div>
       </div>
@@ -581,12 +2152,44 @@
   </div>
 
   <!-- =========================================================
+       Cart Drawer (Acquisitions Bag)
+       ========================================================= -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer(event)">
+    <aside class="cart-drawer" id="cartDrawer" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <h3 class="drawer-title">ACQUISITIONS</h3>
+        <button type="button" class="drawer-close" onclick="closeCartDrawer()">[✕ CLOSE]</button>
+      </div>
+
+      <div class="drawer-items-list" id="cartItemsList">
+        <p style="font-size: 11px; color: var(--color-ink-muted); margin-top: 20px;">
+          YOUR ACQUISITION REGISTRY IS CURRENTLY EMPTY.
+        </p>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="drawer-subtotal">
+          <span>SUBTOTAL</span>
+          <span id="cartSubtotal">$0 USD</span>
+        </div>
+        <button type="button" class="checkout-btn" onclick="simulateCheckout()">
+          REQUEST DISPATCH INVOICE
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="toastPill">COPIED TO CLIPBOARD</div>
+
+  <!-- =========================================================
        Motion & Interaction Controller
        ========================================================= -->
   <script>
-    // 1. Generate Cartesian Crosshairs (+) across the grid intersections
+    // 1. Cartesian Crosshairs Generation in Hero Viewport
     const crosshairsContainer = document.getElementById('crosshairsContainer');
     function createGridCrosshairs() {
+      if (!crosshairsContainer) return;
       crosshairsContainer.innerHTML = '';
       const cols = 8;
       const rows = 6;
@@ -604,7 +2207,17 @@
     createGridCrosshairs();
     window.addEventListener('resize', createGridCrosshairs);
 
-    // 2. Architectural Specimen Catalog
+    // 2. Sticky Minimal HUD Scroll Reveal
+    const stickyHud = document.getElementById('stickyHud');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 160) {
+        stickyHud.classList.add('is-visible');
+      } else {
+        stickyHud.classList.remove('is-visible');
+      }
+    });
+
+    // 3. Architectural Specimen Catalog & Aperture Mechanics
     const specimens = [
       {
         num: '01',
@@ -643,12 +2256,12 @@
     const activeSpecimenNum = document.getElementById('activeSpecimenNum');
     const cardCloseBtn = document.getElementById('cardCloseBtn');
     const thumbCells = document.querySelectorAll('.thumb-cell');
+    const hudApertureBtn = document.getElementById('hudApertureBtn');
 
     function updateActiveSpecimen(index) {
       currentIndex = index;
       const spec = specimens[currentIndex];
 
-      // Update background image with smooth crossfade
       immersionPhoto.style.opacity = '0.3';
       setTimeout(() => {
         immersionPhoto.src = spec.image;
@@ -656,11 +2269,12 @@
         immersionPhoto.style.opacity = '1';
       }, 150);
 
-      // Update title and counter
       specimenTitle.textContent = spec.title;
       activeSpecimenNum.textContent = spec.num;
+      if (hudApertureBtn) {
+        hudApertureBtn.textContent = `APERTURE [${spec.num}/04]`;
+      }
 
-      // Update thumbnail active states
       thumbCells.forEach((cell, idx) => {
         if (idx === currentIndex) {
           cell.classList.add('active');
@@ -698,19 +2312,27 @@
       }
     }
 
-    // Event listeners
     breakFreeBtn.addEventListener('click', toggleAperture);
     apertureSlit.addEventListener('click', expandAperture);
+    apertureSlit.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        expandAperture();
+      }
+    });
     cardCloseBtn.addEventListener('click', collapseAperture);
+    if (hudApertureBtn) {
+      hudApertureBtn.addEventListener('click', () => {
+        expandAperture();
+      });
+    }
 
-    // Clicking outside the card closes the immersion view
     immersionStage.addEventListener('click', (e) => {
       if (e.target === immersionStage) {
         collapseAperture();
       }
     });
 
-    // Thumbnail switching
     thumbCells.forEach((cell, idx) => {
       cell.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -724,13 +2346,16 @@
       });
     });
 
-    // Keyboard navigation
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        collapseAperture();
-      } else if (e.key === ' ' && !isExpanded) {
-        e.preventDefault();
-        expandAperture();
+        if (isExpanded) collapseAperture();
+        closeCartDrawer();
+      } else if (e.key === ' ' && !isExpanded && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        // Space to expand if in hero
+        if (window.scrollY < 400) {
+          e.preventDefault();
+          expandAperture();
+        }
       } else if (e.key === 'ArrowRight' && isExpanded) {
         const next = (currentIndex + 1) % specimens.length;
         updateActiveSpecimen(next);
@@ -740,13 +2365,185 @@
       }
     });
 
-    // Initialize with Specimen 02
+    function triggerSpecimenFromCommission(index) {
+      updateActiveSpecimen(index);
+      expandAperture();
+    }
+
+    // 4. Materials Matrix Interactive Specification Tab Switcher
+    const materialsData = [
+      {
+        title: 'ROMAN TRAVERTINE',
+        desc: 'Sedimentary calcium carbonate extracted from deep quarries in Tivoli. Calibrated with open cellular pores that swallow specular acoustic flutter while allowing thermal mass stabilization through diurnal heat absorption.',
+        density: '2,710 kg/m³',
+        strength: '112 MPa',
+        porosity: '4.2% Volumetric',
+        epoch: '850+ Years',
+        sound: 'NRC 0.35 (Honed)'
+      },
+      {
+        title: 'NORDIC BASALT',
+        desc: 'Dense igneous volcanic rock crystallized under rapid thermal quenching in Iceland. Possesses near-zero moisture absorption and exceptional compressive resilience against freeze-thaw spalling.',
+        density: '3,010 kg/m³',
+        strength: '280 MPa',
+        porosity: '0.4% Volumetric',
+        epoch: '1,500+ Years',
+        sound: 'NRC 0.12 (Specular Reflection)'
+      },
+      {
+        title: 'LOW-IRON OPTICAL GLASS',
+        desc: 'Extra-clear float glass with iron oxide content minimized to less than 0.015%. Transmits 91.5% of full-spectrum solar daylight with zero green tint distortion across multi-laminate spans.',
+        density: '2,500 kg/m³',
+        strength: '120 MPa (Tempered)',
+        porosity: '0.00% Hermetic',
+        epoch: '300+ Years',
+        sound: 'Rw 42 dB (Acoustic Laminate)'
+      },
+      {
+        title: 'WEATHERING CORTEN STEEL',
+        desc: 'Atmospheric corrosion-resistant steel alloy engineered to develop a dense self-regenerating copper-ferrite oxide patina over 18 to 24 months, permanently halting interior structural decay.',
+        density: '7,850 kg/m³',
+        strength: '520 MPa Yield',
+        porosity: 'Solid Ingot',
+        epoch: '400+ Years',
+        sound: 'High Structural Mass Damping'
+      },
+      {
+        title: 'LOST-WAX CAST BRONZE',
+        desc: '88% copper and 12% tin alloy poured into ceramic refractory shell molds. Hand-rubbed with liver of sulfur to create dark obsidian depths that develop subtle viridian highlights through touch.',
+        density: '8,800 kg/m³',
+        strength: '380 MPa',
+        porosity: 'Zero Void Casting',
+        epoch: '2,000+ Years',
+        sound: 'Warm Harmonic Resonance'
+      }
+    ];
+
+    function switchMaterial(index) {
+      const tabs = document.querySelectorAll('.matrix-tab');
+      tabs.forEach((tab, i) => {
+        if (i === index) tab.classList.add('active');
+        else tab.classList.remove('active');
+      });
+
+      const data = materialsData[index];
+      document.getElementById('matTitle').textContent = data.title;
+      document.getElementById('matDesc').textContent = data.desc;
+      document.getElementById('matDensity').textContent = data.density;
+      document.getElementById('matStrength').textContent = data.strength;
+      document.getElementById('matPorosity').textContent = data.porosity;
+      document.getElementById('matEpoch').textContent = data.epoch;
+      document.getElementById('matSound').textContent = data.sound;
+    }
+
+    // 5. Acquisitions / Cart Drawer System
+    const cartItems = [];
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartCount = document.getElementById('cartCount');
+
+    function openCartDrawer() {
+      cartOverlay.classList.add('open');
+    }
+
+    function closeCartDrawer(e) {
+      if (e && e.target !== cartOverlay && !e.target.classList.contains('drawer-close')) return;
+      cartOverlay.classList.remove('open');
+    }
+
+    function addToAcquisitions(title, price) {
+      cartItems.push({ title, price });
+      renderCart();
+      openCartDrawer();
+      showToast(`ADDED: ${title.toUpperCase()}`);
+    }
+
+    function renderCart() {
+      cartCount.textContent = cartItems.length;
+      if (cartItems.length === 0) {
+        cartItemsList.innerHTML = '<p style="font-size: 11px; color: var(--color-ink-muted); margin-top: 20px;">YOUR ACQUISITION REGISTRY IS CURRENTLY EMPTY.</p>';
+        cartSubtotal.textContent = '$0 USD';
+        return;
+      }
+
+      let total = 0;
+      cartItemsList.innerHTML = '';
+      cartItems.forEach((item, idx) => {
+        total += item.price;
+        const row = document.createElement('div');
+        row.className = 'drawer-item';
+        row.innerHTML = `
+          <div class="drawer-item-info">
+            <h4>${item.title}</h4>
+            <p>$${item.price} USD // PHYSICAL CAST</p>
+          </div>
+          <button type="button" style="background:none; border:none; color:var(--color-ink-light); cursor:pointer; font-family:var(--font-mono); font-size:10px;" onclick="removeFromCart(${idx})">[REMOVE]</button>
+        `;
+        cartItemsList.appendChild(row);
+      });
+      cartSubtotal.textContent = `$${total.toLocaleString()} USD`;
+    }
+
+    function removeFromCart(idx) {
+      cartItems.splice(idx, 1);
+      renderCart();
+    }
+
+    function simulateCheckout() {
+      if (cartItems.length === 0) {
+        showToast('ACQUISITIONS BAG IS EMPTY');
+        return;
+      }
+      showToast('DISPATCH DOSSIER GENERATED');
+      setTimeout(() => {
+        alert('Transmission recorded. Our physical curation concierge will dispatch private authentication papers to your billing office.');
+        cartItems.length = 0;
+        renderCart();
+        closeCartDrawer();
+      }, 300);
+    }
+
+    // 6. Typology Selector & Transmission Form
+    function toggleTypePill(btn) {
+      btn.classList.toggle('selected');
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const feedback = document.getElementById('formTerminalFeedback');
+      feedback.style.display = 'block';
+      showToast('SPECIFICATION TRANSMITTED');
+      e.target.reset();
+    }
+
+    // 7. Toast & Clipboard
+    const toastPill = document.getElementById('toastPill');
+    let toastTimeout;
+    function showToast(msg) {
+      toastPill.textContent = msg;
+      toastPill.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastPill.classList.remove('show');
+      }, 2400);
+    }
+
+    function copyStudioEmail() {
+      navigator.clipboard.writeText('commissions@obelisk.studio').then(() => {
+        showToast('COPIED COMMISSIONS@OBELISK.STUDIO');
+      }).catch(() => {
+        showToast('commissions@obelisk.studio');
+      });
+    }
+
+    // Initialize Specimen 02
     updateActiveSpecimen(1);
 
-    // Auto-expand if requested in URL
+    // Check URL parameters for direct expansion
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('expanded') === 'true' || window.location.hash === '#expanded') {
-      setTimeout(expandAperture, 100);
+      setTimeout(expandAperture, 120);
     }
   </script>
 </body>
