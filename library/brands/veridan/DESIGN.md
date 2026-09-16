@@ -3,7 +3,7 @@
 **Type:** Brand Identity System  
 **Category:** Developer / Decision Intelligence & Logistics  
 **Status:** Complete deliverable  
-**Reference Origin:** Rebranded high-conviction decision intelligence platform identity. Characterized by electric vermilion field, rich forest emerald, solar gold, dynamic 4-blade decision vortex mark, diagonal kinetic telemetry ray matrices, and editorial serif headlines.
+**Reference Origin:** Rebranded high-conviction decision intelligence platform identity. Characterized by electric vermilion field, rich forest emerald, solar gold, dynamic 6-blade circular kinetic decision vortex mark, diagonal kinetic telemetry ray matrices, and editorial serif headlines.
 
 ---
 
@@ -12,7 +12,7 @@
 - **Category:** `Developer` / Autonomous Decision Intelligence
 - **Tagline:** *"Stop reading the chart. Start making the call."*
 - **Proposition:** *Veridan is an autonomous decision intelligence platform built for enterprise operations, finance, and global supply chain networks. It replaces passive diagnostic dashboards with direct, prescriptive execution directives.*
-- **Visual Metaphor:** **The Decision Vortex** — 4 interlocking beveled kinetic blades in 90-degree rotational symmetry, embodying the convergence of multi-source operational data into unified, high-conviction action.
+- **Visual Metaphor:** **The Decision Vortex** — 6 interlocking beveled kinetic blades in 60-degree rotational symmetry, embodying circular convergence of multi-source operational data into unified, high-conviction action.
 - **Brand Archetype:** **The Ruler × The Magician** — Uncompromising operational authority, mathematical precision, and rapid conversion of complexity into clarity.
 
 ---
@@ -42,9 +42,9 @@
 
 ## 4. The 4-Tier Responsive Logo Stack
 
-1. **Master Lockup:** 4-Blade Decision Vortex + customized high-contrast serif wordmark `Veridan`.
-2. **Horizontal Nav Lockup:** Compact mark alongside condensed medium-weight title.
-3. **Symbol Glyph:** Standalone 4-blade geometric vortex with 90-degree rotational symmetry.
+1. **Master Lockup:** 6-Blade Circular Decision Vortex + customized high-contrast serif wordmark `Veridan`.
+2. **Horizontal Nav Lockup:** Compact circular mark alongside condensed medium-weight title.
+3. **Symbol Glyph:** Standalone 6-blade geometric vortex with 60-degree rotational symmetry and circular perimeter profile.
 4. **Adaptive Inversions:**
    - Coral Mark on Forest Emerald `#0B422B`
    - Pure White Mark on Coastal Photography
@@ -56,11 +56,11 @@
 ## 5. The 3-Step Logo Stress Test Suite
 
 1. **The Gaussian Blur Test (Silhouette Dominance):**
-   - At a 20px blur radius, the 4-blade vortex silhouette maintains unmistakable pinwheel rotation and balanced four-point visual weight.
+   - At a 20px blur radius, the 6-blade vortex silhouette maintains unmistakable circular perimeter rotation and balanced hexagonal visual momentum.
 2. **The 5-Second Recall Test (Mental Retention):**
-   - The single visual hook—four angled ribbon blades twisting around a central square void—can be accurately sketched from memory within 5 seconds.
+   - The single visual hook—six angled kinetic chevron blades sweeping clockwise into a circular turbine ring—can be accurately sketched from memory within 5 seconds.
 3. **The 16-Pixel Scalability Test (Favicon / Micro-App):**
-   - Scaled down to $16\text{px} \times 16\text{px}$, the uniform 24-unit blade thickness and 12-unit void prevent optical line blurring.
+   - Scaled down to $16\text{px} \times 16\text{px}$, the uniform blade geometry, circular outer envelope, and central hub void prevent optical line blurring.
 
 ---
 
