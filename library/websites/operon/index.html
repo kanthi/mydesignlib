@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operon — Autonomous AI Agent Workforce & Orchestration</title>
+  
+  <!-- Required Noindex & Robots -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google Analytics gtag.js -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       OPERON DESIGN SYSTEM TOKENS
+       ========================================================================== */
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-surface: #f9fafb;
+      --bg-subtle: #f3f4f6;
+      --bg-card: #ffffff;
+      --bg-card-hover: #fcfdfe;
+
+      --border-light: #f1f3f7;
+      --border-default: #e5e7eb;
+      --border-strong: #d1d5db;
+      --border-accent: rgba(107, 138, 253, 0.4);
+
+      --ink-primary: #0f172a;
+      --ink-secondary: #475569;
+      --ink-muted: #64748b;
+      --ink-faint: #94a3b8;
+
+      --accent-primary: #6b8afd;
+      --accent-hover: #5879fc;
+      --accent-active: #4869fa;
+      --accent-soft: rgba(107, 138, 253, 0.10);
+      --accent-subtle: rgba(107, 138, 253, 0.05);
+      --accent-glow: rgba(107, 138, 253, 0.22);
+
+      --star-gold: #fbbf24;
+      --success: #10b981;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+
+      --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
+      --shadow-lg: 0 16px 36px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.03);
+
+      --container-max: 1200px;
+      --transition-base: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      overflow-x: hidden;
+      background-color: var(--bg-canvas);
+      background-image: 
+        linear-gradient(to right, rgba(229, 231, 235, 0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(229, 231, 235, 0.35) 1px, transparent 1px);
+      background-size: 72px 72px;
+      background-position: top center;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      transition: var(--transition-base);
+    }
+
+    input {
+      font-family: inherit;
+      outline: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ==========================================================================
+       BUTTONS & BADGES
+       ========================================================================== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: var(--accent-primary);
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 0.7rem 1.6rem;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 14px rgba(107, 138, 253, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(107, 138, 253, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active {
+      background-color: var(--accent-active);
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: #ffffff;
+      color: var(--ink-primary);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 0.7rem 1.6rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-default);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover {
+      background-color: var(--bg-subtle);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      background-color: #ffffff;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+    .pill-badge .badge-icon {
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+    }
+
+    /* ==========================================================================
+       NAVBAR
+       ========================================================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: var(--ink-primary);
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6b8afd, #4f73fd);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(107, 138, 253, 0.3);
+    }
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+    .nav-link {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      position: relative;
+    }
+    .nav-link:hover {
+      color: var(--ink-primary);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       HERO SECTION (Split Layout)
+       ========================================================================== */
+    .hero-section {
+      padding: 4.5rem 0 5rem;
+      position: relative;
+      background: radial-gradient(circle at 80% 30%, rgba(107, 138, 253, 0.08) 0%, transparent 60%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      align-items: center;
+      gap: 3.5rem;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 4.4vw, 3.85rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      color: var(--ink-primary);
+      margin: 1.25rem 0 1.25rem;
+    }
+    .hero-lead {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--ink-muted);
+      max-width: 480px;
+      margin-bottom: 2rem;
+    }
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-light);
+      width: 100%;
+    }
+    .avatar-cluster {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+    .avatar-stack img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      margin-left: -8px;
+      background: var(--bg-subtle);
+    }
+    .avatar-stack img:first-child {
+      margin-left: 0;
+    }
+    .avatar-label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+    .rating-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .stars {
+      display: flex;
+      gap: 2px;
+      color: var(--star-gold);
+      font-size: 0.875rem;
+    }
+    .rating-label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+
+    /* Hero Isometric Stage */
+    .hero-visual-stage {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    .iso-stack-img {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      filter: drop-shadow(0 20px 32px rgba(107, 138, 253, 0.12));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .iso-stack-img:hover {
+      transform: translateY(-6px);
+    }
+
+    /* ==========================================================================
+       PARTNERS / LOGO STRIP
+       ========================================================================== */
+    .partners-section {
+      border-top: 1px solid var(--border-default);
+      border-bottom: 1px solid var(--border-default);
+      background: #fafbfc;
+      padding: 1.75rem 0;
+    }
+    .partners-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .partners-label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-faint);
+      letter-spacing: 0.02em;
+    }
+    .partner-logos {
+      display: flex;
+      align-items: center;
+      gap: 3.5rem;
+      flex-wrap: wrap;
+    }
+    .partner-item {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-base);
+    }
+    .partner-item:hover {
+      color: var(--ink-primary);
+    }
+    .partner-item.serif {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: bold;
+      font-style: italic;
+      letter-spacing: 0;
+    }
+
+    /* ==========================================================================
+       PROOF & METRICS SECTION
+       ========================================================================== */
+    .proof-section {
+      padding: 6rem 0;
+      background: #ffffff;
+    }
+    .proof-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4.5rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .proof-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+    }
+    .proof-desc-col {
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .proof-subhead {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--ink-muted);
+    }
+    .btn-verify {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-pill);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      color: var(--ink-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-verify:hover {
+      background: #ffffff;
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .metric-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem 0.5rem;
+      transition: var(--transition-base);
+    }
+    .metric-card:hover .metric-svg-icon {
+      transform: translateY(-5px);
+    }
+    .metric-icon-box {
+      width: 100%;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.75rem;
+    }
+    .metric-svg-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    .metric-val {
+      font-size: clamp(2rem, 2.8vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--ink-primary);
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .metric-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin-bottom: 0.45rem;
+    }
+    .metric-detail {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       FEATURE BENTO SECTION ("Everything you need to move faster")
+       ========================================================================== */
+    .features-section {
+      padding: 6rem 0;
+      background: #fafbfc;
+      border-top: 1px solid var(--border-default);
+    }
+    .features-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .features-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+    }
+    .features-subhead {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--ink-muted);
+      max-width: 360px;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .bento-grid-bottom {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .bento-card {
+      background: #ffffff;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-base);
+      overflow: hidden;
+      position: relative;
+    }
+    .bento-card:hover {
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .bento-visual {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      background: #fbfcfe;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .bento-svg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    .bento-card:hover .bento-svg-img {
+      transform: scale(1.02);
+    }
+    .bento-card-wide .bento-visual {
+      height: 200px;
+    }
+    .bento-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--ink-primary);
+      margin-bottom: 0.45rem;
+    }
+    .bento-desc {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       HOW IT WORKS SECTION (3-Step Pipeline)
+       ========================================================================== */
+    .how-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border-default);
+    }
+    .how-header {
+      margin-bottom: 4.5rem;
+    }
+    .how-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+    }
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+    .pipeline-step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .pipeline-visual {
+      width: 100%;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.75rem;
+      background: #fbfcfe;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      transition: var(--transition-base);
+    }
+    .pipeline-step:hover .pipeline-visual {
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+    .pipeline-svg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    .pipeline-step:hover .pipeline-svg-img {
+      transform: translateY(-4px);
+    }
+    .pipeline-step-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin-bottom: 0.45rem;
+    }
+    .pipeline-step-desc {
+      font-size: 0.9375rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       WHY CHOOSE US SECTION
+       ========================================================================== */
+    .why-section {
+      padding: 6rem 0;
+      background: #fafbfc;
+      border-top: 1px solid var(--border-default);
+    }
+    .why-header {
+      margin-bottom: 3.5rem;
+    }
+    .why-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+    }
+    .why-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 0;
+    }
+    .why-deck-svg {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+    .why-deck-svg:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    /* ==========================================================================
+       FAQ SECTION
+       ========================================================================== */
+    .faq-section {
+      padding: 6rem 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border-default);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 4rem;
+      align-items: flex-start;
+    }
+    .faq-left {
+      position: sticky;
+      top: 100px;
+    }
+    .faq-title {
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink-primary);
+      margin-bottom: 2.5rem;
+    }
+    .faq-visual-box {
+      width: 100%;
+      max-width: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .faq-qmark-svg {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      filter: drop-shadow(0 16px 28px rgba(107, 138, 253, 0.10));
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .faq-item {
+      background: #fafbfc;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-base);
+    }
+    .faq-item.active {
+      background: #ffffff;
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-trigger {
+      width: 100%;
+      padding: 1.15rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+    .faq-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-muted);
+      font-weight: bold;
+      font-size: 0.875rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      padding: 0 1.25rem;
+      color: var(--ink-secondary);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .faq-item.active .faq-content {
+      max-height: 200px;
+      padding-bottom: 1.25rem;
+    }
+
+    /* ==========================================================================
+       CLOSING CTA SECTION ("Ready to work Faster & smarter?")
+       ========================================================================== */
+    .cta-stage-section {
+      padding: 7rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+      background: #ffffff;
+      border-top: 1px solid var(--border-default);
+      text-align: center;
+    }
+    .resonator-background {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 860px;
+      height: 460px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .resonator-svg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .cta-stage-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cta-stage-title {
+      font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--ink-primary);
+      margin-bottom: 1rem;
+    }
+    .cta-stage-desc {
+      font-size: 1rem;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      margin-bottom: 2rem;
+    }
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border-default);
+      padding: 4.5rem 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-brand-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .footer-tagline {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+    }
+    .footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-mid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .footer-col-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .footer-newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      max-width: 320px;
+    }
+    .newsletter-input {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      background: #fafbfc;
+      font-size: 0.875rem;
+      color: var(--ink-primary);
+    }
+    .newsletter-input:focus {
+      border-color: var(--accent-primary);
+      background: #ffffff;
+    }
+    .newsletter-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: var(--accent-primary);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .newsletter-btn:hover {
+      background: var(--accent-hover);
+    }
+    .newsletter-note {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-link {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f3f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-secondary);
+      font-size: 0.875rem;
+      transition: var(--transition-base);
+    }
+    .social-link:hover {
+      background: var(--accent-primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-link-item a {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+    }
+    .footer-link-item a:hover {
+      color: var(--accent-primary);
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0 2rem;
+      font-size: 0.8125rem;
+      color: var(--ink-faint);
+    }
+    .footer-legal-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-legal-links a:hover {
+      color: var(--ink-primary);
+    }
+
+    /* Giant 3D Perspective Footprint Wordmark */
+    .footer-mega-wordmark {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+      pointer-events: none;
+    }
+    .footer-wordmark-img {
+      width: 100%;
+      max-width: 1200px;
+      height: auto;
+      display: block;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-grid-bottom {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-grid {
+        grid-template-columns: 1fr;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      .faq-left {
+        position: static;
+      }
+      .faq-visual-box {
+        display: none;
+      }
+      .footer-mid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.25rem;
+      }
+      .hero-social-proof {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .footer-mid {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom-bar {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       NAVBAR
+       ========================================================================== -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#hero" class="brand-logo" aria-label="Operon Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <span>OPERON</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link">Product</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#how-it-works" class="nav-link">How it works</a></li>
+          <li><a href="#why-operon" class="nav-link">Why Operon</a></li>
+          <li><a href="#faq" class="nav-link">Pricing</a></li>
+          <li><a href="#faq" class="nav-link">Resources</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#cta-stage" class="btn-primary">Get started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION (Split 50/50 with 4-Tier Isometric Architecture Stack)
+       ========================================================================== -->
+  <section id="hero" class="hero-section">
+    <div class="container hero-grid">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="pill-badge">
+          <span class="badge-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </span>
+          <span>14.8 mil+ tasks automated</span>
+        </div>
+
+        <h1 class="hero-title">
+          Your team has work to do,<br />
+          Your AI agents can do it
+        </h1>
+
+        <p class="hero-lead">
+          Autonomous AI agents that research, decide, and execute across your enterprise infrastructure, without adding headcount.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#cta-stage" class="btn-primary">Get Started</a>
+          <a href="#how-it-works" class="btn-secondary">Book a call</a>
+        </div>
+
+        <div class="hero-social-proof">
+          <div class="avatar-cluster">
+            <div class="avatar-stack">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%236B8AFD'/%3E%3Ccircle cx='16' cy='12' r='6' fill='%23ffffff'/%3E%3Cpath d='M8 26c0-4.4 3.6-8 8-8s8 3.6 8 8' fill='%23ffffff'/%3E%3C/svg%3E" alt="User 1" />
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%233B82F6'/%3E%3Ccircle cx='16' cy='12' r='6' fill='%23ffffff'/%3E%3Cpath d='M8 26c0-4.4 3.6-8 8-8s8 3.6 8 8' fill='%23ffffff'/%3E%3C/svg%3E" alt="User 2" />
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231E293B'/%3E%3Ccircle cx='16' cy='12' r='6' fill='%23ffffff'/%3E%3Cpath d='M8 26c0-4.4 3.6-8 8-8s8 3.6 8 8' fill='%23ffffff'/%3E%3C/svg%3E" alt="User 3" />
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23818CF8'/%3E%3Ccircle cx='16' cy='12' r='6' fill='%23ffffff'/%3E%3Cpath d='M8 26c0-4.4 3.6-8 8-8s8 3.6 8 8' fill='%23ffffff'/%3E%3C/svg%3E" alt="User 4" />
+            </div>
+            <span class="avatar-label">Trusted by 1000+</span>
+          </div>
+
+          <div class="rating-cluster">
+            <div class="stars">★★★★★</div>
+            <span class="rating-label">Rated excellent : 5/5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Isometric Architectural Stack -->
+      <div class="hero-visual-stage">
+        <img src="assets/hero_stack.svg" alt="Operon 4-Tier Isometric Architecture Stack" class="iso-stack-img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PARTNERS STRIP
+       ========================================================================== -->
+  <section class="partners-section">
+    <div class="container partners-inner">
+      <span class="partners-label">Powered by</span>
+      <div class="partner-logos">
+        <span class="partner-item serif">Forbes</span>
+        <span class="partner-item">airbnb</span>
+        <span class="partner-item">Meta</span>
+        <span class="partner-item">Microsoft</span>
+        <span class="partner-item">Cal.com</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PROOF & METRICS SECTION ("Built to do the work, Proven to deliver")
+       ========================================================================== -->
+  <section class="proof-section">
+    <div class="container">
+      <div class="proof-header">
+        <h2 class="proof-title">
+          Built to do the work,<br />
+          Proven to deliver
+        </h2>
+        <div class="proof-desc-col">
+          <p class="proof-subhead">
+            See what AI agents are actually achieving across tasks, time saved, and reliability.
+          </p>
+          <button class="btn-verify" onclick="alert('Verification Audit: Operon logs demonstrate 99.2% successful agent mission completion across 14.8M+ executions.')">
+            <span>Verify numbers</span>
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <!-- Metric 1: Tasks Automated -->
+        <div class="metric-card">
+          <div class="metric-icon-box">
+            <img src="assets/metric_tasks.svg" alt="12.4M+ Tasks automated" class="metric-svg-icon" />
+          </div>
+          <div class="metric-val">12.4M+</div>
+          <div class="metric-name">Tasks automated</div>
+          <p class="metric-detail">
+            Routine work handled automatically, so your team can focus on valuable work.
+          </p>
+        </div>
+
+        <!-- Metric 2: Hours Saved -->
+        <div class="metric-card">
+          <div class="metric-icon-box">
+            <img src="assets/metric_hours.svg" alt="48K+ Hours saved" class="metric-svg-icon" />
+          </div>
+          <div class="metric-val">48K+</div>
+          <div class="metric-name">Hours saved</div>
+          <p class="metric-detail">
+            Thousands of hours saved by letting AI agents handle repetitive workflows.
+          </p>
+        </div>
+
+        <!-- Metric 3: Task Success Rate -->
+        <div class="metric-card">
+          <div class="metric-icon-box">
+            <img src="assets/metric_success.svg" alt="98.7% Task success rate" class="metric-svg-icon" />
+          </div>
+          <div class="metric-val">98.7%</div>
+          <div class="metric-name">Task success rate</div>
+          <p class="metric-detail">
+            Reliable execution across workflows, with agents completing tasks consistently.
+          </p>
+        </div>
+
+        <!-- Metric 4: 24/7 Availability -->
+        <div class="metric-card">
+          <div class="metric-icon-box">
+            <img src="assets/metric_uptime.svg" alt="24/7 Agent availability" class="metric-svg-icon" />
+          </div>
+          <div class="metric-val">24/7</div>
+          <div class="metric-name">Agent availability</div>
+          <p class="metric-detail">
+            Your AI agents work around the clock, whenever your business needs them.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FEATURE BENTO SECTION ("Everything you need to move faster.")
+       ========================================================================== -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="features-header">
+        <h2 class="features-title">
+          Everything you need<br />
+          to move faster.
+        </h2>
+        <p class="features-subhead">
+          See what AI agents are actually achieving across tasks, time saved, and reliability.
+        </p>
+      </div>
+
+      <!-- Top Row: 3 Bento Cards -->
+      <div class="bento-grid">
+        <!-- Bento 1: Smart Automation -->
+        <div class="bento-card">
+          <div class="bento-visual">
+            <img src="assets/bento_automation.svg" alt="Smart Automation Conveyor" class="bento-svg-img" />
+          </div>
+          <h3 class="bento-title">Smart Automation</h3>
+          <p class="bento-desc">
+            Automate repetitive work and keep everyday workflows moving.
+          </p>
+        </div>
+
+        <!-- Bento 2: Always On -->
+        <div class="bento-card">
+          <div class="bento-visual">
+            <img src="assets/bento_always_on.svg" alt="Always On 24/7 Platform" class="bento-svg-img" />
+          </div>
+          <h3 class="bento-title">Always On</h3>
+          <p class="bento-desc">
+            Your agents keep working around the clock, whenever you need them.
+          </p>
+        </div>
+
+        <!-- Bento 3: Secure by Design -->
+        <div class="bento-card">
+          <div class="bento-visual">
+            <img src="assets/bento_security.svg" alt="Secure by Design Vault Safe" class="bento-svg-img" />
+          </div>
+          <h3 class="bento-title">Secure by Design</h3>
+          <p class="bento-desc">
+            Built with security and controls to keep your business protected.
+          </p>
+        </div>
+      </div>
+
+      <!-- Bottom Row: 2 Wide Bento Cards -->
+      <div class="bento-grid-bottom">
+        <!-- Bento 4: Seamless Integrations -->
+        <div class="bento-card bento-card-wide">
+          <div class="bento-visual">
+            <img src="assets/bento_integrations.svg" alt="Seamless Integrations Circuit Network" class="bento-svg-img" />
+          </div>
+          <h3 class="bento-title">Seamless Integrations</h3>
+          <p class="bento-desc">
+            Connect the tools your team already uses, all in one workflow.
+          </p>
+        </div>
+
+        <!-- Bento 5: Scales With You -->
+        <div class="bento-card bento-card-wide">
+          <div class="bento-visual">
+            <img src="assets/bento_scale.svg" alt="Scales With You Global Network Map" class="bento-svg-img" />
+          </div>
+          <h3 class="bento-title">Scales With You</h3>
+          <p class="bento-desc">
+            Add agents and workflows as your team and business grow.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HOW IT WORKS SECTION (3-Step Pipeline)
+       ========================================================================== -->
+  <section id="how-it-works" class="how-section">
+    <div class="container">
+      <div class="how-header">
+        <h2 class="how-title">How it works?</h2>
+      </div>
+
+      <div class="pipeline-grid">
+        <!-- Step 1: Connect -->
+        <div class="pipeline-step">
+          <div class="pipeline-visual">
+            <img src="assets/step_connect.svg" alt="Step 1: Connect Data & Tools" class="pipeline-svg-img" />
+          </div>
+          <h3 class="pipeline-step-name">Connect</h3>
+          <p class="pipeline-step-desc">
+            Connect your tools, data or workflow.
+          </p>
+        </div>
+
+        <!-- Step 2: Configure -->
+        <div class="pipeline-step">
+          <div class="pipeline-visual">
+            <img src="assets/step_configure.svg" alt="Step 2: Configure Policies & Rules" class="pipeline-svg-img" />
+          </div>
+          <h3 class="pipeline-step-name">Configure</h3>
+          <p class="pipeline-step-desc">
+            Set your preferences, goals and rules.
+          </p>
+        </div>
+
+        <!-- Step 3: Automate -->
+        <div class="pipeline-step">
+          <div class="pipeline-visual">
+            <img src="assets/step_automate.svg" alt="Step 3: Automate Workflows" class="pipeline-svg-img" />
+          </div>
+          <h3 class="pipeline-step-name">Automate</h3>
+          <p class="pipeline-step-desc">
+            Let the platform handle the rest.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       WHY CHOOSE US SECTION (Floating Isometric Card Deck)
+       ========================================================================== -->
+  <section id="why-operon" class="why-section">
+    <div class="container">
+      <div class="why-header">
+        <h2 class="why-title">Why choose us?</h2>
+      </div>
+
+      <div class="why-stage">
+        <img src="assets/why_slab.svg" alt="Why Choose Us 3-Layer Document Slab" class="why-deck-svg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FAQ SECTION (Interactive Accordion + 3D Isometric Question Mark)
+       ========================================================================== -->
+  <section id="faq" class="faq-section">
+    <div class="container faq-grid">
+      <!-- Left Column: Title & 3D Isometric Question Mark -->
+      <div class="faq-left">
+        <h2 class="faq-title">
+          Frequently asked<br />
+          Questions
+        </h2>
+
+        <div class="faq-visual-box">
+          <img src="assets/faq_qmark.svg" alt="3D Isometric Question Mark" class="faq-qmark-svg" />
+        </div>
+      </div>
+
+      <!-- Right Column: Accordion Items -->
+      <div class="faq-accordion">
+        <div class="faq-item active">
+          <button class="faq-trigger" aria-expanded="true">
+            <span>What is Operon?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            Operon is an autonomous agent orchestration platform that helps teams automate repetitive work, streamline workflows, and get more done with AI-powered tools.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>How quickly can I get started?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            You can deploy your first agent pipeline in under 10 minutes. Prebuilt integrations for GitHub, Slack, Notion, and databases allow connecting your existing workflows without changing existing infrastructure.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Do I need any technical knowledge?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            No machine learning expertise is required. Operators configure workflows through intuitive rule toggles and natural language instructions, while developers can customize logic with our TypeScript and Python SDKs.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Can I connect my existing tools?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            Yes. Operon integrates seamlessly with standard enterprise tools including Linear, Jira, GitHub, Slack, Discord, Salesforce, HubSpot, Stripe, Postgres, Snowflake, and custom internal APIs.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Is my data secure?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            Security is built into every layer. Operon provides isolated sandboxing, SOC2 Type II compliance, AES-256 encryption at rest, and zero-trust credential isolation. Your data is never used to train public models.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Can I change or upgrade my plan?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            Yes, plans can be adjusted dynamically anytime through your team console. Billing automatically scales based on active agent threads and execution volume.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>What kind of tasks can I automate?</span>
+            <div class="faq-icon">+</div>
+          </button>
+          <div class="faq-content">
+            Routine research, data synthesis, customer ticket routing, invoice reconciliation, system health checks, and cross-platform operational handoffs.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       CLOSING CTA SECTION ("Ready to work Faster & smarter?")
+       ========================================================================== -->
+  <section id="cta-stage" class="cta-stage-section">
+    <!-- Concentric Elliptical Resonator Wave Graphic -->
+    <div class="resonator-background">
+      <img src="assets/resonator.svg" alt="Resonator Lens Aura" class="resonator-svg-img" />
+    </div>
+
+    <div class="container cta-stage-content">
+      <h2 class="cta-stage-title">
+        Ready to work<br />
+        Faster & smarter?
+      </h2>
+      <p class="cta-stage-desc">
+        Turn your workflow into something faster, simpler and more powerful.
+      </p>
+      <div class="cta-buttons">
+        <a href="#hero" class="btn-primary">Get Started</a>
+        <a href="#how-it-works" class="btn-secondary">Book a call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER & GIANT PERSPECTIVE WORDMARK
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <!-- Top Action Bar -->
+      <div class="footer-top">
+        <div class="footer-brand-wrap">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <span>OPERON</span>
+          </div>
+          <p class="footer-tagline">Automate today, for a smarter tomorrow.</p>
+        </div>
+
+        <div class="footer-actions">
+          <a href="#hero" class="btn-primary">Get Started</a>
+          <a href="#how-it-works" class="btn-secondary">Book a call</a>
+        </div>
+      </div>
+
+      <!-- Middle Directory & Newsletter -->
+      <div class="footer-mid">
+        <div>
+          <h4 class="footer-col-title">Stay in touch</h4>
+          <form class="footer-newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed to Operon updates!');">
+            <input type="email" placeholder="Enter your email" required class="newsletter-input" />
+            <button type="submit" class="newsletter-btn" aria-label="Subscribe">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </form>
+          <p class="newsletter-note">No spam. Just good stuff.</p>
+          <div class="social-links">
+            <a href="https://discord.example" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Discord">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.01c3.931 1.793 8.18 1.793 12.061 0a.076.076 0 0 1 .078.009c.12.098.246.195.373.288a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+              </svg>
+            </a>
+            <a href="https://x.example" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://github.example" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+            </a>
+            <a href="https://linkedin.example" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.761-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Product</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#features">Features</a></li>
+            <li class="footer-link-item"><a href="#features">Integrations</a></li>
+            <li class="footer-link-item"><a href="#faq">Pricings</a></li>
+            <li class="footer-link-item"><a href="#hero">Changelog</a></li>
+            <li class="footer-link-item"><a href="#hero">Roadmap</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Resources</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#hero">Documentation</a></li>
+            <li class="footer-link-item"><a href="#faq">Help Center</a></li>
+            <li class="footer-link-item"><a href="#hero">Blog</a></li>
+            <li class="footer-link-item"><a href="#how-it-works">Guides</a></li>
+            <li class="footer-link-item"><a href="#hero">Community</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#why-operon">About</a></li>
+            <li class="footer-link-item"><a href="#hero">Careers</a></li>
+            <li class="footer-link-item"><a href="#hero">Contact</a></li>
+            <li class="footer-link-item"><a href="#hero">Press</a></li>
+            <li class="footer-link-item"><a href="#faq">Legal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Legal & Copyright Bar -->
+      <div class="footer-bottom-bar">
+        <span>© 2026 Operon. All rights reserved.</span>
+        <div class="footer-legal-links">
+          <a href="#faq">Privacy policy</a>
+          <a href="#faq">Terms of Service</a>
+          <a href="#faq">Cookie settings</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Giant 3D Perspective Footprint Wordmark -->
+    <div class="footer-mega-wordmark">
+      <img src="assets/footer_wordmark.svg" alt="Operon Horizon Wordmark" class="footer-wordmark-img" />
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       VANILLA INTERACTION SCRIPT
+       ========================================================================== -->
+  <script>
+    // FAQ Accordion Interaction
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const isActive = item.classList.contains('active');
+        
+        // Close other items
+        document.querySelectorAll('.faq-item').forEach(el => {
+          el.classList.remove('active');
+          el.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle clicked
+        if (!isActive) {
+          item.classList.add('active');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Smooth Anchor Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
