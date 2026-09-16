@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obelisk — Monolithic Architecture & Spatial Design</title>
+  <meta name="description" content="A spatial architectural study exploring Cartesian precision, monumental serif typography, and kinetic aperture transitions." />
+
+  <!-- No search indexing (Repository requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Newsreader (Monumental Serif) and Space Mono (Surveillance Monospace) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-bg: #ECECE7;
+      --color-grid: rgba(0, 0, 0, 0.08);
+      --color-crosshair: rgba(0, 0, 0, 0.35);
+      --color-ink: #111315;
+      --color-ink-muted: #55575A;
+      --color-white: #FFFFFF;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-mono: 'Space Mono', monospace;
+      --ease-aperture: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--color-bg);
+      color: var(--color-ink);
+      font-family: var(--font-mono);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    /* =========================================================
+       Cartesian Crosshair Grid Canvas
+       ========================================================= */
+    .grid-viewport {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px 48px;
+      z-index: 1;
+    }
+
+    /* Repeating Hairline Grid Overlay */
+    .grid-lines-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background-image:
+        linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+      background-size: 12.5vw 16.666vh;
+    }
+
+    /* Crosshair Plus Signs Generated across Viewport */
+    .crosshairs-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .crosshair-plus {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      transform: translate(-50%, -50%);
+      color: var(--color-crosshair);
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 9px;
+      text-align: center;
+      font-family: var(--font-mono);
+      opacity: 0.7;
+    }
+
+    /* =========================================================
+       Top Header Bar
+       ========================================================= */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 10;
+      position: relative;
+    }
+
+    .nav-links-block {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links-block a {
+      color: var(--color-ink);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      width: fit-content;
+    }
+
+    .nav-links-block a:hover {
+      opacity: 0.5;
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 6.8vw, 102px);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      margin-top: -8px;
+    }
+
+    /* =========================================================
+       Editorial Surveillance Microcopy
+       ========================================================= */
+    .memo-note {
+      font-size: 9.5px;
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      max-width: 280px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .memo-top-right {
+      align-self: flex-end;
+      text-align: left;
+      margin-top: 24px;
+      margin-right: 8vw;
+    }
+
+    .memo-bottom-left {
+      margin-top: auto;
+      margin-bottom: 8px;
+    }
+
+    /* =========================================================
+       Center Kinetic Aperture & Slit Mechanism
+       ========================================================= */
+    .aperture-anchor {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 25vw;
+      min-width: 280px;
+      max-width: 380px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .aperture-indices {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--color-ink);
+      margin-bottom: 8px;
+      font-weight: 700;
+      transition: opacity 0.3s ease;
+    }
+
+    /* The Slit Unit in Rest State */
+    .aperture-slit-box {
+      width: 100%;
+      height: 6px;
+      background: var(--color-ink);
+      border-radius: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: height 0.4s var(--ease-aperture), transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .aperture-slit-box:hover {
+      height: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .slit-preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+      filter: grayscale(100%) contrast(120%);
+      display: none;
+    }
+
+    /* The "Break Free" Trigger Button */
+    .break-free-btn {
+      margin-top: 14px;
+      background: var(--color-white);
+      color: var(--color-ink);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-aperture);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .break-free-btn:hover {
+      background: var(--color-ink);
+      color: var(--color-white);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    /* =========================================================
+       Full-Bleed Expanded Immersion Overlay
+       ========================================================= */
+    .immersion-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0;
+      clip-path: inset(49.7% 37.5% 49.7% 37.5%);
+      transition: clip-path 0.75s var(--ease-aperture), opacity 0.3s ease;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .immersion-stage.active {
+      pointer-events: auto;
+      opacity: 1;
+      clip-path: inset(0% 0% 0% 0%);
+    }
+
+    /* Background Architectural Photo (Full Screen) */
+    .immersion-bg-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(125%) brightness(95%);
+      transform: scale(1.08);
+      transition: transform 1.2s var(--ease-aperture), opacity 0.4s ease;
+    }
+
+    .immersion-stage.active .immersion-bg-photo {
+      transform: scale(1);
+    }
+
+    /* Left & Right Cinematic Slit Crop Curtains */
+    .immersion-stage::before, .immersion-stage::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 25vw;
+      background: rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(2px);
+      pointer-events: none;
+      z-index: 55;
+      display: none;
+    }
+
+    /* Center Floating Specimen Card */
+    .specimen-card {
+      position: relative;
+      z-index: 60;
+      width: 90vw;
+      max-width: 480px;
+      height: 82vh;
+      max-height: 720px;
+      background: var(--color-white);
+      color: var(--color-ink);
+      padding: 36px 36px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transform: translateY(30px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.65s var(--ease-aperture) 0.15s, opacity 0.4s ease 0.15s;
+    }
+
+    .immersion-stage.active .specimen-card {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Card Top Counter & Close Trigger */
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--color-ink-muted);
+    }
+
+    .card-close-btn {
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 4px 8px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.03);
+      transition: all 0.2s ease;
+    }
+
+    .card-close-btn:hover {
+      background: var(--color-ink);
+      color: var(--color-white);
+    }
+
+    /* Card Center 3-Thumbnail Strip */
+    .card-thumb-strip {
+      display: flex;
+      gap: 12px;
+      margin: 28px 0;
+      height: 140px;
+    }
+
+    .thumb-cell {
+      flex: 1;
+      height: 100%;
+      border: 2px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      background: #E5E5E0;
+      transition: all 0.25s var(--ease-aperture);
+      position: relative;
+    }
+
+    .thumb-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(120%);
+      transition: transform 0.4s ease, filter 0.3s ease;
+    }
+
+    .thumb-cell:hover img {
+      transform: scale(1.08);
+      filter: grayscale(100%) contrast(140%);
+    }
+
+    .thumb-cell.active {
+      border-color: var(--color-ink);
+    }
+
+    .thumb-cell.active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-white);
+      box-shadow: 0 0 4px rgba(0,0,0,0.8);
+    }
+
+    /* Card Narrative Note */
+    .card-narrative {
+      font-size: 9.5px;
+      line-height: 1.6;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Card Towering Title */
+    .card-specimen-title {
+      font-family: var(--font-serif);
+      font-size: clamp(38px, 4.6vw, 56px);
+      line-height: 0.95;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    /* Keyboard navigation pill at bottom of expanded view */
+    .immersion-footer-hints {
+      position: absolute;
+      bottom: 24px;
+      display: flex;
+      gap: 20px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      z-index: 60;
+    }
+
+    .immersion-footer-hints span {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 10px;
+      border-radius: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* =========================================================
+       Responsive Adjustments
+       ========================================================= */
+    @media (max-width: 768px) {
+      .grid-viewport {
+        padding: 24px;
+      }
+      .brand-title {
+        font-size: 48px;
+      }
+      .memo-note {
+        display: none;
+      }
+      .specimen-card {
+        padding: 24px;
+        height: 75vh;
+      }
+      .card-specimen-title {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       Cartesian Hairlines and Crosshair Overlay
+       ========================================================= -->
+  <div class="grid-lines-overlay"></div>
+  <div class="crosshairs-container" id="crosshairsContainer"></div>
+
+  <!-- =========================================================
+       Main Grid Viewport (Rest State)
+       ========================================================= -->
+  <div class="grid-viewport" id="gridViewport">
+    <!-- Top Header -->
+    <header class="header-bar">
+      <nav class="nav-links-block" aria-label="Main Navigation">
+        <a href="#services">SERVICES</a>
+        <a href="#shop">SHOP</a>
+        <a href="#about">ABOUT US</a>
+        <a href="#contact">CONTACT US</a>
+      </nav>
+
+      <h1 class="brand-title">OBELISK</h1>
+    </header>
+
+    <!-- Top-Right Asymmetric Surveillance Note -->
+    <div class="memo-note memo-top-right">
+      SOMETHING ABOUT WHAT I WANT TO TELL BUT I CAN'T BECAUSE IT IS FORBIDDEN. YOU WILL NEVER FIND OUT TRUTH OF THIS SITUATION. FORGET ABOUT IT
+    </div>
+
+    <!-- Center Kinetic Aperture & Slit Mechanism -->
+    <div class="aperture-anchor" id="apertureAnchor">
+      <div class="aperture-indices">
+        <span id="labelIndexLeft">[01]</span>
+        <span id="labelIndexRight">[04]</span>
+      </div>
+
+      <div class="aperture-slit-box" id="apertureSlit" role="button" aria-label="Expand architectural aperture">
+        <img src="assets/monolith-pillars.jpg" alt="Aperture preview slit" class="slit-preview-img" id="slitThumb" />
+      </div>
+
+      <button type="button" class="break-free-btn" id="breakFreeBtn" aria-expanded="false" aria-controls="immersionStage">
+        <span>BREAK FREE</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <polyline points="9 21 3 21 3 15"></polyline>
+          <line x1="21" y1="3" x2="14" y2="10"></line>
+          <line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Bottom-Left Asymmetric Surveillance Note -->
+    <div class="memo-note memo-bottom-left">
+      SOMETHING ABOUT WHAT I WANT TO TELL BUT I CAN'T BECAUSE IT IS FORBIDDEN. YOU WILL NEVER FIND OUT TRUTH OF THIS SITUATION. FORGET ABOUT IT
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Full-Bleed Expanded Immersion Overlay (Active State)
+       ========================================================= -->
+  <div class="immersion-stage" id="immersionStage" role="dialog" aria-modal="true" aria-hidden="true">
+    <!-- Active Large Full-Bleed Monochrome Photo -->
+    <img src="assets/monolith-pillars.jpg" alt="Monolithic architectural specimen" class="immersion-bg-photo" id="immersionPhoto" />
+
+    <!-- Center Floating Specimen Card -->
+    <div class="specimen-card" id="specimenCard">
+      <div class="card-top-bar">
+        <span id="activeSpecimenNum">02</span>
+        <button type="button" class="card-close-btn" id="cardCloseBtn" aria-label="Close exhibition view">
+          [✕ ESC]
+        </button>
+      </div>
+
+      <!-- 3-Thumbnail Strip to switch architectural specimens -->
+      <div class="card-thumb-strip" role="tablist" aria-label="Architectural specimens">
+        <div class="thumb-cell active" data-index="0" role="tab" aria-selected="true" tabindex="0">
+          <img src="assets/monolith-pillars.jpg" alt="Monolith Pillars in Still Water" />
+        </div>
+        <div class="thumb-cell" data-index="1" role="tab" aria-selected="false" tabindex="0">
+          <img src="assets/colonnade-hall.jpg" alt="Travertine Colonnade Hall" />
+        </div>
+        <div class="thumb-cell" data-index="2" role="tab" aria-selected="false" tabindex="0">
+          <img src="assets/facade-geometry.jpg" alt="Geometric Glass Facade" />
+        </div>
+        <div class="thumb-cell" data-index="3" role="tab" aria-selected="false" tabindex="0">
+          <img src="assets/interior-lamp-structure.jpg" alt="Steel Window Trusses and Pendant Lamp" />
+        </div>
+      </div>
+
+      <!-- Narrative Note -->
+      <p class="card-narrative">
+        SOMETHING ABOUT WHAT I WANT TO TELL BUT I CAN'T BECAUSE IT IS FORBIDDEN. YOU WILL NEVER FIND OUT TRUTH OF THIS SITUATION. FORGET ABOUT IT
+      </p>
+
+      <!-- Towering Monumental Title -->
+      <h2 class="card-specimen-title" id="specimenTitle">
+        SUNRISE DAWN
+      </h2>
+    </div>
+
+    <!-- Keyboard Navigation Hints -->
+    <div class="immersion-footer-hints">
+      <span>← / → Switch Specimen</span>
+      <span>ESC to Return to Grid</span>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Motion & Interaction Controller
+       ========================================================= -->
+  <script>
+    // 1. Generate Cartesian Crosshairs (+) across the grid intersections
+    const crosshairsContainer = document.getElementById('crosshairsContainer');
+    function createGridCrosshairs() {
+      crosshairsContainer.innerHTML = '';
+      const cols = 8;
+      const rows = 6;
+      for (let r = 1; r < rows; r++) {
+        for (let c = 1; c < cols; c++) {
+          const cross = document.createElement('div');
+          cross.className = 'crosshair-plus';
+          cross.textContent = '+';
+          cross.style.left = `${(c / cols) * 100}%`;
+          cross.style.top = `${(r / rows) * 100}%`;
+          crosshairsContainer.appendChild(cross);
+        }
+      }
+    }
+    createGridCrosshairs();
+    window.addEventListener('resize', createGridCrosshairs);
+
+    // 2. Architectural Specimen Catalog
+    const specimens = [
+      {
+        num: '01',
+        title: 'MONOLITH I',
+        image: 'assets/monolith-pillars.jpg',
+        alt: 'Monolith Pillars in Alpine Still Water'
+      },
+      {
+        num: '02',
+        title: 'SUNRISE DAWN',
+        image: 'assets/colonnade-hall.jpg',
+        alt: 'Travertine Colonnade with Raking Shadows'
+      },
+      {
+        num: '03',
+        title: 'PRISM GEOMETRY',
+        image: 'assets/facade-geometry.jpg',
+        alt: 'Geometric Glass Facade and Structural Louvers'
+      },
+      {
+        num: '04',
+        title: 'CATHEDRAL LIGHT',
+        image: 'assets/interior-lamp-structure.jpg',
+        alt: 'Steel Window Trusses and Pendant Lamp'
+      }
+    ];
+
+    let currentIndex = 1; // Default to Specimen 02 (SUNRISE DAWN) as in reference video
+    let isExpanded = false;
+
+    const breakFreeBtn = document.getElementById('breakFreeBtn');
+    const apertureSlit = document.getElementById('apertureSlit');
+    const immersionStage = document.getElementById('immersionStage');
+    const immersionPhoto = document.getElementById('immersionPhoto');
+    const specimenTitle = document.getElementById('specimenTitle');
+    const activeSpecimenNum = document.getElementById('activeSpecimenNum');
+    const cardCloseBtn = document.getElementById('cardCloseBtn');
+    const thumbCells = document.querySelectorAll('.thumb-cell');
+
+    function updateActiveSpecimen(index) {
+      currentIndex = index;
+      const spec = specimens[currentIndex];
+
+      // Update background image with smooth crossfade
+      immersionPhoto.style.opacity = '0.3';
+      setTimeout(() => {
+        immersionPhoto.src = spec.image;
+        immersionPhoto.alt = spec.alt;
+        immersionPhoto.style.opacity = '1';
+      }, 150);
+
+      // Update title and counter
+      specimenTitle.textContent = spec.title;
+      activeSpecimenNum.textContent = spec.num;
+
+      // Update thumbnail active states
+      thumbCells.forEach((cell, idx) => {
+        if (idx === currentIndex) {
+          cell.classList.add('active');
+          cell.setAttribute('aria-selected', 'true');
+        } else {
+          cell.classList.remove('active');
+          cell.setAttribute('aria-selected', 'false');
+        }
+      });
+    }
+
+    function expandAperture() {
+      if (isExpanded) return;
+      isExpanded = true;
+      immersionStage.classList.add('active');
+      immersionStage.setAttribute('aria-hidden', 'false');
+      breakFreeBtn.setAttribute('aria-expanded', 'true');
+      breakFreeBtn.querySelector('span').textContent = 'COLLAPSE';
+    }
+
+    function collapseAperture() {
+      if (!isExpanded) return;
+      isExpanded = false;
+      immersionStage.classList.remove('active');
+      immersionStage.setAttribute('aria-hidden', 'true');
+      breakFreeBtn.setAttribute('aria-expanded', 'false');
+      breakFreeBtn.querySelector('span').textContent = 'BREAK FREE';
+    }
+
+    function toggleAperture() {
+      if (isExpanded) {
+        collapseAperture();
+      } else {
+        expandAperture();
+      }
+    }
+
+    // Event listeners
+    breakFreeBtn.addEventListener('click', toggleAperture);
+    apertureSlit.addEventListener('click', expandAperture);
+    cardCloseBtn.addEventListener('click', collapseAperture);
+
+    // Clicking outside the card closes the immersion view
+    immersionStage.addEventListener('click', (e) => {
+      if (e.target === immersionStage) {
+        collapseAperture();
+      }
+    });
+
+    // Thumbnail switching
+    thumbCells.forEach((cell, idx) => {
+      cell.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateActiveSpecimen(idx);
+      });
+      cell.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          updateActiveSpecimen(idx);
+        }
+      });
+    });
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        collapseAperture();
+      } else if (e.key === ' ' && !isExpanded) {
+        e.preventDefault();
+        expandAperture();
+      } else if (e.key === 'ArrowRight' && isExpanded) {
+        const next = (currentIndex + 1) % specimens.length;
+        updateActiveSpecimen(next);
+      } else if (e.key === 'ArrowLeft' && isExpanded) {
+        const prev = (currentIndex - 1 + specimens.length) % specimens.length;
+        updateActiveSpecimen(prev);
+      }
+    });
+
+    // Initialize with Specimen 02
+    updateActiveSpecimen(1);
+
+    // Auto-expand if requested in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('expanded') === 'true' || window.location.hash === '#expanded') {
+      setTimeout(expandAperture, 100);
+    }
+  </script>
+</body>
+</html>
