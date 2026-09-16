@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miel — Artisanal Neighborhood Bakery & Morning Atelier</title>
+
+  <!-- Robots / Privacy -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Fonts: Oswald for bold condensed display, Plus Jakarta Sans, Caveat for handwriting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-cream: #FBF6EE;
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFDF9;
+      --color-crust: #C85A32;
+      --color-crust-soft: #F9EBE5;
+      --color-butter: #FCD561;
+      --color-butter-light: #FEF6D8;
+      --color-espresso: #281D17;
+      --color-muted: #7A6F68;
+      --color-border: #EFE4D6;
+      --radius-sm: 8px;
+      --radius-md: 18px;
+      --radius-lg: 32px;
+      --radius-pill: 999px;
+      --font-display: 'Oswald', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-cream);
+      color: var(--color-espresso);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Top Navigation Bar */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(251, 246, 238, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 16px 28px;
+      transition: background 0.3s ease;
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-link:hover {
+      color: var(--color-crust);
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .brand-logo svg {
+      height: 38px;
+      width: auto;
+    }
+    .cart-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-crust);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(200, 90, 50, 0.25);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .cart-trigger:hover {
+      transform: translateY(-2px);
+      background: #B64F2A;
+      box-shadow: 0 8px 20px rgba(200, 90, 50, 0.32);
+    }
+    .cart-badge {
+      background: var(--color-butter);
+      color: var(--color-espresso);
+      font-size: 0.78rem;
+      font-weight: 800;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Container wrapper */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Section Badges */
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-crust);
+      color: #fff;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 18px;
+    }
+    .section-tag.butter {
+      background: var(--color-butter);
+      color: var(--color-espresso);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 40px 0 60px;
+      position: relative;
+    }
+    .hero-bubble-card {
+      background: #F3E8D7;
+      border-radius: 64px;
+      position: relative;
+      padding: 80px 48px 90px;
+      text-align: center;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(200, 150, 110, 0.15);
+    }
+    .hero-bubble-card::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.45) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Floating SVG Doodles */
+    .doodle-croissant {
+      position: absolute;
+      left: 48px;
+      bottom: 40px;
+      width: 150px;
+      height: auto;
+      transform: rotate(-14deg);
+      pointer-events: none;
+      filter: drop-shadow(0 6px 12px rgba(200, 90, 50, 0.12));
+    }
+    .doodle-bread {
+      position: absolute;
+      right: 48px;
+      top: 36px;
+      width: 220px;
+      height: auto;
+      transform: rotate(8deg);
+      pointer-events: none;
+      filter: drop-shadow(0 6px 12px rgba(200, 90, 50, 0.12));
+    }
+
+    .hero-badge-pill {
+      display: inline-block;
+      background: var(--color-butter);
+      color: var(--color-espresso);
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 8px 22px;
+      border-radius: var(--radius-pill);
+      transform: rotate(-4deg);
+      margin-bottom: 26px;
+      box-shadow: 0 4px 12px rgba(240, 190, 60, 0.28);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 7vw, 6.4rem);
+      line-height: 0.96;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--color-crust);
+      max-width: 980px;
+      margin: 0 auto 24px;
+    }
+    .hero-title span.dark {
+      color: var(--color-espresso);
+      display: block;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      color: var(--color-muted);
+      max-width: 620px;
+      margin: 0 auto 36px;
+      line-height: 1.55;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-hero {
+      background: var(--color-crust);
+      color: #fff;
+      font-size: 1.02rem;
+      font-weight: 700;
+      padding: 15px 36px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(200, 90, 50, 0.28);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+    }
+    .btn-hero:hover {
+      transform: translateY(-3px);
+      background: #B44D27;
+    }
+    .btn-hero-outline {
+      background: transparent;
+      color: var(--color-espresso);
+      border: 2px solid var(--color-espresso);
+      font-size: 1.02rem;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-hero-outline:hover {
+      background: var(--color-espresso);
+      color: #fff;
+    }
+
+    /* Founder Note / Meet the Baker Section */
+    .story-section {
+      padding: 90px 0;
+    }
+    .story-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .story-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      line-height: 1.04;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .baker-photo-wrapper {
+      position: relative;
+      border-radius: 40px 12px 40px 40px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px -12px rgba(40, 29, 23, 0.18);
+    }
+    .baker-photo-wrapper img {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .baker-photo-wrapper:hover img {
+      transform: scale(1.03);
+    }
+    .baker-corner-stamp {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: 100px;
+      animation: spinSlow 24s linear infinite;
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Taped Founder Note Card */
+    .note-card-container {
+      position: relative;
+      padding: 20px;
+    }
+    .founder-note-card {
+      background: var(--bg-card);
+      border-radius: 6px;
+      padding: 48px 42px;
+      box-shadow: 0 16px 36px -10px rgba(70, 50, 40, 0.14), 0 0 0 1px rgba(220, 205, 190, 0.5);
+      position: relative;
+      transform: rotate(1deg);
+    }
+    /* Masking tape strip on top */
+    .tape-strip {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 130px;
+      height: 34px;
+      background: rgba(243, 232, 214, 0.85);
+      border-left: 2px dashed rgba(200, 185, 165, 0.6);
+      border-right: 2px dashed rgba(200, 185, 165, 0.6);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      z-index: 2;
+    }
+    .note-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 18px;
+    }
+    .note-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+      margin-bottom: 24px;
+    }
+    .note-body {
+      color: var(--color-muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .note-author {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+    }
+    .note-author span {
+      display: block;
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      color: var(--color-crust);
+      text-transform: none;
+      margin-top: 4px;
+    }
+    .stamp-imprint {
+      position: absolute;
+      bottom: 24px;
+      right: 28px;
+      width: 86px;
+      height: 86px;
+      opacity: 0.85;
+      transform: rotate(-12deg);
+    }
+
+    /* Pillars / Why Miel Section */
+    .pillars-section {
+      padding: 80px 0;
+    }
+    .pillars-header {
+      text-align: center;
+      margin-bottom: 54px;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .pillar-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--color-border);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(200, 90, 50, 0.16);
+    }
+    .pillar-img-frame {
+      width: 170px;
+      height: 170px;
+      border-radius: 50% 50% 45% 45%;
+      overflow: hidden;
+      margin-bottom: 22px;
+      background: var(--color-butter-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pillar-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .pillar-card:hover .pillar-img-frame img {
+      transform: scale(1.08);
+    }
+    .pillar-badge-num {
+      background: var(--color-crust);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 14px;
+    }
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+      margin-bottom: 10px;
+    }
+    .pillar-desc {
+      font-size: 0.94rem;
+      color: var(--color-muted);
+      line-height: 1.5;
+    }
+
+    /* Full-width Braided Bread Banner */
+    .hero-bread-banner {
+      padding: 40px 0;
+    }
+    .banner-container {
+      position: relative;
+      border-radius: 40px;
+      overflow: hidden;
+      height: 480px;
+      box-shadow: 0 24px 50px -10px rgba(40, 25, 20, 0.22);
+    }
+    .banner-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .banner-container:hover img {
+      transform: scale(1.025);
+    }
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(40,25,20,0.7) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 48px;
+    }
+    .banner-text-block {
+      color: #fff;
+      max-width: 600px;
+    }
+    .banner-tag {
+      display: inline-block;
+      background: var(--color-butter);
+      color: var(--color-espresso);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .banner-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* By The Numbers Section */
+    .numbers-section {
+      padding: 90px 0;
+      position: relative;
+    }
+    .numbers-inner {
+      background: var(--bg-card);
+      border-radius: 48px;
+      padding: 64px 48px;
+      border: 1px solid var(--color-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .numbers-top {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .number-item {
+      padding: 0 16px;
+      position: relative;
+    }
+    .number-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--color-border);
+    }
+    .num-value {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 5vw, 4.8rem);
+      line-height: 1;
+      color: var(--color-crust);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .num-label {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+      margin-bottom: 6px;
+    }
+    .num-sub {
+      font-size: 0.92rem;
+      color: var(--color-muted);
+    }
+
+    /* Interactive Menu Showcase */
+    .menu-section {
+      padding: 80px 0 110px;
+    }
+    .menu-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 38px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .menu-categories {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .category-tab {
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-espresso);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .category-tab.active, .category-tab:hover {
+      background: var(--color-crust);
+      color: #fff;
+      border-color: var(--color-crust);
+    }
+
+    .menu-items-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .menu-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px -10px rgba(70, 45, 35, 0.12);
+    }
+    .menu-card-img {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+    .menu-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .menu-card:hover .menu-card-img img {
+      transform: scale(1.06);
+    }
+    .menu-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--color-butter);
+      color: var(--color-espresso);
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+    }
+    .menu-card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .menu-item-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+      margin-bottom: 6px;
+    }
+    .menu-item-desc {
+      font-size: 0.88rem;
+      color: var(--color-muted);
+      margin-bottom: 20px;
+      flex: 1;
+      line-height: 1.45;
+    }
+    .menu-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--color-border);
+      padding-top: 16px;
+    }
+    .menu-price {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-crust);
+    }
+    .add-to-bag-btn {
+      background: var(--bg-cream);
+      color: var(--color-espresso);
+      border: 1px solid var(--color-border);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .add-to-bag-btn:hover {
+      background: var(--color-crust);
+      color: #fff;
+      border-color: var(--color-crust);
+    }
+
+    /* Pre-order Drawer / Modal */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 25, 20, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-panel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    }
+    .drawer-backdrop.open .drawer-panel {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      color: var(--color-espresso);
+    }
+    .close-drawer {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-espresso);
+    }
+    .drawer-body {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .bag-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .bag-item-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .bag-item-price {
+      color: var(--color-crust);
+      font-weight: 700;
+    }
+    .drawer-footer {
+      padding: 24px;
+      border-top: 1px solid var(--color-border);
+      background: var(--bg-card);
+    }
+    .drawer-total {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .checkout-btn {
+      width: 100%;
+      background: var(--color-crust);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .checkout-btn:hover {
+      background: #B44D27;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      background: #251A14;
+      color: #E6D9D0;
+      padding: 80px 0 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+    .footer-logo {
+      margin-bottom: 16px;
+    }
+    .footer-logo text {
+      fill: #FFFDF9;
+    }
+    .footer-desc {
+      font-size: 0.92rem;
+      color: #A99B92;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    .footer-col-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      color: #A99B92;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--color-butter);
+    }
+    .hours-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .hours-badge strong {
+      color: var(--color-butter);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      color: #8C7F77;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+      .pillars-grid, .menu-items-grid, .numbers-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+      .number-item:not(:last-child)::after {
+        display: none;
+      }
+      .doodle-croissant, .doodle-bread {
+        display: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .nav-left, .nav-right .nav-link {
+        display: none;
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .hero-bubble-card {
+        padding: 60px 24px;
+        border-radius: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="nav-left">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#menu" class="nav-link">Menu</a>
+      </nav>
+
+      <a href="#" class="brand-logo">
+        <svg viewBox="0 0 220 60" fill="none">
+          <text x="5" y="46" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="52" font-weight="900" fill="#281D17" letter-spacing="-2">miel</text>
+          <circle cx="94" cy="11" r="5" fill="#C85A32"/>
+          <text x="135" y="24" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="11" font-weight="800" fill="#C85A32" letter-spacing="2">ATELIER</text>
+        </svg>
+      </a>
+
+      <div class="nav-right">
+        <a href="#story" class="nav-link">Journal</a>
+        <a href="#visit" class="nav-link">Contact</a>
+        <button class="cart-trigger" id="openDrawerBtn">
+          <span>Morning Bag</span>
+          <span class="cart-badge" id="bagCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-bubble-card">
+          <!-- Floating Hand-drawn Pastry Doodles -->
+          <img src="assets/doodle-croissant.svg" alt="" class="doodle-croissant" />
+          <img src="assets/doodle-bread.svg" alt="" class="doodle-bread" />
+
+          <div class="hero-badge-pill">About Miel Bakery</div>
+          <h1 class="hero-title">
+            A Neighborhood Bakery
+            <span class="dark">With A Soft Spot</span>
+          </h1>
+          <p class="hero-subtitle">
+            We bake the familiar with a little more joy — entirely by hand, in small batches, every single morning before dawn.
+          </p>
+          <div class="hero-actions">
+            <a href="#menu" class="btn-hero">Explore Today's Bake</a>
+            <a href="#story" class="btn-hero-outline">Our Philosophy</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story / Meet the Baker -->
+    <section class="story-section" id="story">
+      <div class="container">
+        <div class="story-header">
+          <span class="section-tag">Our Mission</span>
+          <h2 class="story-title">Meet The Baker Behind The Counter</h2>
+        </div>
+
+        <div class="story-grid">
+          <div class="baker-photo-wrapper">
+            <img src="images/baker-portrait.jpg" alt="Artisan baker at Miel Bakery" />
+            <img src="assets/stamp-bakery.svg" alt="" class="baker-corner-stamp" />
+          </div>
+
+          <div class="note-card-container">
+            <div class="founder-note-card">
+              <div class="tape-strip"></div>
+              <div class="note-label">Founder Note</div>
+              <h3 class="note-quote">
+                "I wanted Miel to feel like the bakery you grew up with — only a little more playful."
+              </h3>
+              <p class="note-body">
+                That means knowing the dough by touch, learning every regular's morning order, and refusing to rush the parts that make a crust shatter into golden memory. We mill stoneground grain every Tuesday and let sourdough rest for 48 hours in cold cellar stone.
+              </p>
+              <div class="note-author">
+                Arthur Vance
+                <span>Head Baker & Founder</span>
+              </div>
+              <img src="assets/stamp-bakery.svg" alt="" class="stamp-imprint" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Miel / Pillars Section -->
+    <section class="pillars-section" id="about">
+      <div class="container">
+        <div class="pillars-header">
+          <span class="section-tag butter">Why Miel</span>
+          <h2 class="story-title">Freshly Made With Care For Everyday</h2>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-img-frame">
+              <img src="images/baker-hands.jpg" alt="Baker shaping sourdough" />
+            </div>
+            <div class="pillar-badge-num">01</div>
+            <h3 class="pillar-title">Made Fresh Daily</h3>
+            <p class="pillar-desc">All goods are baked fresh every morning from 4:30 AM so every bite tastes at its absolute golden prime.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-img-frame">
+              <img src="images/pastries-swirl.jpg" alt="Golden cinnamon swirls" />
+            </div>
+            <div class="pillar-badge-num">02</div>
+            <h3 class="pillar-title">Quality Ingredients</h3>
+            <p class="pillar-desc">We choose organic heritage flour, churned Normandy butter, wildflower honey, and French sea salt.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-img-frame">
+              <img src="images/bakery-interior.jpg" alt="Warm bakery atmosphere" />
+            </div>
+            <div class="pillar-badge-num">03</div>
+            <h3 class="pillar-title">Made To Share</h3>
+            <p class="pillar-desc">Every loaf and pastry is shaped with community in mind — designed to be broken around warm breakfast tables.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full Width Braided Loaf Banner -->
+    <section class="hero-bread-banner">
+      <div class="container">
+        <div class="banner-container">
+          <img src="images/bread-braided.jpg" alt="Signature braided bread loaf on linen" />
+          <div class="banner-overlay">
+            <div class="banner-text-block">
+              <span class="banner-tag">Signature Oven Bake</span>
+              <h2 class="banner-title">Golden Braided Honey Challah & Seeded Sourdough</h2>
+              <p>Slow-fermented for 36 hours and brushed with raw clover honey syrup straight out of the hearth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Numbers Section -->
+    <section class="numbers-section">
+      <div class="container">
+        <div class="numbers-inner">
+          <div class="numbers-top">
+            <span class="section-tag">In Numbers</span>
+            <h2 class="story-title">The Numbers Behind Every Loaf We Bake</h2>
+          </div>
+
+          <div class="numbers-grid">
+            <div class="number-item">
+              <div class="num-value" data-target="12">12+</div>
+              <div class="num-label">Years of Baking</div>
+              <div class="num-sub">Perfecting our sourdough craft through thousands of mornings.</div>
+            </div>
+
+            <div class="number-item">
+              <div class="num-value" data-target="40">40+</div>
+              <div class="num-label">Handmade Bakes</div>
+              <div class="num-sub">A seasonal daily selection of rustic breads, pastries, and tarts.</div>
+            </div>
+
+            <div class="number-item">
+              <div class="num-value" data-target="30">30K+</div>
+              <div class="num-label">Happy Neighbors</div>
+              <div class="num-sub">Warm pastry moments shared across our morning counter every month.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Menu Section -->
+    <section class="menu-section" id="menu">
+      <div class="container">
+        <div class="menu-header">
+          <div>
+            <span class="section-tag">Daily Counter</span>
+            <h2 class="story-title">Today's Oven Schedule</h2>
+          </div>
+          <div class="menu-categories">
+            <button class="category-tab active" data-filter="all">All Bakes</button>
+            <button class="category-tab" data-filter="pastry">Viennoiserie</button>
+            <button class="category-tab" data-filter="bread">Sourdough & Loaves</button>
+            <button class="category-tab" data-filter="sweet">Sweet Bakes</button>
+          </div>
+        </div>
+
+        <div class="menu-items-grid">
+          <!-- Item 1 -->
+          <div class="menu-card" data-category="pastry">
+            <div class="menu-card-img">
+              <img src="images/croissant-golden.jpg" alt="Artisan Croissant" />
+              <span class="menu-badge">Bestseller</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Classic Butter Croissant</h3>
+              <p class="menu-item-desc">72 folded layers of cultured Charentes-Poitou butter, delivering an airy honeycomb crumb and crisp shatter.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$4.25</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Classic Butter Croissant', 4.25)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="menu-card" data-category="bread">
+            <div class="menu-card-img">
+              <img src="images/bread-braided.jpg" alt="Artisan Bread Loaf" />
+              <span class="menu-badge">Hearth Baked</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Country Sesame Sourdough</h3>
+              <p class="menu-item-desc">Stoneground organic wheat, open crumb, blistering mahogany crust rolled in toasted sesame seeds.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$8.50</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Country Sesame Sourdough', 8.50)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="menu-card" data-category="sweet">
+            <div class="menu-card-img">
+              <img src="images/pastries-swirl.jpg" alt="Cardamom Bun" />
+              <span class="menu-badge">Morning Special</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Cardamom & Brown Sugar Swirl</h3>
+              <p class="menu-item-desc">Crushed green cardamom pods folded into enriched brioche dough with caramelized raw cane sugar.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$5.00</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Cardamom Brown Sugar Swirl', 5.00)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="menu-card" data-category="pastry">
+            <div class="menu-card-img">
+              <img src="images/pastry-coffee.jpg" alt="Pain au Chocolat" />
+              <span class="menu-badge">Dark Chocolate</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Double Dark Pain au Chocolat</h3>
+              <p class="menu-item-desc">Flaky laminated viennoiserie pastry enclosing twin batons of 70% Valrhona dark chocolate.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$5.25</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Double Dark Pain au Chocolat', 5.25)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="menu-card" data-category="bread">
+            <div class="menu-card-img">
+              <img src="images/baker-hands.jpg" alt="Heritage Rye Loaf" />
+              <span class="menu-badge">100% Rye</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Heritage Baltic Rye Loaf</h3>
+              <p class="menu-item-desc">Dense, aromatic dark rye with malted caraway and whole soaked sunflower kernels. Keeps fresh for a week.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$9.00</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Heritage Baltic Rye Loaf', 9.00)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="menu-card" data-category="sweet">
+            <div class="menu-card-img">
+              <img src="images/bakery-interior.jpg" alt="Almond Bostock" />
+              <span class="menu-badge">Chef Choice</span>
+            </div>
+            <div class="menu-card-body">
+              <h3 class="menu-item-title">Honey Almond Bostock</h3>
+              <p class="menu-item-desc">Thick brioche toast soaked in orange blossom syrup, topped with rich frangipane and toasted almonds.</p>
+              <div class="menu-card-footer">
+                <span class="menu-price">$5.50</span>
+                <button class="add-to-bag-btn" onclick="addToBag('Honey Almond Bostock', 5.50)">Add to Bag</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pre-order Drawer Modal -->
+  <div class="drawer-backdrop" id="drawerBackdrop">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <h3 class="drawer-title">Your Morning Bag</h3>
+        <button class="close-drawer" id="closeDrawerBtn">&times;</button>
+      </div>
+      <div class="drawer-body" id="drawerBagList">
+        <p style="color: var(--color-muted); text-align: center; margin-top: 40px;">Your bag is currently empty.<br/>Pick fresh morning pastries from the oven menu!</p>
+      </div>
+      <div class="drawer-footer">
+        <div class="drawer-total">
+          <span>Subtotal</span>
+          <span id="bagTotal">$0.00</span>
+        </div>
+        <button class="checkout-btn" onclick="confirmReserve()">Reserve For Morning Pickup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="visit">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">
+            <svg viewBox="0 0 220 60" fill="none" style="height: 38px;">
+              <text x="5" y="46" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="52" font-weight="900" fill="#FFFDF9" letter-spacing="-2">miel</text>
+              <circle cx="94" cy="11" r="5" fill="#FCD561"/>
+              <text x="135" y="24" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="11" font-weight="800" fill="#FCD561" letter-spacing="2">ATELIER</text>
+            </svg>
+          </div>
+          <p class="footer-desc">
+            A neighborhood bakery crafting honest loaves, buttery viennoiserie, and community joy since 2018.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#about">About Atelier</a></li>
+            <li><a href="#menu">Daily Counter</a></li>
+            <li><a href="#story">Baking Journal</a></li>
+            <li><a href="#visit">Morning Orders</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Bakery Counter</h4>
+          <ul class="footer-links">
+            <li><a href="#">384 Elmwood Lane</a></li>
+            <li><a href="#">Cinnamon District</a></li>
+            <li><a href="#">hello@mielbakery.com</a></li>
+            <li><a href="#">(555) 342-9182</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Opening Hours</h4>
+          <div class="hours-badge">
+            <p><strong>Tuesday – Friday:</strong><br/>07:00 AM – 03:00 PM</p>
+            <p style="margin-top: 8px;"><strong>Saturday – Sunday:</strong><br/>08:00 AM – 04:00 PM</p>
+            <p style="margin-top: 8px; color: #8C7F77;">Closed Mondays for stone milling</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Miel Bakery Atelier. All rights reserved.</div>
+        <div>Crafted for neighborhood mornings.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: GSAP & Lenis Smooth Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    // 1. Initialize Lenis Smooth Scroll
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } catch(e) {
+      console.warn("Lenis not loaded, fallback to native scroll");
+    }
+
+    // 2. Register GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Subtle floating parallax on pastry doodles
+    gsap.to(".doodle-croissant", {
+      y: -18,
+      rotation: -18,
+      repeat: -1,
+      yoyo: true,
+      duration: 3.5,
+      ease: "power1.inOut"
+    });
+    gsap.to(".doodle-bread", {
+      y: -22,
+      rotation: 12,
+      repeat: -1,
+      yoyo: true,
+      duration: 4.2,
+      ease: "power1.inOut"
+    });
+
+    // Animate stats numbers
+    const numItems = document.querySelectorAll(".num-value");
+    numItems.forEach(item => {
+      const target = parseInt(item.getAttribute("data-target"));
+      ScrollTrigger.create({
+        trigger: item,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          let current = 0;
+          const interval = setInterval(() => {
+            current++;
+            if (current >= target) {
+              clearInterval(interval);
+              item.textContent = target + (item.textContent.includes("K") ? "K+" : "+");
+            } else {
+              item.textContent = current + (item.textContent.includes("K") ? "K+" : "+");
+            }
+          }, 35);
+        }
+      });
+    });
+
+    // 3. Category Filter
+    const tabs = document.querySelectorAll('.category-tab');
+    const cards = document.querySelectorAll('.menu-card');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.getAttribute('data-filter');
+        cards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 4. Cart Bag State & Drawer
+    const bag = [];
+    const bagCount = document.getElementById('bagCount');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerBagList = document.getElementById('drawerBagList');
+    const bagTotal = document.getElementById('bagTotal');
+
+    function updateBagUI() {
+      bagCount.textContent = bag.length;
+      if (bag.length === 0) {
+        drawerBagList.innerHTML = '<p style="color: var(--color-muted); text-align: center; margin-top: 40px;">Your bag is currently empty.<br/>Pick fresh morning pastries from the oven menu!</p>';
+        bagTotal.textContent = '$0.00';
+      } else {
+        drawerBagList.innerHTML = '';
+        let sum = 0;
+        bag.forEach((item, idx) => {
+          sum += item.price;
+          const row = document.createElement('div');
+          row.className = 'bag-item';
+          row.innerHTML = `
+            <div>
+              <div class="bag-item-title">${item.name}</div>
+              <small style="color: var(--color-muted)">Fresh morning reserve</small>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="bag-item-price">$${item.price.toFixed(2)}</span>
+              <button onclick="removeFromBag(${idx})" style="background: none; border: none; color: #999; cursor: pointer; font-size: 1.1rem;">&times;</button>
+            </div>
+          `;
+          drawerBagList.appendChild(row);
+        });
+        bagTotal.textContent = '$' + sum.toFixed(2);
+      }
+    }
+
+    function addToBag(name, price) {
+      bag.push({ name, price });
+      updateBagUI();
+      // Brief button reaction
+      drawerBackdrop.classList.add('open');
+    }
+
+    function removeFromBag(idx) {
+      bag.splice(idx, 1);
+      updateBagUI();
+    }
+
+    function confirmReserve() {
+      if (bag.length === 0) {
+        alert("Please add at least one bake to your bag!");
+        return;
+      }
+      alert("Your morning bakes have been reserved! Pickup is ready between 7:30 AM – 11:00 AM.");
+      bag.length = 0;
+      updateBagUI();
+      drawerBackdrop.classList.remove('open');
+    }
+
+    document.getElementById('openDrawerBtn').addEventListener('click', () => {
+      drawerBackdrop.classList.add('open');
+    });
+    document.getElementById('closeDrawerBtn').addEventListener('click', () => {
+      drawerBackdrop.classList.remove('open');
+    });
+    drawerBackdrop.addEventListener('click', (e) => {
+      if (e.target === drawerBackdrop) {
+        drawerBackdrop.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

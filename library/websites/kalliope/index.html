@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalliope — Autonomous Multilingual AI Voice Receptionist</title>
+
+  <!-- Robots / Privacy -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-white: #FFFFFF;
+      --bg-subtle: #FBFBFC;
+      --bg-card: #F7F7F8;
+      --text-main: #111111;
+      --text-muted: #666666;
+      --text-light: #999999;
+      --border-color: #E8E8E8;
+      --border-dark: #111111;
+      --accent-green: #4F7942;
+      --accent-blue: #0070F3;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Subtle vertical pinstripe background bands */
+    .pinstripe-band {
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.03) 0px,
+        rgba(0, 0, 0, 0.03) 1px,
+        transparent 1px,
+        transparent 16px
+      );
+      height: 42px;
+      width: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .pinstripe-band.bottom {
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: none;
+      height: 64px;
+    }
+
+    /* Header Nav */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 18px 36px;
+    }
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .brand-logo svg {
+      height: 32px;
+      width: auto;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+    .btn-pill-black {
+      background: var(--text-main);
+      color: #fff;
+      border: 1px solid var(--text-main);
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s ease;
+    }
+    .btn-pill-black:hover {
+      background: #2b2b2b;
+      transform: translateY(-1px);
+    }
+    .btn-pill-light {
+      background: #F0F0F2;
+      color: var(--text-main);
+      border: 1px solid transparent;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-pill-light:hover {
+      background: #E5E5E8;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      padding: 80px 0 100px;
+      overflow: hidden;
+    }
+    .hero-stepped-graphic {
+      position: absolute;
+      top: 0;
+      right: 5%;
+      width: 380px;
+      height: auto;
+      opacity: 0.95;
+      pointer-events: none;
+    }
+    .hero-content {
+      max-width: 660px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-headline {
+      font-size: clamp(3.2rem, 5.8vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      color: var(--text-main);
+      margin-bottom: 24px;
+    }
+    .hero-subhead {
+      font-size: 1.25rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 580px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Trust / Logo Bar */
+    .trust-section {
+      padding: 60px 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+    .trust-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 32px;
+      letter-spacing: -0.01em;
+    }
+    .trust-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+    .trust-client {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #888888;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.2;
+      text-align: left;
+    }
+    .trust-client svg {
+      width: 24px;
+      height: 24px;
+      fill: #A0A0A0;
+    }
+
+    /* Problem Statement Section with Blue Orb */
+    .problem-section {
+      padding: 110px 0;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 70px;
+      align-items: center;
+    }
+    .orb-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .orb-container img {
+      width: 320px;
+      height: 320px;
+      animation: floatOrb 6s ease-in-out infinite alternate;
+    }
+    @keyframes floatOrb {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-14px) scale(1.02); }
+    }
+    .problem-text h2 {
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: var(--text-main);
+    }
+    .problem-text p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* Bento Feature Grid */
+    .bento-section {
+      padding: 80px 0 120px;
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .bento-header {
+      margin-bottom: 56px;
+    }
+    .bento-header h2 {
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .bento-grid-top {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .bento-grid-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .bento-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 340px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .bento-card:hover {
+      border-color: #D0D0D0;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+    }
+    .bento-visual {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .bento-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+    .bento-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Visual 1: 24/7 Phone */
+    .icon-24h {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-24h svg {
+      width: 90px;
+      height: 90px;
+    }
+
+    /* Visual 2: Live Node Constellation */
+    .constellation-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .center-orb-mini {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00A3FF, #0044EE);
+      box-shadow: 0 0 16px rgba(0, 140, 255, 0.5);
+      z-index: 2;
+    }
+    .node-caller {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* Visual 3: Language Chips */
+    .lang-chips-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 260px;
+    }
+    .lang-chip {
+      background: #F4F4F6;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Visual 4: Stacked Appointment Card */
+    .booking-card-stack {
+      position: relative;
+      width: 240px;
+    }
+    .booking-card-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .booking-badge-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #E8F5E9;
+      color: #2E7D32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    /* Visual 5: Staff Cost Curve */
+    .cost-curve-wrapper {
+      width: 100%;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .cost-curve-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Testimonial Section with Stepped Motif */
+    .quote-section {
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .quote-text {
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+      color: var(--text-main);
+    }
+    .quote-meta {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .quote-author {
+      border-right: 1px solid var(--border-color);
+      padding-right: 32px;
+    }
+    .author-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .author-role {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .quote-stat {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1;
+    }
+    .quote-stat small {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .quote-stepped-graphic {
+      width: 100%;
+      max-width: 320px;
+      margin-left: auto;
+    }
+
+    /* How It Works / Training Hub */
+    .how-section {
+      padding: 100px 0 120px;
+      border-top: 1px solid var(--border-color);
+    }
+    .how-header {
+      margin-bottom: 60px;
+    }
+    .how-header h2 {
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .how-diagram-card {
+      background: #F4F6F3;
+      border-radius: 20px;
+      padding: 50px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .hub-node {
+      position: absolute;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+    .how-info-block {
+      border-left: 2px solid var(--text-main);
+      padding-left: 28px;
+    }
+    .how-info-block h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .how-info-block p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Interactive Voice Simulator Box */
+    .simulator-section {
+      padding: 70px 0 90px;
+      background: #FAFAFB;
+      border-top: 1px solid var(--border-color);
+    }
+    .sim-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.05);
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .sim-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .sim-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2E7D32;
+    }
+    .sim-pulse {
+      width: 10px;
+      height: 10px;
+      background: #2E7D32;
+      border-radius: 50%;
+      animation: blinkPulse 1.8s infinite;
+    }
+    @keyframes blinkPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .sim-waveform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin: 24px 0;
+    }
+    .wave-bar {
+      width: 4px;
+      background: #0070F3;
+      border-radius: 4px;
+      height: 12px;
+      transition: height 0.15s ease;
+    }
+    .sim-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .sim-btn {
+      background: var(--text-main);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .sim-btn:hover {
+      background: #2A2A2A;
+    }
+    .sim-script-box {
+      background: #F7F7F9;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-top: 24px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+    .sim-script-box strong {
+      color: var(--text-main);
+    }
+
+    /* Footer */
+    footer.site-footer {
+      background: #FFFFFF;
+      padding: 60px 0 30px;
+      border-top: 1px solid var(--border-color);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-copy {
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 900px) {
+      .hero-stepped-graphic {
+        opacity: 0.2;
+        width: 240px;
+      }
+      .problem-grid, .bento-grid-top, .bento-grid-bottom, .quote-grid, .how-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fine Pinstripe Header Band -->
+  <div class="pinstripe-band"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="brand-logo">
+        <svg viewBox="0 0 200 48" fill="none">
+          <text x="0" y="34" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="32" font-weight="700" fill="#111111" letter-spacing="-0.5">Kalliope</text>
+          <circle cx="152" cy="18" r="4" fill="#0070F3"/>
+          <circle cx="152" cy="18" r="8" stroke="#0070F3" stroke-width="1.5" stroke-opacity="0.3"/>
+        </svg>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#agents">Agents</a></li>
+        <li><a href="#benefits">Benefits</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQs</a></li>
+      </ul>
+
+      <button class="btn-pill-black" onclick="openDemoModal()">Book A Demo</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <!-- Signature Stepped Pyramid Graphic from Nordic reference -->
+      <img src="assets/stepped-pyramid.svg" alt="" class="hero-stepped-graphic" />
+
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-headline">
+            Never miss a phone call again.
+          </h1>
+          <p class="hero-subhead">
+            Kalliope, your multilingual AI receptionist, answers every call 24/7, books appointments into your calendar, and handles routine patient and client questions with zero latency.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-pill-black" onclick="openDemoModal()">Book A Demo</button>
+            <a href="#demo" class="btn-pill-light">Hear Voice Samples</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Client Marquee / Strip -->
+    <section class="trust-section">
+      <div class="container">
+        <div class="trust-label">30+ Healthcare Networks & Legal Practices Rely On Kalliope Daily</div>
+        <div class="trust-logos">
+          <div class="trust-client">
+            <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+            <span>Nordic Health<br/>Alliance</span>
+          </div>
+          <div class="trust-client">
+            <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+            <span>Apex Dental<br/>Partners</span>
+          </div>
+          <div class="trust-client">
+            <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+            <span>Vanguard Legal<br/>Associates</span>
+          </div>
+          <div class="trust-client">
+            <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+            <span>St. Jude Family<br/>Clinics</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Problem Statement with Luminous Blue Orb -->
+    <section class="problem-section" id="benefits">
+      <div class="container">
+        <div class="problem-grid">
+          <div class="orb-container">
+            <img src="assets/orb-voice.svg" alt="Luminous Acoustic Orb" />
+          </div>
+
+          <div class="problem-text">
+            <h2>One missed call is all it takes to lose a client forever.</h2>
+            <p>
+              A hurried receptionist, an unanswered phone call during peak clinic rush, or a generic voicemail after hours immediately drives potential patients or high-value clients straight to your competitors.
+            </p>
+            <p>
+              Human front-desk teams need breaks, sick days, lunch hours, and sleep. Call volume doesn't care.
+            </p>
+            <p style="color: var(--text-main); font-weight: 600;">
+              Kalliope answers every call within two rings, speaks kindly in 80+ native accents, and never takes a day off.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5-Card Bento Feature Grid -->
+    <section class="bento-section" id="agents">
+      <div class="container">
+        <div class="bento-header">
+          <h2>More efficient than any<br/>human receptionist.</h2>
+        </div>
+
+        <!-- Top 3 Bento Cards -->
+        <div class="bento-grid-top">
+          <!-- Card 1: 24/7 -->
+          <div class="bento-card">
+            <div class="bento-visual">
+              <div class="icon-24h">
+                <svg viewBox="0 0 80 80" fill="none" stroke="#2E7D32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 28 C22 20 28 14 36 14 C44 14 50 20 50 28 C50 36 36 44 26 50 H54"/>
+                  <path d="M58 28 V56"/>
+                  <path d="M12 40 C12 60 26 68 40 68 C58 68 68 56 68 40"/>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3>Works 24/7 without exception</h3>
+              <p>No breaks, no sick days, no maternity leave. Absolute uptime and availability every minute of every day.</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Handles multiple calls -->
+          <div class="bento-card">
+            <div class="bento-visual">
+              <div class="constellation-wrapper">
+                <div class="center-orb-mini"></div>
+                <div class="node-caller" style="top: 10px; left: 66px;">👤</div>
+                <div class="node-caller" style="top: 35px; right: 10px;">👤</div>
+                <div class="node-caller" style="bottom: 30px; right: 12px;">👤</div>
+                <div class="node-caller" style="bottom: 12px; left: 66px;">👤</div>
+                <div class="node-caller" style="bottom: 30px; left: 12px;">👤</div>
+                <div class="node-caller" style="top: 35px; left: 10px;">👤</div>
+              </div>
+            </div>
+            <div>
+              <h3>Handles multiple calls at once</h3>
+              <p>Kalliope answers simultaneous inbound calls concurrently so no caller is left on hold or sent to voicemail.</p>
+            </div>
+          </div>
+
+          <!-- Card 3: Speaks 80+ Languages -->
+          <div class="bento-card">
+            <div class="bento-visual">
+              <div class="lang-chips-cloud">
+                <span class="lang-chip">Hello</span>
+                <span class="lang-chip">Hola</span>
+                <span class="lang-chip">Bonjour</span>
+                <span class="lang-chip">नमस्ते</span>
+                <span class="lang-chip">你好</span>
+                <span class="lang-chip">こんにちは</span>
+                <span class="lang-chip">مرحبا</span>
+                <span class="lang-chip">Ciao</span>
+              </div>
+            </div>
+            <div>
+              <h3>Speaks 80+ languages</h3>
+              <p>Makes your practice fully accessible to callers from diverse linguistic backgrounds without extra bilingual staff.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom 2 Bento Cards -->
+        <div class="bento-grid-bottom">
+          <!-- Card 4: Books Appointments -->
+          <div class="bento-card">
+            <div class="bento-visual">
+              <div class="booking-card-stack">
+                <div class="booking-card-item">
+                  <div class="booking-badge-icon">✓</div>
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.95rem;">Appointment Booked</div>
+                    <div style="font-size: 0.8rem; color: #666;">Dr. Sarah Lin • Today, 2:30 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3>Books appointments automatically</h3>
+              <p>Schedules directly into your Google Calendar, Outlook, Epic, Dentrix, or custom EHR without human intervention.</p>
+            </div>
+          </div>
+
+          <!-- Card 5: Lowers Staff Costs -->
+          <div class="bento-card">
+            <div class="bento-visual">
+              <div class="cost-curve-wrapper">
+                <svg viewBox="0 0 340 100" class="cost-curve-svg">
+                  <!-- Red starting cost -->
+                  <text x="10" y="24" fill="#E53935" font-size="13" font-weight="700">$30k/mo</text>
+                  <circle cx="70" cy="20" r="4" fill="#E53935"/>
+                  <!-- Curved plummeting spline -->
+                  <path d="M 70,20 C 130,22 190,82 260,86" fill="none" stroke="#222" stroke-width="2.5"/>
+                  <!-- Green reduced cost -->
+                  <circle cx="260" cy="86" r="4" fill="#2E7D32"/>
+                  <text x="272" y="90" fill="#2E7D32" font-size="13" font-weight="700">$3k/mo</text>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3>Dramatically lowers staff costs</h3>
+              <p>A full-time front desk costs thousands per month. Kalliope delivers infinite scale for a fraction of the payroll.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial Section with Stepped Accent -->
+    <section class="quote-section">
+      <div class="container">
+        <div class="quote-grid">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px; color: #888;">
+              <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #888;"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+              <span style="font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;">Nordic Health Alliance</span>
+            </div>
+
+            <p class="quote-text">
+              "Kalliope cut our front-desk phone overload by 60% within weeks. She now handles all appointment intakes so our nurses focus exclusively on patient care."
+            </p>
+
+            <div class="quote-meta">
+              <div class="quote-author">
+                <div class="author-name">Dr. Maren Lindqvist</div>
+                <div class="author-role">Chief Medical Officer, Nordic Health</div>
+              </div>
+              <div>
+                <div class="quote-stat">60%<small>Cost & Burden Reduced</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <img src="assets/stepped-pyramid.svg" alt="" class="quote-stepped-graphic" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works / Training Hub -->
+    <section class="how-section" id="how">
+      <div class="container">
+        <div class="how-header">
+          <h2>From zero to live AI<br/>voice agent in 3-4 weeks</h2>
+        </div>
+
+        <div class="how-grid">
+          <div class="how-diagram-card">
+            <!-- Central voice orb -->
+            <img src="assets/orb-voice.svg" alt="" style="width: 110px; height: 110px;" />
+            <!-- Ingested source nodes -->
+            <div class="hub-node" style="top: 20px; left: 50%; transform: translateX(-50%);">📄 Website & Protocols</div>
+            <div class="hub-node" style="top: 100px; left: 16px;">📄 CRM & EHR Fields</div>
+            <div class="hub-node" style="top: 100px; right: 16px;">📄 FAQ Repository</div>
+            <div class="hub-node" style="bottom: 24px; left: 50px;">📄 Triage Matrix</div>
+            <div class="hub-node" style="bottom: 24px; right: 50px;">📄 On-call Staff Routing</div>
+          </div>
+
+          <div class="how-info-block">
+            <h3>We train Kalliope on your verified business data</h3>
+            <p>
+              She is trained exclusively on your clinic guidelines, pricing rules, doctor schedules, and triage boundaries. Pre-configured with medical and legal vocabulary so every answer remains accurate, compliant, and strictly on-brand.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Voice Simulator -->
+    <section class="simulator-section" id="demo">
+      <div class="container">
+        <div class="sim-card">
+          <div class="sim-header">
+            <div>
+              <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 4px;">Live Receptionist Audio Preview</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Test simulated phone call interaction in real-time</p>
+            </div>
+            <div class="sim-status">
+              <span class="sim-pulse"></span>
+              <span>Voice Agent Ready</span>
+            </div>
+          </div>
+
+          <div class="sim-waveform" id="waveform">
+            <!-- 28 waveform bars -->
+          </div>
+
+          <div class="sim-controls">
+            <button class="sim-btn" id="playCallBtn">
+              <span id="playIcon">▶</span>
+              <span id="playText">Simulate Inbound Dental Call</span>
+            </button>
+          </div>
+
+          <div class="sim-script-box" id="scriptBox">
+            <strong>Caller:</strong> "Hi, I have a sudden toothache and I need to see Dr. Adams this afternoon. Do you have any openings?"<br/>
+            <strong>Kalliope:</strong> "Hello! I am sorry to hear you're in pain. Dr. Adams has an emergency slot open today at 3:15 PM. Shall I reserve that for you?"
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pinstripe Band -->
+  <div class="pinstripe-band bottom"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <svg viewBox="0 0 200 48" fill="none" style="height: 26px;">
+            <text x="0" y="34" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="32" font-weight="700" fill="#111111" letter-spacing="-0.5">Kalliope</text>
+            <circle cx="152" cy="18" r="4" fill="#0070F3"/>
+          </svg>
+        </div>
+        <div class="footer-copy">&copy; 2026 Kalliope Voice Intelligence Inc. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: Lenis & Audio Simulator -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script>
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } catch(e) {
+      console.warn("Lenis fallback");
+    }
+
+    // Generate waveform bars
+    const waveform = document.getElementById('waveform');
+    for (let i = 0; i < 28; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      bar.style.height = (8 + Math.random() * 12) + 'px';
+      waveform.appendChild(bar);
+    }
+
+    let isPlaying = false;
+    let waveInterval;
+    const playBtn = document.getElementById('playCallBtn');
+    const playIcon = document.getElementById('playIcon');
+    const playText = document.getElementById('playText');
+
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        playIcon.textContent = '⏸';
+        playText.textContent = 'Pause Call Preview';
+        const bars = document.querySelectorAll('.wave-bar');
+        waveInterval = setInterval(() => {
+          bars.forEach(bar => {
+            bar.style.height = (6 + Math.random() * 46) + 'px';
+          });
+        }, 120);
+
+        // Web Audio Synthesizer speech chime
+        try {
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.5);
+        } catch(e) {}
+      } else {
+        playIcon.textContent = '▶';
+        playText.textContent = 'Simulate Inbound Dental Call';
+        clearInterval(waveInterval);
+        document.querySelectorAll('.wave-bar').forEach(bar => {
+          bar.style.height = '10px';
+        });
+      }
+    });
+
+    function openDemoModal() {
+      alert("Demo booking requested! Our clinical AI onboarding team will reach out within 2 hours.");
+    }
+  </script>
+</body>
+</html>
