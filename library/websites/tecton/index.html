@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tecton — Architects with a Different Approach</title>
+
+  <!-- Robots & Privacy (AGENTS.md rule 4) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google Analytics (AGENTS.md rule 5) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- GSAP & Lenis CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --color-canvas: #FAFAF9;
+      --color-surface: #FFFFFF;
+      --color-surface-subtle: #F4F5F7;
+      --color-surface-dark: #0F172A;
+      --color-surface-darker: #090D16;
+      --color-border: #E5E7EB;
+      --color-border-dark: #1E293B;
+
+      --color-ink-primary: #0F172A;
+      --color-ink-secondary: #475569;
+      --color-ink-muted: #94A3B8;
+      --color-ink-inverse: #F8FAFC;
+
+      --color-cobalt: #1D4ED8;
+      --color-cobalt-hover: #2563EB;
+      --color-cobalt-soft: #EFF6FF;
+      --color-cobalt-border: rgba(29, 78, 216, 0.25);
+
+      --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --container-max: 1320px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    html {
+      scrollbar-width: none;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      font-family: var(--font-display);
+      background-color: var(--color-canvas);
+      color: var(--color-ink-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* ─── Header & Nav ─────────────────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 22px 0;
+      transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .header.scrolled {
+      padding: 14px 0;
+      background: rgba(250, 250, 249, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s ease;
+    }
+
+    .brand-logo:hover {
+      opacity: 0.85;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--color-ink-secondary);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--color-ink-primary);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background-color: var(--color-cobalt);
+      transition: width 0.25s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-pill-primary {
+      background-color: var(--color-cobalt);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 24px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25);
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-pill-primary:hover {
+      background-color: var(--color-cobalt-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(29, 78, 216, 0.35);
+    }
+
+    .btn-pill-primary:active {
+      transform: translateY(0);
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      border-radius: 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+    }
+
+    .mobile-menu-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--color-ink-primary);
+      transition: 0.25s;
+    }
+
+    /* ─── Hero Section ─────────────────────────────────────────── */
+    .hero-section {
+      padding-top: 140px;
+      padding-bottom: 70px;
+      position: relative;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      top: 60px;
+      right: 5%;
+      width: 320px;
+      height: 240px;
+      opacity: 0.35;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(to right, #CBD5E1 1px, transparent 1px),
+        linear-gradient(to bottom, #CBD5E1 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+    }
+
+    .hero-header {
+      margin-bottom: 40px;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 6vw, 76px);
+      font-weight: 900;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      color: var(--color-ink-primary);
+      max-width: 1080px;
+      margin-bottom: 24px;
+    }
+
+    .hero-title-accent {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .hero-ruler {
+      width: 120px;
+      height: 3px;
+      background-color: var(--color-ink-primary);
+      display: inline-block;
+    }
+
+    .hero-subtext {
+      font-size: clamp(16px, 1.4vw, 19px);
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+      max-width: 580px;
+      margin-left: auto;
+      font-weight: 500;
+    }
+
+    .hero-visual-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 24px;
+      background-color: var(--color-surface-subtle);
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 580px;
+      object-fit: cover;
+      object-position: center 35%;
+      transform: scale(1.04);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-visual-wrap:hover .hero-img {
+      transform: scale(1.08);
+    }
+
+    /* Rotating Circular Stamp Badge */
+    .hero-stamp-badge {
+      position: absolute;
+      top: -36px;
+      right: 60px;
+      width: 120px;
+      height: 120px;
+      z-index: 10;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 12px 24px rgba(29, 78, 216, 0.3));
+    }
+
+    .hero-stamp-badge:hover {
+      transform: scale(1.1) rotate(15deg);
+    }
+
+    .stamp-rotator {
+      animation: rotateStamp 20s linear infinite;
+      transform-origin: center;
+    }
+
+    @keyframes rotateStamp {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ─── Section Headers ──────────────────────────────────────── */
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-cobalt);
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-cobalt);
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 3.8vw, 48px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--color-ink-primary);
+    }
+
+    /* ─── About & Stats Section ────────────────────────────────── */
+    .about-section {
+      padding: 90px 0 60px;
+    }
+
+    .about-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 60px;
+      align-items: flex-start;
+      margin-bottom: 60px;
+    }
+
+    .about-desc-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .about-paragraph {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--color-ink-secondary);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .stat-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-cobalt-border);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 4.5vw, 56px);
+      font-weight: 800;
+      color: var(--color-ink-primary);
+      line-height: 1;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .stat-number .accent {
+      color: var(--color-cobalt);
+    }
+
+    .stat-label {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--color-ink-primary);
+      margin-bottom: 6px;
+    }
+
+    .stat-desc {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--color-ink-secondary);
+    }
+
+    /* ─── Projects Section ─────────────────────────────────────── */
+    .projects-section {
+      padding: 70px 0 90px;
+    }
+
+    .projects-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-surface-subtle);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border);
+    }
+
+    .filter-btn {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      color: var(--color-ink-secondary);
+      transition: var(--transition-smooth);
+    }
+
+    .filter-btn:hover {
+      color: var(--color-ink-primary);
+    }
+
+    .filter-btn.active {
+      background: #FFFFFF;
+      color: var(--color-cobalt);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+      border-color: rgba(29, 78, 216, 0.3);
+    }
+
+    .project-thumb-wrap {
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+      position: relative;
+      background-color: var(--color-surface-subtle);
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-card:hover .project-thumb {
+      transform: scale(1.06);
+    }
+
+    .project-badge-tag {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      color: var(--color-ink-primary);
+      letter-spacing: 0.04em;
+    }
+
+    .project-details {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .project-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-bottom: 4px;
+    }
+
+    .project-meta {
+      font-size: 13.5px;
+      color: var(--color-ink-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .project-arrow-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-surface-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-ink-primary);
+      transition: var(--transition-smooth);
+    }
+
+    .project-card:hover .project-arrow-btn {
+      background: var(--color-cobalt);
+      color: #FFFFFF;
+      transform: rotate(45deg);
+    }
+
+    /* ─── Services Section ─────────────────────────────────────── */
+    .services-section {
+      padding: 90px 0;
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .services-header {
+      max-width: 600px;
+      margin-bottom: 50px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .service-card {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 36px 32px;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--color-cobalt-border);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
+      background: #FFFFFF;
+    }
+
+    .service-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--color-cobalt);
+      transition: var(--transition-smooth);
+    }
+
+    .service-card:hover .service-icon-wrap {
+      background: var(--color-cobalt);
+      color: #FFFFFF;
+      border-color: var(--color-cobalt);
+    }
+
+    .service-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-bottom: 14px;
+    }
+
+    .service-desc {
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--color-ink-secondary);
+    }
+
+    /* ─── Corten Steel Banner (Mid-Page CTA) ────────────────────── */
+    .banner-cta-section {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-bg-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      transform: scale(1.05);
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.75) 100%);
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 10;
+      max-width: 780px;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .banner-title {
+      font-size: clamp(32px, 4.5vw, 54px);
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .banner-desc {
+      font-size: 16.5px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 32px;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── Team Section ─────────────────────────────────────────── */
+    .team-section {
+      padding: 100px 0 80px;
+    }
+
+    .team-header {
+      max-width: 600px;
+      margin-bottom: 50px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .team-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 36px rgba(15, 23, 42, 0.08);
+      border-color: var(--color-cobalt-border);
+    }
+
+    .team-photo-wrap {
+      width: 100%;
+      height: 360px;
+      overflow: hidden;
+      background: #0F172A;
+      position: relative;
+    }
+
+    .team-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(15%);
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+
+    .team-card:hover .team-photo {
+      transform: scale(1.05);
+      filter: grayscale(0%);
+    }
+
+    .team-info {
+      padding: 20px 22px;
+    }
+
+    .team-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-bottom: 4px;
+    }
+
+    .team-role {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .team-contact {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--color-cobalt);
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    /* ─── Process Section ──────────────────────────────────────── */
+    .process-section {
+      padding: 90px 0;
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      margin-top: 50px;
+    }
+
+    .process-card {
+      border-top: 3px solid var(--color-border);
+      padding-top: 24px;
+      transition: var(--transition-smooth);
+    }
+
+    .process-card:hover {
+      border-top-color: var(--color-cobalt);
+    }
+
+    .process-num {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-cobalt);
+      margin-bottom: 14px;
+    }
+
+    .process-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .process-desc {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    .footer {
+      background-color: var(--color-surface-darker);
+      color: #94A3B8;
+      padding: 90px 0 40px;
+      border-top: 1px solid var(--color-border-dark);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 48px;
+      margin-bottom: 70px;
+    }
+
+    .footer-brand p {
+      font-size: 14.5px;
+      line-height: 1.65;
+      margin-top: 16px;
+      color: #64748B;
+      max-width: 320px;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      color: #94A3B8;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      background: #1E293B;
+      border: 1px solid #334155;
+      color: #FFFFFF;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .newsletter-input:focus {
+      border-color: var(--color-cobalt);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #1E293B;
+      padding-top: 32px;
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    /* ─── Modal & Consultation Drawer ──────────────────────────── */
+    .drawer-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: -520px;
+      width: 100%;
+      max-width: 500px;
+      height: 100%;
+      background: #FFFFFF;
+      z-index: 210;
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.2);
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 40px 36px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-panel.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .drawer-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--color-ink-primary);
+    }
+
+    .drawer-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-surface-subtle);
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-ink-secondary);
+      transition: var(--transition-smooth);
+    }
+
+    .drawer-close-btn:hover {
+      background: #E2E8F0;
+      color: var(--color-ink-primary);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-ink-primary);
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--color-cobalt);
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-top {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu, .btn-pill-primary.desktop-only {
+        display: none;
+      }
+      .mobile-menu-toggle {
+        display: flex;
+      }
+      .about-split {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .hero-stamp-badge {
+        right: 20px;
+        top: -24px;
+        width: 90px;
+        height: 90px;
+      }
+      .hero-img {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================= -->
+  <!-- HEADER & NAVIGATION                                               -->
+  <!-- ================================================================= -->
+  <header class="header" id="navbar">
+    <div class="container nav-wrap">
+      <a href="#" class="brand-logo" title="Tecton Architecture">
+        <img src="assets/logo.svg" alt="Tecton Logo" height="32" />
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#process" class="nav-link">Process</a></li>
+          <li><a href="#team" class="nav-link">Team</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-pill-primary desktop-only" onclick="openDrawer('Consultation Inquiry')">
+          Contact Us Now
+        </button>
+        <button class="mobile-menu-toggle" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================================================================= -->
+    <!-- HERO SECTION                                                      -->
+    <!-- ================================================================= -->
+    <section class="hero-section" id="hero">
+      <div class="hero-grid-bg"></div>
+      <div class="container">
+        
+        <div class="hero-header">
+          <h1 class="hero-title" id="hero-title-reveal">
+            ARCHITECTS WITH<br />
+            DIFFERENT APPROACH
+          </h1>
+          <div class="hero-title-accent">
+            <span class="hero-ruler"></span>
+            <p class="hero-subtext">
+              Designing with the future in mind means creating solutions that are not only innovative and functional today but also sustainable and adaptable.
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-visual-wrap" id="hero-media-box">
+          <!-- Overlapping Rotating Stamp Badge -->
+          <div class="hero-stamp-badge" onclick="openDrawer('Hero Badge')" title="Click to Initiate Spatial Consultation">
+            <img src="assets/stamp-contact.svg" alt="Contact Us Badge" width="120" height="120" />
+          </div>
+
+          <!-- Hero Architecture Facade Photo -->
+          <img 
+            src="images/hero-building.jpg" 
+            alt="Tecton Modern Angular Facade Architecture" 
+            class="hero-img" 
+            id="hero-parallax-img"
+          />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- ABOUT & STATS SECTION                                             -->
+    <!-- ================================================================= -->
+    <section class="about-section" id="about">
+      <div class="container">
+        
+        <div class="about-split">
+          <div>
+            <span class="section-eyebrow">About Us</span>
+            <h2 class="section-title">
+              We design and build your vision into reality.
+            </h2>
+          </div>
+          <div class="about-desc-col">
+            <p class="about-paragraph">
+              At Tecton, we believe that great architecture is the intersection of art and science. Our philosophy is rooted in the understanding that every project is unique, requiring a tailored approach that considers the specific needs, climate, and site morphology.
+            </p>
+            <button class="btn-pill-primary" onclick="openDrawer('About Studio Exploration')">
+              Explore Studio →
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Proof Quartet -->
+        <div class="stats-row" id="stats-counter-row">
+          <div class="stat-card">
+            <div class="stat-number">
+              <span class="counter" data-target="25">0</span><span class="accent">+</span>
+            </div>
+            <div class="stat-label">Years of Experience</div>
+            <p class="stat-desc">Tecton has been at the forefront of architectural and structural innovation worldwide.</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-number">
+              <span class="counter" data-target="500">0</span><span class="accent">+</span>
+            </div>
+            <div class="stat-label">Projects Completed</div>
+            <p class="stat-desc">From bespoke residential residences to complex monumental civic infrastructures.</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-number">
+              <span class="counter" data-target="94">0</span><span class="accent">%</span>
+            </div>
+            <div class="stat-label">Repeat Client Engagements</div>
+            <p class="stat-desc">Sustained institutional and private partnerships delivering enduring spatial equity.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- RECENT PROJECTS SECTION                                           -->
+    <!-- ================================================================= -->
+    <section class="projects-section" id="projects">
+      <div class="container">
+        
+        <div class="projects-header-row">
+          <div>
+            <span class="section-eyebrow">Our Projects</span>
+            <h2 class="section-title">Take a look at our recent projects.</h2>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="filter-pills">
+            <button class="filter-btn active" onclick="filterProjects('all', this)">All</button>
+            <button class="filter-btn" onclick="filterProjects('civic', this)">Cultural & Civic</button>
+            <button class="filter-btn" onclick="filterProjects('residential', this)">Residential</button>
+            <button class="filter-btn" onclick="filterProjects('commercial', this)">Commercial</button>
+          </div>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="project-cards-container">
+          
+          <!-- Project 1: Curved Pavilion -->
+          <div class="project-card" data-category="civic" onclick="openProjectModal('The Sinuous Canopy', 'civic', 'Changsha Cultural Arts Centre', '2025', 'Fair-faced ultra-high performance concrete with fluid parametric cantilevers.')">
+            <div class="project-thumb-wrap">
+              <span class="project-badge-tag">CULTURAL & CIVIC</span>
+              <img src="images/project-sinuous.jpg" alt="The Sinuous Canopy" class="project-thumb" />
+            </div>
+            <div class="project-details">
+              <div>
+                <h3 class="project-title">The Sinuous Canopy</h3>
+                <span class="project-meta">CIVIC ARTS · 2025</span>
+              </div>
+              <div class="project-arrow-btn">↗</div>
+            </div>
+          </div>
+
+          <!-- Project 2: Terracotta Tower -->
+          <div class="project-card" data-category="residential" onclick="openProjectModal('Kensington Brick Tower', 'residential', 'London High-Density Residential', '2024', 'Hand-laid tactile Roman terracotta brickwork paired with triple-glazed acoustic fenestration.')">
+            <div class="project-thumb-wrap">
+              <span class="project-badge-tag">RESIDENTIAL</span>
+              <img src="images/project-terracotta.jpg" alt="Kensington Brick Tower" class="project-thumb" />
+            </div>
+            <div class="project-details">
+              <div>
+                <h3 class="project-title">Kensington Tower</h3>
+                <span class="project-meta">RESIDENTIAL · 2024</span>
+              </div>
+              <div class="project-arrow-btn">↗</div>
+            </div>
+          </div>
+
+          <!-- Project 3: Bronze Cylinder -->
+          <div class="project-card" data-category="civic" onclick="openProjectModal('Monolith Assembly Pavilion', 'civic', 'Kyoto Environmental Research Institute', '2024', 'Curved architectural bronze sun louvers optimizing seasonal passive heat gain.')">
+            <div class="project-thumb-wrap">
+              <span class="project-badge-tag">CULTURAL & CIVIC</span>
+              <img src="images/project-bronze.jpg" alt="Monolith Assembly Pavilion" class="project-thumb" />
+            </div>
+            <div class="project-details">
+              <div>
+                <h3 class="project-title">Monolith Pavilion</h3>
+                <span class="project-meta">CIVIC · 2024</span>
+              </div>
+              <div class="project-arrow-btn">↗</div>
+            </div>
+          </div>
+
+          <!-- Project 4: Glass Spire -->
+          <div class="project-card" data-category="commercial" onclick="openProjectModal('Vauxhall Glass Spire', 'commercial', 'London Financial District Headquarters', '2026', 'Structural Low-E solar glass envelope delivering Net Zero BREEAM Outstanding certification.')">
+            <div class="project-thumb-wrap">
+              <span class="project-badge-tag">COMMERCIAL</span>
+              <img src="images/project-glass-spire.jpg" alt="Vauxhall Glass Spire" class="project-thumb" />
+            </div>
+            <div class="project-details">
+              <div>
+                <h3 class="project-title">Vauxhall Spire</h3>
+                <span class="project-meta">COMMERCIAL · 2026</span>
+              </div>
+              <div class="project-arrow-btn">↗</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SERVICES SECTION                                                  -->
+    <!-- ================================================================= -->
+    <section class="services-section" id="services">
+      <div class="container">
+        
+        <div class="services-header">
+          <span class="section-eyebrow">Our Services</span>
+          <h2 class="section-title">A comprehensive set of services.</h2>
+        </div>
+
+        <div class="services-grid">
+          
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            </div>
+            <h3 class="service-title">Architectural Design</h3>
+            <p class="service-desc">
+              Architectural design is the cornerstone of any spatial project, encompassing the creative and technical processes required to shape buildings and spaces that harmonize function, beauty, and context.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <h3 class="service-title">Urban Planning and Design</h3>
+            <p class="service-desc">
+              Urban planning and design shapes the sustainable growth and development of cities and communities, optimizing circulation, public transit networks, and vibrant civic gathering nodes.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 4.24 4.24"/><path d="M2 18h8"/><path d="M20 22a8 8 0 0 0-8-8 8 8 0 0 0-8 8"/></svg>
+            </div>
+            <h3 class="service-title">Sustainable Design</h3>
+            <p class="service-desc">
+              Embrace the future with our sustainable design services, where bioclimatic orientation, circular timber systems, and renewable microgrids achieve verified carbon neutrality.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+            </div>
+            <h3 class="service-title">Project Management</h3>
+            <p class="service-desc">
+              Effective project management ensures architectural commissions are executed strictly on schedule and budget, upholding rigorous contractor oversight and building envelope warranties.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2Z"/></svg>
+            </div>
+            <h3 class="service-title">Interior Design</h3>
+            <p class="service-desc">
+              Interior architecture balances sensory materiality, custom millwork, and bespoke lighting choreographies to produce restorative, high-performance environments tailored for human well-being.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+            </div>
+            <h3 class="service-title">Landscape Architecture</h3>
+            <p class="service-desc">
+              Landscape architecture integrates local biodiversity, natural stormwater sponges, and contemplative outdoor living courtyards that merge architecture seamlessly into its terrain.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- CORTEN STEEL BANNER (MID-PAGE CTA)                                -->
+    <!-- ================================================================= -->
+    <section class="banner-cta-section" id="consultation-banner">
+      <img src="images/banner-corten.jpg" alt="Sculptural Corten Architecture" class="banner-bg-img" id="banner-parallax-img" />
+      <div class="banner-overlay"></div>
+      
+      <div class="banner-content">
+        <h2 class="banner-title">
+          Reach out for architectural solutions.
+        </h2>
+        <p class="banner-desc">
+          Reaching out for architectural solutions is an essential step for anyone looking to bring their vision of a building or space to life. Whether you're planning a bespoke private residence, a commercial headquarters, or a civic cultural masterplan.
+        </p>
+        <button class="btn-pill-primary" onclick="openDrawer('Mid-page Banner CTA')">
+          Book A Consultation
+        </button>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TEAM SECTION                                                      -->
+    <!-- ================================================================= -->
+    <section class="team-section" id="team">
+      <div class="container">
+        
+        <div class="team-header">
+          <span class="section-eyebrow">Our Team</span>
+          <h2 class="section-title">Meet our team of expert architects and designers.</h2>
+        </div>
+
+        <div class="team-grid">
+          
+          <div class="team-card">
+            <div class="team-photo-wrap">
+              <img src="images/team-1.jpg" alt="Robert Fox" class="team-photo" />
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Robert Fox</h3>
+              <p class="team-role">Principal Architect • Founding Director</p>
+              <a href="#contact" onclick="openDrawer('Inquire with Robert Fox')" class="team-contact">robert.fox@tecton.studio</a>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="team-photo-wrap">
+              <img src="images/team-2.jpg" alt="Guy Hawkins" class="team-photo" />
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Guy Hawkins</h3>
+              <p class="team-role">Principal Architect • Design Director</p>
+              <a href="#contact" onclick="openDrawer('Inquire with Guy Hawkins')" class="team-contact">guy.hawkins@tecton.studio</a>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="team-photo-wrap">
+              <img src="images/team-3.jpg" alt="Jacob Jones" class="team-photo" />
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Jacob Jones</h3>
+              <p class="team-role">Technical Director • Structural Lead</p>
+              <a href="#contact" onclick="openDrawer('Inquire with Jacob Jones')" class="team-contact">jacob.jones@tecton.studio</a>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="team-photo-wrap">
+              <img src="images/team-4.jpg" alt="Devon Lane" class="team-photo" />
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Devon Lane</h3>
+              <p class="team-role">Principal Architect • Sustainability Director</p>
+              <a href="#contact" onclick="openDrawer('Inquire with Devon Lane')" class="team-contact">devon.lane@tecton.studio</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- PROCESS SECTION                                                   -->
+    <!-- ================================================================= -->
+    <section class="process-section" id="process">
+      <div class="container">
+        
+        <div class="team-header">
+          <span class="section-eyebrow">Work Process</span>
+          <h2 class="section-title">Discover how our process works.</h2>
+        </div>
+
+        <div class="process-grid">
+          
+          <div class="process-card">
+            <div class="process-num">PHASE 01</div>
+            <h3 class="process-title">Context & Feasibility</h3>
+            <p class="process-desc">
+              We begin with exhaustive topographical, environmental, and climatic audits to uncover the deep contextual DNA of your site.
+            </p>
+          </div>
+
+          <div class="process-card">
+            <div class="process-num">PHASE 02</div>
+            <h3 class="process-title">Computational Design</h3>
+            <p class="process-desc">
+              Parametric massing iterations simulate sunlight trajectories, structural loads, and energy efficiency prior to physical prototyping.
+            </p>
+          </div>
+
+          <div class="process-card">
+            <div class="process-num">PHASE 03</div>
+            <h3 class="process-title">Documentation & Permits</h3>
+            <p class="process-desc">
+              Comprehensive BIM engineering schematics, structural calculus, and environmental permits prepared for municipal approvals.
+            </p>
+          </div>
+
+          <div class="process-card">
+            <div class="process-num">PHASE 04</div>
+            <h3 class="process-title">Spatial Execution</h3>
+            <p class="process-desc">
+              On-site construction oversight and material calibration ensuring flawless alignment between conceptual intent and built reality.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- FOOTER                                                            -->
+  <!-- ================================================================= -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/logo-white.svg" alt="Tecton Logo" height="32" />
+          <p>
+            Tecton is an international architectural practice engineering human-centered, sustainable, and enduring built environments.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Studio Locations</div>
+          <ul class="footer-links">
+            <li>London • 14 Berkeley Sq</li>
+            <li>Zurich • Dufourstrasse 28</li>
+            <li>Tokyo • Minami-Aoyama 5</li>
+            <li>New York • 520 West 28th St</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="#about">About Studio</a></li>
+            <li><a href="#services">Practice Areas</a></li>
+            <li><a href="#projects">Selected Works</a></li>
+            <li><a href="#process">Design Method</a></li>
+            <li><a href="#team">Leadership</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Architectural Journal</div>
+          <p style="font-size: 13.5px; margin-bottom: 12px; color: #64748B;">
+            Quarterly monographs on computational architecture and bioclimatic engineering.
+          </p>
+          <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+            <input type="email" placeholder="Enter your email" required class="newsletter-input" />
+            <button type="submit" class="btn-pill-primary" style="padding: 10px 18px; font-size: 13px;">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Tecton Architecture & Spatial Design. All rights reserved.</div>
+        <div style="font-family: var(--font-mono); font-size: 12px;">ISO 14001 • BREEAM OUTSTANDING • RIBA CHARTERED</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- CONSULTATION INQUIRY DRAWER                                       -->
+  <!-- ================================================================= -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+  <aside class="drawer-panel" id="consultationDrawer" aria-label="Consultation Form">
+    <div class="drawer-header">
+      <h3 class="drawer-title" id="drawerHeading">Initiate Project</h3>
+      <button class="drawer-close-btn" onclick="closeDrawer()" aria-label="Close dialog">✕</button>
+    </div>
+
+    <form onsubmit="handleInquirySubmit(event)">
+      <div class="form-group">
+        <label class="form-label">Client / Organization Name</label>
+        <input type="text" class="form-input" placeholder="e.g. Katherine Sterling" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="name@company.com" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Project Typology</label>
+        <select class="form-select">
+          <option>Bespoke Private Residence</option>
+          <option>Civic & Cultural Facility</option>
+          <option>Commercial Office & Headquarters</option>
+          <option>Urban Planning & Masterplan</option>
+          <option>Adaptive Reuse & Heritage</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Estimated Gross Area (sq m / sq ft)</label>
+        <input type="text" class="form-input" placeholder="e.g. 1,200 sq m" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Project Vision & Brief</label>
+        <textarea class="form-textarea" rows="4" placeholder="Describe your site parameters, timeline, and architectural ambitions..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-pill-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 15px;">
+        Submit Consultation Request →
+      </button>
+    </form>
+  </aside>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT & ANIMATION ORCHESTRATION                              -->
+  <!-- ================================================================= -->
+  <script>
+    // 1. Lenis Smooth Scroll Setup
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 2. Navbar Scroll Style
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // 3. GSAP & ScrollTrigger Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Parallax on hero image
+    gsap.to("#hero-parallax-img", {
+      yPercent: 12,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Parallax on Corten banner
+    gsap.to("#banner-parallax-img", {
+      yPercent: 18,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#consultation-banner",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Stat Counters Animation on Scroll
+    ScrollTrigger.create({
+      trigger: "#stats-counter-row",
+      start: "top 80%",
+      once: true,
+      onEnter: () => {
+        document.querySelectorAll('.counter').forEach(counter => {
+          const target = +counter.getAttribute('data-target');
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 2,
+            ease: "power2.out",
+            onUpdate: () => {
+              counter.textContent = Math.round(obj.val);
+            }
+          });
+        });
+      }
+    });
+
+    // 4. Project Filter Functionality
+    function filterProjects(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (category === 'all' || cat === category) {
+          gsap.to(card, { autoAlpha: 1, scale: 1, duration: 0.35, display: 'flex' });
+        } else {
+          gsap.to(card, { autoAlpha: 0, scale: 0.96, duration: 0.25, display: 'none' });
+        }
+      });
+    }
+
+    // 5. Drawer Controls
+    function openDrawer(context = 'Project Consultation') {
+      const heading = document.getElementById('drawerHeading');
+      if (heading) heading.textContent = context;
+      document.getElementById('drawerBackdrop').classList.add('open');
+      document.getElementById('consultationDrawer').classList.add('open');
+      lenis.stop();
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawerBackdrop').classList.remove('open');
+      document.getElementById('consultationDrawer').classList.remove('open');
+      lenis.start();
+    }
+
+    function handleInquirySubmit(e) {
+      e.preventDefault();
+      alert('Thank you for reaching out to Tecton. A senior partner will contact you within 24 hours to schedule your preliminary consultation.');
+      closeDrawer();
+    }
+
+    function handleNewsletter(e) {
+      e.preventDefault();
+      alert('You have successfully subscribed to the Tecton Architectural Journal.');
+      e.target.reset();
+    }
+
+    function toggleMobileNav() {
+      const menu = document.querySelector('.nav-menu');
+      if (menu.style.display === 'flex') {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'flex';
+        menu.style.flexDirection = 'column';
+        menu.style.position = 'absolute';
+        menu.style.top = '100%';
+        menu.style.left = '0';
+        menu.style.width = '100%';
+        menu.style.background = '#FFFFFF';
+        menu.style.padding = '24px';
+        menu.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+      }
+    }
+
+    function openProjectModal(title, cat, location, year, spec) {
+      openDrawer(`Project: ${title}`);
+    }
+  </script>
+</body>
+</html>
