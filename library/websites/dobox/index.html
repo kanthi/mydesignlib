@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dobox — What Do You Want to Get Done?</title>
+<meta name="description" content="Dobox is a fictional AI task companion: prompt, detect, connect your tools. Sample template." />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#14161A;--mut:#5c6470;--paper:#F6F4EE;--card:#fff;--line:#E6E2D6;--acc:#FF6A1A;
+--grot:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace}
+body.dark{--ink:#F2EFE6;--mut:#A7ADb8;--paper:#0E1013;--card:#17191D;--line:#2A2D33}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--grot);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .5s,color .5s}
+::selection{background:var(--acc);color:#fff}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;position:relative;z-index:10}
+.logo{font-weight:700;font-size:21px;letter-spacing:-.02em}
+.logo i{color:var(--acc);font-style:normal}
+.nlinks{display:flex;gap:28px;font-size:14.5px;font-weight:500}
+.nlinks a{opacity:.75}.nlinks a:hover{opacity:1}
+.ncta{display:flex;gap:10px;align-items:center}
+.mode{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 18px;border-radius:99px;cursor:pointer}
+.trybtn{background:var(--ink);color:var(--paper);font-weight:600;font-size:14px;padding:12px 26px;border-radius:99px;border:0;cursor:pointer;transition:.25s}
+.trybtn:hover{transform:translateY(-2px)}
+.burger{display:none;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:10px 16px;font-size:13px;font-weight:600}
+/* dream scene */
+.dream{position:relative;border-radius:28px;overflow:hidden;margin-top:8px;min-height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;box-shadow:0 40px 80px -40px rgba(30,60,100,.4)}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,#3E8FE0 0%,#9CC8EE 55%,#F2D8B8 100%)}
+body.dark .dream .sky{background:linear-gradient(180deg,#101A3A 0%,#2A4A7A 55%,#7A5A6A 100%)}
+.sun{position:absolute;top:8%;right:10%;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#FFF6DE,#FFE3A8 60%,transparent 72%)}
+.cloud{position:absolute;background:#fff;border-radius:99px;opacity:.9;animation:drift 30s ease-in-out infinite alternate}
+body.dark .cloud{background:#C9D4E8;opacity:.5}
+@keyframes drift{from{transform:translateX(-30px)}to{transform:translateX(30px)}}
+.arch{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);width:110%}
+.hills{position:absolute;bottom:0;left:0;right:0}
+.water{position:absolute;bottom:0;left:0;right:0;overflow:hidden}
+.shimmer{position:absolute;inset:0;background:repeating-linear-gradient(178deg,rgba(255,255,255,.35) 0 2px,transparent 2px 8px);animation:shim 3.5s ease-in-out infinite alternate}
+@keyframes shim{from{transform:translateX(-12px)}to{transform:translateX(12px)}}
+/* prompt box */
+.ask{position:relative;z-index:5;width:min(760px,94%);margin-top:10px}
+.bar{background:var(--card);border-radius:26px;padding:10px;box-shadow:0 30px 60px -20px rgba(10,20,40,.35);border:1px solid var(--line)}
+.row1{display:flex;align-items:center;gap:14px;padding:18px 20px}
+.row1 input{flex:1;border:0;background:none;outline:0;font-family:var(--grot);font-size:clamp(16px,2.4vw,22px);color:var(--ink)}
+.row1 input::placeholder{color:var(--mut)}
+.tools-chip{font-family:var(--mono);font-size:12px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:99px;white-space:nowrap}
+.plus{width:44px;height:44px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);font-size:26px;line-height:1;cursor:pointer;transition:.25s;flex:none}
+.plus:hover{background:var(--acc);transform:rotate(90deg)}
+.row2{display:flex;justify-content:center;gap:26px;padding:16px;border-top:1px solid var(--line);font-size:20px}
+.row2 span{cursor:pointer;transition:.2s;opacity:.75}
+.row2 span:hover{opacity:1;transform:translateY(-3px);color:var(--acc)}
+.suggest{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.suggest button{background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:var(--grot);font-size:14px;font-weight:500;padding:13px 24px;border-radius:16px;cursor:pointer;transition:.2s;display:flex;gap:9px;align-items:center}
+body.dark .suggest button{background:#101216}
+.suggest button:hover{transform:translateY(-3px);border-color:var(--acc)}
+.answer{position:relative;z-index:5;width:min(760px,94%);margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 24px;font-size:14px;line-height:1.7;display:none}
+.answer.show{display:block;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:translateY(10px) scale(.98);opacity:0}}
+.answer b{color:var(--acc)}
+/* sections */
+section.block{padding:100px 0}
+.kick{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--acc)}
+h2.big{font-size:clamp(32px,4.4vw,56px);letter-spacing:-.03em;line-height:1.05;margin-top:14px}
+.lead{color:var(--mut);margin-top:14px;max-width:560px;line-height:1.7;font-size:15.5px}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 28px;transition:.25s}
+.tool:hover{transform:translateY(-6px);border-color:var(--acc)}
+.tool .ic{font-size:30px}
+.tool h3{font-size:20px;margin-top:14px}
+.tool p{font-size:13.5px;color:var(--mut);line-height:1.65;margin-top:8px}
+.tool .mono{font-size:11px;color:var(--acc);display:block;margin-top:14px}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.step{border-top:2px solid var(--ink);padding-top:20px}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--acc);letter-spacing:.2em}
+.step h3{font-size:21px;margin-top:8px}
+.step p{font-size:13.5px;color:var(--mut);line-height:1.65;margin-top:8px}
+/* quote + pricing */
+.quote{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:60px clamp(24px,5vw,60px);text-align:center;margin-top:80px}
+.quote p{font-size:clamp(20px,2.8vw,30px);letter-spacing:-.02em;line-height:1.4;max-width:740px;margin:0 auto}
+.quote cite{display:block;margin-top:20px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--mut)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.tier{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px 30px;display:flex;flex-direction:column}
+.tier.hot{border:2px solid var(--acc)}
+.tier h3{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--mut)}
+.tier .p{font-size:44px;font-weight:700;letter-spacing:-.03em;margin-top:10px}
+.tier .p small{font-size:13px;font-weight:400;color:var(--mut)}
+.tier ul{list-style:none;margin:20px 0 26px;font-size:13.5px;color:var(--mut);line-height:2.3}
+.tier ul li::before{content:"✓ ";color:var(--acc)}
+.abtn{margin-top:auto;background:var(--ink);color:var(--paper);font-weight:600;font-size:14px;padding:14px;border:0;border-radius:12px;cursor:pointer;transition:.25s}
+.abtn:hover{background:var(--acc)}
+.faq{max-width:760px;margin:56px auto 0}
+.faq details{background:var(--card);border:1px solid var(--line);border-bottom:0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{padding:20px 24px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;font-size:15px;font-weight:500}
+.faq summary::after{content:"+";color:var(--acc);font-family:var(--mono)}
+.faq details[open] summary::after{content:"—"}
+.faq details p{padding:0 24px 22px;color:var(--mut);font-size:13.5px;line-height:1.7}
+.final{text-align:center;padding:110px 0}
+.final h2{font-size:clamp(36px,5.4vw,66px);letter-spacing:-.035em}
+footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mut);padding:0 0 40px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--paper);font-size:13px;padding:13px 26px;border-radius:99px;opacity:0;pointer-events:none;transition:.3s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:960px){.nlinks{display:none}.burger{display:block}.tools,.steps,.tiers{grid-template-columns:1fr}.dream{min-height:560px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <nav class="nav" aria-label="Primary">
+    <a class="logo" href="#top">Do<i>box</i></a>
+    <div class="nlinks"><a href="#tools">Tools</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></div>
+    <div class="ncta"><button class="mode" id="modeBtn" aria-pressed="false">☾ DARK</button><button class="trybtn" data-toast="Trial opens soon — sample template">Try free</button><button class="burger" id="burger">MENU</button></div>
+  </nav>
+  <div class="nlinks" id="mnav" style="display:none;flex-direction:column;gap:14px;padding:0 0 18px">
+    <a href="#tools">Tools</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- DREAM -->
+<section class="wrap">
+  <div class="dream rv">
+    <div class="sky"></div><div class="sun"></div>
+    <span class="cloud" style="width:150px;height:44px;top:12%;left:8%"></span>
+    <span class="cloud" style="width:200px;height:56px;top:20%;right:6%;animation-delay:1.4s"></span>
+    <span class="cloud" style="width:110px;height:34px;top:30%;left:20%;animation-delay:2.6s"></span>
+    <svg class="arch" viewBox="0 0 1000 420" aria-hidden="true">
+      <defs><linearGradient id="archg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E86A1E"/><stop offset=".5" stop-color="#F5903F"/><stop offset="1" stop-color="#E86A1E"/></linearGradient></defs>
+      <path d="M120 420 L120 220 Q120 60 500 60 Q880 60 880 220 L880 420 L740 420 L740 230 Q740 180 500 180 Q260 180 260 230 L260 420 Z" fill="url(#archg)"/>
+      <ellipse cx="120" cy="330" rx="95" ry="60" fill="#7AC74F"/><ellipse cx="880" cy="330" rx="95" ry="60" fill="#7AC74F"/>
+    </svg>
+    <svg class="hills" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 Q200 10 400 55 Q600 100 800 50 Q920 25 1000 55 L1000 140 L0 140 Z" fill="#6FB84E"/><path d="M0 95 Q250 60 500 90 Q750 120 1000 85 L1000 140 L0 140 Z" fill="#5AA83E"/></svg>
+    <div class="water" style="height:16%"><svg viewBox="0 0 1000 120" preserveAspectRatio="none" style="width:100%;height:100%"><rect width="1000" height="120" fill="#7FB8E0"/></svg><div class="shimmer"></div></div>
+    <div class="ask">
+      <div class="bar">
+        <div class="row1"><input id="askInput" type="text" placeholder="What do you want to get done?" aria-label="Ask Dobox"/><span class="tools-chip">5 tools</span><button class="plus" id="askBtn" aria-label="Submit">+</button></div>
+        <div class="row2"><span title="Files">🗂</span><span title="Ideas">✹</span><span title="Docs">🗐</span><span title="Code">⑂</span><span style="opacity:.3">|</span><span title="Connect">🔗</span></div>
+      </div>
+      <div class="suggest">
+        <button data-q="Draft a launch post from these notes">✎ Improve Prompt</button>
+        <button data-q="Check this text for AI patterns">◌ AI Detection</button>
+        <button data-q="Connect my calendar and drive">🤝 Connect With Other Tools</button>
+      </div>
+    </div>
+    <div class="answer" id="answer"></div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="wrap block" id="tools">
+  <p class="kick rv">01 — THE 5 TOOLS</p>
+  <h2 class="big rv">One box,<br/>five superpowers.</h2>
+  <div class="tools">
+    <div class="tool rv"><span class="ic">✎</span><h3>Improve Prompt</h3><p>Rough ask in, sharp brief out. Dobox rewrites your intent before it runs.</p><span class="mono">PROMPT LINTING →</span></div>
+    <div class="tool rv"><span class="ic">◌</span><h3>AI Detection</h3><p>Know what's synthetic in your draft — flagged inline, explained plainly.</p><span class="mono">PATTERN SCAN →</span></div>
+    <div class="tool rv"><span class="ic">🤝</span><h3>Connect Tools</h3><p>Calendar, drive, tracker, inbox — Dobox acts across all five at once.</p><span class="mono">5 INTEGRATIONS →</span></div>
+  </div>
+  <div class="steps" id="how" style="margin-top:70px">
+    <div class="step rv"><p class="n">STEP 01</p><h3>Ask like you talk</h3><p>No syntax, no settings spelunking. Type the outcome, attach the mess.</p></div>
+    <div class="step rv"><p class="n">STEP 02</p><h3>Watch it assemble</h3><p>Dobox picks tools, shows its plan, and asks before anything irreversible.</p></div>
+    <div class="step rv"><p class="n">STEP 03</p><h3>Collect done</h3><p>Files filed, messages sent, calendar blocked. Reply-all handled.</p></div>
+  </div>
+  <div class="quote rv"><p>“It feels less like software and more like the competent coworker I never got to hire.”</p><cite>— RUE BENNETT-OKA, OPS LEAD, FERN &amp; FIELD (FICTIONAL)</cite></div>
+</section>
+
+<!-- PRICING -->
+<section class="wrap block" id="pricing" style="padding-top:0">
+  <p class="kick rv">02 — PRICING</p>
+  <h2 class="big rv">Cheerful prices.</h2>
+  <p class="lead rv">Fictional sample prices. Free tier is free forever — no card, no catch.</p>
+  <div class="tiers">
+    <div class="tier rv"><h3>DAYDREAM</h3><p class="p">$0<small> / forever</small></p><ul><li>50 asks / mo</li><li>3 tools connected</li><li>Community gallery</li></ul><button class="abtn" data-toast="Trial opens soon — sample template">Start dreaming</button></div>
+    <div class="tier hot rv"><h3>LUCID</h3><p class="p">$14<small> / mo</small></p><ul><li>Unlimited asks</li><li>All 5 tools + API</li><li>Priority rendering</li><li>Shared boxes</li></ul><button class="abtn" data-toast="Trial opens soon — sample template">Go Lucid</button></div>
+    <div class="tier rv"><h3>STUDIO</h3><p class="p">Custom</p><ul><li>SSO + audit log</li><li>Private dreamscapes</li><li>Dedicated support</li></ul><button class="abtn" data-toast="Sales inbox is fictional — sample template">Talk to us</button></div>
+  </div>
+  <div class="faq" id="faq">
+    <details class="rv" open><summary>What counts as an "ask"?</summary><p>One submitted prompt and everything Dobox does with it — tool calls, drafts, and follow-ups included. This sample page counts nothing.</p></details>
+    <details class="rv"><summary>Which tools connect?</summary><p>Five fictional sample integrations covering files, calendar, docs, code, and chat — plus a generic webhook for the rest.</p></details>
+    <details class="rv"><summary>Can I switch themes?</summary><p>You just did — the toggle above flips the whole page between daydream and night-dream.</p></details>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="wrap final">
+  <p class="kick rv">YOUR TURN</p>
+  <h2 class="rv">What do you want<br/>to get done?</h2>
+  <div class="rv" style="margin-top:28px"><button class="trybtn" style="font-size:15px;padding:16px 40px" data-toast="Trial opens soon — sample template">Try Dobox free</button></div>
+</section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 DOBOX — SAMPLE TEMPLATE · HELLO@DOBOX.EXAMPLE</span>
+  <a href="#top">BACK TO TOP ↑</a>
+</footer>
+<div class="toast" id="toast"></div>
+<script>
+// theme
+const modeBtn=document.getElementById('modeBtn');
+modeBtn.addEventListener('click',()=>{const d=document.body.classList.toggle('dark');modeBtn.setAttribute('aria-pressed',d);modeBtn.textContent=d?'☀ LIGHT':'☾ DARK'});
+// mobile nav
+const b=document.getElementById('burger'),m=document.getElementById('mnav');
+b.addEventListener('click',()=>{m.style.display=m.style.display==='none'?'flex':'none'});
+m.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>m.style.display='none'));
+// reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+// ask demo
+const input=document.getElementById('askInput'),answer=document.getElementById('answer');
+function ask(q){const query=(q||input.value||'').trim()||'Plan my week';answer.innerHTML=`<b>Dobox is on it:</b> breaking “${query.replace(/</g,'&lt;')}” into 3 tool calls — <b>calendar</b>, <b>docs</b>, <b>drive</b>. Results would stream here in the live product.`;answer.classList.remove('show');void answer.offsetWidth;answer.classList.add('show')}
+document.getElementById('askBtn').addEventListener('click',()=>ask());
+input.addEventListener('keydown',e=>{if(e.key==='Enter')ask()});
+document.querySelectorAll('.suggest button').forEach(x=>x.addEventListener('click',()=>{input.value=x.dataset.q;ask(x.dataset.q)}));
+// toast
+const toast=document.getElementById('toast');let tt;
+document.querySelectorAll('[data-toast]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();toast.textContent=a.dataset.toast;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('show'),2200)}));
+</script>
+</body>
+</html>

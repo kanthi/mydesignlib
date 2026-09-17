@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numina Foundation — Open-Source Frontier Intelligence</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Animation & Math Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --color-surface-dark: #080B10;
+      --color-surface-paper: #F9F8F6;
+      --color-surface-card: rgba(11, 16, 24, 0.88);
+      --color-text-light: #F4F6F8;
+      --color-text-dark: #121417;
+      --color-text-muted-dark: #8A94A6;
+      --color-text-muted-light: #667085;
+      --color-accent-amber: #FF6B4A;
+      --color-accent-blue: #718698;
+      --color-border-bracket: rgba(255, 255, 255, 0.4);
+
+      --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+
+      --radius-pill: 9999px;
+      --radius-sm: 8px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      background-color: var(--color-surface-dark);
+      color: var(--color-text-light);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-display);
+      overflow-x: hidden;
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ─── Bracket Components & Micro-interactions ────────── */
+    .link-bracket {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: opacity 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .link-bracket:hover {
+      color: var(--color-accent-amber);
+    }
+
+    .bracket-decor {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--color-accent-amber);
+    }
+
+    /* Corner Bracket Overlay for Cards */
+    .card-bracket {
+      position: relative;
+      background: var(--color-surface-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 36px 32px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-bracket::before,
+    .card-bracket::after {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+    }
+
+    .card-bracket::before {
+      top: -1px;
+      left: -1px;
+      border-top: 2px solid #FFFFFF;
+      border-left: 2px solid #FFFFFF;
+    }
+
+    .card-bracket::after {
+      bottom: -1px;
+      right: -1px;
+      border-bottom: 2px solid #FFFFFF;
+      border-right: 2px solid #FFFFFF;
+    }
+
+    /* ─── Navigation Header ──────────────────────────────── */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 24px 0;
+      mix-blend-mode: difference;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.125rem;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+
+    .brand-symbol {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #FFFFFF;
+      border-radius: 50%;
+      font-size: 0.8125rem;
+      font-family: var(--font-mono);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-links a {
+      color: #FFFFFF;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 18px;
+      border: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+      transition: all 0.25s ease;
+    }
+
+    .nav-cta:hover {
+      background: #FFFFFF;
+      color: #000000;
+    }
+
+    /* ─── Hero Section ───────────────────────────────────── */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 96px;
+      padding-top: 140px;
+      overflow: hidden;
+      background: #080B10;
+    }
+
+    .hero-canvas-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #heroCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--color-text-muted-dark);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-accent-amber);
+      display: inline-block;
+      box-shadow: 0 0 12px var(--color-accent-amber);
+    }
+
+    .hero-h1 {
+      font-size: clamp(2.5rem, 5.2vw, 4.75rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      max-width: 1100px;
+      margin-bottom: 48px;
+      color: var(--color-text-light);
+    }
+
+    .hero-grid-sub {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 40px;
+      align-items: flex-start;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 32px;
+    }
+
+    .hero-col-text {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted-dark);
+      line-height: 1.55;
+    }
+
+    .hero-col-text strong {
+      color: var(--color-text-light);
+    }
+
+    /* ─── Section 2: Neural Topology Stage (Warm Paper) ──── */
+    .topology-section {
+      position: relative;
+      background: var(--color-surface-paper);
+      color: var(--color-text-dark);
+      padding: 140px 0;
+      overflow: hidden;
+    }
+
+    .topology-header {
+      max-width: 900px;
+      margin-bottom: 64px;
+    }
+
+    .display-title {
+      font-size: clamp(2.5rem, 4.8vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+
+    .topology-tags {
+      display: flex;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-muted-light);
+      text-transform: uppercase;
+    }
+
+    .topology-interactive-wrap {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: #EFECE6;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.04);
+    }
+
+    #swarmCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .swarm-overlay-hint {
+      position: absolute;
+      bottom: 24px;
+      right: 28px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-muted-light);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      pointer-events: none;
+    }
+
+    /* ─── Section 3: Collective Section ─────────────────── */
+    .collective-section {
+      background: var(--color-surface-paper);
+      color: var(--color-text-dark);
+      padding: 60px 0 140px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .collective-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .collective-h2 {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+
+    .collective-roles-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .role-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      padding: 8px 16px;
+      background: #EAE6DE;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Section 4: Python Pipeline Code Scrub ──────────── */
+    .code-scrub-section {
+      position: relative;
+      background: #0D121B;
+      color: var(--color-text-light);
+      padding: 120px 0;
+      overflow: hidden;
+    }
+
+    .code-scrub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .code-terminal-box {
+      background: #070A0F;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 28px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: #A0AEC0;
+      overflow-x: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .token-keyword { color: #FF6B4A; font-weight: 600; }
+    .token-func { color: #60A5FA; }
+    .token-str { color: #34D399; }
+    .token-comment { color: #64748B; font-style: italic; }
+
+    /* ─── Section 5: THE MOUNTAIN SUMMIT - EXACT PARALLAX ── */
+    .events {
+      position: relative;
+      width: 100%;
+      min-height: 180vh;
+      background: var(--color-surface-dark);
+      overflow: hidden;
+    }
+
+    .canvas_mountain_container {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    #canvas_mountain {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .events_shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(to bottom, #080B10 0%, rgba(8, 11, 16, 0) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .events_shadow.is-bottom {
+      top: auto;
+      bottom: 0;
+      background: linear-gradient(to top, #080B10 0%, rgba(8, 11, 16, 0) 100%);
+    }
+
+    .events_content {
+      position: relative;
+      z-index: 3;
+      padding-top: 30vh;
+      padding-bottom: 40vh;
+      pointer-events: none;
+    }
+
+    .events_content * {
+      pointer-events: auto;
+    }
+
+    /* Floating Multi-plane Code Over Mountain */
+    .floating-code-wrap {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.45);
+      max-width: 480px;
+      margin-bottom: 80px;
+      mix-blend-mode: screen;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Floating Summit Stage & HUD Card */
+    .events-hud-stage {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-top: 12vh;
+    }
+
+    .events-left-block {
+      max-width: 580px;
+    }
+
+    .events-summit-title {
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .events-subhead {
+      font-size: 1.125rem;
+      color: #CBD5E1;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .events-hud-card {
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .card-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .card-meta-tag {
+      color: var(--color-accent-amber);
+    }
+
+    .card-meta-date {
+      color: #94A3B8;
+    }
+
+    .card-h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: #FFFFFF;
+    }
+
+    .card-p {
+      font-size: 0.875rem;
+      color: #94A3B8;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* ─── Section 6: Research Releases & Grants ──────────── */
+    .research-section {
+      background: var(--color-surface-paper);
+      color: var(--color-text-dark);
+      padding: 120px 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .research-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 64px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 32px;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .research-card {
+      background: #FFFFFF;
+      border: 1px solid #E4E7EC;
+      border-radius: 8px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 340px;
+      transition: all 0.25s ease;
+    }
+
+    .research-card:hover {
+      border-color: #000000;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    .research-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--color-accent-amber);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .research-card-h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .research-card-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-muted-light);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* ─── Section 7: Architectural Footer ────────────────── */
+    .site-footer {
+      background: #05070A;
+      color: var(--color-text-light);
+      padding: 100px 0 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 80px;
+    }
+
+    .footer-brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-desc {
+      color: #64748B;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .footer-col-head {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94A3B8;
+      margin-bottom: 20px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links-list a {
+      color: #CBD5E1;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--color-accent-amber);
+    }
+
+    .footer-disclaimer-bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      color: #475569;
+      font-size: 0.75rem;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ─── Modal Dialog ───────────────────────────────────── */
+    .grant-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 11, 16, 0.75);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+      padding: 24px;
+    }
+
+    .grant-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .grant-modal-box {
+      background: #0D121B;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #94A3B8;
+      font-size: 1.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-grid-sub {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .collective-grid {
+        grid-template-columns: 1fr;
+      }
+      .code-scrub-grid {
+        grid-template-columns: 1fr;
+      }
+      .events-hud-stage {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .research-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-brand">
+        <div class="brand-symbol">N</div>
+        <span>NUMINA FOUNDATION</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#topology">About</a></li>
+        <li><a href="#events">Summits</a></li>
+        <li><a href="#research">Grants</a></li>
+        <li><a href="#research">Research</a></li>
+      </ul>
+
+      <button class="nav-cta" onclick="openGrantModal()">
+        <span>Apply for Grant</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Section 1: Hero Section with Interactive Constellation Horizon -->
+  <section class="hero-section" id="hero">
+    <div class="hero-canvas-wrap">
+      <canvas id="heroCanvas"></canvas>
+    </div>
+
+    <div class="container hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span>BUILDING THE OPEN-SOURCE FUTURE OF INTELLIGENCE</span>
+      </div>
+
+      <h1 class="hero-h1">
+        We empower the development of open-source artificial intelligence that is aligned with humanity and never controlled by a single entity.
+      </h1>
+
+      <div class="hero-grid-sub">
+        <div class="hero-col-text">
+          <strong>Where Intelligence Learns to Reason</strong><br />
+          And global contributors actively shape what general intelligence becomes.
+        </div>
+        <div class="hero-col-text">
+          <strong>Decentralized Mandate</strong><br />
+          Uniting researchers, builders, and university labs across 60+ countries in the open.
+        </div>
+        <div>
+          <a href="#topology" class="link-bracket">
+            <span>Our Mission</span>
+            <div class="bracket-decor">[ + → ]</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Neural Topology Stage (Warm Paper Theme) -->
+  <section class="topology-section" id="topology">
+    <div class="container">
+      <div class="topology-header">
+        <h2 class="display-title">
+          Where AI learns to feel,<br />
+          and you shape what it becomes.
+        </h2>
+        <div class="topology-tags">
+          <span>Open Source.</span>
+          <span>·</span>
+          <span>Open Models.</span>
+          <span>·</span>
+          <span>Open Future.</span>
+        </div>
+      </div>
+
+      <div class="topology-interactive-wrap">
+        <canvas id="swarmCanvas"></canvas>
+        <div class="swarm-overlay-hint">Interactive Neural Topology · Move Cursor</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Collective Section -->
+  <section class="collective-section">
+    <div class="container collective-grid">
+      <div>
+        <h2 class="collective-h2">
+          We are a growing collective of researchers, engineers, and thinkers exploring the frontier of artificial intelligence, in the open, for everyone.
+        </h2>
+        <a href="#events" class="link-bracket" style="font-size: 0.9375rem;">
+          <span>Join the collective</span>
+          <div class="bracket-decor">[ + → ]</div>
+        </a>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted-light); margin-bottom: 16px; text-transform: uppercase;">
+          Contributor Archetypes
+        </div>
+        <ul class="collective-roles-list">
+          <li class="role-badge">RESEARCHERS</li>
+          <li class="role-badge">BUILDERS</li>
+          <li class="role-badge">FOUNDERS</li>
+          <li class="role-badge">ENGINEERS</li>
+          <li class="role-badge">COMMUNITY ARCHITECTS</li>
+          <li class="role-badge">SYSTEMS THEORISTS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Python Reasoning Pipeline Code Scrub -->
+  <section class="code-scrub-section">
+    <div class="container code-scrub-grid">
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-amber); margin-bottom: 12px; letter-spacing: 0.08em;">
+          VERIFIABLE AGENT RUNTIME
+        </div>
+        <h2 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; line-height: 1.2; margin-bottom: 20px;">
+          Decentralized consensus across autonomous reasoning graphs.
+        </h2>
+        <p style="color: #94A3B8; font-size: 1rem; line-height: 1.6; margin-bottom: 32px;">
+          Numina coordinates open multi-agent pipelines with cryptographic verification, ensuring no private monopoly controls the weights or inference verification.
+        </p>
+        <a href="#events" class="link-bracket">
+          <span>Explore Architecture Docs</span>
+          <div class="bracket-decor">[ + → ]</div>
+        </a>
+      </div>
+
+      <div class="code-terminal-box" id="codeScrubBox">
+        <span class="token-keyword">import</span> numina_core <span class="token-keyword">as</span> nc<br />
+        <span class="token-keyword">from</span> numina.cognition <span class="token-keyword">import</span> Aggregator, Atomizer, Executor, Verifier<br />
+        <br />
+        <span class="token-comment"># Initialize decentralized reasoning coordinator</span><br />
+        executor_lm = nc.LM(<span class="token-str">"openrouter/numina-frontier-v4"</span>, temperature=0.7)<br />
+        executor = Executor(lm=executor_lm, strategy=<span class="token-str">"react_cot"</span>)<br />
+        <br />
+        <span class="token-comment"># Atomize multi-step objectives across contributor nodes</span><br />
+        atomizer = Atomizer(lm=nc.LM(<span class="token-str">"open-agi/consensus-8b"</span>))<br />
+        <br />
+        <span class="token-keyword">def</span> <span class="token-func">run_pipeline</span>(goal: str) -&gt; str:<br />
+        &nbsp;&nbsp;plan = atomizer.forward(goal)<br />
+        &nbsp;&nbsp;candidate = executor.forward(plan.subtasks)<br />
+        &nbsp;&nbsp;verdict = Verifier.forward(goal, candidate)<br />
+        &nbsp;&nbsp;<span class="token-keyword">if</span> verdict.consensus_quorum &gt; 0.95:<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="token-keyword">return</span> candidate.synthesized_result<br />
+        &nbsp;&nbsp;<span class="token-keyword">return</span> <span class="token-str">"Consensus threshold requires further verification"</span><br />
+        <br />
+        print(run_pipeline(<span class="token-str">"Synthesize open AGI safety benchmarks"</span>))
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: THE MOUNTAIN SUMMIT - EXACT PARALLAX SHADER STAGE -->
+  <section class="events" id="events">
+    <!-- Top & Bottom Atmospheric Shadows -->
+    <div class="events_shadow"></div>
+    <div class="events_shadow is-bottom"></div>
+
+    <!-- WebGL Three.js Fisheye Parallax Canvas -->
+    <div class="canvas_mountain_container">
+      <canvas id="canvas_mountain"></canvas>
+    </div>
+
+    <div class="container events_content">
+      <!-- Floating multi-plane code drift -->
+      <div class="floating-code-wrap" id="mountainFloatingCode">
+        <span># Runtime proof-of-inference stream</span><br />
+        <span>coordinator = nc.Coordinator(quorum=0.96)</span><br />
+        <span>stream = coordinator.observe_latent_space()</span><br />
+        <span>yield from stream.filter(verifiable=True)</span>
+      </div>
+
+      <!-- Floating Summit Stage & Corner-Bracket Card -->
+      <div class="events-hud-stage">
+        <div class="events-left-block">
+          <h2 class="events-summit-title">Open Intelligence Summit</h2>
+          <p class="events-subhead">
+            A space for builders, founders, and researchers to discuss the future of open-source AI and humanity-aligned foundation models.
+          </p>
+          <a href="#research" class="link-bracket" style="font-size: 0.9375rem; color: #FFFFFF;">
+            <span>LEARN MORE</span>
+            <div class="bracket-decor">[ + → ]</div>
+          </a>
+        </div>
+
+        <!-- Corner-bracketed Floating Card -->
+        <div class="events-hud-card card-bracket">
+          <div class="card-meta-row">
+            <span class="card-meta-tag">GLOBAL SUMMIT 2026</span>
+            <span class="card-meta-date">04.22.2026</span>
+          </div>
+
+          <h3 class="card-h3">Open AGI Architecture</h3>
+          <p class="card-p">
+            Bringing together researchers, developers, and communities united by the shared conviction that frontier intelligence must remain open, audited, and accessible to everyone.
+          </p>
+
+          <button class="link-bracket" onclick="openGrantModal()" style="color: #FFFFFF;">
+            <span>REGISTER ATTENDANCE</span>
+            <div class="bracket-decor">[ + → ]</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Research Releases & Grant Announcements -->
+  <section class="research-section" id="research">
+    <div class="container">
+      <div class="research-header">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-amber); font-weight: 700; margin-bottom: 8px;">
+            DISPATCHES & DISCOVERIES
+          </div>
+          <h2 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; letter-spacing: -0.03em;">
+            Research releases, announcements, and milestones from Numina
+          </h2>
+        </div>
+        <div>
+          <a href="#events" class="link-bracket" style="color: var(--color-text-dark);">
+            <span>See all the articles</span>
+            <div class="bracket-decor">[ + ]</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="research-grid">
+        <!-- Paper 1 -->
+        <div class="research-card">
+          <div>
+            <div class="research-tag">// $50M INITIATIVE</div>
+            <h3 class="research-card-h3">Numina Foundation Commits $50 Million to Advance Open Source AGI</h3>
+            <p class="research-card-desc">
+              One of the largest dedicated grant pools supporting developers, research labs, and open architectures without equity lock-in.
+            </p>
+          </div>
+          <div>
+            <a href="#" class="link-bracket" style="color: var(--color-text-dark);" onclick="openGrantModal()">
+              <span>Read Announcement</span>
+              <div class="bracket-decor">[ + ]</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Paper 2 -->
+        <div class="research-card">
+          <div>
+            <div class="research-tag">// RESEARCH DISPATCH</div>
+            <h3 class="research-card-h3">Decentralized Verifiable Compute: Proof-of-Inference Protocol</h3>
+            <p class="research-card-desc">
+              A peer-reviewed benchmark framework for certifying that open model weights were executed faithfully without tampering.
+            </p>
+          </div>
+          <div>
+            <a href="#" class="link-bracket" style="color: var(--color-text-dark);" onclick="openGrantModal()">
+              <span>Download Whitepaper</span>
+              <div class="bracket-decor">[ + ]</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Paper 3 -->
+        <div class="research-card">
+          <div>
+            <div class="research-tag">// FELLOWSHIP</div>
+            <h3 class="research-card-h3">Numina Sparks: Community Fellowship & Lab Grants Worldwide</h3>
+            <p class="research-card-desc">
+              Direct compute stipends and GPU cluster access for independent researchers exploring neurosymbolic alignment.
+            </p>
+          </div>
+          <div>
+            <a href="#" class="link-bracket" style="color: var(--color-text-dark);" onclick="openGrantModal()">
+              <span>Apply for Cohort</span>
+              <div class="bracket-decor">[ + ]</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Architectural Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-title">NUMINA FOUNDATION</div>
+          <p class="footer-desc">
+            A neutral, transparent steward of open-source artificial intelligence. Uniting builders, researchers, and global communities to steward open AGI.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-head">Ecosystem</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero">Overview [ + ]</a></li>
+            <li><a href="#topology">About [ + ]</a></li>
+            <li><a href="#events">Summits [ + ]</a></li>
+            <li><a href="#research">Grants [ + ]</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-head">Research</div>
+          <ul class="footer-links-list">
+            <li><a href="#research">Publications [ + ]</a></li>
+            <li><a href="#research">Benchmarks [ + ]</a></li>
+            <li><a href="#research">Compute Grants [ + ]</a></li>
+            <li><a href="#research">Governance [ + ]</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-head">Connect</div>
+          <ul class="footer-links-list">
+            <li><a href="#">X / Twitter [ + ]</a></li>
+            <li><a href="#">GitHub [ + ]</a></li>
+            <li><a href="#">Discord [ + ]</a></li>
+            <li><a href="#">Research Forum [ + ]</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-disclaimer-bar">
+        <div>
+          © 2026 Numina Foundation. All rights reserved. Fictional rebrand. Sample template.
+        </div>
+        <div>
+          Where AI Learns to Reason, and You Shape What It Becomes.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Grant Application Modal -->
+  <div class="grant-modal-overlay" id="grantModal" onclick="handleModalOverlayClick(event)">
+    <div class="grant-modal-box">
+      <button class="modal-close" onclick="closeGrantModal()" aria-label="Close modal">✕</button>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent-amber); margin-bottom: 8px; font-weight: 700;">
+        // RESEARCH GRANT APPLICATION
+      </div>
+      <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; color: #FFFFFF;">
+        Apply to the Numina Fellowship
+      </h3>
+      <p style="font-size: 0.875rem; color: #94A3B8; line-height: 1.6; margin-bottom: 24px;">
+        Numina awards non-dilutive compute grants and research stipends up to $250,000 for teams building open foundation models.
+      </p>
+
+      <form onsubmit="handleGrantSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="text" placeholder="Principal Researcher or Team Name" required style="width: 100%; padding: 12px 14px; background: #070A0F; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #FFFFFF; font-family: var(--font-mono); font-size: 0.8125rem; outline: none;" />
+        <input type="email" placeholder="Institutional or Contact Email" required style="width: 100%; padding: 12px 14px; background: #070A0F; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #FFFFFF; font-family: var(--font-mono); font-size: 0.8125rem; outline: none;" />
+        <textarea rows="3" placeholder="Research Proposal Summary & Compute Requirements" required style="width: 100%; padding: 12px 14px; background: #070A0F; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #FFFFFF; font-family: var(--font-mono); font-size: 0.8125rem; outline: none;"></textarea>
+
+        <button type="submit" class="nav-cta" style="background: var(--color-accent-amber); border-color: var(--color-accent-amber); color: #FFFFFF; width: 100%; justify-content: center; padding: 12px;">
+          Submit Research Proposal [ → ]
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── JAVASCRIPT & THREE.JS SHADER ENGINE ───────────────── -->
+  <script>
+    // 1. Lenis Smooth Scroll Setup
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    // 2. Hero Background Dynamic Constellation Canvas
+    (function initHeroCanvas() {
+      const canvas = document.getElementById('heroCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [];
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          radius: Math.random() * 1.6 + 0.6
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+
+        for (let i = 0; i < particles.length; i++) {
+          let p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h;
+          if (p.y > h) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            let p2 = particles[j];
+            let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+
+    // 3. Topology Section Interactive Swarm Canvas
+    (function initSwarmCanvas() {
+      const canvas = document.getElementById('swarmCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, points = [];
+      let mouse = { x: -1000, y: -1000 };
+
+      function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        w = canvas.width = rect.width;
+        h = canvas.height = rect.height;
+        initPoints();
+      }
+
+      function initPoints() {
+        points = [];
+        const cols = Math.floor(w / 32);
+        const rows = Math.floor(h / 32);
+        for (let x = 0; x < cols; x++) {
+          for (let y = 0; y < rows; y++) {
+            points.push({
+              origX: (x + 0.5) * 32,
+              origY: (y + 0.5) * 32,
+              x: (x + 0.5) * 32,
+              y: (y + 0.5) * 32
+            });
+          }
+        }
+      }
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      });
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let p of points) {
+          const dx = p.origX - mouse.x;
+          const dy = p.origY - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          const maxDist = 140;
+
+          if (dist < maxDist) {
+            const force = (1 - dist / maxDist) * 22;
+            const angle = Math.atan2(dy, dx);
+            p.x = p.origX + Math.cos(angle) * force;
+            p.y = p.origY + Math.sin(angle) * force;
+          } else {
+            p.x += (p.origX - p.x) * 0.1;
+            p.y += (p.origY - p.y) * 0.1;
+          }
+
+          ctx.fillStyle = dist < maxDist ? '#FF6B4A' : '#718698';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, dist < maxDist ? 2.5 : 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // 4. THE MOUNTAIN SUMMIT - THREE.JS GLSL FISHEYE SHADER ENGINE
+    const MOUNTAIN_URL = "assets/mountain.jpg";
+    const MOUNTAIN_IMAGE_CONFIG = { startOffsetY: -0.09, endOffsetY: -0.5, scale: 1.25 };
+    const MOUNTAIN_FISHEYE_CONFIG = {
+      strength: 3.5,
+      radius: 1.1,
+      radiusX: 1.0,
+      radiusY: 1.9,
+      positionX: 0.5,
+      positionY: 0.5,
+      startLensY: 0.5,
+      endLensY: 0.45,
+      mouseRange: 0.03,
+      minWidth: 900,
+      mobile: {
+        strength: 2.5,
+        radiusX: 1.4,
+        radiusY: 1.9,
+        radius: 1.3
+      }
+    };
+
+    const mountainVertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
+
+    const mountainFragmentShader = `
+      uniform sampler2D uTexture;
+      uniform float uStrength;
+      uniform float uRadius;
+      uniform vec2 uCenter;
+      uniform vec2 uLensPosition;
+      uniform float uRadiusX;
+      uniform float uRadiusY;
+      uniform float uChromaticRadial;
+      uniform float uChromaticHorizontal;
+      uniform float uVignette;
+      uniform vec2 uResolution;
+      uniform vec2 uImageResolution;
+      uniform float uScale;
+      uniform vec2 uAnchor;
+      uniform float uOffsetY;
+
+      varying vec2 vUv;
+
+      vec2 fisheye(vec2 uv, vec2 center, float strength, float radius, float radiusX, float radiusY) {
+        vec2 delta = uv - center;
+        float aspectRatio = uResolution.x / uResolution.y;
+        delta.x *= aspectRatio;
+        vec2 scaledDelta = vec2(delta.x / radiusX, delta.y / radiusY);
+        float dist = length(scaledDelta);
+        float normalizedDist = dist / radius;
+        if (normalizedDist < 1.0) {
+          float distortionFactor = 1.0 + strength * normalizedDist * normalizedDist;
+          delta /= distortionFactor;
+        }
+        delta.x /= aspectRatio;
+        return center + delta;
+      }
+
+      vec2 coverUv(vec2 uv, vec2 resolution, vec2 imageResolution, vec2 anchor, float scale, float offsetY) {
+        vec2 s = resolution;
+        vec2 i = imageResolution;
+        float rs = s.x / s.y;
+        float ri = i.x / i.y;
+        vec2 newSize = rs < ri ? vec2(i.x * s.y / i.y, s.y) : vec2(s.x, i.y * s.x / i.x);
+        vec2 uvScale = s / newSize;
+        uvScale /= scale;
+        vec2 offset = (1.0 - uvScale) * anchor;
+        float availableMove = (1.0 - uvScale.y);
+        offset.y += offsetY * availableMove;
+        return uv * uvScale + offset;
+      }
+
+      void main() {
+        vec2 mouseOffset = uCenter - vec2(0.5, 0.5);
+        vec2 center = uLensPosition + mouseOffset;
+        
+        vec2 fisheyeR = fisheye(vUv, center, uStrength * (1.0 + uChromaticRadial), uRadius, uRadiusX, uRadiusY);
+        vec2 fisheyeG = fisheye(vUv, center, uStrength, uRadius, uRadiusX, uRadiusY);
+        vec2 fisheyeB = fisheye(vUv, center, uStrength * (1.0 - uChromaticRadial), uRadius, uRadiusX, uRadiusY);
+        
+        vec2 uvR = coverUv(fisheyeR, uResolution, uImageResolution, uAnchor, uScale, uOffsetY);
+        vec2 uvG = coverUv(fisheyeG, uResolution, uImageResolution, uAnchor, uScale, uOffsetY);
+        vec2 uvB = coverUv(fisheyeB, uResolution, uImageResolution, uAnchor, uScale, uOffsetY);
+        
+        uvR.x += uChromaticHorizontal;
+        uvB.x -= uChromaticHorizontal;
+        
+        float r = texture2D(uTexture, uvR).r;
+        float g = texture2D(uTexture, uvG).g;
+        float b = texture2D(uTexture, uvB).b;
+        
+        vec3 color = vec3(r, g, b);
+        
+        vec2 vignetteUv = vUv - 0.5;
+        float vignetteAmount = 1.0 - dot(vignetteUv, vignetteUv) * uVignette * 2.0;
+        color *= vignetteAmount;
+        
+        if (uvG.x < 0.0 || uvG.x > 1.0 || uvG.y < 0.0 || uvG.y > 1.0) {
+          color = vec3(0.0);
+        }
+        
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    class MountainFisheyeEngine {
+      constructor() {
+        this.canvas = document.getElementById("canvas_mountain");
+        if (!this.canvas) return;
+        this.container = this.canvas.parentElement;
+        this.width = this.container.offsetWidth || window.innerWidth;
+        this.height = this.container.offsetHeight || window.innerHeight;
+        this.isMobile = this.width < MOUNTAIN_FISHEYE_CONFIG.minWidth;
+        this.isVisible = true;
+        this.initThree();
+        this.loadTexture();
+        this.bindEvents();
+        this.startTicker();
+      }
+
+      initThree() {
+        this.renderer = new THREE.WebGLRenderer({
+          canvas: this.canvas,
+          antialias: false,
+          alpha: false,
+          powerPreference: "high-performance"
+        });
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        this.renderer.setSize(this.width, this.height);
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+        this.camera.position.z = 1;
+
+        const cfg = this.isMobile ? MOUNTAIN_FISHEYE_CONFIG.mobile : MOUNTAIN_FISHEYE_CONFIG;
+
+        this.uniforms = {
+          uTexture: { value: null },
+          uStrength: { value: cfg.strength },
+          uRadius: { value: cfg.radius },
+          uRadiusX: { value: cfg.radiusX },
+          uRadiusY: { value: cfg.radiusY },
+          uCenter: { value: new THREE.Vector2(0.5, 0.5) },
+          uLensPosition: { value: new THREE.Vector2(MOUNTAIN_FISHEYE_CONFIG.positionX, MOUNTAIN_FISHEYE_CONFIG.startLensY) },
+          uChromaticRadial: { value: 0.02 },
+          uChromaticHorizontal: { value: 0.001 },
+          uVignette: { value: 0.08 },
+          uResolution: { value: new THREE.Vector2(this.width, this.height) },
+          uImageResolution: { value: new THREE.Vector2(1920, 1080) },
+          uScale: { value: MOUNTAIN_IMAGE_CONFIG.scale },
+          uAnchor: { value: new THREE.Vector2(0.5, 0.5) },
+          uOffsetY: { value: MOUNTAIN_IMAGE_CONFIG.startOffsetY }
+        };
+
+        this.material = new THREE.ShaderMaterial({
+          vertexShader: mountainVertexShader,
+          fragmentShader: mountainFragmentShader,
+          uniforms: this.uniforms
+        });
+
+        const geo = new THREE.PlaneGeometry(2, 2);
+        this.mesh = new THREE.Mesh(geo, this.material);
+        this.scene.add(this.mesh);
+      }
+
+      loadTexture() {
+        new THREE.TextureLoader().load(MOUNTAIN_URL, (tex) => {
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          this.uniforms.uTexture.value = tex;
+          this.uniforms.uImageResolution.value.set(tex.image.width, tex.image.height);
+        });
+      }
+
+      bindEvents() {
+        this.mouseConfig = { range: MOUNTAIN_FISHEYE_CONFIG.mouseRange, smoothing: 0.08 };
+        this.mouseTarget = { x: 0.5, y: 0.5 };
+        this.mouseCurrent = { x: 0.5, y: 0.5 };
+
+        const section = document.querySelector(".events");
+        if (section) {
+          section.addEventListener("mousemove", (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const normX = (e.clientX - rect.left) / rect.width;
+            const normY = 1 - (e.clientY - rect.top) / rect.height;
+            const range = this.mouseConfig.range;
+            this.mouseTarget.x = 0.5 + (normX - 0.5) * range * 2;
+            this.mouseTarget.y = 0.5 + (normY - 0.5) * range * 2;
+          });
+
+          section.addEventListener("mouseleave", () => {
+            this.mouseTarget.x = 0.5;
+            this.mouseTarget.y = 0.5;
+          });
+        }
+
+        window.addEventListener("resize", () => {
+          this.width = this.container.offsetWidth || window.innerWidth;
+          this.height = this.container.offsetHeight || window.innerHeight;
+          this.renderer.setSize(this.width, this.height);
+          this.uniforms.uResolution.value.set(this.width, this.height);
+        });
+      }
+
+      startTicker() {
+        gsap.ticker.add(() => {
+          if (!this.isVisible) return;
+          const s = this.mouseConfig.smoothing;
+          this.mouseCurrent.x += (this.mouseTarget.x - this.mouseCurrent.x) * s;
+          this.mouseCurrent.y += (this.mouseTarget.y - this.mouseCurrent.y) * s;
+          this.uniforms.uCenter.value.set(this.mouseCurrent.x, this.mouseCurrent.y);
+          this.renderer.render(this.scene, this.camera);
+        });
+      }
+    }
+
+    let mountainEngine;
+    document.addEventListener("DOMContentLoaded", () => {
+      mountainEngine = new MountainFisheyeEngine();
+
+      // ScrollTrigger Parallax Sequence for Mountain Canvas
+      if (mountainEngine) {
+        const u = mountainEngine.uniforms;
+
+        // 1. Fisheye unbending distortion animation
+        gsap.to(u.uStrength, {
+          value: mountainEngine.isMobile ? 0.2 : 0.3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".events",
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.5
+          }
+        });
+
+        // 2. Vertical Image offset parallax
+        gsap.to(u.uOffsetY, {
+          value: MOUNTAIN_IMAGE_CONFIG.endOffsetY,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".events",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5
+          }
+        });
+
+        // 3. Lens position vertical track
+        gsap.to(u.uLensPosition.value, {
+          y: MOUNTAIN_FISHEYE_CONFIG.endLensY,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".events",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.8
+          }
+        });
+
+        // 4. Container 3D translation parallax
+        gsap.fromTo(".canvas_mountain", { yPercent: -12 }, {
+          yPercent: 12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".events",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+          }
+        });
+
+        // 5. Floating code parallax
+        gsap.to("#mountainFloatingCode", {
+          yPercent: -40,
+          opacity: 0.2,
+          scrollTrigger: {
+            trigger: ".events",
+            start: "top center",
+            end: "bottom center",
+            scrub: 2
+          }
+        });
+      }
+    });
+
+    // Modal Interaction
+    function openGrantModal() {
+      document.getElementById('grantModal').classList.add('active');
+    }
+    function closeGrantModal() {
+      document.getElementById('grantModal').classList.remove('active');
+    }
+    function handleModalOverlayClick(e) {
+      if (e.target.id === 'grantModal') closeGrantModal();
+    }
+    function handleGrantSubmit(e) {
+      e.preventDefault();
+      alert("Thank you! Your research proposal has been logged with the Numina Foundation fellowship committee.");
+      closeGrantModal();
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeGrantModal();
+    });
+  </script>
+</body>
+</html>

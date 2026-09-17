@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pharos — Spatial Computing &amp; Retinal Waveguide Hardware</title>
+  <meta name="description" content="Pharos One: ambient spatial computing hardware projecting 8K micro-LED photons directly through a razor diffractive optical aperture. Experience reality without glass." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- High-Precision Typographic Stack: Space Grotesk + Plus Jakarta Sans + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Primary Obsidian & Cadmium Theme */
+      --bg-page: #060606;
+      --bg-elevated: #0c0c0c;
+      --bg-card: #121212;
+      --bg-card-hover: #181818;
+      --bg-glass: rgba(14, 14, 14, 0.78);
+
+      --signal-cadmium: #f24a12;
+      --signal-cadmium-deep: #cc3908;
+      --signal-cadmium-glow: rgba(242, 74, 18, 0.28);
+      --signal-cadmium-subtle: rgba(242, 74, 18, 0.08);
+
+      --text-snow: #fbf9f6;
+      --text-muted: #8d8982;
+      --text-faint: #524f4a;
+
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-medium: rgba(255, 255, 255, 0.14);
+      --border-bright: rgba(255, 255, 255, 0.3);
+      --border-signal: rgba(242, 74, 18, 0.45);
+
+      --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", monospace;
+
+      --wrap: min(1260px, 100% - 3rem);
+      --wrap-wide: min(1380px, 100% - 1.5rem);
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --dur: 240ms;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+      background-color: var(--bg-page);
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-snow);
+      background-color: var(--bg-page);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      selection-background-color: var(--signal-cadmium);
+      selection-color: #000000;
+    }
+
+    ::selection {
+      background: var(--signal-cadmium);
+      color: #000000;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    code, pre {
+      font-family: var(--font-mono);
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: var(--font-display);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: var(--text-snow);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--signal-cadmium);
+      outline-offset: 4px;
+    }
+
+    .wrap {
+      width: var(--wrap);
+      margin-inline: auto;
+    }
+
+    .wrap-wide {
+      width: var(--wrap-wide);
+      margin-inline: auto;
+    }
+
+    /* Ambient Spotlight Background */
+    .ambient-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(600px, 80vw, 1100px);
+      height: 550px;
+      background: radial-gradient(ellipse at 50% 10%, rgba(242, 74, 18, 0.16) 0%, rgba(242, 74, 18, 0.04) 45%, transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navigation Bar */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+    }
+
+    .nav-inner {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-snow);
+    }
+
+    .brand-glyph {
+      width: 28px;
+      height: 28px;
+      background: var(--signal-cadmium);
+      color: #000000;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px var(--signal-cadmium-glow);
+    }
+
+    .brand-glyph svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-item {
+      padding: 0.5rem 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+
+    .nav-item:hover {
+      color: var(--text-snow);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0.35rem 0.8rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+    }
+
+    .nav-telemetry .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--signal-cadmium);
+      box-shadow: 0 0 8px var(--signal-cadmium);
+      animation: blink 2.4s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.65rem 1.35rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-display);
+      font-size: 0.84rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-cadmium {
+      background: var(--signal-cadmium);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--signal-cadmium-glow);
+    }
+
+    .btn-cadmium:hover {
+      background: #ff5922;
+      box-shadow: 0 6px 28px rgba(242, 74, 18, 0.45);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-medium);
+      color: var(--text-snow);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--border-bright);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .mobile-toggle span {
+      width: 18px;
+      height: 2px;
+      background: var(--text-snow);
+      transition: transform var(--dur) var(--ease);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(2.5rem, 5vw, 4.5rem);
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-badge-wrap {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.4rem 1.1rem;
+      border-radius: var(--radius-pill);
+      background: var(--signal-cadmium-subtle);
+      border: 1px solid var(--border-signal);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--signal-cadmium);
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 7.5vw, 6.4rem);
+      font-weight: 700;
+      line-height: 0.96;
+      max-width: 16ch;
+      margin-inline: auto;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-title span.cadmium-accent {
+      color: var(--signal-cadmium);
+      display: inline-block;
+    }
+
+    .hero-desc {
+      font-size: clamp(1.08rem, 2.2vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 54ch;
+      margin-inline: auto;
+      line-height: 1.6;
+      margin-bottom: 2.6rem;
+    }
+
+    .hero-desc strong {
+      color: var(--text-snow);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Interactive Hardware Stage */
+    .stage-container {
+      position: relative;
+      background: radial-gradient(circle at 50% 65%, #181818 0%, #0c0c0c 60%, #060606 100%);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .stage-canvas-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      max-height: 680px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stage-canvas-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(105%) brightness(98%);
+    }
+
+    /* Spatial Hotspots on Hardware */
+    .hotspot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .hotspot-beacon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--signal-cadmium-glow);
+      border: 1px solid var(--signal-cadmium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+
+    .hotspot:hover .hotspot-beacon {
+      transform: scale(1.2);
+      background: var(--signal-cadmium);
+    }
+
+    .hotspot-beacon::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .hotspot-card {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: rgba(12, 12, 12, 0.94);
+      border: 1px solid var(--border-bright);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1.1rem;
+      min-width: 220px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      text-align: left;
+    }
+
+    .hotspot:hover .hotspot-card, .hotspot:focus-within .hotspot-card {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hotspot-card .h-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--signal-cadmium);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hotspot-card .h-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-snow);
+      margin: 0.2rem 0;
+    }
+
+    .hotspot-card .h-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Hardware Control Deck */
+    .stage-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      background: #090909;
+      border-top: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .control-stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .stat-pill {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .stat-pill span:first-child {
+      color: var(--text-faint);
+    }
+
+    .stat-pill span:last-child {
+      color: var(--signal-cadmium);
+      font-weight: 600;
+    }
+
+    /* Key Metrics Grid */
+    .metrics-band {
+      padding: 4.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .metric-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+
+    .metric-box:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-medium);
+    }
+
+    .metric-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--signal-cadmium), transparent);
+    }
+
+    .metric-num {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+      font-weight: 700;
+      color: var(--text-snow);
+      line-height: 1;
+    }
+
+    .metric-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-snow);
+    }
+
+    .metric-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Section Headers */
+    .section-head {
+      margin-bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--signal-cadmium);
+    }
+
+    .section-h2 {
+      font-size: clamp(2rem, 4.8vw, 3.2rem);
+      font-weight: 700;
+      max-width: 22ch;
+    }
+
+    .section-p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 58ch;
+      line-height: 1.6;
+    }
+
+    /* Interactive Optics Comparator Section */
+    .optics-section {
+      padding: 6rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .comparator-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .comparator-panel {
+      padding: clamp(2.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .comparator-panel.conventional {
+      background: #0a0a0a;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .comparator-panel.pharos {
+      background: radial-gradient(circle at 100% 0%, rgba(242, 74, 18, 0.08), transparent 70%), #0e0e0e;
+    }
+
+    .panel-status {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comparator-panel.conventional .panel-status {
+      color: #6d6d6d;
+    }
+
+    .comparator-panel.pharos .panel-status {
+      color: var(--signal-cadmium);
+    }
+
+    .panel-content h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .panel-specs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .panel-specs li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .panel-specs li span.check {
+      color: var(--signal-cadmium);
+      font-weight: 700;
+    }
+
+    .panel-specs li span.cross {
+      color: #555555;
+    }
+
+    /* Photon Waveform Simulator (HTML5 Canvas) */
+    .ray-canvas-wrap {
+      background: #000000;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      height: 150px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    canvas#rayCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Spatial OS Experience */
+    .spatial-os-section {
+      padding: 6.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .os-stage {
+      background: #000000;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .os-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-size: 32px 32px;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      pointer-events: none;
+    }
+
+    .os-window {
+      background: rgba(18, 18, 18, 0.88);
+      border: 1px solid var(--border-bright);
+      backdrop-filter: blur(24px);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      max-width: 580px;
+      position: relative;
+      z-index: 5;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .os-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .os-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .os-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a2a2a;
+    }
+
+    .os-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-snow);
+      letter-spacing: 0.05em;
+    }
+
+    .os-slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .slider-label span.val {
+      color: var(--signal-cadmium);
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: #262626;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--signal-cadmium);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--signal-cadmium);
+    }
+
+    /* Tactile Physical Artifacts */
+    .artifacts-section {
+      padding: 6.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .artifacts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .artifact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+
+    .artifact-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-4px);
+    }
+
+    .artifact-img-wrap {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #000000;
+      position: relative;
+    }
+
+    .artifact-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .artifact-card:hover .artifact-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .artifact-body {
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .artifact-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--signal-cadmium);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .artifact-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .artifact-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Interactive Slit Mark Blueprint */
+    .blueprint-section {
+      padding: 6.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .blueprint-box {
+      background: #070707;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.5rem, 5vw, 4.5rem);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blueprint-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-size: 24px 24px;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      pointer-events: none;
+    }
+
+    .blueprint-display {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      background: #0c0c0c;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .blueprint-svg {
+      width: clamp(140px, 20vw, 220px);
+      height: clamp(140px, 20vw, 220px);
+      color: var(--signal-cadmium);
+      filter: drop-shadow(0 0 30px var(--signal-cadmium-glow));
+      transition: all 0.3s var(--ease);
+    }
+
+    .blueprint-info h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .blueprint-info p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .aperture-control-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Technical Specifications Table */
+    .specs-section {
+      padding: 6.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .specs-table-wrap {
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    .specs-table th, .specs-table td {
+      padding: 1.25rem 1.8rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .specs-table th {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      background: #090909;
+    }
+
+    .specs-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .specs-table td:first-child {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--text-snow);
+      width: 30%;
+    }
+
+    .specs-table td:last-child {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    /* Pre-Order / Dev Access CTA */
+    .cta-section {
+      padding: clamp(5rem, 10vw, 8.5rem) 0;
+      position: relative;
+    }
+
+    .cta-card {
+      background: radial-gradient(circle at 50% 0%, rgba(242, 74, 18, 0.15) 0%, rgba(18, 18, 18, 0.9) 70%), #121212;
+      border: 1px solid var(--border-signal);
+      border-radius: var(--radius-lg);
+      padding: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(242, 74, 18, 0.12);
+    }
+
+    .cta-title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+
+    .cta-p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 50ch;
+      margin-inline: auto;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-form {
+      display: flex;
+      justify-content: center;
+      max-width: 480px;
+      margin-inline: auto;
+      gap: 0.6rem;
+    }
+
+    .cta-input {
+      flex: 1;
+      background: #090909;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-snow);
+      outline: none;
+      transition: border-color var(--dur) var(--ease);
+    }
+
+    .cta-input:focus {
+      border-color: var(--signal-cadmium);
+    }
+
+    /* Global Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 5rem 0 3.5rem;
+      background: #050505;
+      position: relative;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .footer-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
+
+    .footer-hero-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 42ch;
+    }
+
+    .footer-columns {
+      display: flex;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-heading {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-group a {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .footer-group a:hover {
+      color: var(--text-snow);
+    }
+
+    .footer-monument {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 12vw, 9.5rem);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: rgba(255, 255, 255, 0.03);
+      text-align: center;
+      line-height: 0.9;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .comparator-card {
+        grid-template-columns: 1fr;
+      }
+      .comparator-panel.conventional {
+        border-right: 0;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .artifacts-grid {
+        grid-template-columns: 1fr;
+      }
+      .blueprint-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu, .nav-telemetry {
+        display: none;
+      }
+      .mobile-toggle {
+        display: flex;
+      }
+      .site-nav.is-open .nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #0a0a0a;
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 1.5rem;
+        gap: 0.6rem;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .stage-controls {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+      .control-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .cta-form {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Cadmium Optical Glow -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- Reusable SVG Global Symbols -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position: absolute; pointer-events: none;">
+    <defs>
+      <!-- Slit Square: Outer 100x100 solid square with vertical center aperture slit -->
+      <symbol id="pharos-slit-symbol" viewBox="0 0 100 100">
+        <path fill="currentColor" fill-rule="evenodd" d="M 0 0 H 100 V 100 H 0 Z M 46 20 H 54 V 80 H 46 Z" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Global Command Navigation -->
+  <header class="site-nav" id="siteNav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <a class="nav-brand" href="#top" aria-label="Pharos Home">
+          <div class="brand-glyph" aria-hidden="true">
+            <svg><use href="#pharos-slit-symbol"></use></svg>
+          </div>
+          pharos
+        </a>
+
+        <nav class="nav-menu" id="primaryMenu" aria-label="Primary Navigation">
+          <a class="nav-item" href="#hardware">Hardware</a>
+          <a class="nav-item" href="#optics">Retinal Optics</a>
+          <a class="nav-item" href="#spatial-os">Spatial OS</a>
+          <a class="nav-item" href="#craft">Physical Craft</a>
+          <a class="nav-item" href="#blueprint">Architecture</a>
+          <a class="nav-item" href="#specs">Specifications</a>
+        </nav>
+
+        <div class="nav-telemetry" aria-label="System status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>OPTICS 848NM · 120HZ</span>
+        </div>
+
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="../../#/brand/pharos" title="Showcase Gallery">Archive</a>
+          <a class="btn btn-cadmium" href="#reserve">Pre-Order</a>
+          <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primaryMenu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section: The Cinematic Reveal -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-badge-wrap">
+          <div class="hero-badge">
+            <span style="display:inline-block;width:6px;height:6px;background:var(--signal-cadmium);border-radius:50%;"></span>
+            <span>Pharos One // Diffractive Waveguide Computing</span>
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Light through the slit.<br />
+          <span class="cadmium-accent">Reality without glass.</span>
+        </h1>
+
+        <p class="hero-desc">
+          A quantum leap in ambient spatial computing. Direct 8K retinal micro-projection channeled through an optical slit aperture. <strong>Zero bulky goggles. Zero chromatic aberration.</strong> Pure atmospheric intelligence.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-cadmium" href="#reserve">Reserve Founder Kit</a>
+          <a class="btn btn-outline" href="#optics">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Explore Optical Engine
+          </a>
+        </div>
+
+        <!-- Interactive Hardware Stage -->
+        <div class="stage-container" id="hardware">
+          <div class="stage-canvas-wrap">
+            <img src="visor.jpg" alt="Pharos One Spatial Computing Headset with glowing cadmium light aperture resting on obsidian pedestal" loading="eager" />
+
+            <!-- Interactive Spatial Hotspots -->
+            <div class="hotspot" style="top: 48%; left: 68%;">
+              <div class="hotspot-beacon" tabindex="0" role="button" aria-label="Optical Aperture info"></div>
+              <div class="hotspot-card">
+                <span class="h-tag">Component 01</span>
+                <div class="h-title">Cadmium Light Slit</div>
+                <p class="h-desc">Micro-milled optical waveguide sensor operating at 848nm infrared carrier frequency for sub-millimeter tracking.</p>
+              </div>
+            </div>
+
+            <div class="hotspot" style="top: 36%; left: 34%;">
+              <div class="hotspot-beacon" tabindex="0" role="button" aria-label="Magnesium chassis info"></div>
+              <div class="hotspot-card">
+                <span class="h-tag">Component 02</span>
+                <div class="h-title">142g Magnesium Unibody</div>
+                <p class="h-desc">Precision die-cast magnesium-lithium alloy frame with ceramic micro-arc oxidation finish.</p>
+              </div>
+            </div>
+
+            <div class="hotspot" style="top: 56%; left: 44%;">
+              <div class="hotspot-beacon" tabindex="0" role="button" aria-label="Waveguide optic array info"></div>
+              <div class="hotspot-card">
+                <span class="h-tag">Component 03</span>
+                <div class="h-title">Retinal Projection Core</div>
+                <p class="h-desc">Diffractive optical element beaming infinite-depth focus directly into human ocular cones.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-controls">
+            <div class="control-stats">
+              <div class="stat-pill">
+                <span>CHASSIS</span>
+                <span>MG-LI UNIBODY</span>
+              </div>
+              <div class="stat-pill">
+                <span>BEAM CARRIER</span>
+                <span>848.2 NM</span>
+              </div>
+              <div class="stat-pill">
+                <span>MOTION-TO-PHOTON</span>
+                <span>&lt; 4.8 MS</span>
+              </div>
+            </div>
+            <span style="color:var(--text-faint);">INTERACTIVE HOTSPOTS ACTIVE // HOVER TO INSPECT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Metrics Ribbon -->
+    <section class="metrics-band">
+      <div class="wrap">
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-num">0.4<span style="font-size:0.5em;color:var(--signal-cadmium);">mm</span></div>
+            <div class="metric-title">Diffractive Waveguide</div>
+            <p class="metric-sub">Ten times thinner than traditional refractive glass pancake lenses. Total optical transparency.</p>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-num">120<span style="font-size:0.5em;color:var(--signal-cadmium);">Hz</span></div>
+            <div class="metric-title">Bionic Refresh Rate</div>
+            <p class="metric-sub">Real-time binocular alignment at 144 FPS peak rendering to eliminate vestibular motion sickness.</p>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-num">142<span style="font-size:0.5em;color:var(--signal-cadmium);">g</span></div>
+            <div class="metric-title">Featherweight Chassis</div>
+            <p class="metric-sub">Ergonomically balanced across the temporal arch for uninterrupted 12-hour continuous wear.</p>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-num">∞<span style="font-size:0.5em;color:var(--signal-cadmium);">:1</span></div>
+            <div class="metric-title">Photon Contrast</div>
+            <p class="metric-sub">True obsidian dark field projection. Pixels turn completely off, merging digital graphics into physical light.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Optical Comparator: Retinal Projection vs Conventional VR -->
+    <section class="optics-section" id="optics">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">01 // Optical Physics</span>
+          <h2 class="section-h2">Why Glass Displays Are Obsolete</h2>
+          <p class="section-desc">Conventional VR traps heavy glass panels 3 inches from your cornea. Pharos projects photons directly through a micro-aperture slit onto your retina.</p>
+        </div>
+
+        <div class="comparator-card">
+          <!-- Conventional VR Limitations -->
+          <div class="comparator-panel conventional">
+            <div>
+              <div class="panel-status">Conventional VR / AR Goggles</div>
+              <div class="panel-content" style="margin-top:1rem;">
+                <h3>Heavy Glass &amp; Chromatic Blur</h3>
+                <ul class="panel-specs">
+                  <li><span class="cross">✕</span> 500g–650g heavy glass strain on the cervical spine</li>
+                  <li><span class="cross">✕</span> Fixed focal plane causing vergence-accommodation conflict</li>
+                  <li><span class="cross">✕</span> Chromatic aberration and lens glare at peripheral angles</li>
+                  <li><span class="cross">✕</span> Social isolation behind opaque outward facing shells</li>
+                </ul>
+              </div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#555;">LEGACY ARCHITECTURE (2016–2024)</div>
+          </div>
+
+          <!-- Pharos Retinal Advantage -->
+          <div class="comparator-panel pharos">
+            <div>
+              <div class="panel-status">The Pharos Retinal System</div>
+              <div class="panel-content" style="margin-top:1rem;">
+                <h3 style="color:var(--signal-cadmium);">Direct Aperture Waveguide</h3>
+                <ul class="panel-specs">
+                  <li><span class="check">✓</span> 142g ultra-lightweight magnesium-lithium unibody</li>
+                  <li><span class="check">✓</span> Dynamic multi-plane focal depth that shifts naturally with human pupil gaze</li>
+                  <li><span class="check">✓</span> 848nm diffractive aperture with zero edge fringing or glare</li>
+                  <li><span class="check">✓</span> 92% ambient light pass-through for organic eye contact</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Live Photon Ray Canvas -->
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">
+                <span>PHOTON WAVEGUIDE FLUX SIMULATOR</span>
+                <span style="color:var(--signal-cadmium);">ACTIVE BEAM</span>
+              </div>
+              <div class="ray-canvas-wrap">
+                <canvas id="rayCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spatial OS Experience -->
+    <section class="spatial-os-section" id="spatial-os">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">02 // Spatial Operating System</span>
+          <h2 class="section-h2">Ambient Intelligence Floating in Space</h2>
+          <p class="section-desc">Pharos OS replaces flat screens with contextual light volumes anchored directly to physical surfaces with millimeter precision.</p>
+        </div>
+
+        <div class="os-stage">
+          <div class="os-window">
+            <div class="os-header">
+              <div class="os-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="os-title">pharos://retinal.core/telemetry</span>
+              <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--signal-cadmium);">STABLE 99.8%</span>
+            </div>
+
+            <div class="os-slider-group">
+              <div class="slider-row">
+                <div class="slider-label">
+                  <span>PHOTON EMISSION FLUX</span>
+                  <span class="val" id="fluxVal">4200 NITS</span>
+                </div>
+                <input type="range" id="fluxSlider" min="500" max="6000" value="4200" />
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label">
+                  <span>OCULAR CONVERGENCE DEPTH</span>
+                  <span class="val" id="depthVal">1.8 METERS</span>
+                </div>
+                <input type="range" id="depthSlider" min="0.2" max="10" step="0.1" value="1.8" />
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label">
+                  <span>DIFFRACTIVE WAVEGUIDE ANGLE</span>
+                  <span class="val" id="angleVal">48.2° BRAGG</span>
+                </div>
+                <input type="range" id="angleSlider" min="20" max="75" step="0.1" value="48.2" />
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;z-index:5;flex-wrap:wrap;gap:1rem;">
+            <div style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-muted);">
+              <div>LATENCY: 1.28MS BINOCULAR</div>
+              <div>NEURAL EYE-TRACKING: 240HZ ACCELERATED</div>
+            </div>
+            <div class="btn btn-outline" style="background:rgba(0,0,0,0.8);border-color:var(--border-medium);font-size:0.78rem;">
+              Kernel v2.4 Compliant
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tactile Physical Craft & Unboxing -->
+    <section class="artifacts-section" id="craft">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">03 // Industrial Tactility</span>
+          <h2 class="section-h2">Designed for the Physical Realm</h2>
+          <p class="section-desc">Hardware that commands reverence before it ever powers on. Matte carbon fiber, precision debossing, and hot cadmium foils.</p>
+        </div>
+
+        <div class="artifacts-grid">
+          <!-- Unboxing Box Specimen -->
+          <div class="artifact-card">
+            <div class="artifact-img-wrap">
+              <img src="preview.jpg" alt="Pharos Unboxing Experience with Rigid Matte Charcoal Packaging and Cadmium reveal card" loading="lazy" />
+            </div>
+            <div class="artifact-body">
+              <span class="artifact-tag">Physical Artifact 01 // Packaging</span>
+              <h3 class="artifact-title">The Monolith Packaging Suite</h3>
+              <p class="artifact-desc">
+                Crafted from 1200gsm compressed carbon-black paperboard, coated with tactile soft-touch polymer, and accented by a hot-stamped cadmium orange inner bevel.
+              </p>
+            </div>
+          </div>
+
+          <!-- Embossed Stationery Specimen -->
+          <div class="artifact-card">
+            <div class="artifact-img-wrap">
+              <img src="stationery.jpg" alt="Pharos High-Density Cotton Paper and Embossed Cadmium Foil Developer Pass" loading="lazy" />
+            </div>
+            <div class="artifact-body">
+              <span class="artifact-tag">Physical Artifact 02 // Collateral</span>
+              <h3 class="artifact-title">Laser-Debossed Cotton Stationery</h3>
+              <p class="artifact-desc">
+                600gsm duplexed cotton stock blind-debossed with the signature slit aperture mark and precision micro-printed with calibration coordinates in JetBrains Mono.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture & Slit Geometry Blueprint -->
+    <section class="blueprint-section" id="blueprint">
+      <div class="wrap">
+        <div class="blueprint-box">
+          <div class="blueprint-display">
+            <svg class="blueprint-svg" id="apertureSvg" viewBox="0 0 100 100" aria-label="Pharos Slit Aperture Glyph">
+              <path id="svgPath" fill="currentColor" fill-rule="evenodd" d="M 0 0 H 100 V 100 H 0 Z M 46 20 H 54 V 80 H 46 Z" />
+            </svg>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-top:1.5rem;letter-spacing:0.08em;" id="apertureMetric">
+              SLIT APERTURE: 8 UNITS (8% RATIO)
+            </div>
+          </div>
+
+          <div class="blueprint-info">
+            <span class="section-label">04 // Mark Blueprint</span>
+            <h3>The Slit Square Mark</h3>
+            <p>
+              A 100-unit square enclosing an optical beam-slit aperture. It represents the light passing through a diffraction barrier—the mathematical threshold where photons transform into images.
+            </p>
+
+            <div class="aperture-control-wrap">
+              <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.74rem;">
+                <span style="color:var(--text-snow);">INTERACTIVE APERTURE WIDTH</span>
+                <span style="color:var(--signal-cadmium);" id="apertureLabel">8u</span>
+              </div>
+              <input type="range" id="apertureSlider" min="2" max="22" step="2" value="8" />
+            </div>
+
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+              <button class="btn btn-outline" id="copySvgBtn" type="button">Copy Vector Code</button>
+              <a class="btn btn-outline" href="preview.jpg" download>Download Media Kit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Matrix -->
+    <section class="specs-section" id="specs">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">05 // Engineering Data</span>
+          <h2 class="section-h2">Hardware &amp; Optical Specifications</h2>
+          <p class="section-desc">Comprehensive telemetry sheet for hardware developers, optical researchers, and systems founders.</p>
+        </div>
+
+        <div class="specs-table-wrap">
+          <table class="specs-table" aria-label="Pharos One specifications">
+            <thead>
+              <tr>
+                <th>Subsystem</th>
+                <th>Engineering Specification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Display Engine</td>
+                <td>Dual RGB micro-LED optical engines with 8K aggregate resolution (42 PPD retinal density)</td>
+              </tr>
+              <tr>
+                <td>Waveguide Architecture</td>
+                <td>0.4mm diffractive surface-relief grating with 848nm infrared carrier modulation</td>
+              </tr>
+              <tr>
+                <td>Field of View</td>
+                <td>110° diagonal instantaneous field with infinite focal convergence</td>
+              </tr>
+              <tr>
+                <td>Spatial Tracking</td>
+                <td>Inside-out 6DoF optical visual odometry + dual 240Hz sub-millimeter gaze cameras</td>
+              </tr>
+              <tr>
+                <td>Compute Module</td>
+                <td>Custom Pharos Silicon P1 neural processor delivering 18 TOPS dedicated optical inference</td>
+              </tr>
+              <tr>
+                <td>Chassis &amp; Materials</td>
+                <td>Magnesium-lithium cast unibody, titanium headband hinges, breathable 3D spacer mesh</td>
+              </tr>
+              <tr>
+                <td>Acoustics</td>
+                <td>Spatial beamforming bone-conduction transducers with custom ambient noise dampening</td>
+              </tr>
+              <tr>
+                <td>Battery &amp; Thermal</td>
+                <td>Hot-swappable magnetic power rail; 4.5 hours continuous heavy compute, 18 hours standby</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pre-Order Reservation CTA -->
+    <section class="cta-section" id="reserve">
+      <div class="wrap">
+        <div class="cta-card">
+          <div class="hero-badge" style="margin-bottom:1.5rem;">
+            <span>FOUNDER ACCESS // BATCH 01</span>
+          </div>
+          <h2 class="cta-title">Build on the Optical Horizon.</h2>
+          <p class="cta-p">
+            Reserve the Pharos One Developer Edition. Includes the complete headset, magnetic power rail, neural wrist peripheral, and full low-level waveguide SDK access.
+          </p>
+
+          <form class="cta-form" id="reserveForm" onsubmit="event.preventDefault(); document.getElementById('reserveSuccess').style.display='block'; this.style.display='none';">
+            <input class="cta-input" type="email" placeholder="Enter work email for dev allocation..." required />
+            <button class="btn btn-cadmium" type="submit">Request Access</button>
+          </form>
+
+          <div id="reserveSuccess" style="display:none;font-family:var(--font-mono);font-size:0.95rem;color:var(--signal-cadmium);margin-top:1.5rem;">
+            ✓ REQUEST REGISTERED · BATCH 01 ALLOCATION QUEUED
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="wrap footer-content">
+      <div class="footer-main">
+        <div class="footer-hero-brand">
+          <a class="nav-brand" href="#top">
+            <div class="brand-glyph">
+              <svg><use href="#pharos-slit-symbol"></use></svg>
+            </div>
+            pharos
+          </a>
+          <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;">
+            A premier ambient spatial computing platform. Hot signal on obsidian — diffractive optical waveguides delivering reality without glass.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <span class="footer-heading">Platform</span>
+            <a href="#hardware">Hardware Unibody</a>
+            <a href="#optics">Waveguide Physics</a>
+            <a href="#spatial-os">Pharos Spatial OS</a>
+            <a href="#specs">Technical Telemetry</a>
+          </div>
+
+          <div class="footer-group">
+            <span class="footer-heading">System Design</span>
+            <a href="#blueprint">Slit Blueprint</a>
+            <a href="#craft">Physical Packaging</a>
+            <a href="../../index.html">Design Library</a>
+            <a href="../../data/catalog.json">Catalog JSON</a>
+          </div>
+
+          <div class="footer-group">
+            <span class="footer-heading">Archive</span>
+            <a href="DESIGN.md">Design System Spec</a>
+            <a href="preview.jpg">Visual Preview</a>
+            <a href="visor.jpg">Hardware Mockup</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-monument" aria-hidden="true">PHAROS</div>
+
+      <div class="footer-bottom">
+        <span>PHAROS ONE · SPATIAL HARDWARE DESIGN SYSTEM</span>
+        <span>VANILLA STATIC ARCHIVE · PERSONAL DESIGN SYSTEM</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Drawer Toggle
+    const nav = document.getElementById("siteNav");
+    const toggle = document.getElementById("mobileToggle");
+    toggle?.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    // Optical Waveguide Canvas Simulator
+    const canvas = document.getElementById("rayCanvas");
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      let animationId;
+
+      function resizeCanvas() {
+        canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+        canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      let step = 0;
+      function drawWave() {
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        // Dark grid background
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 24) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+
+        // Draw multiple coherent laser rays entering through center slit
+        const rays = [
+          { freq: 0.04, amp: 22, color: "rgba(242, 74, 18, 0.8)", speed: 0.05 },
+          { freq: 0.03, amp: 35, color: "rgba(242, 74, 18, 0.4)", speed: 0.03 },
+          { freq: 0.06, amp: 14, color: "rgba(255, 255, 255, 0.6)", speed: 0.07 }
+        ];
+
+        rays.forEach(ray => {
+          ctx.beginPath();
+          ctx.strokeStyle = ray.color;
+          ctx.lineWidth = 2;
+          for (let x = 0; x < w; x++) {
+            const y = (h / 2) + Math.sin(x * ray.freq + step * ray.speed) * ray.amp * (x / w);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        });
+
+        // Center optical slit focal line
+        ctx.strokeStyle = "rgba(242, 74, 18, 0.9)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.25, 10);
+        ctx.lineTo(w * 0.25, h - 10);
+        ctx.stroke();
+
+        step++;
+        animationId = requestAnimationFrame(drawWave);
+      }
+      drawWave();
+    }
+
+    // Spatial OS Controls
+    const fluxSlider = document.getElementById("fluxSlider");
+    const fluxVal = document.getElementById("fluxVal");
+    fluxSlider?.addEventListener("input", (e) => {
+      fluxVal.textContent = e.target.value + " NITS";
+    });
+
+    const depthSlider = document.getElementById("depthSlider");
+    const depthVal = document.getElementById("depthVal");
+    depthSlider?.addEventListener("input", (e) => {
+      depthVal.textContent = e.target.value + " METERS";
+    });
+
+    const angleSlider = document.getElementById("angleSlider");
+    const angleVal = document.getElementById("angleVal");
+    angleSlider?.addEventListener("input", (e) => {
+      angleVal.textContent = e.target.value + "° BRAGG";
+    });
+
+    // Interactive Slit Aperture Blueprint Slider
+    const apSlider = document.getElementById("apertureSlider");
+    const apLabel = document.getElementById("apertureLabel");
+    const svgPath = document.getElementById("svgPath");
+    const apMetric = document.getElementById("apertureMetric");
+
+    apSlider?.addEventListener("input", (e) => {
+      const width = parseInt(e.target.value, 10);
+      const half = width / 2;
+      const left = 50 - half;
+      const right = 50 + half;
+      apLabel.textContent = width + "u";
+      apMetric.textContent = `SLIT APERTURE: ${width} UNITS (${width}% RATIO)`;
+      // Update SVG path with new aperture width
+      svgPath.setAttribute("d", `M 0 0 H 100 V 100 H 0 Z M ${left} 20 H ${right} V 80 H ${left} Z`);
+    });
+
+    // Copy SVG Button
+    const copyBtn = document.getElementById("copySvgBtn");
+    copyBtn?.addEventListener("click", () => {
+      const d = svgPath.getAttribute("d");
+      const fullSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="currentColor" fill-rule="evenodd" d="${d}"/></svg>`;
+      navigator.clipboard.writeText(fullSvg).then(() => {
+        copyBtn.textContent = "Copied SVG!";
+        setTimeout(() => copyBtn.textContent = "Copy Vector Code", 2000);
+      });
+    });
+  </script>
+</body>
+</html>
