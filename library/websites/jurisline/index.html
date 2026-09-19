@@ -1,0 +1,3907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jurisline — AI Client Operations Infrastructure for Law Firms</title>
+  
+  <!-- Privacy & No Search Indexing -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Newsreader (Editorial Serif) + Plus Jakarta Sans + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- GSAP for scroll motion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS Tokens & Reset
+       ========================================================================== */
+    :root {
+      --color-canvas-light: #FAF9F5;
+      --color-surface-light: #FFFFFF;
+      --color-surface-subtle: #F3F2EB;
+      --color-canvas-dark: #16241E;
+      --color-surface-dark: #1D2F27;
+      --color-surface-dark-alt: #243B30;
+      --color-card-dark: #192921;
+      
+      --color-ink-primary: #151C18;
+      --color-ink-secondary: #5C645F;
+      --color-ink-muted: #8E9892;
+      --color-ink-light: #F3F5F2;
+      --color-ink-light-muted: #9EB0A4;
+
+      --color-accent-lime: #D2EB36;
+      --color-accent-lime-hover: #E0F548;
+      --color-accent-forest: #1D2D27;
+      --color-accent-forest-hover: #273D35;
+
+      --color-border-light: rgba(21, 28, 24, 0.08);
+      --color-border-subtle: rgba(21, 28, 24, 0.05);
+      --color-border-dark: rgba(255, 255, 255, 0.08);
+      --color-border-dark-hover: rgba(255, 255, 255, 0.16);
+
+      --color-badge-green: #E8F7EE;
+      --color-badge-green-txt: #15803D;
+      --color-badge-amber: #FEF9C3;
+      --color-badge-amber-txt: #A16207;
+      --color-badge-blue: #E0F2FE;
+      --color-badge-blue-txt: #0369A1;
+      --color-badge-red: #FEECEB;
+      --color-badge-red-txt: #DC2626;
+
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 6px;
+      --radius-btn: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+      --shadow-dark: 0 24px 60px rgba(0, 0, 0, 0.35);
+
+      --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--color-canvas-light);
+      color: var(--color-ink-primary);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      background-color: var(--color-canvas-light);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+    .container-wide {
+      width: 100%;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 36px;
+      padding-right: 36px;
+    }
+
+    /* ==========================================================================
+       Header & Navigation
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 249, 245, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--color-border-light);
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--color-ink-primary);
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-accent-forest);
+      color: var(--color-accent-lime);
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      transition: color var(--transition-fast);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--color-ink-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-login {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-ink-primary);
+      padding: 9px 18px;
+      border: 1px solid var(--color-border-light);
+      background: #FFFFFF;
+      border-radius: var(--radius-btn);
+      transition: background var(--transition-fast);
+    }
+
+    .btn-login:hover {
+      background: var(--color-surface-subtle);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--color-accent-forest);
+      color: #FFFFFF;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius-btn);
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+      box-shadow: 0 2px 8px rgba(29, 45, 39, 0.12);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-forest-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(29, 45, 39, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #FFFFFF;
+      color: var(--color-ink-primary);
+      border: 1px solid var(--color-border-light);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-btn);
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-surface-subtle);
+      border-color: rgba(0, 0, 0, 0.16);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile Nav Toggle */
+    .mobile-nav-toggle {
+      display: none;
+      padding: 8px;
+    }
+
+    /* ==========================================================================
+       Hero Section with Dark Forest Split Floor
+       ========================================================================== */
+    .hero-section {
+      background: linear-gradient(to bottom, #FAF9F5 0%, #FAF9F5 620px, #16241E 620px, #16241E 100%);
+      padding-top: 56px;
+      padding-bottom: 72px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: flex-start;
+      margin-bottom: 64px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-ink-secondary);
+      margin-bottom: 24px;
+    }
+
+    .eyebrow-icon {
+      width: 14px;
+      height: 14px;
+      background: var(--color-accent-lime);
+      display: inline-block;
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+    }
+
+    .eyebrow-line {
+      display: inline-block;
+      width: 44px;
+      height: 1px;
+      background: var(--color-accent-lime);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 5.2vw, 4.4rem);
+      line-height: 1.08;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      color: var(--color-ink-primary);
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--color-ink-secondary);
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #927238;
+    }
+
+    .hero-trust svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* Right Column Float Card & Stat */
+    .hero-side-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-top: 10px;
+      position: relative;
+    }
+
+    .hero-stat-block {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-number {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(3.8rem, 6vw, 5.2rem);
+      font-weight: 400;
+      line-height: 1;
+      color: var(--color-ink-primary);
+    }
+
+    .stat-label-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-label {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+    }
+
+    .stat-vector {
+      width: 72px;
+      height: 38px;
+    }
+
+    /* Testimonial Bubble */
+    .testimonial-bubble-wrap {
+      max-width: 380px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .testimonial-bubble-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 36px;
+      width: 14px;
+      height: 14px;
+      background: #FFFFFF;
+      border-right: 1px solid var(--color-border-light);
+      border-bottom: 1px solid var(--color-border-light);
+      transform: rotate(45deg);
+    }
+
+    .bubble-quote {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--color-ink-primary);
+      margin-bottom: 0;
+    }
+
+    .bubble-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 24px;
+      align-self: flex-start;
+      padding-left: 12px;
+    }
+
+    .bubble-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border: 2px solid #FFFFFF;
+    }
+
+    .bubble-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+    }
+
+    .bubble-role {
+      font-size: 0.8125rem;
+      color: var(--color-ink-secondary);
+    }
+
+    /* ==========================================================================
+       The Master Hero Browser Window (Flagship Dashboard Specimen)
+       ========================================================================== */
+    .hero-mockup-wrapper {
+      position: relative;
+      margin-top: 12px;
+      z-index: 10;
+    }
+
+    .browser-window {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 28px 70px -12px rgba(22, 36, 30, 0.18), 0 10px 24px rgba(0, 0, 0, 0.05);
+      transition: transform var(--transition-smooth);
+    }
+
+    /* Window Titlebar */
+    .window-titlebar {
+      height: 44px;
+      background: #F7F6F2;
+      border-bottom: 1px solid var(--color-border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: var(--radius-full);
+    }
+
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27C93F; }
+
+    .window-url-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-sm);
+      padding: 4px 18px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      width: 320px;
+    }
+
+    .window-url-bar svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .window-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--color-ink-muted);
+    }
+
+    .window-actions-bar svg {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Dashboard Layout Inside Window */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 720px;
+      background: #FFFFFF;
+    }
+
+    /* Dashboard Sidebar */
+    .dash-sidebar {
+      background: #FAF9F6;
+      border-right: 1px solid var(--color-border-light);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .dash-workspace-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      border: 1px solid var(--color-border-light);
+      margin-bottom: 14px;
+    }
+
+    .dash-workspace-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ws-avatar {
+      width: 20px;
+      height: 20px;
+      background: var(--color-accent-forest);
+      color: #FFFFFF;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ws-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 130px;
+    }
+
+    .dash-search-input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      color: var(--color-ink-muted);
+      margin-bottom: 20px;
+    }
+
+    .kbd-shortcut {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      background: #F1EFE9;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: var(--color-ink-secondary);
+    }
+
+    .dash-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dash-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      transition: background var(--transition-fast), color var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .dash-nav-item:hover {
+      background: #F0EFEA;
+      color: var(--color-ink-primary);
+    }
+
+    .dash-nav-item.active {
+      background: #EAE8DF;
+      color: var(--color-ink-primary);
+      font-weight: 600;
+    }
+
+    .nav-label-group {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .nav-label-group svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .dash-subnav-list {
+      list-style: none;
+      padding-left: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 2px;
+      margin-bottom: 6px;
+    }
+
+    .dash-subnav-item {
+      font-size: 0.75rem;
+      color: var(--color-ink-secondary);
+      padding: 4px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .dash-subnav-item:hover {
+      color: var(--color-ink-primary);
+      background: #F0EFEA;
+    }
+
+    .dash-user-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .user-profile-wrap {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .user-avatar-sm {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+    }
+
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name-txt {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .user-email-txt {
+      font-size: 0.6875rem;
+      color: var(--color-ink-muted);
+    }
+
+    /* Dashboard Main Stage */
+    .dash-main-stage {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background: #FFFFFF;
+    }
+
+    .dash-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dash-title-group h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .dash-title-group p {
+      font-size: 0.8125rem;
+      color: var(--color-ink-muted);
+    }
+
+    .dash-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .select-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #FAF9F6;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      cursor: pointer;
+    }
+
+    .btn-export {
+      background: var(--color-accent-forest);
+      color: #FFFFFF;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast);
+    }
+
+    .btn-export:hover {
+      background: var(--color-accent-forest-hover);
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .kpi-card {
+      background: #FAF9F6;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-ink-secondary);
+      margin-bottom: 8px;
+    }
+
+    .kpi-metric-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .kpi-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-badge {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--color-badge-green-txt);
+      background: var(--color-badge-green);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .kpi-sparkbar {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 18px;
+      margin-top: 6px;
+    }
+
+    .spark-col {
+      flex: 1;
+      background: #DDDCD5;
+      border-radius: 1px;
+    }
+
+    .spark-col.active {
+      background: #759B87;
+    }
+
+    /* Center Section: Main Chart + Right Panels */
+    .dash-analytics-row {
+      display: grid;
+      grid-template-columns: 1.45fr 0.95fr;
+      gap: 16px;
+    }
+
+    .chart-box {
+      background: #FAF9F6;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-head-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .chart-head-left h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .chart-head-left p {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chart-tabs {
+      display: flex;
+      gap: 4px;
+      background: #EDECE6;
+      padding: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    .chart-tab {
+      padding: 4px 10px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--color-ink-secondary);
+      border-radius: 4px;
+      transition: all var(--transition-fast);
+    }
+
+    .chart-tab.active {
+      background: #FFFFFF;
+      color: var(--color-ink-primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .svg-chart-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      margin-top: 10px;
+    }
+
+    .svg-chart-container svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 14px;
+      font-size: 0.6875rem;
+      color: var(--color-ink-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-line-solid {
+      width: 16px;
+      height: 2px;
+      background: #3B8266;
+    }
+
+    .legend-line-dashed {
+      width: 16px;
+      height: 2px;
+      border-top: 2px dashed #9EB0A4;
+    }
+
+    /* Right Metrics Panels */
+    .dash-side-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .progress-box {
+      background: #FAF9F6;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .progress-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+      margin-bottom: 12px;
+    }
+
+    .progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .prog-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .prog-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--color-ink-secondary);
+    }
+
+    .prog-bar-track {
+      width: 100%;
+      height: 6px;
+      background: #E5E3DC;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .prog-bar-fill {
+      height: 100%;
+      background: #2D5844;
+      border-radius: var(--radius-full);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .prog-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--color-border-light);
+      font-size: 0.75rem;
+    }
+
+    .prog-footer-stat {
+      font-weight: 600;
+      color: var(--color-badge-green-txt);
+    }
+
+    .prog-footer-note {
+      color: var(--color-ink-muted);
+    }
+
+    /* Bottom Activity Table */
+    .table-box {
+      background: #FAF9F6;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      overflow-x: auto;
+    }
+
+    .table-head-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .table-head-row h4 {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .table-view-all {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-ink-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .table-view-all:hover {
+      color: var(--color-ink-primary);
+    }
+
+    .activity-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+    }
+
+    .activity-table th {
+      text-align: left;
+      font-weight: 500;
+      color: var(--color-ink-muted);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .activity-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--color-border-light);
+      color: var(--color-ink-primary);
+    }
+
+    .activity-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .caller-desc {
+      font-weight: 500;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+    }
+
+    .tag-success {
+      background: var(--color-badge-green);
+      color: var(--color-badge-green-txt);
+    }
+
+    .tag-unsuccessful {
+      background: var(--color-badge-red);
+      color: var(--color-badge-red-txt);
+    }
+
+    .tag-booked {
+      background: var(--color-badge-blue);
+      color: var(--color-badge-blue-txt);
+    }
+
+    /* ==========================================================================
+       The Deep Dark Forest Transition Section
+       ========================================================================== */
+    .dark-ground {
+      background-color: var(--color-canvas-dark);
+      color: var(--color-ink-light);
+      padding-top: 110px;
+      padding-bottom: 120px;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 740px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 64px;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-accent-lime);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* The Silent Bottleneck: 3 Pain Points Cards */
+    .bottleneck-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 96px;
+    }
+
+    .bottleneck-card {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth), border-color var(--transition-smooth);
+    }
+
+    .bottleneck-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-border-dark-hover);
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-accent-lime);
+      margin-bottom: 24px;
+    }
+
+    .bottleneck-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.25;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+    }
+
+    .bottleneck-card p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-ink-light-muted);
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .card-metric-badge {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      background: rgba(210, 235, 54, 0.1);
+      border: 1px solid rgba(210, 235, 54, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 0.8125rem;
+      color: var(--color-accent-lime);
+      align-self: flex-start;
+    }
+
+    /* ==========================================================================
+       Interactive Live Voice Simulator
+       ========================================================================== */
+    .simulator-section {
+      background: var(--color-card-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      margin-bottom: 110px;
+      box-shadow: var(--shadow-dark);
+    }
+
+    .sim-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .sim-title-group h3 {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      font-weight: 400;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .sim-title-group p {
+      font-size: 0.9375rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    .sim-scenario-pills {
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border-dark);
+    }
+
+    .sim-pill {
+      padding: 8px 16px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-ink-light-muted);
+      border-radius: var(--radius-full);
+      transition: all var(--transition-fast);
+    }
+
+    .sim-pill.active {
+      background: var(--color-accent-lime);
+      color: var(--color-ink-primary);
+    }
+
+    .sim-body-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 36px;
+      align-items: stretch;
+    }
+
+    /* Left: Voice Player & Visualizer */
+    .sim-audio-card {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .audio-status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-accent-lime);
+      margin-bottom: 24px;
+    }
+
+    .status-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-lime);
+      box-shadow: 0 0 10px var(--color-accent-lime);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .waveform-visualizer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 72px;
+      margin-bottom: 28px;
+      padding: 0 12px;
+    }
+
+    .wave-bar {
+      width: 4px;
+      height: 12px;
+      background: var(--color-accent-lime);
+      border-radius: 2px;
+      transition: height 0.12s ease;
+    }
+
+    .wave-bar.playing {
+      animation: jumpWave 0.6s infinite ease-in-out alternate;
+    }
+
+    @keyframes jumpWave {
+      0% { height: 8px; }
+      100% { height: 56px; }
+    }
+
+    .audio-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-play-sim {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-lime);
+      color: var(--color-ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 16px rgba(210, 235, 54, 0.3);
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+
+    .btn-play-sim:hover {
+      transform: scale(1.05);
+      background: var(--color-accent-lime-hover);
+    }
+
+    .audio-telemetry {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sim-caller-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    .sim-caller-sub {
+      font-size: 0.8125rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* Right: Real-time Transcript & Extracted Matter Card */
+    .sim-output-card {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .transcript-scroller {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .bubble-client {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border-dark);
+      color: var(--color-ink-light);
+      align-self: flex-start;
+      max-width: 90%;
+    }
+
+    .bubble-agent {
+      background: rgba(210, 235, 54, 0.12);
+      border: 1px solid rgba(210, 235, 54, 0.2);
+      color: #FFFFFF;
+      align-self: flex-end;
+      max-width: 90%;
+    }
+
+    .speaker-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    /* Matter Extraction Dossier Card */
+    .dossier-card {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dossier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-accent-lime);
+      font-family: var(--font-mono);
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      font-size: 0.8125rem;
+    }
+
+    .dossier-label {
+      color: var(--color-ink-light-muted);
+      font-size: 0.75rem;
+    }
+
+    .dossier-val {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       Interactive ROI & Lost Revenue Recovery Calculator
+       ========================================================================== */
+    .calculator-box {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 110px;
+    }
+
+    .calc-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .slider-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    .slider-val-badge {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-accent-lime);
+    }
+
+    .custom-range {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-accent-lime);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(210, 235, 54, 0.5);
+    }
+
+    .calc-results-card {
+      background: var(--color-card-dark);
+      border: 1px solid rgba(210, 235, 54, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .calc-res-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-ink-light-muted);
+    }
+
+    .calc-big-revenue {
+      font-family: var(--font-serif);
+      font-size: 3.2rem;
+      line-height: 1;
+      font-weight: 500;
+      color: var(--color-accent-lime);
+    }
+
+    .calc-sub-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--color-border-dark);
+    }
+
+    .sub-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .sub-stat-lbl {
+      font-size: 0.75rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* ==========================================================================
+       Integrations & Ecosystem Grid
+       ========================================================================== */
+    .integrations-wrap {
+      margin-bottom: 110px;
+    }
+
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .integration-tile {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all var(--transition-fast);
+    }
+
+    .integration-tile:hover {
+      background: var(--color-surface-dark-alt);
+      border-color: var(--color-border-dark-hover);
+      transform: translateY(-2px);
+    }
+
+    .integration-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #FFFFFF;
+      font-size: 1.1rem;
+    }
+
+    .integration-info h4 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .integration-info p {
+      font-size: 0.75rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* ==========================================================================
+       Comparison Matrix: Legacy Answering vs Jurisline
+       ========================================================================== */
+    .comparison-section {
+      margin-bottom: 110px;
+    }
+
+    .comparison-table-wrap {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+    }
+
+    .comp-table th {
+      padding: 20px 24px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 1px solid var(--color-border-dark);
+      color: #FFFFFF;
+    }
+
+    .comp-table th.col-highlight {
+      background: rgba(210, 235, 54, 0.08);
+      color: var(--color-accent-lime);
+      border-bottom: 2px solid var(--color-accent-lime);
+    }
+
+    .comp-table td {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--color-border-dark);
+      color: var(--color-ink-light-muted);
+    }
+
+    .comp-table td.col-highlight {
+      background: rgba(210, 235, 54, 0.03);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .comp-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ==========================================================================
+       Managing Partner Testimonials
+       ========================================================================== */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 110px;
+    }
+
+    .test-card {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .test-quote {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      line-height: 1.55;
+      color: #FFFFFF;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .test-profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .test-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .test-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .test-firm {
+      font-size: 0.8125rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    /* ==========================================================================
+       Pricing Tiers
+       ========================================================================== */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 110px;
+    }
+
+    .pricing-card {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--color-accent-lime);
+      background: var(--color-surface-dark-alt);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 30px;
+      background: var(--color-accent-lime);
+      color: var(--color-ink-primary);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .tier-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+    }
+
+    .tier-desc {
+      font-size: 0.875rem;
+      color: var(--color-ink-light-muted);
+      margin-bottom: 24px;
+      min-height: 42px;
+    }
+
+    .tier-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .tier-price {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+
+    .tier-period {
+      font-size: 0.875rem;
+      color: var(--color-ink-light-muted);
+    }
+
+    .tier-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-grow: 1;
+    }
+
+    .tier-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--color-ink-light);
+    }
+
+    .tier-feature-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--color-accent-lime);
+      fill: none;
+      stroke-width: 2.5;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       FAQ Accordion
+       ========================================================================== */
+    .faq-wrap {
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 110px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: var(--color-surface-dark);
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color var(--transition-fast);
+    }
+
+    .faq-item:hover {
+      border-color: var(--color-border-dark-hover);
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 22px 26px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .faq-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--color-accent-lime);
+      fill: none;
+      stroke-width: 2;
+      transition: transform var(--transition-fast);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 26px;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--color-ink-light-muted);
+    }
+
+    .faq-item.active .faq-answer {
+      padding-bottom: 22px;
+    }
+
+    /* ==========================================================================
+       Final CTA Banner
+       ========================================================================== */
+    .cta-banner {
+      background: linear-gradient(135deg, #1C3328 0%, #15251F 100%);
+      border: 1px solid rgba(210, 235, 54, 0.25);
+      border-radius: var(--radius-xl);
+      padding: 72px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(210, 235, 54, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+
+    .cta-subtitle {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--color-ink-light-muted);
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 36px;
+    }
+
+    .cta-actions-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-lime {
+      background: var(--color-accent-lime);
+      color: var(--color-ink-primary);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(210, 235, 54, 0.35);
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+
+    .btn-cta-lime:hover {
+      background: var(--color-accent-lime-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-cta-ghost {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--color-border-dark-hover);
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background var(--transition-fast);
+    }
+
+    .btn-cta-ghost:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    /* ==========================================================================
+       Site Footer
+       ========================================================================== */
+    .site-footer {
+      background: #0F1A15;
+      color: var(--color-ink-light-muted);
+      padding-top: 80px;
+      padding-bottom: 40px;
+      border-top: 1px solid var(--color-border-dark);
+      font-size: 0.875rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: 48px;
+      margin-bottom: 64px;
+    }
+
+    .footer-brand h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand p {
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+
+    .system-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(39, 201, 63, 0.1);
+      border: 1px solid rgba(39, 201, 63, 0.25);
+      border-radius: var(--radius-full);
+      padding: 4px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #27C93F;
+    }
+
+    .status-dot-green {
+      width: 6px;
+      height: 6px;
+      background: #27C93F;
+      border-radius: 50%;
+    }
+
+    .footer-col h4 {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #FFFFFF;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--color-ink-light-muted);
+      transition: color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border-dark);
+      font-size: 0.8125rem;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .legal-disclaimer {
+      max-width: 600px;
+      line-height: 1.5;
+      color: #6C7A72;
+    }
+
+    /* ==========================================================================
+       Interactive Live Demo Modal
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 18, 14, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 540px;
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+      animation: modalPop 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F4F3ED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-ink-primary);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: var(--color-ink-primary);
+    }
+
+    .modal-desc {
+      font-size: 0.875rem;
+      color: var(--color-ink-secondary);
+      margin-bottom: 24px;
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-ink-primary);
+    }
+
+    .form-field input, .form-field select {
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border-light);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      outline: none;
+    }
+
+    .form-field input:focus, .form-field select:focus {
+      border-color: var(--color-accent-forest);
+    }
+
+    /* ==========================================================================
+       Responsive Rules
+       ========================================================================== */
+    @media (max-width: 1080px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .hero-side-card {
+        align-items: flex-start;
+      }
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+      .dash-sidebar {
+        display: none;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dash-analytics-row {
+        grid-template-columns: 1fr;
+      }
+      .bottleneck-grid {
+        grid-template-columns: 1fr;
+      }
+      .sim-body-grid {
+        grid-template-columns: 1fr;
+      }
+      .calculator-box {
+        grid-template-columns: 1fr;
+      }
+      .integrations-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .btn-login {
+        display: none;
+      }
+      .mobile-nav-toggle {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .integrations-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="site-header">
+    <div class="container-wide nav-inner">
+      <a href="#" class="brand-logo" aria-label="Jurisline home">
+        <span class="brand-mark">
+          <!-- Stylized Scales / Precision J mark -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18"></path>
+            <path d="M5 8h14"></path>
+            <path d="M3 13l3-5 3 5a3 3 0 0 1-6 0z"></path>
+            <path d="M15 13l3-5 3 5a3 3 0 0 1-6 0z"></path>
+          </svg>
+        </span>
+        <span>jurisline</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#how-it-works" class="nav-link">Products</a></li>
+        <li><a href="#how-it-works" class="nav-link">How it works</a></li>
+        <li><a href="#voice-simulator" class="nav-link">Voice Simulator</a></li>
+        <li><a href="#calculator" class="nav-link">ROI Calculator</a></li>
+        <li><a href="#integrations" class="nav-link">Integrations</a></li>
+        <li><a href="#security" class="nav-link">Security</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-login" onclick="openDemoModal('Law Firm Partner Portal')">Login</button>
+        <button class="btn-primary" onclick="openDemoModal('Book a Live Demo')">
+          <span>Book a demo</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         Hero Section
+         ========================================================================== -->
+    <section class="hero-section">
+      <div class="container-wide">
+        
+        <!-- Top Hero Grid: Headline vs Floating Metric & Social Proof -->
+        <div class="hero-grid">
+          
+          <!-- Left Column: Primary Copy & CTAs -->
+          <div class="hero-main-col">
+            <div class="hero-eyebrow">
+              <span class="eyebrow-icon"></span>
+              <span>AI INFRASTRUCTURE FOR LAW FIRMS</span>
+              <span class="eyebrow-line"></span>
+            </div>
+
+            <h1 class="hero-title">From First Call To<br />Closed Case</h1>
+
+            <p class="hero-subtitle">
+              Every call answered. Every case moving. Every lead worked. Jurisline is the AI layer that runs your firm's client operations end to end.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="openDemoModal('Priority Consultation')">
+                <span>Book a demo</span>
+              </button>
+              
+              <button class="btn-secondary" onclick="scrollToSimulator()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>Call a live agent</span>
+              </button>
+            </div>
+
+            <div class="hero-trust">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span>Trusted by 200+ Law Firms Globally</span>
+            </div>
+          </div>
+
+          <!-- Right Column: 60% Metric & Eleanor Vance Testimonial Bubble -->
+          <div class="hero-side-card">
+            <div class="hero-stat-block">
+              <div class="stat-number">60%</div>
+              <div class="stat-label-wrap">
+                <span class="stat-label">Leads revived</span>
+                <!-- Upward chartreuse vector zigzag arrow -->
+                <svg class="stat-vector" viewBox="0 0 80 40" fill="none">
+                  <path d="M2 36 L22 28 L36 34 L56 12 L68 18 L76 4" stroke="#D2EB36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <polyline points="68 4 76 4 76 12" stroke="#D2EB36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Testimonial Speech Bubble -->
+            <div class="testimonial-bubble-wrap">
+              <p class="bubble-quote">
+                “Jurisline handled all our hassle and we were able to focus on the courtroom rather than the managerial part.”
+              </p>
+            </div>
+
+            <div class="bubble-author">
+              <img src="assets/vance.jpg" alt="Eleanor Vance" class="bubble-avatar" />
+              <div>
+                <div class="bubble-name">Eleanor Vance</div>
+                <div class="bubble-role">Managing Partner, Vance &amp; Sterling LLP</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ======================================================================
+             The Master Browser Window Mockup (Faithful Re-creation of Reference)
+             ====================================================================== -->
+        <div class="hero-mockup-wrapper">
+          <div class="browser-window">
+            
+            <!-- Window Title Bar -->
+            <div class="window-titlebar">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+
+              <div class="window-url-bar">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>www.jurisline.ai/overview</span>
+              </div>
+
+              <div class="window-actions-bar">
+                <!-- Share, Plus, Window icons -->
+                <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+              </div>
+            </div>
+
+            <!-- Inner Dashboard Screen -->
+            <div class="dashboard-layout">
+              
+              <!-- Left Sidebar -->
+              <aside class="dash-sidebar">
+                <div>
+                  <div class="dash-workspace-switcher">
+                    <div class="dash-workspace-info">
+                      <span class="ws-avatar">P</span>
+                      <span class="ws-title">Pearson Workspace</span>
+                    </div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+
+                  <div class="dash-search-input">
+                    <span>Quick actions...</span>
+                    <span class="kbd-shortcut">⌘K</span>
+                  </div>
+
+                  <ul class="dash-nav-list">
+                    <li class="dash-nav-item active">
+                      <span class="nav-label-group">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span>Overview</span>
+                      </span>
+                    </li>
+                    <li class="dash-nav-item">
+                      <span class="nav-label-group">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span>Conversations</span>
+                      </span>
+                    </li>
+                    <li class="dash-nav-item">
+                      <span class="nav-label-group">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span>Leads</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul class="dash-subnav-list">
+                    <li class="dash-subnav-item">♡ Revive</li>
+                  </ul>
+
+                  <ul class="dash-nav-list">
+                    <li class="dash-nav-item">
+                      <span class="nav-label-group">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                        <span>Cases</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul class="dash-subnav-list">
+                    <li class="dash-subnav-item">⊞ Client health</li>
+                    <li class="dash-subnav-item">↗ Upload links</li>
+                  </ul>
+
+                  <ul class="dash-nav-list">
+                    <li class="dash-nav-item">
+                      <span class="nav-label-group">
+                        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        <span>Automations</span>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Bottom User Profile in Sidebar -->
+                <div class="dash-user-bar">
+                  <div class="user-profile-wrap">
+                    <img src="assets/vance.jpg" alt="Amy Lina" class="user-avatar-sm" />
+                    <div class="user-info-text">
+                      <span class="user-name-txt">Amy Lina</span>
+                      <span class="user-email-txt">amy@jurisline.ai</span>
+                    </div>
+                  </div>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </aside>
+
+              <!-- Main Dashboard Area -->
+              <div class="dash-main-stage">
+                
+                <!-- Stage Header -->
+                <div class="dash-header-row">
+                  <div class="dash-title-group">
+                    <h2>Overview</h2>
+                    <p>Calls, leads and case activity at a glance</p>
+                  </div>
+                  <div class="dash-header-actions">
+                    <button class="select-pill" id="dateFilterBtn">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                      <span>Last 30 days</span>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <button class="btn-export" onclick="exportDataNotice()">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      <span>Export report</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 4 KPI Cards -->
+                <div class="kpi-grid">
+                  
+                  <div class="kpi-card">
+                    <div class="kpi-label">Total calls</div>
+                    <div class="kpi-metric-row">
+                      <span class="kpi-val" id="kpiTotalCalls">70</span>
+                      <span class="kpi-badge">+12%</span>
+                    </div>
+                    <div class="kpi-sparkbar">
+                      <span class="spark-col" style="height: 30%"></span>
+                      <span class="spark-col" style="height: 45%"></span>
+                      <span class="spark-col" style="height: 40%"></span>
+                      <span class="spark-col" style="height: 60%"></span>
+                      <span class="spark-col" style="height: 75%"></span>
+                      <span class="spark-col active" style="height: 90%"></span>
+                    </div>
+                  </div>
+
+                  <div class="kpi-card">
+                    <div class="kpi-label">Qualified leads</div>
+                    <div class="kpi-metric-row">
+                      <span class="kpi-val" id="kpiQualified">24</span>
+                      <span class="kpi-badge">+8%</span>
+                    </div>
+                    <div class="kpi-sparkbar">
+                      <span class="spark-col" style="height: 25%"></span>
+                      <span class="spark-col" style="height: 50%"></span>
+                      <span class="spark-col" style="height: 55%"></span>
+                      <span class="spark-col" style="height: 70%"></span>
+                      <span class="spark-col" style="height: 60%"></span>
+                      <span class="spark-col active" style="height: 85%"></span>
+                    </div>
+                  </div>
+
+                  <div class="kpi-card">
+                    <div class="kpi-label">Appointments booked</div>
+                    <div class="kpi-metric-row">
+                      <span class="kpi-val" id="kpiBooked">18</span>
+                      <span class="kpi-badge">+15%</span>
+                    </div>
+                    <div class="kpi-sparkbar">
+                      <span class="spark-col" style="height: 35%"></span>
+                      <span class="spark-col" style="height: 40%"></span>
+                      <span class="spark-col" style="height: 65%"></span>
+                      <span class="spark-col" style="height: 50%"></span>
+                      <span class="spark-col" style="height: 80%"></span>
+                      <span class="spark-col active" style="height: 95%"></span>
+                    </div>
+                  </div>
+
+                  <div class="kpi-card">
+                    <div class="kpi-label">Success rate</div>
+                    <div class="kpi-metric-row">
+                      <span class="kpi-val" id="kpiRate">87%</span>
+                      <span class="kpi-badge">+4%</span>
+                    </div>
+                    <div class="kpi-sparkbar">
+                      <span class="spark-col" style="height: 60%"></span>
+                      <span class="spark-col" style="height: 70%"></span>
+                      <span class="spark-col" style="height: 75%"></span>
+                      <span class="spark-col" style="height: 80%"></span>
+                      <span class="spark-col" style="height: 85%"></span>
+                      <span class="spark-col active" style="height: 92%"></span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Center Chart & Side Panels -->
+                <div class="dash-analytics-row">
+                  
+                  <!-- Main Call Activity Graph -->
+                  <div class="chart-box">
+                    <div class="chart-head-row">
+                      <div class="chart-head-left">
+                        <h3>Call activity</h3>
+                        <p><span id="chartTotalLabel">70</span> Total calls <span class="kpi-badge">+12%</span></p>
+                      </div>
+                      <div class="chart-tabs">
+                        <button class="chart-tab" onclick="switchChartTab('7d', this)">7 days</button>
+                        <button class="chart-tab active" onclick="switchChartTab('30d', this)">30 days</button>
+                        <button class="chart-tab" onclick="switchChartTab('3m', this)">3 months</button>
+                      </div>
+                    </div>
+
+                    <!-- Responsive SVG Area Chart -->
+                    <div class="svg-chart-container" id="chartWrapper">
+                      <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="areaGreenGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#3B8266" stop-opacity="0.32"></stop>
+                            <stop offset="100%" stop-color="#3B8266" stop-opacity="0.0"></stop>
+                          </linearGradient>
+                        </defs>
+                        
+                        <!-- Grid Lines -->
+                        <line x1="30" y1="30" x2="590" y2="30" stroke="#E5E4DC" stroke-width="0.7"></line>
+                        <line x1="30" y1="75" x2="590" y2="75" stroke="#E5E4DC" stroke-width="0.7"></line>
+                        <line x1="30" y1="120" x2="590" y2="120" stroke="#E5E4DC" stroke-width="0.7"></line>
+                        <line x1="30" y1="160" x2="590" y2="160" stroke="#DDDCD5" stroke-width="1"></line>
+
+                        <!-- Y-Axis Labels -->
+                        <text x="12" y="34" font-size="10" fill="#9CA3AF" font-family="Plus Jakarta Sans">8</text>
+                        <text x="12" y="79" font-size="10" fill="#9CA3AF" font-family="Plus Jakarta Sans">6</text>
+                        <text x="12" y="124" font-size="10" fill="#9CA3AF" font-family="Plus Jakarta Sans">4</text>
+                        <text x="12" y="163" font-size="10" fill="#9CA3AF" font-family="Plus Jakarta Sans">0</text>
+
+                        <!-- Previous Period Dotted Curve -->
+                        <path id="prevPeriodPath" d="M30,150 Q90,135 150,140 T270,125 T390,135 T510,110 T590,120" fill="none" stroke="#B0BEB6" stroke-width="1.8" stroke-dasharray="3,3"></path>
+
+                        <!-- Current Period Area Gradient -->
+                        <path id="currentAreaPath" d="M30,155 L30,150 Q80,138 120,142 T210,120 T300,105 T390,115 T480,85 T540,110 L585,55 L585,160 L30,160 Z" fill="url(#areaGreenGrad)"></path>
+
+                        <!-- Current Period Line Curve -->
+                        <path id="currentLinePath" d="M30,150 Q80,138 120,142 T210,120 T300,105 T390,115 T480,85 T540,110 L585,55" fill="none" stroke="#2D6A50" stroke-width="2.4" stroke-linecap="round"></path>
+
+                        <!-- Date Labels -->
+                        <text x="80" y="174" font-size="9" fill="#9CA3AF" font-family="Plus Jakarta Sans">Aug 4</text>
+                        <text x="230" y="174" font-size="9" fill="#9CA3AF" font-family="Plus Jakarta Sans">Aug 11</text>
+                        <text x="380" y="174" font-size="9" fill="#9CA3AF" font-family="Plus Jakarta Sans">Aug 18</text>
+                        <text x="500" y="174" font-size="9" fill="#9CA3AF" font-family="Plus Jakarta Sans">Aug 25</text>
+                        <text x="565" y="174" font-size="9" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sep 2</text>
+                      </svg>
+                    </div>
+
+                    <div class="chart-legend">
+                      <div class="legend-item">
+                        <span class="legend-line-solid"></span>
+                        <span>Current period</span>
+                      </div>
+                      <div class="legend-item">
+                        <span class="legend-line-dashed"></span>
+                        <span>Previous period</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right Panels: Call Outcomes & Lead Pipeline -->
+                  <div class="dash-side-panels">
+                    
+                    <!-- Call Outcomes Progress Box -->
+                    <div class="progress-box">
+                      <div class="progress-box-header">
+                        <span>Call outcomes</span>
+                        <span style="font-weight: 500; color: #8E9892;">70 total</span>
+                      </div>
+
+                      <div class="progress-list">
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Appointment booked</span>
+                            <span>26%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 26%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Qualified</span>
+                            <span>34%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 34%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Follow-up needed</span>
+                            <span>16%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 16%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Not a fit</span>
+                            <span>11%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 11%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Missed</span>
+                            <span>7%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 7%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Other</span>
+                            <span>6%</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 6%;"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="prog-footer">
+                        <span class="prog-footer-stat">60% positive outcomes</span>
+                        <span class="prog-footer-note">◷ 16 calls pending</span>
+                      </div>
+                    </div>
+
+                    <!-- Lead Pipeline -->
+                    <div class="progress-box" style="padding-bottom: 12px;">
+                      <div class="progress-box-header">
+                        <span>Lead pipeline</span>
+                        <span style="font-weight: 500; color: #8E9892;">92 retained</span>
+                      </div>
+
+                      <div class="progress-list">
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>New</span>
+                            <span>38</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 78%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Qualified</span>
+                            <span>24</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 55%;"></div>
+                          </div>
+                        </div>
+
+                        <div class="prog-item">
+                          <div class="prog-label-row">
+                            <span>Booked</span>
+                            <span>18</span>
+                          </div>
+                          <div class="prog-bar-track">
+                            <div class="prog-bar-fill" style="width: 42%;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <!-- Bottom Recent Conversations Table -->
+                <div class="table-box">
+                  <div class="table-head-row">
+                    <h4>Recent conversations</h4>
+                    <a href="#how-it-works" class="table-view-all">View all &rarr;</a>
+                  </div>
+
+                  <table class="activity-table">
+                    <thead>
+                      <tr>
+                        <th>Caller</th>
+                        <th>Channel</th>
+                        <th>Outcome</th>
+                        <th>Duration</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="caller-desc">Estate-planning inquiry — newlywed couple</td>
+                        <td>Inbound</td>
+                        <td><span class="status-tag tag-success">Successful</span></td>
+                        <td>3:19</td>
+                        <td>5 hours ago</td>
+                      </tr>
+                      <tr>
+                        <td class="caller-desc">Wrong number — caller was trying to reach another firm</td>
+                        <td>Inbound</td>
+                        <td><span class="status-tag tag-unsuccessful">Unsuccessful</span></td>
+                        <td>0:29</td>
+                        <td>15 hours ago</td>
+                      </tr>
+                      <tr>
+                        <td class="caller-desc">Commercial breach of contract — logistics provider</td>
+                        <td>Inbound</td>
+                        <td><span class="status-tag tag-booked">Consultation Booked</span></td>
+                        <td>4:42</td>
+                        <td>1 day ago</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         The Deep Dark Forest Ground Section
+         ========================================================================== -->
+    <div class="dark-ground">
+      <div class="container-wide">
+
+        <!-- Section: The Silent Bottlenecks in Legal Client Operations -->
+        <section id="how-it-works" style="margin-bottom: 96px;">
+          <div class="section-header">
+            <span class="section-eyebrow">The Intake Gap</span>
+            <h2 class="section-title">Where High-Value Retainers Disappear</h2>
+            <p class="section-desc">
+              Law firms spend thousands on client acquisition only to leak 40% of their pipeline through delayed callbacks, associate phone tag, and manual conflict checks.
+            </p>
+          </div>
+
+          <div class="bottleneck-grid">
+            
+            <div class="bottleneck-card">
+              <div class="card-num">01 / SPEED TO RETENTION</div>
+              <h3>The 15-Minute Rule</h3>
+              <p>
+                82% of prospective clients hire the first competent law firm that speaks with them. When calls roll over to voicemail or generic answering desks, they dial your closest competitor immediately.
+              </p>
+              <div class="card-metric-badge">
+                <span>⚡ Sub-second pick-up rate</span>
+              </div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">02 / BILLABLE DRAIN</div>
+              <h3>Associate Phone Tag</h3>
+              <p>
+                High-billing associates lose 12+ hours each week screening unqualified leads, chasing callback schedules, and repeating boilerplate firm disclosures before knowing if a case meets threshold.
+              </p>
+              <div class="card-metric-badge">
+                <span>⏱ 14 hrs/associate recovered</span>
+              </div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">03 / CONFLICT FRICTION</div>
+              <h3>4-Hour Database Lag</h3>
+              <p>
+                Manually cross-referencing party names against adverse client registries in Clio or Filevine slows down client retention. Jurisline performs instant live conflict clearance in 340 milliseconds.
+              </p>
+              <div class="card-metric-badge">
+                <span>🛡 340ms Conflict clearance</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: The Autonomous 3-Step Pipeline -->
+        <section style="margin-bottom: 110px;">
+          <div class="section-header">
+            <span class="section-eyebrow">The Architecture</span>
+            <h2 class="section-title">End-to-End Client Operations</h2>
+            <p class="section-desc">
+              From the instant a phone rings to executed engagement letter and retainer deposit, Jurisline coordinates your intake workflow with institutional precision.
+            </p>
+          </div>
+
+          <div class="bottleneck-grid">
+            <div class="bottleneck-card">
+              <div class="card-num">STAGE 01</div>
+              <h3>Empathetic Legal Voice Agent</h3>
+              <p>
+                Trained on legal procedure, jurisdictional statute limitations, and state bar ethical boundaries. Our conversational voice models speak with professional composure, triage urgency, and collect vital facts.
+              </p>
+              <div class="card-metric-badge">
+                <span>24/7/365 Zero-downtime intake</span>
+              </div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">STAGE 02</div>
+              <h3>Adverse Party Conflict Check</h3>
+              <p>
+                As the caller speaks, Jurisline queries your practice management system in real time. Adverse parties, co-defendants, and past representations are checked before any privileged facts are exchanged.
+              </p>
+              <div class="card-metric-badge">
+                <span>ABA Model Rule 1.6 compliant</span>
+              </div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">STAGE 03</div>
+              <h3>Direct Retainer &amp; Calendar Booking</h3>
+              <p>
+                Qualified prospects are immediately booked onto the appropriate partner's calendar. Jurisline auto-generates custom engagement letters, collects e-signatures, and captures consultation fees via LawPay.
+              </p>
+              <div class="card-metric-badge">
+                <span>DocuSign &amp; LawPay embedded</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Interactive Live Audio Voice Simulator -->
+        <section id="voice-simulator" class="simulator-section">
+          <div class="sim-top-row">
+            <div class="sim-title-group">
+              <span class="section-eyebrow" style="margin-bottom: 8px;">Interactive Simulator</span>
+              <h3>Experience Jurisline Live</h3>
+              <p>Listen to our autonomous voice agent handle high-stakes intake scenarios in real time.</p>
+            </div>
+
+            <div class="sim-scenario-pills">
+              <button class="sim-pill active" onclick="switchSimScenario('injury', this)">Personal Injury</button>
+              <button class="sim-pill" onclick="switchSimScenario('commercial', this)">Commercial Dispute</button>
+              <button class="sim-pill" onclick="switchSimScenario('estate', this)">Estate Planning</button>
+            </div>
+          </div>
+
+          <div class="sim-body-grid">
+            
+            <!-- Left Audio Visualizer Player -->
+            <div class="sim-audio-card">
+              <div>
+                <div class="audio-status-tag">
+                  <span class="status-pulse-dot"></span>
+                  <span id="simStatusText">CALL SIMULATION READY · LATENCY 280MS</span>
+                </div>
+
+                <div class="waveform-visualizer" id="waveVisualizer">
+                  <span class="wave-bar" style="height: 14px"></span>
+                  <span class="wave-bar" style="height: 24px"></span>
+                  <span class="wave-bar" style="height: 38px"></span>
+                  <span class="wave-bar" style="height: 20px"></span>
+                  <span class="wave-bar" style="height: 44px"></span>
+                  <span class="wave-bar" style="height: 52px"></span>
+                  <span class="wave-bar" style="height: 28px"></span>
+                  <span class="wave-bar" style="height: 48px"></span>
+                  <span class="wave-bar" style="height: 60px"></span>
+                  <span class="wave-bar" style="height: 32px"></span>
+                  <span class="wave-bar" style="height: 18px"></span>
+                  <span class="wave-bar" style="height: 42px"></span>
+                  <span class="wave-bar" style="height: 50px"></span>
+                  <span class="wave-bar" style="height: 26px"></span>
+                  <span class="wave-bar" style="height: 16px"></span>
+                </div>
+              </div>
+
+              <div class="audio-controls-row">
+                <button class="btn-play-sim" id="playSimBtn" onclick="toggleSimAudio()">
+                  <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                </button>
+                <div class="audio-telemetry">
+                  <span class="sim-caller-name" id="simCallerName">Inbound: Highway Collision Inquiry</span>
+                  <span class="sim-caller-sub" id="simCallerSub">Caller: Robert Sterling · Jurisdiction: Illinois Cook County</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Live Transcript & Extracted Dossier -->
+            <div class="sim-output-card">
+              <div class="transcript-scroller" id="simTranscript">
+                <div class="chat-bubble bubble-client">
+                  <div class="speaker-tag">Caller (Robert Sterling)</div>
+                  <p>“Hi, I was involved in a serious commercial truck accident on I-90 yesterday. The other driver ran a red light, and I have neck injuries and extensive vehicle damage. I need immediate counsel.”</p>
+                </div>
+                <div class="chat-bubble bubble-agent">
+                  <div class="speaker-tag">Jurisline AI Agent</div>
+                  <p>“I'm very sorry to hear that, Robert. First, please ensure you've received all necessary medical attention. I am noting the incident on I-90. Let me confirm the opposing carrier name so we can verify there are no representation conflicts with our partners.”</p>
+                </div>
+              </div>
+
+              <!-- Real-time Extracted Case Dossier -->
+              <div class="dossier-card">
+                <div class="dossier-header">
+                  <span>LIVE CASE EXTRACTION</span>
+                  <span style="color: #27C93F;">● CONFLICT: CLEARED</span>
+                </div>
+                <div class="dossier-grid">
+                  <div>
+                    <span class="dossier-label">Matter Category</span>
+                    <div class="dossier-val" id="dossierType">Catastrophic Personal Injury</div>
+                  </div>
+                  <div>
+                    <span class="dossier-label">Est. Claim Bracket</span>
+                    <div class="dossier-val" id="dossierValue">$175,000 - $350,000</div>
+                  </div>
+                  <div>
+                    <span class="dossier-label">Statute of Limitations</span>
+                    <div class="dossier-val">718 Days Remaining</div>
+                  </div>
+                  <div>
+                    <span class="dossier-label">Automated Next Action</span>
+                    <div class="dossier-val" style="color: var(--color-accent-lime);">DocuSign Retainer Dispatched</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: Interactive Firm Revenue & ROI Recovery Calculator -->
+        <section id="calculator" class="calculator-box">
+          <div class="calc-controls">
+            <div>
+              <span class="section-eyebrow">Firm ROI Model</span>
+              <h3 style="font-family: var(--font-serif); font-size: 2.2rem; color: #FFFFFF; margin-bottom: 8px;">
+                Calculate Your Firm's Recoverable Retainers
+              </h3>
+              <p style="color: var(--color-ink-light-muted); font-size: 0.9375rem;">
+                Adjust your monthly intake metrics to see how much billable case revenue Jurisline prevents from leaking to competitors.
+              </p>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span>Monthly Inbound Inquiries</span>
+                <span class="slider-val-badge" id="callsValDisplay">120 calls</span>
+              </div>
+              <input type="range" min="30" max="400" value="120" step="10" class="custom-range" id="callsRange" oninput="updateCalculator()" />
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span>Average Matter Retainer Value</span>
+                <span class="slider-val-badge" id="retainerValDisplay">$8,500</span>
+              </div>
+              <input type="range" min="2000" max="35000" value="8500" step="500" class="custom-range" id="retainerRange" oninput="updateCalculator()" />
+            </div>
+          </div>
+
+          <div class="calc-results-card">
+            <span class="calc-res-title">Estimated Annual Recovered Revenue</span>
+            <div class="calc-big-revenue" id="calcAnnualRevenue">+$244,800</div>
+            <p style="font-size: 0.8125rem; color: var(--color-ink-light-muted); margin-top: -12px;">
+              Based on a benchmark 24% increase in speed-to-lead retention across 200+ partner law practices.
+            </p>
+
+            <div class="calc-sub-stats">
+              <div>
+                <div class="sub-stat-num" id="calcRescuedCases">+28 cases</div>
+                <div class="sub-stat-lbl">Lost inquiries rescued/year</div>
+              </div>
+              <div>
+                <div class="sub-stat-num" id="calcSavedHours">420 hrs</div>
+                <div class="sub-stat-lbl">Associate time saved/year</div>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="openDemoModal('ROI Model Review')">
+              <span>Deploy Jurisline for Your Practice</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Section: Practice Management Ecosystem Integrations -->
+        <section id="integrations" class="integrations-wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Enterprise Sync</span>
+            <h2 class="section-title">Seamless Integration with Your Legal Stack</h2>
+            <p class="section-desc">
+              Jurisline connects directly to your existing practice management software, calendar, adverse party databases, and billing processors in minutes.
+            </p>
+          </div>
+
+          <div class="integrations-grid">
+            <div class="integration-tile">
+              <div class="integration-icon">C</div>
+              <div class="integration-info">
+                <h4>Clio Manage &amp; Grow</h4>
+                <p>Two-way matter &amp; contact synchronization</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">F</div>
+              <div class="integration-info">
+                <h4>Filevine</h4>
+                <p>Live project intake &amp; phase triage</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">M</div>
+              <div class="integration-info">
+                <h4>MyCase</h4>
+                <p>Instant lead creation &amp; conflict logs</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">S</div>
+              <div class="integration-info">
+                <h4>Smokeball</h4>
+                <p>Automatic billable activity recording</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">D</div>
+              <div class="integration-info">
+                <h4>DocuSign &amp; PandaDoc</h4>
+                <p>Instant e-retainer agreements</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">L</div>
+              <div class="integration-info">
+                <h4>LawPay</h4>
+                <p>Compliant trust deposit processing</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">SF</div>
+              <div class="integration-info">
+                <h4>Salesforce Legal</h4>
+                <p>Enterprise multi-office CRM pipelines</p>
+              </div>
+            </div>
+
+            <div class="integration-tile">
+              <div class="integration-icon">Z</div>
+              <div class="integration-info">
+                <h4>Custom Webhooks &amp; API</h4>
+                <p>Full REST API &amp; Zapier endpoints</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Security & Ethics Compliance -->
+        <section id="security" style="margin-bottom: 110px;">
+          <div class="section-header">
+            <span class="section-eyebrow">Enterprise Security</span>
+            <h2 class="section-title">Built for Legal Confidentiality</h2>
+            <p class="section-desc">
+              Engineered specifically to satisfy attorney-client privilege, state ethics opinions, and strict regulatory standards.
+            </p>
+          </div>
+
+          <div class="bottleneck-grid">
+            <div class="bottleneck-card">
+              <div class="card-num">SECURITY 01</div>
+              <h3>ABA Model Rule 1.6 Compliant</h3>
+              <p>
+                Strict confidentiality safeguards ensure privileged client disclosures are isolated, encrypted, and never exposed to cross-tenant models.
+              </p>
+              <div class="card-metric-badge"><span>Bar Ethics Validated</span></div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">SECURITY 02</div>
+              <h3>Zero Model Training</h3>
+              <p>
+                Your firm's audio recordings, client intake transcripts, and matter documents are never used to train public LLMs. Your data remains strictly firm property.
+              </p>
+              <div class="card-metric-badge"><span>Complete Tenant Isolation</span></div>
+            </div>
+
+            <div class="bottleneck-card">
+              <div class="card-num">SECURITY 03</div>
+              <h3>SOC 2 Type II &amp; HIPAA Ready</h3>
+              <p>
+                Continuous third-party security audits, custom Business Associate Agreements (BAAs), and end-to-end 256-bit encryption in transit and at rest.
+              </p>
+              <div class="card-metric-badge"><span>Audited Infrastructure</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Comparison Matrix -->
+        <section class="comparison-section">
+          <div class="section-header">
+            <span class="section-eyebrow">The Competitive Edge</span>
+            <h2 class="section-title">How Jurisline Compares</h2>
+            <p class="section-desc">
+              Why leading managing partners are replacing legacy call centers with autonomous legal intelligence.
+            </p>
+          </div>
+
+          <div class="comparison-table-wrap">
+            <table class="comp-table">
+              <thead>
+                <tr>
+                  <th>Capability</th>
+                  <th class="col-highlight">Jurisline AI Infrastructure</th>
+                  <th>Legacy Answering Service</th>
+                  <th>In-House Receptionist</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Response Speed</td>
+                  <td class="col-highlight">Instant (Sub-second pickup)</td>
+                  <td>3 to 8 rings (frequent hold)</td>
+                  <td>Limited by active line</td>
+                </tr>
+                <tr>
+                  <td>Availability</td>
+                  <td class="col-highlight">24/7/365 Unlimited concurrency</td>
+                  <td>24/7 (Surcharged after hours)</td>
+                  <td>8:30 AM - 5:00 PM weekdays</td>
+                </tr>
+                <tr>
+                  <td>Conflict of Interest Clearance</td>
+                  <td class="col-highlight">Automated in 340ms via CRM API</td>
+                  <td>Impossible (cannot access firm CRM)</td>
+                  <td>Manual lookup (2-4 hours)</td>
+                </tr>
+                <tr>
+                  <td>Direct Retainer Generation</td>
+                  <td class="col-highlight">Dispatches DocuSign &amp; LawPay in-call</td>
+                  <td>Takes paper message only</td>
+                  <td>Requires partner review first</td>
+                </tr>
+                <tr>
+                  <td>Legal Terminology &amp; Statute Triage</td>
+                  <td class="col-highlight">Trained on state-specific legal nuances</td>
+                  <td>Non-legal generalist operators</td>
+                  <td>High variance / turnover risk</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section: Managing Partner Testimonials -->
+        <section style="margin-bottom: 110px;">
+          <div class="section-header">
+            <span class="section-eyebrow">Proven Results</span>
+            <h2 class="section-title">Endorsed by Managing Partners</h2>
+            <p class="section-desc">
+              Hear from practices that scaled their retainer volume without expanding overhead.
+            </p>
+          </div>
+
+          <div class="testimonials-grid">
+            <div class="test-card">
+              <p class="test-quote">
+                “In personal injury, speed is everything. We recovered $480,000 in retainers our first quarter just by capturing weekend and late-night accident callers before they dialed another firm.”
+              </p>
+              <div class="test-profile">
+                <img src="assets/vance.jpg" alt="Eleanor Vance" class="test-avatar" />
+                <div>
+                  <div class="test-name">Eleanor Vance</div>
+                  <div class="test-firm">Vance &amp; Sterling LLP · New York</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="test-card">
+              <p class="test-quote">
+                “The automated conflict clearance is a masterpiece. It queries our Clio adverse party register before the caller even finishes explaining their dispute. Our associates are completely liberated from phone tag.”
+              </p>
+              <div class="test-profile">
+                <img src="assets/thorne.jpg" alt="Marcus Thorne" class="test-avatar" />
+                <div>
+                  <div class="test-name">Marcus Thorne</div>
+                  <div class="test-firm">Thorne &amp; Caldwell Litigation · Chicago</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="test-card">
+              <p class="test-quote">
+                “Our high-net-worth estate clients demand immediate, discreet responsiveness. Jurisline's voice demeanor is so composed and professional that our clients assume she is our senior director of intake.”
+              </p>
+              <div class="test-profile">
+                <img src="assets/patel.jpg" alt="Priya Patel" class="test-avatar" />
+                <div>
+                  <div class="test-name">Priya Patel</div>
+                  <div class="test-firm">Patel Family Wealth Group · San Francisco</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Practice Pricing Tiers -->
+        <section id="pricing" style="margin-bottom: 110px;">
+          <div class="section-header">
+            <span class="section-eyebrow">Investment</span>
+            <h2 class="section-title">Transparent Practice Tiers</h2>
+            <p class="section-desc">
+              Every plan includes unlimited conflict checks, custom voice personalization, and full CRM integration.
+            </p>
+          </div>
+
+          <div class="pricing-grid">
+            
+            <div class="pricing-card">
+              <div class="tier-name">Boutique Firm</div>
+              <div class="tier-desc">Ideal for solo practitioners and boutique partnerships with up to 100 monthly calls.</div>
+              <div class="tier-price-row">
+                <span class="tier-price">$950</span>
+                <span class="tier-period">/ month</span>
+              </div>
+              <ul class="tier-feature-list">
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Up to 150 voice intake minutes/mo</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Clio / Filevine / MyCase sync</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Automated adverse conflict checks</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Calendar scheduling &amp; SMS alerts</span>
+                </li>
+              </ul>
+              <button class="btn-secondary" style="width: 100%;" onclick="openDemoModal('Boutique Tier')">Select Boutique</button>
+            </div>
+
+            <div class="pricing-card featured">
+              <span class="pricing-badge">Most Popular</span>
+              <div class="tier-name">Growth Practice</div>
+              <div class="tier-desc">Designed for active litigation, personal injury, and multi-associate firms scaling lead volume.</div>
+              <div class="tier-price-row">
+                <span class="tier-price">$2,400</span>
+                <span class="tier-period">/ month</span>
+              </div>
+              <ul class="tier-feature-list">
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Up to 500 voice intake minutes/mo</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Automatic DocuSign retainer generation</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>LawPay consultation fee capture</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Dedicated legal prompt engineering</span>
+                </li>
+              </ul>
+              <button class="btn-primary" style="width: 100%; background: var(--color-accent-lime); color: var(--color-ink-primary);" onclick="openDemoModal('Growth Practice Tier')">Select Growth</button>
+            </div>
+
+            <div class="pricing-card">
+              <div class="tier-name">Enterprise Group</div>
+              <div class="tier-desc">Custom deployment for multi-state, high-volume practices and regional defense firms.</div>
+              <div class="tier-price-row">
+                <span class="tier-price">Custom</span>
+                <span class="tier-period">/ annual</span>
+              </div>
+              <ul class="tier-feature-list">
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Unlimited intake minutes &amp; lines</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Custom BAA &amp; on-prem database sync</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Multi-office branch routing rules</span>
+                </li>
+                <li class="tier-feature-item">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>24/7 SLA &amp; dedicated solutions partner</span>
+                </li>
+              </ul>
+              <button class="btn-secondary" style="width: 100%;" onclick="openDemoModal('Enterprise Inquiries')">Contact Enterprise</button>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: Frequently Asked Questions -->
+        <section class="faq-wrap">
+          <div class="section-header">
+            <span class="section-eyebrow">Clarifications</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-desc">Everything you need to know about compliance, implementation, and operations.</p>
+          </div>
+
+          <div class="faq-list">
+            
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Does Jurisline provide legal advice to callers?</span>
+                <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+              <div class="faq-answer">
+                <p>No. Jurisline operates strictly as an administrative intake layer and non-attorney legal representative under your firm's supervision, fully compliant with ABA Model Rule 5.3 (Responsibilities Regarding Nonlawyer Assistance). It asks screening questions, checks facts, and gathers signatures without forming unauthorized attorney-client relationships.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>How long does onboarding and CRM integration take?</span>
+                <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Standard setup takes less than 48 hours. Our legal engineering team connects your Clio, Filevine, or Smokeball instance, imports your conflict database, and maps your custom intake intake questions before conducting rigorous live test calls.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Can we customize the voice tone and persona?</span>
+                <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Yes. You can select from dozens of executive voice models, modulate speaking pace, choose empathetic vs formal cadences, and dictate strict firm pronunciation guidelines for partner surnames and local court jurisdictions.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>What happens if an adverse conflict of interest is found?</span>
+                <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Jurisline politely halts the intake before receiving privileged fact patterns, states that the firm cannot represent the matter due to existing client commitments, and logs the inquiry as a conflict flag in your CRM.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: Final High-Impact CTA Banner -->
+        <section class="cta-banner">
+          <h2 class="cta-title">Never Lose Another High-Value<br />Retainer to a Busy Signal</h2>
+          <p class="cta-subtitle">
+            Deploy the autonomous intake layer that answers every call, clears conflicts instantly, and signs retainers while you litigate.
+          </p>
+          <div class="cta-actions-group">
+            <button class="btn-cta-lime" onclick="openDemoModal('Final CTA Booking')">
+              <span>Book a 20-minute firm walkthrough</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="btn-cta-ghost" onclick="scrollToSimulator()">
+              <span>Listen to live voice samples</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container-wide">
+      <div class="footer-grid">
+        
+        <div class="footer-brand">
+          <h3>
+            <span class="brand-mark" style="width: 26px; height: 26px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v18"></path><path d="M5 8h14"></path><path d="M3 13l3-5 3 5a3 3 0 0 1-6 0z"></path><path d="M15 13l3-5 3 5a3 3 0 0 1-6 0z"></path></svg>
+            </span>
+            <span>jurisline</span>
+          </h3>
+          <p>
+            Autonomous client operations and AI voice infrastructure built exclusively for ambitious law practices.
+          </p>
+          <div class="system-status-badge">
+            <span class="status-dot-green"></span>
+            <span>All Systems Operational · 99.99%</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">Voice Intake Agent</a></li>
+            <li><a href="#how-it-works">Conflict Screening</a></li>
+            <li><a href="#how-it-works">Retainer Dispatch</a></li>
+            <li><a href="#integrations">Clio &amp; Filevine Sync</a></li>
+            <li><a href="#calculator">ROI Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Practice Areas</h4>
+          <ul class="footer-links">
+            <li><a href="#voice-simulator">Personal Injury &amp; Tort</a></li>
+            <li><a href="#voice-simulator">Commercial Litigation</a></li>
+            <li><a href="#voice-simulator">Estate &amp; Wealth Planning</a></li>
+            <li><a href="#voice-simulator">Corporate &amp; Transactions</a></li>
+            <li><a href="#voice-simulator">Family Law &amp; Custody</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Offices &amp; Contact</h4>
+          <ul class="footer-links">
+            <li>New York · 445 Park Ave, NY</li>
+            <li>San Francisco · 555 Mission St, CA</li>
+            <li>London · 100 Bishopsgate, EC2N</li>
+            <li><a href="mailto:contact@jurisline.example">contact@jurisline.example</a></li>
+            <li><a href="tel:+18005550199">+1 (800) 555-0199</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Jurisline Technologies Inc. All rights reserved. Sample template.</div>
+        <div class="legal-disclaimer">
+          Disclaimer: Jurisline is a software infrastructure provider, not a law firm or lawyer referral service. Jurisline does not provide legal advice or represent clients in legal proceedings.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Component: Interactive Consultation & Demo Booking -->
+  <div class="modal-overlay" id="demoModal" onclick="closeDemoModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeDemoModalDirect()">&times;</button>
+      <h3 class="modal-title" id="modalTitleText">Schedule Your Firm Consultation</h3>
+      <p class="modal-desc">See how Jurisline integrates with your current practice management software in a live 20-minute tailored demonstration.</p>
+
+      <form class="modal-form" onsubmit="handleModalSubmit(event)">
+        <div class="form-field">
+          <label>Managing Attorney / Partner Name</label>
+          <input type="text" placeholder="e.g. Eleanor Vance, Esq." required />
+        </div>
+
+        <div class="form-field">
+          <label>Law Firm Name</label>
+          <input type="text" placeholder="e.g. Vance &amp; Sterling LLP" required />
+        </div>
+
+        <div class="form-field">
+          <label>Primary Practice Management CRM</label>
+          <select required>
+            <option value="">Select your platform...</option>
+            <option value="clio">Clio Manage / Clio Grow</option>
+            <option value="filevine">Filevine</option>
+            <option value="mycase">MyCase</option>
+            <option value="smokeball">Smokeball</option>
+            <option value="salesforce">Salesforce Legal</option>
+            <option value="other">Other / Custom Database</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Work Email</label>
+          <input type="email" placeholder="partner@firmname.com" required />
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 10px; width: 100%; justify-content: center;">
+          <span>Confirm Consultation Request</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Client-Side Vanilla JS Logic & Motion Controls
+       ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // Simulated Scenarios Data
+    // --------------------------------------------------------------------------
+    const scenarios = {
+      injury: {
+        caller: 'Inbound: Highway Collision Inquiry',
+        sub: 'Caller: Robert Sterling · Jurisdiction: Illinois Cook County',
+        type: 'Catastrophic Personal Injury',
+        value: '$175,000 - $350,000',
+        action: 'DocuSign Retainer Dispatched',
+        transcript: [
+          { speaker: 'Caller (Robert Sterling)', text: '“Hi, I was involved in a serious commercial truck accident on I-90 yesterday. The other driver ran a red light, and I have neck injuries and extensive vehicle damage. I need immediate counsel.”' },
+          { speaker: 'Jurisline AI Agent', text: '“I\'m very sorry to hear that, Robert. First, please ensure you\'ve received all necessary medical attention. I am noting the incident on I-90. Let me confirm the opposing carrier name so we can verify there are no representation conflicts with our partners.”' },
+          { speaker: 'Caller (Robert Sterling)', text: '“The police report lists Swift Logistics, and their insurance is Travelers. My hospital intake was at Northwestern Memorial.”' },
+          { speaker: 'Jurisline AI Agent', text: '“Thank you, Robert. I have cross-referenced our Clio active registry and conflict clearance is complete. I am transmitting our emergency intake retainer agreement to your mobile phone right now.”' }
+        ]
+      },
+      commercial: {
+        caller: 'Inbound: Commercial Lease Breach',
+        sub: 'Caller: Victoria Davenport · Commercial Tenant Dispute',
+        type: 'Commercial Real Estate Litigation',
+        value: '$450,000 - $800,000',
+        action: 'Partner Consultation Booked',
+        transcript: [
+          { speaker: 'Caller (Victoria Davenport)', text: '“Hello, our commercial landlord locked out our medical practice this morning citing alleged HVAC repair covenants, in direct violation of our 10-year master lease agreement.”' },
+          { speaker: 'Jurisline AI Agent', text: '“Good morning Victoria. An unlawful commercial lockout requires emergency injunctive relief. Do you have the cure notice date and lease agreement on hand?”' },
+          { speaker: 'Caller (Victoria Davenport)', text: '“Yes, we received a 5-day notice on Thursday, and today is day 3. We are losing $40,000 a day in surgical revenue.”' },
+          { speaker: 'Jurisline AI Agent', text: '“Understood. Conflict check against the landlord entity is clear. I have reserved an emergency 2:00 PM video briefing with Marcus Thorne, our senior commercial litigation partner.”' }
+        ]
+      },
+      estate: {
+        caller: 'Inbound: HNW Trust Administration',
+        sub: 'Caller: Arthur Pendelton · Trust & Estate Probate',
+        type: 'Revocable Living Trust & Probate',
+        value: '$2,500,000 Assets at Issue',
+        action: 'Retainer & Vault Link Sent',
+        transcript: [
+          { speaker: 'Caller (Arthur Pendelton)', text: '“Good afternoon. My late father\'s estate includes multiple real estate properties across California and Nevada, held in a revocable trust, and we need guidance on fiduciary tax elections and successor trustee filings.”' },
+          { speaker: 'Jurisline AI Agent', text: '“My condolences on your loss, Mr. Pendelton. Handling multi-jurisdictional trust administration requires careful statutory navigation. Are all beneficiaries currently in agreement?”' },
+          { speaker: 'Caller (Arthur Pendelton)', text: '“Yes, all three siblings are aligned. We have the death certificates, original trust indentures, and schedule of assets compiled.”' },
+          { speaker: 'Jurisline AI Agent', text: '“Excellent. I have registered your file into our secure vault and cleared conflict records. A welcome dossier and consultation link with Priya Patel has been dispatched to your email.”' }
+        ]
+      }
+    };
+
+    let currentSim = 'injury';
+    let isPlaying = false;
+    let audioCtx = null;
+    let playInterval = null;
+
+    function switchSimScenario(key, btn) {
+      document.querySelectorAll('.sim-pill').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+      currentSim = key;
+      const data = scenarios[key];
+
+      document.getElementById('simCallerName').textContent = data.caller;
+      document.getElementById('simCallerSub').textContent = data.sub;
+      document.getElementById('dossierType').textContent = data.type;
+      document.getElementById('dossierValue').textContent = data.value;
+
+      const transcriptContainer = document.getElementById('simTranscript');
+      transcriptContainer.innerHTML = '';
+      data.transcript.forEach(item => {
+        const div = document.createElement('div');
+        div.className = item.speaker.includes('Caller') ? 'chat-bubble bubble-client' : 'chat-bubble bubble-agent';
+        div.innerHTML = `<div class="speaker-tag">${item.speaker}</div><p>${item.text}</p>`;
+        transcriptContainer.appendChild(div);
+      });
+
+      if (isPlaying) {
+        stopSimAudio();
+      }
+    }
+
+    function toggleSimAudio() {
+      if (isPlaying) {
+        stopSimAudio();
+      } else {
+        startSimAudio();
+      }
+    }
+
+    function startSimAudio() {
+      isPlaying = true;
+      document.getElementById('playIcon').style.display = 'none';
+      document.getElementById('pauseIcon').style.display = 'block';
+      document.getElementById('simStatusText').textContent = 'AUDIO STREAM ACTIVE · PROCESSING VOICE CADENCE';
+
+      const bars = document.querySelectorAll('.wave-bar');
+      bars.forEach(b => b.classList.add('playing'));
+
+      // Web Audio Synthesizer Beep & Harmonic Ambient Chime
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        // Soft synthetic vocal chime
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(540, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.45);
+      } catch(e) {}
+
+      // Waveform height randomizer
+      playInterval = setInterval(() => {
+        bars.forEach(b => {
+          const rand = Math.floor(Math.random() * 48) + 12;
+          b.style.height = rand + 'px';
+        });
+      }, 140);
+    }
+
+    function stopSimAudio() {
+      isPlaying = false;
+      document.getElementById('playIcon').style.display = 'block';
+      document.getElementById('pauseIcon').style.display = 'none';
+      document.getElementById('simStatusText').textContent = 'CALL SIMULATION READY · LATENCY 280MS';
+
+      const bars = document.querySelectorAll('.wave-bar');
+      bars.forEach(b => {
+        b.classList.remove('playing');
+        b.style.height = '18px';
+      });
+
+      if (playInterval) {
+        clearInterval(playInterval);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Chart Tabs Switcher
+    // --------------------------------------------------------------------------
+    function switchChartTab(period, tabBtn) {
+      document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+      tabBtn.classList.add('active');
+
+      const totalLabel = document.getElementById('chartTotalLabel');
+      const kpiTotal = document.getElementById('kpiTotalCalls');
+      const currentArea = document.getElementById('currentAreaPath');
+      const currentLine = document.getElementById('currentLinePath');
+      const prevLine = document.getElementById('prevPeriodPath');
+
+      if (period === '7d') {
+        totalLabel.textContent = '19';
+        kpiTotal.textContent = '19';
+        currentArea.setAttribute('d', 'M30,155 L30,140 Q120,110 220,130 T400,90 T585,60 L585,160 L30,160 Z');
+        currentLine.setAttribute('d', 'M30,140 Q120,110 220,130 T400,90 T585,60');
+        prevLine.setAttribute('d', 'M30,150 Q120,130 220,140 T400,110 T585,90');
+      } else if (period === '30d') {
+        totalLabel.textContent = '70';
+        kpiTotal.textContent = '70';
+        currentArea.setAttribute('d', 'M30,155 L30,150 Q80,138 120,142 T210,120 T300,105 T390,115 T480,85 T540,110 L585,55 L585,160 L30,160 Z');
+        currentLine.setAttribute('d', 'M30,150 Q80,138 120,142 T210,120 T300,105 T390,115 T480,85 T540,110 L585,55');
+        prevLine.setAttribute('d', 'M30,150 Q90,135 150,140 T270,125 T390,135 T510,110 T590,120');
+      } else if (period === '3m') {
+        totalLabel.textContent = '218';
+        kpiTotal.textContent = '218';
+        currentArea.setAttribute('d', 'M30,155 L30,130 Q100,80 200,95 T350,60 T480,45 T585,35 L585,160 L30,160 Z');
+        currentLine.setAttribute('d', 'M30,130 Q100,80 200,95 T350,60 T480,45 T585,35');
+        prevLine.setAttribute('d', 'M30,145 Q100,110 200,115 T350,90 T480,75 T585,65');
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Calculator Logic
+    // --------------------------------------------------------------------------
+    function updateCalculator() {
+      const calls = parseInt(document.getElementById('callsRange').value, 10);
+      const retainer = parseInt(document.getElementById('retainerRange').value, 10);
+
+      document.getElementById('callsValDisplay').textContent = `${calls} calls`;
+      document.getElementById('retainerValDisplay').textContent = `$${retainer.toLocaleString()}`;
+
+      // 24% of calls rescued that would otherwise be missed/dropped
+      const rescuedCasesYear = Math.round(calls * 12 * 0.02);
+      const annualRevenue = rescuedCasesYear * retainer;
+      const savedHours = Math.round(calls * 12 * 0.28);
+
+      document.getElementById('calcAnnualRevenue').textContent = `+$${annualRevenue.toLocaleString()}`;
+      document.getElementById('calcRescuedCases').textContent = `+${rescuedCasesYear} cases`;
+      document.getElementById('calcSavedHours').textContent = `${savedHours} hrs`;
+    }
+
+    // --------------------------------------------------------------------------
+    // Accordion FAQ
+    // --------------------------------------------------------------------------
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('active');
+
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('active');
+        el.querySelector('.faq-answer').style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 30 + 'px';
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Modal Booking Component
+    // --------------------------------------------------------------------------
+    function openDemoModal(contextTitle) {
+      const modal = document.getElementById('demoModal');
+      const title = document.getElementById('modalTitleText');
+      if (contextTitle) {
+        title.textContent = contextTitle;
+      }
+      modal.classList.add('active');
+    }
+
+    function closeDemoModalDirect() {
+      document.getElementById('demoModal').classList.remove('active');
+    }
+
+    function closeDemoModal(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeDemoModalDirect();
+      }
+    }
+
+    function handleModalSubmit(e) {
+      e.preventDefault();
+      alert('Thank you! Your firm consultation request has been logged. An executive legal engineering specialist will contact your office shortly.');
+      closeDemoModalDirect();
+    }
+
+    function exportDataNotice() {
+      alert('Generating verified PDF intake audit report and CSV log for the current 30-day billing cycle...');
+    }
+
+    function scrollToSimulator() {
+      const sim = document.getElementById('voice-simulator');
+      if (sim) {
+        sim.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+          if (!isPlaying) startSimAudio();
+        }, 600);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // GSAP Scroll Motion Animations
+    // --------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Subtle parallax float for hero mockup
+        gsap.from('.browser-window', {
+          y: 40,
+          opacity: 0.9,
+          duration: 1.2,
+          ease: 'power3.out'
+        });
+
+        // Bottleneck cards stagger
+        gsap.utils.toArray('.bottleneck-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%'
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: (i % 3) * 0.12,
+            ease: 'power2.out'
+          });
+        });
+
+        // Testimonial cards stagger
+        gsap.utils.toArray('.test-card').forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%'
+            },
+            y: 25,
+            opacity: 0,
+            duration: 0.7,
+            delay: (i % 3) * 0.1,
+            ease: 'power2.out'
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
