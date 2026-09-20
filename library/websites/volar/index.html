@@ -398,7 +398,7 @@
        ========================================================================== */
     .hero-scroll-track {
       position: relative;
-      height: 190vh;
+      height: 220vh;
       background-color: var(--bg-dark);
     }
 
@@ -422,9 +422,80 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 0;
+      z-index: 1;
       perspective: 1400px;
       pointer-events: none;
+    }
+
+    .hero-story-backdrop {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 7.5rem 3rem 3rem;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-story-backdrop.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .hero-story-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary-yellow);
+    }
+
+    .hero-story-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary-yellow);
+      box-shadow: 0 0 10px var(--primary-yellow);
+    }
+
+    .hero-story-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #ffffff;
+      margin-top: 1rem;
+      max-width: 680px;
+    }
+
+    .hero-story-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-dark-secondary);
+      letter-spacing: 0.05em;
+      margin-top: 0.6rem;
     }
 
     .hero-bg-wrapper {
@@ -436,11 +507,27 @@
       border-radius: 0px;
       transform-origin: center center;
       will-change: transform, border-radius, box-shadow;
-      transition: box-shadow 0.3s ease;
+      border: 1px solid transparent;
+      transition: box-shadow 0.4s ease, border-color 0.4s ease;
     }
 
     .hero-bg-wrapper.recessed {
-      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.14);
+      box-shadow: 0 45px 120px -15px rgba(0, 0, 0, 0.98), 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 50px rgba(244, 229, 0, 0.05);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .hero-bg-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .hero-bg-wrapper.recessed::after {
+      opacity: 1;
     }
 
     .hero-bg-img {
@@ -1543,6 +1630,15 @@
          ========================================================================= -->
     <div class="hero-scroll-track" id="heroScrollTrack">
       <section class="hero" id="hero">
+        <div class="hero-story-backdrop" id="heroStoryBackdrop">
+          <div class="hero-story-header">
+            <span class="hero-story-badge">01 // OUR STORY</span>
+            <span class="hero-story-meta">GOTHENBURG PROVING GROUNDS · 68.3582° N</span>
+          </div>
+          <h2 class="hero-story-title">A new era of<br />enduro starts here.</h2>
+          <p class="hero-story-meta">Instant 1,080 Nm rear torque · 30s modular power swap · Monocoque carbon chassis</p>
+        </div>
+
         <div class="hero-3d-stage">
           <div class="hero-bg-wrapper" id="heroBgWrapper">
             <img src="assets/hero.webp" alt="Volar TXR Electric Enduro Motorcycle" class="hero-bg-img" id="heroImg" />
@@ -2138,43 +2234,78 @@
         }
       }, { passive: true });
 
-      // 1b. 3D Recess Scroll Transition from Radian Reference
+      // 1b. 3D Recess Scroll & Perspective Transition (Radian reference)
       const heroTrack = document.getElementById('heroScrollTrack');
       const heroBgWrapper = document.getElementById('heroBgWrapper');
       const heroContent = document.getElementById('heroContent');
+      const heroStoryBackdrop = document.getElementById('heroStoryBackdrop');
 
-      function update3DHeroScroll() {
-        if (!heroTrack || !heroBgWrapper) return;
+      let currentScrollEase = 0;
+      let targetScrollEase = 0;
+      let currentProgress = 0;
+      let mouseTiltX = 0, mouseTiltY = 0;
+      let targetTiltX = 0, targetTiltY = 0;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReduced) {
+        window.addEventListener('mousemove', (e) => {
+          const cx = window.innerWidth / 2;
+          const cy = window.innerHeight / 2;
+          targetTiltX = ((e.clientY - cy) / cy) * -5.5; // pitch
+          targetTiltY = ((e.clientX - cx) / cx) * 6.5;  // yaw
+        }, { passive: true });
+      }
+
+      function calculateScrollProgress() {
+        if (!heroTrack) return 0;
         const rect = heroTrack.getBoundingClientRect();
         const scrollable = heroTrack.offsetHeight - window.innerHeight;
-        if (scrollable <= 0) return;
+        if (scrollable <= 0) return 0;
+        return Math.min(Math.max(-rect.top / scrollable, 0), 1);
+      }
 
-        const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
-        const ease = 1 - Math.pow(1 - progress, 2.5);
+      function render3DHero() {
+        currentProgress = calculateScrollProgress();
+        // Power-curve ease matching Radian custom ease
+        targetScrollEase = 1 - Math.pow(1 - currentProgress, 2.8);
+        currentScrollEase += (targetScrollEase - currentScrollEase) * 0.12;
 
-        const scale = 1.0 - (0.48 * ease);
-        const rotateX = 5 * ease;
-        const radius = 24 * ease;
-        const contentY = -35 * ease;
-        const contentOpacity = Math.max(1 - (progress * 1.25), 0);
+        mouseTiltX += (targetTiltX - mouseTiltX) * 0.08;
+        mouseTiltY += (targetTiltY - mouseTiltY) * 0.08;
 
-        heroBgWrapper.style.transform = `scale(${scale}) rotateX(${rotateX}deg) translateZ(0)`;
-        heroBgWrapper.style.borderRadius = `${radius}px`;
+        if (heroBgWrapper) {
+          const scale = 1.0 - (0.32 * currentScrollEase);
+          const baseRotateX = 6.0 * currentScrollEase;
+          const totalRotateX = baseRotateX + (mouseTiltX * (0.4 + 0.6 * currentScrollEase));
+          const totalRotateY = mouseTiltY * (0.4 + 0.6 * currentScrollEase);
+          const radius = 28 * currentScrollEase;
 
-        if (progress > 0.04) {
-          heroBgWrapper.classList.add('recessed');
-        } else {
-          heroBgWrapper.classList.remove('recessed');
+          heroBgWrapper.style.transform = `perspective(1200px) scale(${scale}) rotateX(${totalRotateX.toFixed(2)}deg) rotateY(${totalRotateY.toFixed(2)}deg) translateZ(0)`;
+          heroBgWrapper.style.borderRadius = `${radius.toFixed(1)}px`;
+
+          if (currentScrollEase > 0.05) {
+            heroBgWrapper.classList.add('recessed');
+          } else {
+            heroBgWrapper.classList.remove('recessed');
+          }
         }
 
         if (heroContent) {
-          heroContent.style.transform = `translateY(${contentY}px)`;
-          heroContent.style.opacity = contentOpacity;
+          const contentY = -48 * currentScrollEase;
+          const contentOpacity = Math.max(1 - (currentProgress * 2.2), 0);
+          heroContent.style.transform = `translateY(${contentY.toFixed(1)}px)`;
+          heroContent.style.opacity = contentOpacity.toFixed(3);
+          heroContent.style.pointerEvents = contentOpacity < 0.1 ? 'none' : 'auto';
         }
+
+        if (heroStoryBackdrop) {
+          heroStoryBackdrop.classList.toggle('visible', currentProgress > 0.28);
+        }
+
+        requestAnimationFrame(render3DHero);
       }
 
-      window.addEventListener('scroll', update3DHeroScroll, { passive: true });
-      update3DHeroScroll();
+      requestAnimationFrame(render3DHero);
 
       // 2. Odometer Step Dropdown Menu
       const navStepBtn = document.getElementById('navStepBtn');
