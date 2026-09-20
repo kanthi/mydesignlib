@@ -394,26 +394,53 @@
     }
 
     /* ==========================================================================
-       HERO SECTION (Full Bleed Cinematic Viewport)
+       HERO SECTION (3D Scroll Recess Stage matching Radian Reference)
        ========================================================================== */
-    .hero {
+    .hero-scroll-track {
       position: relative;
-      min-height: 100vh;
-      min-height: 100dvh;
+      height: 190vh;
+      background-color: var(--bg-dark);
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 8rem 0 4.5rem;
+      padding: 7rem 0 4rem;
       background-color: var(--bg-dark);
       overflow: hidden;
+      perspective: 1200px;
+    }
+
+    .hero-3d-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+      perspective: 1400px;
+      pointer-events: none;
     }
 
     .hero-bg-wrapper {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       background: #0c0f0d;
+      border-radius: 0px;
+      transform-origin: center center;
+      will-change: transform, border-radius, box-shadow;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .hero-bg-wrapper.recessed {
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.14);
     }
 
     .hero-bg-img {
@@ -1512,19 +1539,22 @@
 
   <main>
     <!-- =========================================================================
-         Hero Section: Full-Bleed High-Voltage Enduro
+         Hero Section: Full-Bleed High-Voltage Enduro with 3D Recess
          ========================================================================= -->
-    <section class="hero" id="hero">
-      <div class="hero-bg-wrapper">
-        <img src="assets/hero.webp" alt="Volar TXR Electric Enduro Motorcycle" class="hero-bg-img" id="heroImg" />
-        <div class="hero-vignette"></div>
-        <div class="hero-bottom-gradient"></div>
-      </div>
+    <div class="hero-scroll-track" id="heroScrollTrack">
+      <section class="hero" id="hero">
+        <div class="hero-3d-stage">
+          <div class="hero-bg-wrapper" id="heroBgWrapper">
+            <img src="assets/hero.webp" alt="Volar TXR Electric Enduro Motorcycle" class="hero-bg-img" id="heroImg" />
+            <div class="hero-vignette"></div>
+            <div class="hero-bottom-gradient"></div>
+          </div>
+        </div>
 
-      <div class="container hero-content">
-        <div>
-          <span class="hero-eyebrow">THE VOLAR TXR // ELECTRIC ENDURO</span>
-          <h1 class="hero-title">A new era of<br />enduro starts here.</h1>
+        <div class="container hero-content" id="heroContent">
+          <div>
+            <span class="hero-eyebrow">THE VOLAR TXR // ELECTRIC ENDURO</span>
+            <h1 class="hero-title">A new era of<br />enduro starts here.</h1>
           <p class="hero-desc">
             Engineered for those driven to ride beyond limits. 1,080 Nm instant rear torque, 30-second tool-free modular battery swap, and surgical zero-emission control.
           </p>
@@ -1573,6 +1603,7 @@
         </div>
       </div>
     </section>
+  </div>
 
     <!-- =========================================================================
          Interactive USP / Engineering Scrubber Section
@@ -2106,6 +2137,44 @@
           header.classList.remove('scrolled');
         }
       }, { passive: true });
+
+      // 1b. 3D Recess Scroll Transition from Radian Reference
+      const heroTrack = document.getElementById('heroScrollTrack');
+      const heroBgWrapper = document.getElementById('heroBgWrapper');
+      const heroContent = document.getElementById('heroContent');
+
+      function update3DHeroScroll() {
+        if (!heroTrack || !heroBgWrapper) return;
+        const rect = heroTrack.getBoundingClientRect();
+        const scrollable = heroTrack.offsetHeight - window.innerHeight;
+        if (scrollable <= 0) return;
+
+        const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+        const ease = 1 - Math.pow(1 - progress, 2.5);
+
+        const scale = 1.0 - (0.48 * ease);
+        const rotateX = 5 * ease;
+        const radius = 24 * ease;
+        const contentY = -35 * ease;
+        const contentOpacity = Math.max(1 - (progress * 1.25), 0);
+
+        heroBgWrapper.style.transform = `scale(${scale}) rotateX(${rotateX}deg) translateZ(0)`;
+        heroBgWrapper.style.borderRadius = `${radius}px`;
+
+        if (progress > 0.04) {
+          heroBgWrapper.classList.add('recessed');
+        } else {
+          heroBgWrapper.classList.remove('recessed');
+        }
+
+        if (heroContent) {
+          heroContent.style.transform = `translateY(${contentY}px)`;
+          heroContent.style.opacity = contentOpacity;
+        }
+      }
+
+      window.addEventListener('scroll', update3DHeroScroll, { passive: true });
+      update3DHeroScroll();
 
       // 2. Odometer Step Dropdown Menu
       const navStepBtn = document.getElementById('navStepBtn');
