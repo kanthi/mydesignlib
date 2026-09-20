@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Kalyx Network — The Next Evolution of Modular Scalability</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090a0f;
+      --bg-surface: #0f111a;
+      --bg-card: #141622;
+      --bg-card-hover: #191c2c;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.15);
+      
+      --coral: #ff5733;
+      --coral-light: #ff7556;
+      --coral-glow: rgba(255, 87, 51, 0.35);
+      --coral-subtle: rgba(255, 87, 51, 0.12);
+      --emerald: #10b981;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+    }
+
+    body {
+      overflow-x: hidden;
+      line-height: 1.6;
+      background: 
+        radial-gradient(circle at 50% -10%, rgba(255, 87, 51, 0.14), transparent 50%),
+        radial-gradient(circle at 80% 60%, rgba(255, 87, 51, 0.04), transparent 40%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    /* Subtle Technical Blueprint Grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Architectural Corner Brackets */
+    .bracket-box {
+      position: relative;
+    }
+
+    .bracket-box::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: 14px;
+      height: 14px;
+      border-top: 2px solid var(--coral);
+      border-left: 2px solid var(--coral);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .bracket-box::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      border-bottom: 2px solid var(--coral);
+      border-right: 2px solid var(--coral);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .bracket-corners-all {
+      position: relative;
+    }
+
+    .corner-tl, .corner-tr, .corner-bl, .corner-br {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      border-color: var(--coral);
+      border-style: solid;
+      z-index: 5;
+    }
+
+    .corner-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+    .corner-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+    .corner-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+    .corner-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+    /* Header Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(9, 10, 15, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--coral);
+      display: grid;
+      place-items: center;
+      background: var(--coral-subtle);
+    }
+
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--coral);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--coral);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-ghost {
+      font-family: var(--font-mono);
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-coral {
+      font-family: var(--font-mono);
+      background: var(--coral);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 4px;
+      box-shadow: 0 4px 14px var(--coral-glow);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-coral:hover {
+      background: var(--coral-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--coral-glow);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 40px 0 30px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      background: var(--coral-subtle);
+      border: 1px solid rgba(255, 87, 51, 0.3);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--coral-light);
+      margin-bottom: 18px;
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bracket-word {
+      display: inline-block;
+      position: relative;
+      color: var(--coral);
+      padding: 0 8px;
+    }
+
+    .bracket-word::before {
+      content: '[';
+      color: var(--coral);
+      font-family: var(--font-mono);
+      margin-right: 4px;
+    }
+
+    .bracket-word::after {
+      content: ']';
+      color: var(--coral);
+      font-family: var(--font-mono);
+      margin-left: 4px;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 24px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .btn-secondary-outline {
+      font-family: var(--font-mono);
+      background: #11131c;
+      color: var(--text-main);
+      border: 1px solid var(--border-light);
+      font-size: 0.85rem;
+      padding: 9px 20px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary-outline:hover {
+      border-color: var(--coral);
+      background: #171a26;
+    }
+
+    /* Hero Dashboard Console (The Core Reference Visual) */
+    .console-stage {
+      max-width: 1040px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 87, 51, 0.08);
+      position: relative;
+      text-align: left;
+    }
+
+    .console-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: #0b0c13;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .console-crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-dim);
+    }
+
+    .console-crumbs .active {
+      color: var(--coral);
+    }
+
+    .console-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--emerald);
+      font-size: 0.75rem;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .console-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 480px;
+    }
+
+    /* Console Sidebar */
+    .console-sidebar {
+      background: #0c0d15;
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-item.active {
+      color: var(--coral);
+      background: var(--coral-subtle);
+      border-left: 3px solid var(--coral);
+      font-weight: 600;
+    }
+
+    .nav-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Console Main Canvas */
+    .console-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .welcome-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .welcome-header p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* Console Cards Grid */
+    .console-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .dash-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .dash-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wallet-addr {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--coral);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: rgba(255, 87, 51, 0.08);
+      padding: 4px 10px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .wallet-bal-val {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .wallet-bal-usd {
+      font-size: 0.85rem;
+      color: var(--emerald);
+      font-family: var(--font-mono);
+    }
+
+    .card-btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn-sm-action {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .btn-sm-action:hover {
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    .btn-sm-coral {
+      background: var(--coral);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-sm-coral:hover {
+      background: var(--coral-light);
+    }
+
+    /* Fast Bridge Simulation HUD */
+    .bridge-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .bridge-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .bridge-step.done {
+      color: var(--text-main);
+    }
+
+    .step-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      display: grid;
+      place-items: center;
+      font-size: 0.65rem;
+    }
+
+    .bridge-step.done .step-check {
+      background: var(--coral);
+      color: #fff;
+    }
+
+    /* Logo Strip / Ecosystem */
+    .ecosystem-strip {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: #0b0c13;
+      text-align: center;
+    }
+
+    .ecosystem-label {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    .ecosystem-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .eco-mark {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      letter-spacing: -0.02em;
+      transition: color 0.2s;
+    }
+
+    .eco-mark:hover {
+      color: var(--text-main);
+    }
+
+    /* 6-Stage Architecture Flow */
+    .section-pad {
+      padding: 100px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--coral);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .flow-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px 24px;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .flow-card:hover {
+      border-color: rgba(255, 87, 51, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .flow-num {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--coral);
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .flow-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .flow-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* Testimonials with Corner Brackets */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 32px 26px;
+      position: relative;
+    }
+
+    .testi-stars {
+      color: var(--coral);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .testi-quote {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testi-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #1c2030;
+      border: 1px solid var(--coral);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--coral);
+    }
+
+    .testi-meta .name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .testi-meta .role {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Telemetry Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      background: #0c0e17;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 40px;
+      margin: 60px 0;
+      text-align: center;
+    }
+
+    .stat-item .val {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--coral);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .stat-item .label {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* FAQ Section */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .faq-item.active {
+      border-color: var(--coral);
+    }
+
+    .faq-header {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.02rem;
+      user-select: none;
+    }
+
+    .faq-icon {
+      font-family: var(--font-mono);
+      color: var(--coral);
+      transition: transform 0.2s;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      padding: 0 24px;
+    }
+
+    .faq-item.active .faq-content {
+      max-height: 240px;
+      padding-bottom: 20px;
+    }
+
+    /* CTA Deploy Banner */
+    .cta-deploy {
+      background: linear-gradient(135deg, #16121d 0%, #0d0f17 100%);
+      border: 1px solid rgba(255, 87, 51, 0.3);
+      padding: 60px 48px;
+      border-radius: 12px;
+      margin-bottom: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      position: relative;
+    }
+
+    .cli-box {
+      background: #090a0f;
+      border: 1px solid var(--border-light);
+      padding: 14px 20px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--coral-light);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 0 32px;
+      background: #06070a;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links-wrap {
+      display: flex;
+      gap: 48px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a:hover {
+      color: var(--coral);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .console-body {
+        grid-template-columns: 1fr;
+      }
+      .console-sidebar {
+        display: none;
+      }
+      .flow-grid, .testimonial-grid, .stats-bar {
+        grid-template-columns: 1fr;
+      }
+      .cta-deploy {
+        flex-direction: column;
+        text-align: center;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .console-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="container nav-wrap">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>
+        </div>
+        <span>Kalyx</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#features" class="nav-link">Architecture</a>
+        <a href="#console" class="nav-link">Dashboard</a>
+        <a href="#ecosystem" class="nav-link">Ecosystem</a>
+        <a href="#testimonials" class="nav-link">Builders</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../" class="btn-ghost">← Library</a>
+        <button class="btn-coral" onclick="triggerBridge()">
+          <span>Launch App →</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span>MAINNET v3.4 LIVE • 65,000 TPS ENGINE</span>
+      </div>
+
+      <h1 class="hero-title">
+        The Next <span class="bracket-word">Evolution</span> of Modular Scalability
+      </h1>
+
+      <p class="hero-sub">
+        An ultra-fast, zero-knowledge Layer 2 network designed to scale EVM execution with sub-cent gas fees, instantaneous settlement, and uncompromising Ethereum security.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-coral" onclick="triggerBridge()">Launch App →</button>
+        <button class="btn-secondary-outline" onclick="copyCLI()">View Developer Docs</button>
+      </div>
+
+      <!-- Hero Console (The Core Reference Specimen) -->
+      <div class="console-stage bracket-corners-all" id="console">
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="console-topbar">
+          <div class="console-crumbs">
+            <span>kalyx-l2</span> / <span class="active">mainnet-sequencer-01</span>
+          </div>
+          <div class="console-status-pill">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--emerald);"></span>
+            <span>12ms Latency • 54,820 TPS</span>
+          </div>
+        </div>
+
+        <div class="console-body">
+          <!-- Sidebar -->
+          <div class="console-sidebar">
+            <div class="nav-item active" onclick="switchTab(this, 'Overview')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Overview</span>
+            </div>
+            <div class="nav-item" onclick="switchTab(this, 'Wallet')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <span>Wallet</span>
+            </div>
+            <div class="nav-item" onclick="switchTab(this, 'Bridge')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              <span>Bridge L1↔L2</span>
+            </div>
+            <div class="nav-item" onclick="switchTab(this, 'Swap')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8l4 4-4 4"/></svg>
+              <span>Swap Pools</span>
+            </div>
+            <div class="nav-item" onclick="switchTab(this, 'Explorer')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>ZK Explorer</span>
+            </div>
+          </div>
+
+          <!-- Main Console Area -->
+          <div class="console-content">
+            <div class="welcome-header">
+              <h3>Welcome to Kalyx Dashboard</h3>
+              <p>Manage your rollup assets, verify cryptographic proofs, and experience instantaneous execution.</p>
+            </div>
+
+            <div class="console-grid">
+              <!-- Wallet Summary Card -->
+              <div class="dash-card bracket-box">
+                <div class="dash-card-title">
+                  <span>Your Wallet Summary</span>
+                  <span style="color: var(--emerald);">Kalyx Mainnet</span>
+                </div>
+                <div class="wallet-addr" onclick="copyAddress()">
+                  <span>0xA23...B3C7</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </div>
+                <div class="wallet-bal-val">
+                  <span id="ethBal">12.450</span> ETH
+                  <span class="wallet-bal-usd" id="usdBal">≈ $31,245.00</span>
+                </div>
+                <div class="card-btn-row">
+                  <button class="btn-sm-action btn-sm-coral" onclick="triggerBridge()">Bridge Assets</button>
+                  <button class="btn-sm-action" onclick="alert('Deposit address copied.')">Deposit from L1</button>
+                </div>
+              </div>
+
+              <!-- Quick Action & Bridge Simulator -->
+              <div class="dash-card bracket-box">
+                <div class="dash-card-title">
+                  <span>ZK-Rollup Pipeline Telemetry</span>
+                  <span style="color: var(--coral);">Sub-second Proof</span>
+                </div>
+                
+                <div class="bridge-progress">
+                  <div class="bridge-step done" id="step1">
+                    <span class="step-check">✓</span>
+                    <span>1. Parallel EVM Transaction Bundling</span>
+                  </div>
+                  <div class="bridge-step done" id="step2">
+                    <span class="step-check">✓</span>
+                    <span>2. Recursive STARK Proof Generation (320ms)</span>
+                  </div>
+                  <div class="bridge-step done" id="step3">
+                    <span class="step-check">✓</span>
+                    <span>3. State Root Verified on Ethereum L1</span>
+                  </div>
+                </div>
+
+                <div class="card-btn-row">
+                  <button class="btn-sm-action" style="width: 100%; justify-content: center;" onclick="simulateTransaction()">
+                    Simulate Rollup Batch Proof →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem Strip -->
+  <div class="ecosystem-strip" id="ecosystem">
+    <div class="container">
+      <div class="ecosystem-label">Trusted by over 140+ protocols & institutional validators</div>
+      <div class="ecosystem-logos">
+        <span class="eco-mark">[ ARCO-DEX ]</span>
+        <span class="eco-mark">[ SPECTRA-FI ]</span>
+        <span class="eco-mark">[ HYDRA-ORACLE ]</span>
+        <span class="eco-mark">[ ZERO-VAULT ]</span>
+        <span class="eco-mark">[ NOVA-LEND ]</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6-Stage Architecture Section -->
+  <section class="section-pad" id="features">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Architecture</div>
+        <h2 class="section-title">Layer 2, Reimagined for Performance</h2>
+        <p class="section-sub">A fast, secure Layer 2 flow — from instant deployment to zero-knowledge state finality.</p>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card bracket-box">
+          <span class="flow-num">01 / EVM EQUIVALENCE</span>
+          <h3 class="flow-title">Deploy Unchanged</h3>
+          <p class="flow-desc">Deploy existing Solidity smart contracts, Hardhat setups, and Foundry tests with 100% bytecode compatibility.</p>
+        </div>
+
+        <div class="flow-card bracket-box">
+          <span class="flow-num">02 / PARALLEL ENGINE</span>
+          <h3 class="flow-title">Sub-Millisecond Execution</h3>
+          <p class="flow-desc">Multi-threaded state access lists execute non-conflicting transactions concurrently for 65,000 TPS peak speed.</p>
+        </div>
+
+        <div class="flow-card bracket-box">
+          <span class="flow-num">03 / PROVING ENGINE</span>
+          <h3 class="flow-title">Recursive ZK Proving</h3>
+          <p class="flow-desc">Compact STARK-to-SNARK folding generates cryptographic validity proofs in under 320ms with minimal memory footprint.</p>
+        </div>
+
+        <div class="flow-card bracket-box">
+          <span class="flow-num">04 / DATA AVAILABILITY</span>
+          <h3 class="flow-title">Modular DA Sampling</h3>
+          <p class="flow-desc">Flexible plug-and-play data availability guarantees transaction records with 1/100th the storage expense of legacy rollups.</p>
+        </div>
+
+        <div class="flow-card bracket-box">
+          <span class="flow-num">05 / CRYPTO SECURITY</span>
+          <h3 class="flow-title">L1 Ethereum Finality</h3>
+          <p class="flow-desc">State roots are anchored permanently to Ethereum mainnet. No 7-day challenge periods; immediate cryptographic settlement.</p>
+        </div>
+
+        <div class="flow-card bracket-box">
+          <span class="flow-num">06 / TELEMETRY</span>
+          <h3 class="flow-title">Real-Time Analytics</h3>
+          <p class="flow-desc">Enterprise-grade Prometheus metrics, automated invariant assertion, and instantaneous sequencer health monitoring.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry Numbers Bar -->
+  <div class="container">
+    <div class="stats-bar bracket-corners-all">
+      <div class="corner-tl"></div>
+      <div class="corner-tr"></div>
+      <div class="corner-bl"></div>
+      <div class="corner-br"></div>
+      <div class="stat-item">
+        <div class="val">65k+</div>
+        <div class="label">Peak Transactions / Sec</div>
+      </div>
+      <div class="stat-item">
+        <div class="val">&lt;$0.001</div>
+        <div class="label">Average Gas Fee</div>
+      </div>
+      <div class="stat-item">
+        <div class="val">99.99%</div>
+        <div class="label">Uptime Reliability</div>
+      </div>
+      <div class="stat-item">
+        <div class="val">99M+</div>
+        <div class="label">Transactions Settled</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Builder Quotes / Testimonials with Corner Brackets -->
+  <section class="section-pad" style="padding-top: 20px;" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Testimonials</div>
+        <h2 class="section-title">What Builders Are Saying</h2>
+        <p class="section-sub">Discover how teams are scaling global applications on Kalyx infrastructure.</p>
+      </div>
+
+      <div class="testimonial-grid">
+        <div class="testi-card bracket-corners-all">
+          <div class="corner-tl"></div>
+          <div class="corner-tr"></div>
+          <div class="corner-bl"></div>
+          <div class="corner-br"></div>
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">“Deploying our orderbook DEX to Kalyx took under 20 minutes. Gas costs plummeted by 99.4%, and sub-second confirmation feels like Web2 speed.”</p>
+          <div class="testi-author">
+            <div class="testi-avatar">AK</div>
+            <div class="testi-meta">
+              <div class="name">Alex Koslov</div>
+              <div class="role">Lead Architect, ArcoDEX</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card bracket-corners-all">
+          <div class="corner-tl"></div>
+          <div class="corner-tr"></div>
+          <div class="corner-bl"></div>
+          <div class="corner-br"></div>
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">“Launching DAOs on Kalyx is completely frictionless. Community votes happen in real time with near-zero friction. We haven’t had a single re-org.”</p>
+          <div class="testi-author">
+            <div class="testi-avatar">LN</div>
+            <div class="testi-meta">
+              <div class="name">Lara Vance</div>
+              <div class="role">Founder, SpectraFi</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card bracket-corners-all">
+          <div class="corner-tl"></div>
+          <div class="corner-tr"></div>
+          <div class="corner-bl"></div>
+          <div class="corner-br"></div>
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">“The recursive ZK-STARK proving pipeline is a masterpiece of cryptography. State compression happens in 300ms without draining server memory.”</p>
+          <div class="testi-author">
+            <div class="testi-avatar">MT</div>
+            <div class="testi-meta">
+              <div class="name">Marcus Thorne</div>
+              <div class="role">Protocol Engineer, ZeroVault</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical FAQ -->
+  <section class="section-pad" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Verification</div>
+        <h2 class="section-title">Technical Inquiries</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item active">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>How does Kalyx differ from optimistic rollups?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-content">
+            Unlike optimistic rollups that enforce a 7-day fraud-proof dispute window for withdrawals, Kalyx relies on zero-knowledge cryptographic validity proofs. Every state transition is proven mathematically, allowing instant L1 exits in minutes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Are existing Solidity contracts fully compatible?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-content">
+            Yes. Kalyx provides 100% EVM opcode equivalence at the bytecode level. You can use standard tooling including Hardhat, Foundry, ethers.js, viem, and MetaMask without altering contract code.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>What are the typical transaction costs on Kalyx?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-content">
+            Thanks to recursive proof compression and modular data availability, standard token transfers typically cost less than $0.0004, and complex AMM swaps settle for approximately $0.0018.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Deploy CLI -->
+  <div class="container">
+    <div class="cta-deploy bracket-corners-all">
+      <div class="corner-tl"></div>
+      <div class="corner-tr"></div>
+      <div class="corner-bl"></div>
+      <div class="corner-br"></div>
+      <div>
+        <h3 style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin-bottom: 8px;">Ready to deploy on next-gen Layer 2?</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Experience high-speed composability and zero gas volatility today.</p>
+      </div>
+      <div class="cli-box" onclick="copyCLI()" title="Click to copy">
+        <span>$ npx kalyx-cli deploy --mainnet</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="nav-brand" style="margin-bottom: 12px;">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>
+            </div>
+            <span>Kalyx Network</span>
+          </div>
+          <p style="max-width: 340px; line-height: 1.6;">Modular ZK-Rollup infrastructure engineered for high-throughput EVM scaling and instantaneous cryptographic finality.</p>
+        </div>
+
+        <div class="footer-links-wrap">
+          <div class="footer-col">
+            <h4>Protocol</h4>
+            <ul>
+              <li><a href="#features">Architecture</a></li>
+              <li><a href="#console">Dashboard</a></li>
+              <li><a href="#ecosystem">Ecosystem</a></li>
+              <li><a href="#testimonials">Builders</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Developers</h4>
+            <ul>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">ZK Explorer</a></li>
+              <li><a href="#">Bridge RPC</a></li>
+              <li><a href="../../">Design Library</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Kalyx Network. All rights reserved. Fictional specimen for static design library.</div>
+        <div>Modular ZK-Rollup specimen • Zero third-party dependencies</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script>
+    function triggerBridge() {
+      alert("Opening Kalyx Fast Bridge modal. Select amount to transfer from L1 to L2.");
+    }
+
+    function switchTab(el, name) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function copyAddress() {
+      navigator.clipboard.writeText("0xA2394Bc7194E3108");
+      alert("Wallet address 0xA23...B3C7 copied to clipboard!");
+    }
+
+    function copyCLI() {
+      navigator.clipboard.writeText("npx kalyx-cli deploy --mainnet");
+      alert("CLI command copied: npx kalyx-cli deploy --mainnet");
+    }
+
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      item.classList.toggle('active');
+    }
+
+    function simulateTransaction() {
+      const s1 = document.getElementById('step1');
+      const s2 = document.getElementById('step2');
+      const s3 = document.getElementById('step3');
+      
+      s1.classList.remove('done');
+      s2.classList.remove('done');
+      s3.classList.remove('done');
+
+      setTimeout(() => s1.classList.add('done'), 200);
+      setTimeout(() => s2.classList.add('done'), 500);
+      setTimeout(() => {
+        s3.classList.add('done');
+        alert("Batch #9482 verified! 140 transactions proven in 318ms.");
+      }, 850);
+    }
+  </script>
+</body>
+</html>
