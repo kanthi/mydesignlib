@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aeterna — Where Memories Live Forever</title>
+  <meta name="description" content="Create a beautiful celestial memorial to share their story, photos, cherished moments, and celebrate their life together forever." />
+
+  <!-- Privacy & Anti-indexing -->
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>Aeterna — Where Cherished Lives Remain Timeless</title>
-  
-  <!-- Google tag (gtag.js) -->
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -16,34 +19,33 @@
     gtag('config', 'G-Z97ZD3EVSF');
   </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --bg-surface: #0e1424;
-      --bg-card: rgba(18, 26, 44, 0.7);
-      --border-gold: rgba(212, 175, 55, 0.25);
-      --border-subtle: rgba(255, 255, 255, 0.07);
-      
-      --gold-primary: #e6c875;
-      --gold-bright: #fef08a;
-      --gold-glow: rgba(230, 200, 117, 0.35);
-      --gold-deep: #b48c36;
-      
-      --text-main: #f8fafc;
-      --text-ivory: #fdfbf7;
+      --sky-azure: #2c6bb2;
+      --sky-deep: #11386d;
+      --gold-accent: #f5d378;
+      --gold-glow: rgba(245, 211, 120, 0.4);
+      --text-white: #ffffff;
+      --text-soft: #e2e8f0;
       --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-dark: #0f1828;
+      --border-light: rgba(255, 255, 255, 0.2);
+
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --max-width: 1200px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -51,1265 +53,979 @@
 
     html {
       scroll-behavior: smooth;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font-sans);
+      background-color: var(--sky-deep);
+      color: var(--text-white);
+      font-family: var(--font-display);
     }
 
     body {
+      background-color: #0c182c;
       overflow-x: hidden;
-      line-height: 1.65;
-      background: var(--bg-dark);
-      min-height: 100vh;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      outline: none;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     .container {
       width: 100%;
-      max-width: 1200px;
+      max-width: var(--max-width);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 1.5rem;
     }
 
-    /* Celestial Header */
-    header {
-      position: absolute;
+    /* Fixed Glass Navigation */
+    .nav-bar {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 100;
-      padding: 24px 0;
-      transition: background 0.3s;
-    }
-
-    .nav-wrap {
+      padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      pointer-events: auto;
+      transition: background 0.3s ease;
     }
 
-    .brand-mark {
+    .nav-bar.scrolled {
+      background: rgba(14, 28, 52, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.9rem 2rem;
+    }
+
+    .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-family: var(--font-serif);
-      font-size: 1.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--text-ivory);
+      gap: 0.65rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
     }
 
-    .brand-symbol {
-      width: 34px;
-      height: 34px;
+    .brand-icon {
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      border: 1px solid var(--border-gold);
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle, rgba(230, 200, 117, 0.25) 0%, transparent 70%);
-      box-shadow: 0 0 16px var(--gold-glow);
-    }
-
-    .brand-symbol svg {
-      width: 18px;
-      height: 18px;
-      fill: var(--gold-primary);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
     }
 
     .nav-menu {
       display: flex;
       align-items: center;
-      gap: 36px;
-      background: rgba(14, 20, 36, 0.55);
-      padding: 8px 24px;
-      border-radius: 100px;
-      border: 1px solid var(--border-subtle);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    @media (max-width: 800px) {
+      .nav-menu {
+        display: none;
+      }
     }
 
     .nav-link {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.85);
       font-size: 0.9rem;
       font-weight: 500;
-      color: #cbd5e1;
-      transition: color 0.2s;
+      transition: color 0.2s ease;
     }
 
     .nav-link:hover {
-      color: var(--gold-bright);
+      color: #ffffff;
     }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .btn-signin {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 0.5rem 1.15rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
     }
 
-    .btn-library {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 100px;
-      transition: color 0.2s;
+    .btn-signin:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
-    .btn-library:hover {
-      color: #fff;
-    }
-
-    .btn-memorial {
-      background: linear-gradient(135deg, rgba(254, 240, 138, 0.9), rgba(212, 175, 55, 0.9));
-      color: #070a12;
-      font-size: 0.88rem;
-      font-weight: 700;
-      padding: 10px 22px;
-      border-radius: 100px;
-      box-shadow: 0 4px 20px var(--gold-glow);
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-memorial:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 28px rgba(230, 200, 117, 0.5);
-    }
-
-    /* Hero Viewport (Celestial Arch Stage) */
-    .hero-stage {
+    /* =========================================================================
+       HERO PORTAL SCROLL TRACK & 3D STAGE
+       ========================================================================= */
+    .portal-track {
       position: relative;
-      min-height: 100vh;
+      height: 220vh;
+      background: #0d1e38;
+    }
+
+    .portal-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
-      text-align: center;
-      padding-bottom: 90px;
-      overflow: hidden;
-      background: radial-gradient(circle at 50% 30%, #172544 0%, #070a12 75%);
+      perspective: 1200px;
     }
 
-    /* Cloud & Arch Background Layers */
-    .hero-arch-bg {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 1920px;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .hero-arch-img {
-      width: 100%;
-      max-height: 85vh;
-      object-fit: cover;
-      object-position: center top;
-      opacity: 0.95;
-      filter: contrast(1.05) brightness(1.02);
-      animation: archFloat 12s ease-in-out infinite alternate;
-    }
-
-    @keyframes archFloat {
-      0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.02) translateY(-8px); }
-    }
-
-    /* Volumetric Cloud Mist at base of hero */
-    .hero-mist {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 380px;
-      background: linear-gradient(to top, var(--bg-dark) 20%, rgba(7, 10, 18, 0.8) 60%, transparent 100%);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* Floating Celestial Light Particles */
-    .celestial-particles {
+    .portal-viewport {
       position: absolute;
       inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      overflow: hidden;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
-    .mote {
+    .arch-backdrop-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center 25%;
+      will-change: transform;
+      transform-origin: center 45%;
+    }
+
+    /* Floating Cloud Mist Layer */
+    .cloud-mist-layer {
       position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--gold-bright);
-      box-shadow: 0 0 10px var(--gold-bright);
+      bottom: 0;
+      left: -10%;
+      width: 120%;
+      height: 45vh;
+      background-image: url('assets/cloud-mist-front.webp');
+      background-size: cover;
+      background-repeat: repeat-x;
       opacity: 0.7;
-      animation: moteRise 9s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+      animation: cloudDrift 45s linear infinite alternate;
+      will-change: transform;
     }
 
-    @keyframes moteRise {
-      0% { transform: translateY(100vh) scale(0.6); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    @keyframes cloudDrift {
+      0% { transform: translateX(0px); }
+      100% { transform: translateX(-60px); }
     }
 
-    /* Hero Text & Controls */
+    /* Hero Vignette */
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(14, 28, 52, 0.25) 0%, transparent 40%, rgba(12, 24, 44, 0.7) 85%, rgba(12, 24, 44, 0.95) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Golden Sunbeam Glow */
+    .portal-sunbeam {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(254, 240, 138, 0.3) 0%, rgba(245, 211, 120, 0.15) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(40px);
+    }
+
+    /* Hero Content Lockup */
     .hero-content {
       position: relative;
-      z-index: 10;
-      max-width: 840px;
-      margin: 0 auto;
-      padding: 0 20px;
+      z-index: 4;
+      text-align: center;
+      padding: 0 1.5rem 5rem;
+      max-width: 780px;
+      will-change: transform, opacity;
+      transition: opacity 0.3s ease;
     }
 
-    .hero-flourish {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-      color: var(--gold-primary);
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .hero-flourish::before,
-    .hero-flourish::after {
-      content: '';
-      width: 48px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold-primary));
-    }
-
-    .hero-flourish::after {
-      background: linear-gradient(to left, transparent, var(--gold-primary));
+    .hero-sparkle {
+      display: inline-block;
+      font-size: 1.1rem;
+      color: var(--gold-accent);
+      margin-bottom: 0.75rem;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
     }
 
     .hero-title {
-      font-family: var(--font-serif);
-      font-size: clamp(3rem, 6vw, 5.2rem);
-      font-weight: 500;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      color: var(--text-ivory);
-      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
-      margin-bottom: 20px;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--gold-bright);
-      font-weight: 400;
+      font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.1rem;
     }
 
     .hero-desc {
-      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-      color: #cbd5e1;
-      max-width: 640px;
-      margin: 0 auto 36px;
-      font-weight: 300;
-      line-height: 1.7;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 620px;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
     }
 
-    .hero-btns {
-      display: flex;
+    .btn-hero {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .btn-hero-primary {
+      gap: 0.6rem;
       background: #ffffff;
-      color: #070a12;
-      font-size: 1rem;
+      color: #0f172a;
+      padding: 0.85rem 1.75rem;
+      border-radius: 9999px;
+      font-size: 0.95rem;
       font-weight: 700;
-      padding: 14px 32px;
-      border-radius: 100px;
-      box-shadow: 0 10px 35px rgba(255, 255, 255, 0.25);
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.8);
+      transition: var(--transition);
     }
 
-    .btn-hero-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 45px rgba(255, 255, 255, 0.4);
-      background: var(--gold-bright);
+    .btn-hero:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.4);
     }
 
-    .btn-hero-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #f8fafc;
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 14px 28px;
-      border-radius: 100px;
-      border: 1px solid var(--border-gold);
-      backdrop-filter: blur(12px);
-      transition: all 0.25s;
-    }
-
-    .btn-hero-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Interactive Candle Sanctuary Bar */
-    .candle-sanctuary-bar {
+    /* =========================================================================
+       SECTIONS (How It Works, Tributes, Sanctuary, Memorial Creator)
+       ========================================================================= */
+    .content-stream {
       position: relative;
-      z-index: 20;
-      margin-top: -30px;
-      margin-bottom: 60px;
+      background: #0c182c;
+      z-index: 10;
+      box-shadow: 0 -30px 60px rgba(12, 24, 44, 0.9);
     }
 
-    .sanctuary-card {
-      background: rgba(14, 20, 36, 0.85);
-      border: 1px solid var(--border-gold);
-      border-radius: 24px;
-      padding: 24px 36px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(230, 200, 117, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .candle-info {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .candle-animated-flame {
-      width: 48px;
-      height: 48px;
-      position: relative;
-      display: grid;
-      place-items: center;
-    }
-
-    .flame-core {
-      width: 14px;
-      height: 24px;
-      background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #fef08a 40%, #f59e0b 80%, transparent 100%);
-      border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
-      box-shadow: 0 0 20px #f59e0b, 0 0 40px rgba(245, 158, 11, 0.6);
-      animation: flicker 2s infinite ease-in-out alternate;
-    }
-
-    @keyframes flicker {
-      0% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
-      50% { transform: scale(1.08, 0.96) rotate(1.5deg); opacity: 1; }
-      100% { transform: scale(0.96, 1.05) rotate(-2deg); opacity: 0.9; }
-    }
-
-    .candle-stat-num {
-      font-family: var(--font-serif);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--gold-bright);
-      line-height: 1.1;
-    }
-
-    .candle-stat-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .btn-light-candle {
-      background: linear-gradient(135deg, rgba(230, 200, 117, 0.2), rgba(180, 140, 54, 0.2));
-      border: 1px solid var(--border-gold);
-      color: var(--gold-bright);
-      font-weight: 600;
-      font-size: 0.92rem;
-      padding: 12px 26px;
-      border-radius: 100px;
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-
-    .btn-light-candle:hover {
-      background: linear-gradient(135deg, rgba(230, 200, 117, 0.35), rgba(180, 140, 54, 0.35));
-      box-shadow: 0 0 25px var(--gold-glow);
-      transform: translateY(-1px);
-    }
-
-    /* Section Global */
-    .section-pad {
-      padding: 100px 0;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 680px;
-      margin: 0 auto 64px;
+    /* How It Works */
+    .how-section {
+      padding: 6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .section-eyebrow {
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--gold-accent);
       text-transform: uppercase;
-      color: var(--gold-primary);
-      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+      display: block;
+      text-align: center;
     }
 
-    .section-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(2.2rem, 4vw, 3.4rem);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: var(--text-ivory);
-      line-height: 1.15;
-      margin-bottom: 16px;
+    .section-title {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin-bottom: 1rem;
     }
 
-    .section-sub {
+    .section-subtitle {
+      text-align: center;
       color: var(--text-muted);
-      font-size: 1.05rem;
-      font-weight: 300;
-      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 4rem;
+      font-size: 1rem;
     }
 
-    /* Memorial Tributes Gallery */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      transition: var(--transition);
+    }
+
+    .step-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(245, 211, 120, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--gold-accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .step-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .step-desc {
+      color: var(--text-soft);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    /* Living Tributes Gallery */
+    .tributes-section {
+      padding: 6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
     .tributes-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .tributes-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .tribute-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
+      background: rgba(18, 32, 56, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
       overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: var(--transition);
       display: flex;
       flex-direction: column;
-      transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-      position: relative;
+      justify-content: space-between;
     }
 
     .tribute-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--border-gold);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(230, 200, 117, 0.15);
+      border-color: rgba(245, 211, 120, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
     }
 
-    .tribute-photo-wrap {
+    .tribute-img-wrap {
       height: 260px;
-      width: 100%;
       position: relative;
       overflow: hidden;
     }
 
-    .tribute-photo {
+    .tribute-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.6s ease;
     }
 
-    .tribute-card:hover .tribute-photo {
-      transform: scale(1.05);
+    .tribute-card:hover .tribute-img {
+      transform: scale(1.04);
     }
 
-    .tribute-badge {
+    .tribute-overlay {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(7, 10, 18, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--gold-bright);
-      font-size: 0.72rem;
-      padding: 4px 10px;
-      border-radius: 100px;
-      backdrop-filter: blur(8px);
+      inset: 0;
+      background: linear-gradient(to top, rgba(18, 32, 56, 1) 0%, transparent 60%);
     }
 
     .tribute-body {
-      padding: 24px 20px;
+      padding: 1.75rem;
+      flex: 1;
       display: flex;
       flex-direction: column;
-      flex: 1;
       justify-content: space-between;
-    }
-
-    .tribute-dates {
-      font-family: var(--font-serif);
-      font-size: 0.95rem;
-      color: var(--gold-primary);
-      margin-bottom: 6px;
     }
 
     .tribute-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tribute-dates {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--gold-accent);
+      margin-bottom: 1rem;
+    }
+
+    .tribute-quote {
       font-family: var(--font-serif);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-ivory);
-      line-height: 1.2;
-      margin-bottom: 8px;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text-soft);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
     }
 
-    .tribute-epitaph {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .tribute-footer {
+    /* Candle Action */
+    .candle-action-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 14px;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .tribute-candles-count {
+    .candle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 211, 120, 0.12);
+      border: 1px solid rgba(245, 211, 120, 0.3);
+      color: var(--gold-accent);
+      padding: 0.45rem 0.9rem;
+      border-radius: 9999px;
       font-size: 0.78rem;
-      color: var(--gold-bright);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .candle-btn:hover {
+      background: rgba(245, 211, 120, 0.22);
+      transform: scale(1.02);
+    }
+
+    .candle-btn.lit {
+      background: var(--gold-accent);
+      color: #0c182c;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .flame-icon {
+      font-size: 0.95rem;
+    }
+
+    .candle-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 3rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(180deg, rgba(245, 211, 120, 0.1) 0%, rgba(18, 32, 56, 0.7) 100%);
+      border-color: rgba(245, 211, 120, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .plan-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-price {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 1rem 0 1.5rem;
+      font-family: var(--font-display);
+    }
+
+    .plan-price span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+      font-size: 0.92rem;
+      color: var(--text-soft);
+    }
+
+    .plan-list li {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 0.6rem;
     }
 
-    .btn-view-tribute {
-      font-size: 0.82rem;
-      color: #f8fafc;
-      font-weight: 600;
-      transition: color 0.2s;
+    .plan-list li::before {
+      content: '✦';
+      color: var(--gold-accent);
+      font-size: 0.8rem;
     }
 
-    .btn-view-tribute:hover {
-      color: var(--gold-bright);
-    }
-
-    /* 4 Pillars of Perpetual Remembrance */
-    .pillars-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
-
-    .pillar-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 32px 24px;
-      backdrop-filter: blur(12px);
-      transition: all 0.25s ease;
-    }
-
-    .pillar-card:hover {
-      border-color: var(--border-gold);
-      transform: translateY(-4px);
-    }
-
-    .pillar-num {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      color: var(--gold-primary);
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .pillar-title {
-      font-family: var(--font-serif);
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: var(--text-ivory);
-      margin-bottom: 12px;
-      line-height: 1.25;
-    }
-
-    .pillar-desc {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    /* Living Archive Quote / Poetry */
-    .quote-sanctuary {
-      background: radial-gradient(circle at 50% 50%, rgba(230, 200, 117, 0.08) 0%, transparent 70%);
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 100px 0;
+    /* Final CTA Banner */
+    .cta-section {
+      padding: 6rem 0;
       text-align: center;
     }
 
-    .sanctuary-quote {
-      font-family: var(--font-serif);
-      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-      font-style: italic;
-      color: var(--text-ivory);
-      max-width: 860px;
-      margin: 0 auto 20px;
-      line-height: 1.4;
-    }
-
-    .quote-author {
-      font-size: 0.95rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold-primary);
-    }
-
-    /* FAQ Accordion */
-    .faq-list {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .faq-row {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: border-color 0.25s;
-    }
-
-    .faq-row.open {
-      border-color: var(--border-gold);
-    }
-
-    .faq-btn {
-      width: 100%;
-      text-align: left;
-      padding: 22px 28px;
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--text-ivory);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      background: transparent;
-    }
-
-    .faq-symbol {
-      color: var(--gold-primary);
-      transition: transform 0.3s;
-      font-size: 0.9rem;
-    }
-
-    .faq-row.open .faq-symbol {
-      transform: rotate(180deg);
-    }
-
-    .faq-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-      color: var(--text-muted);
-      font-size: 0.96rem;
-      line-height: 1.7;
-      padding: 0 28px;
-    }
-
-    .faq-row.open .faq-content {
-      max-height: 240px;
-      padding-bottom: 24px;
-    }
-
-    /* Modal / Memorial Creator Drawer */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 7, 13, 0.85);
-      backdrop-filter: blur(16px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      padding: 20px;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .creator-box {
-      background: #0f1526;
-      border: 1px solid var(--border-gold);
+    .cta-box {
+      background: radial-gradient(circle at 50% 0%, rgba(245, 211, 120, 0.15) 0%, rgba(14, 28, 52, 0.9) 70%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 24px;
-      max-width: 580px;
-      width: 100%;
-      padding: 40px;
-      position: relative;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(230, 200, 117, 0.15);
-      transform: translateY(20px);
-      transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
-    }
-
-    .modal-overlay.active .creator-box {
-      transform: translateY(0);
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .close-modal:hover {
-      color: #fff;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--gold-primary);
-      margin-bottom: 8px;
-    }
-
-    .form-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 12px 16px;
-      color: #fff;
-      font-size: 0.95rem;
-      font-family: inherit;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--gold-primary);
+      padding: 4.5rem 2rem;
+      max-width: 860px;
+      margin: 0 auto;
     }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 80px 0 40px;
-      background: #04060b;
-      font-size: 0.9rem;
-      color: var(--text-dim);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 3.5rem 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 60px;
-    }
-
-    .footer-col h4 {
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      color: var(--text-ivory);
-      margin-bottom: 18px;
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .footer-col a:hover {
-      color: var(--gold-bright);
-    }
-
-    .footer-bottom {
+    .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 24px;
-      font-size: 0.8rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 992px) {
-      .tributes-grid, .pillars-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .nav-menu {
-        display: none;
-      }
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .tributes-grid, .pillars-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-title {
-        font-size: 2.6rem;
-      }
-      .sanctuary-card {
-        flex-direction: column;
-        text-align: center;
-      }
+      flex-wrap: wrap;
+      gap: 1rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Celestial Particles -->
-  <div class="celestial-particles" id="particles"></div>
-
-  <!-- Header -->
-  <header>
-    <div class="container nav-wrap">
-      <a href="#" class="brand-mark">
-        <div class="brand-symbol">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/></svg>
-        </div>
-        <span>Aeterna</span>
-      </a>
-
-      <nav class="nav-menu">
-        <a href="#tributes" class="nav-link">Tributes</a>
-        <a href="#pillars" class="nav-link">Heritage Pillars</a>
-        <a href="#sanctuary" class="nav-link">Candle Sanctuary</a>
-        <a href="#faq" class="nav-link">Inquiries</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="../../" class="btn-library">← Library</a>
-        <button class="btn-memorial" onclick="openCreatorModal()">
-          <span>Create Memorial</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+  <!-- Fixed Glass Header -->
+  <header class="nav-bar" id="header">
+    <a href="#" class="brand">
+      <div class="brand-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a7 7 0 1 0 7 7"/>
+        </svg>
       </div>
-    </div>
+      <span>Aeterna</span>
+    </a>
+
+    <ul class="nav-menu">
+      <li><a href="#how" class="nav-link">How It Works</a></li>
+      <li><a href="#tributes" class="nav-link">Tributes</a></li>
+      <li><a href="#pricing" class="nav-link">Pricing</a></li>
+      <li><a href="#create" class="nav-link">Support</a></li>
+    </ul>
+
+    <a href="#create" class="btn-signin">Sign In</a>
   </header>
 
-  <!-- Hero Section with Celestial Arch -->
-  <section class="hero-stage">
-    <div class="hero-arch-bg">
-      <img src="assets/celestial-arch-alpha.webp" alt="Celestial Baroque Arch in the Clouds" class="hero-arch-img" />
+  <main>
+    <!-- =========================================================================
+         Hero Celestial Stage (Full-bleed Luminous Azure Sky & Golden Arch)
+         ========================================================================= -->
+    <div class="portal-track" id="portalTrack">
+      <section class="portal-stage" id="portalStage">
+        
+        <!-- 3D Perspective Viewport -->
+        <div class="portal-viewport" id="portalViewport">
+          <img src="assets/celestial-arch-master.webp" alt="Celestial Golden Baroque Portal" class="arch-backdrop-img" id="archImg" />
+          <div class="portal-sunbeam"></div>
+        </div>
+
+        <!-- Drifting Front Cloud Mist -->
+        <div class="cloud-mist-layer" id="cloudMist"></div>
+        <div class="hero-vignette"></div>
+
+        <!-- Hero Content Lockup (Exact Reference Copy) -->
+        <div class="hero-content" id="heroContent">
+          <div class="hero-sparkle">✦</div>
+          <h1 class="hero-title">Where Memories Live Forever</h1>
+          <p class="hero-desc">
+            Create a beautiful memorial to share their story, photos, cherished moments, and celebrate their life together.
+          </p>
+          <a href="#create" class="btn-hero">
+            <span>Create Memorial</span>
+            <span>→</span>
+          </a>
+        </div>
+
+      </section>
     </div>
-    <div class="hero-mist"></div>
 
-    <div class="hero-content">
-      <div class="hero-flourish">Timeless Remembrance</div>
-      <h1 class="hero-title">
-        Where Memories <br/>
-        <em>Live Forever</em>.
-      </h1>
-      <p class="hero-desc">
-        Create a permanent, beautifully curated sanctuary to share life stories, archived voices, cherished photographs, and celebrate legacy across generations.
-      </p>
+    <!-- Content Stream -->
+    <div class="content-stream">
+      
+      <!-- How It Works Section -->
+      <section class="how-section" id="how">
+        <div class="container">
+          <span class="section-eyebrow">// REVERENT SIMPLICITY</span>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle">A peaceful, three-step journey to honor a life of significance.</p>
 
-      <div class="hero-btns">
-        <button class="btn-hero-primary" onclick="openCreatorModal()">
-          <span>Begin a Memorial</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <a href="#tributes" class="btn-hero-secondary">Explore Tributes</a>
-      </div>
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">01 // INITIATION</div>
+              <h3 class="step-title">Create a Sacred Space</h3>
+              <p class="step-desc">
+                Begin with a timeless biography, significant milestones, and a collection of cherished portrait photography.
+              </p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">02 // INVITATION</div>
+              <h3 class="step-title">Invite Family & Friends</h3>
+              <p class="step-desc">
+                Share a private link allowing loved ones from across the globe to contribute stories, voicemails, and letters.
+              </p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">03 // PERPETUITY</div>
+              <h3 class="step-title">Light an Eternal Candle</h3>
+              <p class="step-desc">
+                Every visitor may leave a digital candle, preserving an unbroken flame of remembrance through future generations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Living Tributes Gallery -->
+      <section class="tributes-section" id="tributes">
+        <div class="container">
+          <span class="section-eyebrow">// LIVING SANCTUARY</span>
+          <h2 class="section-title">Cherished Tributes</h2>
+          <p class="section-subtitle">Walk through the sanctuary of lives honored by families across the world.</p>
+
+          <div class="tributes-grid">
+            <!-- Tribute 1 -->
+            <div class="tribute-card">
+              <div class="tribute-img-wrap">
+                <img src="assets/portrait-eleanor.webp" alt="Eleanor Vance Sterling" class="tribute-img" />
+                <div class="tribute-overlay"></div>
+              </div>
+              <div class="tribute-body">
+                <div>
+                  <h3 class="tribute-name">Eleanor Vance Sterling</h3>
+                  <div class="tribute-dates">1934 – 2024 · BOSTON, MA</div>
+                  <p class="tribute-quote">
+                    “She taught three generations that kindness was not an act, but a foundation.”
+                  </p>
+                </div>
+                <div class="candle-action-box">
+                  <button class="candle-btn" onclick="toggleCandle(this)">
+                    <span class="flame-icon">🔥</span>
+                    <span>Light Candle</span>
+                  </button>
+                  <span class="candle-count"><strong class="count-num">142</strong> candles lit</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tribute 2 -->
+            <div class="tribute-card">
+              <div class="tribute-img-wrap">
+                <img src="assets/portrait-arthur.webp" alt="Arthur James Montgomery" class="tribute-img" />
+                <div class="tribute-overlay"></div>
+              </div>
+              <div class="tribute-body">
+                <div>
+                  <h3 class="tribute-name">Arthur James Montgomery</h3>
+                  <div class="tribute-dates">1941 – 2023 · EDINBURGH, UK</div>
+                  <p class="tribute-quote">
+                    “An architect of stone, and a quiet anchor in every storm.”
+                  </p>
+                </div>
+                <div class="candle-action-box">
+                  <button class="candle-btn" onclick="toggleCandle(this)">
+                    <span class="flame-icon">🔥</span>
+                    <span>Light Candle</span>
+                  </button>
+                  <span class="candle-count"><strong class="count-num">89</strong> candles lit</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tribute 3 -->
+            <div class="tribute-card">
+              <div class="tribute-img-wrap">
+                <img src="assets/portrait-clara.webp" alt="Clara Huang Chen" class="tribute-img" />
+                <div class="tribute-overlay"></div>
+              </div>
+              <div class="tribute-body">
+                <div>
+                  <h3 class="tribute-name">Clara Huang Chen</h3>
+                  <div class="tribute-dates">1948 – 2025 · SAN FRANCISCO, CA</div>
+                  <p class="tribute-quote">
+                    “A luminous soul who brought gardens to bloom and warmth to all she met.”
+                  </p>
+                </div>
+                <div class="candle-action-box">
+                  <button class="candle-btn" onclick="toggleCandle(this)">
+                    <span class="flame-icon">🔥</span>
+                    <span>Light Candle</span>
+                  </button>
+                  <span class="candle-count"><strong class="count-num">214</strong> candles lit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Perpetual Preservation & Pricing -->
+      <section class="pricing-section" id="pricing">
+        <div class="container">
+          <span class="section-eyebrow">// SACRED ENDURANCE</span>
+          <h2 class="section-title">Preserved For Generations</h2>
+          <p class="section-subtitle">No recurring subscriptions. One single gift guarantees perpetual archival preservation.</p>
+
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <div>
+                <h3 class="plan-title">Perpetual Sanctuary</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Permanent digital memorial for a beloved family member.</p>
+                <div class="plan-price">$99 <span>one-time</span></div>
+
+                <ul class="plan-list">
+                  <li>Lifetime cloud storage preservation</li>
+                  <li>Unlimited photo and story contributions</li>
+                  <li>Interactive eternal candle ceremony</li>
+                  <li>Private family invitation link</li>
+                  <li>Custom engraved digital plaque</li>
+                </ul>
+              </div>
+
+              <a href="#create" class="btn-hero" style="width:100%; justify-content:center;">Create Sanctuary</a>
+            </div>
+
+            <div class="pricing-card featured">
+              <div>
+                <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--gold-accent); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.5rem;">Recommended</span>
+                <h3 class="plan-title">Family Heritage Vault</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Complete multi-generational family tree and oral history vault.</p>
+                <div class="plan-price">$199 <span>one-time</span></div>
+
+                <ul class="plan-list">
+                  <li>Up to 10 interconnected family memorials</li>
+                  <li>Audio oral history voice recording storage</li>
+                  <li>High-resolution heirloom document preservation</li>
+                  <li>Genealogical family tree visualizer</li>
+                  <li>Physical archival linen QR keepsake card</li>
+                </ul>
+              </div>
+
+              <a href="#create" class="btn-hero" style="width:100%; justify-content:center; background:var(--gold-accent); color:#0f172a;">Honor Family Legacy</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final Creation CTA -->
+      <section class="cta-section" id="create">
+        <div class="container">
+          <div class="cta-box">
+            <div class="hero-sparkle">✦</div>
+            <h2 style="font-size:clamp(2.2rem, 4.2vw, 3.2rem); font-weight:800; margin-bottom:1rem;">
+              Begin their memorial today.
+            </h2>
+            <p style="color:var(--text-soft); max-width:540px; margin:0 auto 2.5rem; font-size:1.05rem;">
+              Take the first step in crafting a timeless haven where their laughter, stories, and spirit remain alive.
+            </p>
+
+            <form style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; max-width:480px; margin:0 auto;" onsubmit="event.preventDefault(); alert('Sanctuary draft initialized.');">
+              <input type="text" placeholder="Loved one's name..." required style="flex:1; min-width:240px; padding:0.8rem 1.25rem; border-radius:9999px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.1); color:#ffffff; font-size:0.95rem; outline:none;" />
+              <button type="submit" class="btn-hero">
+                <span>Begin →</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
     </div>
-  </section>
-
-  <!-- Interactive Candle Sanctuary Bar -->
-  <div class="container candle-sanctuary-bar" id="sanctuary">
-    <div class="sanctuary-card">
-      <div class="candle-info">
-        <div class="candle-animated-flame">
-          <div class="flame-core"></div>
-        </div>
-        <div>
-          <div class="candle-stat-num" id="candleCount">142,890</div>
-          <div class="candle-stat-label">Everlasting Candles Burning Worldwide</div>
-        </div>
-      </div>
-
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <button class="btn-light-candle" id="lightCandleBtn" onclick="lightCandle()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C11.5 2 11 3 11 4.5c0 1.5.5 2.5 1 3.5.5-1 1-2 1-3.5C13 3 12.5 2 12 2zm-3 8v12h6V10H9z"/></svg>
-          <span id="candleBtnText">Light a Candle in Remembrance</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Curated Tributes Gallery -->
-  <section class="section-pad" id="tributes">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow">Living Testaments</div>
-        <h2 class="section-heading">Celebrated Lives, Everlasting Echoes</h2>
-        <p class="section-sub">Each memorial sanctuary is an enduring vessel of gratitude, archival memories, and familial love.</p>
-      </div>
-
-      <div class="tributes-grid">
-        <!-- Eleanor -->
-        <div class="tribute-card">
-          <div class="tribute-photo-wrap">
-            <img src="assets/tribute-eleanor.webp" alt="Eleanor Vance Memorial" class="tribute-photo" />
-            <div class="tribute-badge">Sanctuary Garden</div>
-          </div>
-          <div class="tribute-body">
-            <div>
-              <div class="tribute-dates">1942 — 2024</div>
-              <h3 class="tribute-name">Eleanor Vance</h3>
-              <p class="tribute-epitaph">Master cellist, architect of conservatory botanical gardens, and gentle matriarch whose music warmed four generations.</p>
-            </div>
-            <div class="tribute-footer">
-              <span class="tribute-candles-count">🔥 1,248 Candles</span>
-              <a href="#" class="btn-view-tribute" onclick="openMemorialProfile('Eleanor Vance', '1942 — 2024')">Visit Sanctuary →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Marcus -->
-        <div class="tribute-card">
-          <div class="tribute-photo-wrap">
-            <img src="assets/tribute-marcus.webp" alt="Marcus Aurelius Thorne" class="tribute-photo" />
-            <div class="tribute-badge">Starlight Vault</div>
-          </div>
-          <div class="tribute-body">
-            <div>
-              <div class="tribute-dates">1951 — 2025</div>
-              <h3 class="tribute-name">Marcus A. Thorne</h3>
-              <p class="tribute-epitaph">Observatory astronomer, celestial author, and mountaineer who taught us that we are all fashioned from cosmic dust.</p>
-            </div>
-            <div class="tribute-footer">
-              <span class="tribute-candles-count">🔥 3,890 Candles</span>
-              <a href="#" class="btn-view-tribute" onclick="openMemorialProfile('Marcus A. Thorne', '1951 — 2025')">Visit Sanctuary →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sora -->
-        <div class="tribute-card">
-          <div class="tribute-photo-wrap">
-            <img src="assets/tribute-sora.webp" alt="Sora Takahashi" class="tribute-photo" />
-            <div class="tribute-badge">Quiet Sanctuary</div>
-          </div>
-          <div class="tribute-body">
-            <div>
-              <div class="tribute-dates">1975 — 2024</div>
-              <h3 class="tribute-name">Sora Takahashi</h3>
-              <p class="tribute-epitaph">Master ceramicist and Kyoto tea master whose vessels preserved stillness in an era of hurry.</p>
-            </div>
-            <div class="tribute-footer">
-              <span class="tribute-candles-count">🔥 940 Candles</span>
-              <a href="#" class="btn-view-tribute" onclick="openMemorialProfile('Sora Takahashi', '1975 — 2024')">Visit Sanctuary →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Aris -->
-        <div class="tribute-card">
-          <div class="tribute-photo-wrap">
-            <img src="assets/tribute-aris.webp" alt="Dr. Aris Thorne" class="tribute-photo" />
-            <div class="tribute-badge">Ocean Horizon</div>
-          </div>
-          <div class="tribute-body">
-            <div>
-              <div class="tribute-dates">1968 — 2023</div>
-              <h3 class="tribute-name">Dr. Aris Thorne</h3>
-              <p class="tribute-epitaph">Deep sea oceanographer, reef conservation pioneer, and loving father who guarded the silent blue abyss.</p>
-            </div>
-            <div class="tribute-footer">
-              <span class="tribute-candles-count">🔥 2,120 Candles</span>
-              <a href="#" class="btn-view-tribute" onclick="openMemorialProfile('Dr. Aris Thorne', '1968 — 2023')">Visit Sanctuary →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4 Pillars of Perpetual Remembrance -->
-  <section class="section-pad" style="background: #090e1c;" id="pillars">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow">Archival Foundation</div>
-        <h2 class="section-heading">Designed for Eternity</h2>
-        <p class="section-sub">Aeterna is engineered to outlive digital ephemera, safeguarding your family's precious records for a century.</p>
-      </div>
-
-      <div class="pillars-grid">
-        <div class="pillar-card">
-          <span class="pillar-num">01</span>
-          <h3 class="pillar-title">100-Year Immutable Vault</h3>
-          <p class="pillar-desc">Multi-redundant cold storage protocol guarantees that photographs, manuscripts, and high-fidelity voice notes remain uncorrupted across generations.</p>
-        </div>
-
-        <div class="pillar-card">
-          <span class="pillar-num">02</span>
-          <h3 class="pillar-title">Oral History Voice Threads</h3>
-          <p class="pillar-desc">Family members record audio recollections directly into the sanctuary timeline, accompanied by automatic waveform preservation and transcripts.</p>
-        </div>
-
-        <div class="pillar-card">
-          <span class="pillar-num">03</span>
-          <h3 class="pillar-title">Curated Family Garden</h3>
-          <p class="pillar-desc">An intimate, ad-free environment free of commercial noise. Only invited friends and kin can light tribute flames, pen reflections, and upload memories.</p>
-        </div>
-
-        <div class="pillar-card">
-          <span class="pillar-num">04</span>
-          <h3 class="pillar-title">Hand-Cast Brass Plaques</h3>
-          <p class="pillar-desc">We forge heirloom bronze and basalt QR markers for gravestones, heirloom trees, or family gardens that instantly bridge the physical world to their digital sanctuary.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sacred Quote Section -->
-  <div class="quote-sanctuary">
-    <div class="container">
-      <p class="sanctuary-quote">“What we once enjoyed and deeply loved we can never lose, for all that we love deeply becomes a part of us.”</p>
-      <div class="quote-author">— Helen Keller</div>
-    </div>
-  </div>
-
-  <!-- FAQ Section -->
-  <section class="section-pad" id="faq">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow">Assurance & Guidance</div>
-        <h2 class="section-heading">Frequently Asked Inquiries</h2>
-      </div>
-
-      <div class="faq-list">
-        <div class="faq-row open">
-          <button class="faq-btn" onclick="toggleFaq(this)">
-            <span>How does Aeterna guarantee 100-year digital preservation?</span>
-            <span class="faq-symbol">▼</span>
-          </button>
-          <div class="faq-content">
-            Every memorial is endowed with an upfront perpetual endowment trust that finances decentralized Arweave and cold IPFS archival storage, ensuring zero ongoing subscription fees are ever needed to keep a sanctuary alive.
-          </div>
-        </div>
-
-        <div class="faq-row">
-          <button class="faq-btn" onclick="toggleFaq(this)">
-            <span>Can we keep our family sanctuary private or password protected?</span>
-            <span class="faq-symbol">▼</span>
-          </button>
-          <div class="faq-content">
-            Yes. You retain total sovereignty over access. Sanctuaries can be entirely public, unlisted (accessible only via private link or brass plaque), or protected with family passkeys.
-          </div>
-        </div>
-
-        <div class="faq-row">
-          <button class="faq-btn" onclick="toggleFaq(this)">
-            <span>How do physical heirloom brass plaques work?</span>
-            <span class="faq-symbol">▼</span>
-          </button>
-          <div class="faq-content">
-            Each plaque is custom engraved on marine-grade solid brass or polished obsidian stone with high-precision micro-laser engraving. Touching your smartphone to the plaque or scanning its discreet motif launches their sanctuary instantly.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </main>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="brand-mark" style="margin-bottom: 14px;">
-            <div class="brand-symbol">
-              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/></svg>
-            </div>
-            <span>Aeterna</span>
-          </div>
-          <p style="max-width: 360px; line-height: 1.7; color: var(--text-muted);">A timeless celestial sanctuary preserving precious memories, oral histories, and family legacies in perpetuity.</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>Sanctuary</h4>
-          <ul>
-            <li><a href="#tributes">Curated Tributes</a></li>
-            <li><a href="#pillars">Heritage Pillars</a></li>
-            <li><a href="#sanctuary">Light a Candle</a></li>
-            <li><a href="#faq">Archival Trust</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Heirloom</h4>
-          <ul>
-            <li><a href="#" onclick="openCreatorModal()">Create Memorial</a></li>
-            <li><a href="#">Order Brass Plaque</a></li>
-            <li><a href="../../">Design Library</a></li>
-          </ul>
-        </div>
+    <div class="container footer-inner">
+      <div style="display:flex; align-items:center; gap:0.65rem;">
+        <span style="font-weight:800; color:#ffffff; font-size:1.05rem;">Aeterna</span>
+        <span>&copy; 2026 Aeterna Celestial Memorial Sanctuary. Personal design archive specimen.</span>
       </div>
 
-      <div class="footer-bottom">
-        <div>&copy; 2026 Aeterna Memorial Sanctuary. Fictional specimen for static design repository.</div>
-        <div>Engineered with celestial aesthetics & perpetual archival design</div>
+      <div style="display:flex; gap:1.75rem;">
+        <a href="#how" style="color:var(--text-muted); text-decoration:none;">How It Works</a>
+        <a href="#tributes" style="color:var(--text-muted); text-decoration:none;">Tributes</a>
+        <a href="#pricing" style="color:var(--text-muted); text-decoration:none;">Pricing</a>
       </div>
     </div>
   </footer>
 
-  <!-- Memorial Creator Modal -->
-  <div class="modal-overlay" id="creatorModal">
-    <div class="creator-box">
-      <button class="close-modal" onclick="closeCreatorModal()">&times;</button>
-      <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--gold-bright); margin-bottom: 8px;">Begin a Timeless Memorial</h3>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Celebrate a cherished life in enduring beauty.</p>
-
-      <form onsubmit="handleMemorialSubmit(event)">
-        <div class="form-group">
-          <label>Full Name of Honored Individual</label>
-          <input type="text" class="form-input" id="memorialName" placeholder="e.g. Eleanor Vance" required />
-        </div>
-        <div class="form-group">
-          <label>Years of Life (e.g. 1945 — 2024)</label>
-          <input type="text" class="form-input" id="memorialYears" placeholder="e.g. 1945 — 2024" required />
-        </div>
-        <div class="form-group">
-          <label>Sanctuary Realm Motif</label>
-          <select class="form-input" style="background: #172138; color: #fff;">
-            <option>Celestial Baroque Arch (Golden Twilight)</option>
-            <option>Botanical Conservatory Garden</option>
-            <option>Observatory Star Vault</option>
-            <option>Oceanic Horizon Sanctuary</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-memorial" style="width: 100%; justify-content: center; padding: 14px; font-size: 1rem; margin-top: 10px;">
-          Create & View Sanctuary Preview →
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Ambient Audio & Particle Scripts -->
+  <!-- Interactive 3D Parallax & Web Audio Chime Script -->
   <script>
-    // Spawn floating golden motes
-    const particles = document.getElementById('particles');
-    for (let i = 0; i < 28; i++) {
-      const mote = document.createElement('div');
-      mote.className = 'mote';
-      mote.style.left = Math.random() * 100 + '%';
-      mote.style.top = Math.random() * 100 + '%';
-      mote.style.animationDelay = (Math.random() * 8) + 's';
-      mote.style.animationDuration = (7 + Math.random() * 6) + 's';
-      particles.appendChild(mote);
-    }
+    (function() {
+      'use strict';
 
-    // Gentle Web Audio API Chime for Candle Lighting
-    function playSacredChime() {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        
-        // Two harmonics: 528Hz (warm bell tone) and 1056Hz
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(528, ctx.currentTime);
-        
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(1056, ctx.currentTime);
-
-        gain.gain.setValueAtTime(0.01, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.8);
-
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start();
-        osc2.start();
-        osc1.stop(ctx.currentTime + 3);
-        osc2.stop(ctx.currentTime + 3);
-      } catch (e) {
-        console.log("Audio contextual chime allowed on interaction", e);
+      // 1. Web Audio Chime Synthesizer for Candle Lighting
+      let audioCtx = null;
+      function playSacredChime() {
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          
+          const now = audioCtx.currentTime;
+          // Celestial major chord (E5, G#5, B5)
+          const freqs = [659.25, 830.61, 987.77, 1318.51];
+          freqs.forEach((f, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, now);
+            gain.gain.setValueAtTime(0.04 / (i + 1), now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8 + i * 0.3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.04);
+            osc.stop(now + 2.2);
+          });
+        } catch(e) {}
       }
-    }
 
-    // Candle Lighting Interaction
-    let count = 142890;
-    let hasLit = false;
-    function lightCandle() {
-      if (!hasLit) {
-        count++;
-        document.getElementById('candleCount').innerText = count.toLocaleString();
-        document.getElementById('candleBtnText').innerText = "Flame Lit in Reverence ✓";
-        document.getElementById('lightCandleBtn').style.borderColor = "var(--gold-bright)";
-        playSacredChime();
-        hasLit = true;
-      } else {
-        alert("Your flame burns brightly in remembrance.");
+      window.toggleCandle = function(btn) {
+        const isLit = btn.classList.toggle('lit');
+        const card = btn.closest('.tribute-card');
+        const countNum = card.querySelector('.count-num');
+        let current = parseInt(countNum.textContent, 10) || 100;
+
+        if (isLit) {
+          playSacredChime();
+          btn.querySelector('span:last-child').textContent = 'Candle Lit';
+          countNum.textContent = current + 1;
+        } else {
+          btn.querySelector('span:last-child').textContent = 'Light Candle';
+          countNum.textContent = current - 1;
+        }
+      };
+
+      // 2. Navigation Scroll Blur
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // 3. 3D Mouse Parallax & Scroll Camera Ascension
+      const portalTrack = document.getElementById('portalTrack');
+      const archImg = document.getElementById('archImg');
+      const cloudMist = document.getElementById('cloudMist');
+      const heroContent = document.getElementById('heroContent');
+
+      let mouseTiltX = 0, mouseTiltY = 0;
+      let targetTiltX = 0, targetTiltY = 0;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReduced) {
+        window.addEventListener('mousemove', (e) => {
+          const cx = window.innerWidth / 2;
+          const cy = window.innerHeight / 2;
+          targetTiltX = ((e.clientY - cy) / cy) * -4.0; // pitch
+          targetTiltY = ((e.clientX - cx) / cx) * 4.5;  // yaw
+        }, { passive: true });
       }
-    }
 
-    function toggleFaq(btn) {
-      const row = btn.parentElement;
-      row.classList.toggle('open');
-    }
+      function updatePortalTransitions() {
+        if (!portalTrack) return;
+        const rect = portalTrack.getBoundingClientRect();
+        const scrollable = portalTrack.offsetHeight - window.innerHeight;
+        const progress = Math.min(Math.max(-rect.top / Math.max(scrollable, 1), 0), 1);
 
-    function openCreatorModal() {
-      document.getElementById('creatorModal').classList.add('active');
-    }
+        // Power-curve push-through
+        const ease = Math.pow(progress, 1.8);
+        const scale = 1.0 + (0.55 * ease);
+        const contentFade = Math.max(1 - (progress * 2.2), 0);
+        const contentY = -60 * progress;
 
-    function closeCreatorModal() {
-      document.getElementById('creatorModal').classList.remove('active');
-    }
+        mouseTiltX += (targetTiltX - mouseTiltX) * 0.08;
+        mouseTiltY += (targetTiltY - mouseTiltY) * 0.08;
 
-    function handleMemorialSubmit(e) {
-      e.preventDefault();
-      const name = document.getElementById('memorialName').value;
-      const years = document.getElementById('memorialYears').value;
-      closeCreatorModal();
-      alert(`Sacred sanctuary initialized for ${name} (${years}). Redirecting to sanctuary customizer.`);
-    }
+        if (archImg) {
+          const rotX = (mouseTiltX * (1 - progress * 0.5)).toFixed(2);
+          const rotY = (mouseTiltY * (1 - progress * 0.5)).toFixed(2);
+          archImg.style.transform = `scale(${scale.toFixed(3)}) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(0)`;
+        }
 
-    function openMemorialProfile(name, dates) {
-      alert(`Entering memorial sanctuary for ${name} (${dates}).`);
-    }
+        if (cloudMist) {
+          const mistX = (mouseTiltY * 6).toFixed(1);
+          const mistY = (ease * 80).toFixed(1);
+          cloudMist.style.transform = `translate(${mistX}px, ${mistY}px)`;
+          cloudMist.style.opacity = Math.max(0.7 - progress * 0.8, 0).toFixed(2);
+        }
+
+        if (heroContent) {
+          heroContent.style.opacity = contentFade.toFixed(3);
+          heroContent.style.transform = `translateY(${contentY.toFixed(1)}px)`;
+          heroContent.style.pointerEvents = contentFade < 0.1 ? 'none' : 'auto';
+        }
+
+        requestAnimationFrame(updatePortalTransitions);
+      }
+
+      requestAnimationFrame(updatePortalTransitions);
+
+    })();
   </script>
 </body>
 </html>
