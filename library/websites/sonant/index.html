@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Sonant — Generative Audio & Neural Voice Platform</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --bg-card: #ffffff;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-focus: rgba(139, 92, 246, 0.4);
+      
+      --text-main: #09090b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      --brand-violet: #8b5cf6;
+      --brand-fuchsia: #ec4899;
+      --brand-rose: #f43f5e;
+      --brand-cyan: #06b6d4;
+      
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+    }
+
+    body {
+      overflow-x: hidden;
+      line-height: 1.6;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Top Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(248, 250, 252, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-fuchsia), var(--brand-violet));
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-ghost {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-main);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .btn-dark {
+      background: #09090b;
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 100px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-dark:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Hero Section with Fluid Wave Canvas */
+    .hero {
+      position: relative;
+      padding: 70px 0 90px;
+      text-align: center;
+      overflow: hidden;
+      min-height: 740px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Organic 3D Wave Canvas */
+    .wave-canvas-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 1600px;
+      height: 600px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.95;
+    }
+
+    #waveCanvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Hero Content */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5.8vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 40px;
+      line-height: 1.65;
+    }
+
+    /* Interactive Voice Prompt Bar */
+    .prompt-box {
+      max-width: 640px;
+      margin: 0 auto 28px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      padding: 10px 14px 10px 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .prompt-box:focus-within {
+      border-color: var(--brand-violet);
+      box-shadow: 0 24px 60px rgba(139, 92, 246, 0.15), 0 0 0 2px rgba(139, 92, 246, 0.25);
+      background: #ffffff;
+    }
+
+    .prompt-mic-icon {
+      color: var(--text-muted);
+      display: grid;
+      place-items: center;
+    }
+
+    .prompt-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1.05rem;
+      font-family: inherit;
+      color: var(--text-main);
+    }
+
+    .prompt-input::placeholder {
+      color: var(--text-light);
+    }
+
+    /* Live Equalizer Animation inside Prompt Box */
+    .eq-bars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      background: var(--brand-violet);
+      border-radius: 2px;
+      animation: eqDance 1.2s infinite ease-in-out alternate;
+    }
+
+    .eq-bar:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 16px; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 12px; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 18px; animation-delay: 0.4s; }
+
+    @keyframes eqDance {
+      0% { transform: scaleY(0.4); }
+      100% { transform: scaleY(1.1); }
+    }
+
+    .prompt-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #09090b;
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s;
+    }
+
+    .prompt-btn:hover {
+      background: var(--brand-violet);
+      transform: scale(1.05);
+    }
+
+    /* Hero CTA Row */
+    .hero-btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn-create {
+      background: #09090b;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      transition: all 0.2s;
+    }
+
+    .btn-create:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .btn-sales {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 12px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .btn-sales:hover {
+      background: #f1f5f9;
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    /* Floating Modality Rail (Bottom Left) */
+    .modality-rail {
+      position: absolute;
+      bottom: 40px;
+      left: 48px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .modality-item {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-light);
+      padding: 6px 14px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+    }
+
+    .modality-item:hover {
+      color: var(--text-main);
+    }
+
+    .modality-item.active {
+      color: #ffffff;
+      background: #09090b;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .modality-item .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-violet);
+    }
+
+    /* Audio Capabilities Showcase */
+    .section-pad {
+      padding: 100px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--brand-violet);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Capability Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+
+    .bento-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .bento-box:hover {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .bento-head h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .bento-head p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Interactive Voice Demo Player */
+    .voice-tester {
+      background: #f1f5f9;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tester-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tester-voice-select {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-play-voice {
+      background: var(--brand-violet);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-play-voice:hover {
+      background: #7c3aed;
+    }
+
+    /* Enterprise Telemetry Strip */
+    .telemetry-strip {
+      background: #09090b;
+      color: #ffffff;
+      border-radius: 28px;
+      padding: 60px 48px;
+      margin: 80px 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+
+    .telemetry-stat .num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #f43f5e 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .telemetry-stat .lbl {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 70px 0 36px;
+      background: #ffffff;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a:hover {
+      color: var(--brand-violet);
+    }
+
+    .footer-bar {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .bento-grid, .telemetry-strip {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .modality-rail {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="container nav-wrap">
+      <div class="brand-mark">
+        <div class="brand-dot"></div>
+        <span>Sonant</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#models" class="nav-link">Platform</a>
+        <a href="#demo" class="nav-link">Voice Lab</a>
+        <a href="#developers" class="nav-link">API</a>
+        <a href="#enterprise" class="nav-link">Enterprise</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../../" class="btn-ghost">← Library</a>
+        <button class="btn-dark" onclick="triggerSynthesis()">Sign Up ↗</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Morphing Sound Ribbon Wave -->
+  <section class="hero">
+    <!-- Fluid Wave Canvas Container -->
+    <div class="wave-canvas-wrap">
+      <canvas id="waveCanvas"></canvas>
+    </div>
+
+    <div class="container hero-content">
+      <h1 class="hero-title">
+        Your Voice. Any Language. <br/>
+        Infinite Scale.
+      </h1>
+
+      <p class="hero-sub">
+        Generate natural speech in seconds. Clone voices with precision. Deploy across apps, videos, podcasts, and products. Fast. Reliable. Studio-grade quality.
+      </p>
+
+      <!-- Interactive Voice Prompt Box -->
+      <div class="prompt-box">
+        <div class="prompt-mic-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <input type="text" class="prompt-input" id="promptInput" value="Clone my voice from a one-minute sample" oninput="onPromptType()" />
+        
+        <div class="eq-bars">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+
+        <button class="prompt-btn" onclick="triggerSynthesis()" title="Synthesize Voice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="hero-btn-row">
+        <button class="btn-create" onclick="triggerSynthesis()">Start Creating</button>
+        <button class="btn-sales" onclick="alert('Contacting Sonant enterprise team.')">Contact Sales</button>
+      </div>
+    </div>
+
+    <!-- Modality Rail Switcher -->
+    <div class="modality-rail">
+      <div class="modality-item active" onclick="switchModality(this, 'cloning')">
+        <span class="badge-dot"></span>
+        <span>Voice Cloning</span>
+      </div>
+      <div class="modality-item" onclick="switchModality(this, 'agents')">
+        <span class="badge-dot" style="background:#6366f1;"></span>
+        <span>Voice Agents</span>
+      </div>
+      <div class="modality-item" onclick="switchModality(this, 'dubbing')">
+        <span class="badge-dot" style="background:#06b6d4;"></span>
+        <span>Neural Dubbing</span>
+      </div>
+      <div class="modality-item" onclick="switchModality(this, 'stt')">
+        <span class="badge-dot" style="background:#10b981;"></span>
+        <span>Speech to Text</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Platform Bento -->
+  <section class="section-pad" id="models">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Audio Architecture</div>
+        <h2 class="section-title">Studio-Grade Audio Synthesis</h2>
+        <p class="section-sub">State-of-the-art diffusion transformers designed for ultra-low latency, emotional cadence, and acoustic fidelity.</p>
+      </div>
+
+      <div class="bento-grid">
+        <div class="bento-box">
+          <div class="bento-head">
+            <h3>Zero-Shot Voice Cloning</h3>
+            <p>Replicate vocal timbre, pacing, and emotional nuance from a 60-second audio recording with uncompromised clarity across 32 languages.</p>
+          </div>
+
+          <div class="voice-tester">
+            <div class="tester-top">
+              <span style="font-size: 0.85rem; font-weight: 700;">Live Synthesis Preview:</span>
+              <select class="tester-voice-select" id="voiceSelect">
+                <option>Rachel (Narrative Calibrated • EN)</option>
+                <option>Kenji (Technical Conversational • JP)</option>
+                <option>Elena (Warm Studio Radiance • ES)</option>
+              </select>
+            </div>
+            <button class="btn-play-voice" onclick="playVoiceSample()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span id="playVoiceLabel">Listen to Voice Sample</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bento-box">
+          <div class="bento-head">
+            <h3>Autonomous Voice Agents</h3>
+            <p>Sub-80ms conversational turn latency built for real-time customer support, interactive games, and automated triage assistants.</p>
+          </div>
+          <div style="background: #09090b; color: #a855f7; border-radius: 12px; padding: 20px; font-family: var(--font-mono); font-size: 0.8rem; margin-top: 20px;">
+            <div>&gt; latency: 74ms TTFB</div>
+            <div>&gt; jitter: 0.04%</div>
+            <div>&gt; interruptions: graceful</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry Strip -->
+  <div class="container">
+    <div class="telemetry-strip" id="enterprise">
+      <div class="telemetry-stat">
+        <div class="num">80ms</div>
+        <div class="lbl">Time to First Byte</div>
+      </div>
+      <div class="telemetry-stat">
+        <div class="num">32+</div>
+        <div class="lbl">Supported Languages</div>
+      </div>
+      <div class="telemetry-stat">
+        <div class="num">99.99%</div>
+        <div class="lbl">Global API Uptime</div>
+      </div>
+      <div class="telemetry-stat">
+        <div class="num">4.8B</div>
+        <div class="lbl">Characters Synthesized</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-wrap">
+        <div>
+          <div class="brand-mark" style="margin-bottom: 12px;">
+            <div class="brand-dot"></div>
+            <span>Sonant</span>
+          </div>
+          <p style="max-width: 320px; line-height: 1.6;">Generative audio, neural voice cloning, and autonomous speech infrastructure for modern applications.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#models">Voice Cloning</a></li>
+            <li><a href="#demo">Voice Agents</a></li>
+            <li><a href="#developers">Neural Dubbing</a></li>
+            <li><a href="../../">Design Library</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Security & Trust</a></li>
+            <li><a href="#">Research Papers</a></li>
+            <li><a href="#">Contact Enterprise</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <div>&copy; 2026 Sonant Audio. Fictional specimen for design library.</div>
+        <div>Fluid Audio Ribbon Waveform Specimen • Pure Canvas & Web Audio</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fluid Ribbon Canvas Animation & Web Audio Script -->
+  <script>
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = canvas.parentElement.offsetWidth;
+      height = canvas.height = canvas.parentElement.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Wave parameters
+    let time = 0;
+    let waveSpeed = 0.015;
+    let waveAmplitude = 80;
+    let colorScheme = 'cloning';
+
+    function drawWave() {
+      ctx.clearRect(0, 0, width, height);
+
+      time += waveSpeed;
+
+      // Draw multi-layered iridescent sound ribbon
+      const layers = [
+        { offset: 0, amp: waveAmplitude, color1: 'rgba(244, 63, 94, 0.45)', color2: 'rgba(217, 70, 239, 0.45)' },
+        { offset: 1.2, amp: waveAmplitude * 1.15, color1: 'rgba(168, 85, 247, 0.55)', color2: 'rgba(99, 102, 241, 0.55)' },
+        { offset: 2.4, amp: waveAmplitude * 0.85, color1: 'rgba(236, 72, 153, 0.4)', color2: 'rgba(139, 92, 246, 0.4)' }
+      ];
+
+      if (colorScheme === 'agents') {
+        layers[0].color1 = 'rgba(99, 102, 241, 0.5)';
+        layers[1].color1 = 'rgba(139, 92, 246, 0.6)';
+        layers[2].color1 = 'rgba(6, 182, 212, 0.4)';
+      } else if (colorScheme === 'dubbing') {
+        layers[0].color1 = 'rgba(6, 182, 212, 0.5)';
+        layers[1].color1 = 'rgba(16, 185, 129, 0.55)';
+        layers[2].color1 = 'rgba(59, 130, 246, 0.4)';
+      }
+
+      layers.forEach(layer => {
+        ctx.beginPath();
+        const grad = ctx.createLinearGradient(0, height / 2 - 100, width, height / 2 + 100);
+        grad.addColorStop(0, layer.color1);
+        grad.addColorStop(1, layer.color2);
+        ctx.fillStyle = grad;
+
+        ctx.moveTo(0, height / 2);
+        for (let x = 0; x <= width; x += 10) {
+          const nx = x / width;
+          const envelope = Math.sin(nx * Math.PI); // Envelope peaks at center
+          const y = height / 2 + Math.sin(nx * 5 + time + layer.offset) * layer.amp * envelope
+                               + Math.cos(nx * 2 + time * 1.5) * (layer.amp * 0.4) * envelope;
+          ctx.lineTo(x, y);
+        }
+
+        // Complete filled ribbon shape
+        for (let x = width; x >= 0; x -= 10) {
+          const nx = x / width;
+          const envelope = Math.sin(nx * Math.PI);
+          const y = height / 2 - Math.sin(nx * 5 + time + layer.offset) * (layer.amp * 0.8) * envelope
+                               - Math.cos(nx * 3 + time) * (layer.amp * 0.3) * envelope;
+          ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      requestAnimationFrame(drawWave);
+    }
+    drawWave();
+
+    function onPromptType() {
+      // Temporarily agitate the wave when user types
+      waveAmplitude = 110;
+      waveSpeed = 0.035;
+      setTimeout(() => {
+        waveAmplitude = 80;
+        waveSpeed = 0.015;
+      }, 500);
+    }
+
+    function switchModality(el, mode) {
+      document.querySelectorAll('.modality-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      colorScheme = mode;
+      
+      const input = document.getElementById('promptInput');
+      if (mode === 'cloning') input.value = "Clone my voice from a one-minute sample";
+      else if (mode === 'agents') input.value = "Create customer support voice assistant with sub-80ms latency";
+      else if (mode === 'dubbing') input.value = "Dub this product video into Spanish and German";
+      else if (mode === 'stt') input.value = "Transcribe multi-speaker podcast with automated timestamps";
+      
+      onPromptType();
+    }
+
+    function triggerSynthesis() {
+      const val = document.getElementById('promptInput').value;
+      alert(`Sonant Neural Engine initiated: "${val}"`);
+    }
+
+    // Web Audio Voice Sample Simulation
+    function playVoiceSample() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
+        osc.frequency.exponentialRampToValueAtTime(330, ctx.currentTime + 0.7);
+
+        gain.gain.setValueAtTime(0.01, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 1.3);
+
+        const lbl = document.getElementById('playVoiceLabel');
+        lbl.innerText = "Playing Voice Sample... ♪";
+        setTimeout(() => {
+          lbl.innerText = "Listen to Voice Sample";
+        }, 1300);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  </script>
+</body>
+</html>
