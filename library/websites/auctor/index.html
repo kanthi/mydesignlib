@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auctor | Invest in Creators</title>
+  
+  <!-- SEO & Search Disallow (Library Requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Figtree & Geist Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Geist+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Figtree', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['Geist Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            brand: {
+              orange: '#FF2F00',
+              orangeHover: '#f5775b',
+              warmBg: '#f9efe3',
+              darkCard: '#0F0F0F',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP, ScrollTrigger & Lenis for Exact Motion & Transitions -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --background: #f9efe3;
+      --foreground: #0a0a0a;
+      --font-figtree: 'Figtree', system-ui, sans-serif;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-figtree);
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Original Masked Background and Hero Overlay */
+    .hero {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .masked-img {
+      object-fit: cover;
+      opacity: 0.5;
+      width: 100%;
+      height: 100%;
+      -webkit-mask-image: radial-gradient(65% 50% at 50% 0, #000 65%, transparent 100%);
+      mask-image: radial-gradient(65% 50% at 50% 0, #000 65%, transparent 100%);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+      background-image: url('assets/hero-overlay.png');
+      background-repeat: repeat;
+    }
+
+    /* Floating 3D Icons Keyframes matching Framer-Motion physics */
+    @keyframes floatIcon1 {
+      0%, 100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-10deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 20px 35px rgba(0,0,0,0.45)) drop-shadow(0px 8px 15px rgba(0,0,0,0.3));
+      }
+      50% {
+        transform: translate3d(10px, -28px, 0px) rotate(-20deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 35px 55px rgba(0,0,0,0.55)) drop-shadow(0px 15px 30px rgba(0,0,0,0.4));
+      }
+    }
+
+    @keyframes floatIcon2 {
+      0%, 100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-14deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 18px 30px rgba(0,0,0,0.45)) drop-shadow(0px 10px 20px rgba(0,0,0,0.32));
+      }
+      50% {
+        transform: translate3d(-12px, -32px, 0px) rotate(-24deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 30px 55px rgba(0,0,0,0.55)) drop-shadow(0px 15px 30px rgba(0,0,0,0.42));
+      }
+    }
+
+    @keyframes floatIcon3 {
+      0%, 100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-18deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 22px 40px rgba(0,0,0,0.5)) drop-shadow(0px 12px 25px rgba(0,0,0,0.35));
+      }
+      50% {
+        transform: translate3d(14px, -38px, 0px) rotate(-28deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 35px 65px rgba(0,0,0,0.58)) drop-shadow(0px 18px 35px rgba(0,0,0,0.45));
+      }
+    }
+
+    @keyframes floatIcon4 {
+      0%, 100% {
+        transform: translate3d(0px, 0px, 0px) rotate(-20deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 24px 45px rgba(0,0,0,0.52)) drop-shadow(0px 15px 30px rgba(0,0,0,0.38));
+      }
+      50% {
+        transform: translate3d(-16px, -42px, 0px) rotate(-30deg) rotateX(15deg) rotateY(-10deg);
+        filter: drop-shadow(0px 40px 70px rgba(0,0,0,0.6)) drop-shadow(0px 22px 40px rgba(0,0,0,0.48));
+      }
+    }
+
+    .hero-float-1 { animation: floatIcon1 4s ease-in-out infinite; }
+    .hero-float-2 { animation: floatIcon2 5s ease-in-out infinite; }
+    .hero-float-3 { animation: floatIcon3 4.5s ease-in-out infinite; }
+    .hero-float-4 { animation: floatIcon4 6s ease-in-out infinite; }
+
+    /* Word staggered entrance helper */
+    .word-reveal {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .word-reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Fixed Navbar Initial Spring Scale */
+    .nav-pill-wrapper {
+      transform-origin: center;
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+    }
+
+    /* Progress bar transition */
+    .progress-bar-fill {
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+    .progress-bar-fill.active {
+      transition: transform 7s linear;
+      transform: scaleX(1);
+    }
+
+    /* Step Card Transitions */
+    .step-img-trans {
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    /* Accordion transitions */
+    .faq-collapse {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+      opacity: 0;
+    }
+    .faq-collapse.open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .faq-collapse-inner {
+      overflow: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-float-1, .hero-float-2, .hero-float-3, .hero-float-4 {
+        animation: none !important;
+      }
+      .word-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="antialiased overflow-x-hidden">
+
+  <!-- ==================== FLOATING PILL NAVBAR ==================== -->
+  <div class="mobile-menu-container fixed top-0 left-0 w-full h-[100px] flex items-center justify-center z-50">
+    <div id="navPill" class="nav-pill-wrapper border border-zinc-700 bg-black py-2 md:py-3 px-5 md:px-7 rounded-full flex justify-between items-center w-[92%] md:w-auto md:gap-32 shadow-2xl shadow-zinc-800 origin-center opacity-0 scale-0">
+      
+      <!-- Brand Logo & Name -->
+      <div class="flex gap-3 items-center">
+        <a class="flex items-center gap-3" href="#">
+          <img src="assets/logo-icon.png" alt="Auctor Logo" class="h-10 md:h-11 rounded-xl shadow-[0_0_15px_rgba(255,47,0,0.4)]" loading="eager" />
+          <span class="text-white font-semibold text-xl tracking-tight">Auctor</span>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <div class="md:hidden">
+        <button id="mobileNavToggle" class="flex flex-col gap-1 p-2 hover:bg-zinc-800 rounded-lg transition-colors duration-200" aria-label="Toggle mobile menu">
+          <div class="w-5 h-0.5 bg-white transition-all duration-300"></div>
+          <div class="w-5 h-0.5 bg-white transition-all duration-300"></div>
+          <div class="w-5 h-0.5 bg-white transition-all duration-300"></div>
+        </button>
+      </div>
+
+      <!-- Desktop Nav Links & CTAs -->
+      <div class="hidden md:flex gap-6 items-center">
+        <div class="flex gap-5 items-center font-semibold">
+          <div class="relative group">
+            <a class="block" href="#market"><span class="text-white cursor-pointer hover:text-zinc-300 transition-colors">Market</span></a>
+            <div class="absolute bottom-0 left-0 h-[2px] bg-white rounded-full w-0 group-hover:w-full transition-all duration-300"></div>
+          </div>
+          <div class="relative group">
+            <a class="block" href="#how-it-works"><span class="text-white cursor-pointer hover:text-zinc-300 transition-colors">Mechanism</span></a>
+            <div class="absolute bottom-0 left-0 h-[2px] bg-white rounded-full w-0 group-hover:w-full transition-all duration-300"></div>
+          </div>
+          <div class="relative group">
+            <a class="block" href="#faq"><span class="text-white cursor-pointer hover:text-zinc-300 transition-colors">FAQ</span></a>
+            <div class="absolute bottom-0 left-0 h-[2px] bg-white rounded-full w-0 group-hover:w-full transition-all duration-300"></div>
+          </div>
+        </div>
+
+        <a href="#waitlist-email-input" class="px-5 bg-gradient-to-t from-zinc-800 to-zinc-700 border border-zinc-700 hover:from-zinc-900 hover:to-zinc-800 font-semibold text-white py-2 rounded-full transition-all duration-300 inline-block text-sm">
+          Join Waitlist
+        </a>
+
+        <a target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-zinc-600 rounded-full px-4 py-2 transition-all duration-300" href="#" aria-label="Github Specification">
+          <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-white font-medium text-sm">—</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenuDropdown" class="hidden absolute top-24 left-4 right-4 bg-black/95 border border-zinc-700 rounded-3xl p-6 shadow-2xl flex flex-col gap-4 text-center md:hidden">
+      <a href="#market" class="text-white text-lg font-medium py-2">Market</a>
+      <a href="#how-it-works" class="text-white text-lg font-medium py-2">Mechanism</a>
+      <a href="#faq" class="text-white text-lg font-medium py-2">FAQ</a>
+      <a href="#waitlist-email-input" class="w-full py-3 bg-gradient-to-r from-[#FF2F00] to-[#f5775b] text-white font-semibold rounded-full mt-2">Join Waitlist</a>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 0: HERO ==================== -->
+  <section class="relative h-fit w-full">
+    
+    <!-- Hero Background Container with exact Mask & 4 Floating 3D Icons -->
+    <div class="hero relative h-dvh w-full overflow-hidden">
+      <img class="masked-img" src="assets/hero-image.jpg" alt="Hero Background" loading="eager" />
+      <div class="hero-overlay" aria-hidden="true"></div>
+      
+      <!-- Icon 1 (Streamline / Top-Left) -->
+      <img 
+        src="assets/platform-streamline.png" 
+        alt="Streamline platform token" 
+        class="hero-float-1 absolute h-[60px] md:h-[120px] top-[15%] left-[5%] md:top-[18%] md:left-[12%]" 
+      />
+
+      <!-- Icon 2 (VibeCast / Top-Right) -->
+      <img 
+        src="assets/platform-vibecast.png" 
+        alt="VibeCast platform token" 
+        class="hero-float-2 absolute h-[50px] md:h-[100px] top-[10%] right-[5%] md:top-[8%] md:right-[14%]" 
+      />
+
+      <!-- Icon 3 (SoundWave / Bottom-Left) -->
+      <img 
+        src="assets/platform-soundwave.png" 
+        alt="SoundWave platform token" 
+        class="hero-float-3 absolute h-[65px] md:h-[130px] top-[55%] left-[2%] md:top-[62%] md:left-[6%]" 
+      />
+
+      <!-- Icon 4 (Kinesis / Bottom-Right) -->
+      <img 
+        src="assets/platform-kinesis.png" 
+        alt="Kinesis platform token" 
+        class="hero-float-4 absolute h-[70px] md:h-[135px] top-[60%] right-[2%] md:top-[70%] md:right-[3%]" 
+      />
+    </div>
+
+    <!-- Central Hero Staggered Typography & Dashboard Specimen -->
+    <div class="relative z-10 flex flex-col items-center justify-center w-full pt-32 md:pt-60 gap-16 md:gap-40">
+      
+      <!-- Word-by-Word Animated H1 -->
+      <h1 id="heroHeadline" class="text-4xl xs:text-5xl sm:text-7xl lg:text-8xl max-sm:px-2 max-w-4xl text-center font-bold flex flex-wrap justify-center content-center gap-x-2 sm:gap-x-3 gap-y-1 sm:gap-y-2 text-black">
+        <span class="word-reveal">Creators</span>
+        <span class="word-reveal">Aren't</span>
+        <span class="word-reveal">Content,</span>
+        <span class="word-reveal">They're</span>
+        <span class="word-reveal">Assets</span>
+      </h1>
+
+      <!-- Spring-Scaled Dashboard Specimen -->
+      <div id="dashboardWrapper" class="relative opacity-0 scale-0">
+        <img 
+          src="assets/dashboard.png" 
+          alt="Auctor Trading Terminal" 
+          class="h-[250px] sm:h-[400px] md:h-[500px] lg:h-[700px] rounded-xl relative z-10 shadow-2xl border border-zinc-200/40" 
+          loading="eager" 
+        />
+        <div id="dashboardGlow" class="absolute inset-0 rounded-4xl pointer-events-none transition-opacity duration-1000" style="box-shadow: 1px -10px 80px -10px #f8532e; opacity: 0;"></div>
+      </div>
+    </div>
+
+    <!-- Waitlist CTA Area -->
+    <div class="flex flex-col items-center justify-center my-30 gap-10">
+      <h2 class="font-medium text-lg sm:text-2xl text-center text-zinc-900">
+        You've been investing in creators emotionally.<br />
+        Try financially.
+      </h2>
+
+      <div class="w-full max-w-2xl px-5">
+        <div class="flex flex-col items-center gap-6 w-full">
+          <div class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto w-full relative">
+            <form id="waitlistForm" class="flex flex-col sm:flex-row gap-4 w-full">
+              <div class="flex-1 group">
+                <input 
+                  type="email" 
+                  id="waitlist-email-input" 
+                  name="email"
+                  required
+                  placeholder="Enter your email" 
+                  class="w-full min-w-0 rounded-md border px-3 py-1 shadow-xs outline-none md:text-lg h-12 text-base transition-all duration-300 bg-white/90 backdrop-blur-sm border-zinc-200 focus:border-[#F2723B] focus:ring-[#F2723B]/20 hover:shadow-md focus:shadow-lg text-zinc-900"
+                  style="scroll-margin-top: 40vh;"
+                />
+              </div>
+              <button 
+                type="submit" 
+                class="inline-flex items-center justify-center gap-2 rounded-md shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[#FF2F00] h-12 px-8 bg-gradient-to-r from-[#FF2F00] to-[#f5775b] hover:from-[#FF2F00] hover:to-[#FF2F00] text-white font-semibold text-base whitespace-nowrap transition-all duration-300 hover:shadow-lg hover:scale-105"
+              >
+                <span class="flex items-center gap-2">
+                  Join Waitlist
+                  <svg class="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                  </svg>
+                </span>
+              </button>
+            </form>
+          </div>
+          
+          <!-- Waitlist Feedback -->
+          <div id="waitlistSuccess" class="hidden text-sm font-medium text-emerald-700 bg-emerald-100 border border-emerald-300 px-4 py-2 rounded-lg">
+            ✓ Priority allocation secured. Check your email for Alpha invitation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Follow Us Platforms -->
+      <div class="flex flex-col gap-3 items-center">
+        <div class="flex gap-2">
+          <a href="#" aria-label="Twitter">
+            <div class="p-3 border border-zinc-300 bg-white shadow-zinc-500 rounded-xl hover:-translate-y-2 duration-300 transition-all cursor-pointer" style="transform: rotate(-5deg);">
+              <svg class="h-7 w-7 text-black" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </div>
+          </a>
+          <a href="#" aria-label="GitHub">
+            <div class="p-3 border border-zinc-300 bg-white shadow-zinc-500 rounded-xl hover:-translate-y-2 duration-300 transition-all cursor-pointer" style="transform: rotate(3deg);">
+              <svg class="h-7 w-7 text-black" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </a>
+        </div>
+        <p class="text-zinc-700 font-medium text-sm sm:text-base">Follow us on these platforms</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 1: BLACK MONOLITH CONTAINER (#0F0F0F) ==================== -->
+  <section id="market" class="px-2 sm:px-4 lg:px-6 w-full mt-10 sm:mt-16 lg:mt-20">
+    <div class="h-fit w-full bg-[#0F0F0F] rounded-2xl sm:rounded-3xl lg:rounded-4xl px-4 sm:px-8 lg:px-12 xl:px-20">
+      
+      <!-- Header Split -->
+      <div class="flex flex-col lg:flex-row justify-between gap-8 lg:gap-12 py-12 sm:py-16 lg:py-20 xl:py-32 px-5">
+        <h3 class="text-white text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium max-w-full lg:max-w-[700px] leading-tight">
+          A market where creators rise—and your wallet doesn't get left behind.
+        </h3>
+        <div class="flex flex-col gap-6 sm:gap-8 lg:gap-10 max-w-full lg:max-w-[600px]">
+          <p class="text-zinc-400 text-base sm:text-lg leading-relaxed">
+            We’re building a decentralized platform where creators issue royalty-linked blockchain tokens with built-in initial liquidity. These tokens later transition to open market trading, enabling community participation in creator growth and sustainable monetization.
+          </p>
+          <a href="#how-it-works" class="w-fit bg-gradient-to-t from-zinc-900 to-zinc-700 border border-t-zinc-500 hover:from-zinc-900 hover:to-zinc-800 border-zinc-700 font-semibold text-white px-6 sm:px-7 py-2.5 sm:py-3 rounded-full transition-all duration-300 text-sm sm:text-base cursor-pointer inline-block">
+            Let's Dive In
+          </a>
+        </div>
+      </div>
+
+      <!-- 4-Quadrant Feature Cards Grid -->
+      <div class="border-4 sm:border-6 border-zinc-900 rounded-2xl sm:rounded-3xl lg:rounded-4xl grid grid-cols-1 lg:grid-cols-2 w-full mb-6 sm:mb-8 lg:mb-10 p-1 sm:p-2 gap-1 sm:gap-2">
+        
+        <!-- Feature 1: Sustainable Creator Capital -->
+        <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] w-full border border-zinc-800 rounded-2xl sm:rounded-3xl lg:rounded-4xl overflow-hidden group">
+          <img src="assets/bitcoin.png" alt="Sustainable Creator Capital" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div class="absolute bottom-3 sm:bottom-4 lg:bottom-6 left-3 sm:left-4 lg:left-6 text-white p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-3 sm:gap-4 lg:gap-5">
+            <img src="assets/earning.png" alt="Capital Icon" class="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10" loading="lazy" />
+            <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">Sustainable Creator Capital</h2>
+            <p class="text-sm sm:text-base lg:text-lg text-zinc-400 leading-relaxed">
+              Creators raise upfront capital by issuing royalty-linked blockchain tokens, enabling long-term, transparent monetization without ads, sponsorship dependence, or equity dilution.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 2: Participation in Creator Growth -->
+        <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] w-full border border-zinc-800 rounded-2xl sm:rounded-3xl lg:rounded-4xl overflow-hidden group">
+          <img src="assets/portfolio.png" alt="Participation in Creator Growth" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div class="absolute bottom-3 sm:bottom-4 lg:bottom-6 left-3 sm:left-4 lg:left-6 text-white p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-3 sm:gap-4 lg:gap-5">
+            <img src="assets/trading.png" alt="Participation Icon" class="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10" loading="lazy" />
+            <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">Participation in Creator Growth</h2>
+            <p class="text-sm sm:text-base lg:text-lg text-zinc-400 leading-relaxed">
+              Supporters can acquire and hold creator-backed blockchain tokens that represent participation in a creator’s growth, with transparent pricing and on-chain settlement.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 3: Initial Royalty Offering (IRO) -->
+        <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] w-full border border-zinc-800 rounded-2xl sm:rounded-3xl lg:rounded-4xl overflow-hidden group">
+          <img src="assets/ipo.png" alt="Initial Royalty Offering (IRO)" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div class="absolute bottom-3 sm:bottom-4 lg:bottom-6 left-3 sm:left-4 lg:left-6 text-white p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-3 sm:gap-4 lg:gap-5">
+            <img src="assets/rocket.png" alt="IRO Icon" class="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10" loading="lazy" />
+            <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">Initial Royalty Offering (IRO)</h2>
+            <p class="text-sm sm:text-base lg:text-lg text-zinc-400 leading-relaxed">
+              Creators launch royalty-backed blockchain tokens through a structured issuance process that defines valuation, supply, and release conditions before public access.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 4: Bootstrapped Liquidity → Orderbook Markets -->
+        <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] w-full border border-zinc-800 rounded-2xl sm:rounded-3xl lg:rounded-4xl overflow-hidden group">
+          <img src="assets/tbc.png" alt="Bootstrapped Liquidity" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div class="absolute bottom-3 sm:bottom-4 lg:bottom-6 left-3 sm:left-4 lg:left-6 text-white p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-3 sm:gap-4 lg:gap-5">
+            <img src="assets/curve.png" alt="Bonding Curve Icon" class="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10" loading="lazy" />
+            <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-tight">Bootstrapped Liquidity → Orderbook Markets</h2>
+            <p class="text-sm sm:text-base lg:text-lg text-zinc-400 leading-relaxed">
+              Early liquidity is provided through an automated bonding curve on-chain. Once maturity thresholds are met, tokens transition to an open orderbook-based market for price discovery.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feature Callout Banner -->
+      <div class="h-[300px] sm:h-[350px] lg:h-[400px] xl:h-[500px] w-full relative flex items-center justify-center overflow-hidden">
+        <img src="assets/bg.png" alt="Features Background" class="h-full w-full object-contain" loading="lazy" />
+        <h3 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-white max-w-2xl sm:max-w-3xl lg:max-w-4xl absolute top-0 mt-8 sm:mt-12 lg:mt-16 xl:mt-20 text-center leading-tight px-4 sm:px-6">
+          Discover, invest, and thrive <span class="text-zinc-400">in the new creator economy.</span>
+        </h3>
+      </div>
+
+      <!-- 3 Tilted Cards Deck -->
+      <div class="h-fit w-full flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 lg:gap-8 relative -top-12 sm:-top-16 lg:-top-20 xl:-top-24 mb-12 sm:mb-16 lg:mb-20 px-2 sm:px-4">
+        
+        <!-- Tilted Card 1 -->
+        <div class="p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-6 sm:gap-8 lg:gap-12 xl:gap-16 h-fit w-full sm:w-1/2 lg:w-1/3 bg-zinc-900/80 rounded-2xl sm:rounded-3xl lg:rounded-4xl border border-zinc-800 shadow-2xl shadow-black rotate-1 sm:rotate-2 hover:rotate-0 transition-transform duration-300">
+          <div class="flex flex-wrap gap-2 sm:gap-3">
+            <img src="assets/feature11.jpg" style="transform: rotate(-9.16deg);" alt="Creator Token Badge" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+            <img src="assets/feature12.jpg" style="transform: rotate(6.4deg);" alt="Creator Token Badge" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+          </div>
+          <p class="text-lg sm:text-xl lg:text-2xl font-medium text-white leading-tight">
+            Launch your own creator token like it's your personal IRO moment
+          </p>
+        </div>
+
+        <!-- Tilted Card 2 -->
+        <div class="p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-6 sm:gap-8 lg:gap-12 xl:gap-16 h-fit w-full sm:w-1/2 lg:w-1/3 bg-zinc-900/80 rounded-2xl sm:rounded-3xl lg:rounded-4xl border border-zinc-800 shadow-2xl shadow-black -rotate-1 sm:-rotate-3 hover:rotate-0 transition-transform duration-300">
+          <div class="flex flex-wrap gap-2 sm:gap-3">
+            <img src="assets/feature21.webp" style="transform: rotate(3.01deg);" alt="Trading Badge" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+            <img src="assets/feature22.webp" style="transform: rotate(-9.68deg);" alt="Trading Badge" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+            <img src="assets/feature23.png" style="transform: rotate(2.28deg);" alt="Trading Badge" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+          </div>
+          <p class="text-lg sm:text-xl lg:text-2xl font-medium text-white leading-tight">
+            Buy and trade creator shares without the Wall Street drama
+          </p>
+        </div>
+
+        <!-- Tilted Card 3 -->
+        <div class="p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col gap-6 sm:gap-8 lg:gap-12 xl:gap-16 h-fit w-full sm:w-1/2 lg:w-1/3 bg-zinc-900/80 rounded-2xl sm:rounded-3xl lg:rounded-4xl border border-zinc-800 shadow-2xl shadow-black rotate-1 sm:rotate-4 hover:rotate-0 transition-transform duration-300">
+          <div class="flex flex-wrap gap-2 sm:gap-3">
+            <img src="assets/logo-icon.png" style="transform: rotate(1.65deg);" alt="Auctor Portfolio Mark" class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-lg sm:rounded-xl border border-zinc-400 shadow-lg shadow-black" loading="lazy" />
+          </div>
+          <p class="text-lg sm:text-xl lg:text-2xl font-medium text-white leading-tight">
+            Build a flex-worthy portfolio powered by your favorite creators
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: HOW IT WORKS (WARM BACKGROUND #f9efe3) ==================== -->
+  <section id="how-it-works" class="w-full my-16 sm:my-20 lg:my-24 xl:my-32 px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col lg:flex-row h-fit gap-8 lg:gap-0 items-stretch">
+    
+    <!-- Left Column: Step Selector -->
+    <div class="w-full lg:w-[47%] p-6 sm:p-8 lg:p-12 flex flex-col gap-8 sm:gap-12 lg:gap-16 xl:gap-20 justify-between">
+      <div>
+        <h3 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-zinc-900 font-medium leading-tight">
+          <span class="text-zinc-600">So… How Does This Whole Thing </span>Actually Work?
+        </h3>
+        <p class="text-zinc-500 text-base sm:text-lg font-semibold leading-relaxed mt-6">
+          Yes, it's fully on-chain, yes, liquidity is instant, and no, you don't have to understand bonding curves to use it like an absolute pro.
+        </p>
+      </div>
+
+      <!-- 3 Animated Steps List -->
+      <div class="flex flex-col gap-3 sm:gap-4 lg:gap-5 pr-0 lg:pr-10 relative">
+        
+        <!-- Step 0 Button -->
+        <div onclick="selectStep(0)" class="step-nav-item cursor-pointer px-4 sm:px-5 lg:px-7 py-3 sm:py-4 lg:py-5 rounded-lg sm:rounded-xl flex gap-3 sm:gap-4 lg:gap-5 items-center relative overflow-hidden transition-all duration-300">
+          <div class="step-bg absolute inset-0 bg-orange-200 rounded-lg sm:rounded-xl -z-10 transition-colors duration-300"></div>
+          <div class="progress-bar-fill absolute inset-0 bg-orange-400/70 -z-10 rounded-lg sm:rounded-xl"></div>
+          <img src="assets/rocket.png" class="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 shrink-0" alt="IRO Phase" loading="lazy" />
+          <span class="text-zinc-900 font-semibold text-sm sm:text-base lg:text-lg">Initial Royalty Offering (IRO)</span>
+        </div>
+
+        <!-- Step 1 Button -->
+        <div onclick="selectStep(1)" class="step-nav-item cursor-pointer px-4 sm:px-5 lg:px-7 py-3 sm:py-4 lg:py-5 rounded-lg sm:rounded-xl flex gap-3 sm:gap-4 lg:gap-5 items-center relative overflow-hidden transition-all duration-300">
+          <div class="step-bg absolute inset-0 bg-zinc-400/10 rounded-lg sm:rounded-xl -z-10 transition-colors duration-300"></div>
+          <div class="progress-bar-fill absolute inset-0 bg-orange-400/70 -z-10 rounded-lg sm:rounded-xl"></div>
+          <img src="assets/curve.png" class="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 shrink-0" alt="Bonding Curve Phase" loading="lazy" />
+          <span class="text-zinc-900 font-semibold text-sm sm:text-base lg:text-lg">Bonding Curve Liquidity Phase</span>
+        </div>
+
+        <!-- Step 2 Button -->
+        <div onclick="selectStep(2)" class="step-nav-item cursor-pointer px-4 sm:px-5 lg:px-7 py-3 sm:py-4 lg:py-5 rounded-lg sm:rounded-xl flex gap-3 sm:gap-4 lg:gap-5 items-center relative overflow-hidden transition-all duration-300">
+          <div class="step-bg absolute inset-0 bg-zinc-400/10 rounded-lg sm:rounded-xl -z-10 transition-colors duration-300"></div>
+          <div class="progress-bar-fill absolute inset-0 bg-orange-400/70 -z-10 rounded-lg sm:rounded-xl"></div>
+          <img src="assets/trading.png" class="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 shrink-0" alt="Orderbook Phase" loading="lazy" />
+          <span class="text-zinc-900 font-semibold text-sm sm:text-base lg:text-lg">Orderbook Market Transition</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Step Showcase Container -->
+    <div class="w-full lg:w-[53%] rounded-2xl sm:rounded-3xl lg:rounded-4xl relative overflow-hidden min-h-[420px] sm:min-h-[500px]">
+      
+      <!-- Container Background -->
+      <div class="absolute inset-0 rounded-2xl sm:rounded-3xl lg:rounded-4xl overflow-hidden">
+        <img src="assets/bg.png" class="w-full h-full object-cover" alt="How It Works Background" loading="lazy" />
+        <div class="absolute inset-0 bg-black/30"></div>
+      </div>
+
+      <!-- Content Deck -->
+      <div class="relative z-10 h-full flex flex-col p-6 sm:p-8 lg:p-12 justify-between">
+        <div class="flex-1 flex items-center justify-center min-h-0 mb-10">
+          <img 
+            id="stepImg" 
+            src="assets/step1.png" 
+            class="step-img-trans max-h-[200px] sm:max-h-[250px] lg:max-h-[300px] xl:max-h-[350px] w-auto rounded-lg sm:rounded-xl shadow-2xl shadow-zinc-200/60" 
+            alt="Initial Royalty Offering (IRO)" 
+            loading="lazy" 
+          />
+        </div>
+        <div class="shrink-0 transition-opacity duration-400">
+          <p id="stepDesc" class="text-white/80 font-medium text-sm sm:text-base lg:text-lg leading-relaxed">
+            Creators begin by launching a royalty-backed blockchain token through a structured Initial Royalty Offering (IRO). Early participants acquire the first tokens at a predefined price. A portion of the proceeds is released to the creator as upfront capital, while the remainder is locked into a reserve that initializes on-chain liquidity.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==================== SECTION 3: FAQ ACCORDION ==================== -->
+  <section id="faq" class="w-full h-fit px-6 lg:px-8 xl:px-10 2xl:px-20 my-16 sm:my-20 lg:my-24 xl:my-32 2xl:my-40 overflow-x-hidden">
+    <div class="flex flex-col lg:flex-row justify-between w-full gap-8 lg:gap-12">
+      <h3 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium text-zinc-900 leading-tight">
+        Got questions?<br class="hidden sm:block" /><span class="sm:hidden"> </span>We've got answers.
+      </h3>
+      <div class="flex flex-col gap-6 sm:gap-8 lg:gap-10 max-w-full lg:max-w-md text-left lg:text-right">
+        <p class="text-base sm:text-lg lg:text-xl text-zinc-600 leading-relaxed">
+          Here's everything you need to know before getting started.
+        </p>
+        <a class="text-[#FF2F00] text-base sm:text-lg font-semibold flex gap-3 items-center justify-start lg:justify-end w-fit group" href="#waitlist-email-input">
+          <span>Contact us</span>
+          <svg class="h-4 w-4 sm:h-5 sm:w-5 -rotate-45 shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 6 Accordion Cards -->
+    <div class="mt-12 sm:mt-16 lg:mt-20 space-y-3 sm:space-y-4 lg:space-y-5 w-full">
+      
+      <!-- FAQ 01 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(1)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">01</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">How do creators earn money on Auctor?</span>
+          </div>
+          <span id="faqIcon1" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">−</span>
+        </button>
+        <div id="faqItem1" class="faq-collapse open">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              Creators raise upfront capital by launching royalty-backed blockchain tokens through a structured Initial Royalty Offering (IRO). A portion of the proceeds is released to the creator, while the rest initializes on-chain liquidity. Over time, creators may also benefit from continued participation tied to activity around their token — all without ads, sponsorship dependence, or giving up ownership.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 02 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(2)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">02</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">Do I need financial or crypto knowledge to participate?</span>
+          </div>
+          <span id="faqIcon2" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">+</span>
+        </button>
+        <div id="faqItem2" class="faq-collapse">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              Not at all. Auctor abstracts away most of the complexity. Pricing and liquidity are handled automatically by smart contracts, so you don’t need to understand trading mechanics or market math. You simply choose creators you believe in and interact through a simple, guided interface.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 03 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(3)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">03</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">How do buying and selling work?</span>
+          </div>
+          <span id="faqIcon3" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">+</span>
+        </button>
+        <div id="faqItem3" class="faq-collapse">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              During the early phase, tokens use an automated bonding curve that provides on-chain liquidity, meaning interactions happen instantly without waiting for a counterparty. Once a token reaches predefined maturity thresholds, it transitions to an orderbook-based market where prices are discovered through open participation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 04 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(4)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">04</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">What happens as a creator grows in popularity?</span>
+          </div>
+          <span id="faqIcon4" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">+</span>
+        </button>
+        <div id="faqItem4" class="faq-collapse">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              As a creator’s ecosystem grows, demand for their token may increase. During the bonding-curve phase, this demand is reflected algorithmically in pricing. After the transition to an orderbook market, price discovery is driven by open participation. This allows the system to reflect creator momentum in a transparent, market-based way.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 05 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(5)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">05</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">How safe and transparent is the platform?</span>
+          </div>
+          <span id="faqIcon5" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">+</span>
+        </button>
+        <div id="faqItem5" class="faq-collapse">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              All issuance, pricing logic, and token flows are handled by audited smart contracts. Funds are held on-chain, and key actions are verifiable in real time. The system is designed to minimize manual intervention and provide clear, rule-based behavior for both creators and participants.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 06 -->
+      <div class="border border-orange-300 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 transition-all bg-white shadow-sm hover:shadow-md">
+        <button type="button" onclick="toggleAccordion(6)" class="w-full flex items-center justify-between cursor-pointer text-left focus:outline-none">
+          <div class="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
+            <span class="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full font-medium text-xs sm:text-sm shrink-0">06</span>
+            <span class="text-base sm:text-lg lg:text-xl font-medium text-zinc-900 leading-tight pr-2">Can any creator launch a token?</span>
+          </div>
+          <span id="faqIcon6" class="text-[#FF2F00] text-xl sm:text-2xl lg:text-3xl leading-none select-none shrink-0 ml-2 transition-transform duration-300">+</span>
+        </button>
+        <div id="faqItem6" class="faq-collapse">
+          <div class="faq-collapse-inner">
+            <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed pb-2 sm:pb-3 pl-11 sm:pl-13 lg:pl-15">
+              Creators go through a verification and eligibility process before launching. This helps maintain quality, reduce misuse, and ensure that only active, credible creators can issue royalty-backed tokens. Once approved, creators can launch through a structured and standardized process.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: FULL-SCREEN STADIUM FOOTER ==================== -->
+  <section class="w-full h-screen p-2 sm:p-3 lg:p-4 relative overflow-x-hidden">
+    <img src="assets/bg.png" alt="Footer Background" class="w-full h-full object-cover object-center rounded-2xl sm:rounded-3xl lg:rounded-4xl" loading="lazy" />
+    
+    <div class="absolute text-white inset-0 p-2 sm:p-3 lg:p-4 w-full h-full">
+      
+      <!-- Top 75%: Headline & Social Badges -->
+      <div class="h-[75%] sm:h-[78%] lg:h-[80%] xl:h-[82%] w-full pt-8 sm:pt-12 lg:pt-16 xl:pt-20 2xl:pt-24">
+        <div class="flex flex-col items-center justify-center gap-6 sm:gap-8 lg:gap-10 h-full">
+          <h2 class="font-medium text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl text-center max-w-sm sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl px-4 leading-tight">
+            Invest in creators before everyone else gets it.
+          </h2>
+          <div class="flex flex-col gap-2 sm:gap-3 items-center">
+            <div class="flex gap-2 sm:gap-3 lg:gap-4">
+              <a href="#" aria-label="X Platform">
+                <div class="p-2 sm:p-2.5 lg:p-3 border border-zinc-300 bg-white shadow-zinc-500 rounded-lg sm:rounded-xl hover:-translate-y-1 sm:hover:-translate-y-2 duration-300 transition-all cursor-pointer" style="transform: rotate(-5deg);">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </div>
+              </a>
+              <a href="#" aria-label="GitHub Repository">
+                <div class="p-2 sm:p-2.5 lg:p-3 border border-zinc-300 bg-white shadow-zinc-500 rounded-lg sm:rounded-xl hover:-translate-y-1 sm:hover:-translate-y-2 duration-300 transition-all cursor-pointer" style="transform: rotate(4deg);">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-black" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                </div>
+              </a>
+            </div>
+            <p class="text-zinc-400 font-medium text-sm sm:text-base text-center px-4">Follow us on these platforms</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom 25%: Glass Nav & Email Subscription -->
+      <div class="h-[25%] sm:h-[22%] lg:h-[18%] xl:h-[20%] w-full backdrop-blur-2xl border-dashed border-t border-zinc-700 flex flex-col sm:flex-row rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl">
+        
+        <!-- Left Footer Navigation -->
+        <div class="h-full sm:w-[70%] border-r-0 sm:border-r border-dashed border-zinc-700 flex flex-col justify-center sm:justify-between p-4 sm:p-6 lg:p-8 xl:p-10 gap-3 sm:gap-0">
+          <div class="grid grid-cols-2 sm:flex sm:flex-col gap-3 sm:gap-0">
+            <a class="text-white text-sm sm:text-base lg:text-lg font-medium hover:text-zinc-300 transition-colors" href="#">Home</a>
+            <a class="text-white text-sm sm:text-base lg:text-lg font-medium hover:text-zinc-300 transition-colors" href="#market">Market</a>
+            <a class="text-white text-sm sm:text-base lg:text-lg font-medium hover:text-zinc-300 transition-colors" href="#faq">FAQ</a>
+          </div>
+        </div>
+
+        <!-- Right Newsletter Subscription -->
+        <div class="h-full sm:w-[30%] p-4 sm:p-6 lg:p-8 xl:p-12 flex flex-col gap-3 sm:gap-4 lg:gap-5 justify-center">
+          <div class="text-white font-medium text-sm sm:text-base lg:text-lg">Stay in touch</div>
+          <form id="footerSubscribe" class="w-full">
+            <div class="w-full h-10 sm:h-11 lg:h-12 xl:h-[50px] bg-[#121111cb] rounded-lg sm:rounded-xl border border-zinc-700 flex justify-between p-[2px]">
+              <input 
+                type="email" 
+                required 
+                placeholder="name@gmail.com" 
+                class="w-full px-3 sm:px-4 lg:px-5 focus:outline-none text-sm sm:text-base bg-transparent text-white placeholder-zinc-400" 
+              />
+              <button 
+                type="submit" 
+                class="w-fit px-4 sm:px-5 lg:px-6 xl:px-7 py-1.5 sm:py-2 bg-[#292929] hover:bg-[#3a3a3a] rounded-lg sm:rounded-xl flex gap-2 sm:gap-3 lg:gap-4 xl:gap-5 items-center transition-colors cursor-pointer"
+              >
+                <svg class="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 rotate-90 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+                <span class="text-xs sm:text-sm lg:text-base text-white">Subscribe</span>
+              </button>
+            </div>
+          </form>
+          <div id="footerSuccess" class="hidden text-xs text-emerald-400 font-mono">✓ Subscribed successfully.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== ANIMATIONS & INTERACTION CONTROLLER ==================== -->
+  <script>
+    // 1. Initialize Lenis Smooth Scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    // 2. Floating Navbar Entrance and Hide/Show on Scroll
+    const navPill = document.getElementById('navPill');
+    
+    // Animate navbar in on mount (matching initial: scale 0 -> 1, ease: [0.23, 1, 0.32, 1], duration 0.8)
+    gsap.to(navPill, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power4.out',
+      delay: 0.1
+    });
+
+    let lastScrollY = window.scrollY;
+    let accumulatedDelta = 0;
+
+    function handleNavScroll() {
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollY;
+      
+      // Auto-detect when scrolled to the bottom of the page
+      const isAtBottom = (window.innerHeight + currentScrollY) >= (document.documentElement.scrollHeight - 80);
+      
+      accumulatedDelta = Math.sign(accumulatedDelta) === Math.sign(diff) ? accumulatedDelta + diff : diff;
+
+      if (currentScrollY < 50 || isAtBottom) {
+        // At top OR completely scrolled to bottom -> auto-appear menu
+        navPill.style.transform = 'translateY(0px) scale(1)';
+        navPill.style.opacity = '1';
+        accumulatedDelta = 0;
+      } else if (accumulatedDelta > 100 && currentScrollY > 150) {
+        // Scrolling down -> hide navbar
+        navPill.style.transform = 'translateY(-120px) scale(0.95)';
+        navPill.style.opacity = '0';
+      } else if (accumulatedDelta < -40 || diff < 0) {
+        // Scrolling up -> show navbar
+        navPill.style.transform = 'translateY(0px) scale(1)';
+        navPill.style.opacity = '1';
+        accumulatedDelta = 0;
+      }
+      lastScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', handleNavScroll, { passive: true });
+    lenis.on('scroll', handleNavScroll);
+
+    // Also observe the footer section so when reaching the bottom it guarantees navbar appearance
+    const footerSection = document.querySelector('section:last-of-type');
+    if (footerSection) {
+      const footerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+            navPill.style.transform = 'translateY(0px) scale(1)';
+            navPill.style.opacity = '1';
+          }
+        });
+      }, { threshold: [0.1, 0.3, 0.6] });
+      footerObserver.observe(footerSection);
+    }
+
+    // Mobile Navigation Toggle
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const mobileMenuDropdown = document.getElementById('mobileMenuDropdown');
+    if (mobileNavToggle && mobileMenuDropdown) {
+      mobileNavToggle.addEventListener('click', () => {
+        mobileMenuDropdown.classList.toggle('hidden');
+      });
+      mobileMenuDropdown.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => mobileMenuDropdown.classList.add('hidden'));
+      });
+    }
+
+    // 3. Hero Word-by-Word Reveal & Dashboard Pop-In
+    const words = document.querySelectorAll('.word-reveal');
+    words.forEach((word, index) => {
+      setTimeout(() => {
+        word.classList.add('active');
+      }, 150 + index * 100);
+    });
+
+    // Dashboard Spring Scale Entrance
+    const dashboardWrapper = document.getElementById('dashboardWrapper');
+    const dashboardGlow = document.getElementById('dashboardGlow');
+    gsap.to(dashboardWrapper, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.9,
+      delay: 0.4,
+      ease: 'back.out(1.1)'
+    });
+    setTimeout(() => {
+      if (dashboardGlow) dashboardGlow.style.opacity = '0.35';
+    }, 1100);
+
+    // 4. Hero Headline GSAP ScrollTrigger Scrub (Matches original nz.to(i.current, { opacity: 0, scale: 0.7, scrollTrigger: ... }))
+    const heroHeadline = document.getElementById('heroHeadline');
+    if (heroHeadline) {
+      gsap.to(heroHeadline, {
+        opacity: 0,
+        scale: 0.7,
+        scrollTrigger: {
+          trigger: heroHeadline,
+          start: 'top 20%',
+          end: 'top -10%',
+          scrub: 2,
+          pin: true
+        }
+      });
+    }
+
+    // 5. Interactive How-It-Works Tab Controller with 7s Auto-Timer
+    const stepData = [
+      {
+        title: "Initial Royalty Offering (IRO)",
+        icon: "assets/rocket.png",
+        image: "assets/step1.png",
+        description: "Creators begin by launching a royalty-backed blockchain token through a structured Initial Royalty Offering (IRO). Early participants acquire the first tokens at a predefined price. A portion of the proceeds is released to the creator as upfront capital, while the remainder is locked into a reserve that initializes on-chain liquidity."
+      },
+      {
+        title: "Bonding Curve Liquidity Phase",
+        icon: "assets/curve.png",
+        image: "assets/step2.jpeg",
+        description: "After the IRO, the token enters a bonding-curve phase that provides automated, on-chain liquidity. Token prices adjust algorithmically based on supply and demand, with buys minting tokens and sells burning them. This phase ensures continuous liquidity without relying on external market makers."
+      },
+      {
+        title: "Orderbook Market Transition",
+        icon: "assets/trading.png",
+        image: "assets/step3.jpeg",
+        description: "Once predefined maturity thresholds are reached, the token transitions from the bonding curve to an open orderbook market. At this stage, participants can trade freely with market-driven price discovery, while creators benefit from long-term participation tied to their ecosystem’s growth."
+      }
+    ];
+
+    let currentStep = 0;
+    let stepTimer = null;
+
+    function renderStep(index) {
+      currentStep = index;
+      const navItems = document.querySelectorAll('.step-nav-item');
+      
+      navItems.forEach((item, i) => {
+        const bg = item.querySelector('.step-bg');
+        const fill = item.querySelector('.progress-bar-fill');
+        
+        // Reset progress bar
+        fill.classList.remove('active');
+        fill.style.transform = 'scaleX(0)';
+        
+        if (i === index) {
+          bg.className = "step-bg absolute inset-0 bg-orange-200 rounded-lg sm:rounded-xl -z-10 transition-colors duration-300";
+          // Start 7-second progress bar fill
+          requestAnimationFrame(() => {
+            fill.classList.add('active');
+          });
+        } else {
+          bg.className = "step-bg absolute inset-0 bg-zinc-400/10 rounded-lg sm:rounded-xl -z-10 transition-colors duration-300";
+        }
+      });
+
+      // Animate Right Image and Description
+      const stepImg = document.getElementById('stepImg');
+      const stepDesc = document.getElementById('stepDesc');
+
+      if (stepImg && stepDesc) {
+        stepImg.style.opacity = '0';
+        stepImg.style.transform = 'translateY(20px) scale(0.96)';
+        stepDesc.style.opacity = '0';
+
+        setTimeout(() => {
+          stepImg.src = stepData[index].image;
+          stepImg.alt = stepData[index].title;
+          stepDesc.textContent = stepData[index].description;
+
+          stepImg.style.opacity = '1';
+          stepImg.style.transform = 'translateY(0px) scale(1)';
+          stepDesc.style.opacity = '1';
+        }, 180);
+      }
+    }
+
+    function selectStep(index) {
+      clearInterval(stepTimer);
+      renderStep(index);
+      startAutoCycle();
+    }
+
+    function startAutoCycle() {
+      stepTimer = setInterval(() => {
+        const next = (currentStep + 1) % stepData.length;
+        renderStep(next);
+      }, 7000);
+    }
+
+    // Initialize step 0 and start auto cycle
+    renderStep(0);
+    startAutoCycle();
+
+    // 6. Accordion Interactive Toggle
+    function toggleAccordion(id) {
+      const collapseEl = document.getElementById(`faqItem${id}`);
+      const iconEl = document.getElementById(`faqIcon${id}`);
+      if (!collapseEl || !iconEl) return;
+
+      const isOpen = collapseEl.classList.contains('open');
+      if (isOpen) {
+        collapseEl.classList.remove('open');
+        iconEl.textContent = '+';
+        iconEl.style.transform = 'rotate(0deg)';
+      } else {
+        collapseEl.classList.add('open');
+        iconEl.textContent = '−';
+        iconEl.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // 7. Form Handlers
+    const waitlistForm = document.getElementById('waitlistForm');
+    const waitlistSuccess = document.getElementById('waitlistSuccess');
+    if (waitlistForm && waitlistSuccess) {
+      waitlistForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        waitlistSuccess.classList.remove('hidden');
+        waitlistForm.reset();
+      });
+    }
+
+    const footerSubscribe = document.getElementById('footerSubscribe');
+    const footerSuccess = document.getElementById('footerSuccess');
+    if (footerSubscribe && footerSuccess) {
+      footerSubscribe.addEventListener('submit', (e) => {
+        e.preventDefault();
+        footerSuccess.classList.remove('hidden');
+        footerSubscribe.reset();
+      });
+    }
+  </script>
+</body>
+</html>

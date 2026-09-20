@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <title>Ashlar — Kalden and the civic hall</title>
+  <meta name="description" content="Ashlar is a fictional architecture studio. Civic halls, courtyard housing, and parametric shells. Sample template." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --font-display: "Syne", "Avenir Next", sans-serif;
+      --font-body: "Instrument Sans", "Helvetica Neue", sans-serif;
+      --surface-page: #F6F4F0;
+      --surface-raised: #FFFFFF;
+      --surface-ink: #141311;
+      --text-primary: #161514;
+      --text-secondary: #6A6762;
+      --text-on-photo: #F7F4EE;
+      --text-on-accent: #FFFFFF;
+      --border-default: #E4E0D8;
+      --action-primary: #FF6A1A;
+      --action-primary-deep: #E05510;
+      --text-hero: clamp(3.6rem, 16vw, 12.5rem);
+      --text-3xl: clamp(2.1rem, 4.4vw, 3.4rem);
+      --text-2xl: clamp(1.5rem, 2.4vw, 2rem);
+      --text-xl: 1.25rem;
+      --text-base: 1.05rem;
+      --text-sm: 0.84rem;
+      --text-xs: 0.72rem;
+      --leading-body: 1.58;
+      --section-y: clamp(4.75rem, 10vw, 7.75rem);
+      --wrap: min(1180px, 100% - 2.5rem);
+      --radius-frame: 22px;
+      --radius-ticket: 8px;
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --lift: 0 16px 40px rgba(22, 21, 20, 0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      color: var(--text-primary);
+      background: var(--surface-page);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    :focus-visible {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 3px;
+    }
+
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 80;
+      background: var(--action-primary);
+      color: var(--text-on-accent);
+      padding: 0.6rem 0.9rem;
+      border-radius: var(--radius-ticket);
+    }
+    .skip:focus { top: 1rem; }
+
+    .label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    h1, h2, h3, .wordmark {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+    }
+    h2 { font-size: var(--text-3xl); line-height: 1.05; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 44px;
+      padding: 0 0.35rem 0 1.1rem;
+      border-radius: var(--radius-pill);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .btn .disc {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--surface-raised);
+      color: var(--action-primary);
+      flex-shrink: 0;
+    }
+    .btn-primary {
+      background: var(--action-primary);
+      color: var(--text-on-accent);
+    }
+    .btn-primary:hover { background: var(--action-primary-deep); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--text-on-photo);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0 1.2rem;
+      border: 1px solid rgba(247, 244, 238, 0.18);
+    }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.24); }
+    .btn-ink {
+      background: var(--surface-ink);
+      color: var(--text-on-photo);
+    }
+    .btn-ink:hover { background: #2a2826; }
+    .btn-ink .disc { background: var(--action-primary); color: var(--text-on-accent); }
+
+    /* ── Nav ── */
+    .site-header {
+      position: absolute;
+      top: 1.35rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1120px, calc(100% - 3.5rem));
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.45rem 0.5rem 0.45rem 1rem;
+      background: rgba(246, 244, 240, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.03em;
+    }
+    .mark {
+      width: 22px;
+      height: 22px;
+      color: var(--action-primary);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      list-style: none;
+    }
+    .nav-links a {
+      padding: 0.45rem 0.8rem;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      border-radius: var(--radius-pill);
+    }
+    .nav-links a:hover { color: var(--text-primary); background: rgba(22, 21, 20, 0.05); }
+    .nav-tools { display: flex; align-items: center; gap: 0.4rem; }
+    .nav-search, .nav-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-pill);
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+    }
+    .nav-search { background: var(--surface-raised); border: 1px solid var(--border-default); }
+    .nav-toggle { display: none; }
+    .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+      display: block;
+      width: 16px;
+      height: 1.5px;
+      background: currentColor;
+      position: relative;
+    }
+    .nav-toggle span::before, .nav-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    .nav-toggle span::before { top: -5px; }
+    .nav-toggle span::after { top: 5px; }
+
+    /* ── Hero ── */
+    .hero-shell { padding: 0.85rem 0.85rem 0; }
+    .hero {
+      position: relative;
+      min-height: min(92svh, 860px);
+      border-radius: var(--radius-frame);
+      overflow: hidden;
+      color: var(--text-on-photo);
+      background: #1a1814;
+    }
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      object-position: 70% 55%;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(20, 19, 17, 0.08) 0%, rgba(20, 19, 17, 0.12) 40%, rgba(20, 19, 17, 0.55) 100%),
+        linear-gradient(90deg, rgba(20, 19, 17, 0.28) 0%, transparent 38%);
+      pointer-events: none;
+    }
+    .hero-word {
+      position: absolute;
+      top: 18%;
+      left: 4%;
+      right: 4%;
+      z-index: 2;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--text-hero);
+      line-height: 0.82;
+      letter-spacing: -0.05em;
+      color: var(--text-on-photo);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .hero-live {
+      position: absolute;
+      top: 46%;
+      right: 18%;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.7rem 0.35rem 0.5rem;
+      background: rgba(246, 244, 240, 0.92);
+      color: var(--text-primary);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-xs);
+      font-weight: 600;
+    }
+    .hero-live i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--action-primary);
+      display: block;
+    }
+    .hero-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      display: grid;
+      gap: 1.4rem;
+      padding: 0 2rem 1.4rem;
+    }
+    .hero-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .hero-copy {
+      max-width: 34ch;
+      font-size: var(--text-sm);
+      line-height: 1.5;
+      color: var(--text-on-photo);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
+    .glass-stat {
+      min-width: 200px;
+      padding: 1rem 1.15rem;
+      border-radius: 16px;
+      background: rgba(20, 19, 17, 0.38);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(247, 244, 238, 0.16);
+    }
+    .glass-stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0.15rem 0 0.45rem;
+    }
+    .glass-stat .val {
+      font-size: var(--text-xl);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .spec-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      padding: 0.85rem 0.2rem 0.2rem;
+      border-top: 1px solid rgba(247, 244, 238, 0.18);
+    }
+    .spec-bar dt {
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0.7;
+      margin-bottom: 0.2rem;
+    }
+    .spec-bar dd { font-size: var(--text-sm); font-weight: 500; }
+    .spec-bar > div { padding-left: 1rem; border-left: 1px solid rgba(247, 244, 238, 0.16); }
+    .spec-bar > div:first-child { padding-left: 0; border-left: 0; }
+
+    /* ── Achievements ── */
+    .ach { padding: var(--section-y) 0 3rem; }
+    .ach-head {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 2.4rem;
+    }
+    .ach-head h2 { max-width: 12ch; }
+    .ach-head p { color: var(--text-secondary); max-width: 46ch; }
+    .spark {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      margin-right: 0.45rem;
+      vertical-align: 0.15em;
+      color: var(--action-primary);
+    }
+    .ach-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: 1.1rem;
+      align-items: stretch;
+    }
+    .frame {
+      position: relative;
+      border-radius: var(--radius-frame);
+      overflow: hidden;
+      background: #1a1814;
+    }
+    .frame img { width: 100%; height: 100%; object-fit: cover; }
+    .ach-a { min-height: 420px; }
+    .ach-b { min-height: 480px; }
+    .ticket {
+      position: absolute;
+      left: 1.1rem;
+      right: 1.1rem;
+      bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.95rem 1.1rem;
+      background: var(--action-primary);
+      color: var(--text-on-accent);
+      border-radius: var(--radius-ticket);
+    }
+    .ticket span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1.3;
+    }
+    .stripes { display: flex; gap: 5px; height: 28px; }
+    .stripes i {
+      width: 4px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 1px;
+    }
+
+    /* ── Projects ── */
+    .projects { padding: 3rem 0 var(--section-y); }
+    .proj-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .proj-head h2 { max-width: 14ch; }
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .proj-card { display: block; }
+    .proj-card .frame {
+      aspect-ratio: 4 / 3;
+      margin-bottom: 0.75rem;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+    .proj-card:hover .frame {
+      transform: translateY(-4px);
+      box-shadow: var(--lift);
+    }
+    .proj-card h3 {
+      font-size: 1.02rem;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.2rem;
+    }
+    .proj-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    /* ── Services ── */
+    .services { padding: 0 0.85rem var(--section-y); }
+    .svc-plate {
+      background: var(--surface-ink);
+      color: var(--text-on-photo);
+      border-radius: 28px;
+      padding: clamp(2rem, 4vw, 3.4rem);
+    }
+    .svc-plate .kicker {
+      text-align: center;
+      color: var(--action-primary);
+      margin-bottom: 0.55rem;
+    }
+    .svc-plate h2 { text-align: center; }
+    .svc-lead {
+      text-align: center;
+      max-width: 48ch;
+      margin: 0.7rem auto 2rem;
+      color: rgba(247, 244, 238, 0.68);
+      font-size: var(--text-sm);
+    }
+    .svc-list { max-width: 820px; margin: 0 auto 1.6rem; }
+    .svc-item { border-top: 1px solid rgba(247, 244, 238, 0.12); }
+    .svc-item:last-of-type { border-bottom: 1px solid rgba(247, 244, 238, 0.12); }
+    .svc-btn {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 3.2rem 1fr auto;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1.05rem 0;
+      text-align: left;
+      color: inherit;
+    }
+    .svc-btn .num { color: var(--action-primary); font-variant-numeric: tabular-nums; }
+    .svc-btn h3 { font-size: 1.15rem; font-weight: 600; }
+    .svc-note {
+      display: none;
+      padding: 0 0 1.1rem 3.8rem;
+      max-width: 54ch;
+      color: rgba(247, 244, 238, 0.68);
+      font-size: var(--text-sm);
+    }
+    .svc-item.is-open .svc-note { display: block; }
+    .svc-plus {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(247, 244, 238, 0.25);
+      display: grid;
+      place-items: center;
+      color: var(--action-primary);
+    }
+    .svc-item.is-open .svc-plus { background: var(--action-primary); color: var(--text-on-accent); border-color: var(--action-primary); }
+    .svc-feat {
+      position: relative;
+      border-radius: var(--radius-frame);
+      overflow: hidden;
+      min-height: 360px;
+    }
+    .svc-feat img { width: 100%; height: 100%; object-fit: cover; min-height: 360px; }
+    .night-card {
+      position: absolute;
+      left: 1.2rem;
+      top: 1.2rem;
+      width: min(280px, 72%);
+      padding: 1.15rem 1.2rem;
+      background: var(--surface-raised);
+      color: var(--text-primary);
+      border-radius: 14px;
+    }
+    .night-card h3 { font-size: 1.15rem; line-height: 1.2; margin-bottom: 0.7rem; }
+    .night-card li {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+    }
+    .night-card li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      margin-top: 0.45rem;
+      border-radius: 50%;
+      background: var(--action-primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Proof ── */
+    .proof {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 2.5rem;
+      align-items: start;
+      padding-bottom: var(--section-y);
+    }
+    .proof-kicker { color: var(--action-primary); margin-bottom: 0.6rem; }
+    .proof p { max-width: 48ch; color: var(--text-secondary); }
+    .metrics {
+      display: flex;
+      gap: 3rem;
+      margin-top: 1.6rem;
+    }
+    .metrics strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 3.6rem);
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+    }
+    .metrics span { color: var(--text-secondary); font-size: var(--text-sm); }
+
+    /* ── Pricing ── */
+    .pricing { padding: 0 0 var(--section-y); }
+    .pricing-head { text-align: center; margin-bottom: 2rem; }
+    .pricing-head p { color: var(--text-secondary); margin-top: 0.4rem; }
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-top: 1.1rem;
+      font-size: var(--text-sm);
+    }
+    .switch {
+      width: 44px;
+      height: 24px;
+      border-radius: var(--radius-pill);
+      background: var(--surface-ink);
+      position: relative;
+    }
+    .switch i {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--surface-raised);
+      transition: transform var(--dur) var(--ease);
+    }
+    .toggle.is-year .switch i { transform: translateX(20px); }
+    .price-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .plan {
+      border-radius: 22px;
+      padding: 1.7rem 1.6rem 1.5rem;
+      border: 1px solid var(--border-default);
+      background: var(--surface-raised);
+    }
+    .plan.is-night {
+      background: var(--surface-ink);
+      color: var(--text-on-photo);
+      border-color: transparent;
+    }
+    .plan h3 { font-size: 1.35rem; margin-bottom: 0.3rem; }
+    .plan .lede { font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 1rem; }
+    .plan.is-night .lede { color: rgba(247, 244, 238, 0.62); }
+    .plan .amt {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+    .plan .amt em { font-style: normal; font-size: 1rem; font-family: var(--font-body); }
+    .plan ul { list-style: none; margin: 1.2rem 0 1.5rem; }
+    .plan li {
+      display: flex;
+      gap: 0.55rem;
+      font-size: var(--text-sm);
+      margin-bottom: 0.45rem;
+    }
+    .plan li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45rem;
+      border-radius: 50%;
+      background: var(--action-primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Team ── */
+    .team {
+      padding: 2.2rem;
+      margin-bottom: var(--section-y);
+      background: var(--surface-raised);
+      border-radius: 28px;
+      border: 1px solid var(--border-default);
+    }
+    .team-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .team-head p { color: var(--text-secondary); max-width: 36ch; font-size: var(--text-sm); }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .team-grid img {
+      width: 148px;
+      height: 148px;
+      margin: 0 auto 0.85rem;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 18%;
+    }
+    .team-grid h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .team-grid .role { color: var(--text-secondary); font-size: var(--text-sm); }
+
+    /* ── Talk ── */
+    .talk {
+      background: var(--surface-ink);
+      color: var(--text-on-photo);
+      border-radius: 28px 28px 0 0;
+      padding: clamp(3.5rem, 8vw, 6rem) 0 0;
+    }
+    .talk-word {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(3.4rem, 12vw, 8.5rem);
+      letter-spacing: -0.05em;
+      line-height: 0.85;
+      color: var(--text-on-photo);
+    }
+    .talk-word .disc {
+      width: clamp(36px, 4vw, 56px);
+      height: clamp(36px, 4vw, 56px);
+      border-radius: 50%;
+      background: var(--action-primary);
+      color: var(--text-on-accent);
+      display: grid;
+      place-items: center;
+      margin-top: 0.2em;
+    }
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 2rem 0 1.6rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(247, 244, 238, 0.1);
+      font-size: var(--text-sm);
+      color: rgba(247, 244, 238, 0.62);
+    }
+    .foot nav { display: flex; gap: 1.1rem; }
+    .foot a:hover { color: var(--text-on-photo); }
+
+    /* ── Drawer / search ── */
+    .drawer, .search-pop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+    }
+    .drawer.is-open, .search-pop.is-open { display: block; }
+    .drawer-back, .search-pop .back {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 19, 17, 0.45);
+    }
+    .drawer-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(360px, 88vw);
+      height: 100%;
+      background: var(--surface-page);
+      padding: 1.4rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .drawer-panel a {
+      padding: 0.7rem 0.2rem;
+      font-size: 1.15rem;
+      font-family: var(--font-display);
+      border-bottom: 1px solid var(--border-default);
+    }
+    .search-box {
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(520px, 90vw);
+      background: var(--surface-raised);
+      border-radius: 16px;
+      padding: 1.1rem;
+    }
+    .search-box input {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-ticket);
+      padding: 0 0.9rem;
+      font: inherit;
+    }
+
+    @media (max-width: 1060px) {
+      .proj-grid { grid-template-columns: 1fr 1fr; }
+      .hero-live { display: none; }
+    }
+    @media (max-width: 860px) {
+      .nav-links, .nav-search { display: none; }
+      .nav-toggle { display: grid; }
+      .site-header { width: calc(100% - 2.2rem); top: 1rem; }
+      .ach-head, .ach-grid, .proof, .price-grid, .team-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+      .spec-bar { grid-template-columns: 1fr 1fr; gap: 0.8rem 1rem; }
+      .spec-bar > div { padding-left: 0; border-left: 0; }
+      .ach-a, .ach-b { min-height: 280px; aspect-ratio: 4 / 3; }
+      .foot { flex-direction: column; align-items: flex-start; }
+      .hero-word { top: 22%; font-size: clamp(3.2rem, 22vw, 6rem); }
+      .hero-bottom { padding: 0 1.1rem 1rem; }
+      .team { padding: 1.4rem; }
+    }
+    @media (max-width: 640px) {
+      .proj-grid { grid-template-columns: 1fr; }
+      .hero-shell, .services { padding-left: 0.55rem; padding-right: 0.55rem; }
+      .metrics { gap: 1.4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Ashlar home">
+      <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3.5 19.5 8 5.5h8l4.5 14H3.5Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+        <path d="M7 19.5 10.2 10h3.6L17 19.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+      </svg>
+      Ashlar
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#works">Works</a></li>
+        <li><a href="#practice">Practice</a></li>
+        <li><a href="#careers">Careers</a></li>
+        <li><a href="#studio">Studio</a></li>
+      </ul>
+    </nav>
+    <div class="nav-tools">
+      <button class="nav-search" type="button" aria-label="Search drawings" data-search-open>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+      </button>
+      <button class="nav-toggle" type="button" aria-label="Open menu" data-menu-open>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="hero-shell" id="top">
+      <section class="hero" aria-labelledby="hero-word">
+        <img class="hero-photo" src="assets/hero.jpg" alt="Kalden civic hall, a glass prism on the Vela salt at dusk, amber light in the undercroft." />
+        <h1 class="hero-word" id="hero-word">Kalden</h1>
+        <span class="hero-live"><i></i> Night load</span>
+        <div class="hero-bottom">
+          <div class="hero-row">
+            <div>
+              <p class="hero-copy">Kalden is a civic hall on the Vela salt. Forty-eight metres of glass, night-lit from the floor, run off the roof array.</p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#careers">Join our team <span class="disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+                <a class="btn btn-ghost" href="#works">Discover</a>
+              </div>
+            </div>
+            <aside class="glass-stat">
+              <p class="label">Roof array</p>
+              <strong>Night load</strong>
+              <p class="val">1.2 MW</p>
+            </aside>
+          </div>
+          <dl class="spec-bar">
+            <div><dt>Type</dt><dd>Civic hall</dd></div>
+            <div><dt>Budget</dt><dd>$48–92M</dd></div>
+            <div><dt>Area</dt><dd>18,400 m²</dd></div>
+            <div><dt>Occupancy</dt><dd>2027</dd></div>
+          </dl>
+        </div>
+      </section>
+    </div>
+
+    <section class="ach wrap" id="practice" data-reveal>
+      <div class="ach-head">
+        <h2>
+          <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5 14.2 9.8 22.5 12 14.2 14.2 12 22.5 9.8 14.2 1.5 12 9.8 9.8Z" fill="currentColor"/></svg>
+          Achievements &amp; recognition
+        </h2>
+        <p>From courtyard housing on Low Market to civic shells on the Vela salt, the work is measured in occupancy — not in boards.</p>
+      </div>
+      <div class="ach-grid">
+        <article class="frame ach-a">
+          <img src="assets/ach-lumen.jpg" alt="Lumen Fold, a white ribboned cultural hall on a wet plaza at dusk." />
+          <div class="ticket">
+            <span>STONE THAT<br>LEARNS TO FOLD</span>
+            <span class="stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+        </article>
+        <article class="frame ach-b">
+          <img src="assets/ach-orel.jpg" alt="Orel Pavilion, a laminated timber spiral glowing over still water in a pine stand." />
+        </article>
+      </div>
+    </section>
+
+    <section class="projects wrap" id="works">
+      <div class="proj-head" data-reveal>
+        <h2>Discover our most notable projects</h2>
+        <a class="btn btn-primary" href="#careers">Join our team <span class="disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      </div>
+      <div class="proj-grid">
+        <a class="proj-card" href="#talk">
+          <div class="frame"><img src="assets/proj-nadir.jpg" alt="Nadir House, a folded concrete residence on Red Mesa at storm light." /></div>
+          <h3>Nadir House</h3>
+          <p class="proj-meta"><span>Red Mesa</span><span>$6.4M</span></p>
+        </a>
+        <a class="proj-card" href="#talk">
+          <div class="frame"><img src="assets/proj-solstice.jpg" alt="Solstice Wing, a white concrete curve wrapping a glass museum facade at twilight." /></div>
+          <h3>Solstice Wing</h3>
+          <p class="proj-meta"><span>North Spit</span><span>$28M</span></p>
+        </a>
+        <a class="proj-card" href="#talk">
+          <div class="frame"><img src="assets/proj-thorn.jpg" alt="Thorn Spire, stacked petal shells of white concrete with an amber entrance." /></div>
+          <h3>Thorn Spire</h3>
+          <p class="proj-meta"><span>Calder Head</span><span>$41M</span></p>
+        </a>
+        <a class="proj-card" href="#talk">
+          <div class="frame"><img src="assets/proj-rill.jpg" alt="Rill Court, circular courtyard housing in white concrete with warm windows." /></div>
+          <h3>Rill Court</h3>
+          <p class="proj-meta"><span>Low Market</span><span>$19M</span></p>
+        </a>
+      </div>
+    </section>
+
+    <section class="services" id="solutions">
+      <div class="svc-plate">
+        <p class="kicker label">Our services</p>
+        <h2>Design solutions we provide</h2>
+        <p class="svc-lead">We take a building from massing to night-cycle. Residential, civic, and urban work share one drawing set.</p>
+        <div class="svc-list">
+          <article class="svc-item is-open">
+            <button class="svc-btn" type="button" aria-expanded="true">
+              <span class="num label">01</span>
+              <h3>Residential design</h3>
+              <span class="svc-plus" aria-hidden="true">+</span>
+            </button>
+            <p class="svc-note">Courtyard houses and private halls. Load first, then the window wall. Nadir House on Red Mesa is the current drawing.</p>
+          </article>
+          <article class="svc-item">
+            <button class="svc-btn" type="button" aria-expanded="false">
+              <span class="num label">02</span>
+              <h3>Urban planning</h3>
+              <span class="svc-plus" aria-hidden="true">+</span>
+            </button>
+            <p class="svc-note">Street, block, and civic edge. We set the grain so a hall can sit without erasing the market around it.</p>
+          </article>
+          <article class="svc-item">
+            <button class="svc-btn" type="button" aria-expanded="false">
+              <span class="num label">03</span>
+              <h3>Civic shells</h3>
+              <span class="svc-plus" aria-hidden="true">+</span>
+            </button>
+            <p class="svc-note">Halls, wings, and spires. Kalden, Solstice, and Thorn share a night-cycle model and a single site architect.</p>
+          </article>
+        </div>
+        <div class="svc-feat">
+          <img src="assets/svc-night.jpg" alt="A ribbed civic shell in rain, amber glass undercroft reflecting on the wet plaza." />
+          <div class="night-card">
+            <h3>Kalden night cycle</h3>
+            <ul>
+              <li>Floor load at 22:00</li>
+              <li>Roof array 1.2 MW</li>
+              <li>840 seats, occupancy test</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof wrap" data-reveal>
+      <div>
+        <p class="proof-kicker label">A drawing set, not a pitch deck</p>
+      </div>
+      <div>
+        <p>The studio exists to put people in rooms that hold. Private residences, civic halls, and block work — each drawing names a load, a span, and a date of occupancy.</p>
+        <div class="metrics">
+          <p><strong>48</strong><span>Built works</span></p>
+          <p><strong>15yr</strong><span>In practice since 2011</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing wrap" id="studio">
+      <div class="pricing-head" data-reveal>
+        <p class="label">Retainers</p>
+        <h2>Pricing plans</h2>
+        <p>Two retainers. Schematic, or design through site.</p>
+        <div class="toggle" data-toggle>
+          <span>Monthly</span>
+          <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Bill yearly"><i></i></button>
+          <span>Yearly</span>
+        </div>
+      </div>
+      <div class="price-grid">
+        <article class="plan is-night">
+          <h3>Atelier</h3>
+          <p class="lede">Schematic and planning retainer</p>
+          <p class="amt" data-month="$4,900" data-year="$49,000">$4,900<em>/mo</em></p>
+          <ul>
+            <li>Massing and planning set</li>
+            <li>One civic or residential shell</li>
+            <li>Weekly drawing review</li>
+            <li>Two site visits a season</li>
+          </ul>
+          <a class="btn btn-primary" href="#talk">Open a drawing <span class="disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+        </article>
+        <article class="plan">
+          <h3>Chamber</h3>
+          <p class="lede">Design through site</p>
+          <p class="amt" data-month="$14,900" data-year="$149,000">$14,900<em>/mo</em></p>
+          <ul>
+            <li>Full design through site</li>
+            <li>Parametric model and night cycle</li>
+            <li>Weekly drawing review</li>
+            <li>Resident architect on site</li>
+          </ul>
+          <a class="btn btn-ink" href="#talk">Open a drawing <span class="disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+        </article>
+      </div>
+    </section>
+
+    <section class="team wrap" id="careers" data-reveal>
+      <div class="team-head">
+        <div>
+          <h2>Meet the studio</h2>
+          <p>Four principals on the drawing. Join if you can hold a load path in your head.</p>
+        </div>
+        <a class="btn btn-primary" href="mailto:studio@ashlar.example">Join our team <span class="disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      </div>
+      <div class="team-grid">
+        <figure>
+          <img src="assets/team-mira.jpg" alt="Mira Voss, principal, in the studio with a glass model." />
+          <figcaption>
+            <h3>Mira Voss</h3>
+            <p class="role label">Principal</p>
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="assets/team-calen.jpg" alt="Calen Orth, parametric lead, with a rolled drawing." />
+          <figcaption>
+            <h3>Calen Orth</h3>
+            <p class="role label">Parametric</p>
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="assets/team-nia.jpg" alt="Nia Sol, site architect, on a Kalden pour." />
+          <figcaption>
+            <h3>Nia Sol</h3>
+            <p class="role label">Site</p>
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="assets/team-reed.jpg" alt="Reed Halden, structures, reading a shop drawing." />
+          <figcaption>
+            <h3>Reed Halden</h3>
+            <p class="role label">Structures</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="talk" id="talk">
+      <a class="talk-word" href="mailto:studio@ashlar.example">
+        LET’S TALK
+        <span class="disc" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <div class="wrap">
+        <footer class="foot">
+          <p class="brand">
+            <svg class="mark" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
+              <path d="M3.5 19.5 8 5.5h8l4.5 14H3.5Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+              <path d="M7 19.5 10.2 10h3.6L17 19.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+            </svg>
+            Ashlar
+          </p>
+          <nav aria-label="Footer">
+            <a href="#practice">Practice</a>
+            <a href="#works">Works</a>
+            <a href="#careers">Careers</a>
+            <a href="mailto:studio@ashlar.example">studio@ashlar.example</a>
+          </nav>
+          <p>Sample template</p>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <div class="drawer" data-drawer hidden>
+    <div class="drawer-back" data-menu-close></div>
+    <div class="drawer-panel" role="dialog" aria-label="Menu">
+      <button type="button" class="label" data-menu-close style="align-self:flex-end;min-height:44px;">Close</button>
+      <a href="#works" data-menu-close>Works</a>
+      <a href="#practice" data-menu-close>Practice</a>
+      <a href="#careers" data-menu-close>Careers</a>
+      <a href="#studio" data-menu-close>Studio</a>
+      <a href="mailto:studio@ashlar.example">Join our team</a>
+    </div>
+  </div>
+
+  <div class="search-pop" data-search hidden>
+    <div class="back" data-search-close></div>
+    <form class="search-box" action="#" method="get" data-search-form>
+      <label class="label" for="q">Search drawings</label>
+      <input id="q" name="q" type="search" placeholder="Kalden, Rill, Thorn…" autocomplete="off" />
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelectorAll('[data-menu-open], [data-menu-close]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          var d = document.querySelector('[data-drawer]');
+          var open = el.hasAttribute('data-menu-open');
+          d.hidden = !open;
+          d.classList.toggle('is-open', open);
+        });
+      });
+      document.querySelectorAll('[data-search-open], [data-search-close]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          var s = document.querySelector('[data-search]');
+          var open = el.hasAttribute('data-search-open');
+          s.hidden = !open;
+          s.classList.toggle('is-open', open);
+          if (open) s.querySelector('input').focus();
+        });
+      });
+
+      document.querySelectorAll('.svc-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.parentElement;
+          var open = item.classList.contains('is-open');
+          document.querySelectorAll('.svc-item').forEach(function (n) {
+            n.classList.remove('is-open');
+            n.querySelector('.svc-btn').setAttribute('aria-expanded', 'false');
+          });
+          if (!open) {
+            item.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      var toggle = document.querySelector('[data-toggle]');
+      var sw = toggle.querySelector('.switch');
+      sw.addEventListener('click', function () {
+        var yearly = !toggle.classList.contains('is-year');
+        toggle.classList.toggle('is-year', yearly);
+        sw.setAttribute('aria-checked', String(yearly));
+        document.querySelectorAll('.amt').forEach(function (el) {
+          var v = yearly ? el.dataset.year : el.dataset.month;
+          var unit = yearly ? '/yr' : '/mo';
+          el.innerHTML = v + '<em>' + unit + '</em>';
+        });
+      });
+      var searchForm = document.querySelector('[data-search-form]');
+      if (searchForm) {
+        searchForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          document.querySelector('[data-search]').classList.remove('is-open');
+          document.querySelector('[data-search]').hidden = true;
+        });
+      }
+
+      if (reduce) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+      var lenis = new Lenis({ duration: 1.05, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+
+      gsap.from('.hero-word', { opacity: 0, y: 20, duration: 0.9, ease: 'power3.out' });
+      gsap.from('.hero-copy, .hero-actions, .glass-stat, .spec-bar', {
+        opacity: 0, y: 16, duration: 0.5, stagger: 0.08, delay: 0.28, ease: 'power2.out'
+      });
+      gsap.to('.hero-photo', {
+        yPercent: 8,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+      gsap.utils.toArray('[data-reveal]').forEach(function (el) {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 86%' },
+          opacity: 0, y: 16, duration: 0.28, ease: 'power2.out'
+        });
+      });
+      gsap.from('.proj-card', {
+        scrollTrigger: { trigger: '.projects', start: 'top 80%' },
+        opacity: 0, y: 16, duration: 0.28, stagger: 0.06, ease: 'power2.out'
+      });
+      gsap.from('.talk-word', {
+        scrollTrigger: { trigger: '.talk', start: 'top 78%' },
+        opacity: 0, y: 18, duration: 0.45, ease: 'power2.out'
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lacet — Generate links that hold</title>
+  <meta name="description" content="Create, brand, and track short links. One lace from destination to download — QR, PNG, SVG, live." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Syne", sans-serif;
+      --font-body: "IBM Plex Sans", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+      --surface-page: #070B12;
+      --surface-raised: #0C131C;
+      --surface-card: #111A26;
+      --surface-paper: #F4F8FB;
+      --text-primary: #F3F7FB;
+      --text-secondary: #8B9AAB;
+      --text-faint: #5C6B7A;
+      --text-on-paper: #0C131C;
+      --text-on-accent: #06241E;
+      --border-default: rgba(46, 230, 198, 0.14);
+      --border-subtle: rgba(243, 247, 251, 0.08);
+      --action-primary: #2EE6C6;
+      --action-primary-hover: #5AF0D4;
+      --glow-teal: rgba(46, 230, 198, 0.38);
+      --status-danger: #E24B4B;
+
+      --text-display: clamp(2.35rem, 5vw, 3.85rem);
+      --text-3xl: clamp(2.0rem, 4.2vw, 3.2rem);
+      --text-2xl: clamp(1.5rem, 2.4vw, 2.0rem);
+      --text-xl: 1.25rem;
+      --text-lg: 1.0625rem;
+      --text-base: 1rem;
+      --text-sm: 0.875rem;
+      --text-xs: 0.75rem;
+      --leading-display: 0.98;
+      --leading-body: 1.62;
+      --tracking-display: -0.04em;
+      --tracking-label: 0.12em;
+
+      --section-y: clamp(4.5rem, 10vw, 7.25rem);
+      --wrap: min(1120px, 100% - 2.5rem);
+      --hero-wrap: min(1180px, 100% - 2rem);
+      --radius-card: 18px;
+      --radius-panel: 14px;
+      --radius-chip: 10px;
+      --radius-pill: 999px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--surface-page); }
+    html.lenis, html.lenis body { height: auto; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      color: var(--text-primary);
+      background: var(--surface-page);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    ul { list-style: none; }
+    :focus-visible {
+      outline: 3px solid var(--action-primary);
+      outline-offset: 3px;
+    }
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 80;
+      background: var(--action-primary); color: var(--text-on-accent);
+      padding: 0.6rem 1rem; border-radius: var(--radius-pill);
+    }
+    .skip:focus { top: 1rem; }
+
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .hero-wrap { width: var(--hero-wrap); margin-inline: auto; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      height: 48px; padding: 0 1.35rem; border-radius: var(--radius-pill);
+      font-size: var(--text-sm); font-weight: 600; letter-spacing: -0.01em;
+      transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--action-primary); color: var(--text-on-accent); }
+    .btn-primary:hover { background: var(--action-primary-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-ghost {
+      background: transparent; color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+    .btn-ghost:hover { background: rgba(46, 230, 198, 0.08); }
+    .btn-hero {
+      background: var(--surface-paper); color: var(--text-on-paper);
+    }
+    .btn-hero:hover { background: #fff; transform: translateY(-1px); }
+    .btn-ink {
+      background: var(--surface-page); color: var(--text-primary);
+    }
+    .btn-ink:hover { background: #121820; transform: translateY(-1px); }
+
+    /* NAV */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 11, 18, 0.72);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner {
+      width: var(--hero-wrap); margin-inline: auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px; gap: 1rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.65rem; color: var(--text-primary); }
+    .brand-mark { width: 28px; height: 28px; display: block; }
+    .brand-name { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.03em; }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-links a {
+      font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary);
+      transition: color var(--dur) var(--ease);
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-end { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-toggle {
+      display: none; width: 44px; height: 44px;
+      border: 1px solid var(--border-subtle); border-radius: 12px;
+      align-items: center; justify-content: center;
+    }
+    .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+      display: block; width: 16px; height: 1.5px; background: var(--text-primary); position: relative;
+    }
+    .nav-toggle span::before, .nav-toggle span::after {
+      content: ""; position: absolute; left: 0;
+    }
+    .nav-toggle span::before { top: -5px; }
+    .nav-toggle span::after { top: 5px; }
+    .nav-drawer {
+      display: none; border-top: 1px solid var(--border-subtle);
+      background: var(--surface-raised); padding: 1rem 1.25rem 1.4rem;
+    }
+    .nav-drawer a, .nav-drawer .btn { display: flex; width: 100%; margin-top: 0.4rem; }
+    .nav-drawer a {
+      height: 44px; align-items: center; padding: 0 0.4rem;
+      color: var(--text-secondary); font-weight: 500;
+    }
+    body.nav-open .nav-drawer { display: block; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 2.5rem 0 0;
+      overflow: hidden;
+    }
+    .hero-panel {
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      background:
+        radial-gradient(120% 70% at 50% 118%, rgba(46, 230, 198, 0.55) 0%, rgba(46, 230, 198, 0.12) 38%, transparent 68%),
+        linear-gradient(180deg, #0A1018 0%, #070B12 55%);
+      padding: 2.2rem 1.5rem 3.8rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .flow {
+      width: min(920px, 100%);
+      display: grid;
+      grid-template-columns: 1fr minmax(90px, 1.1fr) auto minmax(90px, 1.1fr) 1fr;
+      align-items: center;
+      gap: 0.4rem;
+      margin: 1.2rem 0 2.4rem;
+    }
+    .flow-col { display: flex; flex-direction: column; gap: 0.55rem; }
+    .flow-col.left { align-items: flex-end; }
+    .flow-col.right { align-items: flex-start; }
+    .node {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      height: 36px; padding: 0 0.7rem 0 0.45rem;
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-chip);
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--text-primary); text-transform: uppercase;
+      box-shadow: 0 0 0 4px rgba(7, 11, 18, 0.4);
+    }
+    .node i {
+      width: 22px; height: 22px; border-radius: 7px;
+      display: grid; place-items: center;
+      background: rgba(46, 230, 198, 0.1);
+      color: var(--action-primary);
+    }
+    .node i svg { width: 13px; height: 13px; }
+    .flow-beam {
+      height: 64px; width: 100%;
+      filter: drop-shadow(0 0 8px var(--glow-teal));
+    }
+    .flow-beam path {
+      fill: none; stroke: var(--action-primary); stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 10 14;
+      animation: dash 2.4s linear infinite;
+    }
+    .flow-beam path.halo {
+      stroke-width: 8; opacity: 0.22; stroke-dasharray: none; animation: none;
+      filter: blur(3px);
+    }
+    @keyframes dash { to { stroke-dashoffset: -96; } }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(46, 230, 198, 0.35); }
+      50% { box-shadow: 0 0 0 10px rgba(46, 230, 198, 0); }
+    }
+    .gen-mark {
+      width: 72px; height: 72px; border-radius: 16px;
+      border: 1px solid var(--border-default);
+      background: rgba(12, 19, 28, 0.8);
+      display: grid; place-items: center;
+      animation: pulse 3.2s ease-in-out infinite;
+    }
+    .gen-mark svg { width: 36px; height: 36px; }
+    .gen-cap {
+      margin-top: 0.55rem; text-align: center;
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.16em; color: var(--text-faint); text-transform: uppercase;
+    }
+    .flow-center { display: flex; flex-direction: column; align-items: center; }
+
+    .hero-copy { text-align: center; max-width: 720px; position: relative; z-index: 1; }
+    .hero-copy h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-display);
+      font-weight: 800;
+      line-height: var(--leading-display);
+      letter-spacing: var(--tracking-display);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .hero-copy h1 em {
+      font-style: normal; color: var(--action-primary);
+    }
+    .hero-copy p {
+      margin: 1.15rem auto 1.6rem;
+      max-width: 48ch;
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+    }
+
+    /* TRUST */
+    .trust { padding: 2.4rem 0 1rem; }
+    .trust-kicker {
+      display: flex; align-items: center; justify-content: center; gap: 1rem;
+      color: var(--action-primary); font-size: var(--text-xs);
+      letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+    }
+    .trust-kicker::before, .trust-kicker::after {
+      content: ""; height: 1px; width: min(140px, 18vw);
+      background: linear-gradient(90deg, transparent, var(--action-primary), transparent);
+      opacity: 0.5;
+    }
+    .trust-row {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 2.2rem 2.8rem; padding: 1.6rem 0 2rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .partner {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: var(--text-secondary); font-weight: 600; font-size: 0.95rem;
+      opacity: 0.85;
+    }
+    .partner svg { width: 18px; height: 18px; color: var(--text-faint); }
+
+    /* SPINE */
+    .spine-intro {
+      padding: 4.5rem 0 1.5rem; text-align: center;
+    }
+    .spine-intro h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 800; line-height: 1.06;
+      letter-spacing: -0.03em; text-transform: uppercase;
+      text-wrap: balance;
+    }
+    .spine-intro h2 em { font-style: normal; color: var(--action-primary); }
+    .spine-intro p { margin-top: 0.9rem; color: var(--text-secondary); }
+
+    .spine { padding-bottom: var(--section-y); }
+    .spine-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .rail {
+      position: sticky; top: 6.2rem;
+      padding-left: 0.9rem;
+      border-left: 1px solid var(--border-subtle);
+    }
+    .rail a {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.45rem 0;
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 500;
+    }
+    .rail a::before {
+      content: ""; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--text-faint); margin-left: -1.15rem;
+      box-shadow: 0 0 0 4px var(--surface-page);
+    }
+    .rail a.is-active { color: var(--action-primary); }
+    .rail a.is-active::before { background: var(--action-primary); }
+
+    .chip {
+      display: inline-flex; align-items: center;
+      height: 28px; padding: 0 0.75rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-pill);
+      color: var(--action-primary);
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+    }
+    .block { padding: 2.4rem 0 3.2rem; scroll-margin-top: 6rem; }
+    .block h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.08; max-width: 16ch;
+      text-wrap: balance;
+    }
+
+    .steps {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem 2.4rem; margin-top: 2rem;
+    }
+    .step-num {
+      display: inline-grid; place-items: center;
+      min-width: 36px; height: 26px; padding: 0 0.45rem;
+      background: var(--action-primary); color: var(--text-on-accent);
+      border-radius: 8px;
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+    }
+    .step h4 {
+      display: flex; align-items: center; gap: 0.65rem;
+      font-size: var(--text-lg); font-weight: 600; margin-bottom: 0.45rem;
+    }
+    .step p { color: var(--text-secondary); font-size: var(--text-sm); max-width: 38ch; }
+
+    .use-layout {
+      display: grid; grid-template-columns: 1fr minmax(280px, 0.95fr);
+      gap: 2rem; margin-top: 1.8rem; align-items: stretch;
+    }
+    .use-list { display: flex; flex-direction: column; gap: 1.35rem; }
+    .use-item { display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; }
+    .use-item p { color: var(--text-secondary); font-size: var(--text-sm); margin-top: 0.25rem; }
+    .use-item h4 { font-size: 1.05rem; }
+
+    .assistant {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+      padding: 1rem;
+      box-shadow: 0 0 40px rgba(46, 230, 198, 0.08);
+    }
+    .assistant-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.9rem;
+    }
+    .assistant-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .assistant-brand .dot {
+      width: 22px; height: 22px; border-radius: 7px;
+      background: rgba(46, 230, 198, 0.15); color: var(--action-primary);
+      display: grid; place-items: center;
+    }
+    .tabs { display: flex; gap: 0.35rem; }
+    .tabs span {
+      font-size: 0.68rem; color: var(--text-faint); padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+    }
+    .tabs span.on { color: var(--action-primary); background: rgba(46, 230, 198, 0.08); }
+    .assistant-row {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      padding: 0.75rem 0.6rem; border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 0.5rem;
+    }
+    .assistant-row .orb {
+      width: 28px; height: 28px; border-radius: 50%; flex: 0 0 auto;
+      border: 2px solid var(--action-primary);
+      box-shadow: 0 0 12px var(--glow-teal);
+      background: radial-gradient(circle at 40% 35%, #7ff6e2, #128f7a);
+    }
+    .assistant-row strong { display: block; font-size: 0.82rem; }
+    .assistant-row small { color: var(--text-faint); font-size: 0.72rem; }
+
+    .types {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.1rem; margin-top: 1.8rem;
+    }
+    .type-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 1.4rem 1.3rem 1.2rem;
+      min-height: 250px;
+    }
+    .orbit {
+      height: 140px; position: relative; margin-bottom: 1rem;
+    }
+    .orbit-core {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #7ff6e2, #0e6f62);
+      box-shadow: 0 0 28px var(--glow-teal);
+      display: grid; place-items: center; color: var(--text-on-accent);
+    }
+    .orbit-ring {
+      position: absolute; left: 50%; top: 50%;
+      width: 118px; height: 118px; margin: -59px 0 0 -59px;
+      border: 1px dashed rgba(46, 230, 198, 0.28); border-radius: 50%;
+    }
+    .sat {
+      position: absolute; width: 28px; height: 28px; border-radius: 8px;
+      background: var(--surface-raised); border: 1px solid var(--border-default);
+      display: grid; place-items: center; color: var(--action-primary);
+    }
+    .sat svg { width: 14px; height: 14px; }
+    .type-card h4 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .type-card p { color: var(--text-secondary); font-size: var(--text-sm); }
+
+    .integ-layout {
+      display: grid; grid-template-columns: 1fr minmax(280px, 0.95fr);
+      gap: 2rem; margin-top: 1.8rem;
+    }
+    .chat {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-card);
+      padding: 1.1rem;
+      min-height: 280px;
+      display: flex; flex-direction: column;
+    }
+    .chat-arc {
+      height: 120px; position: relative; margin-bottom: 0.8rem;
+    }
+    .chat-arc .hub {
+      position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #7ff6e2, #0e6f62);
+      box-shadow: 0 0 24px var(--glow-teal);
+      display: grid; place-items: center;
+    }
+    .chat-arc .hub svg { width: 22px; height: 22px; }
+    .chat-arc .sat { bottom: auto; }
+    .chat-bubble {
+      background: var(--surface-raised); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 0.7rem 0.85rem; font-size: 0.8rem;
+      color: var(--text-secondary); margin-top: auto;
+    }
+    .chat-bar {
+      margin-top: 0.55rem; height: 40px; border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      display: flex; align-items: center; padding: 0 0.8rem;
+      color: var(--text-faint); font-size: 0.8rem;
+    }
+
+    /* STATS */
+    .stats { padding: var(--section-y) 0; text-align: center; }
+    .stats h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+      text-wrap: balance;
+    }
+    .stats h2 em { font-style: normal; color: var(--action-primary); }
+    .stats .lede { color: var(--text-secondary); margin: 0.7rem 0 2rem; }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem;
+    }
+    .stat {
+      text-align: left;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-panel);
+      padding: 1.3rem 1.15rem 1.1rem;
+    }
+    .stat b {
+      display: block; font-family: var(--font-mono);
+      font-size: 1.55rem; font-weight: 500; font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em; margin-bottom: 0.45rem;
+    }
+    .stat p { color: var(--text-secondary); font-size: 0.8rem; }
+    .stat-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 1.1rem; color: var(--action-primary);
+    }
+    .stat-foot .pip {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--action-primary); box-shadow: 0 0 8px var(--glow-teal);
+    }
+
+    /* PRICING */
+    .pricing {
+      position: relative; padding: var(--section-y) 0 3rem;
+      overflow: hidden;
+    }
+    .pricing-glow {
+      position: absolute; inset: 0 auto auto 50%;
+      transform: translateX(-50%);
+      width: min(920px, 100%); height: 280px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(46, 230, 198, 0.32), transparent 70%);
+      pointer-events: none;
+    }
+    .pricing-head { text-align: center; position: relative; }
+    .pricing-head .chip { margin-bottom: 0.8rem; }
+    .pricing-head h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+      text-wrap: balance;
+    }
+    .pricing-head h2 em { font-style: normal; color: var(--action-primary); }
+    .pricing-head p { color: var(--text-secondary); margin-top: 0.6rem; }
+    .price-grid {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-top: 2.2rem;
+      max-width: 760px; margin-inline: auto;
+    }
+    .price {
+      border-radius: var(--radius-card); padding: 1.6rem 1.5rem 1.4rem;
+    }
+    .price-starter {
+      background: var(--surface-paper); color: var(--text-on-paper);
+    }
+    .price-pro {
+      background: var(--surface-raised);
+      border: 1px solid var(--border-default);
+    }
+    .price .plan { font-weight: 600; font-size: 0.95rem; }
+    .price .amt {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 2.6rem; letter-spacing: -0.04em; line-height: 1.1;
+      margin: 0.35rem 0 0.15rem;
+    }
+    .price .amt span { font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; opacity: 0.6; }
+    .price .hint { font-size: 0.82rem; opacity: 0.7; margin-bottom: 1.1rem; }
+    .price ul { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.3rem; }
+    .price li {
+      display: flex; gap: 0.55rem; align-items: flex-start;
+      font-size: 0.88rem;
+    }
+    .tick {
+      width: 16px; height: 16px; border-radius: 50%; flex: 0 0 auto; margin-top: 0.15rem;
+      background: var(--action-primary); color: var(--text-on-accent);
+      display: grid; place-items: center;
+    }
+    .tick svg { width: 10px; height: 10px; }
+    .price-starter .tick { background: var(--surface-page); color: var(--action-primary); }
+    .price .btn { width: 100%; }
+    .custom {
+      max-width: 760px; margin: 1rem auto 0;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      background: var(--surface-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-panel); padding: 1.1rem 1.3rem;
+    }
+    .custom h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .custom p { color: var(--text-secondary); font-size: 0.82rem; max-width: 48ch; }
+
+    /* DEV TOOLS */
+    .tools { padding: 3rem 0 var(--section-y); text-align: center; }
+    .tools h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+      text-wrap: balance;
+    }
+    .tools .lede { color: var(--text-secondary); margin: 0.7rem auto 2.2rem; max-width: 46ch; }
+    .orbit-stage { position: relative; height: 280px; max-width: 520px; margin: 0 auto; }
+    .orbit-stage .ring {
+      position: absolute; left: 50%; top: 58%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(46, 230, 198, 0.16); border-radius: 50%;
+      border-bottom-color: transparent;
+    }
+    .ring.r1 { width: 160px; height: 160px; }
+    .ring.r2 { width: 280px; height: 280px; }
+    .ring.r3 { width: 400px; height: 400px; }
+    .orbit-stage .core {
+      position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%);
+      width: 86px; height: 86px; border-radius: 50%;
+      background: radial-gradient(circle at 38% 32%, #9ff8e8, #0b7466 62%, #06443d);
+      box-shadow: 0 0 40px var(--glow-teal);
+      display: grid; place-items: center;
+    }
+    .orbit-stage .core svg { width: 36px; height: 36px; }
+    .orbit-stage .tool {
+      position: absolute; width: 44px; height: 44px; border-radius: 50%;
+      background: var(--surface-card); border: 1px solid var(--border-default);
+      display: grid; place-items: center; color: var(--action-primary);
+    }
+    .orbit-stage .tool svg { width: 18px; height: 18px; }
+
+    /* QUOTES */
+    .quotes { padding: 0 0 var(--section-y); }
+    .quotes-head { text-align: center; margin-bottom: 2rem; }
+    .quotes-head .chip { margin-bottom: 0.7rem; }
+    .quotes-head h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em;
+    }
+    .quotes-head h2 em { font-style: normal; color: var(--action-primary); }
+    .quotes-head p { color: var(--text-secondary); margin-top: 0.5rem; }
+    .quote-grid {
+      display: grid; grid-template-columns: 1.05fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 0.85rem;
+    }
+    .q {
+      background: var(--surface-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-panel); padding: 1.2rem 1.2rem 1.1rem;
+    }
+    .q.rating { display: flex; flex-direction: column; justify-content: space-between; }
+    .q .score {
+      font-family: var(--font-display); font-size: 2.4rem; font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .who { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem; }
+    .who img {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      border: 1px solid var(--border-subtle);
+    }
+    .who strong { display: block; font-size: 0.88rem; }
+    .who span { font-size: 0.75rem; color: var(--text-faint); }
+    .q blockquote {
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;
+    }
+    .q.span2 { grid-column: 2 / 4; }
+
+    /* FINAL CTA */
+    .final {
+      padding: 0 0 var(--section-y);
+    }
+    .final-panel {
+      border-radius: 28px;
+      border: 1px solid var(--border-subtle);
+      background:
+        radial-gradient(90% 80% at 50% 120%, rgba(46, 230, 198, 0.42), transparent 60%),
+        var(--surface-raised);
+      text-align: center; padding: 4.2rem 1.5rem;
+    }
+    .final-panel h2 {
+      font-family: var(--font-display); font-size: var(--text-3xl);
+      font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+      text-wrap: balance; max-width: 16ch; margin-inline: auto;
+    }
+    .final-panel p { color: var(--text-secondary); margin: 0.8rem auto 1.5rem; max-width: 42ch; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 3rem 0 2rem;
+    }
+    .foot-grid {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 2rem; margin-bottom: 2.4rem;
+    }
+    .foot-brand p { color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.7rem; max-width: 28ch; }
+    footer h5 {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-faint); margin-bottom: 0.8rem;
+    }
+    footer li { margin: 0.4rem 0; }
+    footer a { color: var(--text-secondary); font-size: 0.9rem; }
+    footer a:hover { color: var(--action-primary); }
+    .foot-end {
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      border-top: 1px solid var(--border-subtle); padding-top: 1.1rem;
+      color: var(--text-faint); font-size: 0.8rem;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed; inset: 0; z-index: 60;
+      background: rgba(4, 8, 12, 0.72); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; padding: 1.25rem;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(440px, 100%);
+      background: var(--surface-raised);
+      border: 1px solid var(--border-default);
+      border-radius: 20px; padding: 1.4rem 1.35rem 1.3rem;
+    }
+    .modal-card h3 {
+      font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 0.3rem;
+    }
+    .modal-card .sub { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.1rem; }
+    label { display: block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 0.7rem 0 0.35rem; }
+    input[type="url"], input[type="text"] {
+      width: 100%; height: 44px; border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-card); color: var(--text-primary);
+      padding: 0 0.85rem; font: inherit;
+    }
+    input:focus { outline: none; border-color: var(--action-primary); box-shadow: 0 0 0 2px rgba(46, 230, 198, 0.25); }
+    .slug-row { display: flex; align-items: center; gap: 0.4rem; }
+    .slug-row span { color: var(--text-faint); font-size: 0.85rem; white-space: nowrap; }
+    .modal-actions { display: flex; gap: 0.6rem; margin-top: 1.15rem; }
+    .modal-actions .btn { flex: 1; }
+    .result {
+      display: none; margin-top: 1rem; padding: 0.85rem;
+      border: 1px solid var(--border-default); border-radius: 12px;
+      background: rgba(46, 230, 198, 0.06);
+    }
+    .result.open { display: block; }
+    .result code { font-family: var(--font-mono); color: var(--action-primary); font-size: 0.9rem; }
+
+    [data-reveal] { opacity: 0; transform: translateY(16px); }
+    [data-reveal].in { opacity: 1; transform: none; transition: opacity 280ms var(--ease), transform 280ms var(--ease); }
+
+    @media (max-width: 1023px) {
+      .spine-grid { grid-template-columns: 1fr; }
+      .rail {
+        position: static; display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem;
+        border-left: 0; padding: 0 0 1rem;
+      }
+      .rail a::before { display: none; }
+      .rail a {
+        border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
+        padding: 0.35rem 0.75rem;
+      }
+      .rail a.is-active { border-color: var(--action-primary); }
+      .use-layout, .integ-layout { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .quote-grid { grid-template-columns: 1fr 1fr; }
+      .q.span2 { grid-column: auto; }
+    }
+    @media (max-width: 720px) {
+      .nav-links, .nav-end .btn-ghost { display: none; }
+      .nav-toggle { display: inline-flex; }
+      .flow {
+        grid-template-columns: 1fr;
+        justify-items: center; gap: 0.35rem;
+        margin: 0.4rem 0 1.15rem;
+      }
+      .flow-col.left, .flow-col.right { align-items: center; gap: 0.35rem; }
+      .flow-beam { height: 36px; transform: rotate(90deg); width: 56px; }
+      .gen-mark { width: 56px; height: 56px; }
+      .node { height: 32px; font-size: 0.68rem; }
+      .steps, .types, .price-grid, .stat-grid, .quote-grid, .foot-grid { grid-template-columns: 1fr; }
+      .custom { flex-direction: column; align-items: flex-start; }
+      .hero-panel { min-height: auto; padding: 1.4rem 0.85rem 2.6rem; border-radius: 20px; }
+      .hero-copy { max-width: 100%; padding-inline: 0.2rem; }
+      .hero-copy h1 {
+        white-space: normal;
+        font-size: clamp(1.7rem, 8.2vw, 2.25rem);
+        line-height: 0.96;
+      }
+      .hero-copy p { font-size: 0.95rem; }
+      .btn { min-height: 44px; }
+      .orbit-stage { height: 220px; }
+      .ring.r3 { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .flow-beam path { animation: none; stroke-dasharray: none; }
+      .gen-mark { animation: none; }
+      [data-reveal] { opacity: 1; transform: none; }
+      .btn, .btn-primary, .btn-hero { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Lacet home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <pattern id="lh" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+              <rect width="1.4" height="3.2" fill="#2EE6C6"/>
+            </pattern>
+          </defs>
+          <path d="M7 4h8.2v17.2H23V28H7V4z" fill="url(#lh)"/>
+        </svg>
+        <span class="brand-name">Lacet</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#how">How it works</a>
+        <a href="#cases">Use cases</a>
+        <a href="#types">Link types</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <div class="nav-end">
+        <a class="btn btn-ghost" href="#contact">Contact</a>
+        <button class="btn btn-primary js-open" type="button">Create a link</button>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-drawer" id="drawer" hidden>
+      <a href="#how">How it works</a>
+      <a href="#cases">Use cases</a>
+      <a href="#types">Link types</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <button class="btn btn-primary js-open" type="button">Create a link</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-wrap">
+        <div class="hero-panel">
+          <div class="flow" aria-label="Link generate flow">
+            <div class="flow-col left">
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+              </i>Website</span>
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.4"/><path d="M21 16l-5.5-5.5L7 19"/></svg>
+              </i>Image</span>
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="9" r="2.2"/><path d="M8 16.5c1.1-1.4 2.4-2 4-2s2.9.6 4 2"/></svg>
+              </i>vCard</span>
+            </div>
+            <svg class="flow-beam" viewBox="0 0 160 64" preserveAspectRatio="none" aria-hidden="true">
+              <path class="halo" d="M1 33 L18 31 28 22 40 38 52 20 66 36 80 18 94 40 110 24 124 34 140 21 159 32"/>
+              <path d="M1 33 L18 31 28 22 40 38 52 20 66 36 80 18 94 40 110 24 124 34 140 21 159 32"/>
+            </svg>
+            <div class="flow-center">
+              <div class="gen-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32">
+                  <defs>
+                    <pattern id="lh2" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+                      <rect width="1.4" height="3.2" fill="#2EE6C6"/>
+                    </pattern>
+                  </defs>
+                  <path d="M7 4h8.2v17.2H23V28H7V4z" fill="url(#lh2)"/>
+                </svg>
+              </div>
+              <div class="gen-cap">Link generate</div>
+            </div>
+            <svg class="flow-beam" viewBox="0 0 160 64" preserveAspectRatio="none" aria-hidden="true">
+              <path class="halo" d="M1 32 L16 28 30 40 44 18 58 36 74 16 90 38 108 22 124 34 140 20 159 32"/>
+              <path d="M1 32 L16 28 30 40 44 18 58 36 74 16 90 38 108 22 124 34 140 20 159 32"/>
+            </svg>
+            <div class="flow-col right">
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3h7v7"/><path d="M10 14 L21 3"/><path d="M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6"/></svg>
+              </i>Jpg</span>
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v12"/><path d="M7 12l5 5 5-5"/><path d="M5 20h14"/></svg>
+              </i>Download</span>
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/></svg>
+              </i>Png</span>
+              <span class="node"><i>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8l8-5 8 5v8l-8 5-8-5z"/></svg>
+              </i>Svg</span>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <h1>We generate<br><em>links</em> that hold</h1>
+            <p>Create, brand, and track short links without a developer. Destination in — QR, PNG, SVG, and a live slug out.</p>
+            <button class="btn btn-hero js-open" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.8 13.12a5 5 0 0 0 7.07 7.07L13 19"/></svg>
+              Create a link
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust">
+      <div class="wrap">
+        <p class="trust-kicker">Our trusted brands</p>
+        <div class="trust-row">
+          <span class="partner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg>
+            Halcy
+          </span>
+          <span class="partner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg>
+            Noxen
+          </span>
+          <span class="partner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v6l4 2-4 2v8"/><path d="M8 7l8 4"/></svg>
+            Pinion
+          </span>
+          <span class="partner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
+            Ordia
+          </span>
+          <span class="partner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16l8-12 8 12"/><path d="M8 16h8"/></svg>
+            Kestrel
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="spine-intro" data-reveal>
+      <div class="wrap">
+        <h2>One lace<br><em>across every channel</em></h2>
+        <p>Create, customize, and track branded links in a few clicks.</p>
+      </div>
+    </section>
+
+    <section class="spine">
+      <div class="wrap spine-grid">
+        <nav class="rail" aria-label="Product sections">
+          <a href="#how" data-rail="how">How it works</a>
+          <a href="#cases" data-rail="cases">Use cases</a>
+          <a href="#types" data-rail="types">Link types</a>
+          <a href="#integ" data-rail="integ">Integrations</a>
+        </nav>
+
+        <div>
+          <article class="block" id="how">
+            <span class="chip">How it works</span>
+            <h3>Create, customize, and track your links in a few clicks.</h3>
+            <div class="steps">
+              <div class="step" data-reveal>
+                <h4><span class="step-num">01</span> Generate your link</h4>
+                <p>Paste a site, image, or vCard. Lacet mints a unique short URL in a second — ready to share, no queue, no code.</p>
+              </div>
+              <div class="step" data-reveal>
+                <h4><span class="step-num">02</span> Customize &amp; brand it</h4>
+                <p>Lock a slug, wrap it in your domain, and lace QR, UTM, and preview cards so every click still looks like you.</p>
+              </div>
+              <div class="step" data-reveal>
+                <h4><span class="step-num">03</span> Share anywhere</h4>
+                <p>Drop the same lace into mail, social, print, or a slide. JPG, PNG, and SVG exports sit next to the live redirect.</p>
+              </div>
+              <div class="step" data-reveal>
+                <h4><span class="step-num">04</span> Track &amp; optimize</h4>
+                <p>Watch clicks, devices, and geos as they land. Reroute a dead dest without reprinting the QR on the crate.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="block" id="cases">
+            <span class="chip">Use cases</span>
+            <h3>Unlock the full potential of every click</h3>
+            <div class="use-layout">
+              <div class="use-list">
+                <div class="use-item" data-reveal>
+                  <span class="step-num">01</span>
+                  <div>
+                    <h4>Marketers</h4>
+                    <p>Spin campaign laces for paid, CRM, and field kits. Keep one destination, many wrappers, clean attribution.</p>
+                  </div>
+                </div>
+                <div class="use-item" data-reveal>
+                  <span class="step-num">02</span>
+                  <div>
+                    <h4>Creators &amp; studios</h4>
+                    <p>Ship a bio link that still looks like the work. Swap the dest mid-drop without breaking the QR on merch.</p>
+                  </div>
+                </div>
+                <div class="use-item" data-reveal>
+                  <span class="step-num">03</span>
+                  <div>
+                    <h4>Brands &amp; commerce</h4>
+                    <p>Custom domains, geo routes, and device splits — so a poster in Lisbon and a story in Seoul both convert.</p>
+                  </div>
+                </div>
+              </div>
+              <aside class="assistant" aria-label="Link Assistant mock">
+                <div class="assistant-top">
+                  <div class="assistant-brand">
+                    <span class="dot">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/></svg>
+                    </span>
+                    Link assistant
+                  </div>
+                  <div class="tabs" aria-hidden="true">
+                    <span class="on">Prompt</span><span>Config</span><span>Tools</span>
+                  </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-faint);margin-bottom:0.7rem;">Define the prompt and conversation settings</p>
+                <div class="assistant-row">
+                  <span class="orb"></span>
+                  <div><strong>Configure prompt</strong><small>Voice, tone, and dest rules for this lace.</small></div>
+                </div>
+                <div class="assistant-row">
+                  <span class="orb"></span>
+                  <div><strong>Script / stages</strong><small>Intro → qualify → hand off a tracked URL.</small></div>
+                </div>
+                <div class="assistant-row">
+                  <span class="orb"></span>
+                  <div><strong>Settings</strong><small>Domain, UTM defaults, expiry, QR style.</small></div>
+                </div>
+              </aside>
+            </div>
+          </article>
+
+          <article class="block" id="types">
+            <span class="chip">Link types</span>
+            <h3>Build the right kind of link for every use case.</h3>
+            <div class="types">
+              <div class="type-card" data-reveal>
+                <div class="orbit" aria-hidden="true">
+                  <div class="orbit-ring"></div>
+                  <div class="orbit-core">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07"/><path d="M14 11a5 5 0 1 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07"/></svg>
+                  </div>
+                  <span class="sat" style="left:8%;top:18%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/></svg></span>
+                  <span class="sat" style="right:10%;top:12%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span>
+                  <span class="sat" style="left:14%;bottom:8%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></span>
+                  <span class="sat" style="right:12%;bottom:10%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v16M4 12h16"/></svg></span>
+                </div>
+                <h4>Short lace</h4>
+                <p>Turn a long dest into a concise slug. Built for bios, print, and anything that has to be typed out loud.</p>
+              </div>
+              <div class="type-card" data-reveal>
+                <div class="orbit" aria-hidden="true">
+                  <div class="orbit-ring"></div>
+                  <div class="orbit-core">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h16"/><path d="M12 4v16"/><circle cx="12" cy="12" r="3"/></svg>
+                  </div>
+                  <span class="sat" style="left:6%;top:22%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18V6l8 4 8-4v12l-8 4z"/></svg></span>
+                  <span class="sat" style="right:8%;top:16%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19l7-14 7 14"/></svg></span>
+                  <span class="sat" style="left:18%;bottom:6%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="4" width="14" height="16" rx="2"/></svg></span>
+                  <span class="sat" style="right:16%;bottom:12%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><path d="M10 9l4 6"/></svg></span>
+                </div>
+                <h4>Campaign / UTM lace</h4>
+                <p>Source, medium, and content baked in. Generate unique, tracked URLs per placement without a spreadsheet.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="block" id="integ">
+            <span class="chip">Integrations</span>
+            <h3>Connect with the tools you already use</h3>
+            <div class="integ-layout">
+              <div class="use-list">
+                <div class="use-item" data-reveal>
+                  <span class="step-num">01</span>
+                  <div>
+                    <h4>Marketing &amp; analytics</h4>
+                    <p>Push click streams into the warehouse you already trust. Tag, cohort, and close the loop on spend.</p>
+                  </div>
+                </div>
+                <div class="use-item" data-reveal>
+                  <span class="step-num">02</span>
+                  <div>
+                    <h4>Automation &amp; productivity</h4>
+                    <p>Mint laces from a form submit, a sheet row, or a deploy hook. Keep routing in one place.</p>
+                  </div>
+                </div>
+                <div class="use-item" data-reveal>
+                  <span class="step-num">03</span>
+                  <div>
+                    <h4>Social &amp; creator tools</h4>
+                    <p>Sync bios, stories, and live descriptions so the dest can move while the lace stays put.</p>
+                  </div>
+                </div>
+              </div>
+              <aside class="chat" aria-label="Assistant chat mock">
+                <div class="chat-arc" aria-hidden="true">
+                  <span class="sat" style="left:8%;top:28%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/></svg></span>
+                  <span class="sat" style="left:28%;top:4%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>
+                  <span class="sat" style="right:28%;top:4%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg></span>
+                  <span class="sat" style="right:8%;top:28%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="14" height="14" rx="3"/></svg></span>
+                  <div class="hub">
+                    <svg viewBox="0 0 32 32">
+                      <path d="M7 4h8.2v17.2H23V28H7V4z" fill="#06241E"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="chat-bubble">Need a geo-split for the Lisbon poster and the Seoul story?</div>
+                <div class="chat-bar">Ask Lacet…</div>
+              </aside>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" data-reveal>
+      <div class="wrap">
+        <h2>Trusted by thousands,<br>built for <em>results</em></h2>
+        <p class="lede">Create, customize, and track your links in just a few clicks.</p>
+        <div class="stat-grid">
+          <article class="stat">
+            <b>48M+</b>
+            <p>Clicks routed last year across 62 countries, without a missed resolve.</p>
+            <div class="stat-foot"><span class="pip"></span>→</div>
+          </article>
+          <article class="stat">
+            <b>12.4k</b>
+            <p>Workspaces lacing campaigns, merch, and product dests from one desk.</p>
+            <div class="stat-foot"><span class="pip"></span>→</div>
+          </article>
+          <article class="stat">
+            <b>99.98%</b>
+            <p>Resolve uptime on the edge. Dead dests reroute without reprinting the QR.</p>
+            <div class="stat-foot"><span class="pip"></span>→</div>
+          </article>
+          <article class="stat">
+            <b>140ms</b>
+            <p>Median redirect. Fast enough that the click never feels like a hop.</p>
+            <div class="stat-foot"><span class="pip"></span>→</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <div class="pricing-glow" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="pricing-head" data-reveal>
+          <span class="chip">Pricing</span>
+          <h2>Simple pricing<br><em>no surprises</em></h2>
+          <p>Create, customize, and track your links in just a few clicks.</p>
+        </div>
+        <div class="price-grid">
+          <article class="price price-starter" data-reveal>
+            <div class="plan">Starter plan</div>
+            <div class="amt">$19 <span>/ month</span></div>
+            <p class="hint">For personal use and getting started.</p>
+            <ul>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>50 active short links</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Basic click analytics</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>QR + PNG / SVG export</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>1 workspace</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>lacet.link slug preview</li>
+            </ul>
+            <button class="btn btn-ink js-open" type="button">Start generating</button>
+          </article>
+          <article class="price price-pro" data-reveal>
+            <div class="plan">Pro plan</div>
+            <div class="amt">$59 <span>/ month</span></div>
+            <p class="hint">For teams lacing campaigns at volume.</p>
+            <ul>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Unlimited links &amp; redirects</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>3 custom domains</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>UTM builder &amp; campaign lacing</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Smart routes (geo, device, date)</li>
+              <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Team seats &amp; analytics desk</li>
+            </ul>
+            <button class="btn btn-primary js-open" type="button">Start generating</button>
+          </article>
+        </div>
+        <div class="custom" data-reveal>
+          <div>
+            <h4>Need something custom?</h4>
+            <p>We’ll lace a plan around your workflow — agencies, enterprise teams, or high-volume print programs.</p>
+          </div>
+          <a class="btn btn-primary" href="#contact">Contact us</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools" data-reveal>
+      <div class="wrap">
+        <h2>Empowering teams with<br>tools that just fit</h2>
+        <p class="lede">Plays with your site, warehouse, and the rest of the stack — cloud or on-prem.</p>
+        <div class="orbit-stage" aria-hidden="true">
+          <div class="ring r3"></div>
+          <div class="ring r2"></div>
+          <div class="ring r1"></div>
+          <span class="tool" style="left:8%;top:42%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/></svg></span>
+          <span class="tool" style="left:22%;top:14%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span>
+          <span class="tool" style="right:22%;top:14%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></span>
+          <span class="tool" style="right:8%;top:42%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M12 5v14"/></svg></span>
+          <span class="tool" style="left:28%;bottom:6%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/></svg></span>
+          <span class="tool" style="right:28%;bottom:6%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
+          <div class="core">
+            <svg viewBox="0 0 32 32"><path d="M7 4h8.2v17.2H23V28H7V4z" fill="#06241E"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quotes" id="quotes">
+      <div class="wrap">
+        <div class="quotes-head" data-reveal>
+          <span class="chip">Testimonials</span>
+          <h2>What our users<br>are <em>saying</em></h2>
+          <p>Create, customize, and track your links in just a few clicks.</p>
+        </div>
+        <div class="quote-grid">
+          <article class="q rating">
+            <div>
+              <div class="score">4.9</div>
+              <p style="color:var(--text-secondary);margin-top:0.4rem;">We routed $2.4m in attributed campaigns last quarter without a single dest collision.</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-top:1.2rem;">
+              <img src="assets/face-nara.jpg" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" />
+              <img src="assets/face-jun.jpg" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:50%;object-fit:cover;margin-left:-8px;" />
+              <img src="assets/face-mira.jpg" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:50%;object-fit:cover;margin-left:-8px;" />
+              <span style="font-size:0.75rem;color:var(--text-faint);margin-left:0.4rem;">Trusted by 12k workspaces</span>
+            </div>
+            <button class="btn btn-primary js-open" type="button" style="margin-top:1rem;width:100%;">Leave a review</button>
+          </article>
+          <article class="q" data-reveal>
+            <div class="who">
+              <img src="assets/face-nara.jpg" alt="Portrait of Nara Okello" width="40" height="40" />
+              <div><strong>Nara Okello</strong><span>Growth lead · Halcy</span></div>
+            </div>
+            <blockquote>“Since switching to Lacet, my paid clicks stopped leaking. I can finally show the board a dest map that looks like the brand.”</blockquote>
+          </article>
+          <article class="q" data-reveal>
+            <div class="who">
+              <img src="assets/face-mira.jpg" alt="Portrait of Mira Holst" width="40" height="40" />
+              <div><strong>Mira Holst</strong><span>Founder · Pinion Studio</span></div>
+            </div>
+            <blockquote>“As an agency, link tracking used to be a spreadsheet. Now we lace multiple brands under one desk and export white-label reports in minutes.”</blockquote>
+          </article>
+          <article class="q span2" data-reveal>
+            <div class="who">
+              <img src="assets/face-jun.jpg" alt="Portrait of Jun Park" width="40" height="40" />
+              <div><strong>Jun Park</strong><span>Ops manager · Noxen Lab</span></div>
+            </div>
+            <blockquote>“I used to juggle five different tools for bios and tracking. Now it’s all one lace — and easy enough that merch can reprint QRs without paging engineering.”</blockquote>
+          </article>
+          <article class="q" data-reveal>
+            <div class="who">
+              <img src="assets/face-rafa.jpg" alt="Portrait of Rafa Mendes" width="40" height="40" />
+              <div><strong>Rafa Mendes</strong><span>Content chair · Ordia</span></div>
+            </div>
+            <blockquote>“The generate beam is not a metaphor. Paste a vCard, get PNG, SVG, and a live slug before the meeting ends.”</blockquote>
+          </article>
+          <article class="q" data-reveal>
+            <div class="who">
+              <img src="assets/face-leela.jpg" alt="Portrait of Leela Shah" width="40" height="40" />
+              <div><strong>Leela Shah</strong><span>Campaigns · Kestrel</span></div>
+            </div>
+            <blockquote>“Geo routes for Lisbon vs Seoul used to be a ticket. Lacet made it a toggle. 140ms later, the poster still works.”</blockquote>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="wrap">
+        <div class="final-panel" data-reveal>
+          <h2>Start generating links that hold</h2>
+          <p>Mint your first lace in under a minute. No card, no code, no waiting on a developer.</p>
+          <button class="btn btn-hero js-open" type="button">Create a link</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top">
+            <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M7 4h8.2v17.2H23V28H7V4z" fill="#2EE6C6"/>
+            </svg>
+            <span class="brand-name">Lacet</span>
+          </a>
+          <p>Branded short links with a current through every channel. Sample template — not a live product.</p>
+        </div>
+        <div>
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#types">Link types</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#integ">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#quotes">Customers</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="mailto:hello@lacet.example">hello@lacet.example</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="#contact">Privacy</a></li>
+            <li><a href="#contact">Terms</a></li>
+            <li><a href="#contact">Status</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-end">
+        <span>© 2026 Lacet. Fictional rebrand for a private design library.</span>
+        <span>hello@lacet.example</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h3 id="modal-title">Create a link</h3>
+      <p class="sub">Paste a destination. Lacet mints a lace you can brand, export, and track.</p>
+      <form id="gen-form">
+        <label for="dest">Destination</label>
+        <input id="dest" name="dest" type="url" required placeholder="https://studio.pinion.example/drop" />
+        <label for="slug">Custom slug</label>
+        <div class="slug-row">
+          <span>lacet.link/</span>
+          <input id="slug" name="slug" type="text" placeholder="q3-drop" maxlength="32" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" id="modal-close">Close</button>
+          <button class="btn btn-primary" type="submit">Generate lace</button>
+        </div>
+      </form>
+      <div class="result" id="result">
+        Live lace: <code id="result-url">lacet.link/q3-drop</code>
+        <p style="margin-top:0.45rem;font-size:0.8rem;color:var(--text-secondary);">PNG, SVG, and QR queued. Tracking is on.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const drawer = document.getElementById("drawer");
+      const toggle = document.querySelector(".nav-toggle");
+      const modal = document.getElementById("modal");
+      const result = document.getElementById("result");
+
+      toggle.addEventListener("click", () => {
+        const open = document.body.classList.toggle("nav-open");
+        toggle.setAttribute("aria-expanded", String(open));
+        drawer.hidden = !open;
+      });
+      drawer.querySelectorAll("a,button").forEach((el) => {
+        el.addEventListener("click", () => {
+          document.body.classList.remove("nav-open");
+          toggle.setAttribute("aria-expanded", "false");
+          drawer.hidden = true;
+        });
+      });
+
+      function openModal() {
+        modal.classList.add("open");
+        const dest = document.getElementById("dest");
+        dest.focus();
+      }
+      function closeModal() {
+        modal.classList.remove("open");
+        result.classList.remove("open");
+      }
+      document.querySelectorAll(".js-open").forEach((b) => b.addEventListener("click", openModal));
+      document.getElementById("modal-close").addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+      document.getElementById("gen-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const slug = (document.getElementById("slug").value || "lace-" + Math.random().toString(36).slice(2, 6)).replace(/[^a-z0-9-]/gi, "").toLowerCase();
+        document.getElementById("result-url").textContent = "lacet.link/" + slug;
+        result.classList.add("open");
+      });
+
+      const rails = document.querySelectorAll("[data-rail]");
+      const sections = ["how", "cases", "types", "integ"].map((id) => document.getElementById(id));
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          rails.forEach((a) => a.classList.toggle("is-active", a.dataset.rail === en.target.id));
+        });
+      }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.1 });
+      sections.forEach((s) => s && spy.observe(s));
+
+      if (!reduce && window.Lenis) {
+        const lenis = new Lenis({ lerp: 0.12 });
+        function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+      if (!reduce && window.gsap) {
+        gsap.from(".flow", { opacity: 0, y: 12, duration: 0.55, ease: "power2.out" });
+        gsap.from(".hero-copy", { opacity: 0, y: 10, duration: 0.55, delay: 0.08, ease: "power2.out" });
+      }
+      const nodes = document.querySelectorAll("[data-reveal]");
+      if (reduce) {
+        nodes.forEach((el) => el.classList.add("in"));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              en.target.classList.add("in");
+              io.unobserve(en.target);
+            }
+          });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+        nodes.forEach((el) => io.observe(el));
+      }
+    })();
+  </script>
+</body>
+</html>

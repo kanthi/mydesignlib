@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quire — Curated Editions &amp; Rare Literature</title>
+
+  <!-- Robots & Privacy (Library Requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Favicon: Book Monogram -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2308090b'/%3E%3Cpath d='M8 7H24V25H8C6.89543 25 6 24.1046 6 23V9C6 7.89543 6.89543 7 8 7Z' stroke='%23ffffff' stroke-width='2' fill='none'/%3E%3Cline x1='12' y1='7' x2='12' y2='25' stroke='%23ff5533' stroke-width='2'/%3E%3C/svg%3E" />
+
+  <!-- Google Fonts: Cormorant Garamond / Playfair Display & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #07080a;
+      --surface: #0e1015;
+      --card: #141720;
+      --accent: #ff4d2e;
+      --accent-warm: #f4a261;
+      --text: #f5f4f0;
+      --text-muted: #8c909d;
+      --text-dim: #545766;
+      --border: rgba(255, 255, 255, 0.09);
+      --border-hover: rgba(255, 255, 255, 0.22);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Fixed Navigation Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 2.5rem;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .header.scrolled {
+      padding: 1rem 2.5rem;
+      background: rgba(7, 8, 10, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-book-icon {
+      width: 20px;
+      height: 24px;
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      border-radius: 2px 4px 4px 2px;
+      position: relative;
+    }
+
+    .brand-book-icon::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 3px;
+      bottom: 0;
+      width: 1.5px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    @media (min-width: 860px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .link-join {
+      display: none;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    @media (min-width: 640px) {
+      .link-join {
+        display: inline-block;
+      }
+    }
+
+    .link-join:hover {
+      color: #ffffff;
+    }
+
+    .btn-list {
+      background: #ffffff;
+      color: #07080a;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.35rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 12px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-list:hover {
+      background: #f0edf7;
+      transform: translateY(-1px);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6.5rem 1.5rem 3.5rem;
+      overflow: hidden;
+      perspective: 1400px;
+    }
+
+    /* Massive Editorial Headline */
+    .hero-title-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: center;
+      padding-top: 1rem;
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 16vw, 15rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      user-select: none;
+    }
+
+    /* 3D BOOK CAROUSEL RACK */
+    .books-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1400px;
+      margin: auto 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 2rem 0;
+      transform-style: preserve-3d;
+    }
+
+    .books-stage {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 1.25rem;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (max-width: 768px) {
+      .books-stage {
+        gap: 0.65rem;
+        transform: scale(0.72) translateY(20px);
+      }
+    }
+
+    /* Individual 3D Book */
+    .book-item {
+      position: relative;
+      width: 190px;
+      height: 290px;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.85));
+    }
+
+    /* Fan-out tilt rotation angles */
+    .book-item:nth-child(1) { transform: rotateY(26deg) translateZ(10px); }
+    .book-item:nth-child(2) { transform: rotateY(18deg) translateZ(25px); }
+    .book-item:nth-child(3) { transform: rotateY(10deg) translateZ(40px); }
+    .book-item:nth-child(4) { transform: rotateY(0deg) translateZ(60px) scale(1.04); }
+    .book-item:nth-child(5) { transform: rotateY(-10deg) translateZ(40px); }
+    .book-item:nth-child(6) { transform: rotateY(-18deg) translateZ(25px); }
+    .book-item:nth-child(7) { transform: rotateY(-26deg) translateZ(10px); }
+
+    .book-item:hover {
+      transform: translateZ(90px) translateY(-25px) scale(1.08) !important;
+      z-index: 50;
+    }
+
+    .book-item.dimmed {
+      opacity: 0.25;
+      filter: grayscale(80%) blur(1px);
+    }
+
+    /* Book Jacket Cover */
+    .book-cover {
+      position: absolute;
+      inset: 0;
+      border-radius: 4px 8px 8px 4px;
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      backface-visibility: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .book-spine-crease {
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.5), transparent, rgba(255,255,255,0.1));
+      pointer-events: none;
+    }
+
+    .book-author {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .book-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .book-cat {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* Individual Book Themes */
+    .book-1 {
+      background: linear-gradient(145deg, #1f1b24 0%, #100d14 100%);
+      color: #f7e6d0;
+      border-left: 6px solid #4a2838;
+    }
+    .book-2 {
+      background: linear-gradient(145deg, #e85d04 0%, #dc2f02 100%);
+      color: #ffffff;
+      border-left: 6px solid #9d0208;
+    }
+    .book-3 {
+      background: linear-gradient(145deg, #1b263b 0%, #0d1b2a 100%);
+      color: #e0e1dd;
+      border-left: 6px solid #415a77;
+    }
+    .book-4 {
+      background: linear-gradient(145deg, #283618 0%, #141c0c 100%);
+      color: #fefae0;
+      border-left: 6px solid #606c38;
+    }
+    .book-5 {
+      background: linear-gradient(145deg, #3d0c11 0%, #1f0406 100%);
+      color: #ffccd5;
+      border-left: 6px solid #800f2f;
+    }
+    .book-6 {
+      background: linear-gradient(145deg, #2b2d42 0%, #151622 100%);
+      color: #edf2f4;
+      border-left: 6px solid #8d99ae;
+    }
+    .book-7 {
+      background: linear-gradient(145deg, #183059 0%, #0b182f 100%);
+      color: #d6e2e9;
+      border-left: 6px solid #276fbf;
+    }
+
+    /* CATEGORY PILL FILTER BAR */
+    .cat-bar {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      background: rgba(14, 16, 21, 0.75);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.5rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .cat-pill {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.5rem 1.15rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .cat-pill:hover {
+      color: #ffffff;
+    }
+
+    .cat-pill.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* SECTION 2: CURATED EDITIONS */
+    .section {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 8rem 2.5rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 3.5rem;
+    }
+
+    .editions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    @media (min-width: 860px) {
+      .editions-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .edition-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .edition-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+
+    .edition-num {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--accent-warm);
+    }
+
+    .edition-name {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .edition-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border);
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="#" class="brand" aria-label="Quire Editions">
+        <span class="brand-book-icon" aria-hidden="true"></span>
+        <span>Quire</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#catalogs" class="nav-link">Catalogs</a></li>
+        <li><a href="#editions" class="nav-link">Editions</a></li>
+        <li><a href="#hub" class="nav-link">Hub</a></li>
+        <li><a href="#info" class="nav-link">Info</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#join" class="link-join">Join us</a>
+        <a href="#list" class="btn-list">Build Your List</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Massive Editorial Headline -->
+    <div class="hero-title-container">
+      <h1 class="hero-title">Quire</h1>
+    </div>
+
+    <!-- 3D Book Carousel Stage -->
+    <div class="books-viewport" id="booksViewport">
+      <div class="books-stage" id="booksStage">
+        <!-- Book 1 -->
+        <div class="book-item" data-category="classic">
+          <div class="book-cover book-1">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">E. M. Callow</span>
+            <h2 class="book-title">Shadows of Stone</h2>
+            <span class="book-cat">Classic &bull; 1924</span>
+          </div>
+        </div>
+
+        <!-- Book 2 -->
+        <div class="book-item" data-category="short-story">
+          <div class="book-cover book-2">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">Arthur Vance</span>
+            <h2 class="book-title">The Last Message</h2>
+            <span class="book-cat">Short Story &bull; 1948</span>
+          </div>
+        </div>
+
+        <!-- Book 3 -->
+        <div class="book-item" data-category="romance">
+          <div class="book-cover book-3">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">Julian Bell</span>
+            <h2 class="book-title">Letters to Venice</h2>
+            <span class="book-cat">Romance &bull; 1931</span>
+          </div>
+        </div>
+
+        <!-- Book 4 (Centerpiece) -->
+        <div class="book-item" data-category="architecture">
+          <div class="book-cover book-4">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">M. Rostova</span>
+            <h2 class="book-title">Silent Archways</h2>
+            <span class="book-cat">Architecture &bull; 1956</span>
+          </div>
+        </div>
+
+        <!-- Book 5 -->
+        <div class="book-item" data-category="memoir">
+          <div class="book-cover book-5">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">Helena Cross</span>
+            <h2 class="book-title">Echoes of a Haven</h2>
+            <span class="book-cat">Memoir &bull; 1968</span>
+          </div>
+        </div>
+
+        <!-- Book 6 -->
+        <div class="book-item" data-category="fantasy">
+          <div class="book-cover book-6">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">K. D. Thorne</span>
+            <h2 class="book-title">The Lost Astral</h2>
+            <span class="book-cat">Fantasy &bull; 1974</span>
+          </div>
+        </div>
+
+        <!-- Book 7 -->
+        <div class="book-item" data-category="classic">
+          <div class="book-cover book-7">
+            <div class="book-spine-crease"></div>
+            <span class="book-author">Soren Hall</span>
+            <h2 class="book-title">Tides of Winter</h2>
+            <span class="book-cat">Classic &bull; 1912</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Pill Filter Bar -->
+    <div class="cat-bar">
+      <button class="cat-pill active" data-filter="all">All</button>
+      <button class="cat-pill" data-filter="romance">Romance</button>
+      <button class="cat-pill" data-filter="short-story">Short Story</button>
+      <button class="cat-pill" data-filter="memoir">Memoir</button>
+      <button class="cat-pill" data-filter="classic">Classic</button>
+      <button class="cat-pill" data-filter="fantasy">Fantasy</button>
+      <button class="cat-pill" data-filter="architecture">Architecture</button>
+    </div>
+  </section>
+
+  <!-- Curated Editions Section -->
+  <section class="section" id="editions">
+    <span class="section-eyebrow">Archival Compendium</span>
+    <h2 class="section-title">Printed with rag paper and linen binding.</h2>
+
+    <div class="editions-grid">
+      <div class="edition-card">
+        <span class="edition-num">Series 01</span>
+        <h3 class="edition-name">Letterpress Folios</h3>
+        <p class="edition-desc">Cast in lead type and impressioned into 180gsm cotton mould-made rag paper from Somerset mills.</p>
+      </div>
+
+      <div class="edition-card">
+        <span class="edition-num">Series 02</span>
+        <h3 class="edition-name">Smyth-Sewn Hardcovers</h3>
+        <p class="edition-desc">Bound in German bookcloth with blind debossed title blocks, headbands, and gilt ribbon markers.</p>
+      </div>
+
+      <div class="edition-card">
+        <span class="edition-num">Series 03</span>
+        <h3 class="edition-name">Monograph Boxsets</h3>
+        <p class="edition-desc">Quarter-bound slipcase editions containing annotated marginalia, original drafts, and facsimile plates.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>&copy; 2026 Quire Rare Editions &amp; Archival Bindery.</div>
+    <div style="display: flex; gap: 2rem;">
+      <a href="#catalogs" style="color: inherit; text-decoration: none;">Index</a>
+      <a href="#editions" style="color: inherit; text-decoration: none;">Colophon</a>
+      <a href="#info" style="color: inherit; text-decoration: none;">Inquiries</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Navbar Scroll Transition
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 30) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // 2. Category Filter Interaction
+      const pills = document.querySelectorAll('.cat-pill');
+      const books = document.querySelectorAll('.book-item');
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+
+          const filter = pill.getAttribute('data-filter');
+
+          books.forEach(book => {
+            const cat = book.getAttribute('data-category');
+            if (filter === 'all' || cat === filter) {
+              book.classList.remove('dimmed');
+            } else {
+              book.classList.add('dimmed');
+            }
+          });
+        });
+      });
+
+      // 3. Subtle 3D Perspective Tilt on Mouse Move
+      const stage = document.getElementById('booksStage');
+      window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 12;
+        const y = (e.clientY / window.innerHeight - 0.5) * -8;
+        stage.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+      });
+    })();
+  </script>
+</body>
+</html>

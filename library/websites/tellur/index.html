@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tellur — Layers Hold Tales of Time</title>
+
+  <!-- Robots & Privacy (Library Requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Favicon: Geological Strata Mark -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050508'/%3E%3Cpath d='M8 12L24 8M8 17L24 14M8 22L24 20' stroke='%23522DFF' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+  <!-- Fonts: Instrument Serif Italic & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Three.js for 3D Earth Globe & Orbital Vector Rings -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #050508;
+      --surface: #0b0c12;
+      --card: #10121a;
+      --purple: #522dff;
+      --purple-light: #7c5cff;
+      --purple-glow: rgba(82, 45, 255, 0.45);
+      --text: #ffffff;
+      --text-muted: #8b8ea0;
+      --text-dim: #545768;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Fixed Navigation Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 2.5rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .header.scrolled {
+      padding: 1rem 2.5rem;
+      background: rgba(5, 5, 8, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Brand Logo */
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Center Pill Menu */
+    .nav-pill-container {
+      display: none;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.4rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    @media (min-width: 860px) {
+      .nav-pill-container {
+        display: flex;
+      }
+    }
+
+    .nav-pill-item {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.45rem 1.15rem;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-pill-item:hover {
+      color: #ffffff;
+    }
+
+    .nav-pill-item.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    /* Right Action Button */
+    .btn-signup {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      color: #050508;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 1.35rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-signup:hover {
+      background: #f0eff5;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8.5rem 2rem 3rem;
+      overflow: hidden;
+    }
+
+    /* Three.js Globe Container */
+    #globeCanvasContainer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Subtle background space gradient */
+    .space-aura {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(82, 45, 255, 0.12) 0%, rgba(5, 5, 8, 0.6) 55%, var(--bg) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Hero Heading */
+    .hero-heading-lockup {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+      font-weight: 300;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      color: #ffffff;
+    }
+
+    .hero-title em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-right: 0.1em;
+    }
+
+    /* Bottom Split Columns & Waveform Bar */
+    .hero-bottom-stage {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1360px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: flex-end;
+      margin-top: auto;
+      padding-top: 4rem;
+    }
+
+    @media (min-width: 860px) {
+      .hero-bottom-stage {
+        grid-template-columns: 1fr auto 1fr;
+        gap: 3rem;
+      }
+    }
+
+    .hero-copy-left {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 360px;
+    }
+
+    .hero-copy-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      max-width: 380px;
+      justify-self: end;
+    }
+
+    .hero-desc-right {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .btn-digging {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background-color: var(--purple);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.8rem 1.85rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px var(--purple-glow);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-digging:hover {
+      background-color: var(--purple-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(124, 92, 255, 0.6);
+    }
+
+    /* Audio Waveform Widget (Bottom Center) */
+    .audio-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(16, 18, 26, 0.85);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1.15rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      justify-self: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .audio-capsule:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .audio-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff5533;
+      box-shadow: 0 0 10px rgba(255, 85, 51, 0.6);
+    }
+
+    .waveform-bars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+    }
+
+    .wave-bar {
+      width: 2.5px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 2px;
+      height: 6px;
+      animation: soundWave 1.4s ease-in-out infinite;
+    }
+
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 12px; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+    .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 14px; }
+    .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 10px; }
+
+    @keyframes soundWave {
+      0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+      50% { transform: scaleY(1.2); opacity: 1; }
+    }
+
+    /* SECTION 2: SIX ERAS TIMELINE */
+    .section-eras {
+      position: relative;
+      z-index: 10;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 7rem 2.5rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 2.5rem;
+      display: block;
+    }
+
+    .eras-table {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+    }
+
+    .era-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 2.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    @media (min-width: 768px) {
+      .era-row {
+        grid-template-columns: 240px 1fr 180px;
+        align-items: center;
+        gap: 2rem;
+      }
+    }
+
+    .era-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--border-hover);
+    }
+
+    .era-name {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 2rem;
+      font-weight: 400;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .era-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .era-date {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--purple-light);
+      letter-spacing: 0.05em;
+      text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .era-date {
+        text-align: left;
+      }
+    }
+
+    /* SECTION 3: GUIDES FOR EVERY GROUND */
+    .section-guides {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 8rem;
+    }
+
+    .guides-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      margin-bottom: 3.5rem;
+      color: #ffffff;
+    }
+
+    .guides-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 860px) {
+      .guides-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .guide-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .guide-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(82, 45, 255, 0.15);
+    }
+
+    .guide-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+    }
+
+    .guide-card-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .guide-card-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 2.5rem;
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Header -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="#" class="brand" aria-label="Tellur Home">
+        <span class="brand-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#522DFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </span>
+        <span>Tellur</span>
+      </a>
+
+      <!-- Pill Nav -->
+      <nav class="nav-pill-container" aria-label="Navigation">
+        <a href="#course" class="nav-pill-item active">Course</a>
+        <a href="#guides" class="nav-pill-item">Field Guides</a>
+        <a href="#geology" class="nav-pill-item">Geology</a>
+        <a href="#plans" class="nav-pill-item">Plans</a>
+        <a href="#tour" class="nav-pill-item">Live Tour</a>
+      </nav>
+
+      <a href="#signup" class="btn-signup">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- 3D Three.js Globe & Orbit Canvas -->
+    <div id="globeCanvasContainer"></div>
+    <div class="space-aura"></div>
+
+    <!-- Center Headline -->
+    <div class="hero-heading-lockup">
+      <h1 class="hero-title">
+        <em>Layers hold</em> tales of time
+      </h1>
+    </div>
+
+    <!-- Bottom Stage Columns & Waveform Widget -->
+    <div class="hero-bottom-stage">
+      <!-- Left Column -->
+      <div class="hero-copy-left">
+        Every layer of sediment records a chapter of our planet, from ancient seabeds to drifting ash, layered across millions of years beneath us.
+      </div>
+
+      <!-- Center Waveform Capsule -->
+      <div class="audio-capsule" id="audioToggle" title="Atmospheric Subsurface Seismic Wave">
+        <span class="audio-dot"></span>
+        <div class="waveform-bars">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="hero-copy-right">
+        <p class="hero-desc-right">
+          Our interactive maps let you peel back the crust to trace how stones, fossils, and deep time combine to shape the ground beneath your feet.
+        </p>
+        <a href="#geology" class="btn-digging">
+          <span>Start Digging</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Six Eras Geological Timeline Section -->
+  <section class="section-eras" id="geology">
+    <span class="section-eyebrow">Six eras — from the first crust to present day</span>
+
+    <div class="eras-table">
+      <!-- Era 1 -->
+      <div class="era-row">
+        <h3 class="era-name">Cenozoic</h3>
+        <p class="era-desc">Grasslands, ice ages, and the rapid radiation of mammals.</p>
+        <span class="era-date">66 MA — TODAY</span>
+      </div>
+
+      <!-- Era 2 -->
+      <div class="era-row">
+        <h3 class="era-name">Mesozoic</h3>
+        <p class="era-desc">Dinosaurs walk a slowly splitting supercontinent beneath greenhouse skies.</p>
+        <span class="era-date">252 — 66 MA</span>
+      </div>
+
+      <!-- Era 3 -->
+      <div class="era-row">
+        <h3 class="era-name">Paleozoic</h3>
+        <p class="era-desc">Life crawls ashore; immense ancient forests are compressed into coal seams.</p>
+        <span class="era-date">539 — 252 MA</span>
+      </div>
+
+      <!-- Era 4 -->
+      <div class="era-row">
+        <h3 class="era-name">Proterozoic</h3>
+        <p class="era-desc">Oxygen floods the atmosphere; the first complex eukaryotic cells emerge.</p>
+        <span class="era-date">2.5 GA — 539 MA</span>
+      </div>
+
+      <!-- Era 5 -->
+      <div class="era-row">
+        <h3 class="era-name">Archean</h3>
+        <p class="era-desc">Proto-continents seed themselves across a boiling, iron-rich primeval ocean.</p>
+        <span class="era-date">4.0 — 2.5 GA</span>
+      </div>
+
+      <!-- Era 6 -->
+      <div class="era-row">
+        <h3 class="era-name">Hadean</h3>
+        <p class="era-desc">A molten planet cools beneath relentless bombardment and primordial degassing.</p>
+        <span class="era-date">4.6 — 4.0 GA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guides for Every Ground Section -->
+  <section class="section-guides" id="guides">
+    <h2 class="guides-title">Guides for every ground</h2>
+
+    <div class="guides-grid">
+      <!-- Card 1 -->
+      <a href="#guide-basalt" class="guide-card">
+        <span class="guide-tag">Igneous Extrusive</span>
+        <h3 class="guide-card-title">Basaltic Plateaus &amp; Dykes</h3>
+        <p class="guide-card-desc">Rapid subaerial cooling resulting in columnar hexagonal jointing and high-density volcanic glass matrices.</p>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="#guide-carbonate" class="guide-card">
+        <span class="guide-tag">Sedimentary Chemical</span>
+        <h3 class="guide-card-title">Limestone Karst Formations</h3>
+        <p class="guide-card-desc">Millennia of carbonic acid percolation carving subterranean canyon networks and fossilized biogenic reefs.</p>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="#guide-schist" class="guide-card">
+        <span class="guide-tag">Metamorphic Foliated</span>
+        <h3 class="guide-card-title">Gneiss &amp; Mica Schist Belts</h3>
+        <p class="guide-card-desc">Extreme directional pressure and heat recrystallizing granite into aligned tectonic banding.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>&copy; 2026 Tellur Deep Time Cartography. All rights reserved.</div>
+    <div style="display: flex; gap: 2rem;">
+      <a href="#course" style="color: inherit; text-decoration: none;">Course Syllabus</a>
+      <a href="#geology" style="color: inherit; text-decoration: none;">Chronostratigraphy</a>
+      <a href="#privacy" style="color: inherit; text-decoration: none;">Privacy</a>
+    </div>
+  </footer>
+
+  <!-- Three.js 3D Earth Globe & Orbital Vector Geometry -->
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Navbar Scroll Transition
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 30) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // 2. Three.js Scene Setup
+      const container = document.getElementById('globeCanvasContainer');
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 7.5;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Globe Group
+      const globeGroup = new THREE.Group();
+      scene.add(globeGroup);
+
+      // Core Sphere Geometry
+      const sphereRadius = 2.4;
+      const sphereGeo = new THREE.SphereGeometry(sphereRadius, 64, 64);
+
+      // Custom Glowing Shader Material for Earth Atmosphere
+      const atmosphereMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.65 - dot(vNormal, vec3(0, 0, 1.0)), 2.2);
+            vec3 glowColor = vec3(0.32, 0.18, 1.0); // #522DFF
+            gl_FragColor = vec4(glowColor, intensity * 0.95);
+          }
+        `,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        transparent: true
+      });
+
+      const atmosphereMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(sphereRadius * 1.15, 48, 48),
+        atmosphereMat
+      );
+      globeGroup.add(atmosphereMesh);
+
+      // Wireframe Latitude / Longitude Strata
+      const wireframeMat = new THREE.MeshBasicMaterial({
+        color: 0x522dff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.12
+      });
+      const wireframeSphere = new THREE.Mesh(sphereGeo, wireframeMat);
+      globeGroup.add(wireframeSphere);
+
+      // Procedural Dot Cloud for Continents
+      const dotCount = 1800;
+      const dotGeo = new THREE.BufferGeometry();
+      const dotPositions = new Float32Array(dotCount * 3);
+
+      for (let i = 0; i < dotCount; i++) {
+        // Fibonacci sphere distribution
+        const phi = Math.acos(-1 + (2 * i) / dotCount);
+        const theta = Math.sqrt(dotCount * Math.PI) * phi;
+
+        // Bias distribution to resemble continental landmass clusters
+        const r = sphereRadius * (1 + (Math.sin(theta * 3) * Math.cos(phi * 4) > 0.1 ? 0.02 : -0.01));
+
+        dotPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        dotPositions[i * 3 + 1] = r * Math.cos(phi);
+        dotPositions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+      }
+
+      dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+      const dotMat = new THREE.PointsMaterial({
+        color: 0x9e88ff,
+        size: 0.045,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      });
+      const pointsMesh = new THREE.Points(dotGeo, dotMat);
+      globeGroup.add(pointsMesh);
+
+      // Two Luminous Orbital Rings with Glowing Arrow Direction Vectors
+      function createOrbitRing(radius, tiltX, tiltY, direction) {
+        const ringGroup = new THREE.Group();
+        ringGroup.rotation.x = tiltX;
+        ringGroup.rotation.y = tiltY;
+
+        // Curve path
+        const curve = new THREE.EllipseCurve(0, 0, radius, radius * 0.42, 0, 2 * Math.PI, false, 0);
+        const points = curve.getPoints(120);
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        const material = new THREE.LineBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.85
+        });
+        const line = new THREE.Line(geometry, material);
+        ringGroup.add(line);
+
+        // Arrowhead cone
+        const arrowGeo = new THREE.ConeGeometry(0.12, 0.35, 16);
+        const arrowMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const arrow = new THREE.Mesh(arrowGeo, arrowMat);
+
+        arrow.position.set(radius, 0, 0);
+        arrow.rotation.z = direction > 0 ? -Math.PI / 2 : Math.PI / 2;
+        ringGroup.add(arrow);
+
+        globeGroup.add(ringGroup);
+        return { ringGroup, radius, direction };
+      }
+
+      const ring1 = createOrbitRing(3.2, 0.45, 0.2, 1);
+      const ring2 = createOrbitRing(3.2, -0.55, -0.3, -1);
+
+      // Responsive Resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Mouse Parallax
+      let mouseX = 0, mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 0.35;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 0.25;
+      });
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        globeGroup.rotation.y += 0.0035;
+
+        // Smooth Parallax tilt
+        globeGroup.rotation.x += (mouseY - globeGroup.rotation.x) * 0.05;
+        globeGroup.position.x += (mouseX - globeGroup.position.x) * 0.05;
+
+        ring1.ringGroup.rotation.z += 0.006 * ring1.direction;
+        ring2.ringGroup.rotation.z += 0.006 * ring2.direction;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    })();
+  </script>
+</body>
+</html>

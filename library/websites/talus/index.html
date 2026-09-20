@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talus — Product Studio Turning Ideas into Meaningful Products</title>
+
+  <!-- Robots & Privacy (Library Requirement) -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Favicon: Triple Dash Studio Monogram -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2308090a'/%3E%3Cpath d='M9 22L13 10M14 22L18 10M19 22L23 10' stroke='%23ff441f' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+  <!-- Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #07080a;
+      --bg-surface: #0e1014;
+      --bg-card: #13161c;
+      --accent: #ff441f;
+      --accent-glow: rgba(255, 68, 31, 0.45);
+      --accent-amber: #ff8833;
+      --text: #ffffff;
+      --text-muted: #8a929e;
+      --text-dim: #515763;
+      --border: rgba(255, 255, 255, 0.14);
+      --border-strong: rgba(255, 255, 255, 0.28);
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Outfit', var(--font-ui);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Fixed Navigation */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.75rem 3rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: linear-gradient(180deg, rgba(7, 8, 10, 0.6) 0%, rgba(7, 8, 10, 0.2) 60%, transparent 100%);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1.25rem 1.5rem;
+      }
+    }
+
+    .header.scrolled {
+      padding: 1.1rem 3rem;
+      background: rgba(7, 8, 10, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-marks {
+      display: inline-flex;
+      align-items: center;
+      gap: 3.5px;
+    }
+
+    .brand-slash {
+      width: 3px;
+      height: 17px;
+      background-color: #ffffff;
+      transform: skewX(-20deg);
+      display: inline-block;
+      border-radius: 1px;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    }
+
+    .brand-slash:first-child {
+      background-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .nav-list {
+      display: none;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    @media (min-width: 900px) {
+      .nav-list {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.925rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      transition: color 0.2s ease, opacity 0.2s ease;
+      position: relative;
+      padding: 0.25rem 0;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.5rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-contact:hover {
+      background: #ffffff;
+      color: #07080a;
+      border-color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Mobile Hamburger */
+    .mobile-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .mobile-toggle {
+        display: none;
+      }
+    }
+
+    .mobile-bar {
+      width: 22px;
+      height: 2px;
+      background-color: #ffffff;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(7, 8, 10, 0.98);
+      backdrop-filter: blur(24px);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-drawer.open {
+      transform: translateY(0);
+    }
+
+    .mobile-drawer a {
+      color: #ffffff;
+      font-size: 1.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: var(--font-display);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      padding: 8rem 3rem 4.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 7rem 1.5rem 3rem;
+      }
+    }
+
+    /* Full-Bleed Interactive Cybernetic Canvas Background */
+    .hero-canvas-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: #07080a;
+    }
+
+    .talus-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Ambient studio vignette overlays */
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 45%, rgba(7, 8, 10, 0) 30%, rgba(7, 8, 10, 0.45) 75%, rgba(7, 8, 10, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .hero-bottom-shade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 38%;
+      background: linear-gradient(180deg, transparent 0%, rgba(7, 8, 10, 0.7) 65%, var(--bg) 100%);
+      pointer-events: none;
+    }
+
+    /* Hero Content Stage */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: flex-end;
+    }
+
+    @media (min-width: 960px) {
+      .hero-content {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 5rem;
+      }
+    }
+
+    /* Left Block */
+    .hero-kicker {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title {
+      font-family: var(--font-ui);
+      font-size: clamp(2.4rem, 4.6vw, 3.85rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      max-width: 680px;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Right Block */
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.35vw, 1.08rem);
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 500px;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-hero-primary:hover {
+      background: #ffffff;
+      color: #07080a;
+      border-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+
+    .btn-hero-secondary:hover {
+      opacity: 0.8;
+      transform: translateX(3px);
+    }
+
+    .btn-hero-secondary svg {
+      width: 15px;
+      height: 15px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-hero-secondary:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* SECTION LAYOUTS */
+    .section {
+      position: relative;
+      z-index: 10;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 8rem 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 5rem 1.5rem;
+      }
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 3.25rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      max-width: 780px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* WORKS GRID */
+    .works-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    @media (min-width: 860px) {
+      .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .work-card {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .work-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+    }
+
+    .work-media {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      background: #111419;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .work-tag-pill {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: rgba(7, 8, 10, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #ffffff;
+      z-index: 5;
+    }
+
+    .work-info {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .work-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .work-title svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.4;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .work-card:hover .work-title svg {
+      opacity: 1;
+      transform: translate(3px, -3px);
+    }
+
+    .work-meta {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* MEDIA ARTWORKS */
+    .media-mesh-1 {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 60% 40%, rgba(255, 68, 31, 0.25) 0%, transparent 60%),
+                  linear-gradient(135deg, #12151b 0%, #090a0d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-mesh-2 {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 40% 60%, rgba(80, 140, 255, 0.2) 0%, transparent 60%),
+                  linear-gradient(135deg, #0e121a 0%, #07080a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-mesh-3 {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 136, 51, 0.2) 0%, transparent 65%),
+                  linear-gradient(135deg, #16181e 0%, #0a0b0d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-mesh-4 {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 70% 30%, rgba(180, 70, 255, 0.2) 0%, transparent 60%),
+                  linear-gradient(135deg, #14111a 0%, #07080a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* DISCIPLINES SECTION */
+    .disciplines-list {
+      border-top: 1px solid var(--border);
+    }
+
+    .discipline-row {
+      padding: 2.25rem 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: baseline;
+      transition: background-color 0.2s ease;
+    }
+
+    @media (min-width: 860px) {
+      .discipline-row {
+        grid-template-columns: 80px 1.2fr 1.8fr;
+        gap: 2rem;
+      }
+    }
+
+    .discipline-num {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent);
+      font-family: monospace;
+    }
+
+    .discipline-name {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .discipline-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* IMPACT STATS */
+    .stats-strip {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4.5rem 3rem;
+    }
+
+    .stats-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 3rem;
+    }
+
+    .stat-val {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      line-height: 1;
+      margin-bottom: 0.65rem;
+    }
+
+    .stat-label {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    /* FOOTER */
+    .footer {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 6rem 3rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .footer-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 780px;
+    }
+
+    .footer-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Navigation -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="#" class="brand" aria-label="Talus Studio">
+        <span class="brand-marks" aria-hidden="true">
+          <span class="brand-slash"></span>
+          <span class="brand-slash"></span>
+          <span class="brand-slash"></span>
+        </span>
+        <span>Talus</span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="#what-we-do" class="nav-link">What We Do</a></li>
+          <li><a href="#work" class="nav-link">Work</a></li>
+          <li><a href="#approach" class="nav-link">Approach</a></li>
+          <li><a href="#insights" class="nav-link">Insights</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="#contact" class="btn-contact">Contact us</a>
+        <button class="mobile-toggle" id="mobileBtn" aria-label="Toggle navigation menu">
+          <span class="mobile-bar"></span>
+          <span class="mobile-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#what-we-do" class="mobile-link">What We Do</a>
+    <a href="#work" class="mobile-link">Work</a>
+    <a href="#approach" class="mobile-link">Approach</a>
+    <a href="#insights" class="mobile-link">Insights</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Interactive Cybernetic Canvas Background -->
+    <div class="hero-canvas-wrapper">
+      <canvas id="talusCanvas" class="talus-canvas"></canvas>
+      <div class="hero-vignette"></div>
+      <div class="hero-bottom-shade"></div>
+    </div>
+
+    <!-- Content Stage -->
+    <div class="hero-content">
+      <!-- Left Block -->
+      <div>
+        <span class="hero-kicker">Ideas that inspire curious minds</span>
+        <h1 class="hero-title">
+          Product studio turning ideas into meaningful products
+        </h1>
+      </div>
+
+      <!-- Right Block -->
+      <div class="hero-aside">
+        <p class="hero-desc">
+          Partnering with forward-thinking brands to craft stronger stories, create smarter identities, and design for maximum impact. Our work transforms attention into action.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-hero-primary">Work with Us</a>
+          <a href="#work" class="btn-hero-secondary">
+            <span>Explore Our Work</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected Work Section -->
+  <section class="section" id="work">
+    <span class="section-eyebrow">Selected Work</span>
+    <h2 class="section-heading">Forming new categories through strategic craft.</h2>
+
+    <div class="works-grid">
+      <!-- Project 1 -->
+      <a href="#project-kinetix" class="work-card">
+        <div class="work-media">
+          <span class="work-tag-pill">Spatial UI &bull; Wearables</span>
+          <div class="media-mesh-1">
+            <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5">
+              <circle cx="50" cy="50" r="38" stroke="#ff441f" stroke-width="1" stroke-dasharray="3 3"/>
+              <circle cx="50" cy="50" r="26"/>
+              <circle cx="50" cy="50" r="14" fill="rgba(255,68,31,0.1)"/>
+              <line x1="50" y1="12" x2="50" y2="88"/>
+              <line x1="12" y1="50" x2="88" y2="50"/>
+            </svg>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3 class="work-title">
+            <span>Kinetix Spatial OS</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </h3>
+          <p class="work-meta">Next-generation micro-gesture OS interface and spatial tokens for augmented computing.</p>
+        </div>
+      </a>
+
+      <!-- Project 2 -->
+      <a href="#project-aura" class="work-card">
+        <div class="work-media">
+          <span class="work-tag-pill">Acoustics &bull; Identity</span>
+          <div class="media-mesh-2">
+            <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5">
+              <path d="M20 50 Q 35 20, 50 50 T 80 50" stroke="#66a3ff" stroke-width="2"/>
+              <path d="M15 50 Q 35 30, 50 50 T 85 50" stroke="rgba(102,163,255,0.4)" stroke-width="1"/>
+              <path d="M25 50 Q 35 10, 50 50 T 75 50" stroke="rgba(102,163,255,0.2)" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3 class="work-title">
+            <span>Aura Acoustic Platform</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </h3>
+          <p class="work-meta">Audio telemetry visualization and global eCommerce architecture for precision acoustic hardware.</p>
+        </div>
+      </a>
+
+      <!-- Project 3 -->
+      <a href="#project-vesper" class="work-card">
+        <div class="work-media">
+          <span class="work-tag-pill">Autonomous Systems</span>
+          <div class="media-mesh-3">
+            <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5">
+              <polygon points="50,15 85,75 15,75" stroke="#ff8833" stroke-width="1.5"/>
+              <polygon points="50,28 75,70 25,70" stroke="rgba(255,136,51,0.3)"/>
+              <circle cx="50" cy="52" r="6" fill="#ff8833"/>
+            </svg>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3 class="work-title">
+            <span>Vesper Agent Mesh</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </h3>
+          <p class="work-meta">High-density operational dashboard and real-time observability for multi-agent LLM infrastructure.</p>
+        </div>
+      </a>
+
+      <!-- Project 4 -->
+      <a href="#project-chronos" class="work-card">
+        <div class="work-media">
+          <span class="work-tag-pill">Automotive HMI</span>
+          <div class="media-mesh-4">
+            <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5">
+              <rect x="20" y="30" width="60" height="40" rx="8" stroke="#b446ff" stroke-width="1.5"/>
+              <line x1="20" y1="45" x2="80" y2="45" stroke="rgba(180,70,255,0.4)"/>
+              <circle cx="32" cy="57" r="4" fill="#b446ff"/>
+              <line x1="44" y1="57" x2="70" y2="57" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="work-info">
+          <h3 class="work-title">
+            <span>Chronos Cockpit HMI</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </h3>
+          <p class="work-meta">Deterministic HUD interface and ergonomic tactile design for autonomous long-haul transport.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Disciplines Section -->
+  <section class="section" id="what-we-do">
+    <span class="section-eyebrow">Disciplines</span>
+    <h2 class="section-heading">Engineered precision from strategic narrative to runtime code.</h2>
+
+    <div class="disciplines-list">
+      <div class="discipline-row">
+        <span class="discipline-num">01</span>
+        <h3 class="discipline-name">Product Discovery</h3>
+        <p class="discipline-desc">Deconstructing ambiguous problem spaces into validated product architectures, user mental models, and rapid functional prototypes.</p>
+      </div>
+
+      <div class="discipline-row">
+        <span class="discipline-num">02</span>
+        <h3 class="discipline-name">Brand Architecture</h3>
+        <p class="discipline-desc">Crafting cohesive visual identity frameworks, typographic voice, and design systems designed to scale seamlessly across hardware and software.</p>
+      </div>
+
+      <div class="discipline-row">
+        <span class="discipline-num">03</span>
+        <h3 class="discipline-name">Spatial &amp; WebGL</h3>
+        <p class="discipline-desc">Pushing the boundaries of browser performance with custom shaders, real-time 3D environments, and sensory micro-interactions.</p>
+      </div>
+
+      <div class="discipline-row">
+        <span class="discipline-num">04</span>
+        <h3 class="discipline-name">Design Engineering</h3>
+        <p class="discipline-desc">Bridging visual nuance with production-grade engineering: fluid transitions, accessibility standards, and zero-latency front-end code.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Strip -->
+  <div class="stats-strip">
+    <div class="stats-container">
+      <div>
+        <div class="stat-val">$2.4B+</div>
+        <div class="stat-label">Client Enterprise Value Created</div>
+      </div>
+      <div>
+        <div class="stat-val">38</div>
+        <div class="stat-label">Global Design &amp; Technology Awards</div>
+      </div>
+      <div>
+        <div class="stat-val">99.4%</div>
+        <div class="stat-label">Long-Term Partner Retention Rate</div>
+      </div>
+      <div>
+        <div class="stat-val">12 ms</div>
+        <div class="stat-label">Average Interactive Transition Response</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer-cta">
+      <span class="section-eyebrow">Let's Build</span>
+      <h2 class="footer-title">Have an ambitious idea? Let's give it form.</h2>
+      <div>
+        <a href="mailto:partnerships@talus.example" class="btn-hero-primary" style="background:#ffffff; color:#07080a;">
+          <span>Start a Project</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 Talus Design &amp; Product Studio. All rights reserved.</div>
+      <div style="display: flex; gap: 1.5rem;">
+        <span>San Francisco</span>
+        <span>London</span>
+        <span>Tokyo</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Navbar Scroll Transition
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // 2. Mobile Drawer
+      const mobileBtn = document.getElementById('mobileBtn');
+      const mobileDrawer = document.getElementById('mobileDrawer');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      mobileBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('open');
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileDrawer.classList.remove('open');
+        });
+      });
+
+      // 3. Interactive Cybernetic Canvas Engine (Buttery Smooth 2.5D Parallax & Visor HUD)
+      const canvas = document.getElementById('talusCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Pristine Hero Image
+      const heroImg = new Image();
+      let isHeroLoaded = false;
+      heroImg.src = 'assets/hero.webp';
+      heroImg.onload = () => {
+        isHeroLoaded = true;
+      };
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = canvas.width = window.innerWidth * dpr;
+        height = canvas.height = window.innerHeight * dpr;
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+      }
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      // Ambient Floating Cybernetic Particles
+      const PARTICLE_COUNT = 24;
+      const particles = [];
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push({
+          x: Math.random(),
+          y: Math.random(),
+          size: Math.random() * 2 + 1,
+          speedY: -(Math.random() * 0.04 + 0.015),
+          speedX: (Math.random() - 0.5) * 0.02,
+          alpha: Math.random() * 0.4 + 0.1,
+          pulseSpeed: Math.random() * 2 + 1
+        });
+      }
+
+      // Smooth Tracking State (Lerped Damping)
+      let targetMouseX = 0.5;
+      let targetMouseY = 0.5;
+      let curMouseX = 0.5;
+      let curMouseY = 0.5;
+      let isInteracting = false;
+      let lastInteraction = performance.now();
+
+      function onPointerMove(clientX, clientY) {
+        targetMouseX = clientX / window.innerWidth;
+        targetMouseY = clientY / window.innerHeight;
+        isInteracting = true;
+        lastInteraction = performance.now();
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        onPointerMove(e.clientX, e.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      window.addEventListener('mouseleave', () => {
+        isInteracting = false;
+      });
+
+      // Render Loop
+      const startTime = performance.now();
+
+      function render(now) {
+        const elapsed = (now - startTime) * 0.001;
+
+        // Auto-glide when idle (> 2.5s)
+        if (performance.now() - lastInteraction > 2500) {
+          isInteracting = false;
+        }
+
+        if (!isInteracting) {
+          // Autonomous organic breathing Lissajous curve
+          targetMouseX = 0.5 + Math.sin(elapsed * 0.5) * 0.08;
+          targetMouseY = 0.5 + Math.cos(elapsed * 0.38) * 0.05;
+        }
+
+        // Buttery smooth exponential damping (lerp)
+        const LERP = 0.055;
+        curMouseX += (targetMouseX - curMouseX) * LERP;
+        curMouseY += (targetMouseY - curMouseY) * LERP;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw Ambient Cybernetic Particles (Background Layer)
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.y += p.speedY * 0.016;
+          p.x += p.speedX * 0.016;
+          if (p.y < 0) p.y = 1;
+          if (p.x < 0) p.x = 1;
+          if (p.x > 1) p.x = 0;
+
+          const px = (p.x + (curMouseX - 0.5) * 0.03) * width;
+          const py = (p.y + (curMouseY - 0.5) * 0.03) * height;
+          const pAlpha = p.alpha * (0.6 + 0.4 * Math.sin(elapsed * p.pulseSpeed));
+
+          ctx.fillStyle = `rgba(255, 110, 40, ${pAlpha})`;
+          ctx.beginPath();
+          ctx.arc(px, py, p.size * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Draw Base Cybernetic Bust with 2.5D Parallax & Depth Tilt
+        if (isHeroLoaded && heroImg.naturalWidth > 0) {
+          const imgAspect = heroImg.naturalWidth / heroImg.naturalHeight;
+          const canvasAspect = width / height;
+
+          let baseW, baseH;
+          if (canvasAspect > imgAspect) {
+            baseW = width;
+            baseH = width / imgAspect;
+          } else {
+            baseH = height;
+            baseW = height * imgAspect;
+          }
+
+          // Subtle extra scale so parallax movements never reveal edges
+          const scale = 1.08;
+          const renderW = baseW * scale;
+          const renderH = baseH * scale;
+
+          // Parallax offsets
+          const parallaxX = (curMouseX - 0.5) * 52 * dpr;
+          const parallaxY = (curMouseY - 0.5) * 32 * dpr;
+          const floatY = Math.sin(elapsed * 1.1) * 7 * dpr;
+          const tiltRot = (curMouseX - 0.5) * 0.032;
+
+          const centerX = width * 0.5;
+          const centerY = height * 0.46;
+
+          // 1. Draw Transformed Hero Plate
+          ctx.save();
+          ctx.translate(centerX + parallaxX, centerY + parallaxY + floatY);
+          ctx.rotate(tiltRot);
+          ctx.drawImage(heroImg, -renderW * 0.5, -renderH * 0.5, renderW, renderH);
+          ctx.restore();
+
+          // 2. Interactive Visor Geometry & Specular Light Engine
+          // Visor center coordinates mapped precisely to helmet
+          const visorCenterX = centerX + parallaxX * 1.25;
+          const visorCenterY = centerY + parallaxY * 1.25 + floatY - renderH * 0.136;
+          const visorRadX = renderW * 0.125;
+          const visorRadY = renderH * 0.082;
+
+          // Dynamic Specular Glare (Light sheen gliding across curved visor glass)
+          const glareX = visorCenterX + (curMouseX - 0.5) * visorRadX * 0.85;
+          const glareY = visorCenterY + (curMouseY - 0.5) * visorRadY * 0.85;
+
+          ctx.save();
+          // Clip to Visor Ellipse
+          ctx.beginPath();
+          ctx.ellipse(visorCenterX, visorCenterY, visorRadX, visorRadY, tiltRot, 0, Math.PI * 2);
+          ctx.clip();
+
+          // Specular highlight gradient
+          const glareGrad = ctx.createRadialGradient(glareX, glareY, 2 * dpr, glareX, glareY, visorRadX * 0.9);
+          glareGrad.addColorStop(0, 'rgba(255, 140, 60, 0.42)');
+          glareGrad.addColorStop(0.35, 'rgba(255, 75, 20, 0.22)');
+          glareGrad.addColorStop(1, 'rgba(255, 60, 0, 0)');
+          ctx.fillStyle = glareGrad;
+          ctx.fill();
+
+          // Ambient Visor Backlight Pulse
+          const pulseAlpha = 0.06 + 0.035 * Math.sin(elapsed * 2.8);
+          ctx.fillStyle = `rgba(255, 68, 31, ${pulseAlpha})`;
+          ctx.fill();
+
+          // Continuous Cybernetic Laser Scanline
+          const scanOffset = Math.sin(elapsed * 2.4) * (visorRadY * 0.75);
+          const scanY = visorCenterY + scanOffset;
+          const scanGrad = ctx.createLinearGradient(0, scanY - 8 * dpr, 0, scanY + 8 * dpr);
+          scanGrad.addColorStop(0, 'rgba(255, 68, 31, 0)');
+          scanGrad.addColorStop(0.5, 'rgba(255, 90, 40, 0.65)');
+          scanGrad.addColorStop(1, 'rgba(255, 68, 31, 0)');
+          ctx.fillStyle = scanGrad;
+          ctx.fillRect(visorCenterX - visorRadX * 1.2, scanY - 8 * dpr, visorRadX * 2.4, 16 * dpr);
+
+          // Interactive Gaze Tracking Reticle (HUD Locked onto Cursor)
+          const reticleX = visorCenterX + (curMouseX - 0.5) * visorRadX * 0.65;
+          const reticleY = visorCenterY + (curMouseY - 0.5) * visorRadY * 0.65;
+
+          // Outer reticle ring
+          ctx.strokeStyle = 'rgba(255, 145, 55, 0.45)';
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.arc(reticleX, reticleY, 14 * dpr, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Inner crosshair
+          ctx.strokeStyle = 'rgba(255, 180, 80, 0.7)';
+          ctx.lineWidth = 1.2 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(reticleX - 6 * dpr, reticleY);
+          ctx.lineTo(reticleX + 6 * dpr, reticleY);
+          ctx.moveTo(reticleX, reticleY - 6 * dpr);
+          ctx.lineTo(reticleX, reticleY + 6 * dpr);
+          ctx.stroke();
+
+          // Cardinal target brackets
+          ctx.strokeStyle = 'rgba(255, 110, 30, 0.35)';
+          const bSize = 22 * dpr;
+          const bLen = 5 * dpr;
+          // Top-left
+          ctx.beginPath();
+          ctx.moveTo(reticleX - bSize, reticleY - bSize + bLen);
+          ctx.lineTo(reticleX - bSize, reticleY - bSize);
+          ctx.lineTo(reticleX - bSize + bLen, reticleY - bSize);
+          // Bottom-right
+          ctx.moveTo(reticleX + bSize, reticleY + bSize - bLen);
+          ctx.lineTo(reticleX + bSize, reticleY + bSize);
+          ctx.lineTo(reticleX + bSize - bLen, reticleY + bSize);
+          ctx.stroke();
+
+          // HUD Micro Telemetry inside visor
+          ctx.font = `${8 * dpr}px 'JetBrains Mono', 'Courier New', monospace`;
+          ctx.fillStyle = 'rgba(255, 130, 50, 0.55)';
+          ctx.fillText(`TRK: ${(curMouseX * 100).toFixed(0)}%`, visorCenterX - visorRadX * 0.65, visorCenterY + visorRadY * 0.55);
+          ctx.fillText('SYS // ACTIVE', visorCenterX + visorRadX * 0.15, visorCenterY + visorRadY * 0.55);
+
+          ctx.restore();
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    })();
+  </script>
+</body>
+</html>

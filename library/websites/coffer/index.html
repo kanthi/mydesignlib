@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Coffer — A coffer that spends as fast as you do</title>
+  <meta name="description" content="Fictional neobank. Physical card, 70,000 transactions a second, 56 countries, a desk that answers at 3am." />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'%3E%3Cpath d='M5 11.5 9.2 5.2A3 3 0 0 1 11.6 4h8.8a3 3 0 0 1 2.4 1.2L27 11.5' fill='%23B8F06E'/%3E%3Crect x='5' y='11.5' width='22' height='13.5' rx='3' fill='%230F3D24'/%3E%3Ccircle cx='16' cy='18.2' r='2.2' fill='%23B8F06E'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --font-display: "Lexend", sans-serif;
+      --font-body: "Lexend", sans-serif;
+      --surface-page: #FAFBF7;
+      --surface-paper: #FFFFFF;
+      --surface-lime: #B8F06E;
+      --surface-forest: #0F3D24;
+      --text-primary: #0F3D24;
+      --ink: #0F3D24;
+      --text-secondary: #4A6B58;
+      --muted: #4A6B58;
+      --text-on-forest: #EAF8C8;
+      --text-on-lime: #0F3D24;
+      --border-default: #D7E6CC;
+      --line: #D7E6CC;
+      --action-primary: #0F3D24;
+      --on-action: #F3FFD4;
+      --status-danger: #B42318;
+      --chip-gold: #C9A24A;
+      --text-display: clamp(2.6rem, 5.6vw, 4.15rem);
+      --text-3xl: clamp(1.85rem, 3.2vw, 2.55rem);
+      --text-xl: 1.25rem;
+      --text-base: 1.0125rem;
+      --text-sm: 0.875rem;
+      --text-xs: 0.72rem;
+      --leading-display: 1.05;
+      --leading-body: 1.6;
+      --tracking-display: -0.04em;
+      --section-y: clamp(4.25rem, 9vw, 7rem);
+      --wrap: min(1180px, 100% - 2.5rem);
+      --radius-card: 22px;
+      --radius-tile: 18px;
+      --radius-pill: 999px;
+      --radius-phone: 36px;
+      --radius-input: 12px;
+      --dur: 280ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --shadow-card: 0 28px 60px rgba(15, 61, 36, 0.16);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--surface-page);
+      color: var(--ink);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    :focus-visible { outline: 2px solid var(--surface-lime); outline-offset: 3px; }
+    .btn-primary:focus-visible { outline-color: var(--surface-lime); }
+    .btn-ghost:focus-visible, .nav-links a:focus-visible { outline-color: var(--ink); }
+    .skip {
+      position: absolute; left: 1rem; top: -3rem; z-index: 80;
+      padding: 0.5rem 0.8rem; background: var(--action-primary); color: var(--on-action);
+      border-radius: 8px;
+    }
+    .skip:focus { top: 1rem; }
+    .sr {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .tabular { font-variant-numeric: tabular-nums; }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      min-height: 48px; padding: 0.35rem 0.4rem 0.35rem 1.2rem;
+      background: var(--action-primary); color: var(--on-action);
+      border-radius: var(--radius-pill); font-weight: 600; font-size: 0.95rem;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+    .btn-primary .disc {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface-lime); color: var(--ink);
+      display: grid; place-items: center; flex: 0 0 34px;
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary[disabled] { opacity: 0.4; pointer-events: none; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      min-height: 48px; padding: 0.4rem 0.45rem 0.4rem 1.1rem;
+      border: 1px solid var(--line); background: var(--surface-paper);
+      border-radius: var(--radius-pill); font-weight: 600; font-size: 0.92rem;
+      transition: transform var(--dur) var(--ease);
+    }
+    .btn-ghost .disc {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--action-primary); color: var(--on-action);
+      display: grid; place-items: center;
+    }
+    .btn-ghost:hover { transform: translateY(-1px); }
+    .btn-contact {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      min-height: 42px; padding: 0.25rem 0.3rem 0.25rem 1rem;
+      background: var(--action-primary); color: var(--on-action);
+      border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem;
+      transition: transform var(--dur) var(--ease);
+    }
+    .btn-contact .disc {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--surface-paper); color: var(--ink);
+      display: grid; place-items: center;
+    }
+    .btn-contact:hover { transform: translateY(-1px); }
+
+    /* Nav */
+    .site-head {
+      position: relative; z-index: 20;
+      padding: 1.15rem 0 0;
+    }
+    .site-head-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.55rem;
+      font-weight: 700; font-size: 1.15rem; letter-spacing: -0.03em;
+    }
+    .brand svg { width: 28px; height: 24px; }
+    .nav-links {
+      display: none; align-items: center; gap: 0.15rem;
+      padding: 0.28rem; background: var(--surface-paper);
+      border: 1px solid var(--line); border-radius: var(--radius-pill);
+    }
+    .nav-links a {
+      padding: 0.45rem 0.85rem; border-radius: var(--radius-pill);
+      font-size: 0.82rem; font-weight: 500; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active {
+      background: #F3F8EA; color: var(--ink); font-weight: 600;
+    }
+    .nav-links a.is-active .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--surface-lime);
+      box-shadow: 0 0 0 3px #E3F5B8;
+    }
+    .head-actions { display: flex; align-items: center; gap: 0.6rem; }
+    .nav-toggle {
+      width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--surface-paper); display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 5px;
+    }
+    .nav-toggle span { display: block; width: 16px; height: 1.5px; background: var(--ink); }
+    .drawer {
+      display: none; position: absolute; inset: calc(100% + 0.5rem) 0 auto;
+      background: var(--surface-paper); border: 1px solid var(--line);
+      border-radius: 16px; padding: 0.6rem; box-shadow: var(--shadow-card);
+    }
+    .drawer.open { display: block; }
+    .drawer a {
+      display: block; padding: 0.75rem 0.9rem; border-radius: 10px; font-weight: 500;
+    }
+    .drawer a:hover { background: #F3F8EA; }
+    @media (min-width: 1080px) {
+      .nav-links { display: flex; }
+      .nav-toggle { display: none; }
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding-bottom: 3.5rem;
+      background: var(--surface-page);
+    }
+    .hero-wash {
+      position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 94% 70% at 50% 58%, #C8F48A 0%, var(--surface-lime) 34%, rgba(184,240,110,0.42) 62%, rgba(250,251,247,0) 100%);
+      pointer-events: none;
+    }
+    .hero-copy {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 1.5rem 0 0;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .eyebrow svg { width: 14px; height: 14px; }
+    h1 {
+      font-size: var(--text-display); font-weight: 700;
+      line-height: var(--leading-display); letter-spacing: var(--tracking-display);
+      text-wrap: balance; max-width: 16ch; margin: 0.65rem auto 0;
+    }
+    .lede {
+      max-width: 42ch; margin: 0.85rem auto 0; color: var(--muted); font-size: 0.98rem;
+    }
+    .hero-cta { margin-top: 1.2rem; }
+    .orb {
+      position: absolute; width: 54px; height: 54px; border-radius: 50%;
+      background: var(--surface-paper); color: var(--ink);
+      display: grid; place-items: center;
+      box-shadow: 0 10px 24px rgba(15,61,36,0.08);
+      z-index: 3;
+    }
+    .orb svg { width: 22px; height: 22px; }
+    .orb-wallet { left: 4%; top: 38%; }
+    .orb-chart { left: 16%; top: 56%; width: 44px; height: 44px; }
+    .orb-refresh { right: 6%; top: 42%; }
+    .orb-bell { right: 14%; top: 8%; width: 44px; height: 44px; }
+    @media (max-width: 719px) {
+      .orb { display: none; }
+    }
+    .hero-stage {
+      position: relative; z-index: 2;
+      display: grid; gap: 2.2rem;
+      margin-top: 1.7rem;
+      align-items: end;
+    }
+    .stats { display: grid; gap: 1.15rem; }
+    .stat-num {
+      font-size: clamp(2.7rem, 6vw, 4.2rem); font-weight: 700;
+      letter-spacing: -0.045em; line-height: 0.95;
+    }
+    .stat-cap { color: var(--muted); font-size: var(--text-sm); max-width: 16ch; margin-top: 0.35rem; }
+    .hero-card-col { display: grid; gap: 0.85rem; justify-items: stretch; }
+    .join {
+      display: flex; gap: 0.5rem; background: var(--surface-paper);
+      border-radius: 14px; padding: 0.35rem; border: 1px solid rgba(15,61,36,0.06);
+      box-shadow: 0 10px 30px rgba(15,61,36,0.06);
+    }
+    .join input {
+      flex: 1; min-width: 0; height: 48px; border: 0; background: transparent;
+      padding: 0 0.9rem; outline: none;
+    }
+    .join input::placeholder { color: #8AA392; }
+    .join button {
+      min-width: 64px; height: 48px; padding: 0 1rem;
+      background: var(--action-primary); color: var(--on-action);
+      border-radius: 10px; font-weight: 600;
+    }
+    .join-msg { font-size: var(--text-sm); }
+    .join-msg:empty { display: none; }
+    .join-msg.ok { color: var(--ink); }
+    .join-msg.err { color: var(--status-danger); }
+    @media (min-width: 720px) {
+      .hero-stage { grid-template-columns: 0.85fr 1.15fr; }
+      .hero-card-col { justify-items: end; }
+      .join { width: min(100%, 360px); }
+    }
+    @media (min-width: 1080px) {
+      .hero-stage { grid-template-columns: 0.9fr 1fr; padding-inline: 0.5rem; }
+    }
+
+    /* Plastic card */
+    .plastic {
+      width: min(100%, 360px);
+      aspect-ratio: 1.586 / 1;
+      border-radius: var(--radius-card);
+      padding: 1.25rem 1.35rem 1.15rem;
+      background:
+        linear-gradient(155deg, rgba(255,255,255,0.55) 0%, rgba(232,249,184,0.4) 28%, var(--surface-lime) 72%);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: var(--shadow-card);
+      display: flex; flex-direction: column; justify-content: space-between;
+      color: var(--ink);
+      animation: float 7s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .plastic-top { display: flex; align-items: center; justify-content: space-between; }
+    .chip {
+      width: 38px; height: 28px; border-radius: 5px;
+      background:
+        linear-gradient(180deg, #E8D08A, var(--chip-gold) 40%, #A9842E);
+      position: relative; overflow: hidden;
+    }
+    .chip::before, .chip::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 1px; background: rgba(80,50,10,0.35);
+    }
+    .chip::before { top: 9px; }
+    .chip::after { top: 18px; }
+    .nfc { width: 28px; height: 28px; }
+    .nfc path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+    .plastic-pan {
+      font-size: clamp(1.05rem, 2.4vw, 1.28rem); font-weight: 600;
+      letter-spacing: 0.08em; font-variant-numeric: tabular-nums;
+    }
+    .plastic-pan-label {
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(15,61,36,0.6); font-weight: 600; margin-bottom: 0.25rem;
+    }
+    .plastic-foot {
+      display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;
+    }
+    .plastic-foot span { display: block; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(15,61,36,0.55); font-weight: 600; }
+    .plastic-foot strong { font-size: 0.82rem; font-weight: 600; }
+    .plastic-mark { font-weight: 700; letter-spacing: -0.03em; font-size: 0.95rem; display: flex; align-items: center; gap: 0.3rem; }
+    .plastic-mark svg { width: 16px; height: 14px; }
+
+    /* Partners */
+    .partners { padding: 2.5rem 0 1rem; text-align: center; }
+    .partners p {
+      font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 600; color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .partner-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.5rem;
+      color: #8FA392; align-items: center; justify-items: center;
+    }
+    .partner {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-weight: 600; font-size: 0.92rem; letter-spacing: -0.02em; white-space: nowrap;
+      color: #6B8A74;
+    }
+    .partner svg { width: 22px; height: 22px; flex: 0 0 22px; }
+    @media (min-width: 720px) {
+      .partner-grid { grid-template-columns: repeat(4, 1fr); gap: 1.4rem 1rem; }
+    }
+
+    /* Mission */
+    .mission { padding: var(--section-y) 0; }
+    .mission-grid {
+      display: grid; gap: 2.4rem; align-items: center;
+    }
+    .portrait-wrap {
+      position: relative; border-radius: var(--radius-card); overflow: hidden;
+      background: var(--surface-lime); aspect-ratio: 4 / 5;
+    }
+    .portrait-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
+    .cal-badge {
+      position: absolute; right: 1rem; bottom: 1rem;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--surface-paper); display: grid; place-items: center;
+      box-shadow: 0 10px 24px rgba(15,61,36,0.12);
+    }
+    .cal-badge svg { width: 32px; height: 32px; }
+    .kicker {
+      font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    h2 {
+      font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1.12; text-wrap: balance; margin-top: 0.55rem;
+    }
+    .mission-copy .body { margin-top: 1rem; color: var(--muted); max-width: 42ch; }
+    .checks { list-style: none; margin: 1.4rem 0 1.6rem; display: grid; gap: 0.7rem; }
+    .checks li { display: flex; align-items: center; gap: 0.65rem; font-weight: 500; }
+    .checks svg { width: 20px; height: 20px; flex: 0 0 20px; }
+    @media (min-width: 900px) {
+      .mission-grid { grid-template-columns: 1.05fr 1fr; gap: 4rem; }
+    }
+
+    /* Bento */
+    .bento-sec { padding: 1rem 0 var(--section-y); }
+    .bento-head { text-align: center; margin-bottom: 2rem; }
+    .bento {
+      display: grid; gap: 1rem;
+    }
+    .tile {
+      background: var(--surface-paper); border: 1px solid var(--line);
+      border-radius: var(--radius-tile); padding: 1.15rem 1.2rem 1.2rem;
+      overflow: hidden; min-height: 220px;
+    }
+    .tile h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.02em; }
+    .tile .sub { color: var(--muted); font-size: var(--text-sm); margin-top: 0.2rem; }
+    .tile-dark {
+      background: var(--surface-forest); color: var(--text-on-forest); border-color: transparent;
+    }
+    .tile-dark .sub { color: #A9C9B0; }
+    .card-stage {
+      position: relative; height: 168px; margin-top: 1rem;
+    }
+    .mini-card {
+      position: absolute; width: 210px; height: 132px; border-radius: 16px; padding: 0.85rem;
+      background: linear-gradient(155deg, #F4FFD4, var(--surface-lime));
+      box-shadow: 0 16px 32px rgba(15,61,36,0.12);
+      color: var(--ink);
+    }
+    .mini-card.back { left: 8%; top: 18%; transform: rotate(-14deg); background: #E2F5B0; }
+    .mini-card.front { right: 4%; top: 4%; transform: rotate(10deg); z-index: 2; }
+    .mini-card .row { display: flex; justify-content: space-between; font-size: 0.7rem; }
+    .mini-card .num { margin-top: 1.4rem; font-weight: 600; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; font-size: 0.78rem; }
+    .chart-head { display: flex; justify-content: space-between; align-items: baseline; }
+    .chart-head strong { font-variant-numeric: tabular-nums; }
+    .chart-svg { width: 100%; height: 120px; margin-top: 0.6rem; }
+    .hex-row {
+      display: flex; gap: 0.55rem; margin: 1.1rem 0 0.9rem; justify-content: center;
+    }
+    .hex {
+      width: 48px; height: 52px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+      display: grid; place-items: center; color: var(--surface-paper);
+    }
+    .hex.a { background: #1F6B45; }
+    .hex.b { background: var(--ink); }
+    .hex.c { background: #5AA63A; }
+    .pill-ok {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: #F3F8EA; border-radius: 10px; padding: 0.55rem 0.75rem;
+      font-size: var(--text-sm); font-weight: 500; margin-top: 0.45rem;
+    }
+    .pill-ok i {
+      width: 8px; height: 8px; border-radius: 50%; background: #3D9A3A; display: inline-block;
+    }
+    .phone {
+      width: 168px; margin: 0.8rem auto 0; background: #111;
+      border-radius: var(--radius-phone); padding: 8px 8px 10px;
+      box-shadow: 0 18px 36px rgba(15,61,36,0.18);
+    }
+    .phone-screen {
+      background: #F4FBE8; border-radius: 28px; overflow: hidden; min-height: 210px; padding: 0.85rem 0.8rem 1rem;
+    }
+    .phone-bar { display: flex; justify-content: space-between; font-size: 0.58rem; font-weight: 600; color: var(--muted); }
+    .phone-brand { display: flex; align-items: center; gap: 0.3rem; font-weight: 700; font-size: 0.78rem; margin: 0.7rem 0 0.55rem; }
+    .phone-brand svg { width: 14px; height: 12px; }
+    .pay-card {
+      background: linear-gradient(160deg, #E8F9B8, var(--surface-lime));
+      border-radius: 12px; padding: 0.7rem; font-size: 0.68rem;
+    }
+    .pay-card strong { display: block; font-size: 0.82rem; margin-top: 0.45rem; letter-spacing: 0.06em; }
+    .pay-amt { margin-top: 0.55rem; font-size: 0.7rem; color: var(--muted); }
+    .xfer {
+      display: flex; justify-content: center; gap: 0.7rem; margin: 1.2rem 0 0.6rem; align-items: center;
+    }
+    .coin {
+      width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+      font-weight: 700; font-size: 0.85rem; color: var(--on-action);
+    }
+    .coin.n { background: #1F6B45; }
+    .coin.h { background: var(--ink); }
+    .coin.o { background: #5AA63A; }
+    .xfer path { stroke: var(--muted); }
+    @media (min-width: 720px) {
+      .bento { grid-template-columns: 1fr 1fr; }
+      .bento-low { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    }
+    @media (max-width: 719px) {
+      .bento-low { display: grid; gap: 1rem; }
+    }
+
+    /* Reviews */
+    .reviews { padding: 1rem 0 var(--section-y); }
+    .reviews-head { text-align: center; margin-bottom: 0.4rem; }
+    .stars { display: flex; justify-content: center; gap: 0.2rem; margin: 0.6rem 0 0.35rem; }
+    .stars svg { width: 16px; height: 16px; }
+    .reviews-kicker { font-size: var(--text-sm); color: var(--muted); }
+    .review-grid {
+      display: grid; gap: 1rem; margin-top: 1.6rem; align-items: stretch;
+    }
+    .stat-tile {
+      background: var(--surface-lime); color: var(--ink);
+      border-radius: var(--radius-card); padding: 1.6rem 1.5rem;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 220px;
+    }
+    .stat-tile .big {
+      font-size: clamp(3.4rem, 8vw, 5rem); font-weight: 700; letter-spacing: -0.05em; line-height: 0.9;
+    }
+    .stat-tile p { font-weight: 600; max-width: 18ch; margin-top: 1.2rem; }
+    .quote {
+      background: var(--surface-paper); border: 1px solid var(--line);
+      border-radius: var(--radius-card); padding: 1.5rem 1.4rem;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 1.2rem;
+    }
+    .quote .qstars { display: flex; gap: 0.15rem; }
+    .quote .qstars svg { width: 14px; height: 14px; }
+    .quote blockquote { font-size: 1.02rem; line-height: 1.55; font-weight: 500; }
+    .who { display: flex; align-items: center; gap: 0.7rem; }
+    .who img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .who strong { display: block; font-size: 0.88rem; }
+    .who span { font-size: 0.75rem; color: var(--muted); }
+    .who time { margin-left: auto; font-size: 0.75rem; color: var(--muted); }
+    @media (min-width: 720px) {
+      .review-grid { grid-template-columns: 0.72fr 1.28fr; }
+    }
+
+    /* Pricing */
+    .pricing { padding: 0 0 var(--section-y); }
+    .price-strip {
+      display: grid; gap: 1px; background: var(--line);
+      border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden;
+    }
+    .price-cell { background: var(--surface-paper); padding: 1.25rem 1.2rem; }
+    .price-cell dt { font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .price-cell dd { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.03em; margin-top: 0.3rem; }
+    @media (min-width: 720px) {
+      .price-strip { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Journal */
+    .journal { padding: 0 0 var(--section-y); }
+    .journal-head {
+      display: flex; align-items: end; justify-content: space-between; gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .posts {
+      display: grid; gap: 1rem;
+    }
+    .post {
+      background: var(--surface-paper); border: 1px solid var(--line);
+      border-radius: var(--radius-card); overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform var(--dur) var(--ease);
+    }
+    .post:hover { transform: translateY(-3px); }
+    .post img { width: 100%; height: 180px; object-fit: cover; }
+    .post-body { padding: 1.05rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+    .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 0.2rem 0.5rem; border-radius: 999px; background: #F3F8EA; color: var(--ink);
+    }
+    .post h3 { font-size: 1.05rem; letter-spacing: -0.02em; }
+    .post p { color: var(--muted); font-size: var(--text-sm); }
+    .read {
+      margin-top: auto; padding-top: 0.6rem; font-weight: 600; font-size: var(--text-sm);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+    @media (min-width: 720px) {
+      .posts { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 719px) {
+      .posts { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.4rem; }
+      .post { min-width: 78%; scroll-snap-align: start; }
+    }
+
+    /* FAQ */
+    .faq { padding: 0 0 var(--section-y); }
+    .faq-grid { display: grid; gap: 1.5rem; }
+    .acc { border-top: 1px solid var(--line); }
+    .acc-item { border-bottom: 1px solid var(--line); }
+    .acc-btn {
+      width: 100%; text-align: left; padding: 1.1rem 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      font-weight: 600; font-size: 1rem;
+    }
+    .acc-btn .plus {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line);
+      display: grid; place-items: center; flex: 0 0 28px;
+      transition: transform var(--dur) var(--ease);
+    }
+    .acc-item.open .plus { transform: rotate(45deg); background: var(--action-primary); color: var(--on-action); border-color: var(--action-primary); }
+    .acc-panel { display: none; padding: 0 0 1.1rem; color: var(--muted); max-width: 52ch; }
+    .acc-item.open .acc-panel { display: block; }
+    @media (min-width: 900px) {
+      .faq-grid { grid-template-columns: 0.7fr 1.3fr; gap: 3rem; align-items: start; }
+    }
+
+    /* Close */
+    .close {
+      padding: 0 0 var(--section-y);
+    }
+    .close-card {
+      background: var(--surface-forest); color: var(--text-on-forest);
+      border-radius: 28px; padding: clamp(2rem, 5vw, 3.4rem);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem;
+    }
+    .close-card h2 { color: var(--on-action); margin: 0; }
+    .close-card p { color: #A9C9B0; max-width: 36ch; margin-top: 0.5rem; }
+
+    /* Footer */
+    .site-foot {
+      background: var(--surface-page); border-top: 1px solid var(--line);
+      padding: 2.4rem 0 1.6rem; color: var(--muted); font-size: var(--text-sm);
+    }
+    .foot-grid {
+      display: grid; gap: 1.6rem;
+    }
+    .foot-brand { color: var(--ink); }
+    .foot-brand .brand { margin-bottom: 0.55rem; }
+    .foot-nav { display: flex; flex-direction: column; gap: 0.4rem; }
+    .foot-nav a:hover { color: var(--ink); }
+    .foot-mail { color: var(--ink); font-weight: 600; }
+    .foot-base {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem;
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+    }
+    @media (min-width: 720px) {
+      .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(16px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .plastic { animation: none; }
+      .reveal { opacity: 1; transform: none; }
+      .btn-primary, .btn-ghost, .btn-contact, .post { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <main id="main">
+  <div class="hero">
+    <div class="hero-wash" aria-hidden="true"></div>
+    <header class="site-head">
+      <div class="wrap site-head-inner">
+        <a class="brand" href="#top" id="top">
+          <svg viewBox="0 0 32 28" aria-hidden="true">
+            <path d="M5 11.5 9.2 5.2A3 3 0 0 1 11.6 4h8.8a3 3 0 0 1 2.4 1.2L27 11.5" fill="#B8F06E"/>
+            <rect x="5" y="11.5" width="22" height="13.5" rx="3" fill="#0F3D24"/>
+            <circle cx="16" cy="18.2" r="2.2" fill="#B8F06E"/>
+          </svg>
+          Coffer
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a class="is-active" href="#top"><span class="dot" aria-hidden="true"></span>Home</a>
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#journal">Journal</a>
+        </nav>
+        <div class="head-actions">
+          <a class="btn-contact" href="#contact">Contact
+            <span class="disc" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="drawer" id="drawer">
+          <a href="#top">Home</a>
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#journal">Journal</a>
+          <a href="#contact">Get started</a>
+        </div>
+      </div>
+    </header>
+
+      <section class="wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.2 9.6 6h4.1L10.8 8.6 12.3 12.5 8 10.2 3.7 12.5 5.2 8.6 2.3 6h4.1L8 2.2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            Ledger 2.0 rails go live 01 Jan 2026
+          </p>
+          <span class="orb orb-bell" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 9a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5H4.5S6 13 6 9Z" stroke="currentColor" stroke-width="1.6"/><path d="M10 18.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <h1 id="hero-title">A coffer that spends as fast as you do</h1>
+          <span class="orb orb-wallet" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="14.5" r="1.2" fill="currentColor"/></svg>
+          </span>
+          <span class="orb orb-chart" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 16.5 9 11l4 3.5 7-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6.5h4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span class="orb orb-refresh" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-2.2-5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M20 5v5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <p class="lede">Physical card. 70,000 transactions a second. A desk that answers at 3am. Open an account and pay in 56 countries.</p>
+          <div class="hero-cta">
+            <a class="btn-primary" href="#contact">Get started
+              <span class="disc" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-stage">
+          <div class="stats">
+            <div>
+              <p class="stat-num tabular">70k</p>
+              <p class="stat-cap">Transactions a second, and still climbing</p>
+            </div>
+            <div>
+              <p class="stat-num tabular">56</p>
+              <p class="stat-cap">Countries the card already works</p>
+            </div>
+            <div>
+              <p class="stat-num tabular">24/7</p>
+              <p class="stat-cap">A human on the line, not a bot tree</p>
+            </div>
+          </div>
+
+          <div class="hero-card-col">
+            <form class="join" id="join" novalidate>
+              <label class="sr" for="join-email">Email</label>
+              <input id="join-email" name="email" type="email" autocomplete="email" placeholder="Join the future" required />
+              <button type="submit">Go</button>
+            </form>
+            <p class="join-msg" id="join-msg" role="status"></p>
+
+            <article class="plastic" aria-label="Coffer debit card, number 4821 7603 9914 2258, Mira Solenne, expires 08 29">
+              <div class="plastic-top">
+                <span class="chip" aria-hidden="true"></span>
+                <svg class="nfc" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8.2c2.4 1.8 2.4 5.8 0 7.6"/><path d="M11.2 5.6c3.8 2.8 3.8 9.8 0 12.8"/><path d="M14.4 3.2c5.2 3.8 5.2 13.8 0 17.6"/></svg>
+              </div>
+              <div>
+                <p class="plastic-pan-label">Debit card no.</p>
+                <p class="plastic-pan tabular">4821 7603 9914 2258</p>
+              </div>
+              <div class="plastic-foot">
+                <div>
+                  <span>Name</span>
+                  <strong>Mira Solenne</strong>
+                </div>
+                <div>
+                  <span>Exp</span>
+                  <strong class="tabular">08/29</strong>
+                </div>
+                <div class="plastic-mark">
+                  <svg viewBox="0 0 32 28" aria-hidden="true">
+                    <path d="M5 11.5 9.2 5.2A3 3 0 0 1 11.6 4h8.8a3 3 0 0 1 2.4 1.2L27 11.5" fill="#0F3D24"/>
+                    <rect x="5" y="11.5" width="22" height="13.5" rx="3" fill="#0F3D24"/>
+                    <circle cx="16" cy="18.2" r="2.2" fill="#B8F06E"/>
+                  </svg>
+                  Coffer
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+  </div>
+
+  <section class="partners" aria-labelledby="partners-title">
+    <div class="wrap">
+      <p id="partners-title">Clearing partners, not a logo wall of strangers</p>
+      <div class="partner-grid">
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.6"/></svg>
+          Northvale Mutual
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 16 12 5l8 11H4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Harborline
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3"/></svg>
+          Lumen Clearing
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M9 12h6" stroke="currentColor" stroke-width="1.6"/></svg>
+          Bramble Trust
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18V8l6-3 6 3v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 18v-6h4v6" stroke="currentColor" stroke-width="1.6"/></svg>
+          Wick &amp; Quill
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17c4-8 12-8 16 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 7v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Fenway Reserve
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="12" rx="8" ry="5" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v10" stroke="currentColor" stroke-width="1.6"/></svg>
+          Oakmint
+        </span>
+        <span class="partner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 16 12 5l7 11" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 16h8" stroke="currentColor" stroke-width="1.6"/></svg>
+          Solstice Rail
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission" id="about" aria-labelledby="mission-title">
+    <div class="wrap mission-grid">
+      <div class="portrait-wrap reveal">
+        <img src="assets/portrait.jpg" alt="Nia Calder, Coffer night-desk lead, photographed on a lime studio backdrop" width="864" height="1116" />
+        <span class="cal-badge" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="5" y="7" width="22" height="20" rx="4" fill="#B8F06E"/>
+            <path d="M5 13h22" stroke="#0F3D24" stroke-width="1.6"/>
+            <path d="M11 5v5M21 5v5" stroke="#0F3D24" stroke-width="1.8" stroke-linecap="round"/>
+            <rect x="10" y="17" width="4" height="4" rx="0.8" fill="#0F3D24"/>
+            <rect x="18" y="17" width="4" height="4" rx="0.8" fill="#0F3D24"/>
+          </svg>
+        </span>
+      </div>
+      <div class="mission-copy reveal">
+        <p class="kicker">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 11.5 8 4l5 7.5H3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Our mission
+        </p>
+        <h2 id="mission-title">Money that stays yours until you spend it</h2>
+        <p class="body">Coffer is a consumer neobank. We hold the balance in a box you can see, issue a card in two days, and clear taps at 70,000 a second. The night desk is a person. The partners on the strip above are clearing rails, not a borrowed brand wall.</p>
+        <ul class="checks">
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#B8F06E"/><path d="M6 10.2 8.6 12.8 14 7.4" stroke="#0F3D24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Night desk on the line
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#B8F06E"/><path d="M6 10.2 8.6 12.8 14 7.4" stroke="#0F3D24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Card issued in two days
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#B8F06E"/><path d="M6 10.2 8.6 12.8 14 7.4" stroke="#0F3D24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            41,000 accounts already open
+          </li>
+        </ul>
+        <a class="btn-ghost" href="#contact">Get started
+          <span class="disc" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bento-sec" id="features" aria-labelledby="bento-title">
+    <div class="wrap">
+      <div class="bento-head">
+        <p class="kicker">Features</p>
+        <h2 id="bento-title">How we earn the right to hold your money</h2>
+      </div>
+      <div class="bento">
+        <article class="tile reveal">
+          <h3>Physical card</h3>
+          <p class="sub">No ATM fees. Pay in 56 countries.</p>
+          <div class="card-stage" aria-hidden="true">
+            <div class="mini-card back">
+              <div class="row"><span class="chip" style="width:28px;height:20px"></span><span>Coffer</span></div>
+              <p class="num tabular">4821 7603 9914 2258</p>
+            </div>
+            <div class="mini-card front">
+              <div class="row"><span class="chip" style="width:28px;height:20px"></span><svg class="nfc" viewBox="0 0 24 24" width="22" height="22"><path d="M8 8.2c2.4 1.8 2.4 5.8 0 7.6"/><path d="M11.2 5.6c3.8 2.8 3.8 9.8 0 12.8"/><path d="M14.4 3.2c5.2 3.8 5.2 13.8 0 17.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+              <p class="num tabular">4821 7603 9914 2258</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tile tile-dark reveal">
+          <div class="chart-head">
+            <p class="sub">Target</p>
+            <strong class="tabular">$412k</strong>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 360 120" fill="none" aria-hidden="true">
+            <path d="M0 88 C 40 86, 60 70, 90 74 S 140 96, 180 60 S 250 28, 300 36 S 340 50, 360 44" stroke="#B8F06E" stroke-width="2.4"/>
+            <circle cx="180" cy="60" r="5" fill="#B8F06E"/>
+            <rect x="156" y="18" width="48" height="22" rx="6" fill="#B8F06E"/>
+            <text x="180" y="33" text-anchor="middle" font-size="10" font-family="Lexend,sans-serif" fill="#0F3D24" font-weight="600">May</text>
+          </svg>
+          <h3>Understand the ledger</h3>
+          <p class="sub">Balances, spend, and the week ahead — at any hour.</p>
+        </article>
+
+        <div class="bento-low">
+          <article class="tile reveal">
+            <h3>Connect to apps</h3>
+            <p class="sub">See payroll, rent, and the grocer in one place.</p>
+            <div class="hex-row" aria-hidden="true">
+              <span class="hex a">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v11H4z" stroke="currentColor" stroke-width="1.6"/><path d="M8 7V5h8v2" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+              <span class="hex b">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <span class="hex c">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 16 12 5l7 11H5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
+            </div>
+            <p class="pill-ok"><i></i> Wick &amp; Quill connected</p>
+            <p class="pill-ok"><i></i> Harborline payroll on</p>
+          </article>
+
+          <article class="tile reveal">
+            <h3>Wherever you go</h3>
+            <p class="sub">The same card, in the pocket and on the phone.</p>
+            <div class="phone" aria-hidden="true">
+              <div class="phone-screen">
+                <div class="phone-bar"><span>9:41</span><span>Coffer</span></div>
+                <p class="phone-brand">
+                  <svg viewBox="0 0 32 28"><path d="M5 11.5 9.2 5.2A3 3 0 0 1 11.6 4h8.8a3 3 0 0 1 2.4 1.2L27 11.5" fill="#B8F06E"/><rect x="5" y="11.5" width="22" height="13.5" rx="3" fill="#0F3D24"/><circle cx="16" cy="18.2" r="2.2" fill="#B8F06E"/></svg>
+                  Coffer
+                </p>
+                <div class="pay-card">
+                  Payment
+                  <strong class="tabular">4821 ···· 2258</strong>
+                  <p class="pay-amt">Mira Solenne · 08/29</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="tile reveal">
+            <h3>Instant transfers</h3>
+            <p class="sub">Move the balance before the kettle boils.</p>
+            <div class="xfer" aria-hidden="true">
+              <span class="coin n">N</span>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 5l5 4-5 4" stroke="#4A6B58" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span class="coin h">H</span>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 5l5 4-5 4" stroke="#4A6B58" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span class="coin o">O</span>
+            </div>
+            <p class="pill-ok"><i></i> Received · Oakmint $240</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <div class="reviews-head">
+        <p class="kicker">Customer notes</p>
+        <h2 id="reviews-title">The desk, the card, the 3am wire</h2>
+        <div class="stars" aria-label="4 out of 5">
+          <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="none" stroke="#0F3D24" stroke-width="1.2"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+        </div>
+        <p class="reviews-kicker">Coffer is the one box for money that has to move.</p>
+      </div>
+      <div class="review-grid">
+        <div class="stat-tile reveal">
+          <p class="big tabular">70k</p>
+          <p>Making more transactions a second, and getting better at it.</p>
+        </div>
+        <figure class="quote reveal">
+          <div>
+            <div class="qstars" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+              <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+              <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+              <svg viewBox="0 0 16 16" fill="#0F3D24"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+              <svg viewBox="0 0 16 16" fill="none" stroke="#0F3D24" stroke-width="1.2"><path d="M8 1.6 9.8 6h4.6L11.4 8.8 13 13.2 8 10.6 3 13.2 4.6 8.8 1.6 6h4.6L8 1.6Z"/></svg>
+            </div>
+            <blockquote>The night desk actually picks up. I wired rent from Lisbon at 1am and the card cleared before I hung up. 70k a second is a number until you tap at a stall and it just works.</blockquote>
+          </div>
+          <figcaption class="who">
+            <img src="assets/face-sable.jpg" alt="" width="80" height="80" />
+            <div>
+              <strong>Sable Ibarra</strong>
+              <span>Ops, Harborline</span>
+            </div>
+            <time datetime="2026-03-10">10 Mar 2026</time>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <p class="kicker">Pricing</p>
+      <h2 id="pricing-title">What it costs to keep the box</h2>
+      <dl class="price-strip reveal" style="margin-top:1.4rem">
+        <div class="price-cell"><dt>Open an account</dt><dd>$0</dd></div>
+        <div class="price-cell"><dt>Physical card</dt><dd>$0</dd></div>
+        <div class="price-cell"><dt>ATM, 56 countries</dt><dd>$0</dd></div>
+        <div class="price-cell"><dt>FX after $1,000 / mo</dt><dd>0.4%</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="journal" id="journal" aria-labelledby="journal-title">
+    <div class="wrap">
+      <div class="journal-head">
+        <div>
+          <p class="kicker">Journal</p>
+          <h2 id="journal-title">Notes from the ledger</h2>
+        </div>
+        <a class="btn-ghost" href="#journal">View all
+          <span class="disc" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      </div>
+      <div class="posts">
+        <article class="post reveal">
+          <img src="assets/blog-coffer.jpg" alt="Oak money coffer with a lime debit card on marble" width="1280" height="692" />
+          <div class="post-body">
+            <div class="tags"><span class="tag">Rails</span><span class="tag">Card</span></div>
+            <h3>What 70,000 transactions a second means on a Tuesday</h3>
+            <p>Throughput is a desk metric until the grocer tap returns in 180 milliseconds. A short note on the rail.</p>
+            <span class="read">Read note
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </article>
+        <article class="post reveal">
+          <img src="assets/blog-night.jpg" alt="Lime debit card on a cafe sill looking out at a rainy night street" width="1280" height="692" />
+          <div class="post-body">
+            <div class="tags"><span class="tag">Desk</span></div>
+            <h3>The 3am desk: why Coffer still answers the phone</h3>
+            <p>We staff a night line in Lisbon and Accra. Not a tree. Not a chatbot with a hold playlist.</p>
+            <span class="read">Read note
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </article>
+        <article class="post reveal">
+          <img src="assets/blog-ledger.jpg" alt="Handwritten household ledger and a lime debit card on a sunlit kitchen table" width="1280" height="692" />
+          <div class="post-body">
+            <div class="tags"><span class="tag">Account</span></div>
+            <h3>How we issue a card in two days without a branch</h3>
+            <p>Identity, a photo of the coffer application, a card on a truck. No marble lobby required.</p>
+            <span class="read">Read note
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-title">Questions we actually get</h2>
+      </div>
+      <div class="acc" data-acc>
+        <div class="acc-item open">
+          <button class="acc-btn" type="button" aria-expanded="true">
+            Is Coffer a bank?
+            <span class="plus" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel">Coffer is a fictional neobank in this specimen. Balances are held with clearing partners Northvale Mutual and Lumen Clearing. We issue the card; they hold the license in this story.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            How fast is a tap, really?
+            <span class="plus" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel">The rail is rated at 70,000 transactions a second. A grocery tap on the Coffer card typically returns in under 200 milliseconds in the 56 countries we already clear.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            What does the card cost?
+            <span class="plus" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel">Account $0. Card $0. ATM $0 in those 56 countries. FX is 0.4% after the first $1,000 each month. Replacement cards are $8 if you lose one on a tram.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            How do I get started?
+            <span class="plus" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="acc-panel">Leave an email with Get started. We send an application the same day, issue the card in two days, and the night desk is on +1 415 555 0142 if the box does not open.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" id="contact" aria-labelledby="close-title">
+    <div class="wrap">
+      <div class="close-card reveal">
+        <div>
+          <h2 id="close-title">Open the coffer. Get the card.</h2>
+          <p>Write hello@coffer.example or leave the inbox in the hero. The desk answers 24/7.</p>
+        </div>
+        <a class="btn-primary" href="#join-email">Get started
+          <span class="disc" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top">
+            <svg viewBox="0 0 32 28" aria-hidden="true">
+              <path d="M5 11.5 9.2 5.2A3 3 0 0 1 11.6 4h8.8a3 3 0 0 1 2.4 1.2L27 11.5" fill="#B8F06E"/>
+              <rect x="5" y="11.5" width="22" height="13.5" rx="3" fill="#0F3D24"/>
+              <circle cx="16" cy="18.2" r="2.2" fill="#B8F06E"/>
+            </svg>
+            Coffer
+          </a>
+          <p>A consumer neobank. The money stays in the box until you spend it.</p>
+        </div>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#journal">Journal</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div>
+          <p class="kicker" style="margin-bottom:0.45rem">Desk</p>
+          <a class="foot-mail" href="mailto:hello@coffer.example">hello@coffer.example</a>
+          <p style="margin-top:0.45rem">+1 415 555 0142 · 24/7</p>
+        </div>
+      </div>
+      <div class="foot-base">
+        <p>Sample template · fictional rebrand · not a real bank</p>
+        <p>© 2026 Coffer</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    (function () {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const drawer = document.getElementById("drawer");
+      const toggle = document.querySelector(".nav-toggle");
+      toggle.addEventListener("click", function () {
+        const open = !drawer.classList.contains("open");
+        drawer.classList.toggle("open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      });
+      drawer.addEventListener("click", function (e) {
+        if (e.target.closest("a")) {
+          drawer.classList.remove("open");
+          toggle.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      document.querySelectorAll("[data-acc]").forEach(function (root) {
+        root.addEventListener("click", function (e) {
+          const btn = e.target.closest(".acc-btn");
+          if (!btn) return;
+          const item = btn.parentElement;
+          const willOpen = !item.classList.contains("open");
+          root.querySelectorAll(".acc-item").forEach(function (el) {
+            el.classList.remove("open");
+            el.querySelector(".acc-btn").setAttribute("aria-expanded", "false");
+          });
+          if (willOpen) {
+            item.classList.add("open");
+            btn.setAttribute("aria-expanded", "true");
+          }
+        });
+      });
+
+      const form = document.getElementById("join");
+      const msg = document.getElementById("join-msg");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = (form.email.value || "").trim();
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!ok) {
+          msg.textContent = "Enter a real inbox — we’ll send the application there.";
+          msg.className = "join-msg err";
+          form.email.focus();
+          return;
+        }
+        msg.textContent = "You’re on the list. We’ll write to " + email + ".";
+        msg.className = "join-msg ok";
+        form.querySelector("button").disabled = true;
+      });
+
+      const navLinks = document.querySelectorAll(".nav-links a");
+      const sections = ["top", "features", "about", "pricing", "journal"].map(function (id) {
+        return document.getElementById(id === "top" ? "top" : id);
+      });
+      function markNav() {
+        let current = "top";
+        sections.forEach(function (el) {
+          if (!el) return;
+          if (el.getBoundingClientRect().top < 120) current = el.id;
+        });
+        navLinks.forEach(function (a) {
+          const href = a.getAttribute("href").slice(1);
+          a.classList.toggle("is-active", href === current || (current === "top" && href === "top"));
+        });
+      }
+      window.addEventListener("scroll", markNav, { passive: true });
+
+      if (!reduce) {
+        try {
+          const LenisCtor = window.Lenis || window.lenis;
+          if (typeof LenisCtor === "function") {
+            const lenis = new LenisCtor({ lerp: 0.1 });
+            function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+            if (window.ScrollTrigger) lenis.on("scroll", ScrollTrigger.update);
+          }
+        } catch (err) { /* optional */ }
+        if (window.gsap && window.ScrollTrigger) {
+          gsap.registerPlugin(ScrollTrigger);
+          gsap.utils.toArray(".reveal").forEach(function (el) {
+            gsap.to(el, {
+              opacity: 1, y: 0, duration: 0.28, ease: "power2.out",
+              scrollTrigger: { trigger: el, start: "top 88%" }
+            });
+          });
+        } else {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+          });
+        }
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

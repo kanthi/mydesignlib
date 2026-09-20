@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crag Team — Brand identity system</title>
+  <meta name="description" content="Fictional 1981 alpine racing identity. Rust and charcoal print kit: hatched CRAG wordmark, pixel chevron, ridgeline, 3482m." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-Z97ZD3EVSF");
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-page: #dcd9d4;
+      --surface-paper: #e8e4dc;
+      --surface-rust: #d44f30;
+      --surface-rust-deep: #c24328;
+      --surface-ink: #292e2a;
+      --text-primary: #292e2a;
+      --text-on-rust: #292e2a;
+      --text-on-ink: #d44f30;
+      --text-secondary: #6a6862;
+      --action-primary: #d44f30;
+      --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+      --font-body: "Barlow", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --text-display: clamp(3.2rem, 8vw, 7.5rem);
+      --text-3xl: clamp(2rem, 4vw, 2.6rem);
+      --section-y: clamp(3rem, 6vw, 5rem);
+      --wrap: min(1120px, 100% - 2.4rem);
+      --board: min(1180px, 100% - 1.2rem);
+      --radius: 8px;
+      --dur: 240ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: var(--surface-page);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    h1, h2, h3 { margin: 0; line-height: 0.9; text-wrap: balance; }
+    p { margin: 0; }
+    :focus-visible { outline: 2px solid var(--surface-ink); outline-offset: 3px; }
+
+    .grain {
+      position: relative;
+      isolation: isolate;
+    }
+    .grain::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+    .hatch-fill {
+      background-image: repeating-linear-gradient(-45deg, var(--surface-ink) 0 2px, transparent 2px 7px);
+    }
+
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .board-wrap { width: var(--board); margin-inline: auto; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--surface-page) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+    }
+    .nav { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+    .nav-brand {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-family: var(--font-display); font-weight: 800; font-size: 1.35rem;
+      letter-spacing: -0.04em; text-transform: uppercase;
+    }
+    .pix { width: 18px; height: 28px; display: block; }
+    .nav-panel { display: contents; }
+    .nav-links {
+      display: flex; flex-wrap: wrap; gap: 0.15rem 1.1rem;
+      margin-left: 0.6rem; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);
+    }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-actions { margin-left: auto; display: flex; gap: 0.45rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0.5rem 1rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.82rem;
+      transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--action-primary); color: var(--text-on-rust); }
+    .btn-primary:hover { background: var(--surface-rust-deep); }
+    .btn-ghost { border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent); }
+    .menu-toggle {
+      display: none; width: 44px; height: 44px; border-radius: var(--radius);
+      border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+      flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    }
+    .menu-toggle span { width: 16px; height: 1.5px; background: var(--text-primary); }
+
+    .intro { padding: var(--section-y) 0 1.6rem; }
+    .kicker {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--surface-rust); margin-bottom: 0.5rem;
+    }
+    .intro h1 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2.6rem, 6vw, 4.4rem); letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+    .intro .lead { margin-top: 0.85rem; max-width: 46ch; color: var(--text-secondary); }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-rows: 1.1fr 0.95fr 0.52fr;
+      gap: 12px;
+    }
+    .cell {
+      position: relative;
+      overflow: hidden;
+      min-height: 160px;
+    }
+    .poster { grid-row: 1 / 4; display: grid; grid-template-rows: 1fr auto; background: var(--surface-rust); color: var(--text-on-rust); }
+    .arrow-cell { background: var(--surface-ink); color: var(--text-on-ink); }
+    .rise-cell { background: var(--surface-rust); color: var(--text-on-rust); display: grid; grid-template-rows: 1fr auto; }
+    .alt-cell {
+      background:
+        repeating-linear-gradient(-42deg, rgba(41,46,42,0.14) 0 2px, transparent 2px 7px),
+        var(--surface-rust);
+      color: var(--text-on-rust);
+      display: grid;
+      place-items: center;
+    }
+
+    .corners { position: absolute; inset: 10px; pointer-events: none; }
+    .corners svg { position: absolute; width: 18px; height: 18px; }
+    .c-tl { top: 0; left: 0; }
+    .c-tr { top: 0; right: 0; }
+    .c-bl { bottom: 0; left: 0; }
+    .c-br { bottom: 0; right: 0; }
+
+    .poster-main {
+      display: grid; place-items: center; padding: 2.2rem 1.2rem 0.4rem;
+      position: relative;
+    }
+    .wordmark {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(4.6rem, 11vw, 8.4rem);
+      letter-spacing: -0.07em;
+      line-height: 0.78;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+      padding-right: 0.72em;
+    }
+    .wordmark .hatched {
+      background-image: repeating-linear-gradient(-42deg, var(--surface-ink) 0 3px, transparent 3px 7px);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .wordmark .team {
+      position: absolute;
+      right: 0.08em;
+      top: 0.1em;
+      font-size: 0.13em;
+      letter-spacing: 0.32em;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-weight: 800;
+      line-height: 1;
+    }
+    .poster-meta {
+      width: min(88%, 420px);
+      display: flex; justify-content: space-between; gap: 1rem;
+      font-family: var(--font-mono); font-size: 0.72rem; margin: 0.4rem auto 0.8rem;
+    }
+    .poster-copy {
+      max-width: 52ch; font-size: 0.58rem; line-height: 1.45;
+      opacity: 0.72; margin: 0 auto 1.1rem; padding: 0 8%;
+    }
+    .poster-base {
+      background: var(--surface-ink); color: var(--text-on-ink);
+      padding: 1.1rem 1.1rem 0.9rem; position: relative;
+    }
+    .poster-base p {
+      font-size: 0.58rem; line-height: 1.45; opacity: 0.7; max-width: 54ch;
+      margin-top: 0.45rem;
+    }
+    .sun-disc {
+      position: absolute;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface-rust);
+      left: 46%; top: 12%;
+    }
+
+    .ridgeline { width: 100%; height: auto; display: block; }
+    .arrow-cell { padding: 1.1rem 1.15rem; display: grid; grid-template-rows: auto 1fr auto; }
+    .code-row {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    }
+    .code {
+      font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: -0.04em;
+    }
+    .arrow-art { width: 100%; height: 100%; min-height: 140px; }
+    .sig { font-family: var(--font-body); font-style: italic; font-size: 0.85rem; text-align: right; opacity: 0.8; }
+
+    .rise-sky { position: relative; min-height: 140px; padding: 0.8rem; }
+    .rise-sky .ridgeline { position: absolute; left: 0; right: 0; bottom: 0; }
+    .rise-bar {
+      background: var(--surface-ink); color: var(--text-on-ink);
+      padding: 0.55rem 0.2rem 0.45rem;
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.8rem, 4.4vw, 3.1rem);
+      letter-spacing: -0.05em; text-transform: uppercase;
+      text-align: center; white-space: nowrap; overflow: hidden;
+    }
+    .alt-cell .num {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(3.6rem, 9vw, 6.4rem);
+      letter-spacing: -0.07em; line-height: 0.8;
+    }
+    .alt-cell .num small {
+      font-size: 0.32em; letter-spacing: -0.04em; margin-left: 0.08em;
+    }
+
+    section.system { padding: var(--section-y) 0; }
+    .title {
+      font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+      font-size: var(--text-3xl); letter-spacing: -0.04em; margin-bottom: 0.4rem;
+    }
+    .sub { color: var(--text-secondary); max-width: 48ch; margin-bottom: 1.4rem; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .tile {
+      min-height: 220px; display: grid; place-items: center; padding: 1.2rem;
+    }
+    .tile-ink { background: var(--surface-ink); color: var(--text-on-ink); }
+    .tile-rust { background: var(--surface-rust); color: var(--text-on-rust); }
+    .tile-paper { background: var(--surface-paper); }
+
+    .colors { display: grid; gap: 0.5rem; }
+    .crow {
+      display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 1rem;
+      background: var(--surface-paper); overflow: hidden;
+    }
+    .cchip { height: 58px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-primary) 12%, transparent); }
+    .crow code {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);
+      padding-right: 1rem; font-variant-numeric: tabular-nums;
+    }
+    .type-grid, .rules, .apps { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .card { background: var(--surface-paper); padding: 1.2rem; }
+    .card h3 {
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 0.55rem; font-weight: 700;
+    }
+    .spec-word {
+      font-family: var(--font-display); font-weight: 900; font-size: 2.4rem;
+      letter-spacing: -0.06em; text-transform: uppercase;
+    }
+    .spec-mono { font-family: var(--font-mono); font-size: 0.85rem; }
+    .rules ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .voice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+    .voice article { background: var(--surface-ink); color: var(--text-on-ink); padding: 1.15rem; }
+    .voice h3 {
+      font-family: var(--font-display); font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; font-size: 0.95rem; margin-bottom: 0.4rem;
+    }
+    .voice p { font-size: 0.88rem; color: color-mix(in srgb, var(--text-on-ink) 78%, white); }
+
+    .bib {
+      width: min(220px, 70%);
+      aspect-ratio: 0.82;
+      background: var(--surface-paper);
+      color: var(--text-primary);
+      border: 4px solid var(--surface-ink);
+      display: grid; place-items: center; text-align: center; padding: 0.8rem;
+    }
+    .bib b {
+      font-family: var(--font-display); font-weight: 900; font-size: 3.2rem;
+      letter-spacing: -0.06em; display: block; line-height: 0.8;
+    }
+    .bib span { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+    .pennant {
+      width: min(280px, 80%);
+      height: 150px;
+      background: var(--surface-rust);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      display: grid; place-items: center; padding-right: 18%;
+      color: var(--text-on-rust);
+      font-family: var(--font-display); font-weight: 900; font-size: 2.4rem;
+      letter-spacing: -0.06em;
+    }
+
+    footer {
+      padding: 2.2rem 0;
+      border-top: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+      color: var(--text-secondary); font-size: 0.86rem;
+    }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+    .foot .nav-brand { color: var(--text-primary); }
+
+    .js .reveal { opacity: 0; transform: translateY(14px); }
+    .reveal { opacity: 1; transform: none; }
+
+    @media (max-width: 860px) {
+      .board { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .poster { grid-row: auto; min-height: 520px; }
+      .pair, .type-grid, .rules, .apps, .voice { grid-template-columns: 1fr; }
+      .crow { grid-template-columns: 88px 1fr; }
+      .crow code { grid-column: 2; padding: 0 1rem 0.7rem; }
+      .nav-panel {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--surface-page); padding: 0.75rem 1rem 1rem; flex-direction: column;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+      }
+      .nav.is-open .nav-panel { display: flex; }
+      .nav-links { flex-direction: column; margin: 0; }
+      .menu-toggle { display: flex; }
+      .nav-actions .btn { display: none; }
+      .site-header .wrap { position: relative; }
+      .wordmark .team { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal, .reveal { opacity: 1; transform: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <pattern id="hatch45" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-42)">
+        <rect width="8" height="8" fill="none"/>
+        <rect width="3" height="8" fill="#292E2A"/>
+      </pattern>
+      <pattern id="hatchRust" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-42)">
+        <rect width="8" height="8" fill="none"/>
+        <rect width="3" height="8" fill="#D44F30"/>
+      </pattern>
+      <symbol id="pix" viewBox="0 0 20 36">
+        <g fill="currentColor">
+          <rect x="8" y="0" width="4" height="4"/>
+          <rect x="4" y="4" width="4" height="4"/><rect x="12" y="4" width="4" height="4"/>
+          <rect x="0" y="8" width="4" height="4"/><rect x="16" y="8" width="4" height="4"/>
+          <rect x="8" y="12" width="4" height="4"/>
+          <rect x="4" y="16" width="4" height="4"/><rect x="12" y="16" width="4" height="4"/>
+          <rect x="0" y="20" width="4" height="4"/><rect x="16" y="20" width="4" height="4"/>
+          <rect x="8" y="24" width="4" height="4"/>
+          <rect x="4" y="28" width="4" height="4"/><rect x="12" y="28" width="4" height="4"/>
+          <rect x="0" y="32" width="4" height="4"/><rect x="16" y="32" width="4" height="4"/>
+        </g>
+      </symbol>
+      <symbol id="arrow-ne" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2.2" d="M6 18 L18 6 M10 6 H18 V14"/>
+      </symbol>
+      <symbol id="arrow-nw" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2.2" d="M18 18 L6 6 M14 6 H6 V14"/>
+      </symbol>
+      <symbol id="arrow-se" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2.2" d="M6 6 L18 18 M10 18 H18 V10"/>
+      </symbol>
+      <symbol id="arrow-sw" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2.2" d="M18 6 L6 18 M14 18 H6 V10"/>
+      </symbol>
+      <symbol id="ridge" viewBox="0 0 640 160">
+        <path fill="none" stroke="currentColor" stroke-width="1.6" d="M0 128 L48 112 L92 128 L140 72 L188 118 L230 40 L272 96 L318 22 L360 88 L402 54 L448 110 L492 68 L536 124 L580 90 L640 132"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55" d="M0 140 L70 128 L120 142 L180 100 L250 130 L318 70 L400 120 L480 92 L560 138 L640 148"/>
+      </symbol>
+      <symbol id="sunburst" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3.2" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.4">
+          <path d="M12 2 v3.2M12 18.8 v3.2M2 12 h3.2M18.8 12 h3.2M4.6 4.6 l2.2 2.2M17.2 17.2 l2.2 2.2M19.4 4.6 l-2.2 2.2M6.8 17.2 l-2.2 2.2"/>
+        </g>
+      </symbol>
+      <symbol id="moon" viewBox="0 0 48 48">
+        <path fill="currentColor" d="M30 8a16 16 0 1 0 10 26 18 18 0 0 1-10-26z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="nav" id="nav">
+        <a class="nav-brand" href="#top" id="top">
+          <svg class="pix" aria-hidden="true"><use href="#pix"></use></svg>
+          Crag
+        </a>
+        <div class="nav-panel" id="navPanel">
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#board">Board</a>
+            <a href="#mark">Mark</a>
+            <a href="#color">Color</a>
+            <a href="#type">Type</a>
+            <a href="#apps">Kit</a>
+            <a href="#voice">Voice</a>
+          </nav>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#board">Specimen</a>
+          <a class="btn btn-primary" href="mailto:kit@crag.example">Request the kit</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="wrap">
+        <p class="kicker">Brand identity · alpine racing · 1981</p>
+        <h1 class="reveal">The ridge<br />at racing speed.</h1>
+        <p class="lead">Crag Team is a fictional alpine racing club. Two inks, one hatched letter, a pixel chevron that reads from the valley floor.</p>
+      </div>
+    </section>
+
+    <section id="board">
+      <div class="board-wrap">
+        <div class="board" aria-label="Crag Team identity board">
+          <article class="cell poster grain">
+            <div class="corners">
+              <svg class="c-tl"><use href="#arrow-nw"></use></svg>
+              <svg class="c-tr"><use href="#arrow-ne"></use></svg>
+              <svg class="c-bl"><use href="#arrow-sw"></use></svg>
+              <svg class="c-br"><use href="#arrow-se"></use></svg>
+            </div>
+            <div class="poster-main">
+              <h2 class="wordmark" aria-label="Crag Team">
+                C<span class="hatched">R</span>AG
+                <span class="team">TEAM</span>
+              </h2>
+              <div class="poster-meta">
+                <span>© CRAG TEAM</span>
+                <span>1981</span>
+              </div>
+            </div>
+            <div class="poster-base grain">
+              <span class="sun-disc" aria-hidden="true"></span>
+              <svg class="ridgeline" viewBox="0 0 640 160" aria-hidden="true"><use href="#ridge"></use></svg>
+              <p>We race the long line, not the shortest. Two inks. The hatched R is the only letter allowed to open onto the field.</p>
+            </div>
+          </article>
+
+          <article class="cell arrow-cell grain">
+            <div class="code-row">
+              <svg class="pix" style="width:28px;height:48px" aria-hidden="true"><use href="#pix"></use></svg>
+              <div class="code">CRG-81042</div>
+            </div>
+            <svg class="arrow-art" viewBox="0 0 420 220" aria-hidden="true">
+              <path d="M40 170 C 90 170 120 170 160 150 C 210 126 240 70 300 48" fill="none" stroke="#D44F30" stroke-width="34" stroke-linecap="square"/>
+              <path d="M248 18 L 392 42 L 300 150 Z" fill="url(#hatchRust)"/>
+              <path d="M248 18 L 392 42 L 300 150 Z" fill="none" stroke="#D44F30" stroke-width="8"/>
+            </svg>
+            <div class="sig">e. keld</div>
+          </article>
+
+          <article class="cell rise-cell grain">
+            <div class="rise-sky">
+              <div class="corners">
+                <svg class="c-tl"><use href="#arrow-nw"></use></svg>
+                <svg class="c-tr"><use href="#arrow-ne"></use></svg>
+              </div>
+              <svg class="moon" viewBox="0 0 48 48" width="36" height="36" style="position:absolute;left:46%;top:18%" aria-hidden="true"><use href="#moon"></use></svg>
+              <svg class="ridgeline" viewBox="0 0 640 160" aria-hidden="true"><use href="#ridge"></use></svg>
+            </div>
+            <div class="rise-bar">Rise above</div>
+          </article>
+
+          <article class="cell alt-cell grain">
+            <div class="num">3482<small>m</small></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="mark">
+      <div class="wrap">
+        <h2 class="title reveal">Mark</h2>
+        <p class="sub">A three-stack pixel chevron. Equal squares, no rounding. It is an arrow, a ridge, and a bib stamp.</p>
+        <div class="pair">
+          <div class="tile tile-ink grain">
+            <svg width="72" height="128" viewBox="0 0 20 36" aria-label="Pixel chevron on ink"><use href="#pix"></use></svg>
+          </div>
+          <div class="tile tile-rust grain">
+            <svg width="72" height="128" viewBox="0 0 20 36" aria-label="Pixel chevron on rust"><use href="#pix"></use></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="color">
+      <div class="wrap">
+        <h2 class="title reveal">Color</h2>
+        <p class="sub">Two inks. The studio wall is not a brand color.</p>
+        <div class="colors">
+          <div class="crow"><div class="cchip" style="background:#D44F30"></div><b>Rust</b><code>#D44F30</code></div>
+          <div class="crow"><div class="cchip" style="background:#C24328"></div><b>Rust deep</b><code>#C24328</code></div>
+          <div class="crow"><div class="cchip" style="background:#292E2A"></div><b>Ink</b><code>#292E2A</code></div>
+          <div class="crow"><div class="cchip" style="background:#E8E4DC"></div><b>Paper</b><code>#E8E4DC</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="type">
+      <div class="wrap">
+        <h2 class="title reveal">Type</h2>
+        <p class="sub">Condensed display for racing distance. Mono for codes. Body stays out of the posters.</p>
+        <div class="type-grid">
+          <div class="card">
+            <h3>Display</h3>
+            <p class="spec-word">Crag</p>
+            <p class="spec-mono" style="margin-top:0.5rem">Big Shoulders Display 800–900 · tracking −0.06em</p>
+          </div>
+          <div class="card">
+            <h3>Spec</h3>
+            <p class="spec-mono">CRG-81042 · 3482m · 1981</p>
+            <p class="spec-mono" style="margin-top:0.5rem">IBM Plex Mono · tabular</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="apps">
+      <div class="wrap">
+        <h2 class="title reveal">Kit</h2>
+        <p class="sub">Bib, pennant, same two inks. No photography in the system.</p>
+        <div class="apps">
+          <div class="tile tile-ink grain">
+            <div class="bib" aria-label="Racing bib 42">
+              <span>Crag team</span>
+              <b>42</b>
+              <span>3482 m</span>
+            </div>
+          </div>
+          <div class="tile tile-paper">
+            <div class="pennant grain" aria-label="Pennant">CRAG</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="voice">
+      <div class="wrap">
+        <h2 class="title reveal">Voice</h2>
+        <p class="sub">Terse workshop English. Named things, numbered things.</p>
+        <div class="voice">
+          <article>
+            <h3>Race</h3>
+            <p>Take the long line. Do not cut the switchback for a prettier time.</p>
+          </article>
+          <article>
+            <h3>Print</h3>
+            <p>Two inks. Hatch one letter. If it needs a third color, it is not Crag.</p>
+          </article>
+          <article>
+            <h3>Peak</h3>
+            <p>Crag Horn, 3482 metres. A fictional ridge. Never a real summit badge.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="system" id="rules">
+      <div class="wrap">
+        <h2 class="title reveal">Rules</h2>
+        <div class="rules">
+          <div class="card">
+            <h3>Do</h3>
+            <ul>
+              <li>Hatch only the R</li>
+              <li>Stack TEAM beside the G on posters</li>
+              <li>Keep pixels square</li>
+              <li>Put codes in Plex Mono</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Don’t</h3>
+            <ul>
+              <li>Outline the wordmark</li>
+              <li>Set CRAG in white</li>
+              <li>Round the chevron</li>
+              <li>Add a real mountain’s height</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <a class="nav-brand" href="#top">
+        <svg class="pix" aria-hidden="true"><use href="#pix"></use></svg>
+        Crag
+      </a>
+      <span>Sample template · kit@crag.example · © 1981 / 2026</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const nav = document.getElementById("nav");
+      const btn = document.getElementById("menuToggle");
+      btn.addEventListener("click", () => {
+        const open = nav.classList.toggle("is-open");
+        btn.setAttribute("aria-expanded", String(open));
+      });
+      nav.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+        nav.classList.remove("is-open");
+        btn.setAttribute("aria-expanded", "false");
+      }));
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) {
+        document.querySelectorAll(".reveal").forEach((el) => {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        });
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.style.transition = "opacity 240ms cubic-bezier(0.22,1,0.36,1), transform 240ms cubic-bezier(0.22,1,0.36,1)";
+          e.target.style.opacity = "1";
+          e.target.style.transform = "none";
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <title>SERAC — Alpine Telemetry & Piste Engineering</title>
+  <meta name="description" content="High-altitude cryosphere telemetry, corduroy piste mechanics, and sub-zero equipment from the Valais Glacier Lab." />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =========================================================================
+       Site Header
+       ========================================================================= -->
+  <header class="site-header">
+    <a href="#" class="brand-lockup">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 22 22 22 12 2" fill="none" stroke="#ffffff" />
+        <line x1="12" y1="2" x2="12" y2="22" stroke="#0066ff" stroke-width="2" />
+        <polyline points="7 12 12 16 17 12" stroke="#ffffff" />
+      </svg>
+      <span class="brand-name">SERAC</span>
+    </a>
+
+    <div class="header-telemetry mono">
+      <div class="telemetry-item">
+        <span class="dot"></span>
+        <span>GLACIER STATION 01</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="text-muted">ALT</span>
+        <span>3,883 M</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="text-muted">VALAIS</span>
+        <span>45°58′N 7°42′E</span>
+      </div>
+    </div>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#telemetry" class="nav-link">Telemetry</a></li>
+        <li><a href="#engineering" class="nav-link">Piste Science</a></li>
+        <li><a href="#equipment" class="nav-link">Equipment</a></li>
+        <li><a href="#expeditions" class="nav-cta">Dispatch Pass</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- =========================================================================
+         Hero Section: Full-Bleed Fog Reveal Experience
+         ========================================================================= -->
+    <section class="hero-viewport" id="hero">
+      <div class="hero-media-wrapper">
+        <canvas id="heroShaderCanvas" class="hero-shader-canvas"></canvas>
+      </div>
+
+      <!-- Scrubber Rail Overlay on the right edge -->
+      <aside class="fog-scrubber-rail" aria-label="Fog Reveal Transition Scrubber">
+        <span class="scrubber-label mono-upper active" id="labelDescent">01 Descent</span>
+        <div class="scrubber-track" id="scrubberTrack" title="Drag or click to scrub fog reveal transition">
+          <div class="scrubber-thumb" id="scrubberThumb"></div>
+        </div>
+        <span class="scrubber-label mono-upper" id="labelGroomed">02 Groomed</span>
+      </aside>
+
+      <!-- Content Overlay: Headline & Telemetry HUD -->
+      <div class="hero-content-overlay">
+        <div class="hero-scene-meta">
+          <div class="scene-badge mono-upper" id="badgeLocation">
+            Matterhorn Glacier // Couloir 04
+          </div>
+          <h1 class="scene-title" id="sceneTitle">Descent</h1>
+          <p class="scene-subtitle" id="sceneSubtitle">Zermatt, 3,883 m</p>
+        </div>
+
+        <!-- Telemetry Bottom Bar -->
+        <div class="hero-bottom-bar">
+          <div class="metric-box">
+            <span class="metric-label mono">Elevation</span>
+            <div class="metric-value mono">
+              <span id="metricAlt">3,883</span>
+              <span class="metric-unit">M</span>
+            </div>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label mono">Sub-Zero Ambient</span>
+            <div class="metric-value mono">
+              <span id="metricTemp">-14.2°C</span>
+            </div>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label mono">Ridge Gale</span>
+            <div class="metric-value mono">
+              <span id="metricWind">48 km/h</span>
+              <span class="metric-unit">NNW</span>
+            </div>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label mono">Snowpack Index</span>
+            <div class="metric-value mono">
+              <span id="metricSnow">Powder / 185 cm</span>
+            </div>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label mono">Fog Density</span>
+            <div class="metric-value mono">
+              <span id="metricFog">15%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Pill -->
+      <div class="hero-controls">
+        <button type="button" class="control-btn active" id="btnAutoPlay">AUTO FOG CYCLE</button>
+        <button type="button" class="control-btn" id="btnInteractive">MANUAL SCRUB</button>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Section 2: Live Alpine Telemetry & Atmospheric Sensing
+         ========================================================================= -->
+    <section class="content-section" id="telemetry">
+      <div class="section-header">
+        <span class="section-tag">// Station Network Telemetry</span>
+        <h2 class="section-title">Cryosphere observation at the summit threshold.</h2>
+        <p class="section-desc">
+          Continuous atmospheric telemetry captured across the Matterhorn glacier chain. Continuous density scanning, acoustic snowpack analysis, and sub-surface thermal gradients.
+        </p>
+      </div>
+
+      <div class="telemetry-grid">
+        <!-- Main Card: Altitude & Pressure Barometer -->
+        <div class="telemetry-card card-span-8">
+          <div>
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Dynamic Elevation & Lapse Rate Profile</h3>
+                <p class="metric-label mono" style="margin-top:0.35rem;">Live Barometric Gradient across Valais Traverse</p>
+              </div>
+              <span class="card-badge">STATION SYNC 0.8s</span>
+            </div>
+
+            <!-- Simulated Barometric Histogram -->
+            <div class="graph-container">
+              <div class="bar-col" style="height: 38%;"><span class="bar-label">01:00</span></div>
+              <div class="bar-col" style="height: 42%;"><span class="bar-label">03:00</span></div>
+              <div class="bar-col" style="height: 49%;"><span class="bar-label">05:00</span></div>
+              <div class="bar-col" style="height: 65%;"><span class="bar-label">07:00</span></div>
+              <div class="bar-col active" style="height: 88%;"><span class="bar-label">09:00</span></div>
+              <div class="bar-col active" style="height: 94%;"><span class="bar-label">11:00</span></div>
+              <div class="bar-col" style="height: 72%;"><span class="bar-label">13:00</span></div>
+              <div class="bar-col" style="height: 58%;"><span class="bar-label">15:00</span></div>
+              <div class="bar-col" style="height: 46%;"><span class="bar-label">17:00</span></div>
+              <div class="bar-col" style="height: 40%;"><span class="bar-label">19:00</span></div>
+            </div>
+          </div>
+
+          <!-- Interactive Altitude Scrubber -->
+          <div class="altitude-scrubber-box">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <span class="mono-upper" style="color: var(--text-secondary);">Simulate Elevation Sweep</span>
+              <span class="mono" id="readoutAlt" style="font-size: 1.25rem; font-weight: 600; color: var(--accent-cyan);">3,883 m</span>
+            </div>
+
+            <label for="altitudeSlider" class="sr-only">Elevation Sweep Slider</label>
+            <input 
+              type="range" 
+              id="altitudeSlider" 
+              class="altitude-range-input" 
+              min="1620" 
+              max="3883" 
+              value="3883" 
+              step="10" 
+            />
+
+            <div class="altitude-indicators">
+              <span>Zermatt Base (1,620 m)</span>
+              <span>Trockener Steg (2,939 m)</span>
+              <span>Glacier Paradise (3,883 m)</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
+              <div>
+                <div class="metric-label mono">Lapse Temp</div>
+                <div class="mono" id="readoutTemp" style="font-size: 1.1rem; font-weight: 500;">-14.2°C</div>
+              </div>
+              <div>
+                <div class="metric-label mono">Baro Pressure</div>
+                <div class="mono" id="readoutPressure" style="font-size: 1.1rem; font-weight: 500;">642 hPa</div>
+              </div>
+              <div>
+                <div class="metric-label mono">O₂ Partial</div>
+                <div class="mono" id="readoutOxygen" style="font-size: 1.1rem; font-weight: 500;">63%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Card: Snowpack Stability -->
+        <div class="telemetry-card card-span-4">
+          <div>
+            <div class="card-header">
+              <h3 class="card-title">Snowpack Matrix</h3>
+              <span class="card-badge" style="color: var(--accent-green);">LEVEL 2 // MODERATE</span>
+            </div>
+            <p class="metric-label mono" style="margin-bottom: 1.5rem;">Cross-Stratum Shear Stress</p>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="padding: 1rem; background: var(--bg-surface-elevated); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span class="text-secondary">Surface Powder Bond</span>
+                  <span class="mono" style="color: var(--accent-cyan);">94% Optimal</span>
+                </div>
+                <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                  <div style="width: 94%; height: 100%; background: var(--accent-cyan); border-radius: 2px;"></div>
+                </div>
+              </div>
+
+              <div style="padding: 1rem; background: var(--bg-surface-elevated); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span class="text-secondary">Sub-Layer Facet Resistance</span>
+                  <span class="mono" style="color: var(--accent-green);">78% Stable</span>
+                </div>
+                <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                  <div style="width: 78%; height: 100%; background: var(--accent-green); border-radius: 2px;"></div>
+                </div>
+              </div>
+
+              <div style="padding: 1rem; background: var(--bg-surface-elevated); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span class="text-secondary">Basal Glacial Friction</span>
+                  <span class="mono">0.038 µ</span>
+                </div>
+                <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                  <div style="width: 38%; height: 100%; background: var(--accent-blue); border-radius: 2px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <span class="mono" style="font-size: 0.72rem; color: var(--text-muted);">SATELLITE LORAWAN UPLINK</span>
+            <span class="mono" style="font-size: 0.72rem; color: var(--accent-green);">LOCKED 100%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Section 3: Piste Engineering & Snow Dynamics
+         ========================================================================= -->
+    <section class="content-section" id="engineering">
+      <div class="section-header">
+        <span class="section-tag">// Hydrodynamics & Compaction</span>
+        <h2 class="section-title">The geometry of 06:40 corduroy snow.</h2>
+        <p class="section-desc">
+          Machine grooming transforms chaotic crystals into aligned, high-speed corduroy ridges. Engineered for frictionless edge engagement and micro-thermal re-bonding at dawn.
+        </p>
+      </div>
+
+      <div class="piste-split">
+        <!-- Technical Vector Diagram -->
+        <div class="diagram-wrapper">
+          <svg class="corduroy-diagram" viewBox="0 0 700 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid Background Lines -->
+            <path d="M0 60 H700 M0 120 H700 M0 180 H700 M0 240 H700 M0 300 H700 M0 360 H700" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+            <path d="M70 0 V420 M140 0 V420 M210 0 V420 M280 0 V420 M350 0 V420 M420 0 V420 M490 0 V420 M560 0 V420 M630 0 V420" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+
+            <!-- Corduroy Waveforms -->
+            <path d="M 40 280 Q 70 200, 100 280 T 160 280 T 220 280 T 280 280 T 340 280 T 400 280 T 460 280 T 520 280 T 580 280 T 640 280" stroke="#f5f7fa" stroke-width="3" fill="none" />
+            <path d="M 40 320 Q 70 240, 100 320 T 160 320 T 220 320 T 280 320 T 340 320 T 400 320 T 460 320 T 520 320 T 580 320 T 640 320" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none" />
+            
+            <!-- Curving Blue Guide Line -->
+            <path d="M 120 380 C 220 280, 480 210, 620 90" stroke="#0066ff" stroke-width="4" stroke-linecap="round" />
+            <circle cx="340" cy="240" r="5" fill="#0066ff" />
+            
+            <!-- Dimension Vectors -->
+            <line x1="100" y1="280" x2="100" y2="240" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3 3" />
+            <line x1="70" y1="200" x2="100" y2="200" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="110" y="245" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11">AMPLITUDE: 18 mm</text>
+            
+            <line x1="160" y1="350" x2="220" y2="350" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="175" y="375" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11">PITCH: 60 mm</text>
+
+            <text x="40" y="50" fill="#9aa5b5" font-family="'JetBrains Mono', monospace" font-size="12">// CROSS SECTION: SECTOR 7 GROOMED TILLER</text>
+            <text x="40" y="70" fill="#576273" font-family="'JetBrains Mono', monospace" font-size="10">DENSITY: 420 kg/m³ | SURFACE VELOCITY: 90 km/h</text>
+          </svg>
+        </div>
+
+        <!-- Technical Breakdown List -->
+        <div class="spec-list">
+          <div class="spec-item">
+            <h3 class="spec-title">Tiller Tooth Geometry</h3>
+            <p class="spec-desc">
+              Precisely spaced 60mm ridges provide channels that vent frictional meltwater, preventing hydroplaning and ensuring instant ski edge capture on high-g carving turns.
+            </p>
+          </div>
+
+          <div class="spec-item">
+            <h3 class="spec-title">Sub-Zero Sintering Window</h3>
+            <p class="spec-desc">
+              Snow crystals are compacted between 05:00 and 06:30 at -8°C. This allows sintered ice bridges to form between flakes before sunrise softens the crystal bonds.
+            </p>
+          </div>
+
+          <div class="spec-item">
+            <h3 class="spec-title">Perimeter Blue Visual Index</h3>
+            <p class="spec-desc">
+              High-contrast organic blue dye sprayed along the piste margin maintains spatial visual orientation during dense whiteouts and high-altitude fog rolls.
+            </p>
+          </div>
+
+          <div class="spec-item">
+            <h3 class="spec-title">Acoustic Density Verification</h3>
+            <p class="spec-desc">
+              Ultrasonic sensors verify uniform 420 kg/m³ density across 14 meters of working width, eliminating hidden pockets and soft moguls.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Section 4: Technical Alpine Equipment (SERAC Pro Collection)
+         ========================================================================= -->
+    <section class="content-section" id="equipment">
+      <div class="section-header">
+        <span class="section-tag">// Field Hardware & Apparel</span>
+        <h2 class="section-title">Tested in Zermatt couloirs at 3,883 m.</h2>
+        <p class="section-desc">
+          Minimalist, high-performance equipment calibrated for extreme whiteout exposure, sub-zero descents, and cryosphere telemetry collection.
+        </p>
+      </div>
+
+      <div class="gear-grid">
+        <!-- Item 01 -->
+        <article class="gear-card">
+          <div class="gear-media">
+            <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Technical Jacket Silhouette -->
+              <path d="M 40 40 L 60 25 L 80 35 L 100 25 L 120 40 L 135 75 L 120 85 L 115 140 L 45 140 L 40 85 L 25 75 Z" stroke="#38bdf8" fill="rgba(56, 189, 248, 0.05)" />
+              <line x1="80" y1="35" x2="80" y2="140" stroke="#f5f7fa" stroke-dasharray="4 2" />
+              <circle cx="65" cy="70" r="3" fill="#0066ff" />
+              <text x="35" y="155" fill="#576273" font-family="'JetBrains Mono', monospace" font-size="8">3-LAYER GORE-TEX PRO // 28,000 MM</text>
+            </svg>
+          </div>
+          <div class="gear-body">
+            <div>
+              <div class="gear-id">SERAC-01 // HARDSHELL</div>
+              <h3 class="gear-name">Alpinist Summit Shell</h3>
+              <p class="spec-desc">
+                Engineered for gale-force ridges and whiteout insulation. Features internal RECCO avalanche reflectors and magnetic radio mic routing.
+              </p>
+              <ul class="gear-features">
+                <li class="gear-feature">28,000mm hydrostatic head</li>
+                <li class="gear-feature">Integrated LoRa atmospheric beacon pocket</li>
+                <li class="gear-feature">Storm-rated helmet hood</li>
+              </ul>
+            </div>
+            <div class="gear-footer">
+              <span class="gear-price mono">CHF 890</span>
+              <button type="button" class="gear-btn mono">INSPECT SPEC</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 02 -->
+        <article class="gear-card">
+          <div class="gear-media">
+            <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Technical Carving Ski Core -->
+              <path d="M 30 145 C 40 140, 50 40, 55 15 C 57 10, 63 10, 65 15 C 70 40, 80 140, 90 145 Z" stroke="#f5f7fa" fill="rgba(255, 255, 255, 0.05)" />
+              <line x1="60" y1="15" x2="60" y2="145" stroke="#0066ff" stroke-width="2" />
+              <line x1="45" y1="80" x2="75" y2="80" stroke="#38bdf8" />
+              <text x="25" y="155" fill="#576273" font-family="'JetBrains Mono', monospace" font-size="8">TITANAL SANDWICH // 88 MM WAIST</text>
+            </svg>
+          </div>
+          <div class="gear-body">
+            <div>
+              <div class="gear-id">SERAC-02 // CARVER</div>
+              <h3 class="gear-name">Piste 7 Precision Carver</h3>
+              <p class="spec-desc">
+                Pre-impregnated carbon and dual Titanal laminate with 0.5° race-finish base bevel. Flawless tracking on hard-packed corduroy.
+              </p>
+              <ul class="gear-features">
+                <li class="gear-feature">Ash-Poplar vibration-damping core</li>
+                <li class="gear-feature">Graphite race base with nano-wax structure</li>
+                <li class="gear-feature">14.2m turn radius at 178cm</li>
+              </ul>
+            </div>
+            <div class="gear-footer">
+              <span class="gear-price mono">CHF 1,240</span>
+              <button type="button" class="gear-btn mono">INSPECT SPEC</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 03 -->
+        <article class="gear-card">
+          <div class="gear-media">
+            <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Cryosphere Telemetry Sensor Unit -->
+              <rect x="45" y="35" width="70" height="90" rx="8" stroke="#38bdf8" fill="rgba(56, 189, 248, 0.05)" />
+              <circle cx="80" cy="70" r="18" stroke="#0066ff" stroke-width="2" />
+              <circle cx="80" cy="70" r="4" fill="#0066ff" />
+              <line x1="80" y1="20" x2="80" y2="35" stroke="#f5f7fa" stroke-width="2" />
+              <text x="30" y="155" fill="#576273" font-family="'JetBrains Mono', monospace" font-size="8">SATELLITE BEACON // 142 MHZ</text>
+            </svg>
+          </div>
+          <div class="gear-body">
+            <div>
+              <div class="gear-id">SERAC-03 // TELEMETRY</div>
+              <h3 class="gear-name">Cryosphere Beacon X1</h3>
+              <p class="spec-desc">
+                Multispectral optical sensor measuring snow crystal diameter, surface temperature, and barometric elevation drift in real time.
+              </p>
+              <ul class="gear-features">
+                <li class="gear-feature">Iridium satellite emergency telemetry</li>
+                <li class="gear-feature">Sub-zero lithium cell rated to -40°C</li>
+                <li class="gear-feature">72-hour continuous mission life</li>
+              </ul>
+            </div>
+            <div class="gear-footer">
+              <span class="gear-price mono">CHF 680</span>
+              <button type="button" class="gear-btn mono">INSPECT SPEC</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Section 5: Expeditions & Passes
+         ========================================================================= -->
+    <section class="content-section" id="expeditions">
+      <div class="section-header">
+        <span class="section-tag">// High-Mountain Dispatch</span>
+        <h2 class="section-title">Reserved access to the upper glacier corridor.</h2>
+        <p class="section-desc">
+          Strict daily capacity limits ensure untouched powder lines and freshly rolled corduroy before standard lifts open.
+        </p>
+      </div>
+
+      <div class="passes-grid">
+        <!-- Pass 1 -->
+        <div class="pass-card">
+          <h3 class="pass-name">Dawn Patrol</h3>
+          <p class="spec-desc">06:00 early tram access to Piste 7 corduroy before resort opening.</p>
+          <div class="pass-price mono">
+            CHF 180 <span class="pass-term">/ day</span>
+          </div>
+          <ul class="pass-list">
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>First tracks access at 06:15</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Station meteorological briefing</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Heated locker at Trockener Steg</span>
+            </li>
+          </ul>
+          <a href="#hero" class="pass-cta mono">REQUEST PASS</a>
+        </div>
+
+        <!-- Pass 2: Featured -->
+        <div class="pass-card featured">
+          <span class="pass-badge">MOST DEMANDED</span>
+          <h3 class="pass-name">Glacier Traverse</h3>
+          <p class="spec-desc">Guided high-altitude descent from 3,883 m through the Breithorn plateau.</p>
+          <div class="pass-price mono">
+            CHF 460 <span class="pass-term">/ expedition</span>
+          </div>
+          <ul class="pass-list">
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>UIAGM mountain guide ratio 1:3</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Crevasse safety gear & harness</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Live satellite telemetry tracking</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Alpine gourmet lunch at Gandegghütte</span>
+            </li>
+          </ul>
+          <a href="#hero" class="pass-cta mono">RESERVE ROSTER</a>
+        </div>
+
+        <!-- Pass 3 -->
+        <div class="pass-card">
+          <h3 class="pass-name">Cryosphere Fellow</h3>
+          <p class="spec-desc">Season-long research and piste access for technical alpinists.</p>
+          <div class="pass-price mono">
+            CHF 2,400 <span class="pass-term">/ season</span>
+          </div>
+          <ul class="pass-list">
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Unlimited Matterhorn Glacier access</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Access to private weather raw telemetry API</span>
+            </li>
+            <li class="pass-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Annual SERAC field equipment package</span>
+            </li>
+          </ul>
+          <a href="#hero" class="pass-cta mono">APPLY FOR FELLOWSHIP</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       Site Footer
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand-col">
+        <div class="brand-lockup" style="margin-bottom: 1.5rem;">
+          <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 22 22 22 12 2" fill="none" stroke="#ffffff" />
+            <line x1="12" y1="2" x2="12" y2="22" stroke="#0066ff" stroke-width="2" />
+          </svg>
+          <span class="brand-name">SERAC</span>
+        </div>
+        <p class="spec-desc" style="max-width: 360px; margin-bottom: 1.5rem;">
+          High-altitude research outpost and alpine engineering collective based in Valais, Switzerland. Operating at the boundary of sub-zero performance.
+        </p>
+        <div class="mono" style="font-size: 0.75rem; color: var(--text-muted);">
+          LAT: 45°58′37″N // LON: 7°42′48″E // ELEV: 3,883 M
+        </div>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-title">Telemetry</h4>
+        <ul class="footer-menu">
+          <li><a href="#telemetry">Glacier Paradise Station</a></li>
+          <li><a href="#telemetry">Snowpack Stratum</a></li>
+          <li><a href="#telemetry">Wind Shear Vectors</a></li>
+          <li><a href="#telemetry">Live Barometer</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-title">Piste Lab</h4>
+        <ul class="footer-menu">
+          <li><a href="#engineering">Corduroy Tiller Dynamics</a></li>
+          <li><a href="#engineering">Thermal Sintering</a></li>
+          <li><a href="#engineering">Blue Marker Geometry</a></li>
+          <li><a href="#equipment">Field Collection</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-title">Expeditions</h4>
+        <ul class="footer-menu">
+          <li><a href="#expeditions">Dawn Patrol</a></li>
+          <li><a href="#expeditions">Glacier Traverse</a></li>
+          <li><a href="#expeditions">Cryosphere Fellowship</a></li>
+          <li><a href="#expeditions">Safety Protocols</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 SERAC Alpine Research Collective. All rights reserved.</div>
+      <div class="mono">VALAIS LOCAL TIME: 11:20 CEST // TEMPERATURE: -14.2°C</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
