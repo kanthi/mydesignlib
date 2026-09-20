@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rastera — Reactive Pixel Matrix & Motion Primitives</title>
+  <meta name="description" content="Watch text materialize out of pixels. Nine distinct procedural raster looks by toggling one prop. Lightweight canvas motion primitives for modern web engineers." />
+
+  <!-- Privacy & Anti-indexing -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-void: #08090b;
+      --bg-surface: #0f1115;
+      --bg-card: #15181f;
+      --bg-card-hover: #1c212a;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(34, 197, 94, 0.35);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-lime: #22c55e;
+      --accent-lime-glow: rgba(34, 197, 94, 0.25);
+      --accent-cyan: #00f2fe;
+      --accent-amber: #f59e0b;
+      --accent-purple: #a855f7;
+
+      --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --max-width: 1280px;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+    }
+
+    body {
+      background-color: var(--bg-void);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.07) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(8, 9, 11, 0.85);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      padding: 3px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid var(--border-highlight);
+      border-radius: 6px;
+    }
+
+    .brand-mark span {
+      background: var(--accent-lime);
+      border-radius: 1px;
+    }
+
+    .brand-mark span:nth-child(2),
+    .brand-mark span:nth-child(4),
+    .brand-mark span:nth-child(9) {
+      opacity: 0.25;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.45rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .fps-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-lime);
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    .fps-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      box-shadow: 0 0 8px var(--accent-lime);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.15rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-lime);
+      color: #050608;
+      box-shadow: 0 0 20px var(--accent-lime-glow);
+    }
+
+    .btn-primary:hover {
+      background: #1eb054;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 5rem 0 3.5rem;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-lime);
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      max-width: 920px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    /* Interactive Stage */
+    .stage-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      margin-bottom: 3rem;
+    }
+
+    .stage-header {
+      padding: 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .preset-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .preset-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .preset-pill:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .preset-pill.active {
+      background: var(--accent-lime);
+      color: #060809;
+      border-color: var(--accent-lime);
+      font-weight: 600;
+      box-shadow: 0 0 12px var(--accent-lime-glow);
+    }
+
+    .stage-canvas-wrap {
+      position: relative;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #090a0d;
+      overflow: hidden;
+    }
+
+    .stage-canvas-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 16px 16px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    #pixelCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stage-controls {
+      padding: 1.25rem 1.5rem;
+      background: rgba(255, 255, 255, 0.015);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .input-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .text-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .text-input:focus {
+      border-color: var(--accent-lime);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    }
+
+    .sliders-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .slider-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+
+    .slider-item input[type="range"] {
+      width: 90px;
+      accent-color: var(--accent-lime);
+      cursor: pointer;
+    }
+
+    .color-swatches {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .color-swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease;
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.15);
+    }
+
+    .color-swatch.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* Bento Grid */
+    .bento-section {
+      padding: 4rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-lime);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 2rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+    }
+
+    .bento-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: var(--accent-lime);
+    }
+
+    .bento-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.015em;
+    }
+
+    .bento-desc {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* Presets Specimen Grid */
+    .presets-section {
+      padding: 4rem 0;
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .presets-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .presets-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .specimen-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .specimen-card:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-2px);
+    }
+
+    .specimen-header {
+      padding: 0.85rem 1.15rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .specimen-name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-transform: uppercase;
+    }
+
+    .specimen-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .specimen-canvas-wrap {
+      height: 140px;
+      background: #08090c;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .specimen-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .specimen-footer {
+      padding: 0.75rem 1.15rem;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .specimen-replay {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent-lime);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Code API Section */
+    .code-section {
+      padding: 4rem 0;
+    }
+
+    .code-card {
+      background: #0a0c10;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .code-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .code-tab-list {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .code-tab {
+      padding: 0.9rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .code-tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent-lime);
+    }
+
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+
+    .copy-btn:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .code-content {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      overflow-x: auto;
+    }
+
+    .code-comment { color: #64748b; }
+    .code-keyword { color: #f43f5e; }
+    .code-string { color: #22c55e; }
+    .code-component { color: #38bdf8; }
+    .code-attr { color: #fbbf24; }
+
+    /* Props Table */
+    .props-table-wrap {
+      margin-top: 2rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-surface);
+    }
+
+    .props-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .props-table th {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .props-table td {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .props-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .prop-name {
+      font-family: var(--font-mono);
+      color: var(--accent-lime);
+      font-weight: 500;
+    }
+
+    .prop-type {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #38bdf8;
+    }
+
+    /* Terminal CTA */
+    .cta-section {
+      padding: 5rem 0;
+      text-align: center;
+    }
+
+    .cta-card {
+      background: linear-gradient(180deg, var(--bg-surface) 0%, #0c0e12 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cli-install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: #050608;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      margin: 2rem 0;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cli-install-box:hover {
+      border-color: var(--accent-lime);
+      box-shadow: 0 0 20px var(--accent-lime-glow);
+    }
+
+    .cli-command {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text-primary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 3rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-lime);
+      color: #06080a;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav-bar">
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <div class="brand-mark">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <span class="brand-title">RASTERA</span>
+        <span class="brand-pill">v1.0.4</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link">Playground</a></li>
+        <li><a href="#presets" class="nav-link">9 Presets</a></li>
+        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+        <li><a href="#api" class="nav-link">Component API</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="fps-badge" id="fpsDisplay">
+          <span class="fps-dot"></span>
+          <span id="fpsValue">60 FPS</span>
+        </div>
+        <button class="btn btn-primary" onclick="copyInstallCmd()">
+          <span>Copy Snippet</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="container">
+        <div class="hero-eyebrow">
+          <span>●</span>
+          <span>Original Motion Primitives // 01</span>
+        </div>
+        <h1 class="hero-title">
+          Watch text materialize<br />
+          <span>out of pure pixels.</span>
+        </h1>
+        <p class="hero-desc">
+          Then watch it happen 8 more ways by changing one prop. Pixel Reveal is the premiere motion primitive from Rastera — subpixel bitmap dissolution rendered at 120 FPS.
+        </p>
+
+        <!-- Interactive Canvas Stage -->
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="preset-pills" id="presetPills">
+              <button class="preset-pill active" data-preset="materialize">MATERIALIZE</button>
+              <button class="preset-pill" data-preset="signal">SIGNAL</button>
+              <button class="preset-pill" data-preset="typewriter">TYPEWRITER</button>
+              <button class="preset-pill" data-preset="dissolve">DISSOLVE</button>
+              <button class="preset-pill" data-preset="rain">RAIN</button>
+              <button class="preset-pill" data-preset="radiate">RADIATE</button>
+              <button class="preset-pill" data-preset="impulse">IMPULSE</button>
+              <button class="preset-pill" data-preset="glitch">GLITCH</button>
+              <button class="preset-pill" data-preset="flow">FLOW</button>
+            </div>
+
+            <button class="btn btn-ghost" id="replayBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 4v6h-6M1 20v-6h6"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              <span>Replay [Space]</span>
+            </button>
+          </div>
+
+          <div class="stage-canvas-wrap">
+            <canvas id="pixelCanvas"></canvas>
+          </div>
+
+          <div class="stage-controls">
+            <div class="input-group">
+              <span class="input-label">Text</span>
+              <input type="text" class="text-input" id="customTextInput" value="RASTERA // 01" placeholder="Type anything to test reveal..." />
+            </div>
+
+            <div class="sliders-group">
+              <div class="slider-item">
+                <span>Pixel Size</span>
+                <input type="range" id="pixelSizeSlider" min="2" max="12" step="1" value="5" />
+                <span id="pixelSizeValue" style="color:var(--text-primary); min-width:26px;">5px</span>
+              </div>
+
+              <div class="slider-item">
+                <span>Duration</span>
+                <input type="range" id="durationSlider" min="0.4" max="2.2" step="0.1" value="1.0" />
+                <span id="durationValue" style="color:var(--text-primary); min-width:32px;">1.0s</span>
+              </div>
+
+              <div class="color-swatches">
+                <div class="color-swatch active" data-color="#22c55e" style="background:#22c55e;"></div>
+                <div class="color-swatch" data-color="#00f2fe" style="background:#00f2fe;"></div>
+                <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b;"></div>
+                <div class="color-swatch" data-color="#f8fafc" style="background:#f8fafc;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Bento Architecture Section -->
+    <section class="bento-section" id="architecture">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// ARCHITECTURE</span>
+          <h2 class="section-title">Engineered for 120 FPS Subpixel Motion</h2>
+        </div>
+
+        <div class="bento-grid">
+          <div class="bento-card">
+            <div class="bento-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M3 9h18M9 21V9"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">Dual-Buffer Offscreen Raster</h3>
+            <p class="bento-desc">
+              Text glyphs are painted once to an in-memory offscreen canvas buffer to extract subpixel alpha coordinates. Zero layout reflow or DOM tree recreation during particle updates.
+            </p>
+          </div>
+
+          <div class="bento-card">
+            <div class="bento-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">3.1 kB Zero Dependencies</h3>
+            <p class="bento-desc">
+              No heavy 3D runtimes or bloated WASM payloads. Pure deterministic Canvas 2D math running effortlessly at 60–120 FPS on all modern devices.
+            </p>
+          </div>
+
+          <div class="bento-card">
+            <div class="bento-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <h3 class="bento-title">Full Accessibility Fallback</h3>
+            <p class="bento-desc">
+              Automated screen-reader mirroring with invisible semantic HTML nodes. Honors <code>prefers-reduced-motion</code> by rendering instant crisp typography without flashing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 Presets Specimen Grid -->
+    <section class="presets-section" id="presets">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// PRESET SPECIMENS</span>
+          <h2 class="section-title">Nine Looks. One Prop.</h2>
+        </div>
+
+        <div class="presets-grid" id="specimensGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Component API Section -->
+    <section class="code-section" id="api">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// INTEGRATION</span>
+          <h2 class="section-title">Component API & Integration</h2>
+        </div>
+
+        <div class="code-card">
+          <div class="code-tabs">
+            <div class="code-tab-list">
+              <button class="code-tab active" data-lang="react">React / Next.js</button>
+              <button class="code-tab" data-lang="vanilla">Vanilla JS</button>
+              <button class="code-tab" data-lang="vue">Vue 3</button>
+            </div>
+            <button class="copy-btn" onclick="copySnippet()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+
+          <pre class="code-content" id="codeDisplay"><code><span class="code-keyword">import</span> { <span class="code-component">PixelReveal</span> } <span class="code-keyword">from</span> <span class="code-string">'@rastera/react'</span>;
+
+<span class="code-keyword">export default function</span> <span class="code-component">HeroHeader</span>() {
+  <span class="code-keyword">return</span> (
+    &lt;<span class="code-component">PixelReveal</span>
+      <span class="code-attr">text</span>=<span class="code-string">"RASTERA PRIMITIVES"</span>
+      <span class="code-attr">preset</span>=<span class="code-string">"materialize"</span>  <span class="code-comment">// "signal" | "typewriter" | "dissolve" | "rain" ...</span>
+      <span class="code-attr">pixelSize</span>={<span class="code-string">5</span>}
+      <span class="code-attr">duration</span>={<span class="code-string">1.0</span>}
+      <span class="code-attr">color</span>=<span class="code-string">"#22c55e"</span>
+      <span class="code-attr">onComplete</span>={() =&gt; console.log(<span class="code-string">'Materialized'</span>)}
+    /&gt;
+  );
+}</code></pre>
+        </div>
+
+        <!-- Props Table -->
+        <div class="props-table-wrap">
+          <table class="props-table">
+            <thead>
+              <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="prop-name">preset</span></td>
+                <td><span class="prop-type">'materialize' | 'signal' | 'typewriter' | 'dissolve' | 'rain' | 'radiate' | 'impulse' | 'glitch' | 'flow'</span></td>
+                <td>'materialize'</td>
+                <td>Procedural particle dissolution mode.</td>
+              </tr>
+              <tr>
+                <td><span class="prop-name">text</span></td>
+                <td><span class="prop-type">string</span></td>
+                <td>Required</td>
+                <td>The text string to rasterize and reveal.</td>
+              </tr>
+              <tr>
+                <td><span class="prop-name">pixelSize</span></td>
+                <td><span class="prop-type">number</span></td>
+                <td>5</td>
+                <td>Grid resolution dimension in logical pixels (2–14).</td>
+              </tr>
+              <tr>
+                <td><span class="prop-name">duration</span></td>
+                <td><span class="prop-type">number</span></td>
+                <td>1.0</td>
+                <td>Animation playback time in seconds.</td>
+              </tr>
+              <tr>
+                <td><span class="prop-name">color</span></td>
+                <td><span class="prop-type">string</span></td>
+                <td>'#22c55e'</td>
+                <td>Hex or CSS color string for active phosphor particles.</td>
+              </tr>
+              <tr>
+                <td><span class="prop-name">trigger</span></td>
+                <td><span class="prop-type">'mount' | 'scroll' | 'hover' | 'manual'</span></td>
+                <td>'mount'</td>
+                <td>Event trigger mode for starting the pixel reveal.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Terminal CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-card">
+          <span class="hero-eyebrow">// GET STARTED</span>
+          <h2 class="hero-title" style="font-size:clamp(2rem, 4vw, 3rem); margin: 0.5rem auto 1rem;">
+            Add Pixel Reveal to your stack today.
+          </h2>
+          <p class="hero-desc" style="margin:0 auto 1.5rem;">
+            Single-file install via npm, pnpm, or CLI package generator.
+          </p>
+
+          <div class="cli-install-box" onclick="copyInstallCmd()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-lime);">
+              <polyline points="4 17 10 11 4 5"/>
+              <line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+            <span class="cli-command">npx rastera-ui add pixel-reveal</span>
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); margin-left:0.5rem;">[Click to copy]</span>
+          </div>
+
+          <div style="display:flex; justify-content:center; gap:1rem;">
+            <a href="#hero" class="btn btn-primary">
+              <span>Open Playground</span>
+            </a>
+            <a href="#api" class="btn btn-ghost">
+              <span>Read Spec</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <div style="display:flex; align-items:center; gap:0.6rem;">
+        <span style="font-family:var(--font-display); font-weight:800; color:var(--text-primary);">RASTERA</span>
+        <span>&copy; 2026 Rastera Motion Systems. Static design library specimen.</span>
+      </div>
+
+      <div style="display:flex; gap:1.5rem;">
+        <a href="#hero" style="color:var(--text-muted); text-decoration:none;">Playground</a>
+        <a href="#presets" style="color:var(--text-muted); text-decoration:none;">Presets</a>
+        <a href="#api" style="color:var(--text-muted); text-decoration:none;">API Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <!-- Interactive Pixel Reveal Engine Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // 1. Audio Synthesis for tactile micro-interactions
+      let audioCtx = null;
+      function playMechanicalChime() {
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.08);
+        } catch(e) {}
+      }
+
+      // 2. Pixel Engine Canvas Implementation
+      const canvas = document.getElementById('pixelCanvas');
+      const ctx = canvas.getContext('2d');
+      const textInput = document.getElementById('customTextInput');
+      const pixelSlider = document.getElementById('pixelSizeSlider');
+      const pixelSizeVal = document.getElementById('pixelSizeValue');
+      const durationSlider = document.getElementById('durationSlider');
+      const durationVal = document.getElementById('durationValue');
+      const replayBtn = document.getElementById('replayBtn');
+      const presetPills = document.querySelectorAll('.preset-pill');
+      const colorSwatches = document.querySelectorAll('.color-swatch');
+
+      let currentPreset = 'materialize';
+      let currentText = textInput.value || 'RASTERA // 01';
+      let pixelSize = parseInt(pixelSlider.value, 10) || 5;
+      let duration = parseFloat(durationSlider.value) || 1.0;
+      let activeColor = '#22c55e';
+
+      let particles = [];
+      let startTime = null;
+      let isAnimating = false;
+      let animationFrameId = null;
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        initParticles();
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+
+      // Extract text pixels using offscreen buffer
+      function initParticles() {
+        const rect = canvas.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
+        if (w === 0 || h === 0) return;
+
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = w;
+        offCanvas.height = h;
+        const offCtx = offCanvas.getContext('2d');
+
+        // Font sizing
+        const fontSize = Math.min(w * 0.11, 72);
+        offCtx.fillStyle = '#ffffff';
+        offCtx.font = `800 ${fontSize}px Syne, sans-serif`;
+        offCtx.textAlign = 'center';
+        offCtx.textBaseline = 'middle';
+        offCtx.fillText(currentText, w / 2, h / 2);
+
+        const imgData = offCtx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+
+        particles = [];
+        const step = pixelSize;
+
+        for (let y = 0; y < h; y += step) {
+          for (let x = 0; x < w; x += step) {
+            const index = (y * w + x) * 4;
+            const alpha = data[index + 3];
+            if (alpha > 80) {
+              // Calculate preset parameters
+              let delay = 0;
+              let startX = x;
+              let startY = y;
+              const distFromCenter = Math.hypot(x - w / 2, y - h / 2);
+              const normX = x / w;
+              const normY = y / h;
+
+              switch (currentPreset) {
+                case 'signal':
+                  delay = normX * 0.6;
+                  startX = x - 20;
+                  break;
+                case 'typewriter':
+                  delay = normX * 0.85;
+                  startX = x;
+                  break;
+                case 'rain':
+                  delay = (1 - normY) * 0.5 + Math.random() * 0.3;
+                  startY = y - 40 - Math.random() * 80;
+                  break;
+                case 'radiate':
+                  delay = (distFromCenter / (w * 0.5)) * 0.6;
+                  startX = x + (x - w / 2) * 0.2;
+                  startY = y + (y - h / 2) * 0.2;
+                  break;
+                case 'impulse':
+                  delay = (Math.sin(normX * 12) * 0.5 + 0.5) * 0.4 + normY * 0.3;
+                  break;
+                case 'dissolve':
+                  delay = Math.random() * 0.8;
+                  break;
+                case 'glitch':
+                  delay = ((y % 16) / 16) * 0.5 + (Math.random() * 0.3);
+                  startX = x + (Math.random() - 0.5) * 60;
+                  break;
+                case 'flow':
+                  delay = (normX + Math.sin(normY * 6) * 0.2) * 0.6;
+                  startX = x + Math.cos(normY * 4) * 30;
+                  startY = y + Math.sin(normX * 4) * 20;
+                  break;
+                case 'materialize':
+                default:
+                  delay = Math.random() * 0.5 + normX * 0.3;
+                  startX = x + (Math.random() - 0.5) * 120;
+                  startY = y + (Math.random() - 0.5) * 120;
+                  break;
+              }
+
+              particles.push({
+                targetX: x,
+                targetY: y,
+                startX: startX,
+                startY: startY,
+                delay: delay,
+                size: step - 1,
+                alpha: alpha / 255
+              });
+            }
+          }
+        }
+
+        startTime = performance.now();
+        if (!isAnimating) {
+          isAnimating = true;
+          render();
+        }
+      }
+
+      function render(time) {
+        if (!startTime) startTime = time || performance.now();
+        const elapsed = ((time || performance.now()) - startTime) / 1000;
+        const totalDuration = duration;
+
+        const rect = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+
+        let activeCount = 0;
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          const particleElapsed = elapsed - p.delay;
+          const progress = Math.min(Math.max(particleElapsed / (totalDuration * 0.6), 0), 1);
+
+          if (progress > 0) {
+            // Smooth ease-out quad
+            const ease = 1 - (1 - progress) * (1 - progress);
+            const curX = p.startX + (p.targetX - p.startX) * ease;
+            const curY = p.startY + (p.targetY - p.startY) * ease;
+            const curAlpha = ease * p.alpha;
+
+            ctx.fillStyle = activeColor;
+            ctx.globalAlpha = curAlpha;
+
+            if (currentPreset === 'typewriter' && progress < 0.95) {
+              // Cursor flash
+              ctx.shadowColor = activeColor;
+              ctx.shadowBlur = 8;
+            } else {
+              ctx.shadowBlur = 0;
+            }
+
+            ctx.fillRect(curX, curY, p.size, p.size);
+            activeCount++;
+          }
+        }
+
+        ctx.globalAlpha = 1.0;
+        ctx.shadowBlur = 0;
+
+        if (elapsed < totalDuration + 0.5) {
+          animationFrameId = requestAnimationFrame(render);
+        } else {
+          isAnimating = false;
+        }
+      }
+
+      function triggerAnimation() {
+        playMechanicalChime();
+        initParticles();
+      }
+
+      // 3. Event Listeners
+      presetPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          presetPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          currentPreset = pill.dataset.preset;
+          triggerAnimation();
+        });
+      });
+
+      colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          colorSwatches.forEach(s => s.classList.remove('active'));
+          swatch.classList.add('active');
+          activeColor = swatch.dataset.color;
+          triggerAnimation();
+        });
+      });
+
+      textInput.addEventListener('input', (e) => {
+        currentText = e.target.value.trim() || 'RASTERA';
+        triggerAnimation();
+      });
+
+      pixelSlider.addEventListener('input', (e) => {
+        pixelSize = parseInt(e.target.value, 10);
+        pixelSizeVal.textContent = `${pixelSize}px`;
+        triggerAnimation();
+      });
+
+      durationSlider.addEventListener('input', (e) => {
+        duration = parseFloat(e.target.value);
+        durationVal.textContent = `${duration.toFixed(1)}s`;
+        triggerAnimation();
+      });
+
+      replayBtn.addEventListener('click', triggerAnimation);
+
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target !== textInput) {
+          e.preventDefault();
+          triggerAnimation();
+        }
+      });
+
+      // 4. Populate 9 Presets Specimen Grid
+      const specimens = [
+        { name: 'MATERIALIZE', desc: 'Random coordinates coalesce into crisp glyphs.', tag: '01' },
+        { name: 'SIGNAL', desc: 'Horizontal telemetry scanline wave printer.', tag: '02' },
+        { name: 'TYPEWRITER', desc: 'Phosphor cursor printing sequential glyph blocks.', tag: '03' },
+        { name: 'DISSOLVE', desc: 'Stochastic noise dither fading into solid density.', tag: '04' },
+        { name: 'RAIN', desc: 'Vertical falling cybernetic streams anchoring into type.', tag: '05' },
+        { name: 'RADIATE', desc: 'Centroid shockwave blossoming outwards.', tag: '06' },
+        { name: 'IMPULSE', desc: 'Concentric sine frequency ripple waves.', tag: '07' },
+        { name: 'GLITCH', desc: 'Scanline chromatic displacement and jitter.', tag: '08' },
+        { name: 'FLOW', desc: 'Liquid particle velocity contour dither.', tag: '09' }
+      ];
+
+      const specimensGrid = document.getElementById('specimensGrid');
+      if (specimensGrid) {
+        specimens.forEach(spec => {
+          const card = document.createElement('div');
+          card.className = 'specimen-card';
+          card.innerHTML = `
+            <div class="specimen-header">
+              <span class="specimen-name">${spec.name}</span>
+              <span class="specimen-tag">${spec.tag} // PRESET</span>
+            </div>
+            <div class="specimen-canvas-wrap">
+              <canvas class="specimen-canvas" data-preset="${spec.name.toLowerCase()}"></canvas>
+            </div>
+            <div class="specimen-footer">
+              <span>${spec.desc}</span>
+              <span class="specimen-replay">▶ Run</span>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            // Select in main stage
+            const pill = document.querySelector(`.preset-pill[data-preset="${spec.name.toLowerCase()}"]`);
+            if (pill) {
+              pill.click();
+              window.scrollTo({ top: document.getElementById('hero').offsetTop - 80, behavior: 'smooth' });
+            }
+          });
+
+          specimensGrid.appendChild(card);
+        });
+
+        // Initialize mini canvases
+        setTimeout(initSpecimenCanvases, 200);
+      }
+
+      function initSpecimenCanvases() {
+        const miniCanvases = document.querySelectorAll('.specimen-canvas');
+        miniCanvases.forEach(mCanvas => {
+          const mCtx = mCanvas.getContext('2d');
+          const preset = mCanvas.dataset.preset;
+          const rect = mCanvas.getBoundingClientRect();
+          mCanvas.width = rect.width * 1.5;
+          mCanvas.height = rect.height * 1.5;
+          mCtx.scale(1.5, 1.5);
+
+          mCtx.fillStyle = '#22c55e';
+          mCtx.font = '700 24px Syne, sans-serif';
+          mCtx.textAlign = 'center';
+          mCtx.textBaseline = 'middle';
+          mCtx.fillText(preset.toUpperCase(), rect.width / 2, rect.height / 2);
+        });
+      }
+
+      // 5. Code Tab Switcher
+      const codeTabs = document.querySelectorAll('.code-tab');
+      const codeDisplay = document.getElementById('codeDisplay');
+      const snippets = {
+        react: `<span class="code-keyword">import</span> { <span class="code-component">PixelReveal</span> } <span class="code-keyword">from</span> <span class="code-string">'@rastera/react'</span>;\n\n<span class="code-keyword">export default function</span> <span class="code-component">HeroHeader</span>() {\n  <span class="code-keyword">return</span> (\n    &lt;<span class="code-component">PixelReveal</span>\n      <span class="code-attr">text</span>=<span class="code-string">"RASTERA PRIMITIVES"</span>\n      <span class="code-attr">preset</span>=<span class="code-string">"materialize"</span>  <span class="code-comment">// "signal" | "typewriter" | "dissolve" | "rain" ...</span>\n      <span class="code-attr">pixelSize</span>={<span class="code-string">5</span>}\n      <span class="code-attr">duration</span>={<span class="code-string">1.0</span>}\n      <span class="code-attr">color</span>=<span class="code-string">"#22c55e"</span>\n      <span class="code-attr">onComplete</span>={() =&gt; console.log(<span class="code-string">'Materialized'</span>)}\n    /&gt;\n  );\n}`,
+        vanilla: `<span class="code-comment">// Pure Vanilla JS / Web Component</span>\n<span class="code-keyword">import</span> <span class="code-string">'@rastera/core'</span>;\n\n<span class="code-keyword">const</span> el = document.<span class="code-component">querySelector</span>(<span class="code-string">'rastera-pixel-reveal'</span>);\nel.setAttribute(<span class="code-string">'text'</span>, <span class="code-string">'RASTERA // 01'</span>);\nel.setAttribute(<span class="code-string">'preset'</span>, <span class="code-string">'signal'</span>);\nel.setAttribute(<span class="code-string">'pixel-size'</span>, <span class="code-string">'4'</span>);\nel.<span class="code-component">play</span>();`,
+        vue: `<span class="code-comment">&lt;!-- Vue 3 Composition API --&gt;</span>\n&lt;<span class="code-keyword">template</span>&gt;\n  &lt;<span class="code-component">PixelReveal</span>\n    <span class="code-attr">text</span>=<span class="code-string">"RASTERA // 01"</span>\n    <span class="code-attr">preset</span>=<span class="code-string">"typewriter"</span>\n    :<span class="code-attr">pixel-size</span>=<span class="code-string">"5"</span>\n    :<span class="code-attr">duration</span>=<span class="code-string">"1.0"</span>\n    <span class="code-attr">color</span>=<span class="code-string">"#22c55e"</span>\n  /&gt;\n&lt;/<span class="code-keyword">template</span>&gt;\n\n&lt;<span class="code-keyword">script setup</span>&gt;\n<span class="code-keyword">import</span> { <span class="code-component">PixelReveal</span> } <span class="code-keyword">from</span> <span class="code-string">'@rastera/vue'</span>;\n&lt;/<span class="code-keyword">script</span>&gt;`
+      };
+
+      codeTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          codeTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const lang = tab.dataset.lang;
+          if (snippets[lang]) {
+            codeDisplay.innerHTML = `<code>${snippets[lang]}</code>`;
+          }
+        });
+      });
+
+      // 6. Toast & Copy Utilities
+      const toast = document.getElementById('toast');
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+
+      window.copyInstallCmd = function() {
+        navigator.clipboard.writeText('npx rastera-ui add pixel-reveal').then(() => {
+          showToast('Copied: npx rastera-ui add pixel-reveal');
+        }).catch(() => {
+          showToast('Copied install command!');
+        });
+      };
+
+      window.copySnippet = function() {
+        navigator.clipboard.writeText(codeDisplay.innerText).then(() => {
+          showToast('Code copied to clipboard!');
+        }).catch(() => {
+          showToast('Copied code!');
+        });
+      };
+
+      // 7. Live FPS Monitor
+      let frameCount = 0;
+      let lastFpsUpdate = performance.now();
+      const fpsValEl = document.getElementById('fpsValue');
+
+      function updateFps() {
+        frameCount++;
+        const now = performance.now();
+        if (now - lastFpsUpdate >= 1000) {
+          const fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+          if (fpsValEl) fpsValEl.textContent = `${fps} FPS`;
+          frameCount = 0;
+          lastFpsUpdate = now;
+        }
+        requestAnimationFrame(updateFps);
+      }
+      requestAnimationFrame(updateFps);
+
+      // Start initial canvas
+      setTimeout(resizeCanvas, 100);
+
+    })();
+  </script>
+</body>
+</html>
