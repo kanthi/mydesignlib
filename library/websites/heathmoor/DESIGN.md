@@ -16,12 +16,13 @@
   - "The Path Across the Heath" Interactive Reader Wizard: A multi-step decision tree guiding visitors through tailored poetic moods.
 
 ## Colors (Semantic)
-- `bg-base`: `#f7f4ed` (Warm Antique Parchment)
-- `bg-surface`: `#ede8dc` (Aged Vellum Surface)
-- `bg-card`: `#ffffff` (Crisp Hot-Pressed Cotton Rag)
-- `bg-card-hover`: `#fbfaf6`
-- `border-ink`: `rgba(24, 22, 20, 0.12)` (Iron-Gall Hairline)
-- `border-strong`: `rgba(24, 22, 20, 0.22)`
+- `bg-base`: `#ffffff` (Pure White Canvas)
+- `bg-surface`: `#f9f9fb` (Ultra-subtle Archival Surface)
+- `bg-surface-soft`: `#f4f4f6`
+- `bg-card`: `#ffffff` (Pure White Card Surface)
+- `bg-card-hover`: `#fafafa`
+- `border-ink`: `rgba(24, 22, 20, 0.08)` (Subtle Hairline Ink Rule)
+- `border-strong`: `rgba(24, 22, 20, 0.16)`
 - `border-highlight`: `rgba(125, 24, 48, 0.35)` (Heather Crimson Border)
 - `text-primary`: `#181614` (Dense Iron-Gall Ink)
 - `text-secondary`: `#524d45` (Walnut Slate)
