@@ -1,0 +1,2631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Vitreon — Liquid-Glass AI Infrastructure & Autonomous Compute Substrate</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #06070b;
+      --bg-surface: #0a0d16;
+      --bg-surface-elevated: #0f1422;
+      
+      /* Liquid Glass Tokens */
+      --glass-card: rgba(14, 18, 30, 0.58);
+      --glass-card-hover: rgba(19, 25, 42, 0.72);
+      --glass-specular: rgba(255, 255, 255, 0.12);
+      --glass-specular-bright: rgba(255, 255, 255, 0.28);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-hover: rgba(56, 189, 248, 0.35);
+      
+      /* Glow & Accents */
+      --cyan: #38bdf8;
+      --cyan-muted: #0284c7;
+      --cyan-glow: rgba(56, 189, 248, 0.18);
+      --violet: #818cf8;
+      --purple: #a855f7;
+      --emerald: #34d399;
+      --emerald-glow: rgba(52, 211, 153, 0.15);
+      
+      /* Typography Colors */
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-dim: #334155;
+      
+      /* Fonts */
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Layout */
+      --container-max: 1280px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 10% 35%, rgba(129, 140, 248, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 65%, rgba(52, 211, 153, 0.06) 0%, transparent 40%);
+      background-attachment: fixed;
+      line-height: 1.6;
+    }
+
+    /* Subtle Grid Texture */
+    .bg-grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 85%);
+      z-index: 1;
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Common Frosted Glass Card */
+    .liquid-glass {
+      background: var(--glass-card);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 var(--glass-specular);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--glass-specular-bright) 50%, transparent 100%);
+      opacity: 0.7;
+    }
+
+    .liquid-glass:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.55),
+        0 0 30px var(--cyan-glow),
+        inset 0 1px 0 var(--glass-specular-bright);
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 20px;
+    }
+
+    .nav-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-radius: 999px;
+      background: rgba(10, 13, 22, 0.78);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo-svg {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .brand-lockup:hover .brand-logo-svg {
+      transform: rotate(90deg) scale(1.05);
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .cluster-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(56, 189, 248, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: 96px;
+      padding-bottom: 60px;
+      position: relative;
+    }
+
+    .hero-header {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 24px auto;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(16px);
+      margin-bottom: 14px;
+    }
+
+    .hero-pill-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+    }
+
+    .hero-pill-text {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.3rem, 4.4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--text-secondary);
+      max-width: 660px;
+      margin: 0 auto 22px auto;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .hero-stats-strip {
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+      padding: 8px 22px;
+      border-radius: 999px;
+      background: rgba(14, 18, 30, 0.45);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+    }
+
+    .stat-val {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    /* Masterpiece Cockpit HUD (Figma High-Fidelity Preview) */
+    .cockpit-container {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .cockpit-ambient-glow {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      height: 70%;
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.15) 0%, rgba(129, 140, 248, 0.1) 40%, transparent 75%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cockpit-frame {
+      position: relative;
+      z-index: 2;
+      background: rgba(11, 14, 24, 0.78);
+      backdrop-filter: blur(32px) saturate(200%);
+      -webkit-backdrop-filter: blur(32px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 
+        0 40px 100px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(56, 189, 248, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+
+    .cockpit-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .cockpit-title-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .window-dot.close { background: #ef4444; }
+    .window-dot.min { background: #f59e0b; }
+    .window-dot.max { background: #10b981; }
+
+    .cockpit-tab-group {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .cockpit-tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cockpit-tab.active {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Bento Grid Inside Cockpit */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    .bento-col-8 { grid-column: span 8; }
+    .bento-col-4 { grid-column: span 4; }
+    .bento-col-6 { grid-column: span 6; }
+    .bento-col-12 { grid-column: span 12; }
+
+    .bento-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bento-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .bento-card-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bento-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Live Sparkline & Telemetry Metrics */
+    .metric-hero-value {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .metric-hero-unit {
+      font-size: 1rem;
+      color: var(--cyan);
+      font-weight: 500;
+    }
+
+    .metric-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .metric-trend-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--emerald);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    .sparkline-svg {
+      width: 100%;
+      height: 110px;
+      overflow: visible;
+    }
+
+    .sparkline-line {
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+    }
+
+    .sparkline-fill {
+      fill: url(#cyan-spark-gradient);
+    }
+
+    /* Node Mesh Visualizer */
+    .node-mesh-container {
+      position: relative;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+
+    .node-mesh-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .node-pulse-circle {
+      animation: pulse-node 3s infinite alternate;
+    }
+
+    @keyframes pulse-node {
+      0% { r: 5; opacity: 0.7; }
+      100% { r: 8; opacity: 1; filter: drop-shadow(0 0 10px var(--cyan)); }
+    }
+
+    /* Memory Sharding Bars */
+    .sharding-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .sharding-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .sharding-info {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .sharding-name { color: var(--text-secondary); }
+    .sharding-val { color: var(--text-primary); font-weight: 600; }
+
+    .sharding-progress-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .sharding-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      position: relative;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fill-cyan { background: linear-gradient(90deg, #0284c7, #38bdf8); }
+    .fill-violet { background: linear-gradient(90deg, #6366f1, #a855f7); }
+    .fill-emerald { background: linear-gradient(90deg, #059669, #34d399); }
+
+    /* Live Telemetry Terminal Feed */
+    .telemetry-feed {
+      background: rgba(6, 8, 14, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      height: 170px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      scrollbar-width: thin;
+    }
+
+    .feed-line {
+      display: flex;
+      gap: 8px;
+      line-height: 1.4;
+      animation: feed-slide 0.3s ease;
+    }
+
+    @keyframes feed-slide {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feed-time { color: var(--text-muted); flex-shrink: 0; }
+    .feed-tag-green { color: var(--emerald); flex-shrink: 0; }
+    .feed-tag-blue { color: var(--cyan); flex-shrink: 0; }
+    .feed-tag-purple { color: var(--purple); flex-shrink: 0; }
+    .feed-msg { color: var(--text-secondary); word-break: break-all; }
+
+    /* Section Styling */
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--cyan);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* Swiss Monogram & Identity Studio */
+    .swiss-studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .monogram-showcase-panel {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 480px;
+      position: relative;
+    }
+
+    .monogram-interactive-frame {
+      width: 220px;
+      height: 220px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .monogram-interactive-frame.theme-light {
+      background: #ffffff;
+      color: #08090e;
+      border: 1px solid #e2e8f0;
+    }
+
+    .monogram-interactive-frame.theme-dark {
+      background: #08090e;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .monogram-interactive-frame.theme-grid {
+      background: #08090e;
+      background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.15) 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-position: center center;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #ffffff;
+    }
+
+    .monogram-large-svg {
+      width: 140px;
+      height: 140px;
+      transition: transform 0.3s ease;
+    }
+
+    .monogram-modes {
+      display: flex;
+      gap: 8px;
+      margin-top: 28px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .mode-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* Monogram Specs Breakdown */
+    .swiss-specs-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spec-card {
+      padding: 20px 24px;
+    }
+
+    .spec-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .spec-card-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .spec-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .spec-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Scale Stress Test Strip */
+    .scale-tester-strip {
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 8px;
+    }
+
+    .scale-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scale-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* 6-Card Bento Metrics Deep Dive */
+    .metrics-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .metric-bento-tile {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+    }
+
+    .tile-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--cyan);
+      margin-bottom: 20px;
+    }
+
+    .tile-metric-digit {
+      font-family: var(--font-mono);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .tile-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .tile-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Interactive Latency Sandbox Slider */
+    .sandbox-container {
+      padding: 36px;
+      margin-top: 48px;
+    }
+
+    .sandbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .sandbox-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .custom-range {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      transition: transform 0.1s ease;
+    }
+
+    .custom-range::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .sandbox-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sandbox-metric-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sandbox-metric-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .sandbox-metric-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Interactive Code & Playground */
+    .code-terminal-panel {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .code-terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .code-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .code-tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .code-tab-btn.active {
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .code-body {
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+      overflow-x: auto;
+    }
+
+    .code-kw { color: #f43f5e; }
+    .code-str { color: #34d399; }
+    .code-func { color: #38bdf8; }
+    .code-comm { color: #64748b; font-style: italic; }
+    .code-var { color: #fbbf24; }
+
+    .terminal-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .execution-output-box {
+      margin: 16px 24px 24px 24px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .execution-output-box.show {
+      display: block;
+      animation: feed-slide 0.3s ease;
+    }
+
+    /* Pricing Section */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(16, 22, 38, 0.8);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), 0 0 35px rgba(56, 189, 248, 0.2);
+      transform: scale(1.03);
+    }
+
+    .pricing-tier-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .pricing-tier-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      min-height: 42px;
+    }
+
+    .price-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .price-currency { font-size: 1.5rem; font-weight: 600; color: var(--text-muted); }
+    .price-number { font-family: var(--font-mono); font-size: 2.8rem; font-weight: 800; color: #ffffff; }
+    .price-period { font-size: 0.88rem; color: var(--text-muted); }
+
+    .pricing-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-check {
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    /* FAQ Accordion */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      background: rgba(14, 18, 30, 0.45);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 22px 24px;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+      color: var(--cyan);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease;
+      padding: 0 24px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 220px;
+      padding-bottom: 22px;
+    }
+
+    /* Final CTA Banner */
+    .final-cta-card {
+      padding: 64px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-top: 40px;
+    }
+
+    .cta-glow-backdrop {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.1) 50%, transparent 70%);
+      filter: blur(50px);
+      z-index: 0;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .cli-install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      margin-top: 28px;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      color: var(--cyan);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 80px 0 40px 0;
+      margin-top: 100px;
+      background: rgba(6, 8, 14, 0.8);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 320px;
+      margin-top: 14px;
+    }
+
+    .footer-heading {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(14, 18, 30, 0.95);
+      border: 1px solid var(--cyan);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px var(--cyan-glow);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .toast.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .bento-col-8, .bento-col-4, .bento-col-6 {
+        grid-column: span 12;
+      }
+      .swiss-studio-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-bento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-card.featured {
+        transform: none;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu, .cluster-status {
+        display: none;
+      }
+      .mobile-toggle {
+        display: block;
+      }
+      .hero-section {
+        padding-top: 120px;
+      }
+      .metrics-bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .sandbox-metrics-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats-strip {
+        flex-direction: column;
+        gap: 12px;
+        border-radius: var(--radius-md);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Subtle Ambient Background Grid -->
+  <div class="bg-grid-overlay" aria-hidden="true"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast" role="status" aria-live="polite">SVG Copied to Clipboard</div>
+
+  <!-- Glassmorphic Fixed Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="brand-lockup" aria-label="Vitreon Home">
+        <!-- Swiss Vector Monogram Logomark -->
+        <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer Hex/Cartesian Monogram with Interconnected Nodes -->
+          <rect width="100" height="100" rx="20" fill="black"/>
+          <!-- Swiss Grid Geometric Pathways -->
+          <path d="M22 28L50 78L78 28" stroke="white" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+          <!-- Horizontal Cross Node Interconnect -->
+          <path d="M36 53H64" stroke="white" stroke-width="7" stroke-linecap="square"/>
+          <!-- Center Negative Space Core -->
+          <circle cx="50" cy="53" r="5" fill="black"/>
+          <!-- Interconnected Nodes -->
+          <circle cx="22" cy="28" r="4.5" fill="white"/>
+          <circle cx="78" cy="28" r="4.5" fill="white"/>
+          <circle cx="50" cy="78" r="4.5" fill="white"/>
+        </svg>
+        <span class="brand-name">
+          VITREON
+          <span class="brand-badge">v4.8</span>
+        </span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="#cockpit">Cockpit</a></li>
+          <li><a href="#monogram-studio">Monogram Specimen</a></li>
+          <li><a href="#bento-metrics">Bento Metrics</a></li>
+          <li><a href="#latency-sandbox">Latency Sandbox</a></li>
+          <li><a href="#api-terminal">API Playground</a></li>
+          <li><a href="#pricing">Clusters</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-right">
+        <div class="cluster-status" title="Global Substrate Status">
+          <div class="status-dot"></div>
+          <span>CLUSTER: 99.998% RUNNING</span>
+        </div>
+        <a href="#pricing" class="btn btn-primary">Deploy Cluster</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-header">
+        <div class="hero-pill">
+          <span class="hero-pill-badge">AI INFRASTRUCTURE LAB</span>
+          <span class="hero-pill-text">Liquid-Glass Substrate for High-Throughput Inference</span>
+        </div>
+
+        <h1 class="hero-title">Liquid Glass for Autonomous Intelligence.</h1>
+        <p class="hero-subtitle">
+          A unified compute substrate designed for sub-millisecond tensor dispatch, distributed KV-cache pooling, and zero-copy memory routing across hyperscale GPU clusters.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#pricing" class="btn btn-primary" style="padding: 12px 28px; font-size: 0.95rem;">Deploy Compute Cluster</a>
+          <a href="#monogram-studio" class="btn btn-glass" style="padding: 12px 28px; font-size: 0.95rem;">Swiss Vector Specimen</a>
+        </div>
+
+        <div class="hero-stats-strip">
+          <div class="stat-item">
+            <span class="stat-label">P99 TTFT:</span>
+            <span class="stat-val">1.18ms</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Interconnect:</span>
+            <span class="stat-val">3.2 Tbps</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Active H100s:</span>
+            <span class="stat-val">4,096 Nodes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Cache Hit:</span>
+            <span class="stat-val">99.42%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Masterpiece Cockpit HUD (Figma High-Fidelity Preview) -->
+      <div id="cockpit" class="cockpit-container">
+        <div class="cockpit-ambient-glow" aria-hidden="true"></div>
+
+        <div class="cockpit-frame">
+          <!-- Cockpit Header -->
+          <div class="cockpit-header">
+            <div class="cockpit-title-area">
+              <div class="window-dots" aria-hidden="true">
+                <div class="window-dot close"></div>
+                <div class="window-dot min"></div>
+                <div class="window-dot max"></div>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); margin-left: 8px;">
+                vitreon-telemetry-hud // cluster-us-east-alpha // hbm3e-sharded
+              </span>
+            </div>
+
+            <div class="cockpit-tab-group" role="tablist">
+              <button class="cockpit-tab active" data-mode="inference" onclick="switchCockpitMode('inference')">Real-Time Inference</button>
+              <button class="cockpit-tab" data-mode="training" onclick="switchCockpitMode('training')">Distributed Training</button>
+              <button class="cockpit-tab" data-mode="quantization" onclick="switchCockpitMode('quantization')">Batch Quantization</button>
+            </div>
+          </div>
+
+          <!-- Bento Grid Modular Metrics -->
+          <div class="bento-grid">
+            <!-- Tile A: Primary Metrics & Latency Sparkline -->
+            <div class="liquid-glass bento-card bento-col-8">
+              <div class="bento-card-header">
+                <span class="bento-card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Cluster Throughput & P99 Time-To-First-Token
+                </span>
+                <span class="bento-tag" id="live-hz-tag">POLLING: 100Hz</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
+                <div>
+                  <div class="metric-hero-value">
+                    <span id="metric-throughput-num">14,820</span>
+                    <span class="metric-hero-unit">tok/s/GPU</span>
+                  </div>
+                  <div class="metric-sub">
+                    <span class="metric-trend-badge">+18.4% vs baseline</span>
+                    <span>Zero tail spillover across 128 sharded pods</span>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700; color: var(--cyan);" id="metric-p99-num">1.18 ms</div>
+                  <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">P99 Kernel Latency</div>
+                </div>
+              </div>
+
+              <!-- Dynamic SVG Sparkline -->
+              <svg class="sparkline-svg" viewBox="0 0 600 110" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="cyan-spark-gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+                  </linearGradient>
+                </defs>
+                <path id="sparkline-area" class="sparkline-fill" d="M0,80 Q75,30 150,55 T300,40 T450,20 T600,35 L600,110 L0,110 Z"/>
+                <path id="sparkline-stroke" class="sparkline-line" d="M0,80 Q75,30 150,55 T300,40 T450,20 T600,35"/>
+              </svg>
+            </div>
+
+            <!-- Tile B: Neural Node Mesh Topology Visualizer -->
+            <div class="liquid-glass bento-card bento-col-4">
+              <div class="bento-card-header">
+                <span class="bento-card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="5" cy="19" r="2"/><line x1="12" y1="9" x2="12" y2="3"/><line x1="12" y1="15" x2="12" y2="21"/></svg>
+                  Interconnected Mesh
+                </span>
+                <span class="bento-tag">TOPOLOGY: FAT-TREE</span>
+              </div>
+
+              <div class="node-mesh-container">
+                <svg class="node-mesh-svg" viewBox="0 0 240 160">
+                  <!-- Connective Channels -->
+                  <line x1="40" y1="40" x2="120" y2="80" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5"/>
+                  <line x1="200" y1="40" x2="120" y2="80" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5"/>
+                  <line x1="40" y1="120" x2="120" y2="80" stroke="rgba(129, 140, 248, 0.4)" stroke-width="1.5"/>
+                  <line x1="200" y1="120" x2="120" y2="80" stroke="rgba(129, 140, 248, 0.4)" stroke-width="1.5"/>
+                  <line x1="40" y1="40" x2="200" y2="40" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+                  <line x1="40" y1="120" x2="200" y2="120" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+                  
+                  <!-- Nodes -->
+                  <circle cx="40" cy="40" r="6" fill="#38bdf8"/>
+                  <circle cx="200" cy="40" r="6" fill="#38bdf8"/>
+                  <circle cx="40" cy="120" r="6" fill="#818cf8"/>
+                  <circle cx="200" cy="120" r="6" fill="#818cf8"/>
+                  
+                  <!-- Central Hub Node -->
+                  <circle class="node-pulse-circle" cx="120" cy="80" r="9" fill="#38bdf8"/>
+                  <circle cx="120" cy="80" r="4" fill="#ffffff"/>
+                </svg>
+              </div>
+
+              <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
+                <span>Active Routing Nodes: <strong style="color: #ffffff;">512</strong></span>
+                <span style="color: var(--emerald);">0 Dropped Packets</span>
+              </div>
+            </div>
+
+            <!-- Tile C: Liquid Memory Sharding Bandwidth -->
+            <div class="liquid-glass bento-card bento-col-6">
+              <div class="bento-card-header">
+                <span class="bento-card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                  Unified Liquid Memory & HBM3e Pooling
+                </span>
+                <span class="bento-tag">TOTAL: 768 TB</span>
+              </div>
+
+              <div class="sharding-bar-group">
+                <div class="sharding-item">
+                  <div class="sharding-info">
+                    <span class="sharding-name">Primary Model Weights (FP8 / BF16)</span>
+                    <span class="sharding-val" id="bar-weights-val">284 TB (37.0%)</span>
+                  </div>
+                  <div class="sharding-progress-track">
+                    <div class="sharding-progress-fill fill-cyan" id="bar-weights-fill" style="width: 37%;"></div>
+                  </div>
+                </div>
+
+                <div class="sharding-item">
+                  <div class="sharding-info">
+                    <span class="sharding-name">Distributed KV-Cache Pool</span>
+                    <span class="sharding-val" id="bar-kv-val">340 TB (44.2%)</span>
+                  </div>
+                  <div class="sharding-progress-track">
+                    <div class="sharding-progress-fill fill-violet" id="bar-kv-fill" style="width: 44.2%;"></div>
+                  </div>
+                </div>
+
+                <div class="sharding-item">
+                  <div class="sharding-info">
+                    <span class="sharding-name">Speculative Decode Scratch Buffer</span>
+                    <span class="sharding-val" id="bar-spec-val">82 TB (10.6%)</span>
+                  </div>
+                  <div class="sharding-progress-track">
+                    <div class="sharding-progress-fill fill-emerald" id="bar-spec-fill" style="width: 10.6%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tile D: Autonomous Telemetry Dispatch Stream -->
+            <div class="liquid-glass bento-card bento-col-6">
+              <div class="bento-card-header">
+                <span class="bento-card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                  Real-Time Kernel Dispatch Stream
+                </span>
+                <span class="bento-tag">LIVE STREAM</span>
+              </div>
+
+              <div class="telemetry-feed" id="telemetryFeed" aria-live="off">
+                <div class="feed-line">
+                  <span class="feed-time">10:41:02.104</span>
+                  <span class="feed-tag-green">[DISPATCH]</span>
+                  <span class="feed-msg">Shard #2048 routed in 0.38ms via RoCE v2 low-overhead rail</span>
+                </div>
+                <div class="feed-line">
+                  <span class="feed-time">10:41:02.198</span>
+                  <span class="feed-tag-blue">[KV-CACHE]</span>
+                  <span class="feed-msg">Prefill context hit 128k tokens; zero memory fragmentation</span>
+                </div>
+                <div class="feed-line">
+                  <span class="feed-time">10:41:02.261</span>
+                  <span class="feed-tag-purple">[ROUTING]</span>
+                  <span class="feed-msg">MoE Expert 08 & 14 allocated 94.2% top-2 token weight</span>
+                </div>
+                <div class="feed-line">
+                  <span class="feed-time">10:41:02.342</span>
+                  <span class="feed-tag-green">[KERNEL]</span>
+                  <span class="feed-msg">FlashAttention-4 fused kernel executed in 112µs</span>
+                </div>
+                <div class="feed-line">
+                  <span class="feed-time">10:41:02.408</span>
+                  <span class="feed-tag-blue">[THERMAL]</span>
+                  <span class="feed-msg">Substrate immersion cooling at 48.2°C; PUE 1.03 stable</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Swiss Vector Monogram Logomark & Identity Studio Section -->
+  <section id="monogram-studio" class="section">
+    <div class="container">
+      <div class="section-eyebrow">SYSTEM IDENTITY // SPECIMEN 01</div>
+      <h2 class="section-title">Swiss Modernist Vector Monogram.</h2>
+      <p class="section-desc">
+        A minimalist 2D geometric logomark engineered for an AI infrastructure lab. Built on strict Cartesian axes with abstract interconnected nodes and negative space channels. Zero gradients, zero fake bevels, zero noise.
+      </p>
+
+      <div class="swiss-studio-grid">
+        <!-- Interactive Showcase Frame -->
+        <div class="liquid-glass monogram-showcase-panel">
+          <div id="monogramFrame" class="monogram-interactive-frame theme-dark">
+            <svg id="monogramSvg" class="monogram-large-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="mono-path" d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+              <path class="mono-path" d="M36 53H64" stroke="currentColor" stroke-width="7" stroke-linecap="square"/>
+              <circle class="mono-node" cx="50" cy="53" r="5" fill="none" stroke="currentColor" stroke-width="4"/>
+              <circle class="mono-node" cx="22" cy="28" r="4.5" fill="currentColor"/>
+              <circle class="mono-node" cx="78" cy="28" r="4.5" fill="currentColor"/>
+              <circle class="mono-node" cx="50" cy="78" r="4.5" fill="currentColor"/>
+            </svg>
+          </div>
+
+          <!-- Mode Selector Toggles -->
+          <div class="monogram-modes">
+            <button class="mode-btn active" onclick="setMonogramTheme('dark')">Monochrome Dark</button>
+            <button class="mode-btn" onclick="setMonogramTheme('light')">Swiss Stark Light</button>
+            <button class="mode-btn" onclick="setMonogramTheme('grid')">Construction Grid</button>
+          </div>
+
+          <div style="margin-top: 24px; display: flex; gap: 12px;">
+            <button class="btn btn-glass" onclick="copyMonogramSvg()" style="font-size: 0.8rem; padding: 8px 18px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Clean SVG Code
+            </button>
+            <button class="btn btn-glass" onclick="downloadMonogramSvg()" style="font-size: 0.8rem; padding: 8px 18px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export .SVG
+            </button>
+          </div>
+        </div>
+
+        <!-- Specifications & Precision Analysis -->
+        <div class="swiss-specs-panel">
+          <div class="liquid-glass spec-card">
+            <div class="spec-card-head">
+              <span class="spec-card-title">Interconnected Node Geometry</span>
+              <span class="spec-badge">SWISS MODERNISM</span>
+            </div>
+            <p class="spec-card-desc">
+              Three corner tensor nodes converge at a calibrated 45-degree angle toward the apex. A central cross-interconnect stabilizes the mark while isolating a pristine negative space optical core.
+            </p>
+          </div>
+
+          <div class="liquid-glass spec-card">
+            <div class="spec-card-head">
+              <span class="spec-card-title">Zero Shading / Pure 2D Flat Silhouette</span>
+              <span class="spec-badge">ILLUSTRATOR / FIGMA READY</span>
+            </div>
+            <p class="spec-card-desc">
+              Strictly non-gradient vector geometry designed for instant bezier tracing, laser cutting, embroidered fabric labels, and microchip silicon wafer etchings.
+            </p>
+          </div>
+
+          <div class="liquid-glass spec-card">
+            <div class="spec-card-head">
+              <span class="spec-card-title">Multi-Scale Legibility Stress Test</span>
+              <span class="spec-badge">16PX TO 256PX</span>
+            </div>
+            <p class="spec-card-desc" style="margin-bottom: 12px;">
+              Tested across critical touchpoints down to browser favicon thresholds without stroke blur or optical collapse.
+            </p>
+
+            <div class="scale-tester-strip">
+              <div class="scale-box">
+                <svg width="16" height="16" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="12" stroke-linecap="square"/>
+                  <path d="M36 53H64" stroke="currentColor" stroke-width="10"/>
+                </svg>
+                <span class="scale-label">16px</span>
+              </div>
+              <div class="scale-box">
+                <svg width="24" height="24" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="10" stroke-linecap="square"/>
+                  <path d="M36 53H64" stroke="currentColor" stroke-width="8"/>
+                  <circle cx="50" cy="53" r="5"/>
+                </svg>
+                <span class="scale-label">24px</span>
+              </div>
+              <div class="scale-box">
+                <svg width="36" height="36" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="9" stroke-linecap="square"/>
+                  <path d="M36 53H64" stroke="currentColor" stroke-width="7"/>
+                  <circle cx="50" cy="53" r="5" fill="none" stroke="currentColor" stroke-width="4"/>
+                  <circle cx="22" cy="28" r="4.5"/>
+                  <circle cx="78" cy="28" r="4.5"/>
+                  <circle cx="50" cy="78" r="4.5"/>
+                </svg>
+                <span class="scale-label">36px</span>
+              </div>
+              <div class="scale-box">
+                <svg width="56" height="56" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="9" stroke-linecap="square"/>
+                  <path d="M36 53H64" stroke="currentColor" stroke-width="7"/>
+                  <circle cx="50" cy="53" r="5" fill="none" stroke="currentColor" stroke-width="4"/>
+                  <circle cx="22" cy="28" r="4.5"/>
+                  <circle cx="78" cy="28" r="4.5"/>
+                  <circle cx="50" cy="78" r="4.5"/>
+                </svg>
+                <span class="scale-label">56px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Grid Modular Metrics Deep Dive -->
+  <section id="bento-metrics" class="section">
+    <div class="container">
+      <div class="section-eyebrow">CORE ARCHITECTURE // MODULAR BENTO</div>
+      <h2 class="section-title">Engineered for Sub-Millisecond Predictability.</h2>
+      <p class="section-desc">
+        Traditional cloud orchestrators suffer from unpredictable tail latency and noisy neighbour interference. Vitreon delivers hardware-level memory segregation and deterministic tensor schedules.
+      </p>
+
+      <div class="metrics-bento-grid">
+        <!-- Tile 1 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="tile-metric-digit">1.18 ms</div>
+            <h3 class="tile-title">Deterministic TTFT</h3>
+            <p class="tile-desc">
+              P99 time-to-first-token guaranteed under sustained concurrency via pre-allocated liquid memory lanes.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            VERIFIED: 100K CONCURRENT USERS
+          </div>
+        </div>
+
+        <!-- Tile 2 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="tile-metric-digit">8.4 TB/s</div>
+            <h3 class="tile-title">Zero-Copy Fabric</h3>
+            <p class="tile-desc">
+              Substrate memory interconnection bypasses host operating system drivers via direct GPU-to-GPU RoCE v2 channels.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            RDMA HARDWARE ACCELERATION
+          </div>
+        </div>
+
+        <!-- Tile 3 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+            </div>
+            <div class="tile-metric-digit">48.2 °C</div>
+            <h3 class="tile-title">Immersion Thermal Floor</h3>
+            <p class="tile-desc">
+              Dielectric liquid immersion maintains peak Boost clock states indefinitely without thermal throttling or acoustic resonance.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            PUE 1.03 SUSTAINABLE EFFICIENCY
+          </div>
+        </div>
+
+        <!-- Tile 4 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div class="tile-metric-digit">99.4 %</div>
+            <h3 class="tile-title">Shared KV-Cache Hit Rate</h3>
+            <p class="tile-desc">
+              Global prompt prefix caching eliminates redundant multi-turn prefill overhead across millions of conversational sessions.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            RADIX-TREE CONTEXT INDEXING
+          </div>
+        </div>
+
+        <!-- Tile 5 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="tile-metric-digit">0-Leak</div>
+            <h3 class="tile-title">Cryptographic Enclave</h3>
+            <p class="tile-desc">
+              Hardware-grade confidential compute ensures memory encryption keys never leave physical processor silicon.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            SOC2 TYPE II + FEDRAMP HIGH READY
+          </div>
+        </div>
+
+        <!-- Tile 6 -->
+        <div class="liquid-glass metric-bento-tile">
+          <div>
+            <div class="tile-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="tile-metric-digit">99.999%</div>
+            <h3 class="tile-title">Hardware SLA Guarantees</h3>
+            <p class="tile-desc">
+              Autonomous sub-second node failover dynamically migrates active KV-cache tensors before bad die degradation occurs.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-top: 16px;">
+            ACTIVE MULTI-ZONE RESILIENCE
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Latency Sandbox Slider -->
+      <div id="latency-sandbox" class="liquid-glass sandbox-container">
+        <div class="sandbox-header">
+          <div>
+            <h3 class="sandbox-title">Interactive Cluster Scaling & Concurrency Sandbox</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+              Drag the slider to adjust simultaneous active agent tokens and inspect real-time substrate telemetry response.
+            </p>
+          </div>
+          <span class="bento-tag" style="padding: 6px 14px; font-size: 0.8rem; color: var(--cyan);">
+            ACTIVE SIMULATION
+          </span>
+        </div>
+
+        <div class="slider-wrap">
+          <div class="slider-labels">
+            <span>Concurrency Load: <strong id="concurrencyValue" style="color: #ffffff;">5,000 req/s</strong></span>
+            <span>Scale: 500 – 50,000 req/s</span>
+          </div>
+          <input type="range" class="custom-range" id="concurrencySlider" min="500" max="50000" step="500" value="5000" oninput="updateSandbox(this.value)">
+        </div>
+
+        <div class="sandbox-metrics-row">
+          <div class="sandbox-metric-col">
+            <span class="sandbox-metric-lbl">Projected TTFT P99</span>
+            <span class="sandbox-metric-num" id="sandbox-p99">1.18 ms</span>
+          </div>
+          <div class="sandbox-metric-col">
+            <span class="sandbox-metric-lbl">Cluster Throughput</span>
+            <span class="sandbox-metric-num" id="sandbox-throughput">18.4M tok/s</span>
+          </div>
+          <div class="sandbox-metric-col">
+            <span class="sandbox-metric-lbl">Required H100 Pods</span>
+            <span class="sandbox-metric-num" id="sandbox-pods">16 Nodes</span>
+          </div>
+          <div class="sandbox-metric-col">
+            <span class="sandbox-metric-lbl">Cost per 1M Tokens</span>
+            <span class="sandbox-metric-num" id="sandbox-cost" style="color: var(--emerald);">$0.0028</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Code & Playground Section -->
+  <section id="api-terminal" class="section">
+    <div class="container">
+      <div class="section-eyebrow">DEVELOPER EXPERIENCE // TERMINAL</div>
+      <h2 class="section-title">Zero-Configuration SDK & Instant Dispatch.</h2>
+      <p class="section-desc">
+        Drop-in replacement for standard OpenAI/vLLM endpoints. Integrate with three lines of Python or dispatch raw low-latency streaming RPCs.
+      </p>
+
+      <div class="liquid-glass code-terminal-panel">
+        <div class="code-terminal-header">
+          <div class="code-tabs">
+            <button class="code-tab-btn active" onclick="switchCodeTab('python')">Python SDK</button>
+            <button class="code-tab-btn" onclick="switchCodeTab('curl')">cURL</button>
+            <button class="code-tab-btn" onclick="switchCodeTab('ts')">TypeScript</button>
+            <button class="code-tab-btn" onclick="switchCodeTab('rust')">Rust</button>
+          </div>
+
+          <button class="copy-btn" onclick="copyCodeBlock()" title="Copy Code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; margin-left: 6px;">Copy</span>
+          </button>
+        </div>
+
+        <pre class="code-body" id="codeDisplay"><code id="codeText"><span class="code-kw">import</span> vitreon
+
+<span class="code-comm"># Initialize client connected to Vitreon Liquid-Glass Substrate</span>
+client = vitreon.Client(
+    api_key=<span class="code-str">"vtr_live_948f21bc90a"</span>,
+    substrate=<span class="code-str">"liquid-hbm3e-us-east"</span>
+)
+
+<span class="code-comm"># Stream responses with sub-millisecond TTFT</span>
+stream = client.tensors.stream(
+    model=<span class="code-str">"vitreon-deepseek-moe-236b"</span>,
+    prompt=<span class="code-str">"Synthesize high-frequency neural routing topology across 64 shards."</span>,
+    temperature=<span class="code-var">0.1</span>,
+    kv_cache_pinned=<span class="code-kw">True</span>
+)
+
+<span class="code-kw">for</span> token <span class="code-kw">in</span> stream:
+    print(token.text, end=<span class="code-str">""</span>, flush=<span class="code-kw">True</span>)</code></pre>
+
+        <div class="terminal-action-bar">
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">
+            Simulated Endpoint: <span style="color: var(--cyan);">https://api.vitreon.dev/v1/stream</span>
+          </div>
+          <button class="btn btn-primary" onclick="runSimulatedExecution()" style="font-size: 0.8rem; padding: 7px 18px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Execute Query
+          </button>
+        </div>
+
+        <div id="executionOutput" class="execution-output-box">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--emerald);">
+            <span>✔ TTFT: 1.14ms | DISPATCH COMPLETE</span>
+            <span>TOKENS: 48 | SPEED: 112 tok/s</span>
+          </div>
+          <div id="streamingText" style="color: #f1f5f9; line-height: 1.5;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing & Cluster Provisioning Section -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="section-eyebrow">CLUSTER PROVISIONING // RESERVED COMPUTE</div>
+      <h2 class="section-title">Transparent, On-Demand Hardware Pricing.</h2>
+      <p class="section-desc">
+        No hidden egress surcharges, no stranded GPU idle charges. Provision by the hour or reserve guaranteed annual capacity.
+      </p>
+
+      <div class="pricing-grid">
+        <!-- Tier 1 -->
+        <div class="liquid-glass pricing-card">
+          <div>
+            <h3 class="pricing-tier-name">Dedicated Node</h3>
+            <p class="pricing-tier-desc">Ideal for model fine-tuning, latency profiling, and team R&D evaluation.</p>
+            <div class="price-value-row">
+              <span class="price-currency">$</span>
+              <span class="price-number">2.40</span>
+              <span class="price-period">/ GPU hr</span>
+            </div>
+            <ul class="pricing-feature-list">
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 1× NVIDIA H100 SXM5 80GB
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 3.2 Tbps InfiniBand Interconnect
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Shared Global KV-Cache Pool
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 99.9% Uptime Guarantee
+              </li>
+            </ul>
+          </div>
+          <a href="#cockpit" class="btn btn-glass" style="width: 100%;">Provision Node</a>
+        </div>
+
+        <!-- Tier 2 (Featured) -->
+        <div class="liquid-glass pricing-card featured">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <h3 class="pricing-tier-name" style="color: var(--cyan);">Hyperscale Mesh</h3>
+              <span class="hero-pill-badge" style="background: rgba(56, 189, 248, 0.2); padding: 3px 8px; border-radius: 999px;">POPULAR</span>
+            </div>
+            <p class="pricing-tier-desc">Turnkey multi-node cluster optimized for high-concurrency production models.</p>
+            <div class="price-value-row">
+              <span class="price-currency">$</span>
+              <span class="price-number">18.50</span>
+              <span class="price-period">/ Pod hr (8 GPUs)</span>
+            </div>
+            <ul class="pricing-feature-list">
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 8× NVIDIA H100 SXM5 (640GB HBM3e)
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Dedicated Liquid-Glass Fabric Rail
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Deterministic Sub-2ms P99 TTFT
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Real-Time Autonomous Node Migration
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 99.999% High-Availability SLA
+              </li>
+            </ul>
+          </div>
+          <a href="#cockpit" class="btn btn-primary" style="width: 100%;">Deploy Pod Mesh</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="liquid-glass pricing-card">
+          <div>
+            <h3 class="pricing-tier-name">Dedicated Lab Enclave</h3>
+            <p class="pricing-tier-desc">Custom multi-datacenter topology with air-gapped cryptographic guarantees.</p>
+            <div class="price-value-row">
+              <span class="price-currency">Custom</span>
+              <span class="price-number" style="font-size: 2.2rem;">Enterprise</span>
+            </div>
+            <ul class="pricing-feature-list">
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 64 to 4,096+ Interconnected Nodes
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Air-Gapped Physical Hardware Enclaves
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> Custom FlashAttention & CUDA Kernels
+              </li>
+              <li class="feature-item">
+                <span class="feature-check">✔</span> 24/7 Dedicated Infrastructure Architects
+              </li>
+            </ul>
+          </div>
+          <a href="mailto:contact@vitreon.example" class="btn btn-glass" style="width: 100%;">Contact Architecture Team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-eyebrow" style="justify-content: center;">FREQUENTLY ASKED QUESTIONS</div>
+      <h2 class="section-title" style="text-align: center;">Technical Deep Dive & Architecture.</h2>
+      <p class="section-desc" style="text-align: center; margin-left: auto; margin-right: auto;">
+        Clear answers on memory pooling, zero-copy interconnects, and platform compatibility.
+      </p>
+
+      <div class="faq-container">
+        <div class="faq-item active">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How does Vitreon achieve sub-millisecond TTFT under heavy concurrency?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Vitreon isolates tensor memory channels at the PCIe and RoCE v2 hardware fabric level. By keeping persistent KV-caches dynamically sharded in liquid HBM3e buffers, requests bypass standard operating system file locks and driver queues entirely, guaranteeing predictable token dispatch.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Can I migrate from existing vLLM or HuggingFace setups without rewriting code?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Yes. Vitreon exposes a fully compliant OpenAI-compatible REST API and Python SDK. Pointing your existing `OPENAI_BASE_URL` to `https://api.vitreon.dev/v1` routes your traffic through our liquid-glass substrate without changing any client-side business logic.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What hardware accelerators are supported?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Our clusters run state-of-the-art NVIDIA H100, H200, and B200 accelerators integrated with custom liquid immersion cooling tanks and direct optical photonic transceivers.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How is tenant data security and privacy enforced?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            We enforce strict zero-retention policies. Model inference payloads are cryptographically processed in volatile memory only and never written to non-volatile disk. Dedicated Enclaves also support hardware-level confidential compute (NVIDIA APEX CC).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pre-Footer Final CTA Card -->
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="liquid-glass final-cta-card">
+        <div class="cta-glow-backdrop" aria-hidden="true"></div>
+        <div class="cta-content">
+          <span class="hero-pill-badge" style="background: rgba(56, 189, 248, 0.15); padding: 4px 12px; border-radius: 999px;">
+            GET STARTED TODAY
+          </span>
+          <h2 class="section-title" style="margin-top: 16px; margin-bottom: 16px;">
+            Deploy Your First Substrate Pod in 4 Minutes.
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 1.05rem;">
+            Experience liquid-glass performance on your most demanding foundation models. Instant API key provisioning with $250 complimentary compute credits.
+          </p>
+
+          <div class="cli-install-box">
+            <span style="color: var(--text-muted);">$</span>
+            <span>curl -sSL https://vitreon.dev/init.sh | sh</span>
+            <button class="copy-btn" onclick="copyCliCommand()" title="Copy CLI Command">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+
+          <div style="margin-top: 28px; display: flex; justify-content: center; gap: 16px;">
+            <a href="#pricing" class="btn btn-primary" style="padding: 12px 28px;">Launch Interactive Console</a>
+            <a href="#monogram-studio" class="btn btn-glass" style="padding: 12px 28px;">Explore System Identity</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-lockup">
+            <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="20" fill="black"/>
+              <path d="M22 28L50 78L78 28" stroke="white" stroke-width="9" stroke-linecap="square"/>
+              <path d="M36 53H64" stroke="white" stroke-width="7"/>
+              <circle cx="50" cy="53" r="5" fill="black"/>
+              <circle cx="22" cy="28" r="4.5" fill="white"/>
+              <circle cx="78" cy="28" r="4.5" fill="white"/>
+              <circle cx="50" cy="78" r="4.5" fill="white"/>
+            </svg>
+            <span class="brand-name">VITREON</span>
+          </div>
+          <p class="footer-col-desc">
+            Vitreon AI Infrastructure Lab. Liquid-glass compute substrate engineered for sub-millisecond foundation model inference, tensor routing, and memory pooling.
+          </p>
+          <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted);">
+            Sample template deliverable &bull; contact: <a href="mailto:team@vitreon.example" style="color: var(--cyan); text-decoration: none;">team@vitreon.example</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Architecture</h4>
+          <ul class="footer-links">
+            <li><a href="#cockpit">Liquid-Glass Cockpit</a></li>
+            <li><a href="#bento-metrics">Bento Modular Metrics</a></li>
+            <li><a href="#latency-sandbox">Concurrency Sandbox</a></li>
+            <li><a href="#api-terminal">Kernel Dispatch Stream</a></li>
+            <li><a href="#pricing">Cluster Provisioning</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Identity & Specimen</h4>
+          <ul class="footer-links">
+            <li><a href="#monogram-studio">Swiss Vector Monogram</a></li>
+            <li><a href="#monogram-studio">Construction Grid</a></li>
+            <li><a href="#monogram-studio">Scale Stress Testing</a></li>
+            <li><a href="#monogram-studio">SVG Vector Export</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Security & Lab</h4>
+          <ul class="footer-links">
+            <li><a href="#">SOC2 Type II Attestation</a></li>
+            <li><a href="#">Confidential Enclaves</a></li>
+            <li><a href="#">Immersion Cooling Specs</a></li>
+            <li><a href="#">Responsible AI Charter</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 Vitreon Systems Inc. All rights reserved. Personal design library specimen.
+        </div>
+        <div style="display: flex; gap: 20px;">
+          <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy Directive</a>
+          <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms of Substrate</a>
+          <a href="#" style="color: var(--text-muted); text-decoration: none;">Security Whitepaper</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    // Cockpit Mode Switcher
+    const modeConfigs = {
+      inference: {
+        throughput: '14,820',
+        p99: '1.18 ms',
+        sparkLineD: 'M0,80 Q75,30 150,55 T300,40 T450,20 T600,35',
+        sparkAreaD: 'M0,80 Q75,30 150,55 T300,40 T450,20 T600,35 L600,110 L0,110 Z',
+        weights: '284 TB (37.0%)',
+        weightsW: '37%',
+        kv: '340 TB (44.2%)',
+        kvW: '44.2%',
+        spec: '82 TB (10.6%)',
+        specW: '10.6%'
+      },
+      training: {
+        throughput: '38,450',
+        p99: '2.45 ms',
+        sparkLineD: 'M0,90 Q90,50 180,75 T360,25 T500,45 T600,15',
+        sparkAreaD: 'M0,90 Q90,50 180,75 T360,25 T500,45 T600,15 L600,110 L0,110 Z',
+        weights: '512 TB (66.6%)',
+        weightsW: '66.6%',
+        kv: '120 TB (15.6%)',
+        kvW: '15.6%',
+        spec: '104 TB (13.5%)',
+        specW: '13.5%'
+      },
+      quantization: {
+        throughput: '52,100',
+        p99: '0.84 ms',
+        sparkLineD: 'M0,60 Q80,20 160,40 T320,15 T480,25 T600,10',
+        sparkAreaD: 'M0,60 Q80,20 160,40 T320,15 T480,25 T600,10 L600,110 L0,110 Z',
+        weights: '142 TB (18.4%)',
+        weightsW: '18.4%',
+        kv: '460 TB (59.8%)',
+        kvW: '59.8%',
+        spec: '68 TB (8.8%)',
+        specW: '8.8%'
+      }
+    };
+
+    function switchCockpitMode(mode) {
+      document.querySelectorAll('.cockpit-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+      });
+      const cfg = modeConfigs[mode];
+      if (!cfg) return;
+
+      document.getElementById('metric-throughput-num').innerText = cfg.throughput;
+      document.getElementById('metric-p99-num').innerText = cfg.p99;
+      document.getElementById('sparkline-stroke').setAttribute('d', cfg.sparkLineD);
+      document.getElementById('sparkline-area').setAttribute('d', cfg.sparkAreaD);
+
+      document.getElementById('bar-weights-val').innerText = cfg.weights;
+      document.getElementById('bar-weights-fill').style.width = cfg.weightsW;
+      document.getElementById('bar-kv-val').innerText = cfg.kv;
+      document.getElementById('bar-kv-fill').style.width = cfg.kvW;
+      document.getElementById('bar-spec-val').innerText = cfg.spec;
+      document.getElementById('bar-spec-fill').style.width = cfg.specW;
+
+      showToast(`Cockpit switched to ${mode.toUpperCase()} profile`);
+    }
+
+    // Monogram Theme Switcher
+    function setMonogramTheme(theme) {
+      const frame = document.getElementById('monogramFrame');
+      frame.className = `monogram-interactive-frame theme-${theme}`;
+      document.querySelectorAll('.mode-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', (theme === 'dark' && idx === 0) || (theme === 'light' && idx === 1) || (theme === 'grid' && idx === 2));
+      });
+    }
+
+    // Monogram SVG Code Copying
+    const RAW_MONOGRAM_SVG = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 28L50 78L78 28" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M36 53H64" stroke="currentColor" stroke-width="7" stroke-linecap="square"/>
+  <circle cx="50" cy="53" r="5" fill="none" stroke="currentColor" stroke-width="4"/>
+  <circle cx="22" cy="28" r="4.5" fill="currentColor"/>
+  <circle cx="78" cy="28" r="4.5" fill="currentColor"/>
+  <circle cx="50" cy="78" r="4.5" fill="currentColor"/>
+</svg>`;
+
+    function copyMonogramSvg() {
+      navigator.clipboard.writeText(RAW_MONOGRAM_SVG).then(() => {
+        showToast('Clean Swiss Monogram SVG Copied');
+      }).catch(() => {
+        showToast('SVG Copied to Clipboard');
+      });
+    }
+
+    function downloadMonogramSvg() {
+      const blob = new Blob([RAW_MONOGRAM_SVG], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'vitreon-swiss-monogram.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Downloaded vitreon-swiss-monogram.svg');
+    }
+
+    // Latency Sandbox Update
+    function updateSandbox(val) {
+      document.getElementById('concurrencyValue').innerText = `${Number(val).toLocaleString()} req/s`;
+      
+      const v = Number(val);
+      // Compute simulated metrics
+      const p99 = (0.95 + (v / 50000) * 0.85).toFixed(2);
+      const throughput = ((v * 3.4) / 1000).toFixed(1);
+      const pods = Math.max(4, Math.round(v / 2800));
+      const cost = (0.0024 + (v / 50000) * 0.0012).toFixed(4);
+
+      document.getElementById('sandbox-p99').innerText = `${p99} ms`;
+      document.getElementById('sandbox-throughput').innerText = `${throughput}M tok/s`;
+      document.getElementById('sandbox-pods').innerText = `${pods} Nodes`;
+      document.getElementById('sandbox-cost').innerText = `$${cost}`;
+    }
+
+    // Code Snippets
+    const codeSnippets = {
+      python: `<span class="code-kw">import</span> vitreon
+
+<span class="code-comm"># Initialize client connected to Vitreon Liquid-Glass Substrate</span>
+client = vitreon.Client(
+    api_key=<span class="code-str">"vtr_live_948f21bc90a"</span>,
+    substrate=<span class="code-str">"liquid-hbm3e-us-east"</span>
+)
+
+<span class="code-comm"># Stream responses with sub-millisecond TTFT</span>
+stream = client.tensors.stream(
+    model=<span class="code-str">"vitreon-deepseek-moe-236b"</span>,
+    prompt=<span class="code-str">"Synthesize high-frequency neural routing topology across 64 shards."</span>,
+    temperature=<span class="code-var">0.1</span>,
+    kv_cache_pinned=<span class="code-kw">True</span>
+)
+
+<span class="code-kw">for</span> token <span class="code-kw">in</span> stream:
+    print(token.text, end=<span class="code-str">""</span>, flush=<span class="code-kw">True</span>)`,
+
+      curl: `<span class="code-comm"># Dispatch sub-millisecond streaming inference via cURL</span>
+curl -X POST https://api.vitreon.dev/v1/chat/completions \\
+  -H <span class="code-str">"Authorization: Bearer vtr_live_948f21bc90a"</span> \\
+  -H <span class="code-str">"Content-Type: application/json"</span> \\
+  -H <span class="code-str">"X-Vitreon-Fabric: zero-copy-sharded"</span> \\
+  -d <span class="code-str">'{
+    "model": "vitreon-deepseek-moe-236b",
+    "stream": true,
+    "messages": [{"role": "user", "content": "Explain liquid-state memory routing."}]
+  }'</span>`,
+
+      ts: `<span class="code-kw">import</span> { Vitreon } <span class="code-kw">from</span> <span class="code-str">'@vitreon/sdk'</span>;
+
+<span class="code-kw">const</span> vitreon = <span class="code-kw">new</span> Vitreon({
+  apiKey: process.env.VITREON_API_KEY,
+  cluster: <span class="code-str">'us-east-immersion-01'</span>,
+});
+
+<span class="code-kw">async function</span> <span class="code-func">runDispatch</span>() {
+  <span class="code-kw">const</span> stream = <span class="code-kw">await</span> vitreon.tensors.createStream({
+    model: <span class="code-str">'vitreon-deepseek-moe-236b'</span>,
+    prompt: <span class="code-str">'Optimize KV-cache eviction across 256 H100s'</span>,
+  });
+
+  <span class="code-kw">for await</span> (<span class="code-kw">const</span> chunk <span class="code-kw">of</span> stream) {
+    process.stdout.write(chunk.delta);
+  }
+}`,
+
+      rust: `<span class="code-kw">use</span> vitreon_substrate::{Client, Config, Precision};
+
+<span class="code-kw">#[tokio::main]</span>
+<span class="code-kw">async fn</span> <span class="code-func">main</span>() -> Result&lt;(), Box&lt;<span class="code-kw">dyn</span> std::error::Error&gt;&gt; {
+    <span class="code-kw">let</span> client = Client::new(Config::from_env()?)?;
+    
+    <span class="code-kw">let mut</span> stream = client
+        .dispatch(<span class="code-str">"vitreon-deepseek-moe-236b"</span>)
+        .precision(Precision::FP8)
+        .stream(<span class="code-str">"Generate low-overhead RoCE kernel."</span>)
+        .<span class="code-kw">await</span>?;
+
+    <span class="code-kw">while let</span> Some(token) = stream.next().<span class="code-kw">await</span>? {
+        print!(<span class="code-str">"{}"</span>, token.text);
+    }
+    Ok(())
+}`
+    };
+
+    function switchCodeTab(tab) {
+      document.querySelectorAll('.code-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(tab) || (tab === 'ts' && btn.innerText.includes('TypeScript')));
+      });
+      document.getElementById('codeText').innerHTML = codeSnippets[tab];
+    }
+
+    function copyCodeBlock() {
+      const text = document.getElementById('codeText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Code snippet copied to clipboard');
+      });
+    }
+
+    function copyCliCommand() {
+      navigator.clipboard.writeText('curl -sSL https://vitreon.dev/init.sh | sh').then(() => {
+        showToast('CLI command copied');
+      });
+    }
+
+    // Simulated API Execution Stream
+    let streamInterval = null;
+    function runSimulatedExecution() {
+      const outputBox = document.getElementById('executionOutput');
+      const textSpan = document.getElementById('streamingText');
+      outputBox.classList.add('show');
+      textSpan.innerText = '';
+      
+      const sampleText = "Vitreon Substrate Initialized [OK]. Shard #0..63 mapped via zero-copy RoCE v2 interconnect. KV-cache pinned at 0x7ffd10e000. Throughput stable at 14,820 tok/s. Zero tail latency detected.";
+      const words = sampleText.split(' ');
+      let idx = 0;
+
+      if (streamInterval) clearInterval(streamInterval);
+      
+      streamInterval = setInterval(() => {
+        if (idx < words.length) {
+          textSpan.innerText += (idx === 0 ? '' : ' ') + words[idx];
+          idx++;
+        } else {
+          clearInterval(streamInterval);
+        }
+      }, 45);
+    }
+
+    // FAQ Accordion
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // Toast Functionality
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('active');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2600);
+    }
+
+    // Continuous Live Telemetry Feed Simulation
+    const telemetrySamples = [
+      { tag: 'green', text: '[DISPATCH] Shard #3072 routed in 0.39ms via RoCE v2 interconnect' },
+      { tag: 'blue', text: '[KV-CACHE] Prefill context cache hit 99.4% across 512 nodes' },
+      { tag: 'purple', text: '[ROUTING] MoE Expert 04 & 11 allocated 98.1% top-2 token weight' },
+      { tag: 'green', text: '[KERNEL] FlashAttention-4 fused kernel executed in 108µs' },
+      { tag: 'blue', text: '[THERMAL] Substrate immersion coolant at 47.9°C; PUE 1.02 stable' },
+      { tag: 'green', text: '[BALANCE] Dynamic tensor load migrated seamlessly without pipeline stall' }
+    ];
+
+    setInterval(() => {
+      const feed = document.getElementById('telemetryFeed');
+      if (!feed) return;
+      const sample = telemetrySamples[Math.floor(Math.random() * telemetrySamples.length)];
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+
+      const line = document.createElement('div');
+      line.className = 'feed-line';
+      line.innerHTML = `
+        <span class="feed-time">${timeStr}</span>
+        <span class="feed-tag-${sample.tag}">${sample.text.split(' ')[0]}</span>
+        <span class="feed-msg">${sample.text.substring(sample.text.indexOf(' ') + 1)}</span>
+      `;
+      feed.prepend(line);
+      if (feed.children.length > 20) {
+        feed.removeChild(feed.lastChild);
+      }
+    }, 3200);
+  </script>
+</body>
+</html>
