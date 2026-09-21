@@ -1,32 +1,36 @@
-# DESIGN — Heathmoor (Moody Victorian-Modern Literary Portfolio & Archive)
+# DESIGN — Heathmoor (Victorian-Modern Parchment & Heather Literary Archive)
 
 ## Overview
 - **Brand**: Heathmoor (The Estate of Evelyn Heath / Heathmoor Literary Archive)
-- **Inspiration**: Moody Victorian-modern literary archive for a solitary poet of the high moors.
+- **Inspiration**: Moody Victorian-modern literary archive for a solitary poet of the high moors, rendered in a tactile light parchment aesthetic.
 - **Audience**: Literary scholars, historical fiction enthusiasts, editorial art directors, and creative writers seeking an immersive, tactile digital monograph.
 - **Single CTA**: `Read Selected Works` (secondary: `Enter the Moors` / `Explore Musings`).
-- **Emotion**: Haunting romanticism, solitary moorland wind, intellectual gravitas, tactile ink-on-parchment warmth.
+- **Emotion**: Tactile archival warmth, letterpress authenticity, solitary moorland wind, intellectual gravitas.
 - **Visual Commitments**:
-  - Deep charcoal and blackened slate canvas (`#0d0e12`, `#14161d`, `#1b1e28`) paired with warm parchment and aged bone typography (`#e8e4dc`, `#c5bfae`).
-  - Wind-swept motion choreography: Ethereal drifting mist particles, diagonal wind streaks, and staggered word reveals that mimic gale-driven winds across desolate heather moorlands.
+  - Warm antique bone and aged vellum canvas (`#f7f4ed`, `#efebe2`) paired with rich iron-gall espresso ink typography (`#181614`).
+  - Distinctive botanical moorland accents: Rich Heather Crimson (`#7d1830`, `#941b3a`), Burnished Antique Leaf Gold (`#b8860b`), and Moor Moss Lichen (`#3b4836`).
+  - Wind-swept motion choreography: Ethereal drifting thistle-down particles and sepia wind streaks that sweep across the warm parchment canvas.
   - Classical editorial typography: `Cormorant Garamond` and `Playfair Display` for poetic verse and display headlines; `Inter` for modern UI microcopy; `JetBrains Mono` for meteorological moor telemetry.
-  - Interactive Victorian Parallax Artifact: An interactive 3D carte-de-visite / literary talisman with mouse tilt and holographic foil reflection .
-  - Moorland Atmospheric Telemetry Widget: Live mock weather telemetry tracking wind velocity, barometric gradient, and lunar phase across the Yorkshire moors .
-  - "The Path Across the Heath" Interactive Reader Wizard: A multi-step decision tree guiding visitors through tailored poetic moods .
+  - Tactile 3D Carte-de-Visite: Letterpress cotton card on light vellum with blind debossing, gold foil hot stamping, and real-time mouse parallax.
+  - 19th-Century Antiquarian Telemetry Map: Copperplate engraved cartography with live wind vector currents and barometric telemetry.
+  - "The Path Across the Heath" Interactive Reader Wizard: A multi-step decision tree guiding visitors through tailored poetic moods.
 
 ## Colors (Semantic)
-- `bg-base`: `#0c0d12`
-- `bg-surface`: `#13151d`
-- `bg-card`: `#1a1d28`
-- `bg-card-hover`: `#222634`
-- `border-ink`: `rgba(232, 228, 220, 0.12)`
-- `border-highlight`: `rgba(197, 191, 174, 0.3)`
-- `text-primary`: `#e8e4dc`
-- `text-secondary`: `#9ca0ab`
-- `text-muted`: `#636774`
-- `accent-amber`: `#d4af37` (Aged Victorian Gold)
-- `accent-crimson`: `#881337` (Moorland Heather)
-- `accent-wind`: `rgba(255, 255, 255, 0.08)`
+- `bg-base`: `#f7f4ed` (Warm Antique Parchment)
+- `bg-surface`: `#ede8dc` (Aged Vellum Surface)
+- `bg-card`: `#ffffff` (Crisp Hot-Pressed Cotton Rag)
+- `bg-card-hover`: `#fbfaf6`
+- `border-ink`: `rgba(24, 22, 20, 0.12)` (Iron-Gall Hairline)
+- `border-strong`: `rgba(24, 22, 20, 0.22)`
+- `border-highlight`: `rgba(125, 24, 48, 0.35)` (Heather Crimson Border)
+- `text-primary`: `#181614` (Dense Iron-Gall Ink)
+- `text-secondary`: `#524d45` (Walnut Slate)
+- `text-muted`: `#847e73` (Pencil Graphite)
+- `accent-crimson`: `#7d1830` (Moorland Heather Velvet)
+- `accent-crimson-hover`: `#651225`
+- `accent-gold`: `#b8860b` (Burnished Leaf Gold)
+- `accent-gold-glow`: `rgba(184, 134, 11, 0.18)`
+- `accent-moss`: `#3b4836` (Moorland Lichen)
 
 ## Typography
 - **Headings & Poetry Titles**: `Cormorant Garamond`, serif (Weights: 400, 600, 700, Italic)
@@ -35,7 +39,8 @@
 - **Moor Telemetry**: `JetBrains Mono`, monospace (Weights: 400, 500)
 
 ## Ban List
-- Zero modern corporate SaaS clichés (no bright neon SaaS buttons or cartoon illustrations).
+- No generic dark obsidian shells when an authentic parchment palette is specified.
+- Zero modern corporate SaaS clichés.
 - Zero search indexing (`robots.txt` Disallow, `noindex, nofollow, noarchive, nosnippet, noimageindex` meta tags).
 - GA tag `G-Z97ZD3EVSF` required on all HTML deliverables.
 - Fictional contact: `archivist@heathmoor.example`.
