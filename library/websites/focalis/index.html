@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Focalis Studio — Media-First Design Studio for Websites, Software & Apps</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #f4f1ea;
+      --bg-surface: #ece8dd;
+      --bg-card: #ffffff;
+      --text-primary: #121316;
+      --text-secondary: #555962;
+      --text-muted: #888d96;
+      
+      --border-ink: #121316;
+      --border-subtle: rgba(18, 19, 22, 0.12);
+      
+      /* Primary Interactive Accent */
+      --accent-lime: #d5fb34;
+      --accent-lime-hover: #c4ec26;
+      --accent-active: #d5fb34;
+      
+      /* Auxiliary Accents */
+      --accent-tangerine: #ff5c35;
+      --accent-violet: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-blue: #2563eb;
+      
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+      --container-max: 1320px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-base);
+      background-image: url('assets/topography-contours.svg');
+      background-repeat: repeat-y;
+      background-size: 100% auto;
+      background-position: top center;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 24px 0;
+      background: rgba(244, 241, 234, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(18, 19, 22, 0.05);
+      transition: padding 0.25s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      box-shadow: 0 0 0 2px var(--bg-base), 0 0 0 3.5px var(--text-primary);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .brand-logo:hover .brand-dot {
+      transform: scale(1.3);
+      background: var(--accent-active);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Tactile Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      border: 2px solid var(--border-ink);
+    }
+
+    .btn-lime {
+      background: var(--accent-active);
+      color: var(--text-primary);
+      box-shadow: 0 4px 0 var(--border-ink);
+    }
+
+    .btn-lime:hover {
+      background: var(--accent-lime-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--border-ink);
+    }
+
+    .btn-lime:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--border-ink);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--text-primary);
+      box-shadow: 0 4px 0 var(--border-ink);
+    }
+
+    .btn-outline:hover {
+      background: #fdfdfd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--border-ink);
+    }
+
+    .btn-outline:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--border-ink);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 60px 0 70px 0;
+      position: relative;
+      min-height: calc(100vh - 90px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-content {
+      max-width: 1180px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Focalis Hero Signature Headline with Inline Media Badges */
+    .media-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.3vw, 3.7rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+
+    .media-badge-wrap {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 8px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .media-badge-wrap:hover {
+      transform: scale(1.1) rotate(0deg) !important;
+      z-index: 20;
+    }
+
+    /* Inline Card 1: Desktop Website Mockup */
+    .inline-badge-web {
+      width: 140px;
+      height: 78px;
+      background: #0f172a;
+      border: 2px solid var(--border-ink);
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2), 0 3px 0 var(--border-ink);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: rotate(-3deg);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .badge-browser-bar {
+      height: 14px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .browser-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+
+    .browser-dot.red { background: #ef4444; }
+    .browser-dot.yellow { background: #eab308; }
+    .browser-dot.green { background: #10b981; }
+
+    .badge-web-content {
+      flex: 1;
+      padding: 6px;
+      background: linear-gradient(135deg, #1e1b4b 0%, #0369a1 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .badge-web-chip {
+      align-self: flex-start;
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    .badge-web-title {
+      font-family: var(--font-display);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    /* Inline Card 2: Software / Brand Graphic Pill Card */
+    .inline-badge-graphic {
+      width: 130px;
+      height: 64px;
+      background: #1d4ed8;
+      border: 2px solid var(--border-ink);
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(29, 78, 216, 0.3), 0 3px 0 var(--border-ink);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: rotate(2deg);
+      transition: all 0.3s ease;
+    }
+
+    .badge-graphic-text {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-graphic-sub {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge-graphic-pill {
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      font-weight: 700;
+      background: var(--accent-active);
+      color: var(--text-primary);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* Inline Card 3: Mobile Phone / Smartwatch App Frame */
+    .inline-badge-app {
+      width: 66px;
+      height: 82px;
+      background: #09090b;
+      border: 2px solid var(--border-ink);
+      border-radius: 14px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), 0 3px 0 var(--border-ink);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: rotate(-2deg);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .app-screen-notch {
+      width: 22px;
+      height: 4px;
+      background: #27272a;
+      border-radius: 999px;
+      margin: 3px auto 2px auto;
+    }
+
+    .app-screen-content {
+      flex: 1;
+      padding: 4px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .app-screen-title {
+      font-family: var(--font-display);
+      font-size: 0.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .app-screen-badge {
+      font-family: var(--font-mono);
+      font-size: 0.42rem;
+      background: #38bdf8;
+      color: #082f49;
+      font-weight: 700;
+      padding: 1px 3px;
+      border-radius: 3px;
+      margin: 0 auto;
+    }
+
+    /* Hero Subtitle & CTAs */
+    .hero-subhead {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto 36px auto;
+      font-weight: 400;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .play-icon {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* Corner Date Stamp */
+    .hero-footer-stamp {
+      position: absolute;
+      bottom: 12px;
+      right: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* Dual Marquee Section ("The brands we made") */
+    .marquee-section {
+      padding: 80px 0 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .marquee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+    }
+
+    .marquee-title-group h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .marquee-subhead {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 580px;
+    }
+
+    /* Ticker / Marquee Rows */
+    .marquee-row {
+      display: flex;
+      gap: 24px;
+      width: max-content;
+      margin-bottom: 28px;
+    }
+
+    .marquee-row:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 24px;
+      animation: scroll-left 35s linear infinite;
+    }
+
+    .marquee-track.reverse {
+      animation: scroll-right 40s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @keyframes scroll-right {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Marquee Cards */
+    .project-card {
+      width: 320px;
+      height: 200px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-ink);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 0 var(--border-ink);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 0 var(--border-ink);
+    }
+
+    .project-card-app {
+      width: 220px;
+      height: 240px;
+      background: #0f172a;
+      border: 2px solid var(--border-ink);
+      border-radius: 24px;
+      box-shadow: 0 8px 0 var(--border-ink);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      cursor: pointer;
+      color: #ffffff;
+      transition: all 0.25s ease;
+    }
+
+    .project-card-app:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 0 var(--border-ink);
+    }
+
+    .card-thumb-preview {
+      width: 100%;
+      height: 110px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(18, 19, 22, 0.1);
+    }
+
+    .card-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .card-brand-name {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Section Component Customizer (Framer Property Panel Simulator) */
+    .customizer-section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .customizer-box {
+      background: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 0 var(--border-ink);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .customizer-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .customizer-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .customizer-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 10px;
+    }
+
+    .swatch-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--border-ink);
+      cursor: pointer;
+      box-shadow: 0 2px 0 var(--border-ink);
+      transition: transform 0.2s ease;
+    }
+
+    .swatch-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .swatch-btn.active {
+      box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px var(--border-ink);
+    }
+
+    .customizer-range {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 6px;
+      background: var(--bg-surface);
+      border-radius: 999px;
+      outline: none;
+      border: 1px solid var(--border-ink);
+    }
+
+    .customizer-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-active);
+      border: 2px solid var(--border-ink);
+      cursor: pointer;
+    }
+
+    .customizer-preview-stage {
+      background: var(--bg-base);
+      border: 2px solid var(--border-ink);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Capabilities / Services Section */
+    .services-section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 40px;
+    }
+
+    .service-card {
+      background: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 0 var(--border-ink);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 0 var(--border-ink);
+    }
+
+    .service-index {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 750;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .service-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .service-deliverables {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+    }
+
+    .service-deliverables li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .check-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-primary);
+    }
+
+    /* Modal Dialogs */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 19, 22, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+      animation: modal-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modal-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border: 3px solid var(--border-ink);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 0 var(--border-ink);
+      max-width: 600px;
+      width: 100%;
+      padding: 36px;
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    /* Video Player Mockup inside Showreel Modal */
+    .showreel-player {
+      width: 100%;
+      height: 280px;
+      background: #09090b;
+      border: 2px solid var(--border-ink);
+      border-radius: var(--radius-md);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+
+    .showreel-play-trigger {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent-active);
+      border: 2px solid var(--border-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 0 var(--border-ink);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .showreel-play-trigger:hover {
+      transform: scale(1.1);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 2px solid var(--border-ink);
+      padding: 80px 0 40px 0;
+      background: #ffffff;
+      margin-top: 80px;
+    }
+
+    .footer-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4.6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 48px;
+    }
+
+    .clocks-strip {
+      display: flex;
+      gap: 36px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 20px 0;
+    }
+
+    .clock-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .clock-city {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clock-time {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #ffffff;
+      border: 2px solid var(--border-ink);
+      color: var(--text-primary);
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 6px 0 var(--border-ink);
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      z-index: 2000;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .toast.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .customizer-box {
+        grid-template-columns: 1fr;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero-footer-stamp {
+        position: static;
+        margin-top: 36px;
+        text-align: center;
+      }
+      .media-headline {
+        font-size: 2.2rem;
+        line-height: 1.4;
+      }
+      .inline-badge-web {
+        width: 100px;
+        height: 56px;
+      }
+      .inline-badge-graphic {
+        width: 90px;
+        height: 48px;
+      }
+      .inline-badge-app {
+        width: 50px;
+        height: 62px;
+      }
+      .marquee-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite">Action Completed</div>
+
+  <!-- Top Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="brand-logo" aria-label="Focalis Media Home">
+          <div class="brand-dot"></div>
+          <span>Focalis Media</span>
+        </a>
+
+        <nav aria-label="Primary Site Navigation">
+          <ul class="nav-links">
+            <li><a href="#hero">Studio</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#customizer">Customizer</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-lime" onclick="openContactModal()">Say Hello &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Focalis Hero Signature Inline Badges -->
+  <section id="hero" class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        
+        <h1 class="media-headline" id="mainHeadline">
+          <span style="display: block; margin-bottom: 8px;">Design studio focused on crafting</span>
+          
+          <span style="display: block; margin-bottom: 8px;">
+            <!-- Inline Media Badge 1: Website Mockup -->
+            <span class="media-badge-wrap" onclick="openProjectModal('synthetix')" title="Inspect Synthetix Web Flagship">
+              <span class="inline-badge-web" id="badgeWeb">
+                <span class="badge-browser-bar">
+                  <span class="browser-dot red"></span>
+                  <span class="browser-dot yellow"></span>
+                  <span class="browser-dot green"></span>
+                </span>
+                <span class="badge-web-content">
+                  <span class="badge-web-chip">WEB v2.4</span>
+                  <span class="badge-web-title">Synthetix</span>
+                </span>
+              </span>
+            </span>
+            <span>websites,</span>
+          </span>
+
+          <span style="display: block;">
+            <!-- Inline Media Badge 2: Brand/Graphic Card -->
+            <span class="media-badge-wrap" onclick="openProjectModal('strut')" title="Inspect Strut Brand System">
+              <span class="inline-badge-graphic" id="badgeGraphic">
+                <span class="badge-graphic-text">EVERY BITE IS A TRIPPP...</span>
+                <span class="badge-graphic-sub">
+                  <span class="badge-graphic-pill">BRAND</span>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </span>
+            </span>
+            <span>software, and</span>
+
+            <!-- Inline Media Badge 3: Mobile App Mockup -->
+            <span class="media-badge-wrap" onclick="openProjectModal('aura')" title="Inspect Aura Mobile App">
+              <span class="inline-badge-app" id="badgeApp">
+                <span class="app-screen-notch"></span>
+                <span class="app-screen-content">
+                  <span class="app-screen-title">STEP INTO</span>
+                  <span class="app-screen-badge">APP</span>
+                </span>
+              </span>
+            </span>
+            <span>apps.</span>
+          </span>
+        </h1>
+
+        <p class="hero-subhead" id="mainSubhead">
+          No decoration for decoration's sake. Just good digital work.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-lime" onclick="openContactModal()" style="font-size: 1rem; padding: 12px 28px;">
+            Say Hello &rarr;
+          </button>
+          <button class="btn btn-outline" onclick="openShowreelModal()" style="font-size: 1rem; padding: 12px 28px;">
+            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Watch Showreel (2:34)
+          </button>
+        </div>
+
+        <div class="hero-footer-stamp">
+          EST. 2024<br/>
+          TOKYO &amp; BERLIN,<br/>
+          FOR THE WORLD.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee Showcase Gallery ("The brands we made") -->
+  <section id="work" class="marquee-section">
+    <div class="container">
+      <div class="marquee-header">
+        <div class="marquee-title-group">
+          <h2>The brands<br/>we made</h2>
+          <p class="marquee-subhead">
+            Selected work from the last three years &mdash; brand systems, product surfaces and the sites that carry them.
+          </p>
+        </div>
+
+        <button class="btn btn-lime" onclick="scrollToCustomizer()">
+          Explore more projects &rarr;
+        </button>
+      </div>
+    </div>
+
+    <!-- Marquee Row 1: Web Interfaces -->
+    <div class="marquee-row" aria-label="Web Project Marquee">
+      <div class="marquee-track">
+        <!-- Card 1 -->
+        <div class="project-card" onclick="openProjectModal('aura')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);">
+            <div style="padding: 10px; color: #ffffff; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Aura Spatial Sound
+            </div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-family: var(--font-mono); font-size: 0.6rem; color: #38bdf8;">
+              3D Audio Synth
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Aura Sound</span>
+            <span class="card-tag">Web Flagship</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card" onclick="openProjectModal('veloce')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #451a03 0%, #78350f 100%);">
+            <div style="padding: 10px; color: #fde68a; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Veloce Timepieces
+            </div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-family: var(--font-mono); font-size: 0.6rem; color: #f59e0b;">
+              Configurator
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Veloce Atelier</span>
+            <span class="card-tag">E-Commerce</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card" onclick="openProjectModal('komorebi')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);">
+            <div style="padding: 10px; color: #a7f3d0; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Komorebi Living
+            </div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-family: var(--font-mono); font-size: 0.6rem; color: #34d399;">
+              Architecture
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Komorebi</span>
+            <span class="card-tag">Editorial Site</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="project-card" onclick="openProjectModal('hyperflow')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);">
+            <div style="padding: 10px; color: #ffffff; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Hyperflow Deal Engine
+            </div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-family: var(--font-mono); font-size: 0.6rem; color: #818cf8;">
+              Fintech SaaS
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Hyperflow</span>
+            <span class="card-tag">SaaS Platform</span>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="project-card" onclick="openProjectModal('synthetix')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+            <div style="padding: 10px; color: #ffffff; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Synthetix Bio Labs
+            </div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-family: var(--font-mono); font-size: 0.6rem; color: #7dd3fc;">
+              Genomics
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Synthetix</span>
+            <span class="card-tag">Life Sciences</span>
+          </div>
+        </div>
+
+        <!-- Duplicate for continuous loop -->
+        <div class="project-card" onclick="openProjectModal('aura')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);">
+            <div style="padding: 10px; color: #ffffff; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Aura Spatial Sound
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Aura Sound</span>
+            <span class="card-tag">Web Flagship</span>
+          </div>
+        </div>
+
+        <div class="project-card" onclick="openProjectModal('veloce')">
+          <div class="card-thumb-preview" style="background: linear-gradient(135deg, #451a03 0%, #78350f 100%);">
+            <div style="padding: 10px; color: #fde68a; font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+              Veloce Timepieces
+            </div>
+          </div>
+          <div class="card-meta-row">
+            <span class="card-brand-name">Veloce Atelier</span>
+            <span class="card-tag">E-Commerce</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marquee Row 2: Mobile Apps (Reverse Direction) -->
+    <div class="marquee-row" aria-label="Mobile App Marquee">
+      <div class="marquee-track reverse">
+        <!-- App Card 1 -->
+        <div class="project-card-app" onclick="openProjectModal('strut-app')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #38bdf8;">iOS 18</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #1d4ed8; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.85rem;">NEW DROP</div>
+            <div style="font-size: 0.65rem; color: #bfdbfe; margin-top: 2px;">Strut Capsule #04</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Strut Commerce
+          </div>
+        </div>
+
+        <!-- App Card 2 -->
+        <div class="project-card-app" onclick="openProjectModal('krypton')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #c084fc;">WALLET</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #581c87; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.7rem; color: #e9d5ff;">$48,920.00</div>
+            <div style="font-size: 0.6rem; color: #d8b4fe; margin-top: 2px;">+14.2% Today</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Krypton Vault
+          </div>
+        </div>
+
+        <!-- App Card 3 -->
+        <div class="project-card-app" onclick="openProjectModal('tactile')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #34d399;">AUDIO HW</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #064e3b; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">DIAL 08</div>
+            <div style="font-size: 0.6rem; color: #a7f3d0; margin-top: 2px;">Immersion Mode</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Tactile Controller
+          </div>
+        </div>
+
+        <!-- App Card 4 -->
+        <div class="project-card-app" onclick="openProjectModal('verge')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #fbbf24;">CINEMA</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #78350f; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;">RAW 24FPS</div>
+            <div style="font-size: 0.6rem; color: #fde68a; margin-top: 2px;">35mm Emulation</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Verge Optics
+          </div>
+        </div>
+
+        <!-- Duplicate for continuous loop -->
+        <div class="project-card-app" onclick="openProjectModal('strut-app')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #38bdf8;">iOS 18</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #1d4ed8; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.85rem;">NEW DROP</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Strut Commerce
+          </div>
+        </div>
+
+        <div class="project-card-app" onclick="openProjectModal('krypton')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #c084fc;">WALLET</span>
+            <span style="font-size: 0.75rem;">●</span>
+          </div>
+          <div style="background: #581c87; padding: 12px; border-radius: 14px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 0.7rem; color: #e9d5ff;">$48,920.00</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;">
+            Krypton Vault
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Focalis Hero Component Customizer (Framer Properties Panel) -->
+  <section id="customizer" class="customizer-section">
+    <div class="container">
+      <div class="customizer-box">
+        <div class="customizer-controls">
+          <div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">
+              FRAMER PROPERTIES PANEL
+            </span>
+            <h3 class="customizer-title">Focalis Hero Live Customizer</h3>
+            <p class="customizer-desc">
+              Tweak typography, accent colors, inline media tilt angles, and card geometry. Real-time preview updates instantly.
+            </p>
+          </div>
+
+          <!-- Control 1: Accent Color -->
+          <div class="control-row">
+            <div class="control-label">
+              <span>Accent Theme</span>
+              <span id="currentColorLabel" style="font-family: var(--font-mono); color: var(--text-muted);">Neon Lime (#D5FB34)</span>
+            </div>
+            <div class="color-swatches">
+              <button class="swatch-btn active" style="background: #d5fb34;" onclick="setThemeAccent('#d5fb34', 'Neon Lime (#D5FB34)')" title="Neon Lime"></button>
+              <button class="swatch-btn" style="background: #ff5c35;" onclick="setThemeAccent('#ff5c35', 'Electric Tangerine (#FF5C35)')" title="Electric Tangerine"></button>
+              <button class="swatch-btn" style="background: #8b5cf6;" onclick="setThemeAccent('#8b5cf6', 'Hyper Violet (#8B5CF6)')" title="Hyper Violet"></button>
+              <button class="swatch-btn" style="background: #06b6d4;" onclick="setThemeAccent('#06b6d4', 'Cyber Cyan (#06B6D4)')" title="Cyber Cyan"></button>
+            </div>
+          </div>
+
+          <!-- Control 2: Tilt Intensity Slider -->
+          <div class="control-row">
+            <div class="control-label">
+              <span>Media Tilt Angle</span>
+              <span id="tiltVal" style="font-family: var(--font-mono); color: var(--text-muted);">Default (3&deg;)</span>
+            </div>
+            <input type="range" class="customizer-range" min="0" max="8" value="3" oninput="updateMediaTilt(this.value)">
+          </div>
+
+          <!-- Control 3: Action Buttons -->
+          <div style="display: flex; gap: 12px; margin-top: 10px;">
+            <button class="btn btn-lime" onclick="copyFramerSnippet()" style="font-size: 0.85rem; padding: 8px 18px;">
+              Copy Framer Code
+            </button>
+            <button class="btn btn-outline" onclick="resetCustomizer()" style="font-size: 0.85rem; padding: 8px 18px;">
+              Reset Defaults
+            </button>
+          </div>
+        </div>
+
+        <!-- Customizer Live Preview Stage -->
+        <div class="customizer-preview-stage">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px;">
+            INTERACTIVE PREVIEW SPECIMEN
+          </div>
+          <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1.35;">
+            Crafting 
+            <span style="display: inline-block; width: 44px; height: 26px; background: #0f172a; border: 1.5px solid #000; border-radius: 6px; vertical-align: middle; margin: 0 4px;" id="previewMiniCard1"></span>
+            digital surfaces 
+            <span style="display: inline-block; width: 38px; height: 22px; background: #1d4ed8; border: 1.5px solid #000; border-radius: 6px; vertical-align: middle; margin: 0 4px;" id="previewMiniCard2"></span>
+            that scale.
+          </div>
+          <div style="margin-top: 20px;">
+            <button class="btn btn-lime" id="previewTestBtn" style="font-size: 0.85rem; padding: 8px 18px;">
+              Live Interactive Button &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Studio Capabilities / Services Section -->
+  <section id="services" class="services-section">
+    <div class="container">
+      <div style="max-width: 680px;">
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">
+          DISCIPLINES &amp; OFFERINGS
+        </span>
+        <h2 style="font-family: var(--font-display); font-size: clamp(2.2rem, 3.8vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-top: 8px;">
+          Tailored design systems for ambitious companies.
+        </h2>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card">
+          <div>
+            <div class="service-index">01 // IDENTITY</div>
+            <h3 class="service-title">Brand Architecture &amp; Creative Direction</h3>
+            <p class="service-desc">
+              Distinctive positioning, modular typography lockups, and uncompromising visual systems that command market authority.
+            </p>
+          </div>
+          <ul class="service-deliverables">
+            <li><span class="check-bullet"></span> Multi-Scale Monograms &amp; Logomarks</li>
+            <li><span class="check-bullet"></span> Color Chemistry &amp; Token Systems</li>
+            <li><span class="check-bullet"></span> Editorial Motion Guidelines</li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card">
+          <div>
+            <div class="service-index">02 // DIGITAL FLASGHIP</div>
+            <h3 class="service-title">High-Conversion Web Experiences</h3>
+            <p class="service-desc">
+              Editorial marketing sites and interactive flagships engineered for lightning-fast load times and high visitor engagement.
+            </p>
+          </div>
+          <ul class="service-deliverables">
+            <li><span class="check-bullet"></span> Focalis Hero Inline Visual Primitives</li>
+            <li><span class="check-bullet"></span> Fluid Kinetic Scroll Choreography</li>
+            <li><span class="check-bullet"></span> Static Vanilla HTML/CSS/JS Delivery</li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card">
+          <div>
+            <div class="service-index">03 // SOFTWARE</div>
+            <h3 class="service-title">Product Surfaces &amp; Mobile Systems</h3>
+            <p class="service-desc">
+              High-fidelity iOS app prototypes, multi-platform SaaS command dashboards, and production-grade Figma design kits.
+            </p>
+          </div>
+          <ul class="service-deliverables">
+            <li><span class="check-bullet"></span> Figma High-Fidelity Components</li>
+            <li><span class="check-bullet"></span> Dark Mode Tactile Interfaces</li>
+            <li><span class="check-bullet"></span> Micro-Interactions &amp; Haptic Polish</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showreel Video Modal -->
+  <div id="showreelModal" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeShowreelModal()" aria-label="Close Showreel">&times;</button>
+      <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+        FOCALIS SHOWREEL &bull; RUNTIME: 2:34
+      </span>
+      <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; margin-top: 4px;">
+        Craft in Motion (2024–2026)
+      </h3>
+
+      <div class="showreel-player">
+        <canvas id="showreelCanvas" width="540" height="280" style="width: 100%; height: 100%;"></canvas>
+        <button class="showreel-play-trigger" onclick="togglePlayShowreel()" aria-label="Play/Pause Reel">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Featuring web flagships, kinetic typography, and mobile interfaces.
+        </span>
+        <button class="btn btn-lime" onclick="closeShowreelModal()" style="font-size: 0.85rem; padding: 6px 16px;">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Detail Preview Modal -->
+  <div id="projectModal" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeProjectModal()" aria-label="Close Project">&times;</button>
+      <span id="projectCategory" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+        CASE STUDY
+      </span>
+      <h3 id="projectTitle" style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-top: 4px; margin-bottom: 12px;">
+        Project Name
+      </h3>
+      <div id="projectVisual" style="width: 100%; height: 200px; border: 2px solid var(--border-ink); border-radius: var(--radius-md); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;"></div>
+      <p id="projectDescription" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+        Project description details here.
+      </p>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span id="projectYear" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
+          Delivered in 2025
+        </span>
+        <button class="btn btn-lime" onclick="openContactModal(); closeProjectModal();" style="font-size: 0.85rem; padding: 8px 18px;">
+          Inquire Similar &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Say Hello Contact Modal -->
+  <div id="contactModal" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close Contact">&times;</button>
+      <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+        LET'S COLLABORATE
+      </span>
+      <h3 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-top: 4px; margin-bottom: 16px;">
+        Say Hello to Focalis Studio
+      </h3>
+
+      <form onsubmit="handleContactSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="display: block; font-family: var(--font-display); font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">
+            Your Name &bull; Company
+          </label>
+          <input type="text" required placeholder="Jane Doe, Founder at NextLabs" style="width: 100%; padding: 10px 14px; border: 2px solid var(--border-ink); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.9rem; outline: none;">
+        </div>
+
+        <div>
+          <label style="display: block; font-family: var(--font-display); font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">
+            Email Address
+          </label>
+          <input type="email" required placeholder="jane@example.com" style="width: 100%; padding: 10px 14px; border: 2px solid var(--border-ink); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.9rem; outline: none;">
+        </div>
+
+        <div>
+          <label style="display: block; font-family: var(--font-display); font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">
+            Project Scope
+          </label>
+          <select style="width: 100%; padding: 10px 14px; border: 2px solid var(--border-ink); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.9rem; outline: none; background: #ffffff;">
+            <option>Digital Flagship &amp; Web Experience</option>
+            <option>Mobile Application Design</option>
+            <option>Complete Brand Identity Architecture</option>
+            <option>Framer / Focalis Hero Custom Implementation</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-lime" style="width: 100%; margin-top: 10px; padding: 12px;">
+          Send Project Inquiry &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-headline">
+        Let's build something<br/>unforgettable together.
+      </div>
+
+      <!-- Live Timezone Clocks Strip -->
+      <div class="clocks-strip">
+        <div class="clock-item">
+          <span class="clock-city">Tokyo (Studio)</span>
+          <span class="clock-time" id="clockTokyo">--:-- JST</span>
+        </div>
+        <div class="clock-item">
+          <span class="clock-city">Berlin</span>
+          <span class="clock-time" id="clockBerlin">--:-- CET</span>
+        </div>
+        <div class="clock-item">
+          <span class="clock-city">London</span>
+          <span class="clock-time" id="clockLondon">--:-- GMT</span>
+        </div>
+        <div class="clock-item">
+          <span class="clock-city">New York</span>
+          <span class="clock-time" id="clockNewYork">--:-- EST</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>
+          &copy; 2026 Focalis Media Studio. Built with vanilla static HTML/CSS/JS.
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.78rem;">
+          Inquiries: <a href="mailto:hello@focalis.example" style="color: var(--text-primary); font-weight: 600; text-decoration: underline;">hello@focalis.example</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    // Project Catalog Database for Modals
+    const projects = {
+      synthetix: {
+        title: 'Synthetix Bio Genomics Flagship',
+        category: 'DIGITAL FLAGSHIP // LIFE SCIENCES',
+        desc: 'A luminous web experience exploring computational gene sequencing with live interactive 3D protein folding previews, sub-second latency, and custom shader visualizers.',
+        year: '2025 &bull; Full Redesign',
+        bg: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'
+      },
+      strut: {
+        title: 'Strut Streetwear Capsule Drop',
+        category: 'BRAND ARCHITECTURE // COMMERCE',
+        desc: 'A bold, high-contrast visual identity and mobile drop lookbook engineered for viral limited-edition apparel launches.',
+        year: '2024 &bull; Global Campaign',
+        bg: 'linear-gradient(135deg, #1d4ed8 0%, #1e1b4b 100%)'
+      },
+      aura: {
+        title: 'Aura Spatial Audio Synthesizer',
+        category: 'PRODUCT SYSTEM // AUDIO HW',
+        desc: 'Next-generation web audio workstation featuring custom DSP audio routing, tactile skeuomorphic dials, and seamless hardware synchronization.',
+        year: '2025 &bull; Hardware Interface',
+        bg: 'linear-gradient(135deg, #090d16 0%, #1e293b 100%)'
+      },
+      veloce: {
+        title: 'Veloce Atelier Luxury Configurator',
+        category: 'E-COMMERCE // LUXURY GOODS',
+        desc: 'Interactive titanium wristwatch configurator featuring real-time bezel and movement rendering with micro-engraving previews.',
+        year: '2024 &bull; Web Platform',
+        bg: 'linear-gradient(135deg, #451a03 0%, #78350f 100%)'
+      },
+      komorebi: {
+        title: 'Komorebi Architectural Living',
+        category: 'EDITORIAL // RESIDENTIAL DESIGN',
+        desc: 'Serene editorial sanctuary showcase celebrating Japanese wooden carpentry, diffuse lighting, and organic architectural landscapes.',
+        year: '2025 &bull; Editorial Platform',
+        bg: 'linear-gradient(135deg, #064e3b 0%, #065f46 100%)'
+      },
+      hyperflow: {
+        title: 'Hyperflow Revenue Automation',
+        category: 'SAAS // FINTECH',
+        desc: 'Autonomous revenue intelligence command center with real-time pipeline velocity charts and automated deal routing.',
+        year: '2025 &bull; Enterprise SaaS',
+        bg: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)'
+      },
+      'strut-app': {
+        title: 'Strut Mobile Commerce iOS',
+        category: 'MOBILE APP // COMMERCE',
+        desc: 'Native iOS experience featuring rapid 1-tap checkout, push drop countdowns, and augmented reality virtual shoe fitting.',
+        year: '2025 &bull; iOS App Store',
+        bg: 'linear-gradient(135deg, #1e3a8a 0%, #172554 100%)'
+      },
+      krypton: {
+        title: 'Krypton Vault Cryptographic Storage',
+        category: 'MOBILE APP // CRYPTO VAULT',
+        desc: 'Hardware-grade biometric crypto vault with multi-party computation security and zero-knowledge transaction history.',
+        year: '2025 &bull; Mobile Security',
+        bg: 'linear-gradient(135deg, #581c87 0%, #3b0764 100%)'
+      },
+      tactile: {
+        title: 'Tactile Studio Controller',
+        category: 'MOBILE APP // HARDWARE OS',
+        desc: 'Haptic-driven companion app for tactile synthesizer hardware with custom low-latency Bluetooth MIDI routing.',
+        year: '2024 &bull; Native App',
+        bg: 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)'
+      },
+      verge: {
+        title: 'Verge Cinematic Film Optics',
+        category: 'MOBILE APP // PHOTOGRAPHY',
+        desc: 'Computational photographic laboratory with 35mm film grain emulation, real-time exposure metering, and RAW negative development.',
+        year: '2024 &bull; Camera App',
+        bg: 'linear-gradient(135deg, #78350f 0%, #451a03 100%)'
+      }
+    };
+
+    // Modal Control Functions
+    function openProjectModal(key) {
+      const p = projects[key];
+      if (!p) return;
+      document.getElementById('projectTitle').innerText = p.title;
+      document.getElementById('projectCategory').innerText = p.category;
+      document.getElementById('projectDescription').innerText = p.desc;
+      document.getElementById('projectYear').innerHTML = p.year;
+      const vis = document.getElementById('projectVisual');
+      vis.style.background = p.bg;
+      vis.innerText = p.title;
+      document.getElementById('projectModal').classList.add('active');
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.remove('active');
+    }
+
+    function openShowreelModal() {
+      document.getElementById('showreelModal').classList.add('active');
+      startShowreelAnimation();
+    }
+
+    function closeShowreelModal() {
+      document.getElementById('showreelModal').classList.remove('active');
+      stopShowreelAnimation();
+    }
+
+    function openContactModal() {
+      document.getElementById('contactModal').classList.add('active');
+    }
+
+    function closeContactModal() {
+      document.getElementById('contactModal').classList.remove('active');
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.classList.contains('modal-backdrop')) {
+        e.target.classList.remove('active');
+      }
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      closeContactModal();
+      showToast('Thank you! Project inquiry sent to Focalis.');
+    }
+
+    function scrollToCustomizer() {
+      document.getElementById('customizer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Interactive Customizer Engine
+    function setThemeAccent(color, label) {
+      document.documentElement.style.setProperty('--accent-active', color);
+      document.getElementById('currentColorLabel').innerText = label;
+      document.querySelectorAll('.swatch-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.style.background.includes(color) || btn.title.toLowerCase().includes(label.toLowerCase()));
+      });
+      showToast(`Accent updated to ${label.split(' ')[0]}`);
+    }
+
+    function updateMediaTilt(val) {
+      const v = Number(val);
+      document.getElementById('tiltVal').innerText = `${v}°`;
+      
+      const bWeb = document.getElementById('badgeWeb');
+      const bGraphic = document.getElementById('badgeGraphic');
+      const bApp = document.getElementById('badgeApp');
+
+      if (bWeb) bWeb.style.transform = `rotate(${-v}deg)`;
+      if (bGraphic) bGraphic.style.transform = `rotate(${v * 0.7}deg)`;
+      if (bApp) bApp.style.transform = `rotate(${-v * 0.7}deg)`;
+    }
+
+    function resetCustomizer() {
+      setThemeAccent('#d5fb34', 'Neon Lime (#D5FB34)');
+      updateMediaTilt(3);
+      document.querySelector('.customizer-range').value = 3;
+      showToast('Properties reset to defaults');
+    }
+
+    function copyFramerSnippet() {
+      const code = `// Focalis Focalis Hero Framer Component
+export default function Focalis Hero(props) {
+  const { title = "Design studio focused on crafting", accent = "#d5fb34" } = props;
+  return <HeroSection title={title} accentColor={accent} inlineMedia={true} />;
+}`;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('Framer component code copied');
+      }).catch(() => {
+        showToast('Code copied to clipboard');
+      });
+    }
+
+    // Toast Manager
+    let toastTimer = null;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('active');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove('active');
+      }, 2600);
+    }
+
+    // Canvas-based Simulated Showreel Animation
+    let animId = null;
+    let playing = true;
+    function startShowreelAnimation() {
+      const canvas = document.getElementById('showreelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let angle = 0;
+
+      function render() {
+        if (!playing) return;
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Animated grid lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < canvas.width; x += 40) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+          ctx.stroke();
+        }
+
+        // Geometric kinetic ribbon
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(angle);
+        
+        ctx.strokeStyle = '#d5fb34';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-60, -40, 120, 80);
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(-80, -50, 160, 100);
+
+        ctx.restore();
+
+        // Overlay text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '600 14px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FOCALIS SHOWREEL // 2026 CUT', canvas.width / 2, canvas.height - 24);
+
+        angle += 0.02;
+        animId = requestAnimationFrame(render);
+      }
+      playing = true;
+      render();
+    }
+
+    function stopShowreelAnimation() {
+      playing = false;
+      if (animId) cancelAnimationFrame(animId);
+    }
+
+    function togglePlayShowreel() {
+      playing = !playing;
+      if (playing) {
+        startShowreelAnimation();
+        showToast('Resumed Showreel');
+      } else {
+        showToast('Paused Showreel');
+      }
+    }
+
+    // Live World Time Clocks
+    function updateClocks() {
+      const now = new Date();
+
+      const timeTokyo = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false });
+      const timeBerlin = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', hour12: false });
+      const timeLondon = now.toLocaleTimeString('en-US', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hour12: false });
+      const timeNY = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false });
+
+      const elTokyo = document.getElementById('clockTokyo');
+      const elBerlin = document.getElementById('clockBerlin');
+      const elLondon = document.getElementById('clockLondon');
+      const elNY = document.getElementById('clockNewYork');
+
+      if (elTokyo) elTokyo.innerText = `${timeTokyo} JST`;
+      if (elBerlin) elBerlin.innerText = `${timeBerlin} CET`;
+      if (elLondon) elLondon.innerText = `${timeLondon} GMT`;
+      if (elNY) elNY.innerText = `${timeNY} EST`;
+    }
+
+    updateClocks();
+    setInterval(updateClocks, 1000);
+  </script>
+</body>
+</html>
