@@ -21,29 +21,34 @@
   <!-- Google Fonts: IBM Plex Sans & IBM Plex Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-base: #f4f6f8;
+      --bg-base: #f6f8fa;
       --bg-surface: #ffffff;
-      --bg-subtle: #eceff2;
+      --bg-subtle: #edf1f5;
+      --bg-dark: #0f1217;
       
-      --text-primary: #181b20;
-      --text-secondary: #4e5664;
-      --text-muted: #7c8594;
+      --text-primary: #14171d;
+      --text-secondary: #495261;
+      --text-muted: #788292;
       
-      --accent-teal: #0b6b6e;
-      --accent-teal-dark: #085254;
-      --accent-teal-soft: rgba(11, 107, 110, 0.08);
+      --accent-teal: #0c7275;
+      --accent-teal-dark: #085456;
+      --accent-teal-soft: rgba(12, 114, 117, 0.08);
+      --accent-teal-glow: rgba(12, 114, 117, 0.22);
       
-      --border-hairline: rgba(24, 27, 32, 0.12);
-      --border-strong: rgba(24, 27, 32, 0.24);
+      --border-hairline: rgba(20, 23, 29, 0.10);
+      --border-strong: rgba(20, 23, 29, 0.20);
+      --border-focus: rgba(12, 114, 117, 0.40);
 
       --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'IBM Plex Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-      --container-width: 880px;
+      --container-width: 1120px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
     }
 
     * {
@@ -58,12 +63,17 @@
       font-family: var(--font-sans);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 1.55;
+      line-height: 1.6;
+      scroll-behavior: smooth;
     }
 
     body {
       min-height: 100vh;
       background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 100% 0%, rgba(12, 114, 117, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 0% 50%, rgba(20, 23, 29, 0.02) 0%, transparent 50%);
+      background-attachment: fixed;
       padding: 0;
       margin: 0;
     }
@@ -77,33 +87,37 @@
     /* Header & Navigation */
     header.site-header {
       border-bottom: 1px solid var(--border-hairline);
-      background-color: var(--bg-base);
+      background: rgba(246, 248, 250, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: border-color 0.2s ease;
     }
 
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 70px;
     }
 
     .brand {
       display: inline-flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
       color: var(--text-primary);
       font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
+      font-size: 1.15rem;
+      letter-spacing: -0.015em;
     }
 
     .brand-mark {
       color: var(--accent-teal);
       font-weight: 700;
+      font-size: 1.25rem;
     }
 
     .nav-toggle-checkbox {
@@ -113,23 +127,28 @@
     .nav-toggle-label {
       display: none;
       cursor: pointer;
-      padding: 8px;
+      padding: 8px 12px;
       font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
       color: var(--text-secondary);
+      background: var(--bg-surface);
     }
 
     nav.site-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 32px;
     }
 
     nav.site-nav a {
       text-decoration: none;
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 500;
-      transition: color 0.15s ease;
+      transition: all 0.2s ease;
+      position: relative;
     }
 
     nav.site-nav a:hover {
@@ -137,45 +156,78 @@
     }
 
     nav.site-nav a.nav-contact-link {
-      color: var(--accent-teal);
+      background-color: var(--accent-teal);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 3px;
       font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    nav.site-nav a.nav-contact-link:hover {
+      background-color: var(--accent-teal-dark);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--accent-teal-glow);
     }
 
     /* Layout Sections */
     section.section-block {
-      padding: 64px 0;
+      padding: 80px 0;
       border-bottom: 1px solid var(--border-hairline);
+      position: relative;
     }
 
     .section-label {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 14px;
+      color: var(--accent-teal);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-label::before {
+      content: "";
+      display: inline-block;
+      width: 14px;
+      height: 2px;
+      background-color: var(--accent-teal);
+    }
+
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 48px;
     }
 
     h1.hero-title {
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.025em;
+      font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
       color: var(--text-primary);
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     p.hero-lead {
       font-size: 1.12rem;
       color: var(--text-secondary);
-      max-width: 720px;
-      line-height: 1.6;
+      line-height: 1.65;
       margin-bottom: 32px;
     }
 
     .hero-cta-row {
       display: flex;
       align-items: center;
-      gap: 24px;
-      margin-bottom: 40px;
+      gap: 20px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
     }
 
     a.cta-link {
@@ -183,56 +235,141 @@
       align-items: center;
       background-color: var(--accent-teal);
       color: #ffffff;
-      padding: 10px 18px;
+      padding: 12px 24px;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 600;
-      border-radius: 2px;
-      transition: background-color 0.15s ease;
+      border-radius: 3px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px var(--accent-teal-glow);
     }
 
     a.cta-link:hover {
       background-color: var(--accent-teal-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-teal-glow);
     }
 
     a.text-link {
-      color: var(--accent-teal);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 11px 20px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-surface);
+      border-radius: 3px;
+      transition: all 0.2s ease;
     }
 
     a.text-link:hover {
-      color: var(--accent-teal-dark);
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+      transform: translateY(-1px);
     }
 
-    /* Functional Live Status Strip */
+    /* Hero Visual Card with Hardware Imagery */
+    .hero-visual-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-hairline);
+      box-shadow: 0 20px 50px rgba(20, 23, 29, 0.12);
+      background: var(--bg-dark);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-visual-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .hero-visual-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.88) contrast(1.1);
+      transition: transform 0.6s ease;
+    }
+
+    .hero-visual-card:hover .hero-visual-img {
+      transform: scale(1.03);
+    }
+
+    .hero-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 18, 23, 0.2) 0%, rgba(15, 18, 23, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .hero-visual-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: rgba(15, 18, 23, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-left: 3px solid var(--accent-teal);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+    }
+
+    .badge-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-sub {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #94a3b8;
+    }
+
+    /* Live Telemetry Banner */
     .status-strip {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-hairline);
       border-left: 3px solid var(--accent-teal);
-      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      padding: 16px 22px;
       display: grid;
       grid-template-columns: auto 1fr auto;
-      gap: 16px;
+      gap: 20px;
       align-items: center;
+      box-shadow: 0 4px 20px rgba(20, 23, 29, 0.04);
+      margin-bottom: 28px;
     }
 
     .status-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.84rem;
+      gap: 10px;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text-primary);
     }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background-color: var(--accent-teal);
+      box-shadow: 0 0 10px var(--accent-teal-glow);
+      position: relative;
+      animation: pulse-dot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
     }
 
     .status-metrics {
@@ -240,7 +377,7 @@
       align-items: center;
       gap: 24px;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.84rem;
       color: var(--text-secondary);
       flex-wrap: wrap;
     }
@@ -252,161 +389,301 @@
 
     .status-timestamp {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
     }
 
-    /* Practice Areas (6 practices) */
-    .practices-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1px;
-      background-color: var(--border-hairline);
+    /* Out-of-Scope Statement */
+    .scope-box {
+      padding: 16px 22px;
+      background-color: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      margin-top: 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
-    .practice-item {
+    .scope-box strong {
+      color: var(--text-primary);
+    }
+
+    /* Practices Section (6 Practices in 3x2 Grid with Interactive Elevation) */
+    .practices-header {
+      max-width: 720px;
+      margin-bottom: 36px;
+    }
+
+    .practices-header h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .practices-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .practice-card {
       background-color: var(--bg-surface);
-      padding: 24px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .practice-card:hover {
+      border-color: var(--border-focus);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(20, 23, 29, 0.07);
+    }
+
+    .practice-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 4px;
+      background: var(--accent-teal-soft);
+      border: 1px solid rgba(12, 114, 117, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-teal);
+      margin-bottom: 20px;
+      transition: all 0.25s ease;
+    }
+
+    .practice-card:hover .practice-card-icon {
+      background: var(--accent-teal);
+      color: #ffffff;
     }
 
     .practice-title {
-      font-size: 1.08rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 8px;
-      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      letter-spacing: -0.015em;
     }
 
     .practice-desc {
       font-size: 0.92rem;
       color: var(--text-secondary);
-      line-height: 1.55;
-      margin-bottom: 12px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
     }
 
-    .practice-details {
+    .practice-tech-tags {
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 14px;
+      line-height: 1.5;
     }
 
-    /* Delivery Sequence (4-step sequence) */
-    .sequence-list {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 1px solid var(--border-hairline);
-      background-color: var(--bg-surface);
-    }
-
-    .sequence-item {
-      padding: 24px;
-      border-bottom: 1px solid var(--border-hairline);
+    /* How We Work: 4-Step Delivery Sequence */
+    .sequence-layout {
       display: grid;
-      grid-template-columns: 50px 1fr;
-      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 36px;
     }
 
-    .sequence-item:last-child {
-      border-bottom: none;
+    .sequence-media-card {
+      position: sticky;
+      top: 100px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-hairline);
+      box-shadow: 0 16px 40px rgba(20, 23, 29, 0.08);
+      background: var(--bg-dark);
     }
 
-    .sequence-step {
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--accent-teal);
+    .sequence-media-card img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.85);
     }
 
-    .sequence-content h3 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 6px;
+    .sequence-media-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 18, 23, 0.95) 100%);
+      color: #ffffff;
     }
 
-    .sequence-content p {
-      font-size: 0.92rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-    }
-
-    /* Case Entries (3 cases with concrete metrics) */
-    .cases-list {
-      margin-top: 28px;
+    .sequence-list {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .case-entry {
+    .sequence-item {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      padding: 24px;
+      border-radius: var(--radius-sm);
+      padding: 26px;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 20px;
+      transition: all 0.25s ease;
     }
 
-    .case-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 8px;
+    .sequence-item:hover {
+      border-color: var(--border-focus);
+      transform: translateX(4px);
+      box-shadow: 0 8px 24px rgba(20, 23, 29, 0.04);
     }
 
-    .case-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .case-metric {
+    .sequence-step {
       font-family: var(--font-mono);
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 1.25rem;
+      font-weight: 700;
       color: var(--accent-teal);
-      background-color: var(--accent-teal-soft);
-      padding: 3px 8px;
-      border-radius: 2px;
+      line-height: 1;
+      padding-top: 2px;
     }
 
-    .case-body {
+    .sequence-content h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .sequence-content p {
       font-size: 0.92rem;
       color: var(--text-secondary);
       line-height: 1.6;
+    }
+
+    /* Work: 3 Case Studies with Concrete Metrics & Imagery */
+    .cases-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 36px;
+    }
+
+    .case-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .case-card:hover {
+      border-color: var(--border-focus);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(20, 23, 29, 0.08);
+    }
+
+    .case-thumb {
+      height: 190px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-dark);
+    }
+
+    .case-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: brightness(0.85);
+    }
+
+    .case-card:hover .case-thumb img {
+      transform: scale(1.05);
+    }
+
+    .case-content {
+      padding: 26px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .case-metric {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--accent-teal);
+      background-color: var(--accent-teal-soft);
+      border: 1px solid rgba(12, 114, 117, 0.2);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 14px;
+    }
+
+    .case-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
       margin-bottom: 12px;
+      line-height: 1.35;
+    }
+
+    .case-body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
     }
 
     .case-stack {
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 14px;
     }
 
-    /* Compliance & Trust */
-    .compliance-grid {
-      margin-top: 24px;
+    /* Trust & Compliance */
+    .compliance-card {
+      margin-top: 36px;
       background-color: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      padding: 24px;
+      border-radius: var(--radius-sm);
+      padding: 36px;
+      box-shadow: 0 8px 30px rgba(20, 23, 29, 0.03);
     }
 
     .compliance-list {
       list-style: none;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px 28px;
+      gap: 20px 40px;
     }
 
     .compliance-item {
-      font-size: 0.9rem;
+      font-size: 0.94rem;
       color: var(--text-secondary);
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 12px;
+      line-height: 1.55;
     }
 
     .compliance-item strong {
@@ -417,73 +694,86 @@
     .bullet {
       color: var(--accent-teal);
       font-weight: 700;
+      font-size: 1.1rem;
     }
 
-    /* Out-of-Scope Statement */
-    .scope-box {
-      margin-top: 28px;
-      padding: 16px 20px;
-      background-color: var(--bg-subtle);
-      border: 1px solid var(--border-hairline);
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .scope-box strong {
-      color: var(--text-primary);
-    }
-
-    /* Contact & Footer */
-    .contact-block {
+    /* Contact Section */
+    .contact-card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      padding: 32px;
-      margin-top: 24px;
+      border-left: 4px solid var(--accent-teal);
+      border-radius: var(--radius-sm);
+      padding: 44px;
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 48px;
+      align-items: center;
+      box-shadow: 0 12px 36px rgba(20, 23, 29, 0.05);
     }
 
     .contact-title {
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       color: var(--text-primary);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .contact-desc {
-      font-size: 0.92rem;
+      font-size: 0.96rem;
       color: var(--text-secondary);
-      margin-bottom: 20px;
-      max-width: 580px;
+      line-height: 1.65;
+      margin-bottom: 24px;
     }
 
-    .contact-details {
+    .contact-email-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-teal);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 3px;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px var(--accent-teal-glow);
+    }
+
+    .contact-email-btn:hover {
+      background: var(--accent-teal-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px var(--accent-teal-glow);
+    }
+
+    .contact-meta-col {
+      border-left: 1px solid var(--border-hairline);
+      padding-left: 36px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      font-size: 0.9rem;
+      gap: 16px;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
     }
 
-    .contact-email {
-      font-family: var(--font-mono);
-      font-size: 0.95rem;
-      color: var(--accent-teal);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .contact-email:hover {
-      text-decoration: underline;
-    }
-
-    .contact-meta {
-      font-size: 0.82rem;
+    .meta-group-title {
+      font-size: 0.76rem;
+      font-weight: 700;
       color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
     }
 
+    /* Footer */
     footer.site-footer {
-      padding: 40px 0;
-      font-size: 0.82rem;
+      padding: 50px 0;
+      font-size: 0.85rem;
       color: var(--text-muted);
+      background-color: var(--bg-base);
     }
 
     .footer-inner {
@@ -491,10 +781,38 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 20px;
     }
 
-    /* Mobile Styles via CSS-only toggle */
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .practices-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sequence-layout {
+        grid-template-columns: 1fr;
+      }
+      .sequence-media-card {
+        position: static;
+      }
+      .cases-list {
+        grid-template-columns: 1fr;
+      }
+      .contact-card {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .contact-meta-col {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border-hairline);
+        padding-top: 24px;
+      }
+    }
+
     @media (max-width: 768px) {
       .nav-toggle-label {
         display: block;
@@ -503,15 +821,16 @@
       nav.site-nav {
         display: none;
         position: absolute;
-        top: 64px;
+        top: 70px;
         left: 0;
         right: 0;
         background-color: var(--bg-base);
         border-bottom: 1px solid var(--border-hairline);
         flex-direction: column;
         align-items: flex-start;
-        padding: 20px 28px;
-        gap: 16px;
+        padding: 24px 28px;
+        gap: 18px;
+        box-shadow: 0 16px 30px rgba(20, 23, 29, 0.06);
       }
 
       .nav-toggle-checkbox:checked ~ nav.site-nav {
@@ -520,16 +839,15 @@
 
       .status-strip {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 12px;
+      }
+
+      .practices-grid {
+        grid-template-columns: 1fr;
       }
 
       .compliance-list {
         grid-template-columns: 1fr;
-      }
-
-      .sequence-item {
-        grid-template-columns: 1fr;
-        gap: 8px;
       }
     }
   </style>
@@ -562,24 +880,45 @@
     <!-- Hero Section -->
     <section class="section-block" id="hero">
       <div class="container">
-        <h1 class="hero-title">
-          Platform and infrastructure engineering for high-reliability systems
-        </h1>
+        
+        <div class="hero-grid">
+          <div>
+            <div class="section-label">High-Reliability Systems</div>
+            <h1 class="hero-title">
+              Platform &amp; infrastructure engineering for mission-critical operations
+            </h1>
 
-        <p class="hero-lead">
-          We architect, migrate, and operate mission-critical cloud, bare-metal compute, and high-throughput networking for engineering organizations where downtime directly translates to revenue loss.
-        </p>
+            <p class="hero-lead">
+              We architect, migrate, and operate mission-critical cloud topologies, bare-metal compute arrays, and high-throughput low-latency networking for engineering organizations where downtime directly translates to revenue loss.
+            </p>
 
-        <div class="hero-cta-row">
-          <a href="mailto:architecture@loren-it.example" class="cta-link">
-            Speak with an architect
-          </a>
-          <a href="#how-we-work" class="text-link">
-            Review delivery sequence
-          </a>
+            <div class="hero-cta-row">
+              <a href="mailto:architecture@loren-it.example" class="cta-link">
+                Speak with an architect
+              </a>
+              <a href="#how-we-work" class="text-link">
+                Review delivery sequence
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Server Array Visual Card -->
+          <div class="hero-visual-card">
+            <img src="assets/hero-banner.jpg" alt="Loren IT high-density colocation server rack and switch fabric" class="hero-visual-img" />
+            <div class="hero-visual-overlay"></div>
+            <div class="hero-visual-badge">
+              <div>
+                <div class="badge-label">Colocation Core &bull; Ashburn Fabric</div>
+                <div class="badge-sub">400Gbps Backbone &bull; 0.42ms Cross-Connect</div>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #34d399; font-weight: 600;">
+                LIVE
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Real, Functional Live Status Strip -->
+        <!-- Real Functional Live Status Strip -->
         <div class="status-strip">
           <div class="status-indicator">
             <span class="status-dot"></span>
@@ -598,209 +937,310 @@
           </div>
         </div>
 
-        <!-- Explicit positioning statement -->
+        <!-- Explicit Out-of-Scope Statement -->
         <div class="scope-box">
           <strong>Direct Scope Notice:</strong> We are exclusively a platform engineering and systems architecture firm. We do not provide SAP/ERP consulting, business process outsourcing (BPO), or generic IT body-shopping staffing.
         </div>
+
       </div>
     </section>
 
-    <!-- What We Do: 6 Practices -->
+    <!-- What We Do: 6 Practices in 3x2 Grid -->
     <section class="section-block" id="what-we-do">
       <div class="container">
-        <div class="section-label">What we do</div>
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.015em;">
-          Engineering practices
-        </h2>
-        <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 680px; margin-bottom: 24px;">
-          Engagements are delivered by senior systems engineers. Every environment is defined as versioned code with automated verification pipelines.
-        </p>
-
-        <div class="practices-list">
-          <div class="practice-item">
-            <div class="practice-title">Cloud Architecture &amp; Migration</div>
-            <div class="practice-desc">
-              Terraform and OpenTofu driven greenfield foundations and brownfield lift-and-shape migrations across AWS, GCP, and Azure without service disruption.
-            </div>
-            <div class="practice-details">
-              OpenTofu · AWS IAM identity federation · Multi-region failover · Zero-egress topology
-            </div>
-          </div>
-
-          <div class="practice-item">
-            <div class="practice-title">Platform Engineering &amp; DevOps</div>
-            <div class="practice-desc">
-              Internal developer platforms built on Kubernetes, ArgoCD, and automated ephemeral preview environments that cut lead time to production from days to minutes.
-            </div>
-            <div class="practice-details">
-              Kubernetes (EKS/GKE) · ArgoCD GitOps · Crossplane · Hermetic container builds
-            </div>
-          </div>
-
-          <div class="practice-item">
-            <div class="practice-title">Data Center &amp; Bare-Metal Compute</div>
-            <div class="practice-desc">
-              Colocation architecture, custom racking, and PXE boot provisioning for latency-sensitive workloads that are economically prohibitive on public cloud hypervisors.
-            </div>
-            <div class="practice-details">
-              Equinix Metal / Custom Co-lo · Canonical MAAS · BGP anycast routing · IPMI hardening
-            </div>
-          </div>
-
-          <div class="practice-item">
-            <div class="practice-title">Network &amp; Zero-Trust Security</div>
-            <div class="practice-desc">
-              Segmented network fabrics, transit gateways, WireGuard mesh topologies, and mTLS service-to-service cryptographic verification.
-            </div>
-            <div class="practice-details">
-              Cilium eBPF · Tailscale/WireGuard · Cloudflare Magic Transit · SPIFFE/SPIRE identity
-            </div>
-          </div>
-
-          <div class="practice-item">
-            <div class="practice-title">Managed Operations (NOC / SRE)</div>
-            <div class="practice-desc">
-              24/7/365 tier-3 follow-the-sun operational coverage staffed directly by systems engineers with production debugging authority, not ticket dispatchers.
-            </div>
-            <div class="practice-details">
-              Prometheus &amp; Grafana Mimir · OpenTelemetry tracing · SLO-based alerting · 15-minute P1 SLA
-            </div>
-          </div>
-
-          <div class="practice-item">
-            <div class="practice-title">Performance &amp; Cost Optimization</div>
-            <div class="practice-desc">
-              Deep-packet kernel profiling, memory leak isolation, and aggressive reserved instance / compute savings planning to lower total infrastructure burn.
-            </div>
-            <div class="practice-details">
-              eBPF Linux tracing · FinOps tagging governance · Kube-cost accounting · CPU pinning
-            </div>
-          </div>
+        
+        <div class="practices-header">
+          <div class="section-label">What we do</div>
+          <h2>Specialized engineering practices</h2>
+          <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;">
+            Engagements are staffed directly by senior systems engineers. Every environment is delivered as versioned, declarative infrastructure with automated verification gates.
+          </p>
         </div>
+
+        <div class="practices-grid">
+          
+          <!-- Practice 1 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                </svg>
+              </div>
+              <h3 class="practice-title">Cloud Architecture &amp; Migration</h3>
+              <p class="practice-desc">
+                Terraform and OpenTofu driven greenfield foundations and brownfield lift-and-shape migrations across AWS, GCP, and Azure without service disruption.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              OpenTofu &bull; AWS IAM federation &bull; Multi-region failover &bull; Zero-egress VPC
+            </div>
+          </div>
+
+          <!-- Practice 2 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                  <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                  <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+              </div>
+              <h3 class="practice-title">Platform Engineering &amp; DevOps</h3>
+              <p class="practice-desc">
+                Internal developer platforms built on Kubernetes, ArgoCD GitOps, and automated ephemeral preview environments that cut deployment lead times from days to minutes.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              Kubernetes (EKS/GKE) &bull; ArgoCD &bull; Crossplane &bull; Hermetic containers
+            </div>
+          </div>
+
+          <!-- Practice 3 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <h3 class="practice-title">Data Center &amp; Bare-Metal Compute</h3>
+              <p class="practice-desc">
+                Colocation architecture, custom high-density racking, and PXE boot provisioning for latency-sensitive workloads that are economically prohibitive on hypervisors.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              Equinix Metal / Co-lo &bull; Canonical MAAS &bull; BGP anycast &bull; IPMI hardening
+            </div>
+          </div>
+
+          <!-- Practice 4 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <h3 class="practice-title">Network &amp; Zero-Trust Security</h3>
+              <p class="practice-desc">
+                Segmented network fabrics, transit gateways, WireGuard mesh topologies, and mTLS service-to-service cryptographic verification protecting critical endpoints.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              Cilium eBPF &bull; Tailscale mesh &bull; Cloudflare Magic Transit &bull; SPIRE mTLS
+            </div>
+          </div>
+
+          <!-- Practice 5 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <h3 class="practice-title">Managed Operations (NOC / SRE)</h3>
+              <p class="practice-desc">
+                24/7/365 follow-the-sun operational coverage staffed directly by systems engineers with production debugging authority, backed by strict financial SLA terms.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              Prometheus &bull; Grafana Mimir &bull; OpenTelemetry &bull; 15-minute P1 SLA
+            </div>
+          </div>
+
+          <!-- Practice 6 -->
+          <div class="practice-card">
+            <div>
+              <div class="practice-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <h3 class="practice-title">Performance &amp; Cost Optimization</h3>
+              <p class="practice-desc">
+                Deep-packet kernel profiling, memory leak isolation, and aggressive reserved instance / compute savings governance to systematically drive down total burn.
+              </p>
+            </div>
+            <div class="practice-tech-tags">
+              eBPF Linux profiling &bull; FinOps tagging &bull; Kube-cost &bull; CPU affinity
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
-    <!-- How We Work: 4-Step Delivery Sequence -->
+    <!-- How We Work: 4-Step Delivery Sequence with Operations Visual -->
     <section class="section-block" id="how-we-work">
       <div class="container">
+        
         <div class="section-label">How we work</div>
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.015em;">
-          Delivery sequence
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 12px;">
+          Deterministic delivery sequence
         </h2>
-        <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 680px;">
-          Our engagements follow a deterministic progression designed to uncover architectural bottlenecks prior to committing production traffic.
+        <p style="font-size: 1rem; color: var(--text-secondary); max-width: 680px;">
+          Our engagements follow a structured progression engineered to uncover systemic architectural bottlenecks prior to committing production traffic.
         </p>
 
-        <div class="sequence-list">
-          <div class="sequence-item">
-            <div class="sequence-step">1</div>
-            <div class="sequence-content">
-              <h3>Infrastructure Audit &amp; Threat Model</h3>
-              <p>
-                Two-week technical deep dive reviewing existing repository state, IAM trust policies, network ingress paths, and single points of failure. We produce an actionable remediation roadmap with concrete risk ratings.
-              </p>
+        <div class="sequence-layout">
+          
+          <!-- Sticky Operations Center Photo -->
+          <div class="sequence-media-card">
+            <img src="assets/operations-center.jpg" alt="Loren IT SRE Engineering Operations Team" />
+            <div class="sequence-media-overlay">
+              <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;">Tier-3 SRE Engineering Hub</div>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; color: #cbd5e1;">Continuous Automated Verification &bull; 100% Onshore Architects</div>
             </div>
           </div>
 
-          <div class="sequence-item">
-            <div class="sequence-step">2</div>
-            <div class="sequence-content">
-              <h3>Target Architecture &amp; Proof-of-Concept</h3>
-              <p>
-                Collaborative RFC phase specifying IaC modules, VPC topologies, and deployment gates. We validate the architecture on an isolated staging cluster under simulated production load.
-              </p>
+          <!-- 4 Steps -->
+          <div class="sequence-list">
+            
+            <div class="sequence-item">
+              <div class="sequence-step">1</div>
+              <div class="sequence-content">
+                <h3>Infrastructure Audit &amp; Threat Model</h3>
+                <p>
+                  Two-week technical deep dive reviewing existing repository state, IAM trust policies, network ingress paths, and single points of failure. We produce an actionable remediation roadmap with concrete risk ratings.
+                </p>
+              </div>
             </div>
+
+            <div class="sequence-item">
+              <div class="sequence-step">2</div>
+              <div class="sequence-content">
+                <h3>Target Architecture &amp; Proof-of-Concept</h3>
+                <p>
+                  Collaborative RFC phase specifying IaC modules, VPC topologies, and deployment gates. We validate the architecture on an isolated staging cluster under simulated production load.
+                </p>
+              </div>
+            </div>
+
+            <div class="sequence-item">
+              <div class="sequence-step">3</div>
+              <div class="sequence-content">
+                <h3>Canary Migration &amp; Traffic Switch</h3>
+                <p>
+                  Zero-downtime cutover utilizing DNS weighted routing, database CDC replication streams, and automated rollback triggers. Production cutovers take place during scheduled maintenance windows.
+                </p>
+              </div>
+            </div>
+
+            <div class="sequence-item">
+              <div class="sequence-step">4</div>
+              <div class="sequence-content">
+                <h3>Operational Handover or Ongoing SRE Retainer</h3>
+                <p>
+                  Full runbook documentation, Chaos Engineering fire drills with your internal teams, and either complete sovereign handover or ongoing 24/7 SRE monitoring backed by financial SLA guarantees.
+                </p>
+              </div>
+            </div>
+
           </div>
 
-          <div class="sequence-item">
-            <div class="sequence-step">3</div>
-            <div class="sequence-content">
-              <h3>Canary Migration &amp; Traffic Switch</h3>
-              <p>
-                Zero-downtime cutover utilizing DNS weighted routing, database CDC replication streams, and automated rollback triggers. Production cutovers take place during scheduled maintenance windows.
-              </p>
-            </div>
-          </div>
-
-          <div class="sequence-item">
-            <div class="sequence-step">4</div>
-            <div class="sequence-content">
-              <h3>Operational Handover or Ongoing SRE Retainer</h3>
-              <p>
-                Full runbook documentation, Chaos Engineering fire drills with your internal teams, and either complete sovereign handover or ongoing 24/7 SRE monitoring backed by financial SLA guarantees.
-              </p>
-            </div>
-          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Work: 3 Case Entries with Concrete Metrics -->
+    <!-- Work: 3 Case Studies with Photography & Quantified Metrics -->
     <section class="section-block" id="work">
       <div class="container">
+        
         <div class="section-label">Work</div>
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.015em;">
-          Selected engagements
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 12px;">
+          Selected production engagements
         </h2>
-        <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 680px;">
+        <p style="font-size: 1rem; color: var(--text-secondary); max-width: 680px;">
           Representative production outcomes delivered for regulated financial platforms, high-volume logistics, and healthcare SaaS.
         </p>
 
         <div class="cases-list">
-          <div class="case-entry">
-            <div class="case-header">
-              <div class="case-title">Cross-Border Clearing Platform: Cloud Migration &amp; Latency Reduction</div>
-              <div class="case-metric">p99 latency: 140ms → 18ms</div>
+          
+          <!-- Case 1 -->
+          <article class="case-card">
+            <div class="case-thumb">
+              <img src="assets/cloud-network.jpg" alt="Cross-Border Clearing Platform Topology" />
             </div>
-            <div class="case-body">
-              Migrated a monolithic legacy payments clearing stack from a legacy provider to an AWS multi-region active-active topology with DynamoDB global tables and Envoy proxy routing. P99 transaction latency was reduced by 87% while maintaining strict FINRA data sovereignty requirements.
+            <div class="case-content">
+              <div>
+                <span class="case-metric">p99 latency: 140ms &rarr; 18ms</span>
+                <h3 class="case-title">Cross-Border Clearing Platform: Cloud Migration &amp; Latency Reduction</h3>
+                <p class="case-body">
+                  Migrated a monolithic legacy payments clearing stack to an AWS multi-region active-active topology with DynamoDB global tables and Envoy proxy routing. P99 transaction latency was reduced by 87% while maintaining strict FINRA data sovereignty requirements.
+                </p>
+              </div>
+              <div class="case-stack">
+                AWS &bull; Terraform &bull; Envoy &bull; DynamoDB Global Tables &bull; OpenTelemetry &bull; 60-day window
+              </div>
             </div>
-            <div class="case-stack">
-              AWS · Terraform · Envoy · DynamoDB Global Tables · OpenTelemetry · 60-day migration window
-            </div>
-          </div>
+          </article>
 
-          <div class="case-entry">
-            <div class="case-header">
-              <div class="case-title">Fleet Telemetry Provider: Kubernetes Migration &amp; Deploy Cadence</div>
-              <div class="case-metric">Deploy lead time: 4 days → 9 minutes</div>
+          <!-- Case 2 -->
+          <article class="case-card">
+            <div class="case-thumb">
+              <img src="assets/devops-screen.jpg" alt="Fleet Telemetry Deployment Pipeline" />
             </div>
-            <div class="case-body">
-              Replaced manual VM deployments with an automated ArgoCD GitOps platform managing 1,200 microservices instances. Deployment frequency increased from bi-weekly maintenance windows to an average of 42 deploys daily with zero customer-impacting outages recorded over 14 months.
+            <div class="case-content">
+              <div>
+                <span class="case-metric">Deploy lead time: 4 days &rarr; 9 minutes</span>
+                <h3 class="case-title">Fleet Telemetry Provider: Kubernetes Migration &amp; Deploy Cadence</h3>
+                <p class="case-body">
+                  Replaced manual VM deployments with an automated ArgoCD GitOps platform managing 1,200 microservices instances. Deployment frequency increased from bi-weekly maintenance windows to an average of 42 deploys daily with zero customer-impacting outages over 14 months.
+                </p>
+              </div>
+              <div class="case-stack">
+                Bare-Metal Kubernetes &bull; ArgoCD &bull; GitHub Actions &bull; Cilium eBPF &bull; Vault
+              </div>
             </div>
-            <div class="case-stack">
-              Kubernetes on Bare Metal · ArgoCD · GitHub Actions · Cilium eBPF · Vault
-            </div>
-          </div>
+          </article>
 
-          <div class="case-entry">
-            <div class="case-header">
-              <div class="case-title">Diagnostic Imaging Network: Storage Architecture &amp; Cloud Egress Costs</div>
-              <div class="case-metric">Annual infra burn: $2.4M → $980K</div>
+          <!-- Case 3 -->
+          <article class="case-card">
+            <div class="case-thumb">
+              <img src="assets/server-hardware.jpg" alt="Diagnostic Imaging Network Storage Architecture" />
             </div>
-            <div class="case-body">
-              Engineered a hybrid storage tiering architecture for 4.2 petabytes of DICOM medical images. Shifted hot caches to colocation Ceph clusters while archiving cold images to encrypted immutable cloud tiers, reducing annual recurring infrastructure burn by 59%.
+            <div class="case-content">
+              <div>
+                <span class="case-metric">Annual infra burn: $2.4M &rarr; $980K</span>
+                <h3 class="case-title">Diagnostic Imaging Network: Storage Architecture &amp; Egress Costs</h3>
+                <p class="case-body">
+                  Engineered a hybrid storage tiering architecture for 4.2 petabytes of DICOM medical images. Shifted hot caches to colocation Ceph clusters while archiving cold images to encrypted immutable cloud tiers, reducing annual recurring infrastructure burn by 59%.
+                </p>
+              </div>
+              <div class="case-stack">
+                Ceph Distributed Storage &bull; MinIO &bull; AWS S3 Glacier &bull; Direct Connect 10Gbps
+              </div>
             </div>
-            <div class="case-stack">
-              Ceph Distributed Storage · MinIO · AWS S3 Glacier Instant Retrieval · Direct Connect 10Gbps
-            </div>
-          </div>
+          </article>
+
         </div>
+
       </div>
     </section>
 
-    <!-- Trust & Compliance List -->
+    <!-- Trust & Compliance -->
     <section class="section-block" id="trust">
       <div class="container">
+        
         <div class="section-label">Trust</div>
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.015em;">
-          Compliance &amp; operational posture
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 12px;">
+          Compliance &amp; operational governance
         </h2>
-        <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 680px;">
-          Our operational workflows are independently audited annually. We operate under signed NDAs and standard vendor risk management frameworks.
+        <p style="font-size: 1rem; color: var(--text-secondary); max-width: 680px;">
+          Our operational workflows are independently audited annually. We operate under signed non-disclosure agreements and standard enterprise vendor risk management frameworks.
         </p>
 
-        <div class="compliance-grid">
+        <div class="compliance-card">
           <ul class="compliance-list">
             <li class="compliance-item">
               <span class="bullet">/</span>
@@ -828,33 +1268,52 @@
             </li>
           </ul>
         </div>
+
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Direct Contact Section -->
     <section class="section-block" id="contact" style="border-bottom: none;">
       <div class="container">
+        
         <div class="section-label">Contact</div>
-        <div class="contact-block">
-          <h2 class="contact-title">Direct engineering contact</h2>
-          <p class="contact-desc">
-            Inquiries are reviewed directly by a principal platform architect. We schedule an initial 30-minute technical scope review within one business day.
-          </p>
+        <div class="contact-card">
+          <div>
+            <h2 class="contact-title">Direct engineering contact</h2>
+            <p class="contact-desc">
+              Inquiries are reviewed directly by a principal platform architect. We schedule an initial 30-minute technical scope review within one business day.
+            </p>
+            <a href="mailto:architecture@loren-it.example" class="contact-email-btn">
+              architecture@loren-it.example
+            </a>
+          </div>
 
-          <div class="contact-details">
+          <div class="contact-meta-col">
             <div>
-              <a href="mailto:architecture@loren-it.example" class="contact-email">
-                architecture@loren-it.example
-              </a>
+              <div class="meta-group-title">Public Cryptographic Key</div>
+              <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-primary);">
+                0x4F8291B29CD41E80
+              </div>
+              <div style="font-size: 0.76rem; color: var(--text-muted);">
+                Fingerprint available upon request
+              </div>
             </div>
-            <div class="contact-meta">
-              PGP Key ID: <span style="font-family: var(--font-mono);">0x4F8291B29CD41E80</span> · Fingerprint available upon request
+
+            <div>
+              <div class="meta-group-title">Headquarters</div>
+              <div style="color: var(--text-primary);">
+                100 Montgomery Street, Suite 1400<br/>
+                San Francisco, CA 94104
+              </div>
             </div>
-            <div class="contact-meta">
-              Office: 100 Montgomery Street, Suite 1400, San Francisco, CA 94104
+
+            <div>
+              <div class="meta-group-title">Engagement Response</div>
+              <div>Direct response from senior architect within 24h</div>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </main>
@@ -866,7 +1325,7 @@
         &copy; 2026 Loren IT LLC. Infrastructure &amp; platform engineering.
       </div>
       <div>
-        Personal static design library specimen · No cookies · Zero external trackers
+        Personal static design library specimen &bull; No cookies &bull; Zero external trackers
       </div>
     </div>
   </footer>
