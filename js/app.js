@@ -1,6 +1,7 @@
 /**
  * mydesignlib — personal design library
  * Loads data/catalog.json; type / industry / tag filters, search, sort, detail modal.
+ * Detail actions: view prompt.md, download the template folder as a zip.
  */
 
 (() => {
@@ -77,6 +78,8 @@
     previewPath: "",
     previewName: "",
     modalItemId: "",
+    files: {},
+    zipToken: 0,
   };
 
   const els = {
@@ -108,6 +111,13 @@
     modalRelated: document.getElementById("modal-related"),
     modalPreviewBtn: document.getElementById("modal-preview-btn"),
     modalSourceBtn: document.getElementById("modal-source-btn"),
+    modalPromptBtn: document.getElementById("modal-prompt-btn"),
+    modalPrompt: document.getElementById("modal-prompt"),
+    modalPromptLabel: document.getElementById("modal-prompt-label"),
+    modalPromptBody: document.getElementById("modal-prompt-body"),
+    modalPromptClose: document.getElementById("modal-prompt-close"),
+    modalZipBtn: document.getElementById("modal-zip-btn"),
+    modalFileStatus: document.getElementById("modal-file-status"),
     devicePreview: document.getElementById("device-preview"),
     deviceTitle: document.getElementById("device-preview-title"),
     deviceSize: document.getElementById("device-preview-size"),
@@ -154,9 +164,13 @@
   async function loadCatalog() {
     showSkeletons(3);
     try {
-      const res = await fetch("data/catalog.json", { cache: "no-cache" });
+      const [res, filesRes] = await Promise.all([
+        fetch("data/catalog.json", { cache: "no-cache" }),
+        fetch("data/files.json", { cache: "no-cache" }),
+      ]);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.catalog = await res.json();
+      state.files = filesRes.ok ? await filesRes.json() : {};
       renderAll();
       const q = new URLSearchParams(location.search);
       const previewId = q.get("preview");
@@ -519,6 +533,9 @@
   function openModal(id) {
     const t = getItems().find((x) => x.id === id);
     if (!t) return;
+    hidePrompt();
+    setFileStatus("");
+    resetZipButton();
 
     const type = t.type || "website";
     const catBits = [typeLabel(type)];
@@ -600,8 +617,150 @@
   }
 
   function closeModal() {
+    hidePrompt();
     els.modal.hidden = true;
     document.body.classList.remove("modal-open");
+  }
+
+  function setFileStatus(message) {
+    if (!els.modalFileStatus) return;
+    els.modalFileStatus.hidden = !message;
+    els.modalFileStatus.textContent = message || "";
+  }
+
+  function hidePrompt() {
+    if (!els.modalPrompt) return;
+    els.modalPrompt.hidden = true;
+    if (els.modalPromptBtn) {
+      els.modalPromptBtn.setAttribute("aria-expanded", "false");
+      els.modalPromptBtn.textContent = "View prompt";
+    }
+  }
+
+  function itemFolder(item) {
+    if (!item?.path) return "";
+    return item.path.endsWith("/") ? item.path : `${item.path}/`;
+  }
+
+  async function togglePrompt() {
+    const item = getItems().find((x) => x.id === state.modalItemId);
+    if (!item || !els.modalPrompt || !els.modalPromptBody) return;
+    if (!els.modalPrompt.hidden) {
+      hidePrompt();
+      return;
+    }
+    els.modalPrompt.hidden = false;
+    els.modalPromptBtn?.setAttribute("aria-expanded", "true");
+    if (els.modalPromptBtn) els.modalPromptBtn.textContent = "Hide prompt";
+    if (els.modalPromptLabel) els.modalPromptLabel.textContent = `Prompt · ${item.name}`;
+    els.modalPromptBody.textContent = "Loading the prompt…";
+    const url = new URL(`${itemFolder(item)}prompt.md`, window.location.href);
+    try {
+      const res = await fetch(url.href, { cache: "no-cache" });
+      const text = res.ok ? await res.text() : "";
+      const looksLikeHtml = /^\s*</.test(text);
+      if (!res.ok || !text.trim() || looksLikeHtml) {
+        els.modalPromptBody.textContent = "No prompt was saved with this template.";
+      } else {
+        els.modalPromptBody.textContent = text;
+      }
+    } catch (err) {
+      console.error(err);
+      els.modalPromptBody.textContent = "The prompt could not be loaded.";
+    }
+    els.modalPromptBody.focus();
+  }
+
+  const STORED_EXT = new Set([
+    "avif", "gif", "ico", "jpeg", "jpg", "mp4", "pdf", "png", "webm", "webp", "woff", "woff2",
+  ]);
+
+  function resetZipButton() {
+    if (!els.modalZipBtn) return;
+    els.modalZipBtn.disabled = false;
+    els.modalZipBtn.textContent = "Download zip";
+  }
+
+  async function mapPool(items, limit, fn) {
+    const out = new Array(items.length);
+    let cursor = 0;
+    async function worker() {
+      while (cursor < items.length) {
+        const index = cursor;
+        cursor += 1;
+        out[index] = await fn(items[index], index);
+      }
+    }
+    const workers = Math.min(limit, items.length);
+    await Promise.all(Array.from({ length: workers }, () => worker()));
+    return out;
+  }
+
+  async function downloadTemplateZip() {
+    const item = getItems().find((x) => x.id === state.modalItemId);
+    if (!item || !els.modalZipBtn) return;
+    if (typeof fflate === "undefined" || typeof fflate.zip !== "function") {
+      setFileStatus("Zip support did not load. Refresh the page and try again.");
+      return;
+    }
+    const entry = state.files?.[item.id];
+    const files = entry?.files || [];
+    if (!files.length) {
+      setFileStatus("This template has no files to download.");
+      return;
+    }
+
+    const token = state.zipToken + 1;
+    state.zipToken = token;
+    const forId = item.id;
+    els.modalZipBtn.disabled = true;
+    els.modalZipBtn.textContent = "Preparing zip…";
+    setFileStatus(`Gathering ${files.length} files…`);
+
+    const folder = itemFolder(item);
+    try {
+      const packed = await mapPool(files, 6, async (rel) => {
+        const url = new URL(folder + rel, window.location.href);
+        const res = await fetch(url.href);
+        if (!res.ok) throw new Error(`${rel} (${res.status})`);
+        const data = new Uint8Array(await res.arrayBuffer());
+        const ext = rel.split(".").pop().toLowerCase();
+        const payload = STORED_EXT.has(ext) ? [data, { level: 0 }] : data;
+        return [`${forId}/${rel}`, payload];
+      });
+      if (token !== state.zipToken || state.modalItemId !== forId) return;
+
+      setFileStatus("Packing the zip…");
+      const archive = {};
+      packed.forEach(([name, payload]) => {
+        archive[name] = payload;
+      });
+      const zipped = await new Promise((resolve, reject) => {
+        fflate.zip(archive, { level: 6 }, (err, data) => {
+          if (err) reject(err);
+          else resolve(data);
+        });
+      });
+      if (token !== state.zipToken || state.modalItemId !== forId) return;
+
+      const blob = new Blob([zipped], { type: "application/zip" });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = href;
+      link.download = `${forId}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(href), 4000);
+      setFileStatus(`Downloaded ${forId}.zip`);
+    } catch (err) {
+      console.error(err);
+      if (token === state.zipToken && state.modalItemId === forId) {
+        setFileStatus("The zip could not be built. Try again.");
+      }
+    } finally {
+      if (token === state.zipToken && state.modalItemId === forId) resetZipButton();
+    }
   }
 
   /* ---------- Device preview ---------- */
@@ -844,6 +1003,17 @@
       }
     });
 
+    els.modalPromptBtn?.addEventListener("click", () => {
+      togglePrompt();
+    });
+    els.modalPromptClose?.addEventListener("click", () => {
+      hidePrompt();
+      els.modalPromptBtn?.focus();
+    });
+    els.modalZipBtn?.addEventListener("click", () => {
+      downloadTemplateZip();
+    });
+
     if (els.deviceStage && typeof ResizeObserver !== "undefined") {
       const ro = new ResizeObserver(() => fitDevice());
       ro.observe(els.deviceStage);
@@ -865,6 +1035,11 @@
       if (e.key !== "Escape") return;
       if (els.devicePreview && !els.devicePreview.hidden) {
         closeDevicePreview();
+        return;
+      }
+      if (els.modalPrompt && !els.modalPrompt.hidden) {
+        hidePrompt();
+        els.modalPromptBtn?.focus();
         return;
       }
       if (!els.modal.hidden) closeModal();

@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Torsion — Independent Physics-Driven Digital Experience Studio</title>
+  <meta name="description" content="Torsion is an independent digital studio engineering high-performance interactive 3D web flagships and spatial digital products." />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base: #f4f6fa;
+      --bg-surface: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.76);
+      --border-glass: rgba(255, 255, 255, 0.9);
+      --border-subtle: rgba(20, 24, 35, 0.08);
+      --border-hover: rgba(26, 68, 232, 0.28);
+      --text-primary: #0e121a;
+      --text-secondary: #525a6b;
+      --text-muted: #8890a2;
+      --accent-cobalt: #1a44e8;
+      --accent-cobalt-hover: #1034c4;
+      --accent-cobalt-glow: rgba(26, 68, 232, 0.3);
+      --accent-citron: #9dd81b;
+      --accent-citron-dark: #274003;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --container-max: 1280px;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.5;
+      background: var(--bg-base);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font: inherit;
+      color: inherit;
+    }
+
+    /* Fixed WebGL Canvas Behind Content */
+    #webgl-canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: auto; /* Allow mouse interaction directly on spheres */
+    }
+
+    #webgl-canvas-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Custom Cursor Ring */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--text-primary);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+      display: grid;
+      place-items: center;
+    }
+    .custom-cursor::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--text-primary);
+      border-radius: 50%;
+    }
+    .custom-cursor.active {
+      width: 52px;
+      height: 52px;
+      border-color: var(--accent-cobalt);
+      background: rgba(26, 68, 232, 0.08);
+    }
+
+    /* Foreground Content Wrapper */
+    .site-content {
+      position: relative;
+      z-index: 2;
+      pointer-events: none; /* Let clicks fall through to WebGL canvas unless on interactive elements */
+    }
+
+    .interactive,
+    a, button, input, textarea, select, .card, .slider-control {
+      pointer-events: auto;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Header & Navigation */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 2rem;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    .site-header.scrolled {
+      background: rgba(244, 246, 250, 0.85);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(20, 24, 35, 0.06);
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-cobalt);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-cobalt);
+      animation: pulse-glow 2s infinite ease-in-out;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+    }
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .btn-talk {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-pill);
+      background: var(--accent-cobalt);
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .btn-talk:hover {
+      background: var(--accent-cobalt-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--accent-cobalt-glow);
+    }
+    .arrow-icon {
+      display: inline-block;
+      transition: transform 0.25s;
+    }
+    .btn-talk:hover .arrow-icon {
+      transform: translate(2px, -2px);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 100vh;
+      padding-top: 14vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .hero-top-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3.2rem, 7.5vw, 6.8rem);
+      font-weight: 800;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      max-width: 14ch;
+      color: var(--text-primary);
+    }
+    .hero-headline em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent-cobalt);
+      letter-spacing: -0.01em;
+      padding-left: 0.1em;
+      transition: color 0.5s ease;
+    }
+
+    .hero-footer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 4rem;
+      margin-top: 6rem;
+    }
+    .hero-desc {
+      max-width: 26rem;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .hero-status-box {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .scroll-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Kinematics Section (Phase 2 Collapse) */
+    .kinematics-section {
+      min-height: 100vh;
+      padding: 10rem 0 6rem;
+      position: relative;
+    }
+
+    .kinematics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--accent-cobalt);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      margin-bottom: 2rem;
+    }
+    .section-title em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent-citron-dark);
+      transition: color 0.5s;
+    }
+
+    .section-body {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 32rem;
+    }
+
+    /* Frosted Glass Telemetry Cards */
+    .telemetry-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .glass-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 16px 40px rgba(14, 18, 26, 0.04);
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.3s var(--transition-smooth), box-shadow 0.3s, border-color 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 24px 50px rgba(14, 18, 26, 0.08);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .card-idx {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-cobalt);
+      letter-spacing: -0.04em;
+    }
+
+    .card-info h4 {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .card-info h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .card-info p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent-citron-dark);
+      background: rgba(157, 216, 27, 0.16);
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-pill);
+    }
+    .live-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent-citron);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-citron);
+    }
+
+    /* Live Physics Control Deck */
+    .controls-deck {
+      margin-top: 3rem;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(14, 18, 26, 0.03);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-width: 140px;
+    }
+    .control-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .control-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      background: rgba(20, 24, 35, 0.12);
+      border-radius: var(--radius-pill);
+      outline: none;
+    }
+    .control-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent-cobalt);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-cobalt-glow);
+    }
+
+    .theme-pills {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .theme-btn {
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    .theme-btn.active {
+      background: var(--accent-cobalt);
+      border-color: var(--accent-cobalt);
+      color: #ffffff;
+    }
+
+    /* Selected Works Section */
+    .works-section {
+      padding: 8rem 0;
+      position: relative;
+    }
+    .works-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .work-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 420px;
+      transition: transform 0.4s var(--transition-smooth), border-color 0.3s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .work-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      box-shadow: 0 30px 60px rgba(14, 18, 26, 0.08);
+    }
+    .work-meta-top {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .work-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .work-desc {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 28rem;
+    }
+    .work-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .work-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .tag-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-base);
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-pill);
+      color: var(--text-secondary);
+    }
+    .work-arrow {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-base);
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      transition: background 0.2s, transform 0.2s, color 0.2s;
+    }
+    .work-card:hover .work-arrow {
+      background: var(--accent-cobalt);
+      color: #ffffff;
+      transform: translate(2px, -2px);
+    }
+
+    /* Capabilities / Services */
+    .services-section {
+      padding: 6rem 0 10rem;
+    }
+    .services-list {
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 3rem;
+    }
+    .service-row {
+      display: grid;
+      grid-template-columns: 5rem 1.8fr 2fr auto;
+      align-items: center;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.2s, padding-left 0.2s;
+    }
+    .service-row:hover {
+      padding-left: 1rem;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .service-num {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+    .service-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .service-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 32rem;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--text-primary);
+      color: #ffffff;
+      padding: 6rem 0 3rem;
+      position: relative;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+    .footer-lead h2 {
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+    .footer-lead h2 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--accent-citron);
+    }
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 1.25rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* Inquiry Modal */
+    dialog.inquiry-modal {
+      border: none;
+      padding: 0;
+      background: transparent;
+      margin: auto;
+      max-width: 560px;
+      width: calc(100% - 2rem);
+    }
+    dialog.inquiry-modal::backdrop {
+      background: rgba(14, 18, 26, 0.65);
+      backdrop-filter: blur(12px);
+    }
+    .modal-box {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg-base);
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-secondary);
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font: inherit;
+      background: var(--bg-base);
+    }
+    .form-input:focus {
+      outline: 2px solid var(--accent-cobalt);
+      background: #ffffff;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .kinematics-grid, .works-grid, .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .service-row {
+        grid-template-columns: 3rem 1fr;
+        gap: 1rem;
+      }
+      .service-desc {
+        grid-column: 2;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+
+  <!-- Three.js Physics Canvas Container -->
+  <div id="webgl-canvas-container"></div>
+
+  <!-- Site Content -->
+  <div class="site-content">
+    
+    <!-- Header -->
+    <header class="site-header" id="site-header">
+      <a href="#top" class="brand-mark interactive">
+        <span class="status-dot"></span>
+        Torsion
+      </a>
+      <nav class="nav-menu">
+        <a href="#kinematics" class="nav-link interactive">Kinematics</a>
+        <a href="#works" class="nav-link interactive">Works</a>
+        <a href="#services" class="nav-link interactive">Services</a>
+        <a href="#lab" class="nav-link interactive">Physics Lab</a>
+      </nav>
+      <button type="button" class="btn-talk interactive" id="btn-open-inquiry">
+        Let's talk <span class="arrow-icon">↗</span>
+      </button>
+    </header>
+
+    <main id="top">
+      
+      <!-- Hero Section -->
+      <section class="hero-section container">
+        <div>
+          <div class="hero-top-eyebrow">
+            <span>•</span> Independent Digital Experience Studio
+          </div>
+          <h1 class="hero-headline">
+            Less noise.<br />
+            More <em>torsion.</em>
+          </h1>
+        </div>
+
+        <div class="hero-footer-meta">
+          <p class="hero-desc">
+            We craft spatial web experiences, digital flagships, and realtime physics simulations that strip away distraction and pull customer attention into orbit.
+          </p>
+          <div class="hero-status-box">
+            <div>© 2026 — TORSION STUDIO</div>
+            <div class="scroll-hint">↓ SCROLL TO RELEASE</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kinematics / Collapse Section -->
+      <section class="kinematics-section container" id="kinematics">
+        <div class="kinematics-grid">
+          <div>
+            <div class="section-tag">• 02 — KINEMATICS</div>
+            <h2 class="section-title">
+              When structure<br />lets <em>go.</em>
+            </h2>
+            <p class="section-body">
+              Keep scrolling and the harmonic field surrenders to kinetic gravity. Every sphere obeys simulated Verlet physics — mass, momentum, and restitution — tumbling down and bouncing off the boundaries until the energy settles. Click and drag anywhere to fling or orbit bodies.
+            </p>
+
+            <!-- Live Physics Controls -->
+            <div class="controls-deck interactive" id="lab">
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Gravity</span>
+                  <span id="label-gravity">9.8</span>
+                </div>
+                <input type="range" min="0" max="30" step="0.5" value="9.8" class="control-slider" id="slider-gravity" />
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Bounciness</span>
+                  <span id="label-restitution">0.65</span>
+                </div>
+                <input type="range" min="0.1" max="0.95" step="0.05" value="0.65" class="control-slider" id="slider-restitution" />
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Theme</span>
+                </div>
+                <div class="theme-pills">
+                  <button type="button" class="theme-btn active" data-theme="cobalt">Cobalt</button>
+                  <button type="button" class="theme-btn" data-theme="citron">Citron</button>
+                  <button type="button" class="theme-btn" data-theme="obsidian">Onyx</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="telemetry-stack">
+            <article class="glass-card interactive">
+              <span class="card-idx">01</span>
+              <div class="card-info">
+                <h4>SOLVER</h4>
+                <h3>Verlet · 4 Sub-steps</h3>
+                <p>Constraint relaxation and stable GPU stacking at 60 fps</p>
+              </div>
+              <span class="live-badge">LIVE</span>
+            </article>
+
+            <article class="glass-card interactive">
+              <span class="card-idx">02</span>
+              <div class="card-info">
+                <h4>RESTITUTION</h4>
+                <h3>0.65 Kinetic Bouncy</h3>
+                <p>Dynamic impulse dissipation on floor &amp; obstacle collisions</p>
+              </div>
+              <span class="live-badge">LIVE</span>
+            </article>
+
+            <article class="glass-card interactive">
+              <span class="card-idx">03</span>
+              <div class="card-info">
+                <h4>BODIES</h4>
+                <h3>Real-time WebGL</h3>
+                <p>Zero pre-baked video frames — 45 physical rigid bodies</p>
+              </div>
+              <span class="live-badge">LIVE</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Selected Works Section -->
+      <section class="works-section container" id="works">
+        <div class="works-header">
+          <div>
+            <div class="section-tag">• 03 — SELECTED WORKS</div>
+            <h2 class="section-title" style="margin-bottom: 0;">Built for momentum.</h2>
+          </div>
+          <p class="hero-desc" style="max-width: 20rem;">
+            A collection of digital flagship platforms delivered for world-class founders.
+          </p>
+        </div>
+
+        <div class="works-grid">
+          <article class="work-card interactive">
+            <div>
+              <div class="work-meta-top">
+                <span>Fintech &amp; Spatial Web</span>
+                <span>2026</span>
+              </div>
+              <h3 class="work-title">Aether Platform</h3>
+              <p class="work-desc">
+                High-throughput decentralized asset terminal with 3D volumetric token telemetry and instant sub-millisecond execution.
+              </p>
+            </div>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag-pill">WebGL</span>
+                <span class="tag-pill">Three.js</span>
+                <span class="tag-pill">Design System</span>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </article>
+
+          <article class="work-card interactive">
+            <div>
+              <div class="work-meta-top">
+                <span>Autonomous Hardware</span>
+                <span>2026</span>
+              </div>
+              <h3 class="work-title">Vectis Robotics</h3>
+              <p class="work-desc">
+                Interactive spatial configurator and kinematic sensor visualizer for next-generation automated warehousing fleets.
+              </p>
+            </div>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag-pill">Physics Engine</span>
+                <span class="tag-pill">Kinematics</span>
+                <span class="tag-pill">Product Site</span>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </article>
+
+          <article class="work-card interactive">
+            <div>
+              <div class="work-meta-top">
+                <span>Architecture &amp; Living</span>
+                <span>2025</span>
+              </div>
+              <h3 class="work-title">Kanto Monoliths</h3>
+              <p class="work-desc">
+                Editorial digital monograph and archival spatial tour showcasing brutalist cantilever residences across Hokkaido.
+              </p>
+            </div>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag-pill">Art Direction</span>
+                <span class="tag-pill">GSAP Scroll</span>
+                <span class="tag-pill">Editorial</span>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </article>
+
+          <article class="work-card interactive">
+            <div>
+              <div class="work-meta-top">
+                <span>AI Infrastructure</span>
+                <span>2025</span>
+              </div>
+              <h3 class="work-title">Synapse Mesh</h3>
+              <p class="work-desc">
+                Real-time GPU cluster visualization and network latency telemetry designed for enterprise cloud operations.
+              </p>
+            </div>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag-pill">Data Vis</span>
+                <span class="tag-pill">GLSL Shaders</span>
+                <span class="tag-pill">Design System</span>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section class="services-section container" id="services">
+        <div class="section-tag">• 04 — CAPABILITIES</div>
+        <h2 class="section-title">Where engineering meets <em>craft.</em></h2>
+
+        <div class="services-list">
+          <div class="service-row interactive">
+            <span class="service-num">01</span>
+            <h3 class="service-title">Creative Technology</h3>
+            <p class="service-desc">WebGL, Three.js, GLSL custom shaders, and interactive physics solvers engineered for fluid 60fps browser fidelity.</p>
+            <span class="work-arrow">↗</span>
+          </div>
+
+          <div class="service-row interactive">
+            <span class="service-num">02</span>
+            <h3 class="service-title">Digital Flagships</h3>
+            <p class="service-desc">Full-scale bespoke marketing sites and brand platforms that command premium positioning and convert top-tier customers.</p>
+            <span class="work-arrow">↗</span>
+          </div>
+
+          <div class="service-row interactive">
+            <span class="service-num">03</span>
+            <h3 class="service-title">Motion Choreography</h3>
+            <p class="service-desc">Sophisticated scroll kinematics, Lenis smooth velocity orchestration, and micro-interactions tuned to human perception.</p>
+            <span class="work-arrow">↗</span>
+          </div>
+
+          <div class="service-row interactive">
+            <span class="service-num">04</span>
+            <h3 class="service-title">Spatial Design Systems</h3>
+            <p class="service-desc">Comprehensive design token architectures, accessible typography scales, and modular UI component libraries.</p>
+            <span class="work-arrow">↗</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-lead">
+            <h2>Let's build something with <em>momentum.</em></h2>
+            <button type="button" class="btn-talk interactive" id="btn-footer-talk" style="background:#ffffff; color:var(--text-primary); margin-top:1rem;">
+              Start a project ↗
+            </button>
+          </div>
+
+          <div class="footer-col">
+            <h4>Coordinates</h4>
+            <div class="footer-links">
+              <p>Torsion Creative Lab</p>
+              <p>420 Spadina Avenue</p>
+              <p>studio@torsion.example</p>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Index</h4>
+            <div class="footer-links">
+              <a href="#kinematics" class="interactive">Kinematics</a>
+              <a href="#works" class="interactive">Selected Works</a>
+              <a href="#services" class="interactive">Capabilities</a>
+              <a href="#lab" class="interactive">Physics Lab</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 TORSION STUDIO — ALL RIGHTS RESERVED.</p>
+          <p>BUILT WITH THREE.JS &amp; GSAP · REALTIME KINEMATICS</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Inquiry Modal -->
+  <dialog class="inquiry-modal" id="inquiry-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Start a project</h3>
+        <button type="button" class="close-btn" id="btn-close-modal">×</button>
+      </div>
+      <form id="inquiry-form" onsubmit="event.preventDefault(); alert('Inquiry recorded in sample mode! studio@torsion.example'); document.getElementById('inquiry-modal').close();">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" class="form-input" placeholder="Alex Thorne" required />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-input" placeholder="alex@company.example" required />
+        </div>
+        <div class="form-group">
+          <label>Project Scope</label>
+          <input type="text" class="form-input" placeholder="3D Web Flagship, Rebrand, WebGL Experience" required />
+        </div>
+        <div class="form-group">
+          <label>Estimated Timeline</label>
+          <input type="text" class="form-input" placeholder="Q4 2026 / 8-12 weeks" />
+        </div>
+        <button type="submit" class="btn-talk" style="width:100%; justify-content:center; padding:0.9rem;">
+          Transmit Brief ↗
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- High-Grade Libraries: Three.js + GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+
+  <script>
+    (function () {
+      // 1. Lenis Smooth Scroll
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Header scroll state
+      const header = document.getElementById('site-header');
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+      });
+
+      // Dialog triggers
+      const modal = document.getElementById('inquiry-modal');
+      const openBtn = document.getElementById('btn-open-inquiry');
+      const footerBtn = document.getElementById('btn-footer-talk');
+      const closeBtn = document.getElementById('btn-close-modal');
+
+      openBtn.addEventListener('click', () => modal.showModal());
+      if (footerBtn) footerBtn.addEventListener('click', () => modal.showModal());
+      closeBtn.addEventListener('click', () => modal.close());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.close();
+      });
+
+      // Custom Cursor Tracking
+      const cursor = document.getElementById('custom-cursor');
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let curX = mouseX;
+      let curY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function updateCursor() {
+        curX += (mouseX - curX) * 0.2;
+        curY += (mouseY - curY) * 0.2;
+        cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(updateCursor);
+      }
+      requestAnimationFrame(updateCursor);
+
+      document.querySelectorAll('.interactive, button, a').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+      });
+
+      // -------------------------------------------------------------
+      // 2. Three.js Real-time Verlet Physics Engine
+      // -------------------------------------------------------------
+      const container = document.getElementById('webgl-canvas-container');
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0xf4f6fa, 0.015);
+
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 0, 24);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+      scene.add(ambientLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
+      dirLight1.position.set(10, 18, 15);
+      dirLight1.castShadow = true;
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xaad0ff, 0.45);
+      dirLight2.position.set(-15, -10, 8);
+      scene.add(dirLight2);
+
+      // Color Palettes
+      const PALETTES = {
+        cobalt: [
+          0x1a44e8, // Vivid Cobalt
+          0x2c5bf0, // Electric Blue
+          0x5b82f6, // Sky Blue
+          0xdce6fd, // Porcelain Tint
+          0xffffff, // White lacquer
+          0x0c258a  // Deep Navy
+        ],
+        citron: [
+          0x9dd81b, // Vivid Citron
+          0xb8eb3b, // Lime Glow
+          0x5a8a07, // Olive Deep
+          0x274003, // Dark Foliage
+          0xf2ffd0, // Pale Citron
+          0xffffff
+        ],
+        obsidian: [
+          0x111317, // Onyx
+          0x22262e, // Charcoal
+          0x4b5161, // Titanium Slate
+          0x8d96a8, // Silver Chrome
+          0xe2e6ee, // Pale White
+          0x0a0c0e
+        ]
+      };
+
+      let currentTheme = 'cobalt';
+
+      // Physical Sphere Class (Verlet Integration)
+      const SPHERE_COUNT = 48;
+      const spheres = [];
+      const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+
+      function createSphereMaterial(colorHex, type) {
+        if (type === 'glass') {
+          return new THREE.MeshPhysicalMaterial({
+            color: colorHex,
+            roughness: 0.12,
+            transmission: 0.75,
+            thickness: 1.2,
+            reflectivity: 0.9,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.1
+          });
+        } else if (type === 'matte') {
+          return new THREE.MeshStandardMaterial({
+            color: colorHex,
+            roughness: 0.85,
+            metalness: 0.05
+          });
+        } else {
+          return new THREE.MeshStandardMaterial({
+            color: colorHex,
+            roughness: 0.2,
+            metalness: 0.35
+          });
+        }
+      }
+
+      class PhysicsSphere {
+        constructor(index, total) {
+          this.index = index;
+          this.radius = 0.55 + Math.random() * 0.95; // Varied sizes like in reference
+          
+          // Arch / Torus formation for Hero (Phase 1)
+          const angle = (index / total) * Math.PI * 1.5 - Math.PI * 0.25;
+          const archRadius = 9.5;
+          const spreadZ = (Math.random() - 0.5) * 4;
+          const spreadY = (Math.random() - 0.5) * 3;
+          
+          this.targetX = Math.cos(angle) * archRadius + 1;
+          this.targetY = Math.sin(angle) * (archRadius * 0.6) + spreadY;
+          this.targetZ = spreadZ;
+
+          this.x = this.targetX + (Math.random() - 0.5) * 2;
+          this.y = this.targetY + (Math.random() - 0.5) * 2;
+          this.z = this.targetZ;
+
+          this.prevX = this.x;
+          this.prevY = this.y;
+          this.prevZ = this.z;
+
+          this.mass = this.radius * this.radius * this.radius;
+
+          // Material Assignment
+          const colors = PALETTES[currentTheme];
+          const color = colors[index % colors.length];
+          const matType = (index % 4 === 0) ? 'glass' : (index % 3 === 0) ? 'matte' : 'gloss';
+          this.material = createSphereMaterial(color, matType);
+
+          this.mesh = new THREE.Mesh(sphereGeometry, this.material);
+          this.mesh.scale.setScalar(this.radius);
+          this.mesh.castShadow = true;
+          this.mesh.receiveShadow = true;
+          scene.add(this.mesh);
+        }
+
+        updateMaterialTheme(themeKey) {
+          const colors = PALETTES[themeKey];
+          const color = colors[this.index % colors.length];
+          this.material.color.setHex(color);
+        }
+      }
+
+      for (let i = 0; i < SPHERE_COUNT; i++) {
+        spheres.push(new PhysicsSphere(i, SPHERE_COUNT));
+      }
+
+      // Physics Parameters
+      let gravity = 9.8;
+      let restitution = 0.65;
+      let phase = 0; // 0 = Hero Arch Equilibrium, 1 = Free Kinetic Gravity Collapse
+
+      // Slider Binds
+      const sliderGrav = document.getElementById('slider-gravity');
+      const labelGrav = document.getElementById('label-gravity');
+      sliderGrav.addEventListener('input', (e) => {
+        gravity = parseFloat(e.target.value);
+        labelGrav.textContent = gravity.toFixed(1);
+      });
+
+      const sliderRest = document.getElementById('slider-restitution');
+      const labelRest = document.getElementById('label-restitution');
+      sliderRest.addEventListener('input', (e) => {
+        restitution = parseFloat(e.target.value);
+        labelRest.textContent = restitution.toFixed(2);
+      });
+
+      // Theme Buttons
+      const themeBtns = document.querySelectorAll('.theme-btn');
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          themeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const t = btn.dataset.theme;
+          currentTheme = t;
+          spheres.forEach(s => s.updateMaterialTheme(t));
+        });
+      });
+
+      // Scroll Phase Trigger with GSAP ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+
+      ScrollTrigger.create({
+        trigger: '#kinematics',
+        start: 'top 75%',
+        end: 'bottom top',
+        onEnter: () => {
+          phase = 1; // Release gravity!
+          document.querySelector('.hero-headline em').style.color = 'var(--accent-citron)';
+        },
+        onLeaveBack: () => {
+          phase = 0; // Return to toroidal equilibrium
+          document.querySelector('.hero-headline em').style.color = 'var(--accent-cobalt)';
+        }
+      });
+
+      // Mouse Raycast Interaction
+      const raycaster = new THREE.Raycaster();
+      const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+      const mouse3D = new THREE.Vector3();
+      const pointer = new THREE.Vector2(-999, -999);
+      let isMouseDown = false;
+
+      window.addEventListener('pointermove', (e) => {
+        pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+        raycaster.ray.intersectPlane(mousePlane, mouse3D);
+      });
+
+      window.addEventListener('pointerdown', () => { isMouseDown = true; });
+      window.addEventListener('pointerup', () => { isMouseDown = false; });
+
+      // Physics Loop (Verlet Integration with Sub-stepping)
+      const SUB_STEPS = 4;
+      const dt = 1 / 60 / SUB_STEPS;
+      const bounds = { xMin: -14, xMax: 14, yMin: -10, yMax: 12, zMin: -6, zMax: 6 };
+
+      function stepPhysics() {
+        for (let sub = 0; sub < SUB_STEPS; sub++) {
+          
+          for (let i = 0; i < spheres.length; i++) {
+            const s = spheres[i];
+
+            let vx = (s.x - s.prevX);
+            let vy = (s.y - s.prevY);
+            let vz = (s.z - s.prevZ);
+
+            s.prevX = s.x;
+            s.prevY = s.y;
+            s.prevZ = s.z;
+
+            if (phase === 0) {
+              // Toroidal spring attraction
+              const k = 1.2;
+              const fx = (s.targetX - s.x) * k;
+              const fy = (s.targetY - s.y) * k;
+              const fz = (s.targetZ - s.z) * k;
+              
+              vx += fx * dt;
+              vy += fy * dt;
+              vz += fz * dt;
+
+              // Gentle damping
+              vx *= 0.985;
+              vy *= 0.985;
+              vz *= 0.985;
+            } else {
+              // Downward gravity collapse
+              vy -= (gravity * 1.6) * dt;
+              
+              // Air drag
+              vx *= 0.994;
+              vy *= 0.994;
+              vz *= 0.994;
+            }
+
+            // Mouse Interaction Force (Repulsion / Drag)
+            const dx = s.x - mouse3D.x;
+            const dy = s.y - mouse3D.y;
+            const distSq = dx * dx + dy * dy;
+            const minDist = isMouseDown ? 6.5 : 3.8;
+            if (distSq < minDist * minDist && distSq > 0.01) {
+              const dist = Math.sqrt(distSq);
+              const force = (1 - dist / minDist) * (isMouseDown ? 35 : 12);
+              vx += (dx / dist) * force * dt;
+              vy += (dy / dist) * force * dt;
+            }
+
+            s.x += vx;
+            s.y += vy;
+            s.z += vz;
+
+            // Boundary Collisions
+            if (s.y - s.radius < bounds.yMin) {
+              s.y = bounds.yMin + s.radius;
+              s.prevY = s.y + (s.y - s.prevY) * restitution;
+            }
+            if (s.y + s.radius > bounds.yMax) {
+              s.y = bounds.yMax - s.radius;
+              s.prevY = s.y - (s.prevY - s.y) * restitution;
+            }
+            if (s.x - s.radius < bounds.xMin) {
+              s.x = bounds.xMin + s.radius;
+              s.prevX = s.x + (s.x - s.prevX) * restitution;
+            }
+            if (s.x + s.radius > bounds.xMax) {
+              s.x = bounds.xMax - s.radius;
+              s.prevX = s.x - (s.prevX - s.x) * restitution;
+            }
+            if (s.z - s.radius < bounds.zMin) {
+              s.z = bounds.zMin + s.radius;
+              s.prevZ = s.z + (s.z - s.prevZ) * restitution;
+            }
+            if (s.z + s.radius > bounds.zMax) {
+              s.z = bounds.zMax - s.radius;
+              s.prevZ = s.z - (s.prevZ - s.z) * restitution;
+            }
+          }
+
+          // Sphere-to-Sphere Collision Resolution
+          for (let i = 0; i < spheres.length; i++) {
+            for (let j = i + 1; j < spheres.length; j++) {
+              const a = spheres[i];
+              const b = spheres[j];
+
+              const cdx = b.x - a.x;
+              const cdy = b.y - a.y;
+              const cdz = b.z - a.z;
+              const d2 = cdx * cdx + cdy * cdy + cdz * cdz;
+              const minDist = a.radius + b.radius;
+
+              if (d2 < minDist * minDist && d2 > 0.0001) {
+                const d = Math.sqrt(d2);
+                const overlap = 0.5 * (minDist - d);
+
+                const nx = cdx / d;
+                const ny = cdy / d;
+                const nz = cdz / d;
+
+                a.x -= nx * overlap;
+                a.y -= ny * overlap;
+                a.z -= nz * overlap;
+
+                b.x += nx * overlap;
+                b.y += ny * overlap;
+                b.z += nz * overlap;
+              }
+            }
+          }
+        }
+
+        // Sync Mesh positions
+        for (let i = 0; i < spheres.length; i++) {
+          const s = spheres[i];
+          s.mesh.position.set(s.x, s.y, s.z);
+        }
+      }
+
+      // Render Loop
+      let clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        stepPhysics();
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+    })();
+  </script>
+</body>
+</html>

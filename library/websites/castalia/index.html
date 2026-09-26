@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Castalia — Monumental Bronze Sculpture & Fine Art Digital Archive</title>
+  <meta name="description" content="Castalia is a digital sanctuary and fine art foundry archiving timeless monumental bronze and marble sculptures across ancient memory and digital space." />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base: #0a0705;
+      --bg-surface: #140f0c;
+      --border-grid: rgba(212, 163, 89, 0.12);
+      --border-focus: rgba(212, 163, 89, 0.45);
+      --text-primary: #f5eedd;
+      --text-secondary: #a39580;
+      --text-muted: #6e6353;
+      --accent-bronze: #d4a359;
+      --accent-bronze-glow: rgba(212, 163, 89, 0.35);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --container-max: 1360px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a, button {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+      border: none;
+      background: none;
+    }
+
+    /* Architectural Background Grid Overlay */
+    .bg-grid-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 20% 30% 30% 20%;
+    }
+    .grid-col-line {
+      border-right: 1px solid var(--border-grid);
+      height: 100%;
+      position: relative;
+    }
+    .grid-dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent-bronze);
+      border-radius: 50%;
+      right: -2.5px;
+      opacity: 0.4;
+    }
+
+    /* Fixed Three.js WebGL Stage */
+    #webgl-stage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: auto;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-bronze);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 14px var(--accent-bronze);
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(212, 163, 89, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s, height 0.25s, border-color 0.25s;
+    }
+
+    /* Main Foreground Content */
+    .viewport-overlay {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .interactive, a, button, .exhibition-card, .material-tab {
+      pointer-events: auto;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    /* Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2.2rem 3rem;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Centered Material Switcher Tabs */
+    .material-nav {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+    }
+
+    .material-tab {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      position: relative;
+      padding: 0.4rem 0;
+      transition: color 0.3s;
+    }
+    .material-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--accent-bronze);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .material-tab:hover {
+      color: var(--text-primary);
+    }
+    .material-tab.active {
+      color: var(--accent-bronze);
+    }
+    .material-tab.active::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-grid);
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(20, 15, 12, 0.4);
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    }
+    .btn-contact:hover {
+      border-color: var(--accent-bronze);
+      background: rgba(212, 163, 89, 0.12);
+      transform: translateY(-1px);
+    }
+    .btn-contact-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-bronze);
+    }
+
+    /* Floating Museum Exhibition Card (Top-Left) */
+    .exhibition-card {
+      position: fixed;
+      top: 6.5rem;
+      left: 3rem;
+      width: 175px;
+      height: 175px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-grid);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      z-index: 50;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+    }
+    .exhibition-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85) contrast(1.1);
+      transition: transform 0.6s;
+    }
+    .exhibition-card:hover {
+      transform: scale(1.05) translateY(-3px);
+      border-color: var(--accent-bronze);
+    }
+    .exhibition-card:hover img {
+      transform: scale(1.08);
+    }
+    .exhibition-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.5rem 0.6rem;
+      background: linear-gradient(transparent, rgba(10, 7, 5, 0.95));
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Vertical Chapter Sections */
+    .chapter-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 7rem;
+      position: relative;
+    }
+
+    .chapter-content {
+      max-width: 580px;
+    }
+
+    .chapter-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(3.4rem, 6.5vw, 6.2rem);
+      font-weight: 300;
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.2rem;
+      color: var(--text-primary);
+    }
+    .chapter-headline em {
+      font-style: italic;
+      color: var(--accent-bronze);
+    }
+
+    .chapter-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.68;
+    }
+
+    /* Right Vertical Chapter Counter Indicator */
+    .timeline-nav {
+      position: fixed;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .timeline-track {
+      width: 1px;
+      height: 90px;
+      background: var(--border-grid);
+      position: relative;
+    }
+    .timeline-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 25%;
+      background: var(--accent-bronze);
+      transition: height 0.4s ease;
+    }
+    .timeline-index {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+
+    /* Modal Sheet */
+    dialog.curatorial-dialog {
+      border: none;
+      padding: 0;
+      background: transparent;
+      margin: auto;
+      max-width: 540px;
+      width: calc(100% - 2rem);
+    }
+    dialog.curatorial-dialog::backdrop {
+      background: rgba(10, 7, 5, 0.85);
+      backdrop-filter: blur(16px);
+    }
+    .dialog-inner {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-focus);
+      border-radius: 18px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      color: var(--text-primary);
+    }
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .dialog-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+    }
+    .form-row {
+      margin-bottom: 1.4rem;
+    }
+    .form-row label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-bronze);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(10, 7, 5, 0.7);
+      border: 1px solid var(--border-grid);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      color: #ffffff;
+      font-family: var(--font-sans);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-bronze);
+    }
+
+    @media (max-width: 900px) {
+      .bg-grid-lines {
+        grid-template-columns: 50% 50%;
+      }
+      .material-nav {
+        display: none;
+      }
+      .exhibition-card {
+        display: none;
+      }
+      .chapter-columns {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .timeline-nav {
+        right: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor Elements -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Background Architectural Grid Lines -->
+  <div class="bg-grid-lines" aria-hidden="true">
+    <div class="grid-col-line"><span class="grid-dot" style="top: 25%"></span></div>
+    <div class="grid-col-line"><span class="grid-dot" style="top: 60%"></span></div>
+    <div class="grid-col-line"><span class="grid-dot" style="top: 40%"></span></div>
+    <div class="grid-col-line"><span class="grid-dot" style="top: 80%"></span></div>
+  </div>
+
+  <!-- Three.js Interactive WebGL Stage -->
+  <div id="webgl-stage"></div>
+
+  <!-- Main Viewport Overlay -->
+  <div class="viewport-overlay">
+
+    <!-- Top Navigation -->
+    <header class="site-header">
+      <a href="#bronze" class="brand-logo interactive">
+        CASTALIA
+      </a>
+
+      <nav class="material-nav">
+        <button type="button" class="material-tab active interactive" data-material="bronze">Bronze</button>
+        <button type="button" class="material-tab interactive" data-material="marble">Marble</button>
+        <button type="button" class="material-tab interactive" data-material="fluid">Fluid</button>
+        <button type="button" class="material-tab interactive" data-material="digital">Digital</button>
+      </nav>
+
+      <button type="button" class="btn-contact interactive" id="btn-open-contact">
+        Contact <span class="btn-contact-dot"></span>
+      </button>
+    </header>
+
+    <!-- Floating Exhibition Gallery Card (Top Left) -->
+    <div class="exhibition-card interactive" id="gallery-card">
+      <img src="assets/gallery.jpg" alt="Castalia archival gallery hall with bronze monumental pedestal" />
+      <div class="exhibition-label">SALONE D'ONORE · N° 04</div>
+    </div>
+
+    <!-- Chapter Timeline Counter (Right) -->
+    <div class="timeline-nav">
+      <div class="timeline-track">
+        <div class="timeline-fill" id="timeline-fill"></div>
+      </div>
+      <span class="timeline-index" id="timeline-index">01 / 04</span>
+    </div>
+
+    <main>
+      <!-- Chapter 01: Bronze and Time -->
+      <section class="chapter-section container" id="bronze">
+        <div class="chapter-content">
+          <h1 class="chapter-headline">
+            Bronze<br />
+            and <em>Time</em>
+          </h1>
+          <div class="chapter-columns">
+            <p>
+              A timeless metallurgical medium holding millennia of human drama. Fluid in molten flames, eternal in solid mass. Each curve captures a tense, heroic instant frozen in stillness.
+            </p>
+            <p>
+              Born of fire and classical intention, Castalia bridges ancestral memory and contemporary digital curation. A dynamic energy immortalized in heavyweight burnished bronze.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 02: Marble Emotion -->
+      <section class="chapter-section container" id="marble">
+        <div class="chapter-content">
+          <h2 class="chapter-headline">
+            Marble<br />
+            <em>Emotion</em>
+          </h2>
+          <div class="chapter-columns">
+            <p>
+              Carved from pure Carrara strata. The stone yields to anatomical tension, veins, and poetic vulnerability. A monument poised between earthly weight and sublime grace.
+            </p>
+            <p>
+              Subsurface light penetrates the crystalline quartz matrix, illuminating human perseverance at the precipice of ruthless fate.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 03: Fluid Memory -->
+      <section class="chapter-section container" id="fluid">
+        <div class="chapter-content">
+          <h2 class="chapter-headline">
+            Fluid<br />
+            <em>Obsidian</em>
+          </h2>
+          <div class="chapter-columns">
+            <p>
+              Viscous obsidian liquid chrome reflecting specular golden highlights. The sculpture dissolves into frictionless liquid surface tension before crystallizing anew.
+            </p>
+            <p>
+              An exploration of metamorphosis: where metallic density surrenders to fluid dynamics and reflective planetary caustics.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 04: Digital Presence -->
+      <section class="chapter-section container" id="digital">
+        <div class="chapter-content">
+          <h2 class="chapter-headline">
+            Digital<br />
+            <em>Lattice</em>
+          </h2>
+          <div class="chapter-columns">
+            <p>
+              Spatial coordinates, wireframe polygons, and algorithmic tomography preserving the sculpture across eternal silicon memory.
+            </p>
+            <p>
+              Available for monumental architectural casting, physical foundry fabrication, and high-fidelity virtual museum installations.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- Curatorial Contact Sheet Dialog -->
+  <dialog class="curatorial-dialog" id="contact-dialog">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <h3 class="dialog-title">Curatorial Inquiries</h3>
+        <button type="button" class="btn-contact" id="btn-close-contact">Close ×</button>
+      </div>
+      <form onsubmit="event.preventDefault(); alert('Inquiry recorded in sample mode! curator@castalia.example'); document.getElementById('contact-dialog').close();">
+        <div class="form-row">
+          <label>Inquirer Name</label>
+          <input type="text" class="form-input" placeholder="Countess de Vane" required />
+        </div>
+        <div class="form-row">
+          <label>Institution / Collection</label>
+          <input type="text" class="form-input" placeholder="Galleria Nazionale d'Arte" required />
+        </div>
+        <div class="form-row">
+          <label>Email Address</label>
+          <input type="email" class="form-input" placeholder="inquiry@collection.example" required />
+        </div>
+        <div class="form-row">
+          <label>Medium of Interest</label>
+          <input type="text" class="form-input" placeholder="Bronze Casting / Carrara Marble / Spatial Digital" />
+        </div>
+        <button type="submit" class="btn-contact" style="width: 100%; justify-content: center; padding: 0.9rem; border-color: var(--accent-bronze); background: rgba(212, 163, 89, 0.18);">
+          Transmit Curatorial Note ⭘
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Libraries: Three.js + GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+
+  <script>
+    (function () {
+      // 1. Lenis Smooth Scroll
+      const lenis = new Lenis({
+        duration: 1.3,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Dialog controls
+      const contactDialog = document.getElementById('contact-dialog');
+      document.getElementById('btn-open-contact').addEventListener('click', () => contactDialog.showModal());
+      document.getElementById('btn-close-contact').addEventListener('click', () => contactDialog.close());
+      contactDialog.addEventListener('click', (e) => {
+        if (e.target === contactDialog) contactDialog.close();
+      });
+
+      // Cursor follower
+      const dot = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+      let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      let rx = mx, ry = my;
+
+      window.addEventListener('mousemove', (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+      });
+      function loopCursor() {
+        rx += (mx - rx) * 0.15;
+        ry += (my - ry) * 0.15;
+        ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+        requestAnimationFrame(loopCursor);
+      }
+      loopCursor();
+
+      // -------------------------------------------------------------
+      // 2. Three.js Classical Monumental Sculpture Scene
+      // -------------------------------------------------------------
+      const stage = document.getElementById('webgl-stage');
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x0a0705, 0.022);
+
+      const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 1.2, 11);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
+      stage.appendChild(renderer.domElement);
+
+      // Cinematic Amber Lighting
+      const ambient = new THREE.AmbientLight(0x2a1c12, 1.5);
+      scene.add(ambient);
+
+      // Key Golden Spot
+      const keySpot = new THREE.SpotLight(0xffdf9e, 4.5);
+      keySpot.position.set(6, 9, 8);
+      keySpot.angle = Math.PI / 4;
+      keySpot.penumbra = 0.8;
+      scene.add(keySpot);
+
+      // Warm Amber Rim Light
+      const rimLight = new THREE.DirectionalLight(0xd4a359, 2.8);
+      rimLight.position.set(-8, 4, -6);
+      scene.add(rimLight);
+
+      // Bottom Soft Caustic Fill
+      const bottomFill = new THREE.PointLight(0xa66a38, 2.0, 15);
+      bottomFill.position.set(0, -4, 3);
+      scene.add(bottomFill);
+
+      // Sculpture Group
+      const sculptureGroup = new THREE.Group();
+      sculptureGroup.position.set(1.5, -0.6, 0); // Positioned slightly to right like reference
+      scene.add(sculptureGroup);
+
+      // Procedural Classical Monument Sculpture Construction
+      // Pedestal base
+      const pedestalGeo = new THREE.CylinderGeometry(1.6, 1.9, 0.9, 32);
+      const pedestalMat = new THREE.MeshStandardMaterial({
+        color: 0x181410,
+        roughness: 0.9,
+        metalness: 0.1
+      });
+      const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
+      pedestal.position.y = -2.8;
+      sculptureGroup.add(pedestal);
+
+      // Main Monumental Torso / Steed Hybrid Sculpture
+      // Using a stylized high-subdivision organic geometry with muscular folds & contours
+      const mainGeo = new THREE.TorusKnotGeometry(1.85, 0.65, 200, 32, 2, 5);
+      const pos = mainGeo.attributes.position;
+      // Sculptural deformation: tapering and lifting into an expressive rearing posture
+      for (let i = 0; i < pos.count; i++) {
+        let y = pos.getY(i);
+        let x = pos.getX(i);
+        let z = pos.getZ(i);
+
+        // Arch upwards and twist towards top
+        if (y > 0) {
+          x *= 0.85 + Math.sin(y * 1.5) * 0.2;
+          z *= 0.85;
+          y *= 1.35;
+        } else {
+          y *= 0.8;
+        }
+        // Organic muscle striations
+        const noise = Math.sin(x * 6.0) * Math.cos(y * 5.0) * 0.08;
+        pos.setXYZ(i, x + noise, y, z + noise);
+      }
+      mainGeo.computeVertexNormals();
+
+      // Materials definition
+      const materials = {
+        bronze: new THREE.MeshStandardMaterial({
+          color: 0xba8c46,
+          metalness: 0.92,
+          roughness: 0.24,
+          envMapIntensity: 1.5
+        }),
+        marble: new THREE.MeshStandardMaterial({
+          color: 0xf3efe6,
+          metalness: 0.05,
+          roughness: 0.32,
+          envMapIntensity: 0.6
+        }),
+        fluid: new THREE.MeshStandardMaterial({
+          color: 0x141820,
+          metalness: 0.98,
+          roughness: 0.04,
+          envMapIntensity: 2.2
+        }),
+        digital: new THREE.MeshStandardMaterial({
+          color: 0xd4a359,
+          wireframe: true,
+          roughness: 0.1
+        })
+      };
+
+      const sculptureMesh = new THREE.Mesh(mainGeo, materials.bronze);
+      sculptureGroup.add(sculptureMesh);
+
+      // Undulating Light Ribbon Curve in background
+      const ribbonCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-8, -4, -3),
+        new THREE.Vector3(-4, 0, -1),
+        new THREE.Vector3(2, 3, -4),
+        new THREE.Vector3(7, -1, -2),
+        new THREE.Vector3(10, 4, -5)
+      ]);
+      const ribbonGeo = new THREE.TubeGeometry(ribbonCurve, 80, 0.08, 12, false);
+      const ribbonMat = new THREE.MeshBasicMaterial({
+        color: 0xd4a359,
+        transparent: true,
+        opacity: 0.45
+      });
+      const ribbon = new THREE.Mesh(ribbonGeo, ribbonMat);
+      scene.add(ribbon);
+
+      // Atmospheric Golden Dust Particles
+      const particleCount = 450;
+      const particleGeo = new THREE.BufferGeometry();
+      const pPositions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        pPositions[i] = (Math.random() - 0.5) * 18;
+        pPositions[i + 1] = (Math.random() - 0.5) * 14;
+        pPositions[i + 2] = (Math.random() - 0.5) * 10;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+      const particleMat = new THREE.PointsMaterial({
+        color: 0xd4a359,
+        size: 0.045,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      // Material Switcher Logic
+      let currentMatKey = 'bronze';
+      const materialTabs = document.querySelectorAll('.material-tab');
+      function setMaterial(key) {
+        if (!materials[key]) return;
+        currentMatKey = key;
+        sculptureMesh.material = materials[key];
+        materialTabs.forEach(t => t.classList.toggle('active', t.dataset.material === key));
+      }
+
+      materialTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          setMaterial(tab.dataset.material);
+        });
+      });
+
+      // Mouse Parallax & Orbit
+      let targetRotY = 0;
+      let targetRotX = 0;
+      let mouseNormX = 0, mouseNormY = 0;
+
+      window.addEventListener('pointermove', (e) => {
+        mouseNormX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseNormY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      // Scroll-driven Chapter Transitions with GSAP ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+
+      const timelineFill = document.getElementById('timeline-fill');
+      const timelineIndex = document.getElementById('timeline-index');
+
+      const chapters = [
+        { id: '#bronze', mat: 'bronze', idx: '01 / 04', fill: '25%', rot: 0 },
+        { id: '#marble', mat: 'marble', idx: '02 / 04', fill: '50%', rot: Math.PI * 0.5 },
+        { id: '#fluid', mat: 'fluid', idx: '03 / 04', fill: '75%', rot: Math.PI * 1.0 },
+        { id: '#digital', mat: 'digital', idx: '04 / 04', fill: '100%', rot: Math.PI * 1.5 }
+      ];
+
+      chapters.forEach(ch => {
+        ScrollTrigger.create({
+          trigger: ch.id,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () => {
+            setMaterial(ch.mat);
+            timelineFill.style.height = ch.fill;
+            timelineIndex.textContent = ch.idx;
+            gsap.to(sculptureGroup.rotation, { y: ch.rot, duration: 1.5, ease: 'power2.out' });
+          },
+          onEnterBack: () => {
+            setMaterial(ch.mat);
+            timelineFill.style.height = ch.fill;
+            timelineIndex.textContent = ch.idx;
+            gsap.to(sculptureGroup.rotation, { y: ch.rot, duration: 1.5, ease: 'power2.out' });
+          }
+        });
+      });
+
+      // Animation Loop
+      let clock = new THREE.Clock();
+      function renderLoop() {
+        requestAnimationFrame(renderLoop);
+        const elapsed = clock.getElapsedTime();
+
+        // Subtle continuous drift & mouse responsiveness
+        sculptureGroup.rotation.y += 0.002;
+        sculptureGroup.position.y = -0.6 + Math.sin(elapsed * 0.8) * 0.08;
+
+        // Dust particle drift
+        particles.rotation.y = elapsed * 0.015;
+        particles.rotation.x = Math.sin(elapsed * 0.02) * 0.1;
+
+        // Mouse parallax tilt
+        camera.position.x += (mouseNormX * 0.8 - camera.position.x) * 0.05;
+        camera.position.y += (1.2 - mouseNormY * 0.5 - camera.position.y) * 0.05;
+        camera.lookAt(0.5, 0.4, 0);
+
+        renderer.render(scene, camera);
+      }
+      renderLoop();
+
+      // Window resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+  </script>
+</body>
+</html>

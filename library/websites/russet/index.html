@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Russet — A calmer hold on the month</title>
+  <meta name="description" content="Russet is a fictional household ledger: one metal card, one written plan, and a desk in Wrenfield." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23864D30' d='M8 5h11l8 8v11a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V10a5 5 0 0 1 5-5z'/%3E%3Cpath fill='%23FDF8F4' d='M19 5v7a1 1 0 0 0 1 1h7'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --font-display: "Familjen Grotesk", sans-serif;
+      --font-body: "Source Sans 3", sans-serif;
+      --surface-page: #FDF8F4;
+      --surface-card: #FFFCFA;
+      --surface-sand: #F3E7DE;
+      --surface-cocoa: #864D30;
+      --text-primary: #3C2F28;
+      --text-secondary: #6E5C52;
+      --text-display-soft: #8E6F62;
+      --text-on-cocoa: #FDF8F4;
+      --text-on-cocoa-soft: #F6E6DA;
+      --border-default: #E6D5C8;
+      --border-on-cocoa: rgba(253, 248, 244, 0.22);
+      --action-primary: #6B4634;
+      --action-primary-hover: #5A3A2C;
+      --on-action: #FDF8F4;
+      --status-danger: #9C3B2E;
+      --text-display: clamp(2.7rem, 5.4vw, 4.25rem);
+      --text-3xl: clamp(2rem, 3.6vw, 2.9rem);
+      --text-stat: clamp(3rem, 5vw, 4.25rem);
+      --text-xl: 1.35rem;
+      --text-base: 1.0625rem;
+      --text-sm: 0.9375rem;
+      --text-xs: 0.75rem;
+      --leading-body: 1.55;
+      --section-y: clamp(4.5rem, 8vw, 6.5rem);
+      --wrap: min(1120px, calc(100% - 2.5rem));
+      --wide: min(1180px, calc(100% - 2rem));
+      --radius-card: 20px;
+      --radius-control: 14px;
+      --radius-pill: 999px;
+      --shadow-card: 0 18px 44px rgba(90, 52, 32, 0.12);
+      --dur: 220ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    button, input { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; padding: 0; }
+    :focus-visible { outline: 2px solid var(--action-primary); outline-offset: 3px; }
+    .band :focus-visible { outline-color: var(--text-on-cocoa); }
+    .skip {
+      position: absolute; left: 12px; top: -40px; z-index: 20;
+      background: var(--action-primary); color: var(--on-action);
+      padding: 0.5rem 0.8rem; border-radius: var(--radius-pill);
+    }
+    .skip:focus { top: 12px; }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .wide { width: var(--wide); margin-inline: auto; }
+    .num { font-variant-numeric: tabular-nums; }
+    h1, h2, .stat, .logo span, .giant, .money {
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+    }
+    h1 { font-size: var(--text-display); }
+    h2 { font-size: var(--text-3xl); }
+    h1 em, .about h2 em { font-style: normal; color: var(--text-display-soft); }
+    .site-nav {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      width: min(1240px, calc(100% - 1.5rem));
+      margin: 0 auto;
+      min-height: 76px;
+      background: rgba(253, 248, 244, 0.88);
+      backdrop-filter: blur(14px);
+    }
+    .site-nav.is-scrolled { box-shadow: 0 1px 0 var(--border-default); }
+    .logo { display: inline-flex; align-items: center; gap: 8px; color: var(--surface-cocoa); min-height: 44px; }
+    .logo svg { width: 26px; height: 26px; }
+    .logo span { font-size: 1.35rem; letter-spacing: -0.04em; }
+    .nav-links { display: flex; align-items: center; gap: 2px; background: #fff; border-radius: var(--radius-pill); padding: 4px; box-shadow: 0 1px 0 rgba(60, 47, 40, 0.04); }
+    .nav-links a {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 40px; padding: 0 14px; border-radius: var(--radius-pill);
+      font-size: 0.92rem; color: var(--text-secondary);
+    }
+    .nav-links a[aria-current="page"], .nav-links a:hover { background: var(--action-primary); color: var(--on-action); }
+    .nav-tools { display: flex; align-items: center; gap: 10px; }
+    .who { display: inline-flex; align-items: center; gap: 8px; }
+    .avatar, .stack img {
+      width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: center 18%;
+      border: 2px solid var(--surface-page);
+    }
+    .stack { display: inline-flex; }
+    .stack img + img { margin-left: -10px; }
+    .plus {
+      min-height: 32px; padding: 0 10px; border-radius: var(--radius-pill);
+      border: 1px solid var(--border-default); background: #fff;
+      font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.01em;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px; border-radius: var(--radius-pill);
+      font-weight: 600; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    }
+    .btn-primary { background: var(--action-primary); color: var(--on-action); }
+    .btn-primary:hover { background: var(--action-primary-hover); }
+    .btn-ghost { border: 1.5px solid var(--border-default); background: transparent; }
+    .btn-ghost:hover { border-color: var(--text-primary); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .menu-btn { display: none; min-height: 44px; padding: 0 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--border-default); font-weight: 600; }
+    .hero { padding: 1.5rem 0 0; text-align: center; position: relative; }
+    .live {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-default); background: #fff;
+      border-radius: var(--radius-pill); padding: 4px 12px 4px 4px;
+      font-size: var(--text-xs); font-weight: 600; color: var(--text-secondary);
+    }
+    .hero h1 { margin: 1.15rem auto 0; max-width: 11em; }
+    .coin {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.42em; height: 0.78em; margin: 0 0.06em 0.08em;
+      border-radius: var(--radius-pill); background: #F3E6DC; vertical-align: 0.06em;
+    }
+    .coin svg { width: 0.62em; height: 0.62em; }
+    .lede { margin: 0.9rem auto 0; color: var(--text-secondary); font-size: var(--text-sm); }
+    .cta-row { display: flex; justify-content: center; gap: 12px; margin-top: 1.25rem; flex-wrap: wrap; }
+    .stage {
+      position: relative; margin-top: 0.75rem; min-height: 560px;
+      display: flex; align-items: flex-end; padding-bottom: 0;
+      background: radial-gradient(ellipse 46% 42% at 50% 42%, rgba(214, 186, 168, 0.5), transparent 70%);
+    }
+    .stage::before, .stage::after {
+      content: ""; position: absolute; top: 6%; width: 34%; height: 62%;
+      background-image: radial-gradient(rgba(134, 77, 48, 0.55) 1.05px, transparent 1.2px);
+      background-size: 13px 13px;
+      mask-image: radial-gradient(ellipse at center, #000 15%, transparent 72%);
+      pointer-events: none;
+    }
+    .stage::before { left: 2%; }
+    .stage::after { right: 2%; }
+    .hand {
+      position: absolute; z-index: 3; left: 50%; bottom: 18px;
+      width: min(360px, 32vw); height: 470px; object-fit: cover; object-position: center 68%;
+      transform: translateX(-50%);
+      pointer-events: none; user-select: none;
+      -webkit-mask-image: radial-gradient(ellipse 72% 74% at 52% 50%, #000 38%, transparent 78%);
+      mask-image: radial-gradient(ellipse 72% 74% at 52% 50%, #000 38%, transparent 78%);
+    }
+    .widgets {
+      position: relative; z-index: 2;
+      width: var(--wide); margin: 0 auto;
+      display: grid; grid-template-columns: 1.12fr 1.18fr 0.78fr 1.05fr;
+      gap: 12px; align-items: end; text-align: left;
+    }
+    .w {
+      border-radius: var(--radius-card); padding: 14px 14px 12px;
+      box-shadow: var(--shadow-card); min-height: 168px;
+    }
+    .w-sand { background: var(--surface-sand); }
+    .w-paper { background: var(--surface-card); }
+    .w-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .w-h h3, .card-h h3 { font-size: 0.82rem; font-weight: 700; letter-spacing: -0.01em; }
+    .icon-btn {
+      width: 28px; height: 28px; border-radius: 8px; display: inline-grid; place-items: center; color: var(--text-secondary);
+    }
+    .icon-btn:hover { background: rgba(60, 47, 40, 0.06); }
+    .money { font-size: 1.65rem; letter-spacing: -0.04em; }
+    .delta { color: var(--surface-cocoa); font-size: var(--text-xs); font-weight: 700; margin-left: 4px; }
+    .from { color: var(--text-secondary); font-size: var(--text-xs); margin-left: 8px; }
+    .mix { display: flex; height: 14px; border-radius: var(--radius-pill); overflow: hidden; margin: 10px 0 12px; background: #fff; }
+    .mix span:nth-child(1) { flex: 42; background: #864D30; }
+    .mix span:nth-child(2) { flex: 18; background: #C4A088; }
+    .mix span:nth-child(3) { flex: 24; background: #E7D5C8; }
+    .mix span:nth-child(4) { flex: 16; background: #F7EFE8; }
+    .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; color: var(--text-secondary); font-size: 0.72rem; }
+    .cats li { display: flex; align-items: center; gap: 5px; }
+    .tiny { width: 12px; height: 12px; flex: none; }
+    .legend { display: flex; gap: 8px; font-size: 0.68rem; color: var(--text-secondary); }
+    .legend i { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 3px; }
+    .legend .cocoa { background: #864D30; }
+    .legend .sand { background: #C4A088; }
+    .chart-box { position: relative; }
+    .chart-tip {
+      position: absolute; left: 42%; top: 18%;
+      background: var(--action-primary); color: var(--on-action);
+      border-radius: 10px; padding: 6px 8px; font-size: 0.68rem; line-height: 1.35;
+      box-shadow: var(--shadow-card);
+    }
+    .days { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.68rem; color: var(--text-secondary); font-weight: 700; }
+    .days .on {
+      width: 18px; height: 18px; border-radius: 50%; background: var(--surface-cocoa); color: var(--on-action);
+      display: grid; place-items: center;
+    }
+    .peek .money { font-size: 1.35rem; }
+    .map-wrap { position: relative; height: 112px; }
+    .map-wrap svg { width: 100%; height: 100%; }
+    .pin {
+      position: absolute; width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; border: 2px solid var(--surface-cocoa);
+      display: grid; place-items: center; font-size: 0.55rem; font-weight: 700;
+    }
+    .pin span {
+      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+      white-space: nowrap; font-size: 0.62rem; font-weight: 700; color: var(--text-primary);
+    }
+    .band { background: var(--surface-cocoa); color: var(--text-on-cocoa); position: relative; }
+    .partners {
+      display: grid; grid-template-columns: repeat(8, 1fr);
+      border-bottom: 1px solid var(--border-on-cocoa);
+    }
+    .partners li {
+      min-height: 96px; display: grid; place-items: center; text-align: center;
+      border-right: 1px solid var(--border-on-cocoa); padding: 12px 8px;
+      font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; font-size: 0.98rem;
+    }
+    .partners li:last-child { border-right: 0; }
+    .partners svg { display: block; margin: 0 auto 4px; }
+    .partners .solo svg { margin: 0; }
+    .sub { display: block; font-family: var(--font-body); font-size: 0.58rem; letter-spacing: 0.08em; font-weight: 700; opacity: 0.8; }
+    .quote-block { width: min(1040px, calc(100% - 2.5rem)); margin: 0 auto; padding: 4.5rem 0 4.75rem; position: relative; }
+    .quote-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: start; }
+    .qmark { padding-top: 0.35rem; }
+    .quote-item { display: none; }
+    .quote-item.is-active { display: block; }
+    .quote-item p { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.55rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.18; }
+    .quote-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 1.75rem; padding-right: 210px; }
+    .pager-abs { position: absolute; right: 0; bottom: 4.75rem; }
+    .person { display: flex; align-items: center; gap: 12px; }
+    .person img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; object-position: center 18%; }
+    .person strong { display: block; font-size: 0.95rem; }
+    .person span { color: var(--text-on-cocoa-soft); font-size: var(--text-sm); }
+    .pager { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; }
+    .pager button {
+      width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--border-on-cocoa);
+      color: var(--text-on-cocoa); display: grid; place-items: center;
+    }
+    .pager button:hover { background: rgba(253, 248, 244, 0.12); }
+    .about { padding: var(--section-y) 0; position: relative; }
+    .about-head { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 2rem; align-items: end; margin-bottom: 1rem; }
+    .about-head p { color: var(--text-secondary); font-size: var(--text-sm); max-width: 28em; justify-self: end; }
+    .ledger { display: grid; grid-template-columns: 0.75fr 1.35fr 0.8fr; gap: 1rem 1.25rem; align-items: center; position: relative; min-height: 480px; }
+    .orb { position: absolute; width: 260px; height: 260px; border-radius: 50%; background: #EFE2D8; filter: blur(46px); z-index: 0; }
+    .orb-a { left: 18%; top: 10%; }
+    .orb-b { right: 16%; bottom: 0; width: 220px; height: 220px; }
+    .note { position: relative; z-index: 1; color: var(--text-secondary); font-size: var(--text-sm); max-width: 16em; align-self: end; padding-bottom: 1.5rem; }
+    .stack-charts { position: relative; z-index: 1; height: 460px; }
+    .card {
+      background: var(--surface-card); border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card); padding: 16px 16px 14px;
+    }
+    .card-out { position: absolute; left: 0; top: 18px; width: min(360px, 86%); }
+    .card-radar { position: absolute; right: 0; bottom: 8px; width: min(300px, 72%); }
+    .card-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .seg { display: flex; gap: 6px; align-items: center; }
+    .seg button { min-height: 32px; padding: 0 10px; border-radius: var(--radius-pill); font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary); }
+    .seg button.is-on { background: var(--action-primary); color: var(--on-action); }
+    .bubbles { display: flex; align-items: flex-end; justify-content: space-between; height: 168px; gap: 8px; position: relative; }
+    .col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; flex: 1; height: 100%; }
+    .hi, .lo { width: 42px; border-radius: var(--radius-pill); display: block; }
+    .hi { background: #864D30; }
+    .lo { background: #E4D0C4; }
+    .cap { width: 50px; border-radius: var(--radius-pill); background: linear-gradient(#864D30 0 48%, #E4D0C4 48% 100%); }
+    .col em { font-style: normal; font-size: 0.72rem; color: var(--text-secondary); }
+    .bubbles .tip, .radar .tip {
+      position: absolute; background: #fff; border-radius: 12px; box-shadow: var(--shadow-card);
+      padding: 8px 10px; font-size: 0.72rem; line-height: 1.35; z-index: 2;
+    }
+    .bubbles .tip { right: 0; top: 0; left: auto; }
+    .bubbles .tip b { display: block; font-size: 0.95rem; }
+    .sw { width: 7px; height: 7px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+    .sw-in { background: #864D30; }
+    .sw-out { background: #E4D0C4; }
+    .line-alt { display: none; height: 168px; }
+    .card.is-line .bubbles { display: none; }
+    .card.is-line .line-alt { display: block; }
+    .radar { position: relative; height: 230px; }
+    .radar svg { width: 100%; height: 190px; }
+    .rl { position: absolute; font-size: 0.68rem; color: var(--text-secondary); font-weight: 700; }
+    .rl-mar { left: 50%; top: 0; transform: translateX(-50%); }
+    .rl-aug { right: 8%; top: 22%; }
+    .rl-jul { right: 4%; bottom: 28%; }
+    .rl-jun { left: 50%; bottom: 36px; transform: translateX(-50%); }
+    .rl-may { left: 6%; bottom: 28%; }
+    .rl-apr { left: 4%; top: 22%; }
+    .radar .tip { right: 8px; top: 18px; max-width: 140px; }
+    .proof { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.6rem; align-items: flex-start; }
+    .score p { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .stars { margin-top: 8px; letter-spacing: 2px; color: var(--surface-cocoa); font-weight: 500; }
+    .stars strong { letter-spacing: 0; color: var(--text-primary); margin-left: 6px; }
+    .team {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 18px; padding: 12px 16px;
+      box-shadow: var(--shadow-card); min-height: 72px;
+    }
+    .team strong { font-family: var(--font-display); font-size: 1.35rem; letter-spacing: -0.04em; display: block; line-height: 1; }
+    .team span { font-size: var(--text-sm); color: var(--text-secondary); }
+    .band-end {
+      padding-top: 4.5rem;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 76px), calc(100% - 22px) calc(100% - 76px), calc(100% - 58px) 100%, 58px 100%, 22px calc(100% - 76px), 0 calc(100% - 76px));
+      padding-bottom: 7.25rem;
+    }
+    .side-dots {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(rgba(253, 248, 244, 0.55) 1.05px, transparent 1.2px);
+      background-size: 14px 14px;
+      mask-image: linear-gradient(90deg, #000 0 18%, transparent 32% 68%, #000 82% 100%);
+    }
+    .stats { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .stats article { padding: 0 1.5rem; }
+    .stats article + article { border-left: 1px dashed rgba(253, 248, 244, 0.35); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(253, 248, 244, 0.12); border-radius: var(--radius-pill);
+      padding: 0.35rem 0.75rem; font-size: 0.82rem; font-weight: 700;
+    }
+    .stat { font-size: var(--text-stat); margin: 0.85rem 0 0.45rem; }
+    .stats p:last-child { color: var(--text-on-cocoa-soft); font-size: var(--text-sm); max-width: 26em; }
+    .faq-intro { position: relative; z-index: 1; text-align: center; margin: 4.75rem auto 1.35rem; }
+    .faq-intro h2 { max-width: 14em; margin-inline: auto; }
+    .faq-intro p { margin-top: 0.7rem; color: var(--text-on-cocoa-soft); font-size: var(--text-sm); }
+    .faq {
+      position: relative; z-index: 1;
+      width: min(760px, 100%); margin-inline: auto;
+      background: var(--surface-card); color: var(--text-primary);
+      border-radius: 22px; box-shadow: var(--shadow-card); padding: 0.4rem 0.35rem;
+    }
+    .qa + .qa { border-top: 1px solid var(--border-default); }
+    .qa > button {
+      width: 100%; min-height: 64px; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; text-align: left; padding: 0.85rem 0.7rem 0.85rem 1rem; font-weight: 700;
+    }
+    .pm {
+      width: 44px; height: 44px; border-radius: 50%; background: #EFE4DC; position: relative; flex: none;
+    }
+    .pm::before, .pm::after {
+      content: ""; position: absolute; left: 50%; top: 50%; background: var(--text-primary); transform: translate(-50%, -50%);
+    }
+    .pm::before { width: 14px; height: 1.7px; }
+    .pm::after { width: 1.7px; height: 14px; }
+    .qa.is-open .pm { background: var(--surface-cocoa); }
+    .qa.is-open .pm::before { background: var(--text-on-cocoa); }
+    .qa.is-open .pm::after { opacity: 0; }
+    .qa-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur) var(--ease); }
+    .qa.is-open .qa-a { grid-template-rows: 1fr; }
+    .qa-a > p { overflow: hidden; color: var(--text-secondary); font-size: var(--text-sm); padding: 0 4.2rem 0 1rem; }
+    .qa.is-open .qa-a > p { padding-bottom: 1rem; }
+    .foot { position: relative; padding: 3.5rem 0 1.25rem; overflow: hidden; }
+    .foot-top, .foot-mid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem 3rem; }
+    .foot-top { align-items: start; }
+    .foot .logo { margin-bottom: 0.9rem; }
+    .tag { max-width: 18em; color: var(--text-secondary); }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.5rem; }
+    .meta h3 { font-size: var(--text-xs); font-weight: 600; color: var(--text-display-soft); margin-bottom: 0.25rem; }
+    .meta p, .meta a { font-size: var(--text-sm); }
+    .foot-mid { margin-top: 3.5rem; align-items: end; }
+    .foot-mid h2 { max-width: 8em; }
+    .quiet { margin: 0.7rem 0 1.15rem; color: var(--text-secondary); font-size: var(--text-sm); max-width: 26em; }
+    .join { display: flex; align-items: flex-end; gap: 10px; max-width: 420px; }
+    .join label { flex: 1; }
+    .join input {
+      width: 100%; background: transparent; border: 0; border-bottom: 1.5px solid var(--border-default);
+      min-height: 44px; padding: 0 0 4px; border-radius: 0;
+    }
+    .join input::placeholder { color: #B7A79C; }
+    .err { color: var(--status-danger); font-size: var(--text-sm); min-height: 1.4em; margin-top: 0.45rem; }
+    .ok { color: var(--text-primary); font-size: var(--text-sm); margin-top: 0.45rem; }
+    .prompt { font-weight: 700; margin-bottom: 0.85rem; max-width: 16em; }
+    .link-row {
+      width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border-default); text-align: left; font-weight: 600; gap: 12px;
+    }
+    .giant {
+      position: absolute; left: 50%; bottom: -0.08em; transform: translateX(-50%);
+      font-size: clamp(7rem, 24vw, 17rem); color: rgba(134, 77, 48, 0.07);
+      white-space: nowrap; line-height: 0.8; pointer-events: none; z-index: 0; letter-spacing: -0.06em;
+    }
+    .foot-bottom {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-top: 4.5rem; padding-top: 0.5rem; font-size: var(--text-sm); color: var(--text-secondary);
+    }
+    .channels, .legal { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .channels button, .legal button { min-height: 44px; font-weight: 600; }
+    dialog { border: 0; padding: 0; background: transparent; }
+    dialog::backdrop { background: rgba(60, 47, 40, 0.48); }
+    .sheet {
+      width: min(480px, calc(100vw - 2rem));
+      background: var(--surface-card); color: var(--text-primary);
+      border-radius: 22px; padding: 1.35rem 1.35rem 1.45rem; box-shadow: var(--shadow-card);
+    }
+    .sheet h2 { font-size: 1.7rem; margin: 0.35rem 0 0.6rem; }
+    .sheet-h { display: flex; justify-content: space-between; align-items: center; }
+    .x {
+      width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--border-default); display: grid; place-items: center;
+    }
+    .field { display: flex; flex-direction: column; gap: 4px; margin: 0.85rem 0; font-size: var(--text-sm); font-weight: 700; }
+    .field input {
+      min-height: 44px; border: 1.5px solid var(--border-default); border-radius: var(--radius-control);
+      padding: 0 12px; background: #fff; font-weight: 500;
+    }
+    .steps { list-style: none; padding: 0; min-height: 9rem; }
+    .steps li { display: none; }
+    .steps li.is-on { display: block; }
+    .steps strong { font-family: var(--font-display); font-size: 1.45rem; font-weight: 500; letter-spacing: -0.03em; display: block; margin-bottom: 0.4rem; }
+    .step-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 0.5rem; }
+    .pop {
+      border: 0; border-radius: 14px; background: #fff; color: var(--text-primary);
+      padding: 0.7rem 0.85rem; box-shadow: var(--shadow-card); max-width: 220px; font-size: var(--text-sm);
+    }
+    @media (max-width: 1023px) {
+      .widgets { grid-template-columns: 1fr 1fr; }
+      .hand { width: min(280px, 40vw); height: 380px; bottom: 12px; }
+      .partners { grid-template-columns: repeat(4, 1fr); }
+      .partners li:nth-child(4) { border-right: 0; }
+      .ledger { grid-template-columns: 1fr; min-height: 0; }
+      .stack-charts { height: auto; display: grid; gap: 16px; }
+      .card-out, .card-radar { position: relative; width: 100%; inset: auto; }
+      .about-head { grid-template-columns: 1fr; }
+      .about-head p { justify-self: start; }
+      .note { align-self: start; padding-bottom: 0; }
+    }
+    @media (max-width: 860px) {
+      .menu-btn { display: inline-flex; }
+      .nav-links {
+        display: none; position: absolute; top: 70px; left: 0; right: 0;
+        flex-direction: column; align-items: stretch; padding: 8px; border-radius: 18px;
+        box-shadow: var(--shadow-card);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links a { min-height: 44px; }
+      .who { display: none; }
+      .quote-item p { font-size: 1.55rem; }
+      .stats { grid-template-columns: 1fr; gap: 1.75rem; }
+      .stats article + article { border-left: 0; padding-left: 0; border-top: 1px dashed rgba(253, 248, 244, 0.35); padding-top: 1.5rem; }
+      .foot-top, .foot-mid, .meta { grid-template-columns: 1fr; }
+      .foot-bottom { flex-direction: column; align-items: flex-start; }
+      .band-end { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 48px), calc(100% - 14px) calc(100% - 48px), calc(100% - 36px) 100%, 36px 100%, 14px calc(100% - 48px), 0 calc(100% - 48px)); }
+    }
+    @media (max-width: 720px) {
+      .stage { min-height: 0; display: block; padding-bottom: 1rem; }
+      .hand {
+        position: relative; left: auto; bottom: auto; transform: none;
+        width: min(240px, 64vw); height: 320px; margin: 0.25rem auto -1.25rem; display: block;
+        object-position: center 58%;
+      }
+      .widgets { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; width: calc(100% - 1.25rem); }
+      .w { min-width: 78%; scroll-snap-align: start; }
+      .partners { display: flex; overflow-x: auto; }
+      .partners li { min-width: 46%; border-bottom: 1px solid var(--border-on-cocoa); }
+      .quote-foot { flex-direction: column; align-items: flex-start; padding-right: 0; }
+      .pager-abs { position: static; margin-top: 1rem; }
+      .join { flex-direction: column; align-items: stretch; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-nav">
+    <a class="logo" href="#top" aria-label="Russet, home">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><path fill="currentColor" d="M6.5 4.5h10.2L23.5 11.5V20a4 4 0 0 1-4 4h-13a4 4 0 0 1-4-4V8.5a4 4 0 0 1 4-4z"/><path fill="#FDF8F4" d="M16.6 4.6 23.4 11.4h-5.6a1.2 1.2 0 0 1-1.2-1.2V4.6z"/></svg>
+      <span>russet.</span>
+    </a>
+    <nav id="nav-panel" class="nav-links" aria-label="Sections">
+      <a href="#top" aria-current="page"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 2.2 2 7.2V14h4.2v-3.6h3.6V14H14V7.2L8 2.2z"/></svg> Home</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#procedures">Procedures</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <div class="nav-tools">
+      <div class="who">
+        <img class="avatar" src="assets/portrait-nav.jpg" alt="" width="640" height="640" />
+        <button class="plus" type="button" popovertarget="plus-pop">+plus</button>
+      </div>
+      <button class="btn btn-ghost" type="button" id="open-sign">Sign in</button>
+      <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+    </div>
+  </header>
+  <div id="plus-pop" class="pop" popover>Russet Plus is a sample badge on this page. Nothing is billed.</div>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <p class="live rise">
+        <span class="stack">
+          <img src="assets/portrait-nia.jpg" alt="" width="640" height="640" />
+          <img src="assets/portrait-leila.jpg" alt="" width="640" height="640" />
+          <img src="assets/portrait-priya.jpg" alt="" width="640" height="640" />
+        </span>
+        <span class="num">18,420 households active</span>
+      </p>
+      <h1 class="rise">Make a calmer use<br />of your <span class="coin" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#864D30"/><path d="M11 16.5h10M16.2 11.2l4.2 5.3-4.2 5.3" fill="none" stroke="#FDF8F4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <em>money</em></h1>
+      <p class="lede rise">Track the month. Name a budget. Leave the rest alone.</p>
+      <div class="cta-row rise">
+        <a class="btn btn-primary" href="#join">Open Russet free</a>
+        <button class="btn btn-ghost" type="button" id="open-demo">Watch a short demo</button>
+      </div>
+      <div class="stage">
+        <img class="hand" src="assets/hero-hand.jpg" width="773" height="1191" alt="A hand holding a blank brushed-metal Russet card" />
+        <div class="widgets">
+          <article class="w w-sand">
+            <div class="w-h">
+              <h3>Recent transactions</h3>
+              <button class="icon-btn" type="button" popovertarget="tx-pop" aria-label="About this sample month">
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2V11M8 5.1v.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <p><span class="money num">$128.40</span><span class="delta">↑ 4%</span><span class="from">From $18,420</span></p>
+            <div class="mix" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <ul class="cats">
+              <li><svg class="tiny" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="#6E5C52" stroke-width="1.4"/></svg> Market 42%</li>
+              <li><svg class="tiny" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 11h10M4 11V6l4-2 4 2v5" fill="none" stroke="#6E5C52" stroke-width="1.3"/></svg> Transit 18%</li>
+              <li><svg class="tiny" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="4" width="10" height="8" rx="1.5" fill="none" stroke="#6E5C52" stroke-width="1.3"/></svg> Utilities 24%</li>
+              <li><svg class="tiny" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 8 4l5 4.5V13H3V8.5z" fill="none" stroke="#6E5C52" stroke-width="1.3"/></svg> Home 16%</li>
+            </ul>
+          </article>
+          <article class="w w-paper">
+            <div class="w-h">
+              <h3>Status</h3>
+              <p class="legend"><span><i class="sand"></i>$4,280 in</span><span><i class="cocoa"></i>$3,140 out</span></p>
+            </div>
+            <div class="chart-box">
+              <svg viewBox="0 0 300 92" role="img" aria-label="Income and spending across a week">
+                <g stroke="#E6D5C8" stroke-width="1">
+                  <line x1="16" y1="16" x2="16" y2="78" /><line x1="62" y1="16" x2="62" y2="78" />
+                  <line x1="108" y1="16" x2="108" y2="78" /><line x1="154" y1="16" x2="154" y2="78" />
+                  <line x1="200" y1="16" x2="200" y2="78" /><line x1="246" y1="16" x2="246" y2="78" />
+                  <line x1="286" y1="16" x2="286" y2="78" />
+                </g>
+                <polyline points="16,70 62,46 108,62 154,38 200,58 246,34 286,48" fill="none" stroke="#C4A088" stroke-width="2" />
+                <polyline points="16,62 62,58 108,40 154,52 200,36 246,50 286,32" fill="none" stroke="#864D30" stroke-width="2" />
+              </svg>
+              <div class="chart-tip"><span><i class="cocoa" style="background:#fff;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:4px"></i>Spending</span><br /><span style="opacity:.8">Income</span></div>
+            </div>
+            <div class="days" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span class="on">W</span><span>T</span><span>F</span><span>S</span></div>
+          </article>
+          <article class="w w-paper peek">
+            <div class="w-h"><h3>Out this month</h3></div>
+            <p class="money num">$4,280</p>
+            <svg viewBox="0 0 180 78" aria-hidden="true" style="margin-top:8px">
+              <rect x="8" y="30" width="22" height="40" rx="11" fill="#E4D0C4"/>
+              <rect x="40" y="18" width="22" height="52" rx="11" fill="#864D30"/>
+              <rect x="72" y="36" width="22" height="34" rx="11" fill="#C4A088"/>
+              <rect x="104" y="14" width="22" height="56" rx="11" fill="#864D30"/>
+              <rect x="136" y="26" width="22" height="44" rx="11" fill="#E4D0C4"/>
+            </svg>
+          </article>
+          <article class="w w-sand">
+            <div class="w-h"><h3>Where households sit</h3></div>
+            <div class="map-wrap">
+              <svg viewBox="0 0 280 130" aria-hidden="true">
+                <g fill="#D9C2B2">
+                  <ellipse cx="68" cy="52" rx="22" ry="26"/>
+                  <ellipse cx="78" cy="96" rx="16" ry="20"/>
+                  <ellipse cx="142" cy="46" rx="16" ry="12"/>
+                  <ellipse cx="146" cy="84" rx="14" ry="22"/>
+                  <ellipse cx="198" cy="50" rx="30" ry="16"/>
+                  <ellipse cx="228" cy="78" rx="12" ry="16"/>
+                </g>
+              </svg>
+              <span class="pin" style="left:22%;top:34%"></span>
+              <span class="pin" style="left:46%;top:28%"></span>
+              <span class="pin" style="left:68%;top:42%"></span>
+              <span class="pin" style="left:58%;top:64%"></span>
+            </div>
+            <p class="from" style="margin:6px 0 0">Wrenfield · Glasshouse · Adler · Mallow</p>
+          </article>
+        </div>
+      </div>
+      <div id="tx-pop" class="pop" popover>A sample March for one Wrenfield household. The figures are not a live account.</div>
+    </section>
+
+    <section class="band" id="reviews">
+      <ul class="partners" aria-label="Fictional clearing partners">
+        <li class="solo"><svg width="36" height="28" viewBox="0 0 36 28" aria-hidden="true"><path fill="#F7EDE6" d="M18 2 34 26H2L18 2z"/></svg></li>
+        <li>Northwharf</li>
+        <li>Plover</li>
+        <li>Yarrow<span class="sub">MUTUAL</span></li>
+        <li>Brant</li>
+        <li class="solo"><svg width="36" height="22" viewBox="0 0 36 22" aria-hidden="true"><path fill="none" stroke="#F7EDE6" stroke-width="2.4" d="M2 16c6-10 10-10 16 0s10 10 16 0"/></svg></li>
+        <li>Mallow</li>
+        <li>Ash &amp; Rye</li>
+      </ul>
+      <div class="quote-block">
+        <div class="quote-grid">
+          <div class="qmark" aria-hidden="true">
+            <svg width="54" height="42" viewBox="0 0 54 42"><path fill="#FDF8F4" d="M10 2h12l-6 38H4L10 2zm22 0h12l-6 38H26L32 2z"/></svg>
+          </div>
+          <div class="quote-stage">
+            <blockquote class="quote-item is-active">
+              <p>The month finally sits in one place. The card, the plan, and what the clinic already promised.</p>
+              <div class="quote-foot">
+                <div class="person"><img src="assets/portrait-nia.jpg" alt="" width="640" height="640" /><div><strong>Nia Okonkwo</strong><span>Treasurer, Glasshouse Clinics</span></div></div>
+              </div>
+            </blockquote>
+            <blockquote class="quote-item">
+              <p>I stopped reconciling three apps on Sunday. Russet keeps the plan next to what we already spent.</p>
+              <div class="quote-foot">
+                <div class="person"><img src="assets/portrait-edmund.jpg" alt="" width="640" height="640" /><div><strong>Edmund Hart</strong><span>Partner, Hart &amp; Rowan</span></div></div>
+              </div>
+            </blockquote>
+            <blockquote class="quote-item">
+              <p>A quieter ledger. I can see what the studio spent before the month closes, not the week after.</p>
+              <div class="quote-foot">
+                <div class="person"><img src="assets/portrait-leila.jpg" alt="" width="640" height="640" /><div><strong>Leila Voss</strong><span>Founder, Paperkiln</span></div></div>
+              </div>
+            </blockquote>
+            <blockquote class="quote-item">
+              <p>Fuel, yards, and payroll used to blur. The desk marked the yard account before I did.</p>
+              <div class="quote-foot">
+                <div class="person"><img src="assets/portrait-jonas.jpg" alt="" width="640" height="640" /><div><strong>Jonas Adler</strong><span>Ops lead, Adler Freight</span></div></div>
+              </div>
+            </blockquote>
+            <blockquote class="quote-item">
+              <p>We opened Russet for the card and stayed for the plan. Ours has held for six months.</p>
+              <div class="quote-foot">
+                <div class="person"><img src="assets/portrait-priya.jpg" alt="" width="640" height="640" /><div><strong>Priya Sen</strong><span>Controller, Sen Atelier</span></div></div>
+              </div>
+            </blockquote>
+          </div>
+        </div>
+        <div class="pager pager-abs">
+          <button type="button" id="q-prev" aria-label="Previous review"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 4 6 9l5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+          <span class="num" id="q-count">01 / 05</span>
+          <button type="button" id="q-next" aria-label="Next review"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="wrap about-head reveal">
+        <h2>Handle the month<br /><em>with a steadier hand</em></h2>
+        <p>A ledger, a card, and a desk that answers when a month runs hot.</p>
+      </div>
+      <div class="wrap ledger">
+        <div class="orb orb-a" aria-hidden="true"></div>
+        <div class="orb orb-b" aria-hidden="true"></div>
+        <p class="note reveal">A month you can read. The same method we run with households, written down before the card moves.</p>
+        <div class="stack-charts reveal">
+          <article class="card card-out" id="outlay-card">
+            <div class="card-h">
+              <h3>Outlay</h3>
+              <div class="seg">
+                <button type="button" class="is-on" id="show-bars" aria-pressed="true">Bars</button>
+                <button type="button" id="show-line" aria-pressed="false" aria-label="Show the outlay as a line">
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12l4-5 3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="bubbles">
+              <div class="tip"><b class="num">64,200</b><span class="sw sw-in"></span>In<br /><b class="num">41,880</b><span class="sw sw-out"></span>Out</div>
+              <div class="col"><span class="hi" style="height:46px"></span><span class="lo" style="height:36px"></span><em>Jan</em></div>
+              <div class="col"><span class="hi" style="height:50px"></span><span class="lo" style="height:40px"></span><em>Feb</em></div>
+              <div class="col"><span class="cap" style="height:132px"></span><em>Mar</em></div>
+              <div class="col"><span class="hi" style="height:48px"></span><span class="lo" style="height:42px"></span><em>Apr</em></div>
+              <div class="col"><span class="hi" style="height:54px"></span><span class="lo" style="height:38px"></span><em>May</em></div>
+            </div>
+            <svg class="line-alt" viewBox="0 0 320 150" role="img" aria-label="Outlay from January to May">
+              <polyline points="20,110 85,90 160,28 230,70 300,48" fill="none" stroke="#864D30" stroke-width="2.5"/>
+              <g fill="#864D30"><circle cx="20" cy="110" r="4"/><circle cx="85" cy="90" r="4"/><circle cx="160" cy="28" r="4"/><circle cx="230" cy="70" r="4"/><circle cx="300" cy="48" r="4"/></g>
+            </svg>
+          </article>
+          <article class="card card-radar">
+            <div class="card-h"><h3>Plan shape</h3><span class="icon-btn" aria-hidden="true">···</span></div>
+            <div class="radar">
+              <span class="rl rl-mar">Mar</span><span class="rl rl-aug">Aug</span><span class="rl rl-jul">Jul</span>
+              <span class="rl rl-jun">Jun</span><span class="rl rl-may">May</span><span class="rl rl-apr">Apr</span>
+              <svg viewBox="0 0 200 200" role="img" aria-label="Share of the plan used, August at 92 percent">
+                <polygon points="100,30 160.6,65 160.6,135 100,170 39.4,135 39.4,65" fill="none" stroke="#E6D5C8"/>
+                <polygon points="100,61.5 133.3,80.8 133.3,119.2 100,138.5 66.7,119.2 66.7,80.8" fill="none" stroke="#E6D5C8"/>
+                <polygon points="100,52.4 154.6,68.5 136.4,121 100,150.4 67.3,118.9 52.7,72.7" fill="rgba(134,77,48,0.28)" stroke="#864D30" stroke-width="1.4"/>
+              </svg>
+              <div class="tip"><strong>August</strong><br />92% of the plan used</div>
+            </div>
+          </article>
+        </div>
+        <aside class="proof reveal">
+          <div class="score">
+            <p><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#864D30" d="m9 1.6 2.1 4.4 4.8.7-3.5 3.4.8 4.8L9 12.6 4.8 14.9l.8-4.8L2.1 6.7l4.8-.7L9 1.6z"/></svg> Member score</p>
+            <p class="stars" aria-label="3,800 scores at five">★★★★★ <strong class="num">3,800 at five</strong></p>
+          </div>
+          <div class="team">
+            <span class="stack">
+              <img src="assets/portrait-edmund.jpg" alt="" width="640" height="640" />
+              <img src="assets/portrait-jonas.jpg" alt="" width="640" height="640" />
+              <img src="assets/portrait-nav.jpg" alt="" width="640" height="640" />
+            </span>
+            <p><strong class="num">86</strong><span>on the desk</span></p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="band band-end" id="procedures">
+      <div class="side-dots" aria-hidden="true"></div>
+      <div class="wrap stats">
+        <article class="reveal">
+          <p class="pill"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="11" cy="6.5" r="1.6" fill="currentColor"/><path d="M2.5 13c.4-2 2-3 3.5-3s3.1 1 3.5 3M9 10.2c.8-.5 1.8-.7 2.8-.4 1 .4 1.7 1.4 2 2.7" fill="none" stroke="currentColor" stroke-width="1.3"/></svg> Households</p>
+          <p class="stat num">18K+</p>
+          <p>In 41 regions, one desk reads the month with the household.</p>
+        </article>
+        <article class="reveal">
+          <p class="pill"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 4.5V8l2.2 1.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Plans kept</p>
+          <p class="stat num">96%</p>
+          <p>Still on a written plan six months after the first card arrived.</p>
+        </article>
+        <article class="reveal">
+          <p class="pill"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13V3h2.2v10M7 13V6h2.2v7M11 13V8h2.2v5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg> Desk years</p>
+          <p class="stat num">12</p>
+          <p>The Wrenfield room opened in 2014, above a bakery on Mallow Walk.</p>
+        </article>
+      </div>
+      <div class="wrap faq-intro reveal">
+        <h2>Questions to ask before a balance moves.</h2>
+        <p>A straight answer beats a softer promise.</p>
+      </div>
+      <div class="wrap">
+        <div class="faq" id="questions">
+          <div class="qa is-open">
+            <button type="button" aria-expanded="true"><span>Where does Russet open accounts?</span><span class="pm" aria-hidden="true"></span></button>
+            <div class="qa-a"><p>Russet opens household accounts in 41 regions. If yours is not on the list, the desk writes when it is. This page does not open a real account.</p></div>
+          </div>
+          <div class="qa">
+            <button type="button" aria-expanded="false"><span>Can I name a goal that is not a trip?</span><span class="pm" aria-hidden="true"></span></button>
+            <div class="qa-a"><p>Yes. Rent, a tax quarter, a kiln, a clinic reserve. A plan is a number and a date, not a theme.</p></div>
+          </div>
+          <div class="qa">
+            <button type="button" aria-expanded="false"><span>What sits on the card?</span><span class="pm" aria-hidden="true"></span></button>
+            <div class="qa-a"><p>A metal debit card that spends against the month’s plan. It is not a separate credit line.</p></div>
+          </div>
+          <div class="qa">
+            <button type="button" aria-expanded="false"><span>How do I open an account?</span><span class="pm" aria-hidden="true"></span></button>
+            <div class="qa-a"><p>Leave an email below. On a real desk, someone confirms the region and sends a short form. This template sends nothing.</p></div>
+          </div>
+          <div class="qa">
+            <button type="button" aria-expanded="false"><span>Can I link a bank I already use?</span><span class="pm" aria-hidden="true"></span></button>
+            <div class="qa-a"><p>Yes, read-only, so the month can be sorted. Money still leaves only when you say so.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="giant" aria-hidden="true">russet</p>
+    <div class="wrap foot-top">
+      <div>
+        <a class="logo" href="#top">
+          <svg viewBox="0 0 28 28" aria-hidden="true"><path fill="currentColor" d="M6.5 4.5h10.2L23.5 11.5V20a4 4 0 0 1-4 4h-13a4 4 0 0 1-4-4V8.5a4 4 0 0 1 4-4z"/><path fill="#FDF8F4" d="M16.6 4.6 23.4 11.4h-5.6a1.2 1.2 0 0 1-1.2-1.2V4.6z"/></svg>
+          <span>russet.</span>
+        </a>
+        <p class="tag">A quieter month: one card, one plan, and a desk that picks up.</p>
+      </div>
+      <div class="meta">
+        <div><h3>Address</h3><p>18 Mallow Walk<br />Wrenfield</p></div>
+        <div><h3>Phone</h3><p><a href="tel:+15035550148">+1 (503) 555-0148</a></p></div>
+        <div><h3>Desk</h3><p>Weekdays, 8:00–18:00</p></div>
+        <div><h3>Email</h3><p><a href="mailto:hello@russet.example">hello@russet.example</a></p></div>
+      </div>
+    </div>
+    <div class="wrap foot-mid" id="journal">
+      <div id="join">
+        <h2>Ready to open an account?</h2>
+        <p class="quiet">If a question is still open, the desk answers it.</p>
+        <form class="join" id="join-form" novalidate>
+          <label>Email address
+            <input type="email" name="email" id="join-email" autocomplete="email" placeholder="name@studio.example" required />
+          </label>
+          <button class="btn btn-primary" type="submit">Join Russet</button>
+        </form>
+        <p class="err" id="join-err" role="alert"></p>
+        <p class="ok" id="join-ok" role="status"></p>
+      </div>
+      <div>
+        <p class="prompt">If the month still feels loud, start here.</p>
+        <div class="qa">
+          <button class="link-row" type="button" aria-expanded="false">What is a Russet plan? <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          <div class="qa-a"><p>A number and a date: what the household may spend before the month closes.</p></div>
+        </div>
+        <div class="qa">
+          <button class="link-row" type="button" aria-expanded="false">Is the card a debit card? <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          <div class="qa-a"><p>Yes. It spends against the plan. It is not a credit line.</p></div>
+        </div>
+        <div class="qa">
+          <button class="link-row" type="button" aria-expanded="false">What does a free account include? <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          <div class="qa-a"><p>The plan, the card, and a weekday reply from the desk. The Plus badge on this page bills nothing.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap foot-bottom">
+      <div class="channels">
+        <button type="button" data-sample="Notes" data-copy="Notes is a sample channel for Russet. There is no feed behind it.">Notes</button>
+        <button type="button" data-sample="Wire" data-copy="Wire is a sample channel for Russet. Nothing is posted from this page.">Wire</button>
+        <button type="button" data-sample="Post" data-copy="Post is a sample channel for Russet. Nothing is sent.">Post</button>
+      </div>
+      <div class="legal">
+        <button type="button" data-sample="Privacy" data-copy="Sample copy only. Russet does not collect an account on this page, and the join field is not stored.">Privacy</button>
+        <button type="button" data-sample="Terms" data-copy="Sample copy only. Opening Russet here does not create an account, a card, or a debt.">Terms</button>
+        <button type="button" data-sample="Support" data-copy="The sample desk does not reply. A real note would go to hello@russet.example.">Support</button>
+      </div>
+      <p>© 2026 Russet. Sample template.</p>
+    </div>
+  </footer>
+
+  <dialog class="sheet" id="sign-dialog">
+    <div class="sheet-h">
+      <p class="pill" style="background:#F3E7DE;color:var(--text-primary)">Sample desk</p>
+      <button class="x" type="button" data-close aria-label="Close sign in">×</button>
+    </div>
+    <h2>Sign in</h2>
+    <p>No account is checked. Do not type a password you use anywhere else — this form has no password field on purpose.</p>
+    <form id="sign-form">
+      <label class="field">Email
+        <input type="email" name="email" autocomplete="email" required placeholder="name@studio.example" />
+      </label>
+      <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+    <p class="ok" id="sign-status" role="status"></p>
+  </dialog>
+
+  <dialog class="sheet" id="demo-dialog">
+    <div class="sheet-h">
+      <p class="pill" style="background:#F3E7DE;color:var(--text-primary)">Three steps</p>
+      <button class="x" type="button" data-close aria-label="Close demo">×</button>
+    </div>
+    <h2 id="demo-title">Name the plan</h2>
+    <ol class="steps">
+      <li class="is-on" data-title="Name the plan"><strong>A number and a date.</strong> Write what the household may spend before the month closes. The card reads that figure, not a slogan.</li>
+      <li data-title="Spend against it"><strong>The card follows the plan.</strong> A purchase inside the number goes through. One past it waits for a yes from you.</li>
+      <li data-title="Read what slipped"><strong>The desk marks the line.</strong> Before the month closes, someone in Wrenfield shows what moved and what held.</li>
+    </ol>
+    <div class="step-nav">
+      <button class="btn btn-ghost" type="button" id="demo-prev">Back</button>
+      <button class="btn btn-primary" type="button" id="demo-next">Next step</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="sample-dialog">
+    <div class="sheet-h">
+      <p class="pill" style="background:#F3E7DE;color:var(--text-primary)">Sample</p>
+      <button class="x" type="button" data-close aria-label="Close">×</button>
+    </div>
+    <h2 id="sample-title">Note</h2>
+    <p id="sample-copy"></p>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script>
+    (function () {
+      try {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var lenis = null;
+      var nav = document.querySelector(".site-nav");
+      var menuBtn = document.getElementById("menu-btn");
+      var panel = document.getElementById("nav-panel");
+
+      function lock(on) {
+        if (!lenis) return;
+        if (on) lenis.stop(); else lenis.start();
+      }
+
+      if (!reduce && window.Lenis) {
+        lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          var id = a.getAttribute("href");
+          if (!id || id.length < 2) return;
+          var target = document.querySelector(id);
+          if (!target) return;
+          e.preventDefault();
+          if (lenis) lenis.scrollTo(target, { offset: -76 });
+          else target.scrollIntoView();
+          panel.classList.remove("is-open");
+          menuBtn.setAttribute("aria-expanded", "false");
+          lock(false);
+        });
+      });
+
+      menuBtn.addEventListener("click", function () {
+        var open = panel.classList.toggle("is-open");
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      window.addEventListener("scroll", function () {
+        nav.classList.toggle("is-scrolled", window.scrollY > 8);
+      }, { passive: true });
+
+      if (!reduce && window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+        if (lenis) lenis.on("scroll", ScrollTrigger.update);
+        gsap.from(".rise", { opacity: 0, y: 16, duration: 0.7, stagger: 0.08, ease: "power2.out", delay: 0.05 });
+        gsap.utils.toArray(".reveal").forEach(function (el) {
+          gsap.from(el, { opacity: 0, y: 16, duration: 0.7, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 88%" } });
+        });
+      }
+
+      var items = Array.prototype.slice.call(document.querySelectorAll(".quote-item"));
+      var qi = 0;
+      var count = document.getElementById("q-count");
+      function showQuote(n) {
+        qi = (n + items.length) % items.length;
+        items.forEach(function (el, i) { el.classList.toggle("is-active", i === qi); });
+        count.textContent = String(qi + 1).padStart(2, "0") + " / 05";
+      }
+      document.getElementById("q-prev").addEventListener("click", function () { showQuote(qi - 1); });
+      document.getElementById("q-next").addEventListener("click", function () { showQuote(qi + 1); });
+
+      document.querySelectorAll(".qa > button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var qa = btn.parentElement;
+          var open = qa.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      });
+
+      var outlay = document.getElementById("outlay-card");
+      document.getElementById("show-bars").addEventListener("click", function () {
+        outlay.classList.remove("is-line");
+        this.setAttribute("aria-pressed", "true");
+        this.classList.add("is-on");
+        document.getElementById("show-line").setAttribute("aria-pressed", "false");
+      });
+      document.getElementById("show-line").addEventListener("click", function () {
+        outlay.classList.add("is-line");
+        this.setAttribute("aria-pressed", "true");
+        var bars = document.getElementById("show-bars");
+        bars.setAttribute("aria-pressed", "false");
+        bars.classList.remove("is-on");
+      });
+
+      function wireDialog(id, openBtn) {
+        var dlg = document.getElementById(id);
+        if (openBtn) openBtn.addEventListener("click", function () { dlg.showModal(); lock(true); });
+        dlg.querySelectorAll("[data-close]").forEach(function (b) {
+          b.addEventListener("click", function () { dlg.close(); });
+        });
+        dlg.addEventListener("close", function () { lock(false); });
+      }
+      wireDialog("sign-dialog", document.getElementById("open-sign"));
+      wireDialog("demo-dialog", document.getElementById("open-demo"));
+      wireDialog("sample-dialog");
+
+      document.getElementById("sign-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var email = new FormData(e.target).get("email");
+        document.getElementById("sign-status").textContent = "Nothing was sent. This Russet desk is a sample, including for " + email + ".";
+      });
+
+      var steps = Array.prototype.slice.call(document.querySelectorAll(".steps li"));
+      var step = 0;
+      var demoTitle = document.getElementById("demo-title");
+      var demoNext = document.getElementById("demo-next");
+      function showStep(n) {
+        step = Math.max(0, Math.min(steps.length - 1, n));
+        steps.forEach(function (el, i) { el.classList.toggle("is-on", i === step); });
+        demoTitle.textContent = steps[step].getAttribute("data-title");
+        demoNext.textContent = step === steps.length - 1 ? "Close" : "Next step";
+        document.getElementById("demo-prev").disabled = step === 0;
+      }
+      document.getElementById("demo-prev").addEventListener("click", function () { showStep(step - 1); });
+      demoNext.addEventListener("click", function () {
+        if (step === steps.length - 1) document.getElementById("demo-dialog").close();
+        else showStep(step + 1);
+      });
+
+      document.querySelectorAll("[data-sample]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.getElementById("sample-title").textContent = btn.getAttribute("data-sample");
+          document.getElementById("sample-copy").textContent = btn.getAttribute("data-copy");
+          document.getElementById("sample-dialog").showModal();
+          lock(true);
+        });
+      });
+
+      document.getElementById("join-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = document.getElementById("join-email");
+        var err = document.getElementById("join-err");
+        var ok = document.getElementById("join-ok");
+        err.textContent = "";
+        ok.textContent = "";
+        var value = input.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          err.textContent = "Use an email like name@studio.example.";
+          input.focus();
+          return;
+        }
+        ok.textContent = "Sample only. Nothing was sent. A real desk would write to " + value + ".";
+        input.value = "";
+      });
+      } catch (err) {
+        document.documentElement.dataset.boot = "error: " + err;
+      }
+    })();
+  </script>
+</body>
+</html>

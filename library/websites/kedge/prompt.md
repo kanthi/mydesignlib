@@ -1,0 +1,664 @@
+# Rebuild prompt — Kedge (`kedge`)
+
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
+
+## Deliverable
+- Kind: website · SaaS
+- Folder: `library/websites/kedge/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Vanilla HTML, CSS, and small JS. No bundler and no new framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
+
+## What it is
+Enterprise revenue platform: sunset plasma hero, alpine about and contact bands, coral-tabbed dashboard proof, journal, and demo form.
+
+## Title
+Kedge — One platform to run enterprise revenue
+
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=Sora:wght@400;500;600;700&display=swap`
+
+## Tokens
+Put this `:root` block in the page CSS and use the variables. Do not swap the palette or the typefaces.
+
+```css
+  :root {
+  --font-display: "Sora", sans-serif;
+  --font-body: "Figtree", sans-serif;
+  --surface-page: #f5f5f4;
+  --surface-raised: #ffffff;
+  --text-primary: #141414;
+  --text-secondary: #6a6a68;
+  --border-default: #e4e4e0;
+  --action-primary: #ff3b1a;
+  --action-primary-hover: #e02e12;
+  --status-up: #1f8a4c;
+  --status-danger: #c2301a;
+  --text-display: clamp(2.6rem, 5.4vw, 4.25rem);
+  --text-3xl: clamp(2rem, 3.4vw, 2.85rem);
+  --text-2xl: 2rem;
+  --text-xl: 1.5rem;
+  --text-lg: 1.2rem;
+  --text-base: 1.05rem;
+  --text-sm: 0.9rem;
+  --text-xs: 0.75rem;
+  --leading-tight: 1.08;
+  --leading-body: 1.6;
+  --tracking-display: -0.04em;
+  --section-y: clamp(4.5rem, 9vw, 7rem);
+  --wrap: min(1120px, 100% - 2.5rem);
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-nav: 14px;
+  --radius-pill: 999px;
+  --shadow: 0 18px 50px rgba(20, 20, 20, 0.08);
+  --dur: 220ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :root {
+  --wrap: min(1120px, 100% - 2rem);
+  }
+```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+### `index.html`
+- a: Skip to content → #main
+- header .site-header
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main
+  - section .hero-plasma
+    - h1: One AI platform built to run enterprise revenue
+    - p: Unify data, automate workflows, and enable clearer decisions across sales, finance, and operations from one secure platform.
+    - a: Request a demo → contact.html
+    - a: Contact sales → contact.html
+  - section .logos
+    - p: Powering revenue teams at product-led companies.
+  - section #platform .platform.wrap
+    - h2: One platform. Multiple paths to scale revenue.
+    - p: Different teams solve different problems, all powered by one secure revenue system designed for enterprise growth.
+    - button: Revenue intelligence
+    - button: Sales automation
+    - button: Customer insights
+    - button: Operations & forecasting
+    - article #pane-intel .pane.is-on
+      - h3: Turn complex data into clear revenue decisions
+      - p: Unify revenue data into one real-time view to surface insights, reduce risk, improve forecasting accuracy, and guide confident decisions.
+      - ul .checks
+        - li: Unified revenue dashboards
+        - li: Real-time performance insights
+        - li: Pipeline risk detection
+        - li: Model-assisted forecasts
+      - a: Revenue intelligence → features.html
+    - article #pane-sales .pane
+      - h3: Move the right deals without drowning reps in tasks
+      - p: Route work, score pipeline, and keep handoffs intact so sales time stays on conversations — not on stitching tools together.
+      - ul .checks
+        - li: Deal prioritization queues
+        - li: Playbooks tied to live stages
+        - li: Activity that writes back to CRM
+      - a: Sales automation → features.html
+    - article #pane-cust .pane
+      - h3: See expansion and churn before they hit the number
+      - p: Join product usage, support load, and commercial signals so customer teams act on the same picture finance already believes.
+      - ul .checks
+        - li: Account health scores
+        - li: Expansion signal alerts
+        - li: Shared customer timeline
+      - a: Customer insights → features.html
+    - article #pane-ops .pane
+      - h3: Run a forecast finance will actually sign
+      - p: Roll bottom-up commits into a single model with audit trails, so ops stops reconciling spreadsheets the night before board.
+      - ul .checks
+        - li: Hierarchical forecast rolls
+        - li: Scenario and capacity views
+        - li: Change log for every commit
+      - a: Operations & forecasting → features.html
+  - section .impl.wrap
+    - h2: Live on a forecast in nine weeks
+    - p: A fixed sequence, not a custom science project. Your ops lead owns the cadence before we leave.
+    - article .step
+      - h3: Map the number
+      - p: Name the sources, the roll-up, and the people who commit. We do not connect a single pipe until finance agrees what “the number” means.
+    - article .step
+      - h3: Stand up the model
+      - p: CRM, billing, and product events land in one view. First live forecast call uses Kedge, with the old sheet still in the room as a check.
+    - article .step
+      - h3: Hand the keys to ops
+      - p: Playbooks, change log, and a weekly operating rhythm. Implementation ends when your team runs the call without us.
+  - section .proof-band
+    - blockquote: “For the first time, our executive team sees pipeline risk and forward-looking projections aligned across departments. Forecast accuracy improved within the first quarter.”
+    - p: Enterprise client retention after first year
+  - section .cta-dusk
+    - h2: Request a demo of the revenue model
+    - p: Ninety minutes with a consultant who has sat in your forecast call. No deck-only walkthroughs.
+    - a: Request a demo → contact.html
+- footer .site-footer
+  - nav
+    - a: About → about.html
+    - a: Journal → journal.html
+    - a: Contact → contact.html
+### `about.html`
+- a: Skip to content → #main
+- header .site-header
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main
+  - section .hero-alpine
+    - h1: Building the revenue infrastructure modern enterprises rely on
+    - p: Revenue growth becomes guesswork when data is fragmented, systems are disconnected, and decisions rest on assumptions. Kedge was built to unify intelligence, automation, and forecasting into one secure platform designed for enterprise scale.
+  - section .logos
+    - p: Powering revenue teams at product-led companies.
+  - section .wrap.split
+    - h2: Make enterprise revenue predictable
+    - p: We believe revenue should be engineered, not guessed. Our work is to give revenue leaders complete visibility, structured automation, and forecasting confidence across every department.
+    - blockquote: “As companies scale, complexity multiplies. More tools. More data. More moving parts. What begins as momentum often turns into fragmentation.” Kedge exists to restore structure. We believe revenue should be engineered with intention — supported by unified data, intelligent automation, and forecasting leaders can trust. Mira VossFounder & CEO — Kedge
+    - a: Request a demo → contact.html
+  - section .values
+    - h2: Get to know our core values
+    - p: We believe revenue should be engineered, not guessed.
+    - article .value
+      - p: One model of the business beats a pile of exports. We design for a single source of truth that sales, finance, and ops can share.
+    - article .value
+      - p: Leaders need the few numbers that change a decision — not another dashboard that restates last week’s CRM.
+    - article .value
+      - p: Every commit has a trail. If the number moves, you can say why, to whom, and from which assumption.
+  - section .team.wrap
+    - h2: The people behind the model
+    - article .person
+    - article .person
+    - article .person
+    - article .person
+    - article .person
+  - section .cta-dusk
+    - h2: Meet the team on a working session
+    - p: Bring last quarter’s commit. We will show you where the model would have caught the miss.
+    - a: Request a demo → contact.html
+- footer .site-footer
+  - nav
+    - a: Home → index.html
+    - a: Journal → journal.html
+    - a: Contact → contact.html
+### `article-crm.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: From CRM data to real customer intelligence
+  - article .article
+    - p: A CRM knows the commercial story. It does not know that usage fell 30% or that support load doubled. Those signals sit in tools CS already has — and never reach the forecast until the logo is already gone.
+    - h2: Join, don’t duplicate
+    - p: We join usage, tickets, and commercial stages on the account. Health is a derived field with a recipe you can read, not a mystery score. Expansion alerts fire when usage and stage agree, not when a CSM has a hunch.
+    - h2: Before it hits the quarter
+    - p: The point is lead time. A health drop six weeks out is a save motion. The same drop in week twelve of the quarter is a footnote. Put the join in the model early, or keep being surprised.
+    - p: Request a demo
+- footer .site-footer
+### `article-forecasts.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: Why most enterprise forecasts fail and how to fix them
+  - article .article
+    - p: Forecasts fail in three boring ways: the sources disagree, the humans round in private, and nobody can say who changed the commit. Fancy models do not fix that. Structure does.
+    - h2: Disconnected data
+    - p: If CRM, billing, and capacity live in three files, the call is a negotiation about whose file is true. Unify the objects first. Then argue about judgment.
+    - h2: Manual updates
+    - p: A manager who types the number by hand will protect the number. A change log that records every edit — who, when, from which assumption — makes that protection visible. Shame is a better control than another slide.
+    - h2: Siloed teams
+    - p: Sales, CS, and finance cannot share a forecast they cannot all open. Give them one model with role-specific views, not three “aligned” decks. That is the entire product.
+    - p: Request a demo
+- footer .site-footer
+### `article-impl.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: How we run implementation in nine weeks
+  - article .article
+    - p: We do not start with connectors. We start with the sentence: “The number is X, owned by Y, rolled from Z.” If that sentence is mush, no amount of piping will save the forecast.
+    - h2: Weeks 1–3 — map
+    - p: Finance, sales ops, and CS agree objects and grain. We write the recipe for commit. Sources are listed; none are connected yet.
+    - h2: Weeks 4–6 — stand up
+    - p: Pipes go live. First forecast call uses Kedge with the old sheet in the room as a check. Disagreements become tickets, not vibes.
+    - h2: Weeks 7–9 — handoff
+    - p: Playbooks, change log, weekly rhythm. We leave when your ops lead runs the call. That is the definition of done — not a kickoff photo.
+    - p: Request a demo
+- footer .site-footer
+### `article-monday.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: What a CRO actually needs on Monday morning
+  - article .article
+    - p: I do not need another export. I need a short list: what moved, who owns it, and the one decision that cannot wait until Thursday’s forecast call.
+    - h2: Three lines
+    - p: Pipeline that slipped a stage with no activity. A renewal whose health fell through a threshold. A commit someone changed after Friday. If those three are empty, I can drink my coffee. If they are not, I know who to call before standup.
+    - h2: Stop restating last week
+    - p: Most Monday decks are last week with new colors. Kedge’s Monday view is a delta. That is the only view I open first. Everything else is for the people who have to explain the delta.
+    - p: Request a demo
+- footer .site-footer
+### `article-prioritize.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: Automating deal prioritization without losing judgment
+  - article .article
+    - p: Queues are useful until they hide the deal a human would have taken. We score pipeline for coverage, then we force a manager to accept or override — with a reason that sticks to the record.
+    - h2: What the model is allowed to do
+    - p: It can rank. It can surface stalled stages. It cannot close a commit. Reps still own conversations. Managers still own the call. The machine owns the reminder that a $400k deal has been silent for eleven days.
+    - h2: Write-back
+    - p: If the action does not land in the CRM, it did not happen. Prioritization that lives only in Kedge is a second system. We refuse to ship that.
+    - p: Request a demo
+- footer .site-footer
+### `article-visibility.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - a: ← Journal → journal.html
+  - header .page-hero
+    - h1: Introducing Kedge 2.0: real-time revenue visibility across teams
+  - article .article
+    - p: Most revenue stacks still assemble the week in a spreadsheet. CRM is a day late. Billing is a week late. Product usage never makes the call. Kedge 2.0 is the release that treats those delays as the product problem they are.
+    - h2: One clock
+    - p: Every object in the model now shares a clock. A closed-won in CRM, an invoice in billing, and a seat change in product land on the same timeline within minutes — not in Friday’s export. When the number moves, you can point at the event, not a feeling.
+    - h2: What teams actually see
+    - p: Sales sees pipeline risk with a reason. Finance sees the same commit they heard on the call. CS sees expansion and churn on that same strip. We stopped shipping three “aligned” dashboards. Alignment is a shared clock, or it is theater.
+    - p: If you already run Kedge, 2.0 is on your instance. If you do not, request a demo and bring last quarter’s miss. We will replay it on the new clock.
+    - p: Request a demo
+- footer .site-footer
+### `contact.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - header .page-hero
+    - h1: Get in touch
+    - p: We would like to hear from you. Send us a message and we will respond as soon as possible.
+  - form #consult-form .form-card
+    - label: First name
+    - label: Email
+    - label: Phone number
+    - label: Company name
+    - label: Message
+    - button: Request an enterprise consultation
+  - blockquote: “Kedge changed how we manage forecasting across sales and finance. For the first time, our executive team sees real-time pipeline risk and forward-looking projections aligned across departments. Forecast accuracy improved within the first quarter.”
+  - p: Enterprise client retention after first year
+  - section .help
+    - h2: We’re here to help
+    - p: Guidance, answers, and support whenever you need it.
+    - h3: Email
+    - p: Reach the strategy team anytime. We reply with clear, actionable next steps.
+    - p: hello@kedge.example
+    - h3: Phone
+    - p: Connect directly with consultants for fast, human-driven advice.
+    - p: +1 (503) 555-0148
+    - h3: Address
+    - p: Kedge Systems, Inc. 440 Harbor Cut, Suite 18 Portland, OR 97204 United States
+  - section .faq
+    - h2: Frequently asked questions
+    - p: Quick answers to common questions, all in one place.
+    - button: What types of companies benefit most from Kedge? –
+    - p: Kedge is designed for growth-stage and enterprise organizations managing complex revenue operations across multiple teams.
+    - button: How long does implementation typically take? +
+    - p: Most teams are live on a first forecast in six to nine weeks. We map sources in week one, stand up the model by week four, and hand the operating cadence to your ops lead before week nine.
+    - button: Do you replace the CRM? +
+    - p: No. Kedge reads and writes alongside the CRM you already run. The point is a shared revenue model, not another system of record.
+    - button: Where is data hosted? +
+    - p: Regional residency in the US and EU, with private-network options on Enterprise. Encryption in transit and at rest is standard on every plan.
+    - button: Who runs the demo? +
+    - p: A consultant who has sat in forecast calls, not a touring deck. Bring last quarter’s commit if you can — we work from your number.
+    - button: Can security review start before a contract? +
+    - p: Yes. We send the packet the same week as the first working session: architecture, subprocessors, and residency options.
+- footer .site-footer
+  - nav
+    - a: Home → index.html
+    - a: Journal → journal.html
+### `features.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - header .page-hero
+    - h1: The operating system for revenue
+    - p: Four tightly coupled systems — intelligence, automation, customer insight, and forecast ops — instead of four more tools.
+  - article .feature-row
+    - p: Revenue intelligence
+    - h2: One live picture of the number
+    - p: Join CRM, billing, and product events without a weekend of spreadsheet glue. Surface the few movements that actually change a forecast.
+    - ul .checks
+      - li: Unified revenue dashboards
+      - li: Pipeline risk detection
+  - article .feature-row.reverse
+    - p: Sales automation
+    - h2: Prioritize work, keep the CRM honest
+    - p: Queues, stages, and write-back so reps are not living in a second system. Managers see coverage without a status meeting.
+  - article .feature-row
+    - p: Customer insights
+    - h2: Churn and expansion on the same timeline
+    - p: Health scores from usage, tickets, and commercial signals — shared with the people who own the number, not trapped in CS tools.
+  - article .feature-row.reverse
+    - p: Operations & forecasting
+    - h2: A commit finance will sign
+    - p: Roll-ups, scenarios, and a change log. The night-before-board scramble becomes a review, not a reconstruction.
+    - a: Request a demo → contact.html
+  - article .sec
+    - h3: Sits beside the CRM
+    - p: Read and write to the system of record you already run. Kedge is the shared model — not a second pipeline your reps have to keep honest.
+  - article .sec
+    - h3: Built for audit
+    - p: SSO, regional residency in the US and EU, encryption in transit and at rest, and a change log on every commit. Private-network options on Enterprise.
+- footer .site-footer
+  - nav
+    - a: Pricing → pricing.html
+    - a: Contact → contact.html
+### `journal.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - header .page-hero
+    - h1: Revenue Intelligence Journal
+    - p: Notes on revenue operations, forecasting, and building predictable revenue at scale.
+  - button: All
+  - button: Product updates
+  - button: AI & automation
+  - button: Customer success
+  - a: Introducing Kedge 2.0: real-time revenue visibility across teams Capture signals across systems and turn them into timely actions so teams respond faster and execute with clarity. Nia Calder September 18, 2026 → article-visibility.html
+  - a: Why most enterprise forecasts fail and how to fix them Disconnected data, manual updates, and siloed teams create forecasting chaos. Here is how unified revenue intelligence changes the call. Owen Brant September 10, 2026 → article-forecasts.html
+  - a: Automating deal prioritization without losing judgment Model-assisted queues help sales focus on high-impact deals while managers keep strategic oversight and pipeline discipline. Leah Ibarra September 4, 2026 → article-prioritize.html
+  - a: From CRM data to real customer intelligence Surface churn risk, expansion signals, and health trends before they show up as a miss on the quarter. Theo Maren August 29, 2026 → article-crm.html
+  - a: What a CRO actually needs on Monday morning Not another export. A short list of movements, owners, and the one decision that cannot wait until forecast call. Helena Cho August 12, 2026 → article-monday.html
+  - a: How we run implementation in nine weeks A fixed sequence: map the number, connect the sources, stand up the forecast, then hand the keys to ops. Nia Calder August 2, 2026 → article-impl.html
+- footer .site-footer
+  - nav
+    - a: About → about.html
+    - a: Contact → contact.html
+### `pricing.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - header .page-hero
+    - h1: Plans for teams who own the number
+    - p: Annual contracts, implementation included. Every plan starts with a working session — not a credit card form.
+  - article .plan
+    - h3: Signal
+    - p: One revenue team, one CRM, a live dashboard you can take to forecast call.
+    - p: $2.4k / mo
+    - ul
+      - li: Up to 40 seats
+      - li: Revenue intelligence
+      - li: Weekly forecast roll-up
+      - li: Email support
+    - a: Request a demo → contact.html
+  - article .plan.is-hot
+    - h3: Command
+    - p: Sales, CS, and finance on the same model — the default for most enterprises we onboard.
+    - p: $6.8k / mo
+    - ul
+      - li: Up to 200 seats
+      - li: Automation + customer insights
+      - li: Scenario planning
+      - li: Named success lead
+    - a: Request a demo → contact.html
+  - article .plan
+    - h3: Enterprise
+    - p: Multi-entity, custom data contracts, and a forecast the board already recognizes.
+    - p: Custom
+    - ul
+      - li: Unlimited seats
+      - li: Private network options
+      - li: Audit log and SSO
+      - li: Quarterly operating reviews
+    - a: Talk with sales → contact.html
+  - table .compare
+    - th: Included
+    - th: Signal
+    - th: Command
+    - th: Enterprise
+    - td: Revenue intelligence
+    - td: Yes
+    - td: Yes
+    - td: Yes
+    - td: Sales automation
+    - td: —
+    - td: Yes
+    - td: Yes
+    - td: Customer insights
+    - td: —
+    - td: Yes
+    - td: Yes
+    - td: Scenario planning
+    - td: —
+    - td: Yes
+    - td: Yes
+    - td: SSO & audit log
+    - td: —
+    - td: Yes
+    - td: Yes
+    - td: Private network
+    - td: —
+    - td: —
+    - td: Yes
+    - td: Named success lead
+    - td: —
+    - td: Yes
+    - td: Yes
+    - td: Implementation
+    - td: 6 weeks
+    - td: 9 weeks
+    - td: Custom
+  - section .faq
+    - h2: Pricing questions
+    - p: Annual contracts. Implementation is in the price, not a surprise SOW.
+    - button: Can we start on Signal and move up? –
+    - p: Yes. Most teams land on Command once CS and finance join the model. We credit unused Signal term when you upgrade.
+    - button: Is implementation extra? +
+    - p: No. The nine-week sequence is included on Command. Signal is a shorter six-week stand-up for a single revenue team.
+    - button: Do you offer monthly? +
+    - p: Annual only. The model is useless if the contract resets every thirty days — and so is the operating cadence.
+- footer .site-footer
+  - nav
+    - a: Features → features.html
+    - a: Contact → contact.html
+### `privacy.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - article .legal
+    - h1: Privacy
+    - p: This is a sample template. Kedge Systems, Inc. is a fictional company. Do not submit real personal data.
+    - h2: What a live product would collect
+    - p: Account names, work emails, and usage needed to run the revenue model. No sale of personal data. No consumer profiling.
+    - h2: Contact
+    - p: Questions: hello@kedge.example
+- footer .site-footer
+### `terms.html`
+- a: Skip to content → #main
+- header .site-header.is-solid
+  - a: Kedge → index.html
+  - nav .nav-links “Primary”
+    - a: About → about.html
+    - a: Features → features.html
+    - a: Pricing → pricing.html
+    - a: Journal → journal.html
+  - a: Request a demo → contact.html
+- main #main .wrap
+  - article .legal
+    - h1: Terms
+    - p: This page is part of a fictional sample template. It is not a real contract.
+    - h2: Use of this template
+    - p: The site is a design specimen. Features, prices, and case stories are invented. Do not treat them as an offer.
+    - h2: Contact
+    - p: hello@kedge.example
+- footer .site-footer
+
+## Images in the page
+- `assets/mark.svg`
+- `assets/face-helena.jpg`
+- `assets/face-owen.jpg`
+- `assets/face-nia.jpg`
+- `assets/face-theo.jpg`
+- `assets/about-lounge.jpg — Three colleagues talking in a glass-walled lounge`
+- `assets/face-mira.jpg — Mira Voss`
+- `assets/face-nia.jpg — Nia Calder`
+- `assets/face-owen.jpg — Owen Brant`
+- `assets/face-leah.jpg — Leah Ibarra`
+- `assets/face-theo.jpg — Theo Maren`
+- `assets/journal-4.jpg — Laptop showing a dark analytics dashboard`
+- `assets/journal-2.jpg — Three colleagues collaborating around a laptop`
+- `assets/journal-6.jpg — Felt board covered in colorful sticky notes`
+- `assets/journal-5.jpg — Two colleagues in conversation at a sunlit table`
+- `assets/face-leah.jpg`
+- `assets/journal-3.jpg — Person mapping work on a glass wall of sticky notes`
+- `assets/journal-1.jpg — Team reviewing charts in a conference room`
+
+## Fields
+Keep these controls, including ids and placeholders.
+- input[text] #first name=first
+- input[email] #email name=email
+- input[tel] #phone name=phone
+- input[text] #company name=company
+- textarea #message name=message placeholder='Tell us about your forecast stack…'
+- input[search] #journal-search placeholder='Search'
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `about.html`
+- `app.js`
+- `article-crm.html`
+- `article-forecasts.html`
+- `article-impl.html`
+- `article-monday.html`
+- `article-prioritize.html`
+- `article-visibility.html`
+- `assets/about-lounge.jpg`
+- `assets/about-ridge.jpg`
+- `assets/contact-peak.jpg`
+- `assets/face-helena.jpg`
+- `assets/face-leah.jpg`
+- `assets/face-mira.jpg`
+- `assets/face-nia.jpg`
+- `assets/face-owen.jpg`
+- `assets/face-theo.jpg`
+- `assets/hero-plasma.jpg`
+- `assets/journal-1.jpg`
+- `assets/journal-2.jpg`
+- `assets/journal-3.jpg`
+- `assets/journal-4.jpg`
+- `assets/journal-5.jpg`
+- `assets/journal-6.jpg`
+- `assets/mark.svg`
+- `contact.html`
+- `features.html`
+- `index.html`
+- `journal.html`
+- `preview.jpg`
+- `pricing.html`
+- `privacy.html`
+- `styles.css`
+- `terms.html`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

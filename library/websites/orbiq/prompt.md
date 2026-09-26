@@ -1,0 +1,543 @@
+# Rebuild prompt — Orbiq (`orbiq`)
+
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
+
+## Deliverable
+- Kind: website · SaaS
+- Folder: `library/websites/orbiq/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Vanilla HTML, CSS, and small JS. No bundler and no new framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
+
+## What it is
+Clean, connected modular SaaS operational suite with 4 full variations (Home & Live Dashboard, Company & Culture, Signature Coral Pricing & Matrix, and Integrations Directory). High-clarity white canvas, asterisk grid, interactive telemetry, and stamp directory.
+
+## Title
+Orbiq — The Modular Operations & Workflow Suite
+
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap`
+
+## Tokens
+Put this `:root` block in the page CSS and use the variables. Do not swap the palette or the typefaces.
+
+```css
+  :root {
+  --bg-pure: #ffffff;
+  --bg-subtle: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-border: #e2e8f0;
+  --bg-alt: #f1f5f9;
+  --coral-core: #f95738;
+  --coral-hover: #e04627;
+  --coral-soft: rgba(249, 87, 56, 0.08);
+  --coral-soft-border: rgba(249, 87, 56, 0.2);
+  --text-main: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --border-light: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 24px 48px -12px rgba(15, 23, 42, 0.12);
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+  }
+```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+### `index.html`
+- header .site-header
+  - a: Orbiq → #
+  - ul .nav-menu
+    - li: Home
+    - li: Features
+    - li: Pricing
+    - li: Company
+    - li: Integrations
+  - a: Log in → #pricing
+  - button: Sign up
+- section #overview .hero-section
+  - h1: Do more with the power of a full suite in a single hub
+  - p: Connect every team, automate inventory workflows, and unify your operational telemetry in one lightning-fast workspace.
+  - button: Talk to Sales
+  - a: Start free trial → #pricing
+  - ul .dash-nav-list
+    - li: Home
+    - li: Overview
+    - li: Inventory
+    - li: Debugger
+    - li: Deployments
+  - ul .dash-nav-list
+    - li: Integrations
+    - li: Analytics
+  - main .dash-stage
+    - h3: Operational Overview
+    - button: Export Data
+    - table .dash-table
+      - th: PIPELINE
+      - th: TEAM
+      - th: STATUS
+      - td: inventory-sync-v2
+      - td: Engineering
+      - td: WORKING
+      - td: customer-crm-event
+      - td: Marketing
+      - td: DONE
+      - td: auth0-token-refresh
+      - td: Platform
+      - td: WORKING
+      - td: supplier-api-parser
+      - td: Operations
+      - td: PAUSED
+      - td: webhook-dispatcher
+      - td: Integrations
+      - td: WORKING
+- section .social-proof-strip
+  - p: Trusted by 1000+ Operations & Engineering teams in 90+ countries
+- section #features .features-section
+  - h2: Inventory ordering, and customer management
+  - h3: Data clarity without the headache
+  - p: Stop wrestling with bloated spreadsheets. Turn complex multi-channel inventory records into clean, actionable insights in seconds.
+  - h3: Optimize stock and margins
+  - p: Already integrated with your existing payment gateways, logistics vendors, and ERP platforms to eliminate manual double entry.
+  - h3: See what matters Fast
+  - p: Simplify team collaboration with automated alerts that notify the right engineer before stock delays turn into angry customer tickets.
+- section #integrations .integrations-section
+  - h2: Automate everything with Integrations
+  - p: Fed up with fragile "integrations" that break when payloads change? We engineered two-way sync primitives that keep your operations connected.
+  - button: All
+  - button: Developer
+  - button: AI & LLMs
+  - button: Comms
+  - h4: Alibaba Cloud
+  - p: Seamlessly sync compute telemetry, global VPC triggers, and multi-region database replication.
+  - a: Learn More → → #integrations
+  - h4: Amazon Web Services
+  - p: Supports native SQS event ingestion, S3 raw artifact archive, and Lambda workflow triggers.
+  - a: Learn More → → #integrations
+  - h4: Anthropic
+  - p: Direct Claude 3.5 Sonnet pipeline execution for automated error parsing and inventory summarization.
+  - a: Learn More → → #integrations
+  - h4: Google Vertex
+  - p: Structured predictive modeling over supply chain lead times and cross-vendor logistics.
+  - a: Learn More → → #integrations
+  - h4: Bluesky
+  - p: AT Protocol social event listening and customer sentiment webhook streaming.
+  - a: Learn More → → #integrations
+  - h4: DeepSeek
+  - p: Cost-efficient code audit reasoning and automated SQL migration generation.
+  - a: Learn More → → #integrations
+  - h4: Discord
+  - p: Interactive bot commands for incident escalation, deployment approvals, and status cards.
+  - a: Learn More → → #integrations
+  - h4: Supabase
+  - p: Realtime PostgreSQL change-data-capture (CDC) directly driving operational rules.
+  - a: Learn More → → #integrations
+  - h4: Flutter & Dart
+  - p: Pre-packaged mobile telemetry SDKs for warehouse handheld barcode scanners.
+  - a: Learn More → → #integrations
+- section #pricing .pricing-section
+  - h2: Simple pricing for businesses of all sizes
+  - p: Drowning in convoluted tiers and hidden add-on fees? We stripped everything down to transparent, high-value plans.
+  - button: Annually save 20%
+  - button: Monthly
+  - button: Get Started
+  - ul .plan-features-list
+    - li: 20 operations per month
+    - li: Roll over unused tasks
+    - li: Standard commercial license
+  - button: Get Started
+  - ul .plan-features-list
+    - li: 250 operations per month
+    - li: Unlimited rollover quota
+    - li: Public generation channels
+    - li: Plugins for Figma & Webflow
+  - button: Get Started
+  - ul .plan-features-list
+    - li: 800 operations per month
+    - li: Dedicated VPC & SLA
+    - li: 24/7 Priority Support
+  - table .compare-plans-table
+    - th: Core Capabilities
+    - th: Free
+    - th: Basic
+    - th: Pro
+    - td: Full Automation Suite
+    - td: —
+    - td: ✓
+    - td: ✓
+    - td: Operational Analytics Dashboard
+    - td: Basic
+    - td: ✓
+    - td: ✓
+    - td: Two-way Integration Hub
+    - td: 3 apps
+    - td: Unlimited
+    - td: Unlimited
+    - td: Custom Volume Pricing
+    - td: —
+    - td: —
+    - td: ✓
+    - td: Single Sign-On (SSO / SAML)
+    - td: —
+    - td: —
+    - td: ✓
+    - td: Dedicated Account Manager
+    - td: —
+    - td: —
+    - td: ✓
+- section #company .company-section
+  - h2: We built Orbiq to cut the chaos out of development
+  - p: Finally, a platform that doesn't turn your engineers into full-time coordinators. We kill the busywork so you can focus on shipping real software.
+  - h3: We've raised $12M in capital from top-tier founders, operating in the top 1%
+  - button: Join Our Mission
+- footer .site-footer
+  - a: Orbiq → #
+  - p: The modular operational suite designed to streamline inventory, telemetry, and automated workflows without the overhead.
+  - h4: Product
+  - ul
+    - li: Overview
+    - li: Features
+    - li: Integrations
+    - li: Pricing
+  - h4: Company
+  - ul
+    - li: About Us
+    - li: Careers
+    - li: Design Spec
+    - li: Contact
+  - h4: Legal & Library
+  - ul
+    - li: ← Design Library
+    - li: Privacy Policy
+    - li: Terms of Service
+    - li: Security Overview
+- h3: Start with Orbiq
+- button: ✕
+- p: Deploy your unified workspace in under 3 minutes. No credit card required.
+- form
+  - label: Work Email
+  - label: Team Size
+  - option: 1 - 10 people
+  - option: 11 - 50 people
+  - option: 51 - 250 people
+  - option: 250+ enterprise
+  - button: Create Free Workspace
+- nav .variation-bar
+  - a: 1. Home → index.html
+  - a: 2. Company → company.html
+  - a: 3. Pricing → pricing.html
+  - a: 4. Integrations → integrations.html
+### `company.html`
+- header .site-header
+  - a: Orbiq → index.html
+  - ul .nav-menu
+    - li: Home
+    - li: Features
+    - li: Integrations
+    - li: Pricing
+    - li: Company
+  - a: Log in → pricing.html
+  - a: Sign up → pricing.html
+- section .hero-section
+  - h1: We built Orbiq to cut the chaos out of development
+  - p: Finally, a platform that doesn't turn your team into project coordinators. We kill the busywork so you can focus on shipping real product.
+  - a: Talk to Sales → pricing.html
+  - a: Start free trial → pricing.html
+- section .social-proof-strip
+  - p: Trusted by 1000+ Marketing & Operations teams in 90+ countries
+- section .about-section
+  - h2: We've raised €10m in capital from top-tier investors, and are in the top 1%
+  - h3: Simplicity First
+  - p: No multi-month enterprise onboarding. Connect your databases and APIs in under three minutes.
+  - h3: Zero Operational Bloat
+  - p: Every view is designed for sub-50ms responsiveness so your workflows never lag behind user demand.
+  - h3: Radical Transparency
+  - p: No opaque pricing tiers or hidden per-seat costs. Transparent usage metering with guaranteed SLAs.
+- footer .site-footer
+  - a: Orbiq → index.html
+  - p: The modular operational suite designed to streamline inventory, telemetry, and automated workflows.
+  - h4: Navigation
+  - ul
+    - li: Home
+    - li: Company
+    - li: Pricing
+    - li: Integrations
+  - h4: Company
+  - ul
+    - li: About Us
+    - li: Design Spec
+    - li: Contact
+  - h4: Library
+  - ul
+    - li: ← Design Library
+    - li: Privacy Policy
+    - li: Security
+- nav .variation-bar
+  - a: 1. Home → index.html
+  - a: 2. Company → company.html
+  - a: 3. Pricing → pricing.html
+  - a: 4. Integrations → integrations.html
+### `integrations.html`
+- header .site-header
+  - a: Orbiq → index.html
+  - ul .nav-menu
+    - li: Home
+    - li: Features
+    - li: Pricing
+    - li: Company
+    - li: Integrations
+    - li: Culture
+  - a: Log in → #
+  - a: Sign up → pricing.html
+- section .hero-section
+  - h1: Automate everything with Integrations
+  - p: Fed up with "integrations" that break more than they fix, we built a system that pulls your whole workflow together.
+  - p: Trusted by 1000+ Marketing teams in 90+ countries
+- section .directory-section
+  - button: All (12)
+  - button: Cloud & Infra
+  - button: AI & Models
+  - button: Social & Media
+  - button: Dev & Database
+  - article .integration-card
+    - h3: Alibaba Cloud
+    - p: Alibaba cloud supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Amazon
+    - p: Amazon supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Anthropic
+    - p: Anthropic supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Bard
+    - p: Bard supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Blogger
+    - p: Blogger supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Bluesky
+    - p: Bluesky supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Deepseek
+    - p: Deepseek supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Discord
+    - p: Discord supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Flutter
+    - p: Flutter supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Kick
+    - p: Kick supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Pix
+    - p: Pix supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - article .integration-card
+    - h3: Supabase
+    - p: Supabase supports over 500 link apps, including CRMs, project form to management tools.
+    - button: Learn More →
+  - h3: Need a proprietary connector?
+  - p: Don't see your stack listed? Connect any internal database or webhook endpoint with our zero-latency REST API and OpenAPI 3.1 specification.
+  - a: Request Connector → mailto:integrations@orbiq.example
+  - a: Read API Specs → → index.html#features
+- button: ×
+- h3: App Title
+- p: Detailed description goes here.
+- button: Connect Integration
+- button: Close
+- footer .site-footer
+  - a: Orbiq → index.html
+  - p: The modular operational suite designed to streamline inventory, telemetry, and automated workflows.
+  - h4: Navigation
+  - ul
+    - li: Home
+    - li: Company
+    - li: Pricing
+    - li: Integrations
+  - h4: Ecosystem
+  - ul
+    - li: All Integrations
+    - li: Design Spec
+    - li: Partner Program
+  - h4: Library
+  - ul
+    - li: ← Design Library
+    - li: Privacy Policy
+    - li: Security
+- nav .variation-bar
+  - a: 1. Home → index.html
+  - a: 2. Company → company.html
+  - a: 3. Pricing → pricing.html
+  - a: 4. Integrations → integrations.html
+### `pricing.html`
+- header .site-header
+  - a: Orbiq → index.html
+  - ul .nav-menu
+    - li: Home
+    - li: Features
+    - li: Integrations
+    - li: Pricing
+    - li: Company
+  - a: Log in → pricing.html
+  - a: Sign up → pricing.html
+- section .hero-section
+  - h1: Pricing Simple pricing for businesses of all sizes
+  - p: Drowning in convoluted pricing tiers and pointless add-ons, we stripped everything down to what actually matters.
+  - button: Annually save 20%
+  - button: Monthly
+  - a: Get Started → #compare
+  - ul .plan-features-list
+    - li: ✓✓ 20 volts per month
+    - li: ✓✓ Roll over volts
+    - li: ✓✓ Royalty free commercial
+  - a: Get Started → #compare
+  - ul .plan-features-list
+    - li: ✓✓ 250 volts per month
+    - li: ✓✓ Roll over volts
+    - li: ✓✓ Royalty free commercial
+    - li: ✓✓ Public generations
+    - li: ✓✓ Plugins for Figma, Framer, and Webflow
+  - a: Get Started → #compare
+  - ul .plan-features-list
+    - li: ✓✓ 800 volts per month
+    - li: ✓✓ Roll over volts
+    - li: ✓✓ Personal use license
+    - li: ✓✓ Public generations
+    - li: ✓✓ Plugins for Figma, Framer, and Webflow
+  - table .compare-plans-table
+    - th: Plan Features
+    - th: Free for you Free
+    - th: Basic Plan Get Started
+    - th: Pro Plan Get Started
+    - td: Full Automation Suite
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: Analytics
+    - td: ✓✓
+    - td: ✓✓
+    - td: ✓✓
+    - td: Message and email template studio
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: CDP
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: Integrations
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: Remove Orbiq branded footer from marketing emails
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: Push notifications (unlimited messages per contact)
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: All channels & Features
+    - td: —
+    - td: ✓✓
+    - td: ✓✓
+    - td: Custom volume pricing
+    - td: —
+    - td: —
+    - td: ✓✓
+    - td: Single Sign-On (SSO)
+    - td: —
+    - td: —
+    - td: ✓✓
+    - td: Multiple workspaces
+    - td: —
+    - td: —
+    - td: ✓✓
+    - td: Dedicated support team
+    - td: —
+    - td: —
+    - td: ✓✓
+    - td: Technical Account Manager (TAM)*
+    - td: —
+    - td: —
+    - td: ✓✓
+- footer .site-footer
+  - a: Orbiq → index.html
+  - p: Transparent, utility-driven operations metering without hidden costs.
+  - h4: Navigation
+  - ul
+    - li: Home
+    - li: Company
+    - li: Pricing
+    - li: Integrations
+  - h4: Company
+  - ul
+    - li: About Us
+    - li: Design Spec
+    - li: Contact
+  - h4: Library
+  - ul
+    - li: ← Design Library
+    - li: Privacy Policy
+    - li: Security
+- nav .variation-bar
+  - a: 1. Home → index.html
+  - a: 2. Company → company.html
+  - a: 3. Pricing → pricing.html
+  - a: 4. Integrations → integrations.html
+
+## Images in the page
+- `assets/culture-coffee.jpg — Orbiq engineers discussing designs`
+- `assets/team-collab.jpg — Orbiq team collaboration in sunlit studio`
+- `assets/culture-coffee.jpg — Orbiq culture`
+- `assets/team-collab.jpg — Product review session`
+- `assets/devs-desk.jpg — Engineers pairing on code`
+- `assets/culture-coffee.jpg — Colleagues talking over coffee`
+- `assets/team-detail.jpg — UX review`
+- `assets/team-collab.jpg — Collaborative workspace session`
+- `assets/team-collab.jpg — Orbiq full product team`
+
+## Fields
+Keep these controls, including ids and placeholders.
+- input[email] placeholder='alex@company.com'
+- select
+- input[text] #searchInput placeholder='Search integrations...'
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `assets/culture-coffee.jpg`
+- `assets/devs-desk.jpg`
+- `assets/team-collab.jpg`
+- `assets/team-detail.jpg`
+- `company.html`
+- `index.html`
+- `integrations.html`
+- `preview.jpg`
+- `pricing.html`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

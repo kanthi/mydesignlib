@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AuraScale — Scale Smarter, Not Harder</title>
+  <meta name="description" content="Drive your funnel forward with clever workflows, analytics, and seamless lead management — all in one immersive command center." />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #020611;
+      --card-bg: rgba(9, 16, 33, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(16, 185, 129, 0.35);
+      
+      --accent-mint: #10b981;
+      --accent-mint-glow: rgba(16, 185, 129, 0.3);
+      --accent-cyan: #00f2fe;
+      
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-main);
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      background: var(--bg-dark);
+    }
+
+    /* Fixed Background Three.js Earth Canvas */
+    #earthStage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Interactive Foreground */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(2, 6, 17, 0.7);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74px;
+    }
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-white);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-arrow {
+      width: 22px;
+      height: 22px;
+      fill: var(--accent-mint);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: var(--text-white);
+    }
+    .btn-sign {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-pill);
+      padding: 9px 20px;
+      color: var(--text-white);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-sign:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Centered Hero Section (Exact Match to Ascend) */
+    .hero-section {
+      min-height: calc(100vh - 74px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 0 140px;
+      position: relative;
+    }
+    .hero-headline {
+      font-size: clamp(3.6rem, 6.5vw, 6.2rem);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+    .hero-subhead {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 38px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent-mint);
+      color: #020611;
+      padding: 13px 28px;
+      border-radius: var(--radius-pill);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 20px var(--accent-mint-glow);
+      transition: all 0.25s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: #34d399;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-white);
+      padding: 13px 26px;
+      border-radius: var(--radius-pill);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s var(--ease);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Partner Logo Strip */
+    .partner-section {
+      padding: 40px 0 80px;
+      text-align: center;
+    }
+    .partner-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+    }
+    .partner-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 56px;
+      flex-wrap: wrap;
+      opacity: 0.6;
+    }
+    .partner-logo {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+    .partner-logo:hover {
+      opacity: 1;
+      color: #ffffff;
+    }
+
+    /* Feature Architecture */
+    .features-section {
+      padding: 100px 0;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-mint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-subhead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 50px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      transition: transform 0.3s var(--ease), border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-border-hover);
+    }
+    .feature-card.span-2 {
+      grid-column: span 2;
+    }
+    .feature-card h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Live Funnel Telemetry Section */
+    .funnel-section {
+      padding: 100px 0;
+    }
+    .telemetry-board {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      backdrop-filter: blur(24px);
+    }
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .board-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-mint);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+    }
+    .funnel-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .funnel-bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .bar-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-mint), var(--accent-cyan));
+      border-radius: 4px;
+      box-shadow: 0 0 12px var(--accent-mint-glow);
+    }
+
+    /* Ready When You Are CTA Section */
+    .cta-section {
+      padding: 120px 0 140px;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(180deg, rgba(9, 16, 33, 0.8), rgba(4, 8, 20, 0.95));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 70px 40px;
+      backdrop-filter: blur(24px);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 60px 0 40px;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 1024px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature-card.span-2 {
+        grid-column: span 1;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Three.js 3D Living Earth -->
+  <div id="earthStage"></div>
+
+  <div class="content-wrapper">
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="nav-inner">
+          <a href="#" class="brand-mark">
+            <svg class="brand-arrow" viewBox="0 0 24 24">
+              <path d="M12 2L3 19h7v3h4v-3h7L12 2z"/>
+            </svg>
+            <span>AuraScale</span>
+          </a>
+
+          <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#pipeline">Plans</a></li>
+            <li><a href="#pipeline">Learning</a></li>
+          </ul>
+
+          <a href="#cta" class="btn-sign">Sign Up</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Centered Hero Fold -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="hero-headline">
+          Scale Smarter,<br/>
+          Not Harder
+        </h1>
+        <p class="hero-subhead">
+          Drive your funnel forward with clever workflows, analytics, and seamless lead management — all in one immersive command center.
+        </p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary">
+            Start Free Right Now <span>→</span>
+          </a>
+          <a href="#pipeline" class="btn-secondary">
+            Schedule a Consult
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partner Strip -->
+    <section class="partner-section">
+      <div class="container">
+        <div class="partner-label">TRUSTED BY FAST-MOVING TEAMS</div>
+        <div class="partner-strip">
+          <span class="partner-logo">NIMBUS</span>
+          <span class="partner-logo">PLUMA</span>
+          <span class="partner-logo">CITRUS</span>
+          <span class="partner-logo">SPIDER</span>
+          <span class="partner-logo">HELOD</span>
+          <span class="partner-logo">VERTX</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- One Platform Architecture -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <div class="section-eyebrow">// ONE REVENUE ENGINE</div>
+        <h2 class="section-title">One platform to run the<br/>entire revenue engine</h2>
+        <p class="section-subhead">
+          Stop stitching tools together. AuraScale unifies capture, automation, and insight into a single high-velocity interface.
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-card span-2">
+            <div>
+              <h3>Clever workflows</h3>
+              <p>Automate every hand-off with visual, branching pipelines that move deals forward automatically when buying signals trigger.</p>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.4rem; color:var(--accent-mint); margin-top:24px;">
+              3.4x Faster Deal Velocity
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div>
+              <h3>Unified attribution</h3>
+              <p>Know exactly which touchpoints convert high-ACV enterprise accounts with multi-touch revenue attribution.</p>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.4rem; color:var(--accent-cyan); margin-top:24px;">
+              99.4% Data Accuracy
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div>
+              <h3>Lead enrichment</h3>
+              <p>Real-time firmographic and intent telemetry injected directly into deals before your SDRs dial.</p>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.4rem; color:var(--accent-mint); margin-top:24px;">
+              &lt; 100ms Ingestion
+            </div>
+          </div>
+
+          <div class="feature-card span-2">
+            <div>
+              <h3>Command center visibility</h3>
+              <p>No more disconnected spreadsheets. Leadership monitors cohort churn, CAC payback, and pipeline coverage in one live view.</p>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.4rem; color:var(--accent-cyan); margin-top:24px;">
+              Zero Context Switching
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Built For Momentum / Live Funnel -->
+    <section class="funnel-section" id="pipeline">
+      <div class="container">
+        <div class="telemetry-board">
+          <div class="board-header">
+            <div>
+              <div class="section-eyebrow">BUILT FOR MOMENTUM</div>
+              <h3 style="font-size:1.8rem; font-weight:800; color:#fff;">See the whole funnel move in real time</h3>
+            </div>
+            <div class="board-badge">
+              <span>●</span> LIVE TELEMETRY
+            </div>
+          </div>
+
+          <div class="funnel-bars">
+            <div class="funnel-bar-item">
+              <div class="bar-meta">
+                <span>01 Inbound Leads & Traffic Ingest</span>
+                <span>48,290 / mo (+24%)</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 92%;"></div>
+              </div>
+            </div>
+
+            <div class="funnel-bar-item">
+              <div class="bar-meta">
+                <span>02 Product Qualified Accounts (PQA)</span>
+                <span>12,840 accounts (+18%)</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 74%;"></div>
+              </div>
+            </div>
+
+            <div class="funnel-bar-item">
+              <div class="bar-meta">
+                <span>03 Opportunity Pipeline Stage 3+</span>
+                <span>$4.2M ARR</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 58%;"></div>
+              </div>
+            </div>
+
+            <div class="funnel-bar-item">
+              <div class="bar-meta">
+                <span>04 Closed Won ARR</span>
+                <span>$1.85M Net New</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 42%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ready When You Are CTA Section -->
+    <section class="cta-section" id="cta">
+      <div class="container">
+        <div class="cta-box">
+          <div class="section-eyebrow">READY WHEN YOU ARE</div>
+          <h2 class="section-title" style="margin-bottom:18px;">
+            Put your growth on a new trajectory
+          </h2>
+          <p class="section-subhead" style="margin: 0 auto 36px;">
+            Launch in minutes. No credit card required. Cancel anytime. Join thousands of high-velocity teams compounding revenue on AuraScale.
+          </p>
+          <a href="#" class="btn-primary" style="padding:15px 36px; font-size:1.05rem;">
+            Start Free Right Now →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <div>© 2026 AURASCALE TECHNOLOGIES INC. FICTIONAL SPECIMEN FOR MYDESIGNLIB.</div>
+          <div>PRIVACY · SECURITY · TERMS · SOC2 TYPE II COMPLIANT</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Three.js Living Earth Background Engine -->
+  <script>
+    let scene, camera, renderer, earthMesh, cloudsMesh, atmosphereMesh;
+    let targetX = 0, targetY = 0;
+
+    function initEarth() {
+      const container = document.getElementById('earthStage');
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, -0.6, 6.8);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Deep space directional lighting
+      const sun = new THREE.DirectionalLight(0xffffff, 2.5);
+      sun.position.set(5, 3, 5);
+      scene.add(sun);
+
+      const mintAmbient = new THREE.AmbientLight(0x04101e, 1.4);
+      scene.add(mintAmbient);
+
+      const mintRim = new THREE.DirectionalLight(0x10b981, 2.0);
+      mintRim.position.set(-5, -2, -4);
+      scene.add(mintRim);
+
+      // Earth geometry
+      const r = 2.8;
+      const earthGeom = new THREE.SphereGeometry(r, 64, 64);
+
+      // Procedural Earth surface canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext('2d');
+
+      // Deep Navy Ocean
+      ctx.fillStyle = '#030c1e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Continents
+      ctx.fillStyle = '#0a2337';
+      // North & South America
+      ctx.beginPath(); ctx.ellipse(540, 360, 220, 180, -0.2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(660, 680, 150, 220, 0.3, 0, Math.PI * 2); ctx.fill();
+      // Eurasia & Africa
+      ctx.beginPath(); ctx.ellipse(1300, 340, 380, 210, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(1120, 580, 160, 240, 0.1, 0, Math.PI * 2); ctx.fill();
+      // Australia
+      ctx.beginPath(); ctx.ellipse(1650, 720, 140, 110, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Golden night lights on continents
+      ctx.fillStyle = '#ffd166';
+      for (let i = 0; i < 2000; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        if (ctx.getImageData(x, y, 1, 1).data[1] > 20) {
+          ctx.beginPath();
+          ctx.arc(x, y, Math.random() * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      const earthTex = new THREE.CanvasTexture(canvas);
+      const earthMat = new THREE.MeshStandardMaterial({
+        map: earthTex,
+        roughness: 0.7,
+        metalness: 0.1
+      });
+      earthMesh = new THREE.Mesh(earthGeom, earthMat);
+      scene.add(earthMesh);
+
+      // Cloud layer
+      const cloudGeom = new THREE.SphereGeometry(r + 0.04, 64, 64);
+      const cloudCanvas = document.createElement('canvas');
+      cloudCanvas.width = 1024;
+      cloudCanvas.height = 512;
+      const cctx = cloudCanvas.getContext('2d');
+      cctx.fillStyle = 'rgba(255,255,255,0)';
+      cctx.fillRect(0, 0, 1024, 512);
+      cctx.fillStyle = 'rgba(255,255,255,0.25)';
+      for (let i = 0; i < 70; i++) {
+        cctx.beginPath();
+        cctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 70 + 20, 0, Math.PI * 2);
+        cctx.fill();
+      }
+      const cloudTex = new THREE.CanvasTexture(cloudCanvas);
+      const cloudMat = new THREE.MeshStandardMaterial({
+        map: cloudTex,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+      });
+      cloudsMesh = new THREE.Mesh(cloudGeom, cloudMat);
+      earthMesh.add(cloudsMesh);
+
+      // Atmospheric Mint/Cyan Rayleigh Glow
+      const atmoGeom = new THREE.SphereGeometry(r + 0.22, 64, 64);
+      const atmoMat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        transparent: true,
+        opacity: 0.16,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending
+      });
+      atmosphereMesh = new THREE.Mesh(atmoGeom, atmoMat);
+      earthMesh.add(atmosphereMesh);
+
+      window.addEventListener('resize', onResize);
+      window.addEventListener('scroll', onScroll);
+      animate();
+    }
+
+    function onScroll() {
+      const scrollY = window.scrollY;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, scrollY / (maxScroll || 1)));
+
+      // Sinks and swings smoothly with scroll
+      camera.position.x = Math.sin(progress * Math.PI) * 1.8;
+      camera.position.y = -0.6 - progress * 1.8;
+      earthMesh.rotation.z = progress * 0.35;
+    }
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      earthMesh.rotation.y += 0.0012;
+      if (cloudsMesh) cloudsMesh.rotation.y += 0.0006;
+
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('DOMContentLoaded', initEarth);
+  </script>
+</body>
+</html>

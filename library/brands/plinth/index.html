@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plinth — Monolithic Architectural Brand Identity & Logo System</title>
+  <meta name="description" content="Monolithic architectural brand identity and logo system. Raw concrete plinth, raking sunlight, vector construction grid, 4-tier responsive logo stack, and 3-step stress test suite." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Outfit & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-obsidian: #14171d;
+      --color-slate: #242b35;
+      --color-slate-light: #3e4653;
+      --color-concrete: #9ea3a8;
+      --color-limestone: #dcd7ce;
+      --color-paper: #f4f0e8;
+      --color-white: #ffffff;
+      --color-brass: #b59560;
+      --color-brass-light: #d6b782;
+
+      --bg-page: var(--color-paper);
+      --bg-card: #ece7de;
+      --bg-card-contrast: var(--color-obsidian);
+      --text-main: var(--color-obsidian);
+      --text-muted: #555c66;
+      --text-inverse: var(--color-paper);
+      --border-subtle: rgba(20, 23, 29, 0.12);
+      --border-strong: rgba(20, 23, 29, 0.28);
+      --grid-line: rgba(36, 43, 53, 0.15);
+
+      --font-heading: "Outfit", -apple-system, sans-serif;
+      --font-body: "Outfit", -apple-system, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-page: var(--color-obsidian);
+      --bg-card: #1c212a;
+      --bg-card-contrast: var(--color-paper);
+      --text-main: #f0ebe2;
+      --text-muted: #959fae;
+      --text-inverse: var(--color-obsidian);
+      --border-subtle: rgba(244, 240, 232, 0.1);
+      --border-strong: rgba(244, 240, 232, 0.25);
+      --grid-line: rgba(220, 215, 206, 0.12);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background-color: rgba(244, 240, 232, 0.82);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background-color 0.35s ease, border-color 0.35s ease;
+    }
+
+    [data-theme="dark"] .top-nav {
+      background-color: rgba(20, 23, 29, 0.85);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 1.05rem;
+    }
+
+    .brand-glyph-svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 2rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 900px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      background: var(--bg-card);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--border-strong);
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background-color: var(--text-main);
+      color: var(--bg-page);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn-cta:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: clamp(2.5rem, 6vw, 4.5rem);
+      padding-bottom: clamp(3rem, 7vw, 5rem);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--color-brass);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      max-width: 18ch;
+    }
+
+    .hero-lead {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 48ch;
+      line-height: 1.55;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1.25fr 0.95fr;
+      }
+    }
+
+    .monument-showcase-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      background-color: var(--color-obsidian);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .monument-img {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      max-height: 580px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.6s var(--ease-out);
+    }
+
+    .monument-showcase-card:hover .monument-img {
+      transform: scale(1.02);
+    }
+
+    .monument-overlay-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      padding: 14px 18px;
+      background: rgba(20, 23, 29, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      color: #e5e2dc;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .interactive-mark-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .mark-interactive-viewport {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .blueprint-grid-canvas {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.7;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .hero-interactive-svg {
+      width: 190px;
+      height: 190px;
+      fill: var(--text-main);
+      z-index: 2;
+      transition: transform 0.4s var(--ease-out), filter 0.3s ease;
+    }
+
+    .viewport-controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .toggle-chip {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      background: var(--bg-page);
+      transition: all 0.2s ease;
+    }
+
+    .toggle-chip.active {
+      border-color: var(--color-brass);
+      color: var(--text-main);
+      font-weight: 600;
+      background-color: var(--bg-card);
+    }
+
+    .mark-card-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Section Headers */
+    .section {
+      padding-block: clamp(3.5rem, 7vw, 6rem);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-brass);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 58ch;
+      margin-bottom: 2.75rem;
+    }
+
+    /* Section 1: Geometry & Blueprint */
+    .geometry-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 900px) {
+      .geometry-grid {
+        grid-template-columns: 1.3fr 0.9fr;
+      }
+    }
+
+    .blueprint-display-box {
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      background: #11141a;
+      color: #f0ebe2;
+      padding: 2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 480px;
+    }
+
+    .blueprint-svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+    }
+
+    .geometry-specs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .spec-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 1.5rem;
+    }
+
+    .spec-card h4 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-brass);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .spec-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Section 2: 4-Tier Responsive Stack */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .stack-grid {
+        grid-template-columns: 1.2fr 1fr 0.9fr 0.9fr;
+      }
+    }
+
+    .stack-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 290px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .stack-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .stack-preview-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-block: 1.5rem;
+    }
+
+    .tier-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-brass);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.35rem;
+    }
+
+    .tier-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Tier 1 Primary Stack Lockup */
+    .lockup-primary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .lockup-primary-wordmark {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .lockup-primary-sub {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Tier 2 Horizontal Lockup */
+    .lockup-horizontal {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .lockup-horizontal-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lockup-horizontal-wordmark {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .lockup-horizontal-sub {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Tier 3 Glyph */
+    .lockup-glyph-svg {
+      width: 76px;
+      height: 76px;
+      fill: currentColor;
+    }
+
+    /* Tier 4 Micro-Favicon */
+    .favicon-comparison-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .favicon-actual-badge {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      background: var(--bg-page);
+    }
+
+    .favicon-loupe {
+      width: 80px;
+      height: 80px;
+      border: 2px dashed var(--color-brass);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-page);
+      position: relative;
+    }
+
+    .loupe-tag {
+      position: absolute;
+      bottom: -8px;
+      background: var(--color-brass);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    /* Section 3: Grayscale & Inversion Stress Test */
+    .inversion-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .inversion-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .inversion-tile {
+      height: 220px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.25s ease;
+    }
+
+    .inversion-tile:hover {
+      transform: scale(1.02);
+    }
+
+    .inversion-tile-1 {
+      background-color: #ffffff;
+      color: #14171d;
+    }
+
+    .inversion-tile-2 {
+      background-color: #14171d;
+      color: #f4f0e8;
+    }
+
+    .inversion-tile-3 {
+      background-color: #dcd7ce;
+      color: #242b35;
+    }
+
+    .inversion-tile-4 {
+      background-color: #242b35;
+      color: #b59560;
+    }
+
+    .inversion-label {
+      position: absolute;
+      bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    /* Section 4: Chromatics & Material Tokens */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .palette-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .swatch-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background-color: var(--bg-card);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .swatch-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-brass);
+    }
+
+    .swatch-color {
+      height: 120px;
+      width: 100%;
+    }
+
+    .swatch-info {
+      padding: 1rem;
+    }
+
+    .swatch-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .swatch-material {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .swatch-copied-toast {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 3px 6px;
+      border-radius: 3px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .swatch-card.copied .swatch-copied-toast {
+      opacity: 1;
+    }
+
+    /* Section 5: Typographic System */
+    .type-specimen-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 992px) {
+      .type-specimen-grid {
+        grid-template-columns: 1.4fr 1fr;
+      }
+    }
+
+    .type-box {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 2.25rem;
+    }
+
+    .interactive-tracking-demo {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-block: 1.5rem;
+      letter-spacing: 0.28em;
+      transition: letter-spacing 0.1s ease;
+      word-break: break-all;
+    }
+
+    .tracking-slider-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .tracking-slider-bar input[type="range"] {
+      flex: 1;
+      accent-color: var(--color-brass);
+    }
+
+    /* Section 6: Physical & Spatial Applications */
+    .spatial-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 900px) {
+      .spatial-grid {
+        grid-template-columns: 1.1fr 1fr;
+      }
+    }
+
+    .stationery-card {
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .stationery-img {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      object-fit: cover;
+    }
+
+    /* CSS Title Block Drawing Specimen */
+    .title-block-card {
+      border: 2px solid var(--text-main);
+      background: var(--bg-card);
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+    }
+
+    .drawing-grid-bg {
+      flex: 1;
+      border: 1px solid var(--border-subtle);
+      background-image: 
+        radial-gradient(circle, var(--text-muted) 1px, transparent 1px);
+      background-size: 18px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .title-block-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--text-main);
+      font-size: 0.72rem;
+    }
+
+    .title-block-table td {
+      border: 1px solid var(--text-main);
+      padding: 6px 10px;
+    }
+
+    /* Section 7: The 3 Logo Stress Tests */
+    .stress-test-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .stress-test-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .stress-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .stress-viewport {
+      height: 180px;
+      background: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-block: 1rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .test-blur-target {
+      width: 80px;
+      height: 80px;
+      fill: var(--text-main);
+      filter: blur(12px);
+      transition: filter 0.2s ease;
+    }
+
+    .test-recall-target {
+      width: 80px;
+      height: 80px;
+      fill: var(--text-main);
+      transition: opacity 0.3s ease;
+    }
+
+    .recall-curtain {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 1rem;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .recall-curtain.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Section 8: Download & Asset Suite */
+    .export-box {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+      padding: 2.25rem;
+    }
+
+    .export-tabs {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--bg-page);
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      border-color: var(--color-brass);
+      color: var(--text-main);
+      font-weight: 600;
+      background: var(--bg-card);
+    }
+
+    .code-preview-pre {
+      background: #101318;
+      color: #92a4b8;
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      max-height: 260px;
+      overflow: auto;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .export-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-page);
+      border-color: var(--color-brass);
+    }
+
+    /* Footer */
+    .page-footer {
+      padding-block: 3.5rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .footer-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--text-main);
+    }
+
+    .footer-back-link:hover {
+      color: var(--color-brass);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="container nav-inner">
+      <a href="#overview" class="nav-brand">
+        <!-- SVG Monogram Glyph -->
+        <svg class="brand-glyph-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z" fill="currentColor"/>
+          <path d="M26 62L76 50L84 62L34 74Z" fill="currentColor"/>
+        </svg>
+        <span>PLINTH</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#geometry">Geometry</a>
+        <a href="#responsive-stack">Logo Stack</a>
+        <a href="#chromatics">Materials</a>
+        <a href="#stationery">Spatial Spec</a>
+        <a href="#stress-tests">Stress Tests</a>
+        <a href="#downloads">Assets</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <a href="#downloads" class="btn-cta">
+          <span>Get Kit</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="overview" class="hero-section">
+    <div class="container">
+      <div class="hero-meta">
+        <span>Specimen No. 048</span>
+        <span>•</span>
+        <span>Brutalist Spatial Atelier</span>
+        <span>•</span>
+        <span>Hasselblad 80mm</span>
+      </div>
+
+      <h1 class="hero-title">Permanent form, load-bearing identity.</h1>
+      <p class="hero-lead">
+        A brutalist brand identity and architectural logo system anchored in cast concrete plinths, raking morning shadows, and cantilevered geometry. Designed for structural ateliers and spatial creators.
+      </p>
+
+      <div class="hero-grid">
+        <!-- Physical Monument Render -->
+        <div class="monument-showcase-card">
+          <img src="sculpture.jpg" alt="Monolithic geometric brand sculpture on cast concrete plinth" class="monument-img" />
+          <div class="monument-overlay-badge">
+            <span><strong>SITE:</strong> 45°26'N 9°11'E COURTYARD</span>
+            <span><strong>MATERIAL:</strong> HONED BASALT & C35/45 CONCRETE</span>
+            <span><strong>LIGHT:</strong> 07:42 AM RAKING SUN</span>
+          </div>
+        </div>
+
+        <!-- Interactive Vector Mark Card -->
+        <div class="interactive-mark-card">
+          <div>
+            <div class="viewport-controls">
+              <button id="toggleGridBtn" class="toggle-chip active">Grid: On</button>
+              <button id="toggleWireBtn" class="toggle-chip">Wireframe</button>
+              <button id="resetMarkBtn" class="toggle-chip">Reset</button>
+            </div>
+
+            <div class="mark-interactive-viewport" id="heroViewport">
+              <div class="blueprint-grid-canvas" id="heroGridCanvas"></div>
+              
+              <!-- Core Vector Mark -->
+              <svg id="heroMarkSvg" class="hero-interactive-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tectonic Upright A-Frame -->
+                <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z" />
+                <!-- Cantilevered Crossbeam with 22° Shear -->
+                <path d="M26 62L76 50L84 62L34 74Z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="mark-card-footer">
+            <span><strong>MONOGRAM GLYPH</strong> // 100×100 VECTOR BOUNDS</span>
+            <span style="font-family: var(--font-mono); color: var(--color-brass);">STATUS: VERIFIED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Vector Geometry & Construction Blueprint -->
+  <section id="geometry" class="section">
+    <div class="container">
+      <div class="section-eyebrow">01 // Architectural Geometry</div>
+      <h2 class="section-heading">Mathematical Blueprint & Vector Anatomy</h2>
+      <p class="section-desc">
+        Constructed along rigid 68° tectonic thrust lines with an asymmetrical 22° cantilever shear. Every vector terminal aligns with modular architectural grid divisions.
+      </p>
+
+      <div class="geometry-grid">
+        <div class="blueprint-display-box">
+          <svg class="blueprint-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Blueprint Grid Lines -->
+            <defs>
+              <pattern id="bpGrid" width="25" height="25" patternUnits="userSpaceOnUse">
+                <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="500" height="500" fill="url(#bpGrid)" />
+
+            <!-- Guide Circles and Construction Rays -->
+            <circle cx="250" cy="250" r="190" stroke="rgba(181, 149, 96, 0.25)" stroke-width="1" stroke-dasharray="4 4" />
+            <circle cx="250" cy="250" r="95" stroke="rgba(181, 149, 96, 0.25)" stroke-width="1" stroke-dasharray="4 4" />
+            <line x1="250" y1="20" x2="250" y2="480" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="6 6" />
+            <line x1="20" y1="250" x2="480" y2="250" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="6 6" />
+
+            <!-- Angular Ray Guides -->
+            <line x1="70" y1="440" x2="250" y2="50" stroke="#b59560" stroke-width="1.2" stroke-opacity="0.6" />
+            <line x1="430" y1="440" x2="250" y2="50" stroke="#b59560" stroke-width="1.2" stroke-opacity="0.6" />
+            <line x1="130" y1="310" x2="420" y2="250" stroke="#3e4653" stroke-width="1.2" stroke-dasharray="3 3" />
+
+            <!-- Main Solid Glyph -->
+            <path d="M250 50L70 440H160L250 240L340 440H430L250 50Z" fill="#f4f0e8" fill-opacity="0.95" />
+            <path d="M130 310L380 250L420 310L170 370Z" fill="#b59560" fill-opacity="0.85" />
+
+            <!-- Dimension Annotations -->
+            <text x="260" y="45" fill="#b59560" font-family="IBM Plex Mono" font-size="12" letter-spacing="1">VERTEX APEX [68° THRUST]</text>
+            <text x="435" y="275" fill="#9ea3a8" font-family="IBM Plex Mono" font-size="11">22° SHEAR CANTILEVER</text>
+            <text x="200" y="475" fill="#9ea3a8" font-family="IBM Plex Mono" font-size="11">LOAD-BEARING BASE = 360px</text>
+          </svg>
+        </div>
+
+        <div class="geometry-specs-column">
+          <div class="spec-card">
+            <h4>01 // Tectonic Thrust (68°)</h4>
+            <p>The primary legs rise at an acute 68° angle, evoking the towering structural trusses of cathedral buttresses and monolithic cast-in-place retaining walls.</p>
+          </div>
+          <div class="spec-card">
+            <h4>02 // The Cantilever Crossbeam (22°)</h4>
+            <p>Instead of a static horizontal tie, the crossbeam shears at 22°, projecting outward like an architectural brise-soleil or cantilevered sky terrace.</p>
+          </div>
+          <div class="spec-card">
+            <h4>03 // 1.5× Clear-Space Boundary</h4>
+            <p>The exclusion zone around the mark is pegged to 1.5× the crossbeam thickness. No foreign typographic or graphical elements may invade this perimeter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: 4-Tier Responsive Logo Stack -->
+  <section id="responsive-stack" class="section">
+    <div class="container">
+      <div class="section-eyebrow">02 // Systems & Scalability</div>
+      <h2 class="section-heading">4-Tier Responsive Logo Stack</h2>
+      <p class="section-desc">
+        Engineered per modern identity standards to maintain absolute visual presence across spatial billboards, navigation bars, app icons, and micro 16px browser tabs.
+      </p>
+
+      <div class="stack-grid">
+        <!-- Tier 1: Primary Master Lockup -->
+        <div class="stack-card">
+          <div class="stack-preview-area">
+            <div class="lockup-primary">
+              <svg width="56" height="56" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+                <path d="M26 62L76 50L84 62L34 74Z"/>
+              </svg>
+              <div class="lockup-primary-wordmark">PLINTH</div>
+              <div class="lockup-primary-sub">SPATIAL ATELIER</div>
+            </div>
+          </div>
+          <div>
+            <div class="tier-label">Tier 01</div>
+            <div class="tier-title">Master Stack</div>
+            <div class="tier-desc">Primary brand identity lockup for site monuments, building facades, and exhibition posters.</div>
+          </div>
+        </div>
+
+        <!-- Tier 2: Horizontal Lockup -->
+        <div class="stack-card">
+          <div class="stack-preview-area">
+            <div class="lockup-horizontal">
+              <svg width="42" height="42" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+                <path d="M26 62L76 50L84 62L34 74Z"/>
+              </svg>
+              <div class="lockup-horizontal-text">
+                <div class="lockup-horizontal-wordmark">PLINTH</div>
+                <div class="lockup-horizontal-sub">ATELIER</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="tier-label">Tier 02</div>
+            <div class="tier-title">Horizontal Compact</div>
+            <div class="tier-desc">Designed for fixed website headers, email signatures, and architectural drawing title blocks.</div>
+          </div>
+        </div>
+
+        <!-- Tier 3: Standalone Glyph -->
+        <div class="stack-card">
+          <div class="stack-preview-area">
+            <svg class="lockup-glyph-svg" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+              <path d="M26 62L76 50L84 62L34 74Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tier-label">Tier 03</div>
+            <div class="tier-title">Monogram Glyph</div>
+            <div class="tier-desc">Isolated geometric emblem for social avatars, wax seals, hard-hat stamps, and app icons.</div>
+          </div>
+        </div>
+
+        <!-- Tier 4: 16px Favicon Micro-Scale -->
+        <div class="stack-card">
+          <div class="stack-preview-area">
+            <div class="favicon-comparison-box">
+              <div class="favicon-loupe">
+                <svg width="36" height="36" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 8L10 90H34L50 46L66 90H90L50 8Z"/>
+                  <path d="M24 64L78 50L86 64L32 78Z"/>
+                </svg>
+                <div class="loupe-tag">8× LOUPE</div>
+              </div>
+              <div class="favicon-actual-badge" title="Actual 16x16px render size">
+                <svg width="16" height="16" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 8L10 90H34L50 46L66 90H90L50 8Z"/>
+                  <path d="M24 64L78 50L86 64L32 78Z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="tier-label">Tier 04</div>
+            <div class="tier-title">16px Micro Glyph</div>
+            <div class="tier-desc">Optically thickened stems to prevent line disappearance on low-res screens and smartwatch notifications.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Grayscale & Inversion Stress Test -->
+  <section id="inversion" class="section">
+    <div class="container">
+      <div class="section-eyebrow">03 // Grayscale & Contrast Integrity</div>
+      <h2 class="section-heading">Monochrome & Inversion Matrix</h2>
+      <p class="section-desc">
+        A resilient mark does not depend on color. It commands visual dominance across pure white paper, obsidian shadows, and tonal raw concrete.
+      </p>
+
+      <div class="inversion-grid">
+        <div class="inversion-tile inversion-tile-1">
+          <svg width="64" height="64" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+            <path d="M26 62L76 50L84 62L34 74Z"/>
+          </svg>
+          <span class="inversion-label">100% Carbon on Paper</span>
+        </div>
+
+        <div class="inversion-tile inversion-tile-2">
+          <svg width="64" height="64" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+            <path d="M26 62L76 50L84 62L34 74Z"/>
+          </svg>
+          <span class="inversion-label">Parchment on Obsidian</span>
+        </div>
+
+        <div class="inversion-tile inversion-tile-3">
+          <svg width="64" height="64" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+            <path d="M26 62L76 50L84 62L34 74Z"/>
+          </svg>
+          <span class="inversion-label">Slate on Limestone</span>
+        </div>
+
+        <div class="inversion-tile inversion-tile-4">
+          <svg width="64" height="64" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+            <path d="M26 62L76 50L84 62L34 74Z"/>
+          </svg>
+          <span class="inversion-label">Brass on Deep Slate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Chromatics & Material Tokens -->
+  <section id="chromatics" class="section">
+    <div class="container">
+      <div class="section-eyebrow">04 // Material Honesty</div>
+      <h2 class="section-heading">Tectonic Color & Mineral Palette</h2>
+      <p class="section-desc">
+        Click any swatch to copy its hexadecimal token. Rooted in natural building stones, aggregates, aged brass joints, and board-marked concrete.
+      </p>
+
+      <div class="palette-grid">
+        <div class="swatch-card" data-hex="#14171D">
+          <div class="swatch-color" style="background-color: #14171d;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Obsidian Shadow</div>
+            <div class="swatch-hex">#14171D</div>
+            <div class="swatch-material">Matte basalt & shadow field</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+
+        <div class="swatch-card" data-hex="#242B35">
+          <div class="swatch-color" style="background-color: #242b35;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Welsh Slate</div>
+            <div class="swatch-hex">#242B35</div>
+            <div class="swatch-material">Honed roofing & quarry stone</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+
+        <div class="swatch-card" data-hex="#9EA3A8">
+          <div class="swatch-color" style="background-color: #9ea3a8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cast Concrete</div>
+            <div class="swatch-hex">#9EA3A8</div>
+            <div class="swatch-material">C35/45 structural aggregate</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+
+        <div class="swatch-card" data-hex="#DCD7CE">
+          <div class="swatch-color" style="background-color: #dcd7ce;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Limestone Wash</div>
+            <div class="swatch-hex">#DCD7CE</div>
+            <div class="swatch-material">Warm porous mineral ground</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+
+        <div class="swatch-card" data-hex="#F4F0E8">
+          <div class="swatch-color" style="background-color: #f4f0e8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cotton Parchment</div>
+            <div class="swatch-hex">#F4F0E8</div>
+            <div class="swatch-material">Uncoated 400gsm cotton rag</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+
+        <div class="swatch-card" data-hex="#B59560">
+          <div class="swatch-color" style="background-color: #b59560;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Architectural Brass</div>
+            <div class="swatch-hex">#B59560</div>
+            <div class="swatch-material">Brushed anchor datum plates</div>
+          </div>
+          <div class="swatch-copied-toast">COPIED</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Typographic System -->
+  <section id="typography" class="section">
+    <div class="container">
+      <div class="section-eyebrow">05 // Typographic Voice</div>
+      <h2 class="section-heading">Monumental Tracking & Technical Sans</h2>
+      <p class="section-desc">
+        Wide tracking gives the wordmark monumental gravitas. Use the interactive slider below to calibrate tracking across physical signage and drawings.
+      </p>
+
+      <div class="type-specimen-grid">
+        <div class="type-box">
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-brass);">INTERACTIVE TRACKING SPECIMEN</div>
+          <div id="trackingDemo" class="interactive-tracking-demo">PLINTH</div>
+          
+          <div class="tracking-slider-bar">
+            <span>Tracking: <strong id="trackingValue">0.28em</strong></span>
+            <input type="range" id="trackingSlider" min="0" max="0.5" step="0.02" value="0.28" />
+          </div>
+        </div>
+
+        <div class="type-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-brass); margin-bottom: 0.75rem;">TYPE DIRECTORY</div>
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; text-transform: uppercase;">Outfit & IBM Plex Mono</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              Outfit supplies geometric clarity and architectural proportions for titles, while IBM Plex Mono handles construction coordinates and engineering notes.
+            </p>
+          </div>
+          
+          <div style="background: var(--bg-page); padding: 1rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6;">
+            <div>DISPLAY: Outfit Bold 700 [Tracking: +0.28em]</div>
+            <div>BODY: Outfit Regular 400 [Line-Height: 1.6]</div>
+            <div>SPEC: IBM Plex Mono 500 [Tabular Figures]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Physical & Spatial Applications -->
+  <section id="stationery" class="section">
+    <div class="container">
+      <div class="section-eyebrow">06 // Physical Realization</div>
+      <h2 class="section-heading">Spatial Touchpoints & Material Collateral</h2>
+      <p class="section-desc">
+        Proof of concept across physical environments: heavy letterpress cotton cards, slate stone reference specimens, and ISO engineering title blocks.
+      </p>
+
+      <div class="spatial-grid">
+        <!-- Physical Stationery Photograph -->
+        <div class="stationery-card">
+          <img src="stationery.jpg" alt="Blind letterpress stationery and slate specimen on board-formed concrete" class="stationery-img" />
+        </div>
+
+        <!-- Architectural Title Block Drawing -->
+        <div class="title-block-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              <span>ARCHITECTURAL DRAWING SPECIMEN</span>
+              <span>SCALE: 1:50 @ A2</span>
+            </div>
+            <div class="drawing-grid-bg">
+              <!-- Inline Architectural Elevation Icon -->
+              <svg width="120" height="120" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+                <path d="M26 62L76 50L84 62L34 74Z"/>
+                <line x1="10" y1="92" x2="90" y2="92" stroke-width="2"/>
+                <line x1="20" y1="96" x2="80" y2="96" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+          </div>
+
+          <table class="title-block-table">
+            <tr>
+              <td rowspan="2" style="width: 35%; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.15em;">PLINTH ATELIER</td>
+              <td><strong>PROJECT:</strong> CIVIC MONUMENT NO. 048</td>
+              <td><strong>DATE:</strong> 2026-09-24</td>
+            </tr>
+            <tr>
+              <td><strong>STATUS:</strong> TENDER SPECIFICATION</td>
+              <td><strong>SHEET:</strong> A-104 REV. 3</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: The 3 Logo Stress Tests -->
+  <section id="stress-tests" class="section">
+    <div class="container">
+      <div class="section-eyebrow">07 // Diagnostic Verification</div>
+      <h2 class="section-heading">The 3-Step Logo Stress Test Suite</h2>
+      <p class="section-desc">
+        A logo must survive the Gaussian blur test, the 5-second cognitive recall test, and the 16-pixel micro-scale check to prove foundational superiority.
+      </p>
+
+      <div class="stress-test-grid">
+        <!-- Test 1: Gaussian Blur Test -->
+        <div class="stress-card">
+          <div>
+            <div class="tier-label">Diagnostic 01</div>
+            <div class="tier-title">Gaussian Blur Test</div>
+            <div class="tier-desc">Heavily blurred silhouette dominance. Does the form remain recognizable even when details dissolve?</div>
+          </div>
+
+          <div class="stress-viewport">
+            <svg id="testBlurSvg" class="test-blur-target" viewBox="0 0 100 100">
+              <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+              <path d="M26 62L76 50L84 62L34 74Z"/>
+            </svg>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: var(--font-mono); margin-bottom: 4px;">
+              <span>Blur Radius</span>
+              <span id="blurRadiusText">12px</span>
+            </div>
+            <input type="range" id="blurSlider" min="0" max="24" value="12" style="width: 100%; accent-color: var(--color-brass);" />
+          </div>
+        </div>
+
+        <!-- Test 2: 5-Second Recall Test -->
+        <div class="stress-card">
+          <div>
+            <div class="tier-label">Diagnostic 02</div>
+            <div class="tier-title">5-Second Recall Test</div>
+            <div class="tier-desc">Test single-hook cognitive retention. Can an observer draw the shape from memory after 5 seconds?</div>
+          </div>
+
+          <div class="stress-viewport" style="position: relative;">
+            <svg id="testRecallSvg" class="test-recall-target" viewBox="0 0 100 100">
+              <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+              <path d="M26 62L76 50L84 62L34 74Z"/>
+            </svg>
+
+            <div id="recallCurtain" class="recall-curtain">
+              <div>
+                <strong>TIME EXPIRED</strong>
+                <p style="font-size: 0.75rem; margin-top: 6px; color: var(--text-muted);">Can you recall the A-frame and 22° cantilever beam?</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button id="startRecallBtn" class="btn-secondary" style="width: 100%; justify-content: center;">
+              Start 5-Sec Test
+            </button>
+          </div>
+        </div>
+
+        <!-- Test 3: 16-Pixel Scale Test -->
+        <div class="stress-card">
+          <div>
+            <div class="tier-label">Diagnostic 03</div>
+            <div class="tier-title">16px Scale Test</div>
+            <div class="tier-desc">Scaled down to 16×16px favicon dimensions. Confirms zero micro-line mud or stroke collapse.</div>
+          </div>
+
+          <div class="stress-viewport">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 16px; height: 16px; border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center;">
+                <svg width="16" height="16" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 8L10 90H34L50 46L66 90H90L50 8Z"/>
+                  <path d="M24 64L78 50L86 64L32 78Z"/>
+                </svg>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-brass);">16×16 PASS</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+            STATUS: 100% SHIFT-PROOF VECTOR
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: Vector Asset Downloads -->
+  <section id="downloads" class="section">
+    <div class="container">
+      <div class="section-eyebrow">08 // Production Delivery</div>
+      <h2 class="section-heading">Vector Asset Suite & Token Export</h2>
+      <p class="section-desc">
+        Direct vector SVG code and design tokens for engineering handoff and print fabrication.
+      </p>
+
+      <div class="export-box">
+        <div class="export-tabs">
+          <button class="tab-btn active" data-tab="glyph">Monogram Glyph SVG</button>
+          <button class="tab-btn" data-tab="horizontal">Horizontal Lockup SVG</button>
+          <button class="tab-btn" data-tab="primary">Master Stack SVG</button>
+          <button class="tab-btn" data-tab="tokens">CSS Design Tokens</button>
+        </div>
+
+        <pre class="code-preview-pre"><code id="codeOutput"></code></pre>
+
+        <div class="export-actions">
+          <button id="copyCodeBtn" class="btn-cta">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyCodeText">Copy Code</span>
+          </button>
+          <button id="downloadSvgBtn" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download .SVG</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="container footer-inner">
+      <div>
+        <a href="../../index.html" class="footer-back-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Return to Design Library</span>
+        </a>
+      </div>
+      <div>
+        <span>Plinth Architectural Atelier Identity // Specimen 048 // Private Design Archive</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Logic -->
+  <script>
+    // Theme Switcher
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    let isDark = false;
+    themeToggleBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    });
+
+    // Hero Viewport Controls
+    const toggleGridBtn = document.getElementById('toggleGridBtn');
+    const toggleWireBtn = document.getElementById('toggleWireBtn');
+    const resetMarkBtn = document.getElementById('resetMarkBtn');
+    const heroGridCanvas = document.getElementById('heroGridCanvas');
+    const heroMarkSvg = document.getElementById('heroMarkSvg');
+
+    let gridActive = true;
+    let wireActive = false;
+
+    toggleGridBtn.addEventListener('click', () => {
+      gridActive = !gridActive;
+      heroGridCanvas.style.opacity = gridActive ? '0.7' : '0';
+      toggleGridBtn.classList.toggle('active', gridActive);
+      toggleGridBtn.textContent = gridActive ? 'Grid: On' : 'Grid: Off';
+    });
+
+    toggleWireBtn.addEventListener('click', () => {
+      wireActive = !wireActive;
+      if (wireActive) {
+        heroMarkSvg.style.fill = 'transparent';
+        heroMarkSvg.style.stroke = 'var(--text-main)';
+        heroMarkSvg.style.strokeWidth = '2px';
+      } else {
+        heroMarkSvg.style.fill = 'var(--text-main)';
+        heroMarkSvg.style.stroke = 'none';
+      }
+      toggleWireBtn.classList.toggle('active', wireActive);
+    });
+
+    resetMarkBtn.addEventListener('click', () => {
+      gridActive = true;
+      wireActive = false;
+      heroGridCanvas.style.opacity = '0.7';
+      toggleGridBtn.classList.add('active');
+      toggleGridBtn.textContent = 'Grid: On';
+      heroMarkSvg.style.fill = 'var(--text-main)';
+      heroMarkSvg.style.stroke = 'none';
+      toggleWireBtn.classList.remove('active');
+    });
+
+    // Color Swatch Copy
+    const swatchCards = document.querySelectorAll('.swatch-card');
+    swatchCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const hex = card.getAttribute('data-hex');
+        navigator.clipboard.writeText(hex).then(() => {
+          card.classList.add('copied');
+          setTimeout(() => card.classList.remove('copied'), 1200);
+        });
+      });
+    });
+
+    // Tracking Slider
+    const trackingSlider = document.getElementById('trackingSlider');
+    const trackingDemo = document.getElementById('trackingDemo');
+    const trackingValue = document.getElementById('trackingValue');
+
+    trackingSlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      trackingDemo.style.letterSpacing = val + 'em';
+      trackingValue.textContent = val + 'em';
+    });
+
+    // Blur Stress Test
+    const blurSlider = document.getElementById('blurSlider');
+    const testBlurSvg = document.getElementById('testBlurSvg');
+    const blurRadiusText = document.getElementById('blurRadiusText');
+
+    blurSlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      testBlurSvg.style.filter = `blur(${val}px)`;
+      blurRadiusText.textContent = `${val}px`;
+    });
+
+    // 5-Second Recall Test
+    const startRecallBtn = document.getElementById('startRecallBtn');
+    const recallCurtain = document.getElementById('recallCurtain');
+    let recallTimer = null;
+
+    startRecallBtn.addEventListener('click', () => {
+      recallCurtain.classList.remove('active');
+      startRecallBtn.disabled = true;
+      let secondsLeft = 5;
+      startRecallBtn.textContent = `Testing (${secondsLeft}s)...`;
+
+      if (recallTimer) clearInterval(recallTimer);
+      recallTimer = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft > 0) {
+          startRecallBtn.textContent = `Testing (${secondsLeft}s)...`;
+        } else {
+          clearInterval(recallTimer);
+          recallCurtain.classList.add('active');
+          startRecallBtn.disabled = false;
+          startRecallBtn.textContent = 'Test Again';
+        }
+      }, 1000);
+    });
+
+    // Code & Asset Tabs
+    const assetsData = {
+      glyph: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#14171D">
+  <!-- Plinth Monogram Glyph -->
+  <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+  <path d="M26 62L76 50L84 62L34 74Z"/>
+</svg>`,
+      horizontal: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="#14171D">
+  <!-- Plinth Horizontal Lockup -->
+  <g transform="translate(10, 8)">
+    <path d="M32 6L9 56H20L32 30L44 56H55L32 6Z"/>
+    <path d="M17 40L49 32L54 40L22 47Z"/>
+  </g>
+  <text x="80" y="44" font-family="'Outfit', sans-serif" font-weight="800" font-size="28" letter-spacing="0.24em">PLINTH</text>
+  <text x="82" y="60" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.18em" fill="#555C66">SPATIAL ATELIER</text>
+</svg>`,
+      primary: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="#14171D">
+  <!-- Plinth Primary Master Stack -->
+  <g transform="translate(70, 20)">
+    <path d="M50 10L14 88H32L50 48L68 88H86L50 10Z"/>
+    <path d="M26 62L76 50L84 62L34 74Z"/>
+  </g>
+  <text x="120" y="165" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="800" font-size="32" letter-spacing="0.28em">PLINTH</text>
+  <text x="120" y="190" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.22em" fill="#555C66">SPATIAL ATELIER</text>
+</svg>`,
+      tokens: `:root {
+  /* Plinth Brand Tokens */
+  --plinth-obsidian: #14171d;
+  --plinth-slate: #242b35;
+  --plinth-concrete: #9ea3a8;
+  --plinth-limestone: #dcd7ce;
+  --plinth-paper: #f4f0e8;
+  --plinth-brass: #b59560;
+
+  --plinth-font-heading: 'Outfit', sans-serif;
+  --plinth-font-mono: 'IBM Plex Mono', monospace;
+  --plinth-tracking-monumental: 0.28em;
+  --plinth-tracking-body: -0.015em;
+  --plinth-clearspace: 1.5;
+}`
+    };
+
+    let activeTabKey = 'glyph';
+    const codeOutput = document.getElementById('codeOutput');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const copyCodeText = document.getElementById('copyCodeText');
+    const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+
+    function updateCodeOutput() {
+      codeOutput.textContent = assetsData[activeTabKey];
+      if (activeTabKey === 'tokens') {
+        downloadSvgBtn.style.display = 'none';
+      } else {
+        downloadSvgBtn.style.display = 'inline-flex';
+      }
+    }
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTabKey = btn.getAttribute('data-tab');
+        updateCodeOutput();
+      });
+    });
+
+    updateCodeOutput();
+
+    copyCodeBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(assetsData[activeTabKey]).then(() => {
+        copyCodeText.textContent = 'Copied!';
+        setTimeout(() => copyCodeText.textContent = 'Copy Code', 1500);
+      });
+    });
+
+    downloadSvgBtn.addEventListener('click', () => {
+      const blob = new Blob([assetsData[activeTabKey]], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `plinth-${activeTabKey}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
