@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>ShopForge — AI E-Commerce Storefront Builder</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --dark-bg: #070a08;
+      --dark-surface: #0e1410;
+      --dark-card: #131b16;
+      --neon-lime: #00ff66;
+      --neon-lime-hover: #1df573;
+      --neon-glow: rgba(0, 255, 102, 0.25);
+      --white-bg: #ffffff;
+      --white-surface: #f8fafc;
+      --light-border: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #f8fafc;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--white-bg);
+      color: var(--text-dark);
+      font-family: var(--font-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Navigation */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(7, 10, 8, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--neon-lime);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #000;
+    }
+
+    .brand-logo-text {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-menu a:hover {
+      color: #fff;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-signin {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .nav-signin:hover {
+      color: #fff;
+    }
+
+    .btn-nav-cta {
+      background: #ffffff;
+      color: #070a08;
+      padding: 9px 20px;
+      border-radius: 100px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-nav-cta:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section (Dark Ground) */
+    .hero {
+      background: radial-gradient(circle at 75% 35%, #16241a 0%, #070a08 65%);
+      color: var(--text-light);
+      padding-top: 130px;
+      padding-bottom: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 4.4vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 500px;
+    }
+
+    .btn-hero-lime {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--neon-lime);
+      color: #070a08;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 24px var(--neon-glow);
+    }
+
+    .btn-hero-lime:hover {
+      background: var(--neon-lime-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0, 255, 102, 0.4);
+    }
+
+    .hero-features-list {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+    }
+
+    .hero-features-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .check-icon {
+      width: 18px;
+      height: 18px;
+      background: rgba(0, 255, 102, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neon-lime);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .hero-price-strike {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .hero-price-strike span {
+      text-decoration: line-through;
+    }
+
+    .hero-price-strike strong {
+      color: var(--neon-lime);
+      font-weight: 700;
+    }
+
+    .hero-trust-row {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
+    }
+
+    .trust-stars {
+      color: #00ff66;
+      letter-spacing: 2px;
+    }
+
+    /* Right Column: Live Store Preview Viewport */
+    .store-preview-viewport {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      color: var(--text-dark);
+      position: relative;
+    }
+
+    .store-category-bar {
+      background: #0d120f;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cat-tab {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .cat-tab:hover, .cat-tab.active {
+      background: #ffffff;
+      color: #070a08;
+      border-color: #ffffff;
+    }
+
+    .store-inner-nav {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.8rem;
+    }
+
+    .store-brand-title {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .store-promo-bar {
+      background: #ecfdf5;
+      color: #059669;
+      padding: 6px;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .store-hero-banner {
+      position: relative;
+      height: 230px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      color: #ffffff;
+      transition: background-image 0.4s ease;
+    }
+
+    .store-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .store-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 440px;
+    }
+
+    .store-hero-content h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .btn-store-shop {
+      background: var(--neon-lime);
+      color: #070a08;
+      border: none;
+      padding: 7px 18px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .store-dual-card-row {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .store-promo-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .store-promo-text h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .store-promo-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    /* 5-Step Bento Section */
+    .bento-flow-section {
+      padding: 100px 0;
+      background: #ffffff;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 60px auto;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .bento-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    .flow-card {
+      background: var(--white-surface);
+      border: 1px solid var(--light-border);
+      border-radius: 20px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .flow-card:hover {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .flow-card h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .flow-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Niche Selector UI */
+    .niche-grid-box {
+      background: #ffffff;
+      border: 1px solid var(--light-border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .niche-badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+
+    .niche-tiles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .niche-tile {
+      background: #f8fafc;
+      border: 1px solid var(--light-border);
+      border-radius: 8px;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .niche-tile.active {
+      background: #ecfdf5;
+      border-color: #00ff66;
+      color: #059669;
+      font-weight: 700;
+    }
+
+    /* Branding Customizer UI */
+    .brand-customizer-box {
+      background: #ffffff;
+      border: 1px solid var(--light-border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .brand-store-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 8px 20px;
+      border-radius: 100px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .swatches-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+    }
+
+    /* 30 Winning Products Banner Card */
+    .winning-products-card {
+      background: var(--white-surface);
+      border: 1px solid var(--light-border);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .products-carousel-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 32px 0;
+      overflow-x: auto;
+      padding: 10px;
+    }
+
+    .prod-mini-card {
+      width: 80px;
+      height: 96px;
+      background: #ffffff;
+      border: 1px solid var(--light-border);
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .prod-mini-card.highlight {
+      width: 96px;
+      height: 112px;
+      background: #ecfdf5;
+      border-color: #00ff66;
+      box-shadow: 0 8px 24px rgba(0, 255, 102, 0.25);
+    }
+
+    /* Live Orders Feed Card */
+    .orders-feed-box {
+      background: #0a110d;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-item-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    /* Value Stack Section (Dark Neon) */
+    .value-stack-section {
+      background: #070a08;
+      color: #fff;
+      padding: 100px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .value-card {
+      background: #0d130f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.2s;
+    }
+
+    .value-card:hover {
+      border-color: rgba(0, 255, 102, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .value-icon-box {
+      width: 44px;
+      height: 44px;
+      background: rgba(0, 255, 102, 0.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .value-icon-box svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--neon-lime);
+    }
+
+    .value-card h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .value-card p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Metric Counter Band */
+    .stats-band {
+      background: linear-gradient(90deg, #10b981 0%, #00ff66 100%);
+      padding: 60px 0;
+      color: #070a08;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .stat-val {
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-lbl {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 100px 0;
+      background: #ffffff;
+    }
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 60px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--light-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 18px 24px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-dark);
+    }
+
+    .faq-answer {
+      padding: 0 24px 20px 24px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* Final CTA Banner & Giant Watermark */
+    .final-cta-section {
+      background: #070a08;
+      color: #fff;
+      padding: 100px 0 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-empire-card {
+      background: radial-gradient(circle at 80% 20%, #172c1c 0%, #0d1510 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 60px 48px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 80px;
+    }
+
+    .cta-empire-card h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .giant-watermark {
+      font-size: clamp(3rem, 12vw, 11rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(0, 255, 102, 0.15);
+      text-align: center;
+      letter-spacing: 0.05em;
+      margin-bottom: 40px;
+      user-select: none;
+    }
+
+    /* Footer */
+    footer {
+      background: #050706;
+      color: #94a3b8;
+      padding: 60px 0 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+      gap: 36px;
+      margin-bottom: 48px;
+    }
+
+    .footer-grid h5 {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .footer-grid ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-grid a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-grid a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .bento-flow-grid { grid-template-columns: 1fr; }
+      .value-grid { grid-template-columns: 1fr; }
+      .faq-layout { grid-template-columns: 1fr; }
+      .cta-empire-card { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 0 20px; }
+      .container { padding: 0 20px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <a href="#" class="brand-logo">
+      <div class="brand-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="brand-logo-text">ShopForge</span>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="#features">Product</a></li>
+      <li><a href="#flow">Solutions</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#faq" class="nav-signin">Sign in</a>
+      <a href="#flow" class="btn-nav-cta">Get Started For Free</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <!-- Left Copy -->
+      <div>
+        <h1 class="hero-title">
+          Launch Your E-Commerce Store with our AI Store Builder
+        </h1>
+        <p class="hero-subtitle">
+          Build, optimize, and scale an enterprise-grade storefront in under 10 minutes with AI-assisted product intelligence.
+        </p>
+
+        <a href="#flow" class="btn-hero-lime">
+          <span>Build my store for free</span>
+          <span>→</span>
+        </a>
+
+        <ul class="hero-features-list">
+          <li><span class="check-icon">✓</span> Branded AI Store ready in 2 minutes</li>
+          <li><span class="check-icon">✓</span> Unique & High Converting Product Pages</li>
+          <li><span class="check-icon">✓</span> Branded Pages: Homepage, About Us</li>
+        </ul>
+
+        <div class="hero-price-strike">
+          Usually <span>$1,050</span>, now for <strong>FREE</strong>
+        </div>
+
+        <div class="hero-trust-row">
+          <span style="font-weight: 700; color: #fff;">PARTNERS</span>
+          <span class="trust-stars">★★★★★</span>
+          <span>4.7/5 Rated "Excellent"</span>
+        </div>
+      </div>
+
+      <!-- Right: Live Storefront Mockup Previewer -->
+      <div class="store-preview-viewport">
+        <!-- Interactive Category Switcher -->
+        <div class="store-category-bar">
+          <button class="cat-tab active" onclick="switchCategory('health')">Health</button>
+          <button class="cat-tab" onclick="switchCategory('beauty')">Beauty</button>
+          <button class="cat-tab" onclick="switchCategory('fashion')">Fashion</button>
+          <button class="cat-tab" onclick="switchCategory('kids')">Kids</button>
+          <button class="cat-tab" onclick="switchCategory('tech')">Tech</button>
+          <button class="cat-tab" onclick="switchCategory('pets')">Pets</button>
+          <button class="cat-tab" onclick="switchCategory('home')">Home</button>
+          <button class="cat-tab" onclick="switchCategory('outdoor')">Outdoor</button>
+        </div>
+
+        <!-- Inner Store Header -->
+        <div class="store-promo-bar">
+          ⚡ UP TO 50% OFF · LIMITED TIME GRAND OPENING
+        </div>
+
+        <div class="store-inner-nav">
+          <div style="display: flex; gap: 14px; color: #64748b;">
+            <span>Home</span>
+            <span>Shop Now</span>
+            <span>About Us</span>
+          </div>
+          <div class="store-brand-title" id="previewStoreName">NourishNest</div>
+          <div style="display: flex; gap: 10px;">
+            <span>🔍</span>
+            <span>🛍 (0)</span>
+          </div>
+        </div>
+
+        <!-- Store Hero Banner with Real Botanical Image -->
+        <div class="store-hero-banner" id="storeHeroBanner" style="background-image: url('assets/wellness_hero.jpg');">
+          <div class="store-hero-overlay"></div>
+          <div class="store-hero-content">
+            <h3 id="previewHeroHeading">Discover Wellness with Our Premium Health Products Collection</h3>
+            <button class="btn-store-shop" id="previewCtaBtn">View Collection ↗</button>
+          </div>
+        </div>
+
+        <!-- Store Promo Split -->
+        <div class="store-dual-card-row">
+          <img src="assets/wellness_hero.jpg" class="store-promo-img" alt="Store Product" />
+          <div class="store-promo-text">
+            <h4 id="previewSubHeading">Welcome to NourishNest</h4>
+            <p id="previewSubDesc">Your Pathway to Natural Wellness and Vitality. Premium organic supplements crafted for daily balance.</p>
+            <button class="btn-store-shop" style="background: #0f172a; color: #fff;">View Our Story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5-Step AI Generation Bento Flow -->
+  <section class="bento-flow-section" id="flow">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">● FAST-TRACK LAUNCH</div>
+        <h2 class="section-title">
+          Use AI to create in <em>10 minutes</em><br>what others need many months for
+        </h2>
+      </div>
+
+      <!-- Bento Row 1: Niche + Branding -->
+      <div class="bento-flow-grid">
+        <!-- Step 1: Choose Niche -->
+        <div class="flow-card">
+          <div class="niche-grid-box">
+            <div class="niche-badge-top">🛍 Select Profitable Niches</div>
+            <div class="niche-tiles">
+              <div class="niche-tile" onclick="selectNiche(this, 'Beauty')">💄 Beauty</div>
+              <div class="niche-tile active" onclick="selectNiche(this, 'Health')">🌿 Health</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Fashion')">👗 Fashion</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Tech')">⚡ Tech</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Outdoor')">🏕 Outdoor</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Pets')">🐾 Pets</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Home')">🏡 Home</div>
+              <div class="niche-tile" onclick="selectNiche(this, 'Kids')">🧸 Kids</div>
+            </div>
+          </div>
+          <div>
+            <h3>Choose store niche</h3>
+            <p>Instant market intelligence curates high-margin niches with proven viral demand.</p>
+          </div>
+        </div>
+
+        <!-- Step 2: Choose Branding -->
+        <div class="flow-card">
+          <div class="brand-customizer-box">
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+              <div class="swatches-row">
+                <div class="swatch" style="background: #00ff66;"></div>
+                <div class="swatch" style="background: #059669;"></div>
+                <div class="swatch" style="background: #0f172a;"></div>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;">Aa Bb Cc</div>
+            </div>
+            <div class="brand-store-pill">
+              <span>🛍</span>
+              <input type="text" id="storeInput" value="NourishNest" oninput="updateStoreName(this.value)" style="border: none; outline: none; font-weight: 700; width: 120px;" />
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+              <span style="font-size: 0.75rem; color: #64748b;">📐 Vector Logo Auto-Generated</span>
+              <div class="swatches-row">
+                <div class="swatch" style="background: #3b82f6;"></div>
+                <div class="swatch" style="background: #f59e0b;"></div>
+                <div class="swatch" style="background: #ec4899;"></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>Choose Branding</h3>
+            <p>Dynamic theme generator builds matching typography, color tokens, and logo lockups.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Full Width 30 Winning Products Banner -->
+      <div class="winning-products-card">
+        <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">
+          Get <em>30 Winning Products</em> Added to store
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Pre-vetted suppliers with automated 2-day delivery and 65%+ gross margin calculations.</p>
+
+        <div class="products-carousel-strip">
+          <div class="prod-mini-card"><div style="font-size: 24px;">🧴</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Serum</span></div>
+          <div class="prod-mini-card"><div style="font-size: 24px;">🍵</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Matcha</span></div>
+          <div class="prod-mini-card"><div style="font-size: 24px;">🕯</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Candle</span></div>
+          <div class="prod-mini-card highlight">
+            <div style="font-size: 30px;">🛍</div>
+            <span style="font-size: 0.72rem; font-weight: 800; color: #059669; margin-top: 4px;">Top Pick</span>
+          </div>
+          <div class="prod-mini-card"><div style="font-size: 24px;">💊</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Vitamins</span></div>
+          <div class="prod-mini-card"><div style="font-size: 24px;">🧼</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Soap</span></div>
+          <div class="prod-mini-card"><div style="font-size: 24px;">🧴</div><span style="font-size: 0.65rem; color: #64748b; margin-top: 4px;">Elixir</span></div>
+        </div>
+
+        <a href="#pricing" class="btn-hero-lime" style="background: #070a08; color: #00ff66;">Build my store for free →</a>
+      </div>
+
+      <!-- Bento Row 2: Claim Store + Live Orders -->
+      <div class="bento-flow-grid">
+        <!-- Step 4: Claim Free Store -->
+        <div class="flow-card">
+          <div style="background: #ffffff; border: 1px solid var(--light-border); border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 24px;">
+            <div style="width: 50px; height: 50px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 24px; box-shadow: 0 4px 16px rgba(0, 255, 102, 0.2);">🛍</div>
+            <div style="height: 8px; width: 140px; background: #e2e8f0; border-radius: 100px; margin: 0 auto 8px auto;"></div>
+            <div style="height: 6px; width: 80px; background: #f1f5f9; border-radius: 100px; margin: 0 auto;"></div>
+          </div>
+          <div>
+            <h3>Claim your free AI store</h3>
+            <p>One-click provisioning to global edge CDN with SSL certificate and instant domain mapping.</p>
+          </div>
+        </div>
+
+        <!-- Step 5: Start Making Money -->
+        <div class="flow-card">
+          <div class="orders-feed-box">
+            <div class="order-item-pill">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span>🛍</span>
+                <div>
+                  <div style="font-weight: 700;">Order #1004</div>
+                  <div style="font-size: 0.72rem; color: #94a3b8;">$450.00 · 2 items from online store</div>
+                </div>
+              </div>
+              <span style="font-size: 0.72rem; color: #00ff66;">10m ago</span>
+            </div>
+            <div class="order-item-pill">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span>🛍</span>
+                <div>
+                  <div style="font-weight: 700;">Order #1003</div>
+                  <div style="font-size: 0.72rem; color: #94a3b8;">$350.00 · 2 items from online store</div>
+                </div>
+              </div>
+              <span style="font-size: 0.72rem; color: #00ff66;">8m ago</span>
+            </div>
+          </div>
+          <div>
+            <h3>Start making money</h3>
+            <p>Built-in one-page checkout, conversion funnels, and automated cart abandonment recovery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- $1,050+ Value Stack Section (Dark Neon) -->
+  <section class="value-stack-section" id="resources">
+    <div class="container">
+      <div class="section-head" style="color: #fff;">
+        <div class="section-tag" style="background: rgba(0, 255, 102, 0.15); color: #00ff66;">● PREMIUM VALUE STACK</div>
+        <h2 class="section-title" style="color: #fff;">
+          Get <em>$1,050+</em> worth of tools & resources — FREE
+        </h2>
+      </div>
+
+      <div class="value-grid">
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <h4>AI Store Engine</h4>
+          <p>A complete brand-new storefront ready to accept orders in 10 minutes flat.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><path d="M20 7h-4v-2c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2h-4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2zm-10-2h4v2h-4v-2z"/></svg></div>
+          <h4>30+ Winning Products</h4>
+          <p>Get 30+ pre-vetted viral products with high profit margins imported instantly.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <h4>High-Converting Product Pages</h4>
+          <p>Unique layouts engineered with scarcity timers and social proof reviews.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+          <h4>Branded Core Pages</h4>
+          <p>Professionally written Homepage, About Us, Privacy Policy, and Track Order.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <h4>StoreCopilot AI Free Trial</h4>
+          <p>Automated conversion audit agent suggesting real-time revenue optimizations.</p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon-box"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h4>Ultra-Fast Mobile Theme</h4>
+          <p>Sub-second Lighthouse score theme designed to maximize mobile ad spend ROI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metric Counter Band (Lime Green) -->
+  <section class="stats-band">
+    <div class="container">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-val">800+</div>
+          <div class="stat-lbl">AI Stores Created</div>
+        </div>
+        <div>
+          <div class="stat-val">$1M+</div>
+          <div class="stat-lbl">Revenue Generated</div>
+        </div>
+        <div>
+          <div class="stat-val">100+</div>
+          <div class="stat-lbl">Hours Saved</div>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="#flow" class="btn-hero-lime" style="background: #070a08; color: #fff;">Build my store for free →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container faq-layout">
+      <div>
+        <div class="section-tag">● FAQS</div>
+        <h2 style="font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px;">
+          Got Questions?<br><em>We've Got Answers</em>
+        </h2>
+        <div style="background: #f8fafc; border: 1px solid var(--light-border); border-radius: 12px; padding: 24px;">
+          <div style="font-weight: 700; margin-bottom: 6px;">Still have questions?</div>
+          <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 14px;">Tailor every element of your storefront with our engineering team.</div>
+          <a href="#" class="btn-hero-lime" style="background: #0f172a; color: #fff; padding: 8px 18px; font-size: 0.8rem;">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item open">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Is this really free or am I going to get hit with hidden costs?</span>
+            <span>−</span>
+          </div>
+          <div class="faq-answer">
+            It is 100% free for your first 3 months. No hidden setup charges, no fine print. You get full store ownership, 30 winning products imported, and complete theme access.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Do I need to be a tech genius to use this AI store builder?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            Not at all. The intuitive step-by-step assistant configures your catalog, payment gateways, product images, and copy automatically.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>What if I don't have any products to sell yet?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            ShopForge automatically connects to pre-vetted verified fulfillment suppliers and populates your store with 30 trending viral products matching your chosen niche.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Can I connect my own custom domain?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            Yes, you can bind any custom domain with automated SSL provisioning in one click.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA & Watermark -->
+  <section class="final-cta-section" id="pricing">
+    <div class="container">
+      <div class="cta-empire-card">
+        <div>
+          <h2>Launch Your Empire Now: $1 for Your First 3 Million-Dollar Months</h2>
+          <p style="color: #cbd5e1; font-size: 1.05rem; margin-bottom: 28px;">
+            Stop dreaming, start dominating. Our AI-powered store builder turns rookies into e-commerce titans overnight.
+          </p>
+          <a href="#flow" class="btn-hero-lime">Build my store for free →</a>
+        </div>
+        <div style="text-align: center;">
+          <div style="display: inline-block; width: 140px; height: 180px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; box-shadow: 0 16px 40px rgba(0,0,0,0.5); padding: 16px;">
+            <div style="font-size: 32px; margin-top: 20px;">📱</div>
+            <div style="font-size: 0.75rem; color: #00ff66; font-weight: 700; margin-top: 14px;">Store Live ⚡</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="giant-watermark">SHOPFORGE</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo" style="margin-bottom: 12px;">
+            <div class="brand-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
+            <span class="brand-logo-text">ShopForge</span>
+          </div>
+          <p style="color: #64748b; max-width: 220px; line-height: 1.5;">
+            Autonomous e-commerce store creation and viral product discovery platform.
+          </p>
+        </div>
+
+        <div>
+          <h5>Primary</h5>
+          <ul>
+            <li><a href="#">Modules</a></li>
+            <li><a href="#">How it Works</a></li>
+            <li><a href="#">Reviews</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Socials</h5>
+          <ul>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">X (Twitter)</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Trust Center</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; text-align: center; color: #475569; font-size: 0.8rem;">
+        © 2026 SHOPFORGE INC. ALL RIGHTS RESERVED.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const categoriesData = {
+      health: {
+        title: "Discover Wellness with Our Premium Health Products Collection",
+        storeName: "NourishNest",
+        cta: "View Collection ↗",
+        subTitle: "Welcome to NourishNest",
+        subDesc: "Your Pathway to Natural Wellness and Vitality. Premium organic supplements crafted for daily balance."
+      },
+      beauty: {
+        title: "Radiant Skin Starts Here with Organic Skincare Formulas",
+        storeName: "GlowAura",
+        cta: "Shop Skincare ↗",
+        subTitle: "Welcome to GlowAura",
+        subDesc: "Clean, dermatologist-approved skincare elixirs made from sustainably sourced botanicals."
+      },
+      fashion: {
+        title: "Elevate Your Everyday Style with Contemporary Essentials",
+        storeName: "VeloMode",
+        cta: "Explore Apparel ↗",
+        subTitle: "Welcome to VeloMode",
+        subDesc: "Tailored minimalist cuts designed for effortless urban living and modern comfort."
+      },
+      kids: {
+        title: "Inspire Creative Play with Safe & Educational Toys",
+        storeName: "LittleSparks",
+        cta: "Shop Toys ↗",
+        subTitle: "Welcome to LittleSparks",
+        subDesc: "Eco-friendly, non-toxic toys and learning kits crafted with care for growing minds."
+      },
+      tech: {
+        title: "Next-Gen Productivity Gadgets for High-Performance Workspaces",
+        storeName: "VoltGrid",
+        cta: "Browse Gadgets ↗",
+        subTitle: "Welcome to VoltGrid",
+        subDesc: "Precision-engineered wireless chargers, ergonomics, and smart desk accessories."
+      },
+      pets: {
+        title: "Holistic Nutrition and Premium Gear for Happy Pets",
+        storeName: "PawHaven",
+        cta: "Shop Pet Gear ↗",
+        subTitle: "Welcome to PawHaven",
+        subDesc: "Nutritious grain-free treats and ergonomic harnesses designed for loving companions."
+      },
+      home: {
+        title: "Modern Scandinavian Decor for Calming Living Spaces",
+        storeName: "NordicNest",
+        cta: "Explore Home ↗",
+        subTitle: "Welcome to NordicNest",
+        subDesc: "Ceramic accents, hand-woven linens, and warm ambient lighting for your sanctuary."
+      },
+      outdoor: {
+        title: "Engineered for the Elements: Ultralight Adventure Gear",
+        storeName: "SummitPeak",
+        cta: "Gear Up ↗",
+        subTitle: "Welcome to SummitPeak",
+        subDesc: "Durable weatherproof backpacks, insulated cookware, and technical apparel."
+      }
+    };
+
+    function switchCategory(cat) {
+      document.querySelectorAll('.cat-tab').forEach(b => {
+        b.classList.toggle('active', b.textContent.toLowerCase() === cat);
+      });
+
+      const data = categoriesData[cat];
+      if (data) {
+        document.getElementById('previewHeroHeading').textContent = data.title;
+        document.getElementById('previewStoreName').textContent = data.storeName;
+        document.getElementById('previewCtaBtn').textContent = data.cta;
+        document.getElementById('previewSubHeading').textContent = data.subTitle;
+        document.getElementById('previewSubDesc').textContent = data.subDesc;
+        document.getElementById('storeInput').value = data.storeName;
+      }
+    }
+
+    function selectNiche(el, name) {
+      document.querySelectorAll('.niche-tile').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      switchCategory(name.toLowerCase());
+    }
+
+    function updateStoreName(val) {
+      document.getElementById('previewStoreName').textContent = val || 'Your Store';
+    }
+
+    function toggleFaq(el) {
+      const parent = el.parentElement;
+      parent.classList.toggle('open');
+      const icon = el.querySelector('span:last-child');
+      if (icon) {
+        icon.textContent = parent.classList.contains('open') ? '−' : '+';
+      }
+    }
+  </script>
+</body>
+</html>

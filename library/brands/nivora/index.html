@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Nivora™ — Brand Identity & Design System</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-abyssal: #042627;
+      --bg-card: #083234;
+      --bg-card-hover: #0c3e40;
+      --color-lime: #D8F84C;
+      --color-lime-hover: #e5ff6c;
+      --color-text-dark: #062C2D;
+      --color-white: #F5F8F5;
+      --color-muted: #7E9F94;
+      --border-subtle: rgba(216, 248, 76, 0.16);
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-abyssal);
+      color: var(--color-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem 5rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation / Breadcrumb */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover {
+      color: var(--color-lime);
+    }
+
+    .brand-meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: rgba(216, 248, 76, 0.08);
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-lime);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .header h1 span.tag-tm {
+      font-size: 1rem;
+      font-family: var(--font-mono);
+      color: var(--color-lime);
+      vertical-align: super;
+      font-weight: 500;
+    }
+    .header p {
+      color: var(--color-muted);
+      font-size: 1.125rem;
+      max-width: 680px;
+    }
+
+    /* Chromatic Palette Row */
+    .palette-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .swatch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+    .swatch-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-lime);
+    }
+    .swatch-color {
+      height: 52px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .swatch-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+    }
+    .swatch-name {
+      color: var(--color-muted);
+      font-weight: 500;
+    }
+    .swatch-hex {
+      font-family: var(--font-mono);
+      color: var(--color-white);
+    }
+
+    /* 7-Tile Interlocking Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr 1fr;
+      grid-auto-rows: minmax(280px, auto);
+      gap: 1.25rem;
+      margin-bottom: 4rem;
+    }
+
+    .bento-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .bento-card:hover {
+      border-color: rgba(216, 248, 76, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    }
+
+    .bento-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Layout Positioning */
+    .card-tile1 {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+    .card-tile2 {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+    .card-tile3 {
+      grid-column: 3 / 4;
+      grid-row: 1 / 3;
+    }
+    .card-tile4 {
+      grid-column: 2 / 3;
+      grid-row: 2 / 4;
+      background: var(--color-lime);
+      color: var(--color-text-dark);
+      border-color: var(--color-lime);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .card-tile5 {
+      grid-column: 1 / 2;
+      grid-row: 3 / 5;
+    }
+    .card-tile6 {
+      grid-column: 2 / 3;
+      grid-row: 4 / 5;
+    }
+    .card-tile7 {
+      grid-column: 3 / 4;
+      grid-row: 3 / 5;
+    }
+
+    /* Hero Tile 4 Styling */
+    .hero-glyph {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1.5rem;
+      color: var(--color-text-dark);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .card-tile4:hover .hero-glyph {
+      transform: scale(1.08) rotate(3deg);
+    }
+    .hero-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0.85;
+      max-width: 360px;
+      margin-bottom: 2rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .hero-btn-dark {
+      background: var(--color-text-dark);
+      color: var(--color-lime);
+    }
+    .hero-btn-dark:hover {
+      background: #021a1b;
+      transform: scale(1.03);
+    }
+    .hero-btn-outline {
+      background: rgba(6, 44, 45, 0.08);
+      color: var(--color-text-dark);
+      border: 1px solid rgba(6, 44, 45, 0.25);
+    }
+    .hero-btn-outline:hover {
+      background: rgba(6, 44, 45, 0.15);
+      border-color: var(--color-text-dark);
+    }
+
+    /* 3-Step Logo Stress Test Suite */
+    .stress-suite {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 4rem;
+    }
+    .suite-header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .suite-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--color-white);
+      margin-bottom: 0.35rem;
+    }
+    .suite-header p {
+      color: var(--color-muted);
+      font-size: 0.95rem;
+    }
+    .suite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .stress-panel {
+      background: var(--bg-abyssal);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-lime);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .panel-desc {
+      color: var(--color-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Test 1: Optical Blur */
+    .blur-preview-box {
+      flex: 1;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(216, 248, 76, 0.03);
+      border: 1px dashed var(--border-subtle);
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+    }
+    .blur-target {
+      width: 80px;
+      height: 80px;
+      color: var(--color-lime);
+      transition: filter 0.1s linear;
+    }
+    .slider-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .slider-control input[type="range"] {
+      flex: 1;
+      accent-color: var(--color-lime);
+      cursor: pointer;
+    }
+    .slider-val {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-lime);
+      min-width: 44px;
+    }
+
+    /* Test 2: Multi-Scale Matrix */
+    .scale-matrix-box {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      background: rgba(216, 248, 76, 0.03);
+      border: 1px dashed var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+    }
+    .scale-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scale-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-muted);
+    }
+    .scale-svg {
+      color: var(--color-lime);
+    }
+
+    /* Test 3: Contrast Inversion */
+    .contrast-box {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .contrast-sub {
+      border-radius: 12px;
+      height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    .sub-dark {
+      background: #021617;
+      color: var(--color-lime);
+      border: 1px solid var(--border-subtle);
+    }
+    .sub-light {
+      background: var(--color-lime);
+      color: var(--color-text-dark);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--color-lime);
+      color: var(--color-text-dark);
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .card-tile1 { grid-column: 1 / 2; grid-row: auto; }
+      .card-tile2 { grid-column: 2 / 3; grid-row: auto; }
+      .card-tile3 { grid-column: 1 / 2; grid-row: auto; }
+      .card-tile4 { grid-column: 1 / 3; grid-row: auto; }
+      .card-tile5 { grid-column: 1 / 2; grid-row: auto; }
+      .card-tile6 { grid-column: 2 / 3; grid-row: auto; }
+      .card-tile7 { grid-column: 1 / 3; grid-row: auto; }
+    }
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-tile1, .card-tile2, .card-tile3, .card-tile4, .card-tile5, .card-tile6, .card-tile7 {
+        grid-column: 1 / -1;
+        grid-row: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a href="../../../" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Design Library
+      </a>
+      <div class="brand-meta-badge">
+        <span>Identity Specimen</span>
+        <span>•</span>
+        <span>Studio / Services</span>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Nivora <span class="tag-tm">™</span></h1>
+      <p>Computational software engineering, distributed cloud infrastructure, and spatial system intelligence. Asymmetric 7-tile identity specimen with dual-arc aperture portal.</p>
+    </header>
+
+    <!-- Chromatic Palette -->
+    <div class="palette-strip">
+      <div class="swatch-card" onclick="copyHex('#042627')">
+        <div class="swatch-color" style="background: #042627;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Abyssal Spruce</span>
+          <span class="swatch-hex">#042627</span>
+        </div>
+      </div>
+      <div class="swatch-card" onclick="copyHex('#D8F84C')">
+        <div class="swatch-color" style="background: #D8F84C;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Electric Lime</span>
+          <span class="swatch-hex">#D8F84C</span>
+        </div>
+      </div>
+      <div class="swatch-card" onclick="copyHex('#083234')">
+        <div class="swatch-color" style="background: #083234;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Surface Spruce</span>
+          <span class="swatch-hex">#083234</span>
+        </div>
+      </div>
+      <div class="swatch-card" onclick="copyHex('#F5F8F5')">
+        <div class="swatch-color" style="background: #F5F8F5;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Bone White</span>
+          <span class="swatch-hex">#F5F8F5</span>
+        </div>
+      </div>
+      <div class="swatch-card" onclick="copyHex('#7E9F94')">
+        <div class="swatch-color" style="background: #7E9F94;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Muted Sage</span>
+          <span class="swatch-hex">#7E9F94</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7-Tile Bento Board -->
+    <div class="bento-grid">
+      <!-- Tile 1: Signage Totem -->
+      <div class="bento-card card-tile1">
+        <img src="assets/tile1-signage.jpg" alt="Nivora architectural vertical totem pillar" loading="lazy">
+      </div>
+
+      <!-- Tile 2: iOS Dock -->
+      <div class="bento-card card-tile2">
+        <img src="assets/tile2-dock.jpg" alt="Nivora iOS dock app icon" loading="lazy">
+      </div>
+
+      <!-- Tile 3: Hardware In-Situ -->
+      <div class="bento-card card-tile3">
+        <img src="assets/tile3-phone.jpg" alt="Nivora smartphone device mockup" loading="lazy">
+      </div>
+
+      <!-- Tile 4: Center Hero Specimen -->
+      <div class="bento-card card-tile4">
+        <svg class="hero-glyph" viewBox="0 0 120 120" fill="none">
+          <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+          <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+          <circle cx="26" cy="88" r="6" fill="currentColor"/>
+        </svg>
+        <div class="hero-wordmark">nivora</div>
+        <p class="hero-tagline">Intelligent Software & Distributed Systems</p>
+        <div class="hero-actions">
+          <button class="hero-btn hero-btn-dark" onclick="copySvg()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy SVG Mark
+          </button>
+          <a class="hero-btn hero-btn-outline" href="assets/nivora-lockup.svg" download="nivora-lockup.svg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Master Lockup
+          </a>
+        </div>
+      </div>
+
+      <!-- Tile 5: Portrait Collateral 1 -->
+      <div class="bento-card card-tile5">
+        <img src="assets/tile5-portrait.jpg" alt="Nivora executive portrait on geometric grid" loading="lazy">
+      </div>
+
+      <!-- Tile 6: Business Cards -->
+      <div class="bento-card card-tile6">
+        <img src="assets/tile6-cards.jpg" alt="Nivora edge-painted tactile business cards" loading="lazy">
+      </div>
+
+      <!-- Tile 7: Portrait Collateral 2 -->
+      <div class="bento-card card-tile7">
+        <img src="assets/tile7-editorial.jpg" alt="Nivora applied engineering editorial specimen" loading="lazy">
+      </div>
+    </div>
+
+    <!-- 3-Step Logo Stress Test Suite -->
+    <section class="stress-suite">
+      <div class="suite-header">
+        <div>
+          <h2>Logo Stress Test Suite</h2>
+          <p>Optical durability and retention audit under extreme rendering constraints.</p>
+        </div>
+        <div class="brand-meta-badge">Pass: 3 / 3 Audits</div>
+      </div>
+
+      <div class="suite-grid">
+        <!-- Test 1: Optical Blur -->
+        <div class="stress-panel">
+          <div class="panel-title">
+            <span>Test 01</span>
+            <span>•</span>
+            <span>Optical Blur / Silhouette</span>
+          </div>
+          <p class="panel-desc">Validates immediate shape recognition when vision is blurred or defocussed.</p>
+          <div class="blur-preview-box">
+            <svg id="blurMark" class="blur-target" viewBox="0 0 120 120" fill="none">
+              <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+              <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+              <circle cx="26" cy="88" r="6" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="slider-control">
+            <input type="range" id="blurRange" min="0" max="24" value="0" oninput="updateBlur(this.value)">
+            <span id="blurVal" class="slider-val">0px</span>
+          </div>
+        </div>
+
+        <!-- Test 2: Multi-Scale Matrix -->
+        <div class="stress-panel">
+          <div class="panel-title">
+            <span>Test 02</span>
+            <span>•</span>
+            <span>Multi-Scale Matrix</span>
+          </div>
+          <p class="panel-desc">Counter-space legibility from 128px master display down to 16px favicon.</p>
+          <div class="scale-matrix-box">
+            <div class="scale-unit">
+              <svg class="scale-svg" width="64" height="64" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span class="scale-label">64px</span>
+            </div>
+            <div class="scale-unit">
+              <svg class="scale-svg" width="32" height="32" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span class="scale-label">32px</span>
+            </div>
+            <div class="scale-unit">
+              <svg class="scale-svg" width="24" height="24" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span class="scale-label">24px</span>
+            </div>
+            <div class="scale-unit">
+              <svg class="scale-svg" width="16" height="16" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span class="scale-label">16px</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test 3: High Contrast Inversion -->
+        <div class="stress-panel">
+          <div class="panel-title">
+            <span>Test 03</span>
+            <span>•</span>
+            <span>Substrate Inversion</span>
+          </div>
+          <p class="panel-desc">Contrast luminance and tonal balance across polarity reversals.</p>
+          <div class="contrast-box">
+            <div class="contrast-sub sub-dark">
+              <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span>Substrate #021617</span>
+            </div>
+            <div class="contrast-sub sub-light">
+              <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+                <path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="currentColor"/>
+                <path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="currentColor"/>
+                <circle cx="26" cy="88" r="6" fill="currentColor"/>
+              </svg>
+              <span>Substrate #D8F84C</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast">Copied to clipboard</div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyHex(hex) {
+      navigator.clipboard.writeText(hex).then(() => {
+        showToast(`Copied ${hex}`);
+      });
+    }
+
+    function copySvg() {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none"><path d="M 14 100 L 14 62 C 14 36.596 34.596 16 60 16 L 60 40 C 47.85 40 38 49.85 38 62 L 38 100 Z" fill="#D8F84C"/><path d="M 66 16 C 91.404 16 112 36.596 112 62 C 112 87.404 91.404 108 66 108 L 66 84 C 78.15 84 88 74.15 88 62 C 88 49.85 78.15 40 66 40 Z" fill="#D8F84C"/><circle cx="26" cy="88" r="6" fill="#D8F84C"/></svg>`;
+      navigator.clipboard.writeText(svg).then(() => {
+        showToast('SVG code copied to clipboard');
+      });
+    }
+
+    function updateBlur(val) {
+      document.getElementById('blurMark').style.filter = `blur(${val}px)`;
+      document.getElementById('blurVal').textContent = `${val}px`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Runloop — Every Agent. One Control Plane.</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Pixelify+Sans:wght@600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-canvas: #F8F8F5;
+      --bg-panel: #FFFFFF;
+      --color-black: #0E0F11;
+      --color-orange: #FF4B00;
+      --color-orange-hover: #E04200;
+      --color-orange-light: rgba(255, 75, 0, 0.08);
+      --color-muted: #646560;
+      --color-gutter: #8E8F89;
+      --border-grid: #E5E5DC;
+      --border-subtle: #EDEDE4;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-pixel: 'Pixelify Sans', monospace;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--color-black);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Top Global Nav */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 248, 245, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-grid);
+    }
+    .nav-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 2rem;
+    }
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--color-black);
+    }
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .brand-icon span {
+      background: var(--color-black);
+      border-radius: 1px;
+    }
+    .brand-icon span.accent {
+      background: var(--color-orange);
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--color-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--color-black);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--color-orange);
+      color: #FFFFFF;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.15s ease, transform 0.15s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-cta:hover {
+      background: var(--color-orange-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Main Grid Frame with Left Technical Gutter */
+    .page-frame {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      border-left: 1px solid var(--border-grid);
+      border-right: 1px solid var(--border-grid);
+      background: var(--bg-canvas);
+      min-height: calc(100vh - 64px);
+    }
+
+    .gutter-rail {
+      border-right: 1px solid var(--border-grid);
+      padding: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-gutter);
+      user-select: none;
+    }
+    .gutter-num {
+      padding: 0.25rem 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .content-flow {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Section 01: Telemetry Banner */
+    .sec-01 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .pulse-beacon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    /* Section 02: Hero */
+    .sec-02 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 4.5rem 2.5rem 4rem;
+      position: relative;
+    }
+    .hero-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .corner-pixel-marker {
+      width: 14px;
+      height: 14px;
+      background: var(--color-orange);
+      clip-path: polygon(0 0, 100% 0, 100% 33%, 33% 33%, 33% 100%, 0 100%);
+    }
+
+    /* Interactive Font Toggle (Left vs Right Reference) */
+    .style-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #EFEFE9;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border-grid);
+    }
+    .style-btn {
+      background: transparent;
+      border: none;
+      padding: 0.35rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .style-btn.active {
+      background: #FFFFFF;
+      color: var(--color-black);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      font-weight: 600;
+    }
+
+    /* Headline */
+    .hero-headline {
+      font-size: clamp(3rem, 6.5vw, 5.5rem);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.75rem;
+      max-width: 960px;
+    }
+    .hero-headline .line-1 {
+      display: block;
+      font-family: var(--font-display);
+      transition: font-family 0.2s ease;
+    }
+    .hero-headline .line-2 {
+      display: block;
+      color: var(--color-orange);
+      font-family: var(--font-pixel);
+      letter-spacing: -0.01em;
+    }
+
+    /* Headline Font Modes */
+    body.mode-pixel .hero-headline .line-1 {
+      font-family: var(--font-pixel);
+      letter-spacing: -0.01em;
+    }
+    body.mode-sans .hero-headline .line-2 {
+      font-family: var(--font-display);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-sub {
+      font-size: 1.25rem;
+      color: var(--color-muted);
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      color: var(--color-black);
+      padding: 0.6rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .btn-secondary:hover {
+      background: #F4F4EE;
+      border-color: #D4D4CA;
+    }
+
+    .cli-install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-black);
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+    .cli-install-box:hover {
+      border-color: var(--color-orange);
+    }
+    .cli-prefix {
+      color: var(--color-muted);
+    }
+    .cli-copy-icon {
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+    }
+    .cli-install-box:hover .cli-copy-icon {
+      color: var(--color-orange);
+    }
+
+    /* Section 03: Live Interactive Routing Mesh */
+    .sec-03 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 2.5rem;
+      background: #FAFAF8;
+    }
+    .mesh-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+    .mesh-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .live-runs-stat {
+      color: var(--color-orange);
+      font-weight: 600;
+    }
+
+    /* Routing Interactive Canvas Container */
+    .routing-board {
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      border-radius: 8px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Grid Layout for Routing Mesh */
+    .mesh-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mesh-node {
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      border-radius: 6px;
+      padding: 1.25rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .mesh-node:hover, .mesh-node.active {
+      border-color: var(--color-orange);
+      box-shadow: 0 8px 24px rgba(255, 75, 0, 0.12);
+      transform: translateY(-2px);
+    }
+    .mesh-node.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-orange);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .node-glyph {
+      width: 22px;
+      height: 22px;
+      color: var(--color-orange);
+    }
+    .node-latency {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      background: #F4F4EE;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .node-name {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .node-status {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+
+    /* Texture Crosshatch Block */
+    .pattern-card {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 75, 0, 0.1),
+        rgba(255, 75, 0, 0.1) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      border: 1px solid rgba(255, 75, 0, 0.25);
+      border-radius: 6px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-orange);
+      font-weight: 600;
+    }
+
+    /* Live Telemetry Inspector Drawer */
+    .inspector-panel {
+      margin-top: 2rem;
+      background: #0E0F11;
+      color: #E2E8F0;
+      border-radius: 6px;
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      display: none;
+    }
+    .inspector-panel.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .inspector-top {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #2D3748;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      color: #A0AEC0;
+    }
+    .inspector-top span.node-tag {
+      color: var(--color-orange);
+      font-weight: 600;
+    }
+
+    /* Section 04: Engineering Pillars */
+    .sec-04 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 4rem 2.5rem;
+    }
+    .sec-04 h2 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .sec-04 p.lead {
+      color: var(--color-muted);
+      font-size: 1.125rem;
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .pillar-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .pillar-card:hover {
+      border-color: var(--color-orange);
+      transform: translateY(-2px);
+    }
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--color-orange-light);
+      color: var(--color-orange);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .pillar-card h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .pillar-card p {
+      color: var(--color-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Section 05: Code Sandbox & SDK Tabs */
+    .sec-05 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 4rem 2.5rem;
+      background: #FAFAF8;
+    }
+    .code-container {
+      background: #0E0F11;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #232529;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+    }
+    .code-tabs {
+      display: flex;
+      background: #181A1F;
+      border-bottom: 1px solid #232529;
+      padding: 0 1rem;
+    }
+    .code-tab {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      padding: 0.85rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .code-tab:hover {
+      color: #FFFFFF;
+    }
+    .code-tab.active {
+      color: #FFFFFF;
+      border-bottom-color: var(--color-orange);
+    }
+    .code-block {
+      padding: 1.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: #E2E8F0;
+      overflow-x: auto;
+    }
+    .code-block .kw { color: #F43F5E; }
+    .code-block .fn { color: #38BDF8; }
+    .code-block .str { color: #34D399; }
+    .code-block .cm { color: #64748B; font-style: italic; }
+
+    /* Section 06: Pricing */
+    .sec-06 {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 4rem 2.5rem;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .pricing-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-grid);
+      border-radius: 8px;
+      padding: 2.25rem;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--color-orange);
+      box-shadow: 0 8px 30px rgba(255, 75, 0, 0.08);
+    }
+    .pricing-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -11px;
+      right: 20px;
+      background: var(--color-orange);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .price-val {
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      margin: 1rem 0 0.5rem;
+    }
+    .price-val span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-muted);
+    }
+    .pricing-features {
+      list-style: none;
+      margin: 1.5rem 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-muted);
+    }
+    .pricing-features li.active {
+      color: var(--color-black);
+    }
+
+    /* Footer */
+    .sec-footer {
+      padding: 3rem 2.5rem;
+      background: #F4F4EE;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--color-muted);
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      color: var(--color-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .footer-links a:hover {
+      color: var(--color-black);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--color-black);
+      color: #FFFFFF;
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .page-frame {
+        grid-template-columns: 1fr;
+      }
+      .gutter-rail {
+        display: none;
+      }
+      .mesh-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sec-02, .sec-03, .sec-04, .sec-05, .sec-06 {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Nav -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="../../../" class="brand-lockup">
+        <div class="brand-icon">
+          <span></span><span class="accent"></span><span></span>
+          <span class="accent"></span><span style="background:transparent;"></span><span class="accent"></span>
+          <span></span><span class="accent"></span><span></span>
+        </div>
+        <span class="brand-name">Runloop</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#mesh">Control Plane</a></li>
+        <li><a href="#features">Architecture</a></li>
+        <li><a href="#sdk">Developers</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-cta" onclick="triggerTrial()">Start free trial &rarr;</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Frame with Gutter Rail -->
+  <div class="page-frame">
+    <!-- Left Gutter Rail -->
+    <aside class="gutter-rail">
+      <span class="gutter-num">01</span>
+      <span class="gutter-num">02</span>
+      <span class="gutter-num">03</span>
+      <span class="gutter-num">04</span>
+      <span class="gutter-num">05</span>
+      <span class="gutter-num">06</span>
+    </aside>
+
+    <!-- Main Content Stream -->
+    <main class="content-flow">
+
+      <!-- Section 01: Telemetry Banner -->
+      <section class="sec-01">
+        <div class="pulse-beacon">
+          <span class="pulse-dot"></span>
+          <span>SYSTEM OPERATIONAL &bull; 99.998% UPTIME</span>
+        </div>
+        <div>
+          <span>ROUTED <span id="telemetryRuns">14,892,104</span> AGENT RUNS THIS WEEK</span>
+        </div>
+      </section>
+
+      <!-- Section 02: Hero -->
+      <section class="sec-02">
+        <div class="hero-top-bar">
+          <div class="corner-pixel-marker"></div>
+          <!-- Live Typography Mode Switcher (Left vs Right reference) -->
+          <div class="style-switcher">
+            <button class="style-btn active" id="btnHybrid" onclick="setStyleMode('hybrid')">Hybrid (Left)</button>
+            <button class="style-btn" id="btnPixel" onclick="setStyleMode('pixel')">Full Pixel (Right)</button>
+            <button class="style-btn" id="btnSans" onclick="setStyleMode('sans')">Clean Sans</button>
+          </div>
+        </div>
+
+        <h1 class="hero-headline">
+          <span class="line-1">Every agent.</span>
+          <span class="line-2">One control plane.</span>
+        </h1>
+
+        <p class="hero-sub">
+          Deploy, route and monitor AI agents in production from one place. No glue code, no scattered scripts, no guessing what your agents did at 3 AM.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn-cta" onclick="triggerTrial()">Start free trial &rarr;</button>
+          <a href="#sdk" class="btn-secondary">Read the docs</a>
+
+          <div class="cli-install-box" onclick="copyCli()">
+            <span class="cli-prefix">$</span>
+            <span>npm install @runloop/sdk</span>
+            <svg class="cli-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 03: Live Interactive Routing Mesh -->
+      <section id="mesh" class="sec-03">
+        <div class="mesh-header">
+          <div class="mesh-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Runtime Flow Topology</span>
+          </div>
+          <div>
+            RUNS: <span class="live-runs-stat" id="meshCounter">14,892,104</span>
+          </div>
+        </div>
+
+        <div class="routing-board">
+          <div class="mesh-grid">
+            <!-- Node 1: Router -->
+            <div class="mesh-node active" onclick="inspectNode('ROUTER', '1.160ms', 'Deterministic semantic model gateway. Evaluates prompt intent, context window budget, and directs payload to optimal frontier model.')">
+              <div class="node-header">
+                <svg class="node-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span class="node-latency">1.160ms</span>
+              </div>
+              <div class="node-name">ROUTER</div>
+              <div class="node-status">Active &bull; 99.4% cache hit</div>
+            </div>
+
+            <!-- Pattern cell -->
+            <div class="pattern-card">
+              CROSSHATCH #01
+            </div>
+
+            <!-- Node 2: Retrieve -->
+            <div class="mesh-node" onclick="inspectNode('RETRIEVE', '0.670ms', 'Hybrid vector index & dense memory retrieval. Sub-millisecond ANN search across 40M enterprise embeddings.')">
+              <div class="node-header">
+                <svg class="node-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+                <span class="node-latency">0.670ms</span>
+              </div>
+              <div class="node-name">RETRIEVE</div>
+              <div class="node-status">Hybrid Recall &bull; 128-dim</div>
+            </div>
+
+            <!-- Node 3: Tool Call -->
+            <div class="mesh-node" onclick="inspectNode('TOOL CALL', '2.307ms', 'Firewalled gVisor sandbox container. Executes bash, code compilation, and database queries in 12ms cold start.')">
+              <div class="node-header">
+                <svg class="node-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                <span class="node-latency">2.307ms</span>
+              </div>
+              <div class="node-name">TOOL CALL</div>
+              <div class="node-status">Isolated gVisor Sandbox</div>
+            </div>
+
+            <!-- Node 4: Verify -->
+            <div class="mesh-node" onclick="inspectNode('VERIFY', '2.190ms', 'Deterministic guardrail evaluation. Enforces JSON Schema integrity, PII masking, and anti-hallucination policy.')">
+              <div class="node-header">
+                <svg class="node-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span class="node-latency">2.190ms</span>
+              </div>
+              <div class="node-name">VERIFY</div>
+              <div class="node-status">Guardrails &bull; 0 Violations</div>
+            </div>
+          </div>
+
+          <!-- Inspector Panel -->
+          <div id="inspectorPanel" class="inspector-panel open">
+            <div class="inspector-top">
+              <span>NODE TELEMETRY: <span class="node-tag" id="inspName">ROUTER</span></span>
+              <span>LATENCY: <span id="inspLatency">1.160ms</span></span>
+              <span>STATUS: HTTP 200 OK</span>
+            </div>
+            <p id="inspDesc" style="color: #CBD5E1; margin-bottom: 0.75rem;">
+              Deterministic semantic model gateway. Evaluates prompt intent, context window budget, and directs payload to optimal frontier model.
+            </p>
+            <div style="color: #64748B; font-size: 0.75rem;">
+              TRACE_ID: <span style="color:#94A3B8;">0x8f2a1b94</span> &bull; MEMORY: <span style="color:#94A3B8;">24.2 MB</span> &bull; INPUT_TOKENS: <span style="color:#94A3B8;">1,420</span> &bull; OUTPUT_TOKENS: <span style="color:#94A3B8;">312</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 04: Features / Pillars -->
+      <section id="features" class="sec-04">
+        <h2>Production Grade Agent Infrastructure</h2>
+        <p class="lead">Built from first principles for distributed multi-agent systems operating under sub-second SLA requirements.</p>
+
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            </div>
+            <h3>Sub-Millisecond Gateway</h3>
+            <p>Direct edge termination with zero cold-starts. Stream token chunks with zero buffering overhead across 35 edge regions globally.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h3>Deterministic Guardrails</h3>
+            <p>Compile TypeScript zod or JSON schemas directly into the inference stream. Guarantee structured JSON outputs with zero hallucinated keys.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            </div>
+            <h3>Distributed Short & Long Memory</h3>
+            <p>Unified transactional memory state. Shared vector recall across concurrent agents with automatic deduplication and TTL expiration.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 05: SDK Code Tabs -->
+      <section id="sdk" class="sec-05">
+        <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Developer First Integration</h2>
+        <p style="color: var(--color-muted); margin-bottom: 2rem;">Drop in 4 lines of code to enable automatic routing, tool firewalls, and observability.</p>
+
+        <div class="code-container">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="setLang('ts')">TypeScript</button>
+            <button class="code-tab" onclick="setLang('py')">Python</button>
+            <button class="code-tab" onclick="setLang('curl')">cURL</button>
+          </div>
+          <div id="codeDisplay" class="code-block">
+<span class="kw">import</span> { Runloop } <span class="kw">from</span> <span class="str">'@runloop/sdk'</span>;
+
+<span class="kw">const</span> rl = <span class="kw">new</span> <span class="fn">Runloop</span>({ apiKey: process.env.RUNLOOP_KEY });
+
+<span class="cm">// Spawn routed agent session with automatic tool call verification</span>
+<span class="kw">const</span> session = <span class="kw">await</span> rl.agents.<span class="fn">create</span>({
+  model: <span class="str">'auto/frontier-fast'</span>,
+  guardrails: { strictJson: <span class="kw">true</span>, piiMask: <span class="kw">true</span> },
+  tools: [rl.tools.<span class="fn">codeSandbox</span>(), rl.tools.<span class="fn">webSearch</span>()]
+});
+
+<span class="kw">const</span> stream = <span class="kw">await</span> session.<span class="fn">run</span>({ prompt: <span class="str">'Refactor auth handler to edge'</span> });
+<span class="kw">for</span> <span class="kw">await</span> (<span class="kw">const</span> chunk <span class="kw">of</span> stream) {
+  process.stdout.<span class="fn">write</span>(chunk);
+}
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 06: Pricing -->
+      <section id="pricing" class="sec-06">
+        <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Predictable, Volume-Tiered Pricing</h2>
+        <p style="color: var(--color-muted);">No opaque token markups. Run at raw provider cost plus flat routing fee.</p>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Developer</h3>
+            <p style="color: var(--color-muted); font-size: 0.85rem;">For prototypes and local testing</p>
+            <div class="price-val">$0 <span>/ month</span></div>
+            <ul class="pricing-features">
+              <li class="active">&check; Up to 50,000 runs / month</li>
+              <li class="active">&check; 5 concurrent agent sandboxes</li>
+              <li class="active">&check; 7-day trace retention</li>
+              <li>&times; Dedicated cluster IP</li>
+            </ul>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="triggerTrial()">Deploy Free</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <h3>Production</h3>
+            <p style="color: var(--color-muted); font-size: 0.85rem;">For scale AI products and startups</p>
+            <div class="price-val">$49 <span>/ month</span></div>
+            <ul class="pricing-features">
+              <li class="active">&check; Up to 2,000,000 runs / month</li>
+              <li class="active">&check; Unlimited concurrent sandboxes</li>
+              <li class="active">&check; 90-day full trace telemetry</li>
+              <li class="active">&check; Custom fallback gateway rules</li>
+            </ul>
+            <button class="btn-cta" style="width: 100%; justify-content: center;" onclick="triggerTrial()">Start 14-Day Pro Trial</button>
+          </div>
+
+          <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <p style="color: var(--color-muted); font-size: 0.85rem;">For regulated high-volume clusters</p>
+            <div class="price-val">Custom</div>
+            <ul class="pricing-features">
+              <li class="active">&check; Unlimited runs & zero rate limits</li>
+              <li class="active">&check; VPC peering & on-prem deployment</li>
+              <li class="active">&check; SOC2 Type II compliance report</li>
+              <li class="active">&check; 24/7 dedicated engineering SLA</li>
+            </ul>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="triggerTrial()">Contact Sales</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="sec-footer">
+        <div class="footer-left">
+          <span style="font-weight: 700; color: var(--color-black);">Runloop</span>
+          <span>&copy; 2026 Runloop Technologies Inc. All rights reserved.</span>
+        </div>
+        <div class="footer-links">
+          <a href="../../../">Design Library</a>
+          <a href="#mesh">Telemetry</a>
+          <a href="#sdk">Documentation</a>
+          <a href="#pricing">Terms</a>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Copied to clipboard</div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyCli() {
+      navigator.clipboard.writeText('npm install @runloop/sdk').then(() => {
+        showToast('Copied: npm install @runloop/sdk');
+      });
+    }
+
+    function triggerTrial() {
+      showToast('Runloop console access provisioned');
+    }
+
+    // Typography Mode Switcher (Left vs Right reference)
+    function setStyleMode(mode) {
+      document.body.classList.remove('mode-pixel', 'mode-sans');
+      document.getElementById('btnHybrid').classList.remove('active');
+      document.getElementById('btnPixel').classList.remove('active');
+      document.getElementById('btnSans').classList.remove('active');
+
+      if (mode === 'pixel') {
+        document.body.classList.add('mode-pixel');
+        document.getElementById('btnPixel').classList.add('active');
+        showToast('Typography switched to 8-Bit Pixelated (Right Reference)');
+      } else if (mode === 'sans') {
+        document.body.classList.add('mode-sans');
+        document.getElementById('btnSans').classList.add('active');
+        showToast('Typography switched to Clean Sans-Serif');
+      } else {
+        document.getElementById('btnHybrid').classList.add('active');
+        showToast('Typography switched to Hybrid Sans/Pixel (Left Reference)');
+      }
+    }
+
+    // Mesh Node Inspection
+    function inspectNode(name, latency, desc) {
+      document.querySelectorAll('.mesh-node').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      document.getElementById('inspName').textContent = name;
+      document.getElementById('inspLatency').textContent = latency;
+      document.getElementById('inspDesc').textContent = desc;
+    }
+
+    // Live Run Counter Simulation
+    let runCount = 14892104;
+    setInterval(() => {
+      runCount += Math.floor(Math.random() * 5) + 1;
+      const formatted = runCount.toLocaleString();
+      document.getElementById('telemetryRuns').textContent = formatted;
+      document.getElementById('meshCounter').textContent = formatted;
+    }, 1800);
+
+    // Code Tabs
+    const codeSnippets = {
+      ts: `<span class="kw">import</span> { Runloop } <span class="kw">from</span> <span class="str">'@runloop/sdk'</span>;
+
+<span class="kw">const</span> rl = <span class="kw">new</span> <span class="fn">Runloop</span>({ apiKey: process.env.RUNLOOP_KEY });
+
+<span class="cm">// Spawn routed agent session with automatic tool call verification</span>
+<span class="kw">const</span> session = <span class="kw">await</span> rl.agents.<span class="fn">create</span>({
+  model: <span class="str">'auto/frontier-fast'</span>,
+  guardrails: { strictJson: <span class="kw">true</span>, piiMask: <span class="kw">true</span> },
+  tools: [rl.tools.<span class="fn">codeSandbox</span>(), rl.tools.<span class="fn">webSearch</span>()]
+});
+
+<span class="kw">const</span> stream = <span class="kw">await</span> session.<span class="fn">run</span>({ prompt: <span class="str">'Refactor auth handler to edge'</span> });
+<span class="kw">for</span> <span class="kw">await</span> (<span class="kw">const</span> chunk <span class="kw">of</span> stream) {
+  process.stdout.<span class="fn">write</span>(chunk);
+}`,
+      py: `<span class="kw">from</span> runloop <span class="kw">import</span> Runloop
+
+rl = <span class="fn">Runloop</span>(api_key=<span class="str">"rl_live_9482f"</span>)
+
+<span class="cm"># Orchestrate high-speed tool routing</span>
+agent = rl.agents.<span class="fn">create</span>(
+    model=<span class="str">"auto/frontier-fast"</span>,
+    guardrails={<span class="str">"strict_json"</span>: <span class="kw">True</span>},
+    tools=[rl.tools.python_repl(), rl.tools.retrieval()]
+)
+
+<span class="kw">for</span> event <span class="kw">in</span> agent.<span class="fn">stream</span>(prompt=<span class="str">"Compute portfolio risk matrix"</span>):
+    <span class="fn">print</span>(event.delta, end=<span class="str">""</span>, flush=<span class="kw">True</span>)`,
+      curl: `<span class="cm"># Direct edge inference invocation with guardrail filter</span>
+curl -X POST https://api.runloop.ai/v1/agent/run \\
+  -H <span class="str">"Authorization: Bearer $RUNLOOP_KEY"</span> \\
+  -H <span class="str">"Content-Type: application/json"</span> \\
+  -d <span class="str">'{
+    "agent_id": "ag_9918",
+    "prompt": "Synthesize telemetry logs for incident 402",
+    "route": "deterministic/latency_optimized"
+  }'</span>`
+    };
+
+    function setLang(lang) {
+      document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('codeDisplay').innerHTML = codeSnippets[lang];
+    }
+  </script>
+</body>
+</html>

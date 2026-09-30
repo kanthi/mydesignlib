@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="obsidian">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Klyph — Brand Identity & Algorithmic Design System</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-cobalt: #002BFF;
+      --color-cobalt-glow: rgba(0, 43, 255, 0.25);
+      --color-obsidian: #09090B;
+      --color-surface: #121215;
+      --color-surface-hover: #18181D;
+      --color-border: #23232A;
+      --color-text: #FFFFFF;
+      --color-text-muted: #8E8E9F;
+      --color-text-dim: #545463;
+      --color-walnut: #231C18;
+      --color-white: #FFFFFF;
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="cobalt"] {
+      --color-obsidian: #002BFF;
+      --color-surface: #0A32FF;
+      --color-surface-hover: #1A3FFF;
+      --color-border: rgba(255, 255, 255, 0.2);
+      --color-text: #FFFFFF;
+      --color-text-muted: #D1D8FF;
+      --color-text-dim: #8FA2FF;
+      --color-cobalt: #FFFFFF;
+      --color-cobalt-glow: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="white"] {
+      --color-obsidian: #F8F9FA;
+      --color-surface: #FFFFFF;
+      --color-surface-hover: #F1F3F5;
+      --color-border: #E5E7EB;
+      --color-text: #09090B;
+      --color-text-muted: #6B7280;
+      --color-text-dim: #9CA3AF;
+      --color-cobalt: #002BFF;
+      --color-cobalt-glow: rgba(0, 43, 255, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--color-obsidian);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      overflow-x: hidden;
+    }
+
+    /* Ambient noise & background grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+      background-color: rgba(9, 9, 11, 0.75);
+      transition: background-color 0.4s ease, border-color 0.4s ease;
+    }
+    [data-theme="cobalt"] header { background-color: rgba(0, 43, 255, 0.85); }
+    [data-theme="white"] header { background-color: rgba(248, 249, 250, 0.85); }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand-mark-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-mark-mini {
+      width: 28px;
+      height: 28px;
+      color: var(--color-cobalt);
+      transition: transform 0.3s ease;
+    }
+    .brand-mark-link:hover .brand-mark-mini {
+      transform: rotate(45deg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-transform: lowercase;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Theme Switcher */
+    .theme-switcher {
+      display: flex;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .theme-btn {
+      background: none;
+      border: none;
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      border-radius: 999px;
+      transition: var(--transition);
+      letter-spacing: 0.03em;
+    }
+
+    .theme-btn:hover {
+      color: var(--color-text);
+    }
+
+    .theme-btn.active {
+      background: var(--color-cobalt);
+      color: #FFFFFF;
+    }
+    [data-theme="cobalt"] .theme-btn.active {
+      background: #FFFFFF;
+      color: #002BFF;
+    }
+
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-export:hover {
+      border-color: var(--color-cobalt);
+      background: var(--color-surface-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero-stage {
+      padding: 96px 0 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-cobalt);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      background: rgba(0, 43, 255, 0.08);
+      border: 1px solid rgba(0, 43, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+    [data-theme="cobalt"] .hero-eyebrow {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-lockup-stage {
+      width: 100%;
+      max-width: 680px;
+      margin: 24px auto 40px;
+      padding: 64px 32px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .hero-lockup-stage::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--color-cobalt-glow) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-mark-svg {
+      width: 130px;
+      height: 130px;
+      color: var(--color-cobalt);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .hero-mark-svg:hover {
+      transform: rotate(180deg) scale(1.05);
+    }
+
+    .hero-wordmark {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-top: 24px;
+      color: var(--color-text);
+      line-height: 1;
+      text-transform: lowercase;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-text-muted);
+      margin-top: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .stage-tools {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    /* Section Headers */
+    .section {
+      padding: 72px 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .section-head {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-cobalt);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    [data-theme="cobalt"] .section-num { color: #FFFFFF; }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .section-desc {
+      color: var(--color-text-muted);
+      max-width: 580px;
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    /* Tessellation Interactive Studio */
+    .tess-studio {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .tess-viewport {
+      background: #000000;
+      border-radius: var(--radius-md);
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: crosshair;
+    }
+
+    .tess-viewport canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tess-viewport-overlay {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #94A3B8;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 4px 10px;
+      border-radius: 4px;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+
+    .tess-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .control-slider {
+      width: 100%;
+      accent-color: var(--color-cobalt);
+    }
+
+    .btn-grid-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .option-btn {
+      background: var(--color-surface-hover);
+      border: 1px solid var(--color-border);
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .option-btn:hover {
+      border-color: var(--color-cobalt);
+    }
+    .option-btn.active {
+      background: var(--color-cobalt);
+      color: #FFFFFF;
+      border-color: var(--color-cobalt);
+    }
+
+    /* Blueprint & Geometry Section */
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .blueprint-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .blueprint-canvas-wrap {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .blueprint-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .anatomy-list {
+      width: 100%;
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .anatomy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: var(--color-surface-hover);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+    }
+
+    .anatomy-badge {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--color-cobalt);
+      font-size: 11px;
+      background: rgba(0, 43, 255, 0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    [data-theme="cobalt"] .anatomy-badge {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Multi-Scale Stress Tray */
+    .stress-tray {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .stress-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+    }
+    .stress-card:hover {
+      border-color: var(--color-cobalt);
+      transform: translateY(-2px);
+    }
+
+    .stress-mark-holder {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-cobalt);
+    }
+
+    .stress-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Physical & Digital Touchpoint Specimens */
+    .touchpoints-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .touchpoint-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+    }
+
+    .touchpoint-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-cobalt);
+      margin-bottom: 8px;
+    }
+    [data-theme="cobalt"] .touchpoint-tag { color: #FFFFFF; }
+
+    .touchpoint-heading {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .touchpoint-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #08080A;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      padding: 32px;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+
+    /* Mockup 1: Fluted Walnut Block & Dual Business Cards */
+    .walnut-block {
+      width: 260px;
+      height: 140px;
+      background: repeating-linear-gradient(
+        90deg,
+        #1E1612 0px,
+        #1E1612 10px,
+        #2A201A 10px,
+        #2A201A 14px,
+        #150F0D 14px,
+        #150F0D 16px
+      );
+      border-radius: 8px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 2px 3px rgba(255, 255, 255, 0.08);
+      position: relative;
+      transform: rotateX(25deg) rotateY(-15deg) rotateZ(10deg);
+      transform-style: preserve-3d;
+    }
+
+    .card-black {
+      position: absolute;
+      width: 200px;
+      height: 115px;
+      background: #141416;
+      border: 1px solid #282830;
+      border-radius: 6px;
+      box-shadow: -15px 20px 35px rgba(0, 0, 0, 0.85);
+      top: -30px;
+      left: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateZ(30px) rotateZ(-12deg);
+      transition: transform 0.4s ease;
+    }
+    .touchpoint-box:hover .card-black {
+      transform: translateZ(45px) rotateZ(-6deg);
+    }
+
+    .card-white {
+      position: absolute;
+      width: 200px;
+      height: 115px;
+      background: #FDFDFD;
+      color: #09090B;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      box-shadow: 10px 25px 40px rgba(0, 0, 0, 0.7);
+      top: 15px;
+      left: 60px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateZ(15px) rotateZ(8deg);
+      transition: transform 0.4s ease;
+    }
+    .touchpoint-box:hover .card-white {
+      transform: translateZ(25px) rotateZ(14deg);
+    }
+
+    .foil-mark-svg {
+      width: 32px;
+      height: 32px;
+      color: var(--color-cobalt);
+      filter: drop-shadow(0 2px 8px rgba(0, 43, 255, 0.4));
+    }
+
+    .card-meta-text {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    /* Mockup 2: Monograph Clamshell Box */
+    .monograph-case {
+      width: 280px;
+      height: 200px;
+      background: #0F0F12;
+      border: 2px solid #002BFF;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 43, 255, 0.25);
+      position: relative;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotateX(20deg) rotateZ(-6deg);
+    }
+
+    .monograph-interior {
+      width: 92%;
+      height: 92%;
+      background: #002BFF;
+      border-radius: 8px;
+      box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .monograph-book {
+      width: 86%;
+      height: 86%;
+      background: #111114;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 3px solid #23232A;
+    }
+
+    /* Mockup 3: Reeded Glass Letterhead */
+    .reeded-clip-stage {
+      width: 250px;
+      height: 280px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.08) 0px,
+        rgba(255, 255, 255, 0.08) 4px,
+        rgba(255, 255, 255, 0.02) 4px,
+        rgba(255, 255, 255, 0.02) 8px
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      position: relative;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .anodized-clip {
+      position: absolute;
+      top: -12px;
+      width: 64px;
+      height: 24px;
+      background: #002BFF;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 43, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .clip-rivet {
+      width: 6px;
+      height: 6px;
+      background: #FFFFFF;
+      border-radius: 50%;
+    }
+
+    .vellum-sheet {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      color: #111114;
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Mockup 4: Streetwear Oversized Boxy Tee */
+    .tee-canvas {
+      width: 260px;
+      height: 280px;
+      background: #101012;
+      border-radius: 20px 20px 8px 8px;
+      border: 1px solid #23232A;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 3px 10px rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tee-collar {
+      position: absolute;
+      top: -16px;
+      width: 80px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid #1A1A1E;
+      background: #08080A;
+    }
+
+    .tee-graphic {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tee-vertical-type {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.05em;
+      text-transform: lowercase;
+    }
+
+    .tee-matrix-svg {
+      width: 110px;
+      height: 140px;
+      color: #002BFF;
+    }
+
+    /* Chromatic Tokens */
+    .tokens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .token-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .token-card:hover {
+      border-color: var(--color-cobalt);
+      transform: translateY(-2px);
+    }
+
+    .token-swatch {
+      height: 80px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+    }
+
+    .token-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .token-hex {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .token-badge {
+      font-size: 10px;
+      background: var(--color-surface-hover);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--color-text-dim);
+    }
+
+    /* Live Typographic Specimen */
+    .typo-stage {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .typo-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .typo-live-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--color-text);
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.2;
+      resize: none;
+      margin-bottom: 24px;
+    }
+
+    .typo-hierarchy {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-sample-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .typo-sample-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-text-dim);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--color-cobalt);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-dim);
+    }
+
+    @media (max-width: 900px) {
+      .tess-studio {
+        grid-template-columns: 1fr;
+      }
+      .blueprint-grid,
+      .touchpoints-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-wordmark {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-inner">
+      <a href="#top" class="brand-mark-link">
+        <svg class="brand-mark-mini" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+        </svg>
+        <span class="brand-title">klyph</span>
+        <span class="brand-badge">ID: KLYPH-SYS-01</span>
+      </a>
+
+      <div class="header-actions">
+        <div class="theme-switcher">
+          <button class="theme-btn active" data-theme-val="obsidian">Obsidian</button>
+          <button class="theme-btn" data-theme-val="cobalt">Cobalt</button>
+          <button class="theme-btn" data-theme-val="white">White</button>
+        </div>
+
+        <a href="assets/mark.svg" download="klyph-mark.svg" class="btn-export">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export SVG
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Presentation Stage -->
+    <section class="hero-stage" id="top">
+      <div class="hero-eyebrow">
+        <span>●</span> Algorithmic Identity System & Type Foundry
+      </div>
+
+      <div class="hero-lockup-stage">
+        <svg class="hero-mark-svg" id="heroSvgMark" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+        </svg>
+
+        <h1 class="hero-wordmark">klyph</h1>
+        <p class="hero-tagline">Crafting symbols of connection at the intersection of design and technology.</p>
+
+        <div class="stage-tools">
+          <button class="btn-export" onclick="rotateMark()">Rotate Mark (45°)</button>
+          <button class="btn-export" onclick="copySvg()">Copy Vector XML</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01: Interactive Generative Tessellation Studio -->
+    <section class="section" id="tessellation">
+      <div class="section-head">
+        <div>
+          <div class="section-num">01 / Modular Architecture</div>
+          <h2 class="section-title">Generative Tessellation Studio</h2>
+          <p class="section-desc">The Klyph S-monogram is engineered to tile continuously in two dimensions. Move your cursor over the canvas to perturb the wave field.</p>
+        </div>
+      </div>
+
+      <div class="tess-studio">
+        <div class="tess-viewport" id="viewportContainer">
+          <canvas id="tessCanvas"></canvas>
+          <div class="tess-viewport-overlay">WAVE FIELD: <span id="mouseCoords">INTERACTIVE</span></div>
+        </div>
+
+        <div class="tess-controls">
+          <div class="control-group">
+            <div class="control-label">
+              <span>Grid Columns</span>
+              <span id="colVal">5</span>
+            </div>
+            <input type="range" class="control-slider" id="colSlider" min="2" max="8" value="5" />
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Grid Rows</span>
+              <span id="rowVal">5</span>
+            </div>
+            <input type="range" class="control-slider" id="rowSlider" min="2" max="8" value="5" />
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Unit Scale</span>
+              <span id="scaleVal">1.0x</span>
+            </div>
+            <input type="range" class="control-slider" id="scaleSlider" min="50" max="150" value="100" />
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Matrix Rotation</span>
+            </div>
+            <div class="btn-grid-options">
+              <button class="option-btn active" onclick="setMatrixRot(0)">0° Tile</button>
+              <button class="option-btn" onclick="setMatrixRot(45)">45° Iso</button>
+              <button class="option-btn" onclick="setMatrixRot(90)">90° S</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Colorway Mode</span>
+            </div>
+            <div class="btn-grid-options">
+              <button class="option-btn active" onclick="setTileColor('#002BFF', '#000000')">Cobalt</button>
+              <button class="option-btn" onclick="setTileColor('#FFFFFF', '#002BFF')">White/Blue</button>
+              <button class="option-btn" onclick="setTileColor('#111114', '#002BFF')">Obsidian</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02: Geometric Blueprint & Construction -->
+    <section class="section" id="geometry">
+      <div class="section-head">
+        <div>
+          <div class="section-num">02 / Mathematical Construction</div>
+          <h2 class="section-title">Geometric Grid & Anatomy</h2>
+          <p class="section-desc">Plotted within a 100×100 normalized coordinate system, governed by strict 180° rotational $C_2$ invariance.</p>
+        </div>
+      </div>
+
+      <div class="blueprint-grid">
+        <div class="blueprint-card">
+          <div class="blueprint-canvas-wrap">
+            <svg class="blueprint-svg" viewBox="-20 -20 140 140">
+              <!-- Grid background -->
+              <defs>
+                <pattern id="bpSmallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                </pattern>
+                <pattern id="bpBigGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                  <rect width="50" height="50" fill="url(#bpSmallGrid)"/>
+                  <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect x="-20" y="-20" width="140" height="140" fill="url(#bpBigGrid)" />
+
+              <!-- Clearspace boundary -->
+              <rect x="-10" y="-10" width="120" height="120" fill="none" stroke="rgba(0, 43, 255, 0.4)" stroke-dasharray="3,3" stroke-width="0.8" />
+              <text x="-8" y="-12" fill="rgba(0, 43, 255, 0.8)" font-family="var(--font-mono)" font-size="5">1.5X CLEARSPACE</text>
+
+              <!-- Central Crosshairs -->
+              <line x1="-20" y1="50" x2="120" y2="50" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="2,2" stroke-width="0.5" />
+              <line x1="50" y1="-20" x2="50" y2="120" stroke="rgba(255, 255, 255, 0.2)" stroke-dasharray="2,2" stroke-width="0.5" />
+              <circle cx="50" cy="50" r="2" fill="#002BFF" />
+              <text x="53" y="48" fill="#FFFFFF" font-family="var(--font-mono)" font-size="5">C(50,50)</text>
+
+              <!-- The Mark -->
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" fill="rgba(0, 43, 255, 0.35)" stroke="#002BFF" stroke-width="1.2" />
+
+              <!-- Arc guides -->
+              <circle cx="58" cy="44" r="26" fill="none" stroke="#FF0055" stroke-dasharray="2,2" stroke-width="0.6" opacity="0.6" />
+              <circle cx="42" cy="56" r="26" fill="none" stroke="#FF0055" stroke-dasharray="2,2" stroke-width="0.6" opacity="0.6" />
+              
+              <!-- Coordinate markers -->
+              <circle cx="96" cy="44" r="1.5" fill="#FFFFFF" />
+              <text x="92" y="41" fill="#FFFFFF" font-family="var(--font-mono)" font-size="4">(96, 44)</text>
+
+              <circle cx="36" cy="18" r="1.5" fill="#FFFFFF" />
+              <text x="22" y="16" fill="#FFFFFF" font-family="var(--font-mono)" font-size="4">(36, 18)</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="anatomy-list">
+          <div class="anatomy-item">
+            <span class="anatomy-badge">C2 ROTATION</span>
+            <div>
+              <strong>Rotational Invariance (180°)</strong>
+              <div style="color:var(--color-text-muted); font-size:12px; margin-top:2px;">The top right hooked lobe transforms into the bottom left lobe via (100 - x, 100 - y).</div>
+            </div>
+          </div>
+
+          <div class="anatomy-item">
+            <span class="anatomy-badge">MODULAR PITCH</span>
+            <div>
+              <strong>Interlocking Tab Coupling</strong>
+              <div style="color:var(--color-text-muted); font-size:12px; margin-top:2px;">Horizontal pitch &Delta;X = 78px, Vertical pitch &Delta;Y = 64px for gapless 2D tessellation.</div>
+            </div>
+          </div>
+
+          <div class="anatomy-item">
+            <span class="anatomy-badge">CONCENTRIC ARCS</span>
+            <div>
+              <strong>R26 Outer Arc / r14 Inner Throat</strong>
+              <div style="color:var(--color-text-muted); font-size:12px; margin-top:2px;">Consistent 12px optical stroke weight through the quadrant sweep prevents visual choking at small sizes.</div>
+            </div>
+          </div>
+
+          <div class="anatomy-item">
+            <span class="anatomy-badge">CLEARSPACE 1.5X</span>
+            <div>
+              <strong>Perimeter Exclusion Shield</strong>
+              <div style="color:var(--color-text-muted); font-size:12px; margin-top:2px;">No editorial typography or graphic elements may encroach within 1.5× the outer tab dimension.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03: Multi-Scale Stress Testing -->
+    <section class="section" id="scalability">
+      <div class="section-head">
+        <div>
+          <div class="section-num">03 / Optical Verification</div>
+          <h2 class="section-title">Multi-Scale Stress Tray</h2>
+          <p class="section-desc">Stress tested from 16px micro-favicon through 256px architectural masthead display.</p>
+        </div>
+      </div>
+
+      <div class="stress-tray">
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="16" height="16" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>16px</strong><br/>Favicon / UI Tab
+          </div>
+        </div>
+
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>24px</strong><br/>Toolbar / Nav
+          </div>
+        </div>
+
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>32px</strong><br/>App Icon
+          </div>
+        </div>
+
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="48" height="48" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>48px</strong><br/>Widget / Avatar
+          </div>
+        </div>
+
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="64" height="64" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>64px</strong><br/>Stationery Mark
+          </div>
+        </div>
+
+        <div class="stress-card">
+          <div class="stress-mark-holder">
+            <svg width="96" height="96" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+            </svg>
+          </div>
+          <div class="stress-meta">
+            <strong>96px</strong><br/>Hero Display
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04: Physical & Spatial Touchpoints -->
+    <section class="section" id="touchpoints">
+      <div class="section-head">
+        <div>
+          <div class="section-num">04 / Physical Applications</div>
+          <h2 class="section-title">Material Touchpoints</h2>
+          <p class="section-desc">Tactile manifestations spanning fluted timber stationery blocks, linen clamshell monograph cases, reeded glass folios, and heavyweight streetwear.</p>
+        </div>
+      </div>
+
+      <div class="touchpoints-grid">
+        <!-- Touchpoint 1: Fluted Walnut Desk Plinth -->
+        <div class="touchpoint-box">
+          <div class="touchpoint-tag">Specimen 01 // Stationery</div>
+          <h3 class="touchpoint-heading">Fluted Walnut & Dual Identity Cards</h3>
+
+          <div class="touchpoint-stage">
+            <div class="walnut-block">
+              <!-- Black Card -->
+              <div class="card-black">
+                <svg class="foil-mark-svg" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+                </svg>
+                <div class="card-meta-text" style="color: #64748B;">
+                  <span style="color:#FFFFFF; font-weight:700;">klyph</span><br/>
+                  TECH CREATIVE STUDIO
+                </div>
+              </div>
+
+              <!-- White Card -->
+              <div class="card-white">
+                <div style="font-family:var(--font-display); font-weight:800; font-size:14px; letter-spacing:-0.03em;">
+                  klyph.studio
+                </div>
+                <div class="card-meta-text" style="color: #475569;">
+                  N: SAMSON K.<br/>
+                  R: FOUNDING ARCHITECT<br/>
+                  T: +1 (415) 890-2210<br/>
+                  L: ZÜRICH / TOKYO
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Touchpoint 2: Monograph Clamshell Box -->
+        <div class="touchpoint-box">
+          <div class="touchpoint-tag">Specimen 02 // Packaging</div>
+          <h3 class="touchpoint-heading">Archival Monograph Clamshell Box</h3>
+
+          <div class="touchpoint-stage">
+            <div class="monograph-case">
+              <div class="monograph-interior">
+                <div class="monograph-book">
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <svg width="24" height="24" viewBox="0 0 100 100" fill="#002BFF">
+                      <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+                    </svg>
+                    <span style="font-family:var(--font-mono); font-size:7px; color:#6B7280;">VOL. 01 / 2026</span>
+                  </div>
+
+                  <div>
+                    <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#002BFF; letter-spacing:-0.04em;">klyph</div>
+                    <div style="font-family:var(--font-body); font-size:8px; color:#FFFFFF; margin-top:2px;">crafting symbols of connection</div>
+                    <div style="font-family:var(--font-mono); font-size:6px; color:#64748B; margin-top:6px; line-height:1.3;">
+                      We operate at the intersection of design, code, and material culture.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Touchpoint 3: Reeded Glass Letterhead Folio -->
+        <div class="touchpoint-box">
+          <div class="touchpoint-tag">Specimen 03 // Editorial</div>
+          <h3 class="touchpoint-heading">Reeded Glass & Architectural Folio</h3>
+
+          <div class="touchpoint-stage">
+            <div class="reeded-clip-stage">
+              <div class="anodized-clip">
+                <div class="clip-rivet"></div>
+              </div>
+
+              <div class="vellum-sheet">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <span style="font-family:var(--font-display); font-weight:800; font-size:16px;">klyph</span>
+                  <span style="font-family:var(--font-mono); font-size:7px; color:#6B7280;">SPEC-2026-F1</span>
+                </div>
+
+                <div style="font-family:var(--font-mono); font-size:7px; color:#374151; line-height:1.5;">
+                  <strong>COMMISSION MEMORANDUM</strong><br/>
+                  ATTN: ARCHITECTURAL GUILD<br/><br/>
+                  The mathematical continuum established in the Klyph modular grammar enforces programmatic coherence across spatial and tactile substrates.
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E5E7EB; padding-top:6px;">
+                  <span style="font-family:var(--font-mono); font-size:6px; color:#9CA3AF;">WWW.KLYPH.STUDIO</span>
+                  <svg width="14" height="14" viewBox="0 0 100 100" fill="#002BFF">
+                    <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Touchpoint 4: Streetwear Heavyweight Boxy Tee -->
+        <div class="touchpoint-box">
+          <div class="touchpoint-tag">Specimen 04 // Apparel</div>
+          <h3 class="touchpoint-heading">Heavyweight Boxy Streetwear Tee</h3>
+
+          <div class="touchpoint-stage">
+            <div class="tee-canvas">
+              <div class="tee-collar"></div>
+
+              <div class="tee-graphic">
+                <div class="tee-vertical-type">klyph</div>
+
+                <!-- 4x5 Tessellation Array in SVG -->
+                <svg class="tee-matrix-svg" viewBox="0 0 200 250" fill="currentColor">
+                  <defs>
+                    <pattern id="teePattern" width="40" height="32" patternUnits="userSpaceOnUse">
+                      <g transform="scale(0.5)">
+                        <path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" />
+                      </g>
+                    </pattern>
+                  </defs>
+                  <rect width="200" height="250" fill="url(#teePattern)" />
+                </svg>
+              </div>
+
+              <div style="font-family:var(--font-mono); font-size:6px; color:#8E8E9F; text-align:center; margin-top:12px; letter-spacing:0.04em;">
+                crafting symbols of connection &copy;2026
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05: Chromatic Tokens -->
+    <section class="section" id="tokens">
+      <div class="section-head">
+        <div>
+          <div class="section-num">05 / Color Palette</div>
+          <h2 class="section-title">Chromatic Tokens</h2>
+          <p class="section-desc">Click any card to copy its hexadecimal token code to clipboard.</p>
+        </div>
+      </div>
+
+      <div class="tokens-grid">
+        <div class="token-card" onclick="copyToken('#002BFF')">
+          <div class="token-swatch" style="background:#002BFF; color:#FFFFFF;">
+            <span class="token-badge">PRIMARY</span>
+          </div>
+          <div class="token-name">Cobalt Klein</div>
+          <div class="token-hex">
+            <span>#002BFF</span>
+            <span class="token-badge">AAA Lrg (8.1:1)</span>
+          </div>
+        </div>
+
+        <div class="token-card" onclick="copyToken('#09090B')">
+          <div class="token-swatch" style="background:#09090B; color:#FFFFFF;">
+            <span class="token-badge">BASE</span>
+          </div>
+          <div class="token-name">Obsidian Void</div>
+          <div class="token-hex">
+            <span>#09090B</span>
+            <span class="token-badge">AAA (18.9:1)</span>
+          </div>
+        </div>
+
+        <div class="token-card" onclick="copyToken('#141416')">
+          <div class="token-swatch" style="background:#141416; color:#FFFFFF;">
+            <span class="token-badge">SURFACE</span>
+          </div>
+          <div class="token-name">Uncoated Cardstock</div>
+          <div class="token-hex">
+            <span>#141416</span>
+            <span class="token-badge">AAA (16.2:1)</span>
+          </div>
+        </div>
+
+        <div class="token-card" onclick="copyToken('#FFFFFF')">
+          <div class="token-swatch" style="background:#FFFFFF; color:#09090B; border:1px solid #E5E7EB;">
+            <span class="token-badge" style="background:#F1F3F5; color:#09090B;">EDITORIAL</span>
+          </div>
+          <div class="token-name">High Voltage White</div>
+          <div class="token-hex">
+            <span>#FFFFFF</span>
+            <span class="token-badge">AAA (21:1)</span>
+          </div>
+        </div>
+
+        <div class="token-card" onclick="copyToken('#231C18')">
+          <div class="token-swatch" style="background:#231C18; color:#FFFFFF;">
+            <span class="token-badge">TIMBER</span>
+          </div>
+          <div class="token-name">Fluted Walnut</div>
+          <div class="token-hex">
+            <span>#231C18</span>
+            <span class="token-badge">ACCENT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06: Live Typographic Hierarchy -->
+    <section class="section" id="typography">
+      <div class="section-head">
+        <div>
+          <div class="section-num">06 / Typography Specimen</div>
+          <h2 class="section-title">Typographic Hierarchy & Tester</h2>
+          <p class="section-desc">Set in Plus Jakarta Sans and JetBrains Mono. Type below to test character kerning and ink traps.</p>
+        </div>
+      </div>
+
+      <div class="typo-stage">
+        <div class="typo-controls">
+          <div style="font-family:var(--font-mono); font-size:12px; color:var(--color-text-muted);">
+            FONT: PLUS JAKARTA SANS / INTER
+          </div>
+        </div>
+
+        <textarea class="typo-live-input" id="liveTypeInput" rows="2">klyph crafting symbols of connection</textarea>
+
+        <div class="typo-hierarchy">
+          <div class="typo-sample-row">
+            <span style="font-family:var(--font-display); font-size:32px; font-weight:800; letter-spacing:-0.04em;">
+              Computational Brand Architecture
+            </span>
+            <span class="typo-sample-meta">DISPLAY / 32PX / -0.04EM</span>
+          </div>
+
+          <div class="typo-sample-row">
+            <span style="font-family:var(--font-body); font-size:18px; font-weight:500;">
+              Interlocking mathematical continuity in contemporary material culture.
+            </span>
+            <span class="typo-sample-meta">BODY LEAD / 18PX / 500</span>
+          </div>
+
+          <div class="typo-sample-row">
+            <span style="font-family:var(--font-mono); font-size:13px; color:var(--color-text-muted);">
+              ISO-COORD: [36, 18] -> [84, 44] | ROTATION: C2_180DEG
+            </span>
+            <span class="typo-sample-meta">MONO SPEC / 13PX</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 Klyph Studio &middot; Algorithmic Identity System &middot; Design Reference Specimen
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Theme Switcher Logic
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        themeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const theme = btn.dataset.themeVal;
+        document.documentElement.setAttribute('data-theme', theme);
+      });
+    });
+
+    // Mark Rotation Toggle
+    let currentRot = 0;
+    const heroMark = document.getElementById('heroSvgMark');
+    function rotateMark() {
+      currentRot = (currentRot + 45) % 360;
+      heroMark.style.transform = `rotate(${currentRot}deg)`;
+    }
+
+    // Copy Toast Helper
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function copyToken(hex) {
+      navigator.clipboard.writeText(hex).then(() => {
+        showToast(`Copied token ${hex}`);
+      });
+    }
+
+    function copySvg() {
+      const svgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#002BFF"><path d="M 36,48 L 36,18 L 58,18 A 26 26 0 0 1 84,44 L 96,44 L 96,60 L 82,60 L 82,54 A 14 14 0 0 0 68,40 L 54,40 L 54,48 Z M 64,52 L 64,82 L 42,82 A 26 26 0 0 1 16,56 L 4,56 L 4,40 L 18,40 L 18,46 A 14 14 0 0 0 32,60 L 46,60 L 46,52 Z" /></svg>`;
+      navigator.clipboard.writeText(svgCode).then(() => {
+        showToast('Vector SVG XML copied to clipboard');
+      });
+    }
+
+    // Interactive Tessellation Canvas Engine
+    const canvas = document.getElementById('tessCanvas');
+    const ctx = canvas.getContext('2d');
+    const viewport = document.getElementById('viewportContainer');
+
+    let cols = 5;
+    let rows = 5;
+    let unitScale = 1.0;
+    let matrixRot = 0;
+    let markColor = '#002BFF';
+    let bgColor = '#000000';
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let isHovered = false;
+
+    function resizeCanvas() {
+      const rect = viewport.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      drawTessellation();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 50);
+
+    // Klyph S-Glyph Unit Path Drawer
+    function drawKlyphUnit(c, x, y, scale, rotation, color) {
+      c.save();
+      c.translate(x, y);
+      c.rotate((rotation * Math.PI) / 180);
+      c.scale(scale / 100, scale / 100);
+      c.translate(-50, -50);
+
+      c.fillStyle = color;
+      c.beginPath();
+      // Upper lobe
+      c.moveTo(36, 48);
+      c.lineTo(36, 18);
+      c.lineTo(58, 18);
+      c.arc(58, 44, 26, -Math.PI / 2, 0, false);
+      c.lineTo(96, 44);
+      c.lineTo(96, 60);
+      c.lineTo(82, 60);
+      c.lineTo(82, 54);
+      c.arc(68, 54, 14, 0, -Math.PI / 2, true);
+      c.lineTo(54, 40);
+      c.lineTo(54, 48);
+      c.closePath();
+
+      // Lower lobe (C2 180deg symmetric)
+      c.moveTo(64, 52);
+      c.lineTo(64, 82);
+      c.lineTo(42, 82);
+      c.arc(42, 56, 26, Math.PI / 2, Math.PI, false);
+      c.lineTo(4, 56);
+      c.lineTo(4, 40);
+      c.lineTo(18, 40);
+      c.lineTo(18, 46);
+      c.arc(32, 46, 14, Math.PI, Math.PI / 2, true);
+      c.lineTo(46, 60);
+      c.lineTo(46, 52);
+      c.closePath();
+
+      c.fill();
+      c.restore();
+    }
+
+    function drawTessellation() {
+      const w = canvas.width / window.devicePixelRatio;
+      const h = canvas.height / window.devicePixelRatio;
+
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, w, h);
+
+      const baseUnitW = 78 * unitScale;
+      const baseUnitH = 64 * unitScale;
+
+      const totalW = cols * baseUnitW;
+      const totalH = rows * baseUnitH;
+
+      const startX = (w - totalW) / 2 + baseUnitW / 2;
+      const startY = (h - totalH) / 2 + baseUnitH / 2;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const posX = startX + c * baseUnitW;
+          const posY = startY + r * baseUnitH;
+
+          // Wave perturbation based on mouse
+          let localRot = matrixRot;
+          let localScale = 100 * unitScale;
+
+          if (isHovered) {
+            const dx = posX - mouseX;
+            const dy = posY - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const wave = Math.sin(dist * 0.03 - Date.now() * 0.003);
+            localRot += wave * 12;
+            localScale += wave * 6;
+          }
+
+          drawKlyphUnit(ctx, posX, posY, localScale, localRot, markColor);
+        }
+      }
+    }
+
+    // Mouse movement
+    viewport.addEventListener('mousemove', e => {
+      const rect = viewport.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      isHovered = true;
+      document.getElementById('mouseCoords').textContent = `X:${Math.round(mouseX)} Y:${Math.round(mouseY)}`;
+    });
+
+    viewport.addEventListener('mouseleave', () => {
+      isHovered = false;
+      document.getElementById('mouseCoords').textContent = 'IDLE';
+    });
+
+    // Animation Loop
+    function animLoop() {
+      drawTessellation();
+      requestAnimationFrame(animLoop);
+    }
+    requestAnimationFrame(animLoop);
+
+    // Controls listeners
+    document.getElementById('colSlider').addEventListener('input', e => {
+      cols = parseInt(e.target.value);
+      document.getElementById('colVal').textContent = cols;
+    });
+
+    document.getElementById('rowSlider').addEventListener('input', e => {
+      rows = parseInt(e.target.value);
+      document.getElementById('rowVal').textContent = rows;
+    });
+
+    document.getElementById('scaleSlider').addEventListener('input', e => {
+      unitScale = parseInt(e.target.value) / 100;
+      document.getElementById('scaleVal').textContent = unitScale.toFixed(1) + 'x';
+    });
+
+    function setMatrixRot(deg) {
+      matrixRot = deg;
+      document.querySelectorAll('#tessellation .btn-grid-options:first-of-type .option-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+
+    function setTileColor(mark, bg) {
+      markColor = mark;
+      bgColor = bg;
+      document.querySelectorAll('#tessellation .btn-grid-options:last-of-type .option-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

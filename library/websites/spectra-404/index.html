@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Spectra — 404 Lost In Possibility</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg-sky: #0c2060;
+      --bg-horizon: #f0502a;
+      --bg-glow: #bd1a5e;
+      --color-cream: #FFF8EE;
+      --color-cream-hover: #ffffff;
+      --color-dark: #12131C;
+      --color-white: #FFFFFF;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 120%, #ff5224 0%, #aa1456 30%, #1636a0 65%, #0a184e 100%);
+      color: var(--color-white);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 3D WebGL Canvas Layer */
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: grab;
+    }
+    #webgl-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* UI Overlay Layer */
+    .ui-container {
+      position: relative;
+      z-index: 10;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.5rem 3.5rem;
+      pointer-events: none;
+    }
+
+    /* Top Nav */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: auto;
+    }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.95);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .brand-title:hover {
+      opacity: 0.8;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-menu a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-menu a:hover {
+      color: #FFFFFF;
+    }
+
+    /* Center Stage / Interactive Grid Layout */
+    .center-stage {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      align-items: center;
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+    }
+
+    /* Left: Drag Cue Indicator */
+    .drag-cue-area {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      padding-bottom: 5.5rem;
+    }
+    .drag-pill {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.5rem 1.15rem;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+    .drag-pill:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .drag-pill svg {
+      animation: nudge 2s infinite ease-in-out;
+    }
+    @keyframes nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+
+    /* Right: Editorial Message Block */
+    .message-block {
+      pointer-events: auto;
+      padding-left: 2rem;
+      max-width: 480px;
+    }
+    .headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 5vw, 4.25rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      color: #FFFFFF;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+    }
+    .subtext {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.82);
+      margin-bottom: 2.25rem;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: var(--color-cream);
+      color: var(--color-dark);
+      padding: 0.9rem 2.25rem;
+      border-radius: 9999px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 24px rgba(255, 248, 238, 0.4);
+    }
+    .btn-home:hover {
+      background: var(--color-cream-hover);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35), 0 0 35px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Bottom Status & Theme Switcher */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: auto;
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.65);
+    }
+    .theme-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .theme-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .theme-dot:hover {
+      transform: scale(1.2);
+    }
+    .theme-dot.active {
+      border-color: #FFFFFF;
+      transform: scale(1.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .center-stage {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .message-block {
+        padding-left: 0;
+        margin: 0 auto;
+        order: 2;
+        padding-bottom: 3rem;
+      }
+      .drag-cue-area {
+        order: 1;
+        height: 50vh;
+        padding-bottom: 1rem;
+      }
+      .ui-container {
+        padding: 1.5rem;
+        overflow-y: auto;
+      }
+      .nav-menu {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL 3D Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Overlay Interface -->
+  <div class="ui-container">
+    <!-- Top Nav -->
+    <header class="top-nav">
+      <a href="../../../" class="brand-title">Spectra</a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="../../../">Product</a></li>
+          <li><a href="../../../">Examples</a></li>
+          <li><a href="../../../">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Center Stage -->
+    <main class="center-stage">
+      <!-- Left: Interactive Drag Cue -->
+      <div class="drag-cue-area">
+        <div class="drag-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 11V6a2 2 0 0 0-4 0v5"/>
+            <path d="M14 10V4a2 2 0 0 0-4 0v7"/>
+            <path d="M10 10.5V6a2 2 0 0 0-4 0v8"/>
+            <path d="M18 8a2 2 0 0 1 4 4v4a8 8 0 0 1-16 0v-2"/>
+          </svg>
+          <span>Drag to explore</span>
+        </div>
+      </div>
+
+      <!-- Right: Editorial Message Block -->
+      <div class="message-block">
+        <h1 class="headline">Lost in possibility?</h1>
+        <p class="subtext">This direction doesn't exist yet.</p>
+        <a href="../../../" class="btn-home">
+          <span>Back to home</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </main>
+
+    <!-- Bottom Bar -->
+    <footer class="bottom-bar">
+      <span>Spatial Error Boundary &bull; Three.js WebGL</span>
+      <div class="theme-picker">
+        <div class="theme-dot active" style="background: linear-gradient(135deg, #FF5224, #1636A0);" title="Solar Flare" onclick="setSpectrumTheme('solar', this)"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #00F5D4, #7B2CBF);" title="Aurora Cyan" onclick="setSpectrumTheme('aurora', this)"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #FF007F, #4A00E0);" title="Hyper Violet" onclick="setSpectrumTheme('violet', this)"></div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Three.js 3D Iridescent Scene Setup
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0.2, 8.8);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+
+    // Master 3D Group for 404 Numbers
+    const triadGroup = new THREE.Group();
+    triadGroup.position.x = -1.6;
+    scene.add(triadGroup);
+
+    // Custom Glass Dispersion Shader / Physical Material
+    let glassColor = new THREE.Color(0xffaa55);
+    let glowColor = new THREE.Color(0xff3366);
+
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transmission: 0.92,
+      opacity: 1,
+      transparent: true,
+      roughness: 0.08,
+      metalness: 0.05,
+      ior: 1.52,
+      thickness: 1.8,
+      specularIntensity: 1.2,
+      specularColor: 0xffffff,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      attenuationDistance: 1.2,
+      attenuationColor: new THREE.Color(0xff7733)
+    });
+
+    // 1. Center Zero ("0"): Torus Ring with Radiant Core
+    const torusGeo = new THREE.TorusGeometry(1.4, 0.52, 48, 96);
+    const zeroMesh = new THREE.Mesh(torusGeo, glassMat);
+    zeroMesh.position.set(0, 0, 0);
+    triadGroup.add(zeroMesh);
+
+    // Inner glowing core of 0
+    const innerLightGeo = new THREE.TorusGeometry(1.38, 0.12, 32, 64);
+    const innerLightMat = new THREE.MeshBasicMaterial({
+      color: 0xffdd44,
+      transparent: true,
+      opacity: 0.95
+    });
+    const innerRing = new THREE.Mesh(innerLightGeo, innerLightMat);
+    zeroMesh.add(innerRing);
+
+    // 2. Left Four ("4"): Beveled Hollow Triangular Polyhedron
+    function createFourGeometry(isMirrored = false) {
+      const shape = new THREE.Shape();
+      // Outer triangle
+      shape.moveTo(0, 1.7);
+      shape.lineTo(-1.6, -1.3);
+      shape.lineTo(1.6, -1.3);
+      shape.closePath();
+
+      // Inner triangular cutout
+      const hole = new THREE.Path();
+      hole.moveTo(0, 0.8);
+      hole.lineTo(0.9, -0.7);
+      hole.lineTo(-0.9, -0.7);
+      hole.closePath();
+      shape.holes.push(hole);
+
+      const extrudeSettings = {
+        steps: 2,
+        depth: 0.65,
+        bevelEnabled: true,
+        bevelThickness: 0.25,
+        bevelSize: 0.22,
+        bevelOffset: 0,
+        bevelSegments: 8
+      };
+      const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      geo.center();
+      return geo;
+    }
+
+    const fourGeoLeft = createFourGeometry(false);
+    const fourMeshLeft = new THREE.Mesh(fourGeoLeft, glassMat);
+    fourMeshLeft.position.set(-2.8, 0, 0);
+    fourMeshLeft.rotation.z = 0.08;
+    fourMeshLeft.rotation.y = 0.25;
+    triadGroup.add(fourMeshLeft);
+
+    // 3. Right Four ("4")
+    const fourGeoRight = createFourGeometry(true);
+    const fourMeshRight = new THREE.Mesh(fourGeoRight, glassMat);
+    fourMeshRight.position.set(2.8, 0, 0);
+    fourMeshRight.rotation.z = -0.08;
+    fourMeshRight.rotation.y = -0.25;
+    triadGroup.add(fourMeshRight);
+
+    // 4. Orbital Trajectory Ring
+    const orbitCurve = new THREE.EllipseCurve(0, 0, 4.8, 2.2, 0, 2 * Math.PI, false, 0);
+    const orbitPoints = orbitCurve.getPoints(120);
+    const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+    const orbitMat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.35,
+      linewidth: 1.5
+    });
+    const orbitLine = new THREE.Line(orbitGeo, orbitMat);
+    orbitLine.rotation.x = Math.PI * 0.42;
+    orbitLine.position.y = -0.1;
+    triadGroup.add(orbitLine);
+
+    // 5. Floor Caustic Shadow Pools (Dynamic Soft Discs)
+    const causticGroup = new THREE.Group();
+    causticGroup.position.x = -1.6;
+    scene.add(causticGroup);
+
+    function createCausticDisc(colorHex, size, posX) {
+      const geo = new THREE.PlaneGeometry(size, size);
+      const canvasTex = document.createElement('canvas');
+      canvasTex.width = 128;
+      canvasTex.height = 128;
+      const ctx = canvasTex.getContext('2d');
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grad.addColorStop(0, colorHex);
+      grad.addColorStop(0.5, colorHex.replace('1)', '0.3)'));
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+
+      const tex = new THREE.CanvasTexture(canvasTex);
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.position.set(posX, -2.4, 0);
+      return mesh;
+    }
+
+    const c1 = createCausticDisc('rgba(255, 80, 40, 1)', 4.2, -2.8);
+    const c2 = createCausticDisc('rgba(255, 180, 50, 1)', 5.0, 0);
+    const c3 = createCausticDisc('rgba(255, 70, 120, 1)', 4.2, 2.8);
+    causticGroup.add(c1, c2, c3);
+
+    // Lighting Environment
+    const ambientLight = new THREE.AmbientLight(0x2244aa, 1.2);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffeedd, 2.5);
+    keyLight.position.set(5, 8, 6);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0x00ddff, 3.0);
+    rimLight.position.set(-6, -4, -4);
+    scene.add(rimLight);
+
+    const pointWarm = new THREE.PointLight(0xff6600, 4.0, 12);
+    pointWarm.position.set(-1.6, 0, 0.8);
+    scene.add(pointWarm);
+
+    // Pointer Interaction & Inertial Drag Physics
+    let isDragging = false;
+    let prevPointerX = 0;
+    let prevPointerY = 0;
+    let targetRotationY = 0;
+    let targetRotationX = 0;
+    let velocityY = 0;
+    let velocityX = 0;
+
+    window.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      prevPointerX = e.clientX;
+      prevPointerY = e.clientY;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) {
+        // Subtle parallax when hovering
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = -(e.clientY / window.innerHeight) * 2 + 1;
+        targetRotationY = nx * 0.35;
+        targetRotationX = ny * 0.2;
+        return;
+      }
+      const deltaX = e.clientX - prevPointerX;
+      const deltaY = e.clientY - prevPointerY;
+      prevPointerX = e.clientX;
+      prevPointerY = e.clientY;
+
+      velocityY = deltaX * 0.006;
+      velocityX = deltaY * 0.004;
+      targetRotationY += velocityY;
+      targetRotationX += velocityX;
+    });
+
+    window.addEventListener('pointerup', () => {
+      isDragging = false;
+    });
+
+    // Theme Switcher Logic
+    function setSpectrumTheme(theme, el) {
+      document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+
+      if (theme === 'solar') {
+        document.body.style.background = 'radial-gradient(circle at 50% 120%, #ff5224 0%, #aa1456 30%, #1636a0 65%, #0a184e 100%)';
+        glassMat.attenuationColor.set(0xff7733);
+        innerLightMat.color.set(0xffdd44);
+        pointWarm.color.set(0xff6600);
+      } else if (theme === 'aurora') {
+        document.body.style.background = 'radial-gradient(circle at 50% 120%, #00F5D4 0%, #0B7A75 35%, #192A56 70%, #080D21 100%)';
+        glassMat.attenuationColor.set(0x00F5D4);
+        innerLightMat.color.set(0x7B2CBF);
+        pointWarm.color.set(0x00E5FF);
+      } else if (theme === 'violet') {
+        document.body.style.background = 'radial-gradient(circle at 50% 120%, #FF007F 0%, #7928CA 35%, #2B0938 70%, #0A0214 100%)';
+        glassMat.attenuationColor.set(0xFF007F);
+        innerLightMat.color.set(0x00F5FF);
+        pointWarm.color.set(0x7928CA);
+      }
+    }
+
+    // Window Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Main Render Loop
+    let clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Inertial damping
+      if (!isDragging) {
+        velocityY *= 0.94;
+        velocityX *= 0.94;
+        targetRotationY += velocityY;
+        targetRotationX += velocityX;
+      }
+
+      // Smooth floating motion
+      const floatY = Math.sin(elapsedTime * 1.5) * 0.12;
+      triadGroup.position.y = floatY;
+
+      // Apply rotations smoothly
+      triadGroup.rotation.y += (targetRotationY - triadGroup.rotation.y) * 0.08;
+      triadGroup.rotation.x += (targetRotationX - triadGroup.rotation.x) * 0.08;
+
+      // Individual glyph subtle breathing
+      fourMeshLeft.rotation.x = Math.sin(elapsedTime * 2 + 1) * 0.05;
+      fourMeshRight.rotation.x = Math.cos(elapsedTime * 2 + 2) * 0.05;
+      zeroMesh.rotation.z = Math.sin(elapsedTime * 1.2) * 0.08;
+
+      // Caustics follow rotation parallax
+      causticGroup.position.x = -1.6 - triadGroup.rotation.y * 0.8;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

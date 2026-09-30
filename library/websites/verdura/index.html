@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Verdura — Living Stone, Alpine Flora & Botanical Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700;1,9..144,800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- GSAP & Lenis CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    :root {
+      --bg-linen: #F5F6EE;
+      --bg-linen-light: #FAFBF5;
+      --bg-panel: #FFFFFF;
+      --color-moss: #446E0D;
+      --color-moss-light: #5B8E14;
+      --color-moss-dark: #2D4A08;
+      --color-moss-glow: rgba(68, 110, 13, 0.22);
+      --color-charcoal: #1C2216;
+      --color-muted: #647059;
+      --color-sage: #8F9E83;
+      --color-lichen: #DE4B26;
+      --border-subtle: rgba(68, 110, 13, 0.12);
+      --border-card: rgba(68, 110, 13, 0.18);
+      --font-serif: 'Fraunces', serif;
+      --font-script: 'Playfair Display', serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-linen);
+      color: var(--color-charcoal);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Scroll Progress Indicator */
+    .scroll-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-moss), #78B023, var(--color-lichen));
+      width: 0%;
+      z-index: 1000;
+      pointer-events: none;
+      transition: width 0.08s ease-out;
+    }
+
+    /* Custom Botanical Magnetic Cursor */
+    .cursor-follower {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(68, 110, 13, 0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                  height 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                  background-color 0.25s ease,
+                  border-color 0.25s ease;
+      mix-blend-mode: multiply;
+      display: none;
+    }
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background-color: var(--color-moss);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    @media (pointer: fine) {
+      .cursor-follower, .cursor-dot { display: block; }
+    }
+    body.cursor-active .cursor-follower {
+      width: 58px;
+      height: 58px;
+      background-color: rgba(68, 110, 13, 0.12);
+      border-color: var(--color-moss);
+    }
+
+    /* Top Global Nav */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.5rem 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(245, 246, 238, 0.85);
+      border-bottom: 1px solid rgba(68, 110, 13, 0.08);
+      transition: padding 0.3s ease, background 0.3s ease;
+    }
+    .top-nav.scrolled {
+      padding: 1rem 3.5rem;
+      background: rgba(245, 246, 238, 0.94);
+      box-shadow: 0 4px 20px rgba(28, 34, 22, 0.04);
+    }
+
+    .brand-logo {
+      font-family: var(--font-script);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 1.85rem;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .brand-logo::after {
+      content: 'ARCHITECTURAL BOTANY';
+      position: absolute;
+      left: 100%;
+      bottom: 6px;
+      margin-left: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-style: normal;
+      font-weight: 600;
+      color: var(--color-muted);
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+    .nav-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s ease;
+      position: relative;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 1.5px;
+      background: var(--color-moss);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-item:hover {
+      color: var(--color-moss);
+    }
+    .nav-item:hover::after {
+      width: 100%;
+    }
+    .nav-item svg {
+      transition: transform 0.2s ease;
+    }
+    .nav-item:hover svg {
+      transform: translateY(2px);
+    }
+
+    .btn-talk {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: 1.5px solid var(--color-charcoal);
+      border-radius: 9999px;
+      padding: 0.55rem 1.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .btn-talk:hover {
+      background: var(--color-charcoal);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(28, 34, 22, 0.16);
+    }
+
+    /* Hero Section */
+    .hero-stage {
+      position: relative;
+      height: 100vh;
+      min-height: 740px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 3.5rem;
+      overflow: hidden;
+      perspective: 1400px;
+    }
+
+    /* Giant Background Serif Typography */
+    .monumental-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      width: 100vw;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(6.5rem, 18.5vw, 19.5rem);
+      font-weight: 800;
+      line-height: 0.85;
+      color: var(--color-moss);
+      letter-spacing: -0.01em;
+      user-select: none;
+      z-index: 1;
+      pointer-events: none;
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform, opacity;
+    }
+
+    /* Central 3D Interactive Botanical Monolith Container */
+    .monolith-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 530px;
+      height: 530px;
+      perspective: 1200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      will-change: transform;
+    }
+    .monolith-wrapper:active {
+      cursor: grabbing;
+    }
+
+    .monolith-3d {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.12s cubic-bezier(0.1, 0.9, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .rock-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 32px 50px rgba(28, 34, 22, 0.28));
+      pointer-events: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Blooming Botanical Cluster */
+    .botanical-bloom-cluster {
+      position: absolute;
+      right: 48px;
+      top: 130px;
+      width: 130px;
+      height: 160px;
+      pointer-events: none;
+      z-index: 3;
+      transform-origin: left center;
+      transform: scale(0.65) translateZ(30px);
+      opacity: 0.25;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+    .monolith-wrapper:hover .botanical-bloom-cluster {
+      transform: scale(1.15) translateZ(60px);
+      opacity: 1;
+    }
+
+    /* Floating Satellites */
+    .shard-left {
+      position: absolute;
+      left: -130px;
+      bottom: 70px;
+      width: 90px;
+      height: 90px;
+      z-index: 12;
+      pointer-events: none;
+      transition: transform 0.15s ease-out;
+      filter: drop-shadow(0 15px 25px rgba(28, 34, 22, 0.2));
+    }
+    .shard-right {
+      position: absolute;
+      right: -140px;
+      bottom: 70px;
+      width: 85px;
+      height: 85px;
+      z-index: 12;
+      pointer-events: none;
+      transition: transform 0.15s ease-out;
+      filter: drop-shadow(0 15px 25px rgba(28, 34, 22, 0.2));
+    }
+
+    /* Floating Glassmorphic Product Card */
+    .product-badge-card {
+      position: absolute;
+      left: -210px;
+      bottom: 120px;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 14px;
+      padding: 0.85rem 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 16px 36px rgba(28, 34, 22, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .product-badge-card:hover {
+      transform: translateY(-4px) scale(1.03) translateZ(75px) !important;
+      box-shadow: 0 24px 48px rgba(28, 34, 22, 0.2);
+    }
+    .badge-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .badge-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .badge-title {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-charcoal);
+    }
+    .badge-sub {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      margin-bottom: 0.25rem;
+    }
+    .badge-link {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Hero Bottom Bar */
+    .hero-bottom-bar {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3.5rem;
+      right: 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 25;
+      will-change: opacity, transform;
+    }
+    .origin-text {
+      max-width: 420px;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--color-charcoal);
+    }
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-charcoal);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .scroll-cue:hover {
+      color: var(--color-moss);
+    }
+    .scroll-icon {
+      width: 20px;
+      height: 28px;
+      border: 1.5px solid var(--color-charcoal);
+      border-radius: 10px;
+      position: relative;
+    }
+    .scroll-icon::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 6px;
+      background: var(--color-charcoal);
+      border-radius: 2px;
+      animation: wheel 1.8s infinite;
+    }
+    @keyframes wheel {
+      0% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, 8px); opacity: 0; }
+    }
+
+    /* Content Layout Container */
+    .content-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 7rem 3.5rem;
+      position: relative;
+      z-index: 30;
+    }
+
+    /* Motion Reveal Utilities */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* Section 02: Collection Catalog */
+    .sec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1.75rem;
+      position: relative;
+    }
+    .sec-label {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-moss);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sec-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--color-moss);
+      border-radius: 50%;
+      animation: pulseGlow 2.5s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+    .sec-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.35rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      color: var(--color-charcoal);
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+
+    .catalog-filters {
+      display: flex;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 0.35rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+    }
+    .filter-btn {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.15rem;
+      border-radius: 9999px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--color-moss);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px var(--color-moss-glow);
+    }
+
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin-bottom: 6rem;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 3D Kinetic Tilt Specimen Card */
+    .specimen-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      display: flex;
+      flex-direction: column;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .specimen-card:hover {
+      box-shadow: 0 24px 50px rgba(28, 34, 22, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+      border-color: rgba(68, 110, 13, 0.32);
+    }
+    .card-reflection {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 5;
+    }
+    .specimen-card:hover .card-reflection {
+      opacity: 1;
+    }
+
+    .specimen-media {
+      height: 290px;
+      overflow: hidden;
+      position: relative;
+      background: #E8EBE0;
+    }
+    .specimen-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .specimen-card:hover .specimen-media img {
+      transform: scale(1.08);
+    }
+    .specimen-tag {
+      position: absolute;
+      top: 1.15rem;
+      left: 1.15rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-moss);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transform: translateZ(25px);
+    }
+    .specimen-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      transform: translateZ(20px);
+    }
+    .specimen-body h3 {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--color-charcoal);
+      transition: color 0.2s ease;
+    }
+    .specimen-card:hover .specimen-body h3 {
+      color: var(--color-moss);
+    }
+    .specimen-body p {
+      color: var(--color-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+      flex: 1;
+    }
+    .specimen-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding-top: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+    .btn-reserve {
+      background: var(--color-moss);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.5rem 1.15rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-reserve:hover {
+      background: var(--color-moss-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--color-moss-glow);
+    }
+
+    /* Section 03: Greenhouse Grading Protocol (Sticky Interactive Scrubber) */
+    .grading-section {
+      background: #EAECE0;
+      border-radius: 28px;
+      padding: 5rem 4rem;
+      margin-bottom: 7rem;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(68, 110, 13, 0.15);
+    }
+    .grading-media-container {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(28, 34, 22, 0.16);
+      height: 520px;
+      background: #2D3A20;
+    }
+    .grading-media-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s ease;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+    }
+    .grading-media-container img.active {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    /* Scanning Telemetry Beam & HUD */
+    .grading-hud {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.75rem;
+    }
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hud-badge {
+      background: rgba(28, 34, 22, 0.78);
+      backdrop-filter: blur(8px);
+      color: #A3E635;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(163, 230, 53, 0.3);
+    }
+    .hud-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #A3E635;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    .hud-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      background: rgba(28, 34, 22, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .scan-beam {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #A3E635, transparent);
+      box-shadow: 0 0 15px #A3E635;
+      animation: scanSweep 3.5s ease-in-out infinite;
+      z-index: 8;
+    }
+    @keyframes scanSweep {
+      0% { top: 0%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .grading-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .step-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .step-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12%;
+      height: 76%;
+      width: 3px;
+      background: var(--color-moss);
+      border-radius: 4px;
+      transform: scaleY(0);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .step-item.active {
+      background: #FFFFFF;
+      border-color: var(--border-subtle);
+      box-shadow: 0 12px 30px rgba(28, 34, 22, 0.08);
+      transform: translateX(10px);
+    }
+    .step-item.active::before {
+      transform: scaleY(1);
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-muted);
+      transition: color 0.3s ease;
+    }
+    .step-item.active .step-num {
+      color: var(--color-moss);
+    }
+    .step-content h4 {
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--color-charcoal);
+    }
+    .step-content p {
+      color: var(--color-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Section 04: Interactive Terrarium Simulator (Bio-Engine) */
+    .sim-panel {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: 28px;
+      padding: 4.5rem 4rem;
+      margin-bottom: 7rem;
+      box-shadow: 0 20px 50px rgba(28, 34, 22, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.5s ease;
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4.5rem;
+      align-items: center;
+    }
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+    }
+    .control-header span.val {
+      font-family: var(--font-mono);
+      color: var(--color-moss);
+      font-weight: 600;
+      background: rgba(68, 110, 13, 0.08);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+    .control-group input[type="range"] {
+      accent-color: var(--color-moss);
+      cursor: pointer;
+      height: 6px;
+      border-radius: 3px;
+      background: #E5E9DC;
+    }
+
+    /* Bio-Readout & Spore Canvas Stage */
+    .sim-readout {
+      background: var(--bg-linen);
+      border-radius: 20px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .canvas-stage-wrapper {
+      position: relative;
+      height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #141A0E;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+    #sporeCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .canvas-overlay-label {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(163, 230, 53, 0.85);
+      letter-spacing: 0.08em;
+    }
+
+    .vitality-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--color-moss);
+      font-weight: 700;
+    }
+    .vitality-gauge {
+      height: 10px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .vitality-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-moss), #78B023);
+      width: 98.4%;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Section 05: Architectural Spatial Installations */
+    .installations-section {
+      margin-bottom: 7rem;
+    }
+    .installations-carousel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .install-card {
+      position: relative;
+      height: 460px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(28, 34, 22, 0.1);
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+    }
+    .install-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 28px 60px rgba(28, 34, 22, 0.18);
+    }
+    .install-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .install-card:hover img {
+      transform: scale(1.08);
+    }
+    .install-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to top, rgba(20, 26, 14, 0.92) 0%, rgba(20, 26, 14, 0.2) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.25rem;
+      color: #FFFFFF;
+      transition: background 0.4s ease;
+    }
+    .install-card:hover .install-overlay {
+      background: linear-gradient(to top, rgba(20, 26, 14, 0.96) 0%, rgba(20, 26, 14, 0.3) 60%, transparent 100%);
+    }
+    .install-location {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #A3E635;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+    .install-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .install-desc {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.5;
+    }
+
+    /* Section 06: Living Monolith Commission Studio */
+    .commission-section {
+      background: var(--bg-panel);
+      border-radius: 28px;
+      padding: 5rem 4rem;
+      margin-bottom: 6rem;
+      border: 1px solid var(--border-card);
+      box-shadow: 0 20px 50px rgba(28, 34, 22, 0.06);
+    }
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+    }
+    .customizer-options {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .option-group-title {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.85rem;
+      color: var(--color-charcoal);
+    }
+    .chips-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .config-chip {
+      background: var(--bg-linen);
+      border: 1px solid var(--border-subtle);
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-charcoal);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .config-chip.active, .config-chip:hover {
+      background: var(--color-moss);
+      color: #FFFFFF;
+      border-color: var(--color-moss);
+      box-shadow: 0 4px 14px var(--color-moss-glow);
+    }
+
+    /* Specimen Inspection Modal */
+    .specimen-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(28, 34, 22, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .specimen-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .specimen-modal {
+      background: #FFFFFF;
+      border-radius: 24px;
+      max-width: 820px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 3rem;
+      position: relative;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.35);
+      transform: translateY(30px) scale(0.96);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .specimen-modal-overlay.open .specimen-modal {
+      transform: translateY(0) scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--bg-linen);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--color-charcoal);
+      transition: background 0.2s ease;
+    }
+    .modal-close:hover {
+      background: #E0E4D4;
+    }
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .modal-media {
+      height: 360px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #E8EBE0;
+    }
+    .modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .modal-specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+    .modal-specs-table td {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .modal-specs-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+      color: var(--color-moss);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 4.5rem 3.5rem 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      font-size: 0.875rem;
+      color: var(--color-muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--color-charcoal);
+      color: #FFFFFF;
+      padding: 0.95rem 1.5rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 10001;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .top-nav { padding: 1.25rem 2rem; }
+      .hero-stage { padding: 0 2rem; }
+      .content-container { padding: 5rem 2rem; }
+      .specimen-grid { grid-template-columns: repeat(2, 1fr); }
+      .grading-section { grid-template-columns: 1fr; padding: 3rem 2.5rem; gap: 3rem; }
+      .sim-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .installations-carousel { grid-template-columns: 1fr; }
+      .studio-grid { grid-template-columns: 1fr; }
+      .monolith-wrapper { width: 400px; height: 400px; }
+      .product-badge-card { left: -60px; bottom: 40px; }
+      .shard-left, .shard-right { display: none; }
+    }
+    @media (max-width: 768px) {
+      .specimen-grid { grid-template-columns: 1fr; }
+      .monumental-title { font-size: 4rem; }
+      .nav-links { display: none; }
+      .modal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-bar" id="progressBar"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-follower" id="cursorFollower"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Top Global Nav -->
+  <header class="top-nav" id="topNav">
+    <a href="#" class="brand-logo">Verdura</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#collection" class="nav-item">Specimens <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a></li>
+        <li><a href="#grading" class="nav-item">Methodology <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a></li>
+        <li><a href="#simulator" class="nav-item">Habitat Engine <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a></li>
+        <li><a href="#installations" class="nav-item">Installations <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a></li>
+      </ul>
+    </nav>
+    <a href="#commission" class="btn-talk" onclick="showToast('Botanical consultation desk opened')">Let's Talk &gt;</a>
+  </header>
+
+  <!-- Hero Stage -->
+  <section class="hero-stage" id="heroStage">
+    <!-- Giant Serif Typography -->
+    <div class="monumental-title" id="monumentalTitle">
+      <span>Verdura</span>
+    </div>
+
+    <!-- Central 3D Interactive Monolith -->
+    <div class="monolith-wrapper" id="monolithWrapper">
+      <div class="monolith-3d" id="monolith3D">
+        <img src="assets/rock-monolith.png" alt="Verdura botanical living stone monolith" class="rock-img" id="rockImg">
+
+        <!-- Blooming Botanical Cluster (Blooms in 3D on hover) -->
+        <svg class="botanical-bloom-cluster" id="bloomCluster" viewBox="0 0 100 120" fill="none">
+          <circle cx="50" cy="50" r="14" fill="#DE4B26" opacity="0.9" />
+          <circle cx="65" cy="40" r="10" fill="#E86C45" opacity="0.95" />
+          <circle cx="35" cy="55" r="12" fill="#DE4B26" opacity="0.85" />
+          <circle cx="52" cy="70" r="16" fill="#52850F" opacity="0.95" />
+          <circle cx="70" cy="62" r="11" fill="#78B023" opacity="0.9" />
+          <circle cx="38" cy="35" r="9" fill="#FFFBEB" opacity="0.95" />
+          <circle cx="48" cy="28" r="8" fill="#FFFFFF" opacity="0.9" />
+          <circle cx="58" cy="80" r="10" fill="#446E0D" opacity="0.9" />
+          <path d="M50 35 Q55 20 60 15" stroke="#446E0D" stroke-width="2" stroke-linecap="round" />
+          <path d="M65 45 Q78 35 85 30" stroke="#446E0D" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+
+        <!-- Shards drifting in parallax -->
+        <img src="assets/shard-left.png" alt="Alpine stone shard" class="shard-left" id="shardLeft">
+        <img src="assets/shard-right.png" alt="Botanical stone shard" class="shard-right" id="shardRight">
+
+        <!-- Pinned Glassmorphic Product Card -->
+        <div class="product-badge-card" id="productBadge" onclick="openSpecimenModal('VR-9042', 'Alpine Saxifrage Monolith', 'High-altitude granite matrix with endemic sub-alpine saxifrage.', 'assets/rock-monolith.jpg', '3,200m', 'Granite', '98.6%')">
+          <img src="assets/greenhouse-thumb.jpg" alt="Verdura greenhouse specimen" class="badge-thumb">
+          <div class="badge-meta">
+            <span class="badge-title">Verdura Specimen</span>
+            <span class="badge-sub">Green House Grading</span>
+            <span class="badge-link">Inspect Lot</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Bottom Bar -->
+    <div class="hero-bottom-bar" id="heroBottomBar">
+      <p class="origin-text">
+        Verdura is based in Pacific Palisades, California.<br />
+        We have over 28 years of experience cultivating living botanical monoliths, micro-climate terrariums, and botanical architecture.
+      </p>
+      <a href="#collection" class="scroll-cue">
+        <div class="scroll-icon"></div>
+        <span>Scroll to Discover</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Content Stream -->
+  <main class="content-container">
+
+    <!-- Section 02: Collection Catalog -->
+    <section id="collection" style="margin-bottom: 7rem;">
+      <div class="sec-header reveal-item">
+        <div>
+          <div class="sec-label">The Permanent Archive</div>
+          <h2 class="sec-title">Living Monolith Collection</h2>
+        </div>
+        <div class="catalog-filters">
+          <button class="filter-btn active" onclick="filterSpecimens('all', this)">All Specimens</button>
+          <button class="filter-btn" onclick="filterSpecimens('granite', this)">Alpine Granite</button>
+          <button class="filter-btn" onclick="filterSpecimens('basalt', this)">Volcanic Basalt</button>
+        </div>
+      </div>
+
+      <div class="specimen-grid" id="specimenGrid">
+        <!-- Card 1 -->
+        <div class="specimen-card reveal-item reveal-delay-1" data-cat="granite" onclick="openSpecimenModal('VR-9042', 'Alpine Saxifrage Monolith', 'High-altitude granite matrix inoculated with endemic sub-alpine saxifrage and cushion bryophytes. Self-sustaining capillary moisture retention.', 'assets/rock-monolith.jpg', 'Elevation 3,200m', 'Alpine Granite', '98.8%')">
+          <div class="card-reflection"></div>
+          <div class="specimen-media">
+            <img src="assets/rock-monolith.jpg" alt="Alpine Saxifrage specimen" loading="lazy">
+            <span class="specimen-tag">Elevation 3,200m</span>
+          </div>
+          <div class="specimen-body">
+            <h3>Alpine Saxifrage Monolith</h3>
+            <p>High-altitude granite matrix inoculated with endemic sub-alpine saxifrage and cushion bryophytes. Self-sustaining capillary moisture retention.</p>
+            <div class="specimen-foot">
+              <span>LOT #VR-9042</span>
+              <button class="btn-reserve" onclick="event.stopPropagation(); showToast('Lot #VR-9042 reserved for private inspection')">Inquire Lot</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="specimen-card reveal-item reveal-delay-2" data-cat="basalt" onclick="openSpecimenModal('VR-8109', 'Velvet Bryophyte Sanctuary', 'Cultivated inside pressurized architectural glass cloches. Layered volcanic tuff stone support with micro-fern sporangia and living lichens.', 'assets/greenhouse-thumb.jpg', 'Grade A+ Climate', 'Volcanic Basalt', '99.4%')">
+          <div class="card-reflection"></div>
+          <div class="specimen-media">
+            <img src="assets/greenhouse-thumb.jpg" alt="Botanical terrarium specimen" loading="lazy">
+            <span class="specimen-tag">Grade A+ Climate</span>
+          </div>
+          <div class="specimen-body">
+            <h3>Velvet Bryophyte Sanctuary</h3>
+            <p>Cultivated inside pressurized architectural glass cloches. Layered volcanic tuff stone support with micro-fern sporangia and living lichens.</p>
+            <div class="specimen-foot">
+              <span>LOT #VR-8109</span>
+              <button class="btn-reserve" onclick="event.stopPropagation(); showToast('Lot #VR-8109 reserved for private inspection')">Inquire Lot</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="specimen-card reveal-item reveal-delay-3" data-cat="granite" onclick="openSpecimenModal('VR-7740', 'Crustose Lichen Pillar', 'Slow-growth crustose lichen colony on metamorphic quartzite. Features vivid ochre and coral spore fruiting bodies with micro-irrigation channels.', 'assets/rock-monolith.jpg', 'Dormant Lichen', 'Metamorphic Quartz', '97.2%')">
+          <div class="card-reflection"></div>
+          <div class="specimen-media">
+            <img src="assets/rock-monolith.jpg" alt="Coral Lichen formation" loading="lazy">
+            <span class="specimen-tag">Dormant Lichen</span>
+          </div>
+          <div class="specimen-body">
+            <h3>Crustose Lichen Pillar</h3>
+            <p>Slow-growth crustose lichen colony on metamorphic quartzite. Features vivid ochre and coral spore fruiting bodies with micro-irrigation channels.</p>
+            <div class="specimen-foot">
+              <span>LOT #VR-7740</span>
+              <button class="btn-reserve" onclick="event.stopPropagation(); showToast('Lot #VR-7740 reserved for private inspection')">Inquire Lot</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 03: Greenhouse Grading Protocol (Interactive Scrubber) -->
+    <section id="grading" class="grading-section reveal-item">
+      <div class="grading-media-container" id="gradingMediaContainer">
+        <!-- Interactive Step Images -->
+        <img src="assets/greenhouse-thumb.jpg" alt="Greenhouse grading lab" class="active" id="stepImg0">
+        <img src="assets/installation-atrium.jpg" alt="Controlled bio inoculation chamber" id="stepImg1">
+        <img src="assets/installation-residence.jpg" alt="Architectural climate stabilization" id="stepImg2">
+
+        <!-- Laser Scanline & HUD -->
+        <div class="scan-beam"></div>
+        <div class="grading-hud">
+          <div class="hud-top">
+            <div class="hud-badge"><span id="hudChamber">CHAMBER 01: CORE SOURCING</span></div>
+            <div class="hud-badge" style="color: #FFFFFF; border-color: rgba(255,255,255,0.2);">ISO-9022 BIO-COMPLIANT</div>
+          </div>
+          <div class="hud-bottom">
+            <span>RELATIVE FLUX: <strong id="hudFlux" style="color: #A3E635;">94.2%</strong></span>
+            <span>CIRCADIAN: <strong id="hudCircadian" style="color: #A3E635;">5200K</strong></span>
+            <span>STABILITY: <strong style="color: #A3E635;">OPTIMAL</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-label">Proprietary Technology</div>
+        <h2 class="sec-title" style="margin-bottom: 2rem;">Greenhouse Grading Protocol</h2>
+        <div class="grading-steps">
+          <div class="step-item active" onclick="activateStep(0)">
+            <span class="step-num">01</span>
+            <div class="step-content">
+              <h4>Geological Core Sourcing</h4>
+              <p>Non-invasive harvesting of mineral-dense granite and volcanic basalt boulders selected for balanced capillary porosity.</p>
+            </div>
+          </div>
+          <div class="step-item" onclick="activateStep(1)">
+            <span class="step-num">02</span>
+            <div class="step-content">
+              <h4>Controlled Bio-Inoculation</h4>
+              <p>Sterile laboratory inoculation of cold-tolerant alpine bryophytes and lichen colonies under circadian spectral illumination.</p>
+            </div>
+          </div>
+          <div class="step-item" onclick="activateStep(2)">
+            <span class="step-num">03</span>
+            <div class="step-content">
+              <h4>Architectural Climate Stabilization</h4>
+              <p>Specimens undergo 18 months of rigorous micro-climate acclimatization before certification for residential and public spaces.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 04: Interactive Terrarium Simulator (Bio-Engine) -->
+    <section id="simulator" class="sim-panel reveal-item" id="simPanel">
+      <div class="sec-header" style="border:none; margin-bottom: 2.5rem; padding-bottom: 0;">
+        <div>
+          <div class="sec-label">Micro-Climate Engine</div>
+          <h2 class="sec-title">Habitat Vitality Simulator</h2>
+        </div>
+      </div>
+
+      <div class="sim-grid">
+        <div class="sim-controls">
+          <div class="control-group">
+            <div class="control-header">
+              <span>Relative Ambient Humidity</span>
+              <span class="val" id="humVal">78%</span>
+            </div>
+            <input type="range" id="humRange" min="40" max="98" value="78" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>Spectral Kelvin Temperature</span>
+              <span class="val" id="kelVal">4200K</span>
+            </div>
+            <input type="range" id="kelRange" min="2700" max="6500" step="100" value="4200" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>Capillary Irrigation Cycle</span>
+              <span class="val" id="cycVal">Every 4 hrs</span>
+            </div>
+            <input type="range" id="cycRange" min="1" max="12" value="4" oninput="updateSim()">
+          </div>
+        </div>
+
+        <div class="sim-readout">
+          <div class="canvas-stage-wrapper">
+            <canvas id="sporeCanvas"></canvas>
+            <div class="canvas-overlay-label">LIVE CHLOROPHYLL SPORE DISPERSAL</div>
+          </div>
+
+          <div class="vitality-badge">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>SYSTEM VITALITY INDEX:</span>
+            </div>
+            <span id="vitScore">98.4%</span>
+          </div>
+          <div class="vitality-gauge">
+            <div class="vitality-fill" id="vitFill"></div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6;">
+            Sub-alpine moss spore colonies maintain optimal photosynthetic chlorophyll density. Zero fungal pathogens detected across granite capillary pathways.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 05: Architectural Spatial Installations -->
+    <section id="installations" class="installations-section reveal-item">
+      <div class="sec-header">
+        <div>
+          <div class="sec-label">Spatial Environments</div>
+          <h2 class="sec-title">Architectural Installations</h2>
+        </div>
+      </div>
+
+      <div class="installations-carousel">
+        <div class="install-card reveal-item reveal-delay-1" onclick="showToast('Pacific Palisades Glasshouse dossier requested')">
+          <img src="assets/installation-residence.jpg" alt="Pacific Palisades Glasshouse installation" loading="lazy">
+          <div class="install-overlay">
+            <span class="install-location">Pacific Palisades, CA</span>
+            <h3 class="install-title">Alpine Zen Glass Pavilion</h3>
+            <p class="install-desc">Central 2.8-ton living metamorphic granite stone integrated into custom tempered glass atrium with circadian misting.</p>
+          </div>
+        </div>
+
+        <div class="install-card reveal-item reveal-delay-2" onclick="showToast('Engadin Alpine Chalet dossier requested')">
+          <img src="assets/installation-atrium.jpg" alt="Engadin Alpine Chalet atrium" loading="lazy">
+          <div class="install-overlay">
+            <span class="install-location">St. Moritz, Switzerland</span>
+            <h3 class="install-title">Engadin Monolith Gallery</h3>
+            <p class="install-desc">Multi-pillar botanical sanctuary colonized with sub-zero dormant lichens and alpine saxifrage colonies.</p>
+          </div>
+        </div>
+
+        <div class="install-card reveal-item reveal-delay-3" onclick="showToast('Kyoto Botanical Study dossier requested')">
+          <img src="assets/installation-gallery.jpg" alt="Kyoto Zen Botanical Study" loading="lazy">
+          <div class="install-overlay">
+            <span class="install-location">Kyoto, Japan</span>
+            <h3 class="install-title">Karesansui Micro-Ecology</h3>
+            <p class="install-desc">Dry stone garden architectural installation inoculated with velvety bryophytes and micro-climate humidification.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 06: Living Monolith Commission Studio -->
+    <section id="commission" class="commission-section reveal-item">
+      <div class="sec-header" style="border: none; margin-bottom: 0; padding-bottom: 0;">
+        <div>
+          <div class="sec-label">Bespoke Curation</div>
+          <h2 class="sec-title">Commission a Living Monolith</h2>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <div class="customizer-options">
+          <div>
+            <div class="option-group-title">01. Select Geological Matrix</div>
+            <div class="chips-row">
+              <button class="config-chip active" onclick="selectChip(this, 'matrix')">Alpine Granite</button>
+              <button class="config-chip" onclick="selectChip(this, 'matrix')">Volcanic Basalt</button>
+              <button class="config-chip" onclick="selectChip(this, 'matrix')">Metamorphic Quartzite</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="option-group-title">02. Botanical Inoculation Strain</div>
+            <div class="chips-row">
+              <button class="config-chip active" onclick="selectChip(this, 'flora')">Sub-Alpine Saxifrage</button>
+              <button class="config-chip" onclick="selectChip(this, 'flora')">Velvet Bryophytes</button>
+              <button class="config-chip" onclick="selectChip(this, 'flora')">Coral Crustose Lichens</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="option-group-title">03. Spatial Scale & Vessel</div>
+            <div class="chips-row">
+              <button class="config-chip active" onclick="selectChip(this, 'scale')">Pedestal Monolith (1.2m)</button>
+              <button class="config-chip" onclick="selectChip(this, 'scale')">Atrium Monument (2.4m)</button>
+              <button class="config-chip" onclick="selectChip(this, 'scale')">Estate Centerpiece (4.0m)</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-linen); border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-subtle);">
+          <div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-moss); font-weight: 700;">SPECIFICATION ESTIMATE</span>
+            <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0.75rem 0 1rem; color: var(--color-charcoal);" id="configSummaryTitle">Alpine Granite &bull; Saxifrage</h3>
+            <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;" id="configSummaryDesc">
+              Hand-quarried high-porosity matrix with 18-month laboratory bio-inoculation. Delivered with integrated capillary irrigation foundation.
+            </p>
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.8125rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
+              <span>CURATION LEAD TIME:</span>
+              <strong style="color: var(--color-moss);">14 - 18 WEEKS</strong>
+            </div>
+          </div>
+          <button class="btn-talk" style="width: 100%; justify-content: center; padding: 1rem; background: var(--color-charcoal); color: #FFFFFF; margin-top: 2rem;" onclick="showToast('Commission inquiry submitted to Verdura Botanical Curators')">
+            Submit Private Commission &gt;
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Specimen Quick Inspection Modal -->
+  <div class="specimen-modal-overlay" id="specimenModalOverlay" onclick="closeSpecimenModal(event)">
+    <div class="specimen-modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeSpecimenModal()">&times;</button>
+      <div class="modal-grid">
+        <div class="modal-media">
+          <img src="assets/rock-monolith.jpg" alt="Inspected specimen" id="modalImg">
+        </div>
+        <div class="modal-details">
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-moss);" id="modalLot">LOT #VR-9042</span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.85rem; color: var(--color-charcoal);" id="modalTitle">Alpine Saxifrage Monolith</h2>
+          <p style="color: var(--color-muted); font-size: 0.92rem; line-height: 1.6;" id="modalDesc"></p>
+          <table class="modal-specs-table">
+            <tr><td>GEOLOGICAL MATRIX</td><td id="modalMatrix">Alpine Granite</td></tr>
+            <tr><td>HABITAT ELEVATION</td><td id="modalElevation">3,200m</td></tr>
+            <tr><td>CAPILLARY FLUX</td><td id="modalFlux">98.8%</td></tr>
+            <tr><td>CLIMATE TOLERANCE</td><td>-15&deg;C to +35&deg;C</td></tr>
+          </table>
+          <button class="btn-talk" style="justify-content: center; padding: 0.85rem; background: var(--color-moss); color: #FFFFFF; border-color: var(--color-moss);" onclick="showToast('Lot reserved for private collector preview'); closeSpecimenModal();">
+            Reserve This Specimen &gt;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div>
+      <span style="font-family: var(--font-script); font-weight: 800; font-size: 1.35rem; font-style: italic; color: var(--color-charcoal); margin-right: 1.5rem;">Verdura</span>
+      <span>&copy; 2026 Verdura Living Stones & Botanical Architecture.</span>
+    </div>
+    <div style="display: flex; gap: 2rem;">
+      <a href="../../../" style="color: var(--color-charcoal); text-decoration: none;">Design Library</a>
+      <a href="#collection" style="color: var(--color-charcoal); text-decoration: none;">Specimens</a>
+      <a href="#grading" style="color: var(--color-charcoal); text-decoration: none;">Methodology</a>
+      <a href="#simulator" style="color: var(--color-charcoal); text-decoration: none;">Simulator</a>
+      <a href="#installations" style="color: var(--color-charcoal); text-decoration: none;">Installations</a>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast">Action confirmed</div>
+
+  <script>
+    // Smooth Scrolling with Lenis
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Handle anchor links with Lenis offset
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId !== '#') {
+            const target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              lenis.scrollTo(target, { offset: -70 });
+            }
+          }
+        });
+      });
+    } catch(e) {
+      console.warn('Lenis smooth scroll initialized in fallback mode');
+    }
+
+    // Custom Botanical Cursor
+    const cursorFollower = document.getElementById('cursorFollower');
+    const cursorDot = document.getElementById('cursorDot');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let followerX = mouseX, followerY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      }
+    });
+
+    function updateCursor() {
+      followerX += (mouseX - followerX) * 0.15;
+      followerY += (mouseY - followerY) * 0.15;
+      if (cursorFollower) {
+        cursorFollower.style.left = followerX + 'px';
+        cursorFollower.style.top = followerY + 'px';
+      }
+      requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
+
+    document.querySelectorAll('button, a, .specimen-card, .install-card, .step-item, .config-chip, .monolith-wrapper').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-active'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-active'));
+    });
+
+    // Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // 3D Monolith Pointer Tracking & Inertial Physics
+    const wrapper = document.getElementById('monolithWrapper');
+    const monolith = document.getElementById('monolith3D');
+    const shardLeft = document.getElementById('shardLeft');
+    const shardRight = document.getElementById('shardRight');
+    const productBadge = document.getElementById('productBadge');
+    const monumentalTitle = document.getElementById('monumentalTitle');
+    const heroBottomBar = document.getElementById('heroBottomBar');
+
+    let currentRotateX = 0, currentRotateY = 0;
+    let targetRotateX = 0, targetRotateY = 0;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) return;
+      const nx = (e.clientX / window.innerWidth) - 0.5;
+      const ny = (e.clientY / window.innerHeight) - 0.5;
+      targetRotateY = nx * 34;
+      targetRotateX = -ny * 26;
+    });
+
+    wrapper.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX - targetRotateY * 5;
+      startY = e.clientY + targetRotateX * 5;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      targetRotateY = (e.clientX - startX) * 0.22;
+      targetRotateX = -(e.clientY - startY) * 0.22;
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // Touch Support
+    wrapper.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX - targetRotateY * 5;
+      startY = e.touches[0].clientY + targetRotateX * 5;
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      targetRotateY = (e.touches[0].clientX - startX) * 0.22;
+      targetRotateX = -(e.touches[0].clientY - startY) * 0.22;
+    });
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+    // Hero Physics Animation Loop
+    let t = 0;
+    function renderPhysics() {
+      t += 0.02;
+      currentRotateX += (targetRotateX - currentRotateX) * 0.08;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.08;
+
+      const floatOffset = Math.sin(t) * 12;
+
+      monolith.style.transform = `translateY(${floatOffset}px) rotateY(${currentRotateY}deg) rotateX(${currentRotateX}deg)`;
+      
+      if (shardLeft) {
+        shardLeft.style.transform = `translateY(${floatOffset * 1.5}px) translateX(${currentRotateY * -1.8}px)`;
+      }
+      if (shardRight) {
+        shardRight.style.transform = `translateY(${floatOffset * -1.2}px) translateX(${currentRotateY * -1.2}px)`;
+      }
+      if (productBadge) {
+        productBadge.style.transform = `translateZ(60px) translateX(${currentRotateY * 0.6}px) translateY(${currentRotateX * 0.4}px)`;
+      }
+
+      requestAnimationFrame(renderPhysics);
+    }
+    renderPhysics();
+
+    // Scroll-driven Parallax Transitions & Header Shrink
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrolled / Math.max(1, docHeight)) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+
+      const topNav = document.getElementById('topNav');
+      if (scrolled > 50) {
+        topNav.classList.add('scrolled');
+      } else {
+        topNav.classList.remove('scrolled');
+      }
+
+      // Parallax continuity from hero into Section 02
+      if (scrolled < window.innerHeight * 1.2) {
+        const factor = scrolled / window.innerHeight;
+        monumentalTitle.style.transform = `translate(-50%, calc(-52% - ${scrolled * 0.35}px)) scale(${1 + factor * 0.15})`;
+        monumentalTitle.style.opacity = Math.max(0, 1 - factor * 1.2);
+        
+        wrapper.style.transform = `translateY(${scrolled * 0.22}px) scale(${1 - factor * 0.18}) rotate(${factor * 6}deg)`;
+        wrapper.style.opacity = Math.max(0, 1 - factor * 1.1);
+
+        if (heroBottomBar) {
+          heroBottomBar.style.opacity = Math.max(0, 1 - factor * 1.8);
+          heroBottomBar.style.transform = `translateY(${scrolled * 0.15}px)`;
+        }
+      }
+    });
+
+    // Reveal On Scroll via IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px 100px 0px' });
+
+    document.querySelectorAll('.reveal-item').forEach(el => {
+      observer.observe(el);
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 100) {
+        el.classList.add('revealed');
+      }
+    });
+
+    // Safety fallback so items never stay invisible
+    setTimeout(() => {
+      document.querySelectorAll('.reveal-item').forEach(el => el.classList.add('revealed'));
+    }, 500);
+
+    // 3D Card Hover Physics
+    document.querySelectorAll('.specimen-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const rx = (-y / (rect.height / 2)) * 10;
+        const ry = (x / (rect.width / 2)) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+      });
+    });
+
+    // Catalog Filter with Smooth FLIP Animations
+    function filterSpecimens(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.specimen-card');
+      cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.92)';
+      });
+
+      setTimeout(() => {
+        cards.forEach(card => {
+          if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+            card.style.display = 'flex';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            }, 50);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }, 250);
+    }
+
+    // Greenhouse Grading Interactive Step Activation
+    const stepTitles = ["CHAMBER 01: CORE SOURCING", "CHAMBER 02: BIO-INOCULATION", "CHAMBER 03: CLIMATE STABILIZATION"];
+    const stepFluxes = ["94.2%", "98.7%", "99.8%"];
+    const stepKelvins = ["5200K", "6500K", "4200K"];
+
+    function activateStep(idx) {
+      document.querySelectorAll('.step-item').forEach((item, i) => {
+        item.classList.toggle('active', i === idx);
+      });
+      [0, 1, 2].forEach(i => {
+        const img = document.getElementById(`stepImg${i}`);
+        if (img) img.classList.toggle('active', i === idx);
+      });
+      document.getElementById('hudChamber').textContent = stepTitles[idx];
+      document.getElementById('hudFlux').textContent = stepFluxes[idx];
+      document.getElementById('hudCircadian').textContent = stepKelvins[idx];
+    }
+
+    // Micro-Climate Spore Canvas Simulation
+    const canvas = document.getElementById('sporeCanvas');
+    const ctx = canvas.getContext('2d');
+    let spores = [];
+
+    function initCanvas() {
+      if (!canvas || !canvas.parentElement) return;
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+      spores = [];
+      const count = 48;
+      for (let i = 0; i < count; i++) {
+        spores.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 3 + 1.5,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6,
+          alpha: Math.random() * 0.6 + 0.3,
+          color: Math.random() > 0.4 ? '#A3E635' : '#4ADE80'
+        });
+      }
+    }
+    initCanvas();
+    window.addEventListener('resize', initCanvas);
+
+    let canvasAnimId;
+    function renderSpores() {
+      if (!ctx || !canvas) return;
+      ctx.fillStyle = 'rgba(20, 26, 14, 0.22)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const hum = parseInt(document.getElementById('humRange').value, 10);
+      const speedMultiplier = (hum / 78);
+
+      spores.forEach(s => {
+        s.x += s.vx * speedMultiplier;
+        s.y += s.vy * speedMultiplier;
+
+        if (s.x < 0) s.x = canvas.width;
+        if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height;
+        if (s.y > canvas.height) s.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius * (hum / 75), 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = s.alpha;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = s.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      ctx.globalAlpha = 1.0;
+
+      canvasAnimId = requestAnimationFrame(renderSpores);
+    }
+    renderSpores();
+
+    // Habitat Simulator Readout Updates
+    function updateSim() {
+      const hum = document.getElementById('humRange').value;
+      const kel = document.getElementById('kelRange').value;
+      const cyc = document.getElementById('cycRange').value;
+
+      document.getElementById('humVal').textContent = `${hum}%`;
+      document.getElementById('kelVal').textContent = `${kel}K`;
+      document.getElementById('cycVal').textContent = `Every ${cyc} hrs`;
+
+      // Calculate organic vitality index
+      const score = ((parseInt(hum, 10) * 0.5) + (parseInt(kel, 10) / 6500 * 30) + (12 - parseInt(cyc, 10)) * 1.5).toFixed(1);
+      const clampedScore = Math.min(99.9, Math.max(88.4, score));
+      document.getElementById('vitScore').textContent = `${clampedScore}%`;
+      document.getElementById('vitFill').style.width = `${clampedScore}%`;
+
+      // Dynamic ambient lighting shift on panel
+      const kelNorm = (parseInt(kel, 10) - 2700) / (6500 - 2700);
+      const warmR = Math.round(255 - kelNorm * 15);
+      const warmG = Math.round(252 - kelNorm * 5);
+      const warmB = Math.round(240 + kelNorm * 15);
+      const simEl = document.getElementById('simulator');
+      if (simEl) {
+        simEl.style.backgroundColor = `rgb(${warmR}, ${warmG}, ${warmB})`;
+      }
+    }
+
+    // Commission Studio Configuration
+    const configs = {
+      matrix: 'Alpine Granite',
+      flora: 'Sub-Alpine Saxifrage',
+      scale: 'Pedestal Monolith (1.2m)'
+    };
+
+    function selectChip(btn, type) {
+      btn.parentElement.querySelectorAll('.config-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      configs[type] = btn.textContent;
+
+      document.getElementById('configSummaryTitle').textContent = `${configs.matrix} • ${configs.flora}`;
+      document.getElementById('configSummaryDesc').textContent = 
+        `Custom ${configs.scale} carved from natural ${configs.matrix}. Laboratory inoculated with cold-hardy ${configs.flora} colonies for verified biological longevity.`;
+    }
+
+    // Specimen Modal Dialog
+    function openSpecimenModal(lot, title, desc, img, elevation, matrix, flux) {
+      document.getElementById('modalLot').textContent = `LOT #${lot}`;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('modalImg').src = img;
+      document.getElementById('modalElevation').textContent = elevation;
+      document.getElementById('modalMatrix').textContent = matrix;
+      document.getElementById('modalFlux').textContent = flux;
+      document.getElementById('specimenModalOverlay').classList.add('open');
+    }
+
+    function closeSpecimenModal(e) {
+      document.getElementById('specimenModalOverlay').classList.remove('open');
+    }
+  </script>
+</body>
+</html>
