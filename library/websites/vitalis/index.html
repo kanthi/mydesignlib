@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitalis — Health Coaching & Clinical Care in 3 Simple Steps</title>
+
+  <!-- Robots & Privacy -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Newsreader (Serif) & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-lawn: #619934;
+      --card-sage: #DFE8DA;
+      --card-cream: #F9FBF8;
+      --card-dark: #162617;
+      --text-green-dark: #123116;
+      --text-body: #475B4A;
+      --highlight-lime: #D0EE6B;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-lawn);
+      font-family: var(--font-sans);
+      color: var(--text-green-dark);
+      -webkit-font-smoothing: antialiased;
+      padding: 2.5rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* MAIN CONTAINER CARD */
+    .sage-canvas {
+      background-color: var(--card-sage);
+      border-radius: 40px;
+      width: 100%;
+      max-width: 1380px;
+      padding: 3.5rem 3.5rem 4.5rem;
+      box-shadow: 0 30px 70px rgba(25, 48, 14, 0.28);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* TOP HEADER */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2.75rem;
+    }
+
+    .pill-tag {
+      display: inline-block;
+      background: #FFFFFF;
+      color: var(--text-green-dark);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--text-green-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .highlight-wash {
+      position: relative;
+      display: inline-block;
+      padding: 0 4px;
+      z-index: 1;
+    }
+    .highlight-wash::before {
+      content: '';
+      position: absolute;
+      inset: 15% -2% 5% -2%;
+      background: var(--highlight-lime);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      z-index: -1;
+      opacity: 0.85;
+    }
+
+    /* SLIDER CONTROLS */
+    .slider-arrows {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .arrow-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .arrow-btn:active {
+      transform: scale(0.95);
+    }
+
+    .arrow-prev {
+      background: rgba(18, 49, 22, 0.12);
+      color: var(--text-green-dark);
+    }
+
+    .arrow-next {
+      background: var(--text-green-dark);
+      color: #FFFFFF;
+    }
+
+    /* CARDS SCROLLER */
+    .steps-scroller {
+      display: flex;
+      gap: 1.75rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+    }
+    .steps-scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* STEP CARD */
+    .step-card {
+      flex: 0 0 360px;
+      scroll-snap-align: start;
+      border-radius: 28px;
+      padding: 2.25rem 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-light {
+      background-color: var(--card-cream);
+      color: var(--text-green-dark);
+    }
+
+    .card-dark {
+      background-color: var(--card-dark);
+      color: #FFFFFF;
+    }
+
+    /* 3D FLOATING ICON AT TOP */
+    .step-top-icon {
+      width: 58px;
+      height: 58px;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+    }
+
+    .step-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step-card-desc {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-body);
+      max-width: 280px;
+      margin-bottom: 2rem;
+    }
+
+    .card-dark .step-card-desc {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* PHONE CONTAINER WITH TORN PAPER COLLAGE */
+    .phone-mockup-wrapper {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: auto;
+    }
+
+    /* TORN PAPER COLLAGE ACCENTS */
+    .torn-paper-stack {
+      position: absolute;
+      inset: 20px 0 0 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .torn-shape-1 {
+      position: absolute;
+      left: 10px;
+      bottom: 20px;
+      width: 90px;
+      height: 140px;
+      background: #D9684C;
+      clip-path: polygon(0% 15%, 85% 0%, 100% 85%, 20% 100%);
+      opacity: 0.85;
+      transform: rotate(-8deg);
+    }
+
+    .torn-shape-2 {
+      position: absolute;
+      right: 15px;
+      bottom: 40px;
+      width: 100px;
+      height: 160px;
+      background: #E8B058;
+      clip-path: polygon(15% 0%, 100% 20%, 80% 100%, 0% 80%);
+      opacity: 0.85;
+      transform: rotate(6deg);
+    }
+
+    .torn-shape-3 {
+      position: absolute;
+      left: 20px;
+      bottom: 60px;
+      width: 110px;
+      height: 130px;
+      background: #2D4C3A;
+      clip-path: polygon(5% 0%, 95% 15%, 85% 95%, 0% 85%);
+      opacity: 0.8;
+      transform: rotate(-14deg);
+    }
+
+    /* IPHONE HARDWARE CHASSIS */
+    .iphone-frame {
+      position: relative;
+      width: 250px;
+      height: 480px;
+      background: #FFFFFF;
+      border: 8px solid #1E2320;
+      border-bottom: none;
+      border-radius: 36px 36px 0 0;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dynamic-island {
+      width: 72px;
+      height: 18px;
+      background: #000000;
+      border-radius: 12px;
+      margin: 8px auto 6px;
+    }
+
+    /* PHONE APP HEADER */
+    .app-header {
+      padding: 0.4rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #F1F4F1;
+    }
+
+    .app-brand-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #123116;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .avatar-mini {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #619934;
+      color: #FFFFFF;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CHAT APP INTERFACE (CARD 1) */
+    .chat-scroll-area {
+      padding: 0.85rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      text-align: left;
+      font-size: 0.7rem;
+      background: #F8FAF7;
+      flex: 1;
+    }
+
+    .bubble-coach {
+      background: #FFFFFF;
+      color: #1A2E1D;
+      padding: 0.55rem 0.75rem;
+      border-radius: 14px 14px 14px 2px;
+      max-width: 85%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      line-height: 1.35;
+    }
+
+    .bubble-user {
+      background: #244129;
+      color: #FFFFFF;
+      padding: 0.55rem 0.75rem;
+      border-radius: 14px 14px 2px 14px;
+      max-width: 85%;
+      margin-left: auto;
+      line-height: 1.35;
+    }
+
+    .coach-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #619934;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* VIDEO INSIGHTS GRID (CARD 2) */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 0.75rem;
+      background: #F8FAF7;
+      flex: 1;
+    }
+
+    .video-tile {
+      background: #E5EBE3;
+      border-radius: 10px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .video-thumb-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, #D8C3A5 0%, #8E7970 100%);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .video-tile-title {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: #123116;
+      line-height: 1.25;
+    }
+
+    /* HEALTH TRACKER (CARD 3) */
+    .health-stats-screen {
+      padding: 0.85rem;
+      background: #111E13;
+      color: #FFFFFF;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: left;
+    }
+
+    .goal-card-item {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .goal-ring {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid #619934;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #A3E635;
+    }
+
+    .goal-info {
+      font-size: 0.7rem;
+    }
+    .goal-info strong {
+      display: block;
+      color: #FFFFFF;
+    }
+    .goal-info span {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.62rem;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 1rem;
+      }
+      .sage-canvas {
+        padding: 2rem 1.5rem;
+      }
+      .header-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sage-canvas">
+    <!-- HEADER -->
+    <div class="header-row">
+      <div>
+        <div class="pill-tag">How Vitalis works</div>
+        <h1 class="section-title">
+          Vitalis works in<br>
+          <span class="highlight-wash">3</span> simple steps
+        </h1>
+      </div>
+
+      <div class="slider-arrows">
+        <button class="arrow-btn arrow-prev" id="prevBtn" aria-label="Previous step">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="arrow-btn arrow-next" id="nextBtn" aria-label="Next step">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3 STEP CARDS -->
+    <div class="steps-scroller" id="stepsScroller">
+      <!-- CARD 1: SUPPORT -->
+      <div class="step-card card-light">
+        <div class="step-top-icon">
+          <!-- 3D Heart Glass Icon -->
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <path d="M26 44C26 44 8 32 8 18C8 11.37 13.37 6 20 6C23.6 6 25.8 7.8 26 8.5C26.2 7.8 28.4 6 32 6C38.63 6 44 11.37 44 18C44 32 26 44 26 44Z" fill="url(#heartGlass)" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+            <path d="M18 12C14 14 12 18 12 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+            <defs>
+              <linearGradient id="heartGlass" x1="10" y1="6" x2="40" y2="44">
+                <stop offset="0%" stop-color="#E2E8F0" />
+                <stop offset="50%" stop-color="#CBD5E1" />
+                <stop offset="100%" stop-color="#94A3B8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <h2 class="step-card-title">Support</h2>
+        <p class="step-card-desc">Doctors, health coaches and fitness experts; one-to-one, all day, every day, from your device.</p>
+
+        <div class="phone-mockup-wrapper">
+          <div class="torn-paper-stack">
+            <div class="torn-shape-1"></div>
+            <div class="torn-shape-2"></div>
+            <div class="torn-shape-3"></div>
+          </div>
+
+          <div class="iphone-frame">
+            <div class="dynamic-island"></div>
+            <div class="app-header">
+              <div class="app-brand-title">
+                <span class="avatar-mini">✢</span>
+                <span>Vitalis coaching</span>
+              </div>
+              <div class="avatar-mini" style="background: #123116;">J</div>
+            </div>
+
+            <div class="chat-scroll-area">
+              <div class="coach-label"><span>Coach Joe</span></div>
+              <div class="bubble-coach">
+                Hi Liam, Welcome to Vitalis. I'm Joe. How're you feeling today?
+              </div>
+
+              <div class="bubble-user">
+                Hi Joe. I'm really feeling the pain today and a friend recommended I try this app
+              </div>
+
+              <div class="coach-label"><span>Coach Joe</span></div>
+              <div class="bubble-coach">
+                Thanks for telling me, Liam. Pain days are hard. I'd like to ask a couple of quick questions so I can adjust your plan for days like this.
+              </div>
+
+              <div class="bubble-user">
+                Sure, go ahead.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: RESOURCES -->
+      <div class="step-card card-light">
+        <div class="step-top-icon">
+          <!-- 3D Clapperboard / Video Icon -->
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <rect x="8" y="16" width="36" height="26" rx="6" fill="#CBD5E1" stroke="#94A3B8" stroke-width="2"/>
+            <path d="M8 22H44" stroke="#64748B" stroke-width="2"/>
+            <polygon points="22,25 32,30 22,35" fill="#475569"/>
+          </svg>
+        </div>
+
+        <h2 class="step-card-title">Resources</h2>
+        <p class="step-card-desc">Videos on understanding chronic recovery, and how others like you have improved their quality of life.</p>
+
+        <div class="phone-mockup-wrapper">
+          <div class="torn-paper-stack">
+            <div class="torn-shape-1" style="background: #4A6B56;"></div>
+            <div class="torn-shape-2" style="background: #C47A53;"></div>
+          </div>
+
+          <div class="iphone-frame">
+            <div class="dynamic-island"></div>
+            <div class="app-header">
+              <div style="font-size: 0.75rem; color: #64748B;">&larr;</div>
+              <div class="app-brand-title">Insights</div>
+              <div style="font-size: 0.75rem; color: #64748B;">&times;</div>
+            </div>
+
+            <div class="insights-grid">
+              <div class="video-tile">
+                <div class="video-thumb-circle">👩‍⚕️</div>
+                <div class="video-tile-title">Intro to coach Steph</div>
+              </div>
+
+              <div class="video-tile">
+                <div class="video-thumb-circle">🧘‍♂️</div>
+                <div class="video-tile-title">Exercise & Fibro</div>
+              </div>
+
+              <div class="video-tile">
+                <div class="video-thumb-circle">🌿</div>
+                <div class="video-tile-title">Gentle Mobility</div>
+              </div>
+
+              <div class="video-tile">
+                <div class="video-thumb-circle">💊</div>
+                <div class="video-tile-title">Pain Relief Science</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: HEALTH -->
+      <div class="step-card card-dark">
+        <div class="step-top-icon">
+          <!-- 3D Activity Sparkle -->
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="18" fill="#1C3823" stroke="#619934" stroke-width="2"/>
+            <path d="M16 26h5l3-6 4 12 3-6h5" stroke="#A3E635" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <h2 class="step-card-title" style="color: #FFFFFF;">Health</h2>
+        <p class="step-card-desc">Share your exercise routines, log daily symptoms, and get personal coaching adjustments.</p>
+
+        <div class="phone-mockup-wrapper">
+          <div class="torn-paper-stack">
+            <div class="torn-shape-1" style="background: #244129;"></div>
+            <div class="torn-shape-2" style="background: #8FA876;"></div>
+          </div>
+
+          <div class="iphone-frame" style="background: #111E13; border-color: #0A120B;">
+            <div class="dynamic-island"></div>
+            <div class="app-header" style="border-color: rgba(255,255,255,0.08);">
+              <div class="app-brand-title" style="color: #FFFFFF;">
+                <span class="avatar-mini" style="background: #A3E635; color: #111E13;">★</span>
+                <span>Daily Tracker</span>
+              </div>
+              <div style="font-size: 0.7rem; color: #A3E635; font-weight: 700;">92%</div>
+            </div>
+
+            <div class="health-stats-screen">
+              <div class="goal-card-item">
+                <div class="goal-ring">15m</div>
+                <div class="goal-info">
+                  <strong>Gentle Flow</strong>
+                  <span>Completed &bull; 9:30 AM</span>
+                </div>
+              </div>
+
+              <div class="goal-card-item">
+                <div class="goal-ring" style="border-color: #60A5FA; color: #93C5FD;">2L</div>
+                <div class="goal-info">
+                  <strong>Hydration Target</strong>
+                  <span>On track today</span>
+                </div>
+              </div>
+
+              <div class="goal-card-item">
+                <div class="goal-ring" style="border-color: #F59E0B; color: #FCD34D;">Low</div>
+                <div class="goal-info">
+                  <strong>Symptom Severity</strong>
+                  <span>Reported down -30%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scroller = document.getElementById('stepsScroller');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    if (scroller && prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => {
+        scroller.scrollBy({ left: -380, behavior: 'smooth' });
+      });
+      nextBtn.addEventListener('click', () => {
+        scroller.scrollBy({ left: 380, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

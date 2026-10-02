@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Veltis — The Complete Ecommerce Engine</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-page: #FBFBFC;
+      --bg-card: #FFFFFF;
+      --bg-soft: #F4F4F6;
+      --text-dark: #0D121F;
+      --text-muted: #5E6778;
+      --text-subtle: #8F9CAE;
+      --brand-indigo: #4F46E5;
+      --brand-violet: #6366F1;
+      --brand-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+      --accent-cyan: #06B6D4;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --accent-purple: #8B5CF6;
+      --border-card: rgba(13, 18, 31, 0.07);
+      --border-card-hover: rgba(79, 70, 229, 0.25);
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-pill: 9999px;
+      --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.03);
+      --shadow-card: 0 12px 32px -4px rgba(13, 18, 31, 0.04), 0 4px 12px rgba(13, 18, 31, 0.02);
+      --shadow-hover: 0 20px 40px -8px rgba(13, 18, 31, 0.08), 0 8px 16px rgba(13, 18, 31, 0.03);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Container constraints */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* -------------------------------------------------------------
+       TOP NAVIGATION BAR
+    -------------------------------------------------------------- */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(251, 251, 252, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-card);
+      padding: 1.1rem 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+
+    .brand-logo-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-dark);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-link:hover {
+      color: var(--brand-indigo);
+    }
+
+    .btn-signup-nav {
+      background: var(--brand-gradient);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 1.4rem;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+      transition: var(--transition);
+    }
+
+    .btn-signup-nav:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION
+    -------------------------------------------------------------- */
+    .hero-section {
+      padding: 3rem 0 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .hero-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+      max-width: 620px;
+      margin: 0 auto 2.25rem;
+      line-height: 1.55;
+    }
+
+    .btn-primary-glow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--brand-gradient);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.45);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px -4px rgba(79, 70, 229, 0.55);
+    }
+
+    /* 3D Prism Hero Stage */
+    .hero-stage-container {
+      margin: 2.25rem auto 1rem;
+      max-width: 920px;
+      height: 320px;
+      position: relative;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .perspective-grid-floor {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(13, 18, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(13, 18, 31, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,1) 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(0,0,0,1) 30%, transparent 80%);
+      transform: rotateX(60deg) translateY(20px);
+    }
+
+    .floating-tiles-ambient {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .tile-ambient {
+      position: absolute;
+      width: 140px;
+      height: 90px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 16px 36px rgba(13, 18, 31, 0.05);
+      transform: rotateX(60deg) rotateZ(-20deg);
+    }
+
+    .tile-1 { top: 15%; left: 14%; animation: floatA 6s ease-in-out infinite; }
+    .tile-2 { top: 48%; left: 18%; animation: floatB 7s ease-in-out infinite; }
+    .tile-3 { top: 15%; right: 14%; animation: floatB 6.5s ease-in-out infinite; }
+    .tile-4 { top: 48%; right: 18%; animation: floatA 7.5s ease-in-out infinite; }
+
+    @keyframes floatA {
+      0%, 100% { transform: rotateX(60deg) rotateZ(-20deg) translateY(0); }
+      50% { transform: rotateX(60deg) rotateZ(-20deg) translateY(-12px); }
+    }
+    @keyframes floatB {
+      0%, 100% { transform: rotateX(60deg) rotateZ(-20deg) translateY(-8px); }
+      50% { transform: rotateX(60deg) rotateZ(-20deg) translateY(4px); }
+    }
+
+    /* Central Iridescent Holographic Prism Block */
+    .prism-hero-block {
+      position: relative;
+      z-index: 10;
+      width: 240px;
+      height: 140px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 245, 255, 0.8));
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 
+        0 24px 60px -10px rgba(79, 70, 229, 0.35),
+        0 0 40px rgba(6, 182, 212, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotateX(35deg) rotateZ(-12deg);
+      transition: transform 0.4s ease;
+      cursor: pointer;
+    }
+
+    .prism-hero-block:hover {
+      transform: rotateX(25deg) rotateZ(-5deg) scale(1.05);
+    }
+
+    .prism-inner-glow {
+      position: absolute;
+      inset: 4px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.35) 0%, rgba(124, 58, 237, 0.35) 50%, rgba(236, 72, 153, 0.35) 100%);
+      filter: blur(8px);
+      opacity: 0.85;
+    }
+
+    .prism-brand-symbol {
+      position: relative;
+      z-index: 2;
+      width: 72px;
+      height: 72px;
+      color: #FFFFFF;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    }
+
+    /* -------------------------------------------------------------
+       FEATURE MODULES SECTION (8 CORE CAPABILITIES)
+    -------------------------------------------------------------- */
+    .feature-module-section {
+      padding: 4.5rem 0;
+      border-top: 1px solid var(--border-card);
+    }
+
+    .module-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2.75rem;
+      gap: 2.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .module-header-row {
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+    }
+
+    .module-header-left {
+      max-width: 520px;
+    }
+
+    .module-tag-badge {
+      display: inline-block;
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .module-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3.2vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: var(--text-dark);
+    }
+
+    .module-header-right {
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .module-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .btn-dark-pill {
+      background: #11141D;
+      color: #FFFFFF;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-dark-pill:hover {
+      background: var(--brand-indigo);
+      transform: translateY(-1px);
+    }
+
+    /* 2-Column Split: Stat Quad vs Rich Visual Card */
+    .module-split-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .module-split-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 4-Stat Quad Grid */
+    .stat-quad-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card-micro {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem 1.4rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .stat-card-micro:hover {
+      border-color: var(--border-card-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .stat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-icon-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+
+    .stat-icon-ghost {
+      opacity: 0.15;
+      width: 22px;
+      height: 22px;
+      color: var(--text-dark);
+    }
+
+    .stat-micro-val {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .stat-micro-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.35;
+      margin-top: 0.2rem;
+    }
+
+    /* Showcase Visual Cards */
+    .visual-stage-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Specific Visual 1: CRM Holographic Dashboard */
+    .card-crm-hologram {
+      background: radial-gradient(circle at 50% 100%, rgba(6, 182, 212, 0.15), transparent 70%), #FFFFFF;
+    }
+
+    .crm-big-title-glow {
+      font-family: var(--font-display);
+      font-size: 4.8rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      background: linear-gradient(180deg, #06B6D4 0%, #3B82F6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 10px 20px rgba(6, 182, 212, 0.25));
+    }
+
+    .subscriber-pill-stack {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 5;
+    }
+
+    .subscriber-toast {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(13, 18, 31, 0.08);
+      border-radius: var(--radius-pill);
+      padding: 0.45rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .toast-icon {
+      color: #10B981;
+      font-size: 0.85rem;
+    }
+
+    /* Specific Visual 2: Virtual Metal Payment Card */
+    .payment-card-visual {
+      width: 100%;
+      max-width: 380px;
+      height: 220px;
+      background: linear-gradient(135deg, #10B981 0%, #1E3A8A 100%);
+      border-radius: 16px;
+      padding: 1.75rem;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.4);
+      position: relative;
+    }
+
+    .payment-provider-cluster {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .provider-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    /* Specific Visual 4: Shield Card */
+    .shield-stage-visual {
+      background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12), transparent 70%), #FFFFFF;
+    }
+
+    .shield-center-graphic {
+      width: 140px;
+      height: 160px;
+      background: #FFFFFF;
+      border: 2px solid rgba(245, 158, 11, 0.3);
+      border-radius: 20px 20px 70px 70px;
+      box-shadow: 0 16px 36px rgba(245, 158, 11, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .shield-alert-banner {
+      background: #F43F5E;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.3rem 0.85rem;
+      border-radius: var(--radius-pill);
+      position: absolute;
+      top: -12px;
+      box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: MASSIVE GRADIENT STATEMENT & PILLARS
+    -------------------------------------------------------------- */
+    .section-statement {
+      padding: 7rem 0 5rem;
+      text-align: center;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-card);
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    .statement-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .statement-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      max-width: 900px;
+      margin: 0 auto 2.5rem;
+      color: var(--text-dark);
+    }
+
+    .gradient-ecom {
+      background: linear-gradient(135deg, #06B6D4 0%, #4F46E5 50%, #EC4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pillars-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+      margin-top: 4.5rem;
+      text-align: left;
+    }
+
+    @media (max-width: 860px) {
+      .pillars-grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pillar-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
+      transition: var(--transition);
+    }
+
+    .pillar-card:hover {
+      background: #FFFFFF;
+      border-color: var(--border-card-hover);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--text-dark);
+    }
+
+    .pillar-body {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: INTEGRATIONS GRID
+    -------------------------------------------------------------- */
+    .section-integrations {
+      padding: 6rem 0;
+      text-align: center;
+    }
+
+    .integrations-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .integrations-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .integration-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition);
+      min-height: 90px;
+    }
+
+    .integration-box:hover {
+      border-color: var(--brand-indigo);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: FREQUENTLY ASKED QUESTIONS
+    -------------------------------------------------------------- */
+    .section-faqs {
+      padding: 6rem 0;
+      border-top: 1px solid var(--border-card);
+    }
+
+    .faq-layout-split {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 4rem;
+    }
+
+    @media (max-width: 860px) {
+      .faq-layout-split {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .faq-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition);
+    }
+
+    .faq-question-btn {
+      width: 100%;
+      padding: 1.35rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .faq-icon-cross {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+    }
+
+    .faq-item.active .faq-icon-cross {
+      transform: rotate(45deg);
+      color: var(--brand-indigo);
+    }
+
+    .faq-answer-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      padding: 0 1.5rem;
+    }
+
+    .faq-item.active .faq-answer-panel {
+      max-height: 200px;
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: FINAL CTA & CONSTELLATION STAGE
+    -------------------------------------------------------------- */
+    .section-final-cta {
+      padding: 6rem 0 8rem;
+      border-top: 1px solid var(--border-card);
+      background: radial-gradient(circle at 80% 50%, rgba(99, 102, 241, 0.08), transparent 60%);
+    }
+
+    .final-cta-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .final-cta-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .constellation-isometric-grid {
+      position: relative;
+      height: 380px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .constellation-node {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .constellation-node:hover {
+      transform: scale(1.15) translateY(-6px);
+      z-index: 20;
+    }
+
+    .node-1 { top: 15%; left: 35%; background: var(--accent-emerald); }
+    .node-2 { top: 25%; left: 15%; background: var(--accent-purple); }
+    .node-3 { top: 28%; right: 18%; background: var(--accent-cyan); }
+    .node-4 { top: 48%; left: 42%; background: var(--accent-rose); }
+    .node-5 { bottom: 20%; left: 22%; background: var(--brand-indigo); }
+    .node-6 { bottom: 18%; right: 30%; background: var(--accent-amber); }
+
+    /* -------------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------------- */
+    .site-footer {
+      padding: 5rem 0 3rem;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-watermark {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: clamp(7rem, 16vw, 15rem);
+      font-weight: 900;
+      color: rgba(13, 18, 31, 0.025);
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+
+    .footer-top-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 860px) {
+      .footer-top-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .telegram-support-card {
+      background: #EBF5FF;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      margin-top: 1.25rem;
+      max-width: 280px;
+    }
+
+    .telegram-icon {
+      width: 32px;
+      height: 32px;
+      background: #0088CC;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-col a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--brand-indigo);
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-card);
+      padding-top: 2rem;
+      position: relative;
+      z-index: 2;
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVE MRR CALCULATOR MODAL
+    -------------------------------------------------------------- */
+    .calculator-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 18, 31, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .calculator-modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 2.75rem;
+      width: 100%;
+      max-width: 580px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close-x {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--bg-soft);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a href="#" class="brand-logo-lockup">
+        <!-- Veltis Interlocking Chromatic Ribbon Mark -->
+        <svg class="brand-logo-icon" viewBox="0 0 100 100" fill="none">
+          <circle cx="36" cy="50" r="26" stroke="#4F46E5" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="64" cy="50" r="26" stroke="#06B6D4" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 36 24 C 50 24, 50 76, 64 76" stroke="#7C3AED" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-name">veltis</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#services" class="nav-link">Services ▾</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#benefits" class="nav-link">Benefits</a></li>
+        <li><a href="#integrations" class="nav-link">Integrations</a></li>
+        <li><a href="#faqs" class="nav-link">FAQs</a></li>
+      </ul>
+
+      <a href="#calculator" class="btn-signup-nav" onclick="openMrrModal()">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main id="about">
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-pill-badge">Built For Shopify</div>
+        <h1 class="hero-main-title">
+          The Complete<br>Ecommerce Engine
+        </h1>
+        <p class="hero-subtitle">
+          Everything you need to scale from subscriptions to fulfillment, all under one roof
+        </p>
+        <a href="#services" class="btn-primary-glow">
+          Explore Our Services &rarr;
+        </a>
+
+        <!-- 3D Perspective Hero Stage with Floating Prism Block -->
+        <div class="hero-stage-container">
+          <div class="perspective-grid-floor"></div>
+
+          <div class="floating-tiles-ambient">
+            <div class="tile-ambient tile-1"></div>
+            <div class="tile-ambient tile-2"></div>
+            <div class="tile-ambient tile-3"></div>
+            <div class="tile-ambient tile-4"></div>
+          </div>
+
+          <div class="prism-hero-block" onclick="openMrrModal()">
+            <div class="prism-inner-glow"></div>
+            <svg class="prism-brand-symbol" viewBox="0 0 100 100" fill="none">
+              <circle cx="36" cy="50" r="24" stroke="currentColor" stroke-width="10"/>
+              <circle cx="64" cy="50" r="24" stroke="currentColor" stroke-width="10"/>
+              <path d="M 36 26 C 50 26, 50 74, 64 74" stroke="currentColor" stroke-width="10"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 1: VELTIS CRM
+    =========================================== -->
+    <section class="feature-module-section" id="services">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis CRM</span>
+            <h2 class="module-title">Transform One-Time Buyers Into Monthly Recurring Revenue</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Most ecom stores lose 92% of customers after one purchase. Veltis CRM turns your Shopify store into a subscription powerhouse with custom checkouts, automated billing.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Calculate Your MRR Potential</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-cyan);">$</div>
+                <div class="stat-icon-ghost">&infin;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">+426% Average</div>
+                <div class="stat-micro-sub">Revenue Increase</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--brand-indigo);">$</div>
+                <div class="stat-icon-ghost">&infin;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">$1.3M+ MRR Generated</div>
+                <div class="stat-micro-sub">for Clients</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-cyan);">&#9889;</div>
+                <div class="stat-icon-ghost">&infin;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">14-Day</div>
+                <div class="stat-micro-sub">Launch Timeline</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--brand-indigo);">&#128737;</div>
+                <div class="stat-icon-ghost">&infin;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">95%+ Payment</div>
+                <div class="stat-micro-sub">Approval Rates</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CRM Hologram Visual -->
+          <div class="visual-stage-card card-crm-hologram">
+            <div class="subscriber-pill-stack">
+              <div class="subscriber-toast">
+                <span class="toast-icon">&#10004;</span>
+                <span>Shopify &middot; New Subscriber +$30</span>
+              </div>
+              <div class="subscriber-toast">
+                <span class="toast-icon">&#10004;</span>
+                <span>Shopify &middot; New Subscriber +$65</span>
+              </div>
+            </div>
+            <div class="crm-big-title-glow">CRM</div>
+            <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--text-dark);">
+              veltis
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 2: VELTIS PAYMENT
+    =========================================== -->
+    <section class="feature-module-section">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis Payment</span>
+            <h2 class="module-title">Payment Processing Built for High-Risk Ecommerce</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Stripe banned you. PayPal shut you down. Traditional processors don't understand your business. We do. Get approved for high-risk payment processing with 95%+ approval rates and industry expertise that keeps you running.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Get Approved Now</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- Multi-Rail Metal Virtual Card Visual -->
+          <div class="visual-stage-card" style="background: radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.12), transparent 70%), #FFFFFF;">
+            <div class="payment-provider-cluster">
+              <span class="provider-chip">Shopify</span>
+              <span class="provider-chip">Apple Pay</span>
+              <span class="provider-chip">Woo</span>
+              <span class="provider-chip">Mastercard</span>
+            </div>
+            <div class="payment-card-visual">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;">veltis</span>
+                <span style="font-size: 1.2rem;">&#128246;</span>
+              </div>
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 0.15em; margin-bottom: 0.5rem;">
+                  4835 3245 1997 1228
+                </div>
+                <div style="font-size: 0.75rem; opacity: 0.85;">TITANIUM ENTERPRISE FLEET</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-emerald);">&#10003;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">95%+</div>
+                <div class="stat-micro-sub">Approval Rates</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-emerald);">&#128737;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">High-Risk Industry</div>
+                <div class="stat-micro-sub">Specialists</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-emerald);">&#9889;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">No Sudden</div>
+                <div class="stat-micro-sub">Shutdowns</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-emerald);">&#9881;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Multiple Processor</div>
+                <div class="stat-micro-sub">Network</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 3: VELTIS MAX (CREATIVES)
+    =========================================== -->
+    <section class="feature-module-section">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis Max</span>
+            <h2 class="module-title">Premium Creatives That Scale Your Brand</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Stop losing to bad creatives. We deliver 50 premium static ads monthly with 3 copy variations, complete market research, and strategic angles that convert. Plus free media buying included. Average clients go from 1.5x to 3x+ ROAS.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Calculate Your MRR Potential</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: #3B82F6;">&#10022;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">150 Premium</div>
+                <div class="stat-micro-sub">Creatives Monthly</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: #3B82F6;">&#128200;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">1.5x &rarr; 3x+ ROAS</div>
+                <div class="stat-micro-sub">Average</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: #3B82F6;">$</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">$7M+ Generated</div>
+                <div class="stat-micro-sub">for Clients</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: #3B82F6;">&#127919;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Free Media Buying</div>
+                <div class="stat-micro-sub">Included</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Creative Card Visual -->
+          <div class="visual-stage-card" style="background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.12), transparent 70%), #FFFFFF;">
+            <div style="background: #FFFFFF; border: 1px solid var(--border-card); border-radius: 16px; padding: 2rem; width: 100%; max-width: 340px; box-shadow: var(--shadow-card); text-align: center;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #7C3AED; font-weight: 700;">PROVEN AD VARIATION</span>
+              <h4 style="font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0 1rem;">Take a Look to OUR BENEFITS</h4>
+              <div style="background: var(--bg-soft); border-radius: 8px; padding: 0.85rem; font-size: 0.78rem; color: var(--text-muted); text-align: left; line-height: 1.5;">
+                &check; Clinically Dosed Ingredients<br>
+                &check; Offsets Stimulant Fatigue<br>
+                &check; Free Media Buying Included
+              </div>
+              <div style="margin-top: 1.25rem; font-family: var(--font-display); font-weight: 800; color: var(--brand-indigo);">
+                veltis
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 4: VELTIS SHIELD
+    =========================================== -->
+    <section class="feature-module-section">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis Shield</span>
+            <h2 class="module-title">Stop Chargebacks Before They Cost You Thousands</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Chargebacks cost sales, fees, and risk. Veltis Shield alerts you to disputes early, allowing direct resolution with customers. Protect approval rates and revenue with affordable alerts.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Protect Your Revenue</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- Shield Visual -->
+          <div class="visual-stage-card shield-stage-visual">
+            <div class="shield-center-graphic">
+              <div class="shield-alert-banner">&excl; Chargeback Detected!</div>
+              <!-- Veltis Ribbon Inside Shield -->
+              <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                <circle cx="36" cy="50" r="22" stroke="#F59E0B" stroke-width="10"/>
+                <circle cx="64" cy="50" r="22" stroke="#F43F5E" stroke-width="10"/>
+                <path d="M 36 28 C 50 28, 50 72, 64 72" stroke="#F59E0B" stroke-width="10"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-amber);">&#128737;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">40% Dispute</div>
+                <div class="stat-micro-sub">Resolution Rate</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-rose);">&#128276;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Real-Time</div>
+                <div class="stat-micro-sub">Chargeback Alerts</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-amber);">$</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Cheapest Alerts</div>
+                <div class="stat-micro-sub">on Market</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-rose);">&#128201;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">35% Reduced</div>
+                <div class="stat-micro-sub">Involuntary Churn</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 5: VELTIS THEME
+    =========================================== -->
+    <section class="feature-module-section">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis Theme</span>
+            <h2 class="module-title">High-Converting Websites That Outperform Generic Themes</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Your Shopify theme is leaving money on the table. Veltis Theme combines luxury design with conversion-optimized performance. Built to beat generic themes with better load times, mobile experience, and checkout flows.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Preview Theme Demo</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--brand-indigo);">&#128087;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Conversion-Optimized</div>
+                <div class="stat-micro-sub">Design</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-cyan);">&#9889;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Lightning-Fast</div>
+                <div class="stat-micro-sub">Load Times</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--brand-indigo);">&#128241;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Mobile-First</div>
+                <div class="stat-micro-sub">Architecture</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-cyan);">&#128200;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">2.3x Better</div>
+                <div class="stat-micro-sub">Than Generic Themes</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Theme Split-Mockup Visual -->
+          <div class="visual-stage-card" style="background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12), transparent 70%), #FFFFFF;">
+            <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; width: 100%;">
+              <div style="width: 150px; background: #FFFFFF; border: 1px solid var(--border-card); border-radius: 18px; padding: 1rem; box-shadow: var(--shadow-card); text-align: center;">
+                <div style="background: var(--bg-soft); height: 80px; border-radius: 10px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">&#129524;</div>
+                <div style="font-size: 0.75rem; font-weight: 700;">Organic DTC Pack</div>
+                <div style="color: var(--accent-emerald); font-weight: 800; font-size: 0.85rem;">$29.99</div>
+              </div>
+              <div style="width: 150px; background: #FFFFFF; border: 1px solid var(--border-card); border-radius: 18px; padding: 1rem; box-shadow: var(--shadow-card); text-align: center;">
+                <div style="background: #EBF5FF; height: 80px; border-radius: 10px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">&#128085;</div>
+                <div style="font-size: 0.75rem; font-weight: 700;">Merino Crewneck</div>
+                <div style="color: var(--brand-indigo); font-weight: 800; font-size: 0.85rem;">$85.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURE MODULE 6: VELTIS SHIP & STEALTH
+    =========================================== -->
+    <section class="feature-module-section">
+      <div class="container">
+        <div class="module-header-row">
+          <div class="module-header-left">
+            <span class="module-tag-badge">Veltis Ship</span>
+            <h2 class="module-title">Seamless Global Fulfillment From China &amp; Hubs</h2>
+          </div>
+          <div class="module-header-right">
+            <p class="module-desc">
+              Stop dealing with unreliable suppliers and delayed shipments. Veltis Ship provides premium China &amp; US fulfillment with better sourcing, faster shipping, and payment terms that actually work for DTC brands.
+            </p>
+            <button class="btn-dark-pill" onclick="openMrrModal()">Start Fulfilling</button>
+          </div>
+        </div>
+
+        <div class="module-split-stage">
+          <!-- Logistics Pipeline Visual -->
+          <div class="visual-stage-card" style="background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12), transparent 70%), #FFFFFF;">
+            <div style="width: 100%; max-width: 380px;">
+              <div style="display: flex; justify-content: space-between; position: relative; margin-bottom: 1.5rem;">
+                <div style="position: absolute; top: 12px; left: 10%; right: 10%; height: 3px; background: var(--border-card); z-index: 1;"></div>
+                <div style="position: relative; z-index: 2; width: 28px; height: 28px; border-radius: 50%; background: var(--brand-indigo); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</div>
+                <div style="position: relative; z-index: 2; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-purple); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</div>
+                <div style="position: relative; z-index: 2; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-emerald); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">&check;</div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
+                <span>Order Placed</span>
+                <span>In Transit (5d)</span>
+                <span>Delivered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Stat Quad -->
+          <div class="stat-quad-grid">
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-purple);">&#127758;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Global</div>
+                <div class="stat-micro-sub">Fulfillment Network</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-purple);">&#9201;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Faster</div>
+                <div class="stat-micro-sub">Shipping Times</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-purple);">&#128179;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Better Payment</div>
+                <div class="stat-micro-sub">Terms</div>
+              </div>
+            </div>
+
+            <div class="stat-card-micro">
+              <div class="stat-card-header">
+                <div class="stat-icon-circle" style="background: var(--accent-purple);">&#129309;</div>
+              </div>
+              <div>
+                <div class="stat-micro-val">Premium Sourcing</div>
+                <div class="stat-micro-sub">Partners</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MASSIVE GRADIENT STATEMENT & PILLARS
+    =========================================== -->
+    <section class="section-statement" id="benefits">
+      <div class="container">
+        <div class="statement-eyebrow">THE TOOLS AND SUPPORT YOU SIMPLY CAN'T FIND ANYWHERE ELSE</div>
+        <h2 class="statement-heading">
+          Launch, scale, and manage your <span class="gradient-ecom">ecom business.</span>
+        </h2>
+        <button class="btn-primary-glow" onclick="openMrrModal()">
+          Try Veltis Today &rarr;
+        </button>
+
+        <!-- 3 Feature Pillars -->
+        <div class="pillars-grid-3">
+          <div class="pillar-card">
+            <h3 class="pillar-title">Predictable Revenue Growth</h3>
+            <p class="pillar-body">
+              Transform one-time buyers into loyal subscribers with automated subscriptions and real-time analytics.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <h3 class="pillar-title">Seamless Scaling &amp; Automation</h3>
+            <p class="pillar-body">
+              Manage payments, prevent chargebacks, and optimize every checkout with tools designed to eliminate busywork.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <h3 class="pillar-title">Premium Creative &amp; Support</h3>
+            <p class="pillar-body">
+              Access high-converting ads, 24/7 expert help, and end-to-end creative support—so you stay ahead of competitors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         INTEGRATIONS GRID
+    =========================================== -->
+    <section class="section-integrations" id="integrations">
+      <div class="container">
+        <div class="integrations-label">WORKS SEAMLESSLY WITH THE TOOLS YOU ALREADY USE</div>
+        <div class="integrations-grid">
+          <div class="integration-box" style="color: #95BF47;">Shopify</div>
+          <div class="integration-box" style="color: #96588A;">WooCommerce</div>
+          <div class="integration-box" style="color: #21759B;">WordPress</div>
+          <div class="integration-box" style="color: #121118;">BigCommerce</div>
+          <div class="integration-box" style="color: #0668E1;">Meta Ads</div>
+          <div class="integration-box" style="color: #EA4335;">Google Ads</div>
+          <div class="integration-box" style="color: #00B171;">NMI Gateway</div>
+          <div class="integration-box" style="color: #635BFF;">Stripe Connect</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FREQUENTLY ASKED QUESTIONS
+    =========================================== -->
+    <section class="section-faqs" id="faqs">
+      <div class="container">
+        <div class="faq-layout-split">
+          <div>
+            <span class="module-tag-badge">FAQ's</span>
+            <h2 class="faq-title">Frequently<br>Asked<br>Questions</h2>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item active">
+              <button class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>What is Veltis?</span>
+                <span class="faq-icon-cross">&plus;</span>
+              </button>
+              <div class="faq-answer-panel">
+                Whether you're launching your first product or scaling to eight figures, Veltis gives you every tool to own your ecommerce stack—from CRM to creatives, payments to fulfillment.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>How does Veltis differ from tools like Shopify or Stripe?</span>
+                <span class="faq-icon-cross">&plus;</span>
+              </button>
+              <div class="faq-answer-panel">
+                Shopify handles standard checkout; Veltis handles high-risk merchant accounts, automated subscription recovery, agency whitelisted ad accounts, and dispute-intercept alerts that native platforms block.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>Can I use just one Veltis service?</span>
+                <span class="faq-icon-cross">&plus;</span>
+              </button>
+              <div class="faq-answer-panel">
+                Yes! Every module is modular. You can use Veltis Shield standalone for dispute prevention, Veltis Max for ad creatives, or integrate the entire unified engine.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>How much does Veltis cost?</span>
+                <span class="faq-icon-cross">&plus;</span>
+              </button>
+              <div class="faq-answer-panel">
+                We offer performance-tiered pricing tailored to your GMV, starting with a 14-day free trial on CRM &amp; theme tools, and commission-based rates on payment rails.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>How fast can I get started?</span>
+                <span class="faq-icon-cross">&plus;</span>
+              </button>
+              <div class="faq-answer-panel">
+                Theme and CRM deployments launch in under 24 hours. High-risk merchant underwriting typically concludes within 3 to 5 business days.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FINAL HERO CALL TO ACTION
+    =========================================== -->
+    <section class="section-final-cta">
+      <div class="container">
+        <div class="final-cta-split">
+          <div>
+            <div class="module-tag-badge">Build For Shopify</div>
+            <h2 class="hero-main-title" style="text-align: left; font-size: clamp(2.4rem, 4.5vw, 3.8rem); margin-bottom: 1.25rem;">
+              Build. Sell.<br>Scale. Repeat.
+            </h2>
+            <p class="module-desc" style="max-width: 480px; margin-bottom: 2rem;">
+              Whether you're launching your first product or scaling to eight figures, Veltis gives you every tool to own your ecommerce stack—from CRM to creatives, payments to fulfillment.
+            </p>
+            <button class="btn-primary-glow" onclick="openMrrModal()">
+              Explore Our Services &rarr;
+            </button>
+          </div>
+
+          <!-- Isometric Constellation Graphic -->
+          <div class="constellation-isometric-grid">
+            <div class="constellation-node node-1" title="Veltis Payment">&#10003;</div>
+            <div class="constellation-node node-2" title="Veltis Ship">&#127758;</div>
+            <div class="constellation-node node-3" title="Veltis CRM">$</div>
+            <div class="constellation-node node-4" title="Veltis Shield">&#128737;</div>
+            <div class="constellation-node node-5" title="Veltis Max">&#128085;</div>
+            <div class="constellation-node node-6" title="Veltis Stealth">&#9992;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-watermark">veltis</div>
+
+    <div class="container">
+      <div class="footer-top-grid">
+        <div>
+          <a href="#" class="brand-logo-lockup" style="margin-bottom: 1rem;">
+            <svg class="brand-logo-icon" viewBox="0 0 100 100" fill="none">
+              <circle cx="36" cy="50" r="26" stroke="#4F46E5" stroke-width="12"/>
+              <circle cx="64" cy="50" r="26" stroke="#06B6D4" stroke-width="12"/>
+            </svg>
+            <span class="brand-name">veltis</span>
+          </a>
+          <p style="font-size: 0.82rem; color: var(--text-muted); max-width: 240px; line-height: 1.5;">
+            The unified scaling engine for high-velocity ecommerce operators.
+          </p>
+
+          <a href="#" class="telegram-support-card">
+            <div class="telegram-icon">&#9993;</div>
+            <div>
+              <div style="font-size: 0.78rem; font-weight: 700;">Contact us on telegram</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">Our associate will reply within 24h</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Features</h4>
+          <ul>
+            <li><a href="#services">Subscription Management</a></li>
+            <li><a href="#services">Custom Checkout</a></li>
+            <li><a href="#services">Campaign Strategy</a></li>
+            <li><a href="#services">Chargeback Intercept</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#benefits">Features</a></li>
+            <li><a href="#calculator" onclick="openMrrModal()">MRR Calculator</a></li>
+            <li><a href="#integrations">Partners</a></li>
+            <li><a href="#about">About Team</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#faqs">FAQs</a></li>
+            <li><a href="mailto:support@veltis.example">Email Support</a></li>
+            <li><a href="#faqs">Help Center</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>&copy; 2026 Veltis Technologies Inc. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#" style="color: inherit; text-decoration: none;">Terms of Service</a>
+          <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+          <a href="#" style="color: inherit; text-decoration: none;">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       INTERACTIVE MRR CALCULATOR MODAL
+  =========================================== -->
+  <div class="calculator-modal" id="mrrModal" onclick="handleModalBackdrop(event)">
+    <div class="modal-box">
+      <button class="modal-close-x" onclick="closeMrrModal()">&times;</button>
+      <span class="module-tag-badge">MRR Potential Calculator</span>
+      <h3 style="font-size: 1.6rem; font-weight: 800; margin: 0.4rem 0 1.25rem;">Estimate Your Subscription Upside</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2rem;">
+        See how much recurring revenue Veltis CRM unlocks from your current one-time customer traffic.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.5rem;">
+            <span>MONTHLY STORE ORDERS</span>
+            <span id="ordersDisplay" style="color: var(--brand-indigo);">5,000 orders</span>
+          </div>
+          <input type="range" min="500" max="50000" step="500" value="5000" id="ordersSlider" style="width: 100%; accent-color: var(--brand-indigo);" oninput="recalcMrr()">
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.5rem;">
+            <span>AVERAGE ORDER VALUE (AOV)</span>
+            <span id="aovDisplay" style="color: var(--brand-indigo);">$65</span>
+          </div>
+          <input type="range" min="20" max="250" step="5" value="65" id="aovSlider" style="width: 100%; accent-color: var(--brand-indigo);" oninput="recalcMrr()">
+        </div>
+      </div>
+
+      <!-- Result Banner -->
+      <div style="background: var(--bg-soft); border-radius: 14px; padding: 1.5rem; text-align: center; border: 1px solid var(--border-card); margin-bottom: 1.5rem;">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Estimated Added 12-Month ARR</div>
+        <div id="mrrResult" style="font-family: var(--font-display); font-size: 2.4rem; font-weight: 900; color: var(--accent-emerald); margin: 0.25rem 0;">
+          +$682,500
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Based on standard 17.5% subscriber conversion lift</div>
+      </div>
+
+      <button class="btn-primary-glow" style="width: 100%; justify-content: center;" onclick="closeMrrModal()">
+        Start Free 14-Day Trial &rarr;
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // FAQ Accordion Toggle
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    }
+
+    // Interactive MRR Modal Logic
+    function openMrrModal() {
+      document.getElementById('mrrModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      recalcMrr();
+    }
+    function closeMrrModal() {
+      document.getElementById('mrrModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleModalBackdrop(e) {
+      if (e.target.id === 'mrrModal') closeMrrModal();
+    }
+
+    function recalcMrr() {
+      const orders = parseInt(document.getElementById('ordersSlider').value);
+      const aov = parseInt(document.getElementById('aovSlider').value);
+      document.getElementById('ordersDisplay').textContent = `${orders.toLocaleString()} orders`;
+      document.getElementById('aovDisplay').textContent = `$${aov}`;
+
+      // Typical 17.5% subscriber retention lift over 12 months
+      const annualLift = Math.floor(orders * aov * 0.175 * 12);
+      document.getElementById('mrrResult').textContent = `+$${annualLift.toLocaleString()}`;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMrrModal();
+    });
+  </script>
+</body>
+</html>

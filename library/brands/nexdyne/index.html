@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Nexdyne — Brand Identity System &amp; Design Guidelines</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --c-obsidian: #060510;
+      --c-indigo: #1C1946;
+      --c-indigo-dark: #12102D;
+      --c-violet: #6056DC;
+      --c-violet-glow: rgba(96, 86, 220, 0.45);
+      --c-periwinkle: #766AD3;
+      --c-white: #FBFBFD;
+      --c-slate: #807F93;
+      --c-graphite: #2A2936;
+      --c-graphite-dark: #151421;
+      --c-surface: #0E0D1B;
+      --c-surface-card: #121124;
+
+      --f-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --f-tech: 'Space Grotesk', sans-serif;
+      --f-mono: 'JetBrains Mono', monospace;
+      --f-body: 'Inter', -apple-system, sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+    }
+
+    html {
+      background-color: var(--c-obsidian);
+      color: var(--c-white);
+      font-family: var(--f-body);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(96, 86, 220, 0.12), transparent 70%),
+        radial-gradient(circle 800px at 100% 30%, rgba(28, 25, 70, 0.3), transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* Top Persistent Utility Bar */
+    .top-bar {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(6, 5, 16, 0.82);
+      border-bottom: 1px solid rgba(118, 106, 211, 0.18);
+    }
+
+    .top-bar-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-id {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-mark-mini {
+      width: 28px;
+      height: 28px;
+      color: var(--c-white);
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-family: var(--f-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-white);
+    }
+
+    .brand-badge {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--c-periwinkle);
+      background: rgba(118, 106, 211, 0.12);
+      border: 1px solid rgba(118, 106, 211, 0.28);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-link {
+      font-family: var(--f-mono);
+      font-size: 0.76rem;
+      color: var(--c-slate);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-link:hover {
+      color: var(--c-white);
+    }
+
+    .btn-catalog-back {
+      font-family: var(--f-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--c-white);
+      background: var(--c-graphite);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-catalog-back:hover {
+      background: var(--c-violet);
+      border-color: var(--c-violet);
+    }
+
+    /* Main Container */
+    .container {
+      width: 100%;
+      max-width: 1360px;
+      padding: 2.5rem 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-tag {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-periwinkle);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-tag::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--c-violet);
+      box-shadow: 0 0 10px var(--c-violet);
+    }
+
+    .section-title {
+      font-family: var(--f-display);
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--c-white);
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: var(--c-slate);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+
+    .hero-media-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--c-surface-card);
+      border: 1px solid rgba(118, 106, 211, 0.22);
+      min-height: 480px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-media-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.05) brightness(0.95);
+    }
+
+    .hero-media-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 5, 16, 0.2) 0%, rgba(6, 5, 16, 0.85) 90%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.25rem;
+      pointer-events: none;
+    }
+
+    .hero-overlay-tag {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-periwinkle);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-overlay-title {
+      font-family: var(--f-display);
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-overlay-p {
+      font-size: 0.88rem;
+      color: #D2D1E2;
+      max-width: 440px;
+      line-height: 1.5;
+    }
+
+    .hero-specimen-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-specimen-card::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(96, 86, 220, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .specimen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .telemetry-chip {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-slate);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .interactive-stage {
+      padding: 3.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stage-lockup {
+      width: 100%;
+      max-width: 420px;
+      transition: transform 0.25s ease;
+    }
+
+    .stage-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: rgba(6, 5, 16, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .control-label {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-pills {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .mode-btn {
+      font-family: var(--f-mono);
+      font-size: 0.7rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--c-slate);
+      padding: 0.3rem 0.65rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn:hover {
+      color: var(--c-white);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .mode-btn.active {
+      background: var(--c-violet);
+      border-color: var(--c-violet);
+      color: var(--c-white);
+    }
+
+    /* Blueprint Section */
+    .blueprint-wrapper {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+
+    .blueprint-card {
+      background: #03020A;
+      border: 1px solid rgba(118, 106, 211, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      box-shadow: inset 0 0 30px rgba(96, 86, 220, 0.05);
+    }
+
+    .blueprint-canvas-container {
+      width: 100%;
+      height: 480px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #060510;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(118, 106, 211, 0.2);
+    }
+
+    .blueprint-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .blueprint-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding-top: 0.5rem;
+    }
+
+    .toggle-chip {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(118, 106, 211, 0.25);
+      color: #B5B2D4;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .toggle-chip.active {
+      background: rgba(96, 86, 220, 0.2);
+      border-color: var(--c-violet);
+      color: var(--c-white);
+    }
+
+    .toggle-chip .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-slate);
+    }
+
+    .toggle-chip.active .dot {
+      background: var(--c-periwinkle);
+      box-shadow: 0 0 8px var(--c-violet);
+    }
+
+    .blueprint-metrics-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .metrics-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1rem;
+    }
+
+    .metrics-title {
+      font-family: var(--f-tech);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--c-white);
+      margin-bottom: 0.3rem;
+    }
+
+    .metrics-sub {
+      font-size: 0.8rem;
+      color: var(--c-slate);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .metric-box {
+      background: rgba(6, 5, 16, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .metric-val {
+      font-family: var(--f-mono);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--c-periwinkle);
+    }
+
+    .metric-lbl {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      color: var(--c-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .blueprint-spec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.84rem;
+      color: #A09EB2;
+      line-height: 1.5;
+    }
+
+    .blueprint-spec-list li {
+      margin-left: 1.25rem;
+    }
+
+    /* Wordmark Anatomy Card */
+    .wordmark-anatomy-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .wordmark-visual-stage {
+      position: relative;
+      background: #03020A;
+      border: 1px solid rgba(118, 106, 211, 0.25);
+      border-radius: var(--radius-md);
+      padding: 4rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .wordmark-stage-inner {
+      position: relative;
+      display: inline-block;
+    }
+
+    .wordmark-large {
+      font-family: var(--f-display);
+      font-size: 5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--c-white);
+      line-height: 1;
+      display: block;
+      user-select: none;
+    }
+
+    .guide-line {
+      position: absolute;
+      left: -40px;
+      right: -40px;
+      height: 1px;
+      background: var(--c-periwinkle);
+      opacity: 0.55;
+    }
+
+    .guide-line::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 0;
+      top: -14px;
+      font-family: var(--f-mono);
+      font-size: 0.64rem;
+      color: var(--c-periwinkle);
+      letter-spacing: 0.08em;
+    }
+
+    .guide-cap { top: 12px; }
+    .guide-mean { top: 38px; }
+    .guide-base { bottom: 12px; }
+    .guide-desc { bottom: -14px; }
+
+    .clearspace-box {
+      position: absolute;
+      inset: -28px -36px;
+      border: 1px dashed var(--c-violet);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .clearspace-box::before {
+      content: "CLEARSPACE 1.5X";
+      position: absolute;
+      top: -18px;
+      left: 10px;
+      font-family: var(--f-mono);
+      font-size: 0.62rem;
+      color: var(--c-violet);
+    }
+
+    /* Color Architecture */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .color-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .color-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(118, 106, 211, 0.4);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .color-swatch {
+      height: 130px;
+      width: 100%;
+      position: relative;
+      padding: 0.85rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    .copy-badge {
+      font-family: var(--f-mono);
+      font-size: 0.65rem;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: #FFFFFF;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .color-card:hover .copy-badge {
+      opacity: 1;
+    }
+
+    .color-info {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      background: var(--c-surface-card);
+    }
+
+    .color-name {
+      font-family: var(--f-tech);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--c-white);
+    }
+
+    .color-hex {
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      color: var(--c-periwinkle);
+      font-weight: 600;
+    }
+
+    .color-role {
+      font-size: 0.76rem;
+      color: var(--c-slate);
+      margin-top: 0.2rem;
+      line-height: 1.35;
+    }
+
+    .wcag-tag {
+      font-family: var(--f-mono);
+      font-size: 0.62rem;
+      color: #9FE814;
+      background: rgba(159, 232, 20, 0.08);
+      border: 1px solid rgba(159, 232, 20, 0.2);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      width: fit-content;
+      margin-top: 0.4rem;
+    }
+
+    /* Distribution bar */
+    .dist-bar-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .dist-bar {
+      height: 24px;
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .dist-seg {
+      height: 100%;
+      position: relative;
+    }
+
+    .dist-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-slate);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    /* Typography Studio */
+    .typo-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    .typo-specimen-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .typo-tester-input {
+      width: 100%;
+      background: #03020A;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.15rem;
+      color: var(--c-white);
+      font-family: var(--f-display);
+      font-size: 1.1rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .typo-tester-input:focus {
+      border-color: var(--c-violet);
+    }
+
+    .weight-stacks {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .weight-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .weight-meta {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      color: var(--c-periwinkle);
+    }
+
+    .weight-text {
+      font-family: var(--f-display);
+      color: var(--c-white);
+      font-size: 1.65rem;
+      letter-spacing: -0.02em;
+    }
+
+    .glyphs-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .glyph-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .glyph-cell {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #060510;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      font-family: var(--f-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--c-white);
+      transition: all 0.15s ease;
+    }
+
+    .glyph-cell:hover {
+      background: var(--c-violet);
+      border-color: var(--c-violet);
+      transform: scale(1.1);
+    }
+
+    /* Applications & Mockups */
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    .mockup-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-media {
+      width: 100%;
+      height: 380px;
+      position: relative;
+      overflow: hidden;
+      background: #03020A;
+    }
+
+    .mockup-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .mockup-card:hover .mockup-img {
+      transform: scale(1.02);
+    }
+
+    .mockup-desc {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: var(--c-surface-card);
+    }
+
+    .mockup-title {
+      font-family: var(--f-tech);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--c-white);
+    }
+
+    .mockup-text {
+      font-size: 0.88rem;
+      color: var(--c-slate);
+      line-height: 1.5;
+    }
+
+    .mockup-specs {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-periwinkle);
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    /* Stress Test Suite */
+    .stress-wrapper {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .stress-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .stress-card {
+      background: #03020A;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .stress-label {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      color: var(--c-slate);
+    }
+
+    /* Inversion Card */
+    .inversion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .inversion-box {
+      border-radius: var(--radius-md);
+      padding: 3rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .inversion-box.dark {
+      background: #060510;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+    }
+
+    .inversion-box.light {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #060510;
+    }
+
+    /* Export Section */
+    .export-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .export-card {
+      background: var(--c-surface);
+      border: 1px solid rgba(118, 106, 211, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .export-preview {
+      height: 120px;
+      background: #03020A;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .export-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .export-title {
+      font-family: var(--f-tech);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .export-meta {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-slate);
+    }
+
+    .export-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-action {
+      flex: 1;
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-primary {
+      background: var(--c-violet);
+      color: #FFFFFF;
+      border: 1px solid var(--c-violet);
+    }
+
+    .btn-primary:hover {
+      background: #4E46B1;
+      border-color: #4E46B1;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--c-white);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--c-periwinkle);
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--c-violet);
+      color: #FFFFFF;
+      font-family: var(--f-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.75rem 1.25rem;
+      border-radius: 9999px;
+      box-shadow: 0 10px 30px rgba(96, 86, 220, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 3rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      background: #03020A;
+      color: var(--c-slate);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .footer-mono {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-periwinkle);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .blueprint-wrapper, .typo-wrapper, .mockups-grid {
+        grid-template-columns: 1fr;
+      }
+      .top-nav {
+        display: none;
+      }
+      .wordmark-large {
+        font-size: 3.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Persistent Bar -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="#overview" class="brand-id">
+        <svg class="brand-mark-mini" viewBox="0 0 240 240" fill="none">
+          <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="currentColor" stroke-width="26" stroke-linecap="round"/>
+          <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="currentColor" stroke-width="26" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-name">Nexdyne</span>
+        <span class="brand-badge">ID: NX-08 // SPEC V4.2</span>
+      </a>
+
+      <nav class="top-nav">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#geometry" class="nav-link">Geometry</a>
+        <a href="#colors" class="nav-link">Colors</a>
+        <a href="#typography" class="nav-link">Typography</a>
+        <a href="#applications" class="nav-link">Applications</a>
+        <a href="#stress-test" class="nav-link">Stress Test</a>
+        <a href="#export" class="nav-link">Export</a>
+      </nav>
+
+      <a href="../../index.html" class="btn-catalog-back">
+        <span>←</span> Design Library
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. Hero Overview -->
+    <section id="overview" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Identity System</span>
+        <h1 class="section-title">Nexdyne Brand Identity Guidelines</h1>
+        <p class="section-desc">A mathematically disciplined, high-contrast visual identity system engineered for deep tech, autonomous humanoid robotics, and neural cybernetics.</p>
+      </div>
+
+      <div class="hero-grid">
+        <!-- 3D Android Profile Media -->
+        <div class="hero-media-card">
+          <img src="assets/nexdyne_robot_head.jpg" alt="Nexdyne Humanoid Cybernetic Unit" class="hero-media-img" loading="eager">
+          <div class="hero-media-overlay">
+            <span class="hero-overlay-tag">PROTOTYPE UNIT // NX-CORP-01</span>
+            <h2 class="hero-overlay-title">Kinetic Precision</h2>
+            <p class="hero-overlay-p">Advances in Autonomous Intelligence &amp; Cybernetic Hardware. Shaping the kinetic frontier through mathematically pure robotics.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Specimen Stage -->
+        <div class="hero-specimen-card" id="specimenCard">
+          <div class="specimen-header">
+            <span class="telemetry-chip">MASTER LOCKUP SPECIMEN</span>
+            <span class="telemetry-chip">RATIO 1:1.618</span>
+          </div>
+
+          <div class="interactive-stage" id="stageContainer">
+            <div class="stage-lockup" id="stageLockup">
+              <svg viewBox="0 0 680 180" width="100%" fill="none">
+                <g transform="translate(10, 5) scale(0.72)">
+                  <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="currentColor" stroke-width="26" stroke-linecap="round"/>
+                  <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="currentColor" stroke-width="26" stroke-linecap="round"/>
+                </g>
+                <text x="200" y="118" fill="currentColor" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="82" letter-spacing="-0.03em">Nexdyne</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="stage-controls">
+            <div class="control-row">
+              <span class="control-label">Canvas Mode</span>
+              <div class="mode-pills">
+                <button class="mode-btn active" onclick="setStageMode('obsidian', this)">Obsidian</button>
+                <button class="mode-btn" onclick="setStageMode('gradient', this)">Electric Glow</button>
+                <button class="mode-btn" onclick="setStageMode('white', this)">Paper</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <span class="control-label">Scale View</span>
+              <input type="range" id="scaleSlider" min="0.6" max="1.3" step="0.05" value="1.0" oninput="updateStageScale(this.value)" style="accent-color: var(--c-violet); cursor: pointer;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CAD Geometry & Modular Blueprint -->
+    <section id="geometry" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Mathematical Specification</span>
+        <h2 class="section-title">Modular CAD Blueprint &amp; Geometry</h2>
+        <p class="section-desc">The Nexdyne mark is constructed using golden-ratio concentric arcs and calibrated fillets. No bezier curves are drawn freehand; every tangent derives from fixed circular coordinates.</p>
+      </div>
+
+      <div class="blueprint-wrapper">
+        <div class="blueprint-card">
+          <div class="blueprint-canvas-container">
+            <svg id="blueprintSvg" class="blueprint-svg" viewBox="0 0 600 500" fill="none">
+              <!-- Grid Patterns -->
+              <defs>
+                <pattern id="cad-grid-pattern" width="25" height="25" patternUnits="userSpaceOnUse">
+                  <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                </pattern>
+                <pattern id="cad-major-pattern" width="100" height="100" patternUnits="userSpaceOnUse">
+                  <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(118,106,211,0.2)" stroke-width="1"/>
+                </pattern>
+              </defs>
+
+              <g id="layerGrid">
+                <rect width="600" height="500" fill="url(#cad-grid-pattern)"/>
+                <rect width="600" height="500" fill="url(#cad-major-pattern)"/>
+              </g>
+
+              <!-- Construction Circles -->
+              <g id="layerCircles">
+                <circle cx="280" cy="270" r="160" stroke="#766AD3" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/>
+                <circle cx="280" cy="270" r="120" stroke="#766AD3" stroke-width="1" stroke-dasharray="4 4" opacity="0.35"/>
+                <circle cx="280" cy="270" r="40" stroke="#766AD3" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+                <line x1="80" y1="270" x2="520" y2="270" stroke="#766AD3" stroke-width="1" opacity="0.5"/>
+                <line x1="280" y1="50" x2="280" y2="450" stroke="#766AD3" stroke-width="1" opacity="0.5"/>
+                <line x1="120" y1="430" x2="440" y2="110" stroke="#766AD3" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
+              </g>
+
+              <!-- Mark Geometry -->
+              <g id="layerMark" transform="translate(140, 100) scale(1.4)">
+                <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+                <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              </g>
+
+              <!-- Dimension Calipers -->
+              <g id="layerDimensions">
+                <line x1="193" y1="80" x2="417" y2="80" stroke="#766AD3" stroke-width="2"/>
+                <line x1="193" y1="72" x2="193" y2="88" stroke="#766AD3" stroke-width="2"/>
+                <line x1="417" y1="72" x2="417" y2="88" stroke="#766AD3" stroke-width="2"/>
+                <text x="305" y="72" fill="#766AD3" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="600" text-anchor="middle">224 px</text>
+
+                <line x1="160" y1="186" x2="160" y2="373" stroke="#766AD3" stroke-width="2"/>
+                <line x1="152" y1="186" x2="168" y2="186" stroke="#766AD3" stroke-width="2"/>
+                <line x1="152" y1="373" x2="168" y2="373" stroke="#766AD3" stroke-width="2"/>
+                <text x="145" y="284" fill="#766AD3" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="600" text-anchor="end">187 px</text>
+
+                <line x1="450" y1="186" x2="450" y2="373" stroke="#766AD3" stroke-width="2"/>
+                <line x1="442" y1="186" x2="458" y2="186" stroke="#766AD3" stroke-width="2"/>
+                <line x1="442" y1="373" x2="458" y2="373" stroke="#766AD3" stroke-width="2"/>
+                <text x="465" y="284" fill="#766AD3" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="600" text-anchor="start">Δ 235 px</text>
+
+                <path d="M 280 270 L 350 200 L 400 200" fill="none" stroke="#766AD3" stroke-width="1.5"/>
+                <circle cx="280" cy="270" r="3" fill="#766AD3"/>
+                <text x="408" y="204" fill="#766AD3" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">R1 = 98 px</text>
+
+                <path d="M 274 313 L 230 350 L 190 350" fill="none" stroke="#766AD3" stroke-width="1.5"/>
+                <circle cx="274" cy="313" r="3" fill="#766AD3"/>
+                <text x="182" y="354" fill="#766AD3" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" text-anchor="end">r2 = 24 px</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="blueprint-toggles">
+            <button class="toggle-chip active" onclick="toggleLayer('layerGrid', this)">
+              <span class="dot"></span> Grid Coordinates
+            </button>
+            <button class="toggle-chip active" onclick="toggleLayer('layerCircles', this)">
+              <span class="dot"></span> Tangent Circles
+            </button>
+            <button class="toggle-chip active" onclick="toggleLayer('layerDimensions', this)">
+              <span class="dot"></span> Dimension Calipers
+            </button>
+            <button class="toggle-chip" onclick="toggleXray(this)">
+              <span class="dot"></span> X-Ray Skeleton
+            </button>
+          </div>
+        </div>
+
+        <div class="blueprint-metrics-card">
+          <div class="metrics-header">
+            <h3 class="metrics-title">Geometric Properties</h3>
+            <p class="metrics-sub">Mathematical constants governing vector rendering</p>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <span class="metric-val">98 px</span>
+              <span class="metric-lbl">Outer Radius (R1)</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val">24 px</span>
+              <span class="metric-lbl">Fillet Radius (r2)</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val">26 px</span>
+              <span class="metric-lbl">Caliper Stroke</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val">1.618</span>
+              <span class="metric-lbl">Clearance Ratio (Phi)</span>
+            </div>
+          </div>
+
+          <ul class="blueprint-spec-list">
+            <li><strong>Kinetic Propulsion Axis:</strong> The upper arc sweeps 133° through circular space, creating dynamic visual velocity without losing structural equilibrium.</li>
+            <li><strong>Internal Elbow:</strong> Grounded orthogonal base at 90° ensures stability and architectural presence across hardware nameplates.</li>
+            <li><strong>Semicircular Terminals:</strong> Rounded vector caps soften high-speed cybernetic motion, establishing human-centric tactile ergonomics.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Wordmark Anatomy & Clearspace -->
+    <section class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Typographic Architecture</span>
+        <h2 class="section-title">Logotype Anatomy &amp; Clearspace</h2>
+        <p class="section-desc">Optical kerning rules and minimum clearance boundaries engineered to protect mark integrity in dense technical interfaces.</p>
+      </div>
+
+      <div class="wordmark-anatomy-card">
+        <div class="wordmark-visual-stage">
+          <div class="wordmark-stage-inner">
+            <div class="clearspace-box"></div>
+            <div class="guide-line guide-cap" data-label="CAP HEIGHT // 720"></div>
+            <div class="guide-line guide-mean" data-label="MEANLINE // 520"></div>
+            <div class="guide-line guide-base" data-label="BASELINE // 000"></div>
+            <span class="wordmark-large">Nexdyne</span>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <span class="metric-val">1.5X</span>
+            <span class="metric-lbl">Minimum Clearspace (X = Inner Arc Height)</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-val">16 px</span>
+            <span class="metric-lbl">Minimum Digital Screen Height</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-val">12 mm</span>
+            <span class="metric-lbl">Minimum Physical Print Height</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-val">-0.03em</span>
+            <span class="metric-lbl">Optical Letter Tracking</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Exact Color Architecture -->
+    <section id="colors" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Chromatic Tokens</span>
+        <h2 class="section-title">Exact Color Palette System</h2>
+        <p class="section-desc">Sampled with calibrated spectrophotometric precision from the laboratory reference. Click any swatch to copy the token directly.</p>
+      </div>
+
+      <div class="color-grid">
+        <!-- Electric Violet -->
+        <div class="color-card" onclick="copyToken('#6056DC', 'Electric Violet')">
+          <div class="color-swatch" style="background: #6056DC;">
+            <span class="copy-badge">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Electric Violet</span>
+            <span class="color-hex">#6056DC</span>
+            <p class="color-role">Core kinetic accent, high-energy status, primary CTA.</p>
+            <span class="wcag-tag">WCAG AA 5.12:1</span>
+          </div>
+        </div>
+
+        <!-- Blueprint Periwinkle -->
+        <div class="color-card" onclick="copyToken('#766AD3', 'Blueprint Periwinkle')">
+          <div class="color-swatch" style="background: #766AD3;">
+            <span class="copy-badge">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Blueprint Periwinkle</span>
+            <span class="color-hex">#766AD3</span>
+            <p class="color-role">CAD drafting lines, dimension markers, telemetry callouts.</p>
+            <span class="wcag-tag">WCAG AAA 6.94:1</span>
+          </div>
+        </div>
+
+        <!-- Obsidian Pitch -->
+        <div class="color-card" onclick="copyToken('#060510', 'Obsidian Pitch')">
+          <div class="color-swatch" style="background: #060510; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <span class="copy-badge">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Obsidian Pitch</span>
+            <span class="color-hex">#060510</span>
+            <p class="color-role">Primary canvas, deep shadow background, cinematic pitch.</p>
+            <span class="wcag-tag">Canvas Base</span>
+          </div>
+        </div>
+
+        <!-- Midnight Indigo -->
+        <div class="color-card" onclick="copyToken('#1C1946', 'Midnight Indigo')">
+          <div class="color-swatch" style="background: #1C1946;">
+            <span class="copy-badge">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Midnight Indigo</span>
+            <span class="color-hex">#1C1946</span>
+            <p class="color-role">Atmospheric depth, surface layers, subtle gradient midtone.</p>
+            <span class="wcag-tag">Elevation Layer</span>
+          </div>
+        </div>
+
+        <!-- Pure Luminescence -->
+        <div class="color-card" onclick="copyToken('#FBFBFD', 'Pure Luminescence')">
+          <div class="color-swatch" style="background: #FBFBFD;">
+            <span class="copy-badge" style="color: #000; background: rgba(255,255,255,0.7);">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Pure Luminescence</span>
+            <span class="color-hex" style="color: #6056DC;">#FBFBFD</span>
+            <p class="color-role">Master logotype, high-contrast headings, vector marks.</p>
+            <span class="wcag-tag">WCAG AAA 18.9:1</span>
+          </div>
+        </div>
+
+        <!-- Stealth Graphite -->
+        <div class="color-card" onclick="copyToken('#2A2936', 'Stealth Graphite')">
+          <div class="color-swatch" style="background: #2A2936;">
+            <span class="copy-badge">Copy HEX</span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Stealth Graphite</span>
+            <span class="color-hex">#2A2936</span>
+            <p class="color-role">Structural dividers, card contours, disabled UI states.</p>
+            <span class="wcag-tag">Border Token</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 60-30-10 Dominance Bar -->
+      <div class="dist-bar-card">
+        <span class="control-label">Chromatic Distribution Rule (60-30-10)</span>
+        <div class="dist-bar">
+          <div class="dist-seg" style="width: 60%; background: #060510;" title="60% Obsidian Pitch"></div>
+          <div class="dist-seg" style="width: 30%; background: #FBFBFD;" title="30% Pure Luminescence &amp; Graphite"></div>
+          <div class="dist-seg" style="width: 10%; background: #6056DC;" title="10% Electric Violet"></div>
+        </div>
+        <div class="dist-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #060510; border: 1px solid #333;"></span> 60% Obsidian Pitch (Atmospheric Substrate)</div>
+          <div class="legend-item"><span class="legend-color" style="background: #FBFBFD;"></span> 30% Pure Luminescence &amp; Slate (Legibility &amp; Form)</div>
+          <div class="legend-item"><span class="legend-color" style="background: #6056DC;"></span> 10% Electric Violet (Kinetic Energy &amp; Action)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Typography Studio -->
+    <section id="typography" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Type Specimens</span>
+        <h2 class="section-title">Typographic Hierarchy &amp; Specimen</h2>
+        <p class="section-desc">Identity font paired with monospaced telemetry. Test live tracking and weights interactively below.</p>
+      </div>
+
+      <div class="typo-wrapper">
+        <div class="typo-specimen-card">
+          <div class="specimen-header">
+            <span class="telemetry-chip">PLUS JAKARTA SANS</span>
+            <span class="telemetry-chip">LIVE INPUT TESTER</span>
+          </div>
+
+          <input type="text" id="liveTypoInput" class="typo-tester-input" value="Advances In Technology, Shaping The Future" oninput="updateLiveText(this.value)">
+
+          <div class="weight-stacks">
+            <div class="weight-row">
+              <span class="weight-meta">800 EXTRABOLD // DISPLAY TITLES</span>
+              <span class="weight-text live-text-target" style="font-weight: 800;">Advances In Technology, Shaping The Future</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-meta">700 BOLD // LOGOTYPE &amp; HEADINGS</span>
+              <span class="weight-text live-text-target" style="font-weight: 700;">Advances In Technology, Shaping The Future</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-meta">600 SEMIBOLD // SUBHEADINGS</span>
+              <span class="weight-text live-text-target" style="font-weight: 600;">Advances In Technology, Shaping The Future</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-meta">500 MEDIUM // UI CONTROLS</span>
+              <span class="weight-text live-text-target" style="font-weight: 500;">Advances In Technology, Shaping The Future</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-meta">400 REGULAR // BODY &amp; DESCRIPTIONS</span>
+              <span class="weight-text live-text-target" style="font-weight: 400;">Advances In Technology, Shaping The Future</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glyphs-card">
+          <div class="specimen-header">
+            <span class="telemetry-chip">CHARACTER SET &amp; GLYPHS</span>
+            <span class="telemetry-chip">UNICODE LATIN-1</span>
+          </div>
+
+          <div class="glyph-grid" id="glyphGrid">
+            <!-- Populated via script -->
+          </div>
+
+          <div class="metrics-grid" style="margin-top: 1rem;">
+            <div class="metric-box">
+              <span class="metric-val" style="font-size: 1rem;">JetBrains Mono</span>
+              <span class="metric-lbl">Telemetry &amp; Code Calipers</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-val" style="font-size: 1rem;">Inter Sans</span>
+              <span class="metric-lbl">Technical Documentation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Physical Applications & Collateral -->
+    <section id="applications" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Physical Collateral</span>
+        <h2 class="section-title">Real-World Mockup Applications</h2>
+        <p class="section-desc">Tactile manifestations across executive stationery, architectural field monographs, and industrial hardware packaging.</p>
+      </div>
+
+      <div class="mockups-grid">
+        <!-- Business Cards on Terrazzo -->
+        <div class="mockup-card">
+          <div class="mockup-media">
+            <img src="assets/nexdyne_stationery.jpg" alt="Nexdyne Stationery Mockup on Terrazzo" class="mockup-img" loading="lazy">
+          </div>
+          <div class="mockup-desc">
+            <h3 class="mockup-title">Duplex Executive Business Cards</h3>
+            <p class="mockup-text">600gsm duplex black cotton cardstock with debossed matte silver foil typography paired with electric violet gradient cards on raw terrazzo substrate with architectural window shadows.</p>
+            <div class="mockup-specs">
+              <span>STOCK: 600gsm COTTON</span>
+              <span>FOIL: MATTE TITANIUM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monograph / Book Spine -->
+        <div class="mockup-card">
+          <div class="mockup-media">
+            <img src="assets/nexdyne_book.jpg" alt="Nexdyne Engineering Monograph Spine" class="mockup-img" loading="lazy">
+          </div>
+          <div class="mockup-desc">
+            <h3 class="mockup-title">Field Engineering Monograph</h3>
+            <p class="mockup-text">Heavy buckram cloth hardcover manual with silver hot-stamped lettering and debossed logo geometry, documenting cybernetic safety protocols and autonomous hardware telemetry.</p>
+            <div class="mockup-specs">
+              <span>BINDING: BUCKRAM HARDCOVER</span>
+              <span>FINISH: HOT STAMP FOIL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Logo Stress Test Suite -->
+    <section id="stress-test" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Stress Suite</span>
+        <h2 class="section-title">The 3-Step Logo Stress Test</h2>
+        <p class="section-desc">Rigorous verification guaranteeing legibility across extreme physical and digital environments.</p>
+      </div>
+
+      <div class="stress-wrapper">
+        <span class="control-label">Test 1: Scalability Threshold (Down to 16px Favicon)</span>
+        <div class="stress-row">
+          <div class="stress-card">
+            <svg width="128" height="128" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">128 × 128 px</span>
+          </div>
+
+          <div class="stress-card">
+            <svg width="64" height="64" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">64 × 64 px</span>
+          </div>
+
+          <div class="stress-card">
+            <svg width="32" height="32" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">32 × 32 px</span>
+          </div>
+
+          <div class="stress-card">
+            <svg width="24" height="24" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">24 × 24 px</span>
+          </div>
+
+          <div class="stress-card">
+            <svg width="16" height="16" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">16 × 16 px (Favicon)</span>
+          </div>
+        </div>
+
+        <span class="control-label" style="margin-top: 1rem;">Test 2 &amp; 3: Monochrome Inversion &amp; Fax Resilience</span>
+        <div class="inversion-grid">
+          <div class="inversion-box dark">
+            <svg width="80" height="80" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label">Pure White on Obsidian (#060510)</span>
+          </div>
+
+          <div class="inversion-box light">
+            <svg width="80" height="80" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#060510" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#060510" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+            <span class="stress-label" style="color: #555;">100% Solid Black on Paper (#FFFFFF)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Asset Export Kit -->
+    <section id="export" class="section-block">
+      <div class="section-header">
+        <span class="section-tag">Asset Deliverables</span>
+        <h2 class="section-title">Production Vector Export Kit</h2>
+        <p class="section-desc">Download or copy resolution-independent SVG assets ready for web, mobile, CAD drafting, and print fabrication.</p>
+      </div>
+
+      <div class="export-grid">
+        <!-- Mark SVG -->
+        <div class="export-card">
+          <div class="export-preview">
+            <svg width="60" height="60" viewBox="0 0 240 240" fill="none">
+              <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="export-info">
+            <h4 class="export-title">Nexdyne Isolated Mark</h4>
+            <span class="export-meta">nexdyne-mark.svg // 240×240px // Vector</span>
+          </div>
+          <div class="export-actions">
+            <a href="assets/nexdyne-mark.svg" download class="btn-action btn-primary">Download SVG</a>
+            <button onclick="copySvgCode('mark')" class="btn-action btn-secondary">Copy XML</button>
+          </div>
+        </div>
+
+        <!-- Lockup SVG -->
+        <div class="export-card">
+          <div class="export-preview">
+            <svg width="180" height="50" viewBox="0 0 680 180" fill="none">
+              <g transform="translate(10, 5) scale(0.72)">
+                <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+                <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              </g>
+              <text x="200" y="118" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="82" letter-spacing="-0.03em">Nexdyne</text>
+            </svg>
+          </div>
+          <div class="export-info">
+            <h4 class="export-title">Master Brand Lockup</h4>
+            <span class="export-meta">nexdyne-lockup.svg // 680×180px // Vector</span>
+          </div>
+          <div class="export-actions">
+            <a href="assets/nexdyne-lockup.svg" download class="btn-action btn-primary">Download SVG</a>
+            <button onclick="copySvgCode('lockup')" class="btn-action btn-secondary">Copy XML</button>
+          </div>
+        </div>
+
+        <!-- Blueprint CAD SVG -->
+        <div class="export-card">
+          <div class="export-preview">
+            <svg width="120" height="80" viewBox="0 0 600 500" fill="none">
+              <rect width="600" height="500" fill="#060510"/>
+              <circle cx="280" cy="270" r="140" stroke="#766AD3" stroke-width="2" stroke-dasharray="8 8" opacity="0.4"/>
+              <g transform="translate(140, 100) scale(1.4)">
+                <path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+                <path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+          <div class="export-info">
+            <h4 class="export-title">CAD Construction Blueprint</h4>
+            <span class="export-meta">nexdyne-mark-blueprint.svg // 600×500px</span>
+          </div>
+          <div class="export-actions">
+            <a href="assets/nexdyne-mark-blueprint.svg" download class="btn-action btn-primary">Download SVG</a>
+            <button onclick="copySvgCode('blueprint')" class="btn-action btn-secondary">Copy XML</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Toast Notification -->
+  <div id="toast" class="toast-msg">
+    <span>✓</span> <span id="toastText">Token copied to clipboard</span>
+  </div>
+
+  <footer>
+    <span class="footer-mono">NEXDYNE SYSTEMS // AUTONOMOUS ROBOTICS &amp; CYBERNETICS // BRAND GUIDELINES V4.2</span>
+    <p>Rebranded fictional design specimen archive for <a href="../../index.html" style="color: var(--c-periwinkle); text-decoration: none;">mydesignlib</a>. All brand assets, geometry, and mockups original.</p>
+  </footer>
+
+  <script>
+    // Interactive stage mode switcher
+    function setStageMode(mode, btn) {
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const stage = document.getElementById('stageContainer');
+      const lockup = document.getElementById('stageLockup');
+
+      if (mode === 'obsidian') {
+        stage.style.background = 'transparent';
+        stage.style.color = '#FBFBFD';
+      } else if (mode === 'gradient') {
+        stage.style.background = 'radial-gradient(ellipse at center, #6056DC 0%, #1C1946 50%, #060510 100%)';
+        stage.style.borderRadius = '16px';
+        stage.style.color = '#FFFFFF';
+      } else if (mode === 'white') {
+        stage.style.background = '#FFFFFF';
+        stage.style.borderRadius = '16px';
+        stage.style.color = '#060510';
+      }
+    }
+
+    function updateStageScale(val) {
+      document.getElementById('stageLockup').style.transform = `scale(${val})`;
+    }
+
+    // Blueprint Layer Toggles
+    function toggleLayer(layerId, btn) {
+      const el = document.getElementById(layerId);
+      if (!el) return;
+      const isVisible = el.style.display !== 'none';
+      el.style.display = isVisible ? 'none' : 'block';
+      btn.classList.toggle('active', !isVisible);
+    }
+
+    let isXray = false;
+    function toggleXray(btn) {
+      isXray = !isXray;
+      btn.classList.toggle('active', isXray);
+      const markPaths = document.querySelectorAll('#layerMark path');
+      markPaths.forEach(p => {
+        if (isXray) {
+          p.setAttribute('stroke', '#6056DC');
+          p.setAttribute('stroke-width', '4');
+          p.setAttribute('stroke-dasharray', '6 6');
+        } else {
+          p.setAttribute('stroke', '#FFFFFF');
+          p.setAttribute('stroke-width', '26');
+          p.removeAttribute('stroke-dasharray');
+        }
+      });
+    }
+
+    // Token Copy Toast
+    function copyToken(hex, name) {
+      navigator.clipboard.writeText(hex).then(() => {
+        showToast(`Copied ${name} (${hex})`);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2400);
+    }
+
+    // Live Typography Tester
+    function updateLiveText(val) {
+      const targets = document.querySelectorAll('.live-text-target');
+      targets.forEach(t => t.innerText = val || 'Nexdyne');
+    }
+
+    // Populate glyph sheet
+    const glyphChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&%#@/+-=Δ";
+    const glyphGrid = document.getElementById('glyphGrid');
+    if (glyphGrid) {
+      glyphChars.split('').forEach(char => {
+        const div = document.createElement('div');
+        div.className = 'glyph-cell';
+        div.innerText = char;
+        glyphGrid.appendChild(div);
+      });
+    }
+
+    // SVG Code Snippet Copy
+    const rawSvgStrings = {
+      mark: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none"><path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/><path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/></svg>`,
+      lockup: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" fill="none"><g transform="translate(10, 5) scale(0.72)"><path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/><path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/></g><text x="200" y="118" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="82" letter-spacing="-0.03em">Nexdyne</text></svg>`,
+      blueprint: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" fill="none"><rect width="600" height="500" fill="#060510"/><circle cx="280" cy="270" r="160" stroke="#766AD3" stroke-width="1" stroke-dasharray="4 4" opacity="0.45"/><g transform="translate(140, 100) scale(1.4)"><path d="M 38 62 A 98 98 0 0 1 198 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/><path d="M 38 128 L 96 128 A 24 24 0 0 1 120 152 L 120 195" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/></g></svg>`
+    };
+
+    function copySvgCode(type) {
+      if (rawSvgStrings[type]) {
+        navigator.clipboard.writeText(rawSvgStrings[type]).then(() => {
+          showToast(`Copied ${type.toUpperCase()} SVG code to clipboard`);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

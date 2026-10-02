@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Runix · GPUI Components</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-page: #F4F0E4;
+      --bg-surface: #EAE4D4;
+      --bg-elevated: #DFD7C4;
+      --text-main: #181816;
+      --text-muted: #6E6D64;
+      --text-subtle: #989688;
+      --border-subtle: rgba(24, 24, 22, 0.12);
+      --border-strong: rgba(24, 24, 22, 0.25);
+      --accent-amber: #D97706;
+      --accent-glow: rgba(217, 119, 6, 0.15);
+      --wireframe-stroke: #181816;
+      --canvas-bg: #F4F0E4;
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html.dark {
+      --bg-page: #0F0E0B;
+      --bg-surface: #171612;
+      --bg-elevated: #22201A;
+      --text-main: #F4F0E4;
+      --text-muted: #9E9B8F;
+      --text-subtle: #68655B;
+      --border-subtle: rgba(244, 240, 228, 0.12);
+      --border-strong: rgba(244, 240, 228, 0.25);
+      --accent-amber: #F59E0B;
+      --accent-glow: rgba(245, 158, 11, 0.2);
+      --wireframe-stroke: #F4F0E4;
+      --canvas-bg: #0F0E0B;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Top Navigation Bar */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-page);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background-color 0.4s ease;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .brand-logo-text {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-amber);
+      background: var(--accent-glow);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .telemetry-ticker {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+
+    /* ========================================================
+       KINETIC 4-ACT ANIMATION STAGE (HERO)
+    ======================================================== */
+    .animation-stage-section {
+      padding: 5.5rem 2.5rem 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stage-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .stage-act-label {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-amber);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .stage-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-main);
+    }
+
+    .stage-telemetry-box {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .comp-count-number {
+      font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+      font-weight: 800;
+      color: var(--accent-amber);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .comp-cycle-tag {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* Canvas Stage Container */
+    .canvas-viewport-card {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    #kineticCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Stack Overlay Indicators (Act 3) */
+    .stack-overlay-list {
+      position: absolute;
+      left: 2.5rem;
+      top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .stack-overlay-list.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stack-badge {
+      background: var(--bg-page);
+      border: 1px solid var(--border-strong);
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .stack-badge span.num {
+      color: var(--accent-amber);
+    }
+
+    /* Timeline Scrubber Bar */
+    .stage-timeline-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      padding: 0.4rem 0.6rem;
+      gap: 1rem;
+    }
+
+    .stage-pill-group {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .btn-stage-pill {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-stage-pill:hover {
+      color: var(--text-main);
+      background: var(--bg-elevated);
+    }
+
+    .btn-stage-pill.active {
+      background: var(--text-main);
+      color: var(--bg-page);
+    }
+
+    .timeline-playback-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    .btn-play-pause {
+      background: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .timeline-progress-track {
+      width: 140px;
+      height: 4px;
+      background: var(--border-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .timeline-progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 25%;
+      background: var(--accent-amber);
+      transition: width 0.1s linear;
+    }
+
+    /* ========================================================
+       MONOLITH BRAND OVERVIEW & COMPONENT SPEC
+    ======================================================== */
+    .section-monolith-brand {
+      padding: 6rem 2.5rem 4rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .hero-huge-mark {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 10vw, 9.5rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.88;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .hero-huge-mark span.accent {
+      color: var(--accent-amber);
+    }
+
+    .brand-subline {
+      font-size: clamp(1.2rem, 2vw, 1.75rem);
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.45;
+      margin-bottom: 2rem;
+    }
+
+    .brand-telemetry-strip {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--accent-amber);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-telemetry-strip span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .install-snippet-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: all;
+      transition: border-color 0.2s ease;
+    }
+
+    .install-snippet-box:hover {
+      border-color: var(--accent-amber);
+    }
+
+    /* ========================================================
+       LIVE GPUI COMPONENT PLAYGROUND (43 CATEGORIES)
+    ======================================================== */
+    .section-playground {
+      padding: 4rem 2.5rem 8rem;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .playground-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2.5rem;
+    }
+
+    .playground-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .component-specimen-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      transition: all 0.25s var(--transition-smooth);
+    }
+
+    .component-specimen-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-top-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-amber);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+
+    .specimen-interactive-stage {
+      background: var(--bg-page);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      justify-content: center;
+      min-height: 100px;
+    }
+
+    /* Specimen UI controls */
+    .ui-btn-primary {
+      background: var(--accent-amber);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+    }
+
+    .ui-btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .ui-slider-input {
+      width: 100%;
+      accent-color: var(--accent-amber);
+    }
+
+    .code-preview-trigger {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .code-preview-trigger:hover {
+      color: var(--accent-amber);
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      padding: 4rem 2.5rem 2.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 1024px) {
+      .playground-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .canvas-viewport-card {
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-nav {
+        padding: 0.8rem 1.25rem;
+      }
+      .telemetry-ticker {
+        display: none;
+      }
+      .animation-stage-section {
+        padding: 5rem 1.25rem 2rem;
+      }
+      .stage-header-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .stage-telemetry-box {
+        text-align: left;
+      }
+      .canvas-viewport-card {
+        height: 340px;
+      }
+      .stage-timeline-controls {
+        flex-direction: column;
+        border-radius: var(--radius-md);
+      }
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       SITE HEADER
+  =========================================== -->
+  <header class="site-nav">
+    <div class="brand-group">
+      <a href="#stage" class="brand-logo-text">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="var(--accent-amber)" fill-opacity="0.2" stroke="var(--accent-amber)" stroke-width="2"/>
+          <circle cx="12" cy="12" r="3" fill="var(--accent-amber)"/>
+        </svg>
+        RUNIX GPUI COMPONENTS
+      </a>
+      <span class="brand-badge">RUST · NATIVE &amp; WASM</span>
+    </div>
+
+    <div class="nav-actions">
+      <div class="telemetry-ticker">
+        <span id="navBarTicker">BAR 01 / = 120</span>
+        <span>·</span>
+        <span id="navStageTicker">1 SEED</span>
+      </div>
+
+      <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle light and dark mode" id="themeBtn">
+        ◐
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       HERO: KINETIC 4-ACT ANIMATION STAGE
+  =========================================== -->
+  <main id="stage">
+    <section class="animation-stage-section">
+      <div class="stage-header-row">
+        <div>
+          <div class="stage-act-label" id="actLabel">ACT 1 / 4 · SEED</div>
+          <h1 class="stage-title" id="stageHeadline">Start with one cell.</h1>
+        </div>
+
+        <div class="stage-telemetry-box">
+          <div class="comp-count-number" id="compCounter">1</div>
+          <div class="comp-cycle-tag" id="compCycleTag">COMPONENTS INITIALIZED</div>
+        </div>
+      </div>
+
+      <!-- Viewport Canvas Card -->
+      <div class="canvas-viewport-card">
+        <canvas id="kineticCanvas"></canvas>
+
+        <!-- Stacking Badges Overlay (Act 3) -->
+        <div class="stack-overlay-list" id="stackOverlays">
+          <div class="stack-badge"><span class="num">W 01</span> TitleBar - StatusBar</div>
+          <div class="stack-badge"><span class="num">W 02</span> FileTree Component</div>
+          <div class="stack-badge"><span class="num">W 03</span> CodeEditor SplitPane</div>
+          <div class="stack-badge"><span class="num">W 04</span> Terminal Diagnostics</div>
+        </div>
+      </div>
+
+      <!-- Timeline Scrubber Bar -->
+      <div class="stage-timeline-controls">
+        <div class="stage-pill-group">
+          <button class="btn-stage-pill active" onclick="jumpToStage(0)">1 SEED</button>
+          <button class="btn-stage-pill" onclick="jumpToStage(1)">2 GROW</button>
+          <button class="btn-stage-pill" onclick="jumpToStage(2)">3 STACK</button>
+          <button class="btn-stage-pill" onclick="jumpToStage(3)">4 FLIP</button>
+        </div>
+
+        <div class="timeline-playback-actions">
+          <button class="btn-play-pause" onclick="togglePlayback()" id="playPauseBtn">PAUSE ||</button>
+          <div class="timeline-progress-track">
+            <div class="timeline-progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MONOLITH OVERVIEW & CARGO INSTALL
+    =========================================== -->
+    <section class="section-monolith-brand">
+      <div class="hero-huge-mark">
+        RUNIX<span class="accent">.</span>
+      </div>
+      <p class="brand-subline">
+        A high-performance component library for GPUI, in light and dark. Every component runs live in native desktop apps and browser WebAssembly with sub-millisecond frame budgets.
+      </p>
+
+      <div class="brand-telemetry-strip">
+        <span>✓ 1,272 Components</span>
+        <span>✓ 43 Design Chapters</span>
+        <span>✓ Zero-Allocation Event Loop</span>
+        <span>✓ Native macOS, Linux &amp; Windows</span>
+      </div>
+
+      <div class="install-snippet-box" onclick="copyInstallCmd()">
+        <span>$ cargo add runix-gpui</span>
+        <span style="color: var(--accent-amber);" id="copyFeedback">📋 Copy</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         LIVE COMPONENT CATALOG (43 CHAPTERS SPECIMEN)
+    =========================================== -->
+    <section class="section-playground">
+      <div class="playground-header">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-amber); letter-spacing: 0.1em; margin-bottom: 0.35rem;">
+            CHAPTER SPECIMENS
+          </div>
+          <h2 style="font-size: 2.2rem; font-weight: 800;">Interactive Component Registry</h2>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">
+          43 OF 43 MODULES READY
+        </div>
+      </div>
+
+      <div class="playground-grid">
+        <!-- Specimen 1: Buttons & Toggles -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 01</span>
+              <span>BAR 012 / = 120</span>
+            </div>
+            <h3 class="card-title">Buttons &amp; Actions</h3>
+            <div class="specimen-interactive-stage">
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="ui-btn-primary" onclick="alert('Primary action fired')">gpui::button()</button>
+                <button class="ui-btn-outline" onclick="alert('Outline action')">Ghost</button>
+              </div>
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('buttonCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+
+        <!-- Specimen 2: Color Picker -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 083</span>
+              <span>BAR 083 / = 120</span>
+            </div>
+            <h3 class="card-title">ColorPicker &amp; Palette</h3>
+            <div class="specimen-interactive-stage">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <input type="color" value="#D97706" style="width: 36px; height: 36px; border: none; border-radius: 4px; cursor: pointer;" onchange="document.getElementById('colorVal').textContent = this.value">
+                <span id="colorVal" style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#D97706</span>
+              </div>
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('colorCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+
+        <!-- Specimen 3: Sliders & Steppers -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 045</span>
+              <span>BAR 045 / = 120</span>
+            </div>
+            <h3 class="card-title">Continuous Sliders</h3>
+            <div class="specimen-interactive-stage">
+              <input type="range" min="0" max="100" value="68" class="ui-slider-input" oninput="document.getElementById('sliderVal').textContent = this.value + '%'">
+              <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                <span>MIN 0</span>
+                <span id="sliderVal" style="color: var(--accent-amber); font-weight: 700;">68%</span>
+                <span>MAX 100</span>
+              </div>
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('sliderCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+
+        <!-- Specimen 4: FileTree -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 02</span>
+              <span>BAR 002 / = 120</span>
+            </div>
+            <h3 class="card-title">FileTree Workspace</h3>
+            <div class="specimen-interactive-stage" style="font-family: var(--font-mono); font-size: 0.75rem;">
+              <div>📁 src/</div>
+              <div style="padding-left: 1rem; color: var(--accent-amber);">📄 lib.rs</div>
+              <div style="padding-left: 1rem; color: var(--text-muted);">📄 theme.rs</div>
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('treeCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+
+        <!-- Specimen 5: Code Editor SplitPane -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 03</span>
+              <span>BAR 003 / = 120</span>
+            </div>
+            <h3 class="card-title">CodeEditor View</h3>
+            <div class="specimen-interactive-stage" style="font-family: var(--font-mono); font-size: 0.75rem;">
+              <span style="color: var(--accent-amber);">fn render</span>(&amp;mut self, cx: &amp;mut Context) -&gt; impl IntoElement { ... }
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('editorCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+
+        <!-- Specimen 6: Sankey & Data Graph -->
+        <article class="component-specimen-card">
+          <div>
+            <div class="card-top-tag">
+              <span>MODULE 086</span>
+              <span>BAR 086 / = 120</span>
+            </div>
+            <h3 class="card-title">SankeyFlow Diagram</h3>
+            <div class="specimen-interactive-stage" style="align-items: center;">
+              <svg width="180" height="40" viewBox="0 0 180 40">
+                <path d="M 10 20 C 60 5, 120 35, 170 20" stroke="var(--accent-amber)" stroke-width="6" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <button class="code-preview-trigger" onclick="toggleCodeView('graphCode')">
+            <span>&lt;/&gt; view gpui div! macro</span>
+          </button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>RUNIX GPUI COMPONENT LIBRARY · OPEN SOURCE UNDER MIT / APACHE-2.0</div>
+      <div style="display: flex; gap: 1.5rem;">
+        <span>CARGO V0.9.4</span>
+        <span>GPUI V0.2.1</span>
+        <span>WASM32-UNKNOWN-UNKNOWN</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       EXACT 4-ACT PROCEDURAL ANIMATION ENGINE
+  =========================================== -->
+  <script>
+    // Animation Stages definition
+    const STAGES = [
+      {
+        id: 0,
+        name: '1 SEED',
+        label: 'ACT 1 / 4 · SEED',
+        title: 'Start with one cell.',
+        compCount: 1,
+        ticker: 'BAR 01 / = 120',
+        cycleTag: 'COMPONENTS INITIALIZED',
+        duration: 7000
+      },
+      {
+        id: 1,
+        name: '2 GROW',
+        label: 'ACT 2 / 4 · GROW',
+        title: 'Grow a whole library.',
+        compCount: 1272,
+        ticker: 'BAR 083 / = 120 COLORPICKER',
+        cycleTag: 'EXPANDING 43 CHAPTERS',
+        duration: 9000
+      },
+      {
+        id: 2,
+        name: '3 STACK',
+        label: 'ACT 3 / 4 · STACK',
+        title: 'Compose real apps.',
+        compCount: 1272,
+        ticker: 'BAR 003 / = 120 CODEEDITOR',
+        cycleTag: 'COMPOSING WORKSPACE',
+        duration: 8000
+      },
+      {
+        id: 3,
+        name: '4 FLIP',
+        label: 'ACT 4 / 4 · FLIP',
+        title: 'In light. And in dark.',
+        compCount: 1272,
+        ticker: 'BAR 120 / = 120 LIGHT - DARK',
+        cycleTag: 'DUAL PALETTE INVERSION',
+        duration: 8000
+      }
+    ];
+
+    let currentStageIndex = 0;
+    let isPlaying = true;
+    let stageStartTime = performance.now();
+    let animFrameId = null;
+
+    // Component ticker names for Act 2
+    const COMPONENT_NAMES = [
+      'BUTTON', 'SLIDER', 'COLORPICKER', 'VIDEOPLAYER',
+      'AUDIOPLAYER', 'SANKEYCHART', 'TIMELINE', 'FILETREE',
+      'SPLITPANE', 'CODEEDITOR', 'TERMINAL', 'DATAGRID', 'MODAL'
+    ];
+
+    // Canvas setup
+    const canvas = document.getElementById('kineticCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // 3D Point projection math
+    function project3D(x, y, z, cx, cy, fov = 350) {
+      const scale = fov / (fov + z);
+      return {
+        x: cx + x * scale,
+        y: cy + y * scale,
+        scale: scale
+      };
+    }
+
+    // Main Animation Loop
+    let angle = 0;
+    function render(now) {
+      if (!isPlaying) {
+        animFrameId = requestAnimationFrame(render);
+        return;
+      }
+
+      const stage = STAGES[currentStageIndex];
+      const elapsed = now - stageStartTime;
+      const progress = Math.min(elapsed / stage.duration, 1);
+
+      // Update progress bar
+      const totalProgress = (currentStageIndex + progress) / 4;
+      document.getElementById('progressFill').style.width = (totalProgress * 100) + '%';
+
+      // Check stage progression
+      if (elapsed >= stage.duration) {
+        currentStageIndex = (currentStageIndex + 1) % 4;
+        stageStartTime = now;
+        updateStageUI(currentStageIndex);
+      }
+
+      // Rotate angle
+      angle += 0.015;
+
+      // Clear Canvas
+      ctx.clearRect(0, 0, width, height);
+      const cx = width / 2;
+      const cy = height / 2;
+
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      const strokeColor = isDarkMode ? '#F4F0E4' : '#181816';
+      const accentColor = isDarkMode ? '#F59E0B' : '#D97706';
+
+      // -------------------------------------------------------------
+      // ACT RENDERING
+      // -------------------------------------------------------------
+      if (currentStageIndex === 0) {
+        // ACT 1: SEED (Single rotating geometric cell with orbit rings)
+        renderAct1Seed(cx, cy, angle, strokeColor, accentColor);
+      } else if (currentStageIndex === 1) {
+        // ACT 2: GROW (Expanding crystal lattice + rapid component countup)
+        renderAct2Grow(cx, cy, angle, progress, strokeColor, accentColor);
+      } else if (currentStageIndex === 2) {
+        // ACT 3: STACK (Axonometric exploded desktop IDE workspace)
+        renderAct3Stack(cx, cy, angle, strokeColor, accentColor);
+      } else if (currentStageIndex === 3) {
+        // ACT 4: FLIP (Dynamic theme transition wave)
+        renderAct4Flip(cx, cy, angle, progress, strokeColor, accentColor);
+      }
+
+      animFrameId = requestAnimationFrame(render);
+    }
+
+    // ACT 1: Single Cell Seed
+    function renderAct1Seed(cx, cy, a, stroke, accent) {
+      ctx.save();
+      const r = 55;
+
+      // Orbital circles
+      ctx.strokeStyle = stroke;
+      ctx.globalAlpha = 0.25;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, 140, 45, a * 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, 110, 35, -a * 0.7, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 3D Cube nodes
+      const points = [
+        [-r, -r, -r], [r, -r, -r], [r, r, -r], [-r, r, -r],
+        [-r, -r, r], [r, -r, r], [r, r, r], [-r, r, r]
+      ];
+
+      const proj = points.map(([x, y, z]) => {
+        // Rotate around Y and X
+        const radY = a;
+        const radX = a * 0.7;
+        let x1 = x * Math.cos(radY) - z * Math.sin(radY);
+        let z1 = x * Math.sin(radY) + z * Math.cos(radY);
+        let y1 = y * Math.cos(radX) - z1 * Math.sin(radX);
+        let z2 = y * Math.sin(radX) + z1 * Math.cos(radX);
+        return project3D(x1, y1, z2, cx, cy);
+      });
+
+      // Edges
+      const edges = [
+        [0,1],[1,2],[2,3],[3,0],
+        [4,5],[5,6],[6,7],[7,4],
+        [0,4],[1,5],[2,6],[3,7]
+      ];
+
+      ctx.globalAlpha = 0.85;
+      ctx.lineWidth = 1.5;
+      edges.forEach(([i, j]) => {
+        ctx.beginPath();
+        ctx.moveTo(proj[i].x, proj[i].y);
+        ctx.lineTo(proj[j].x, proj[j].y);
+        ctx.stroke();
+      });
+
+      // Central glowing seed node
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // ACT 2: Grow whole library
+    function renderAct2Grow(cx, cy, a, progress, stroke, accent) {
+      ctx.save();
+      // Scramble component numbers in UI
+      const count = Math.floor(1 + progress * 1271);
+      document.getElementById('compCounter').textContent = count.toLocaleString();
+      const compName = COMPONENT_NAMES[Math.floor(progress * COMPONENT_NAMES.length) % COMPONENT_NAMES.length];
+      document.getElementById('compCycleTag').textContent = `BAR 083 / = 120 ${compName}`;
+
+      // Complex multi-node procedural lattice
+      const nodeCount = 18;
+      const radius = 90 + Math.sin(a * 2) * 20;
+
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1.2;
+      ctx.globalAlpha = 0.35;
+
+      const nodes = [];
+      for (let i = 0; i < nodeCount; i++) {
+        const phi = Math.acos(-1 + (2 * i) / nodeCount);
+        const theta = Math.sqrt(nodeCount * Math.PI) * phi + a;
+        const x = radius * Math.cos(theta) * Math.sin(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(phi);
+        nodes.push(project3D(x, y, z, cx, cy));
+      }
+
+      // Interconnect nodes
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 90) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw vertices
+      ctx.globalAlpha = 0.9;
+      nodes.forEach((n, idx) => {
+        ctx.fillStyle = idx % 3 === 0 ? accent : stroke;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 3 * n.scale, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+    }
+
+    // ACT 3: Stack (Axonometric exploded desktop window)
+    function renderAct3Stack(cx, cy, a, stroke, accent) {
+      ctx.save();
+      const tilt = Math.sin(a * 0.4) * 0.1;
+      const w = 360;
+      const h = 220;
+
+      // 3 Stacking Glass Planes hovering
+      const layers = [
+        { z: -40, label: '01 TitleBar', stroke: stroke, alpha: 0.4 },
+        { z: 0, label: '02 FileTree', stroke: stroke, alpha: 0.6 },
+        { z: 40, label: '03 CodeEditor', stroke: accent, alpha: 0.9 }
+      ];
+
+      layers.forEach((layer) => {
+        const x0 = cx - (w / 2) + layer.z * 0.5;
+        const y0 = cy - (h / 2) + layer.z * 0.8;
+
+        ctx.strokeStyle = layer.stroke;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = layer.alpha;
+        ctx.strokeRect(x0, y0, w, h);
+
+        // Header bar line
+        ctx.beginPath();
+        ctx.moveTo(x0, y0 + 26);
+        ctx.lineTo(x0 + w, y0 + 26);
+        ctx.stroke();
+
+        // Window buttons
+        ctx.fillStyle = layer.stroke;
+        ctx.beginPath();
+        ctx.arc(x0 + 14, y0 + 13, 3, 0, Math.PI * 2);
+        ctx.arc(x0 + 24, y0 + 13, 3, 0, Math.PI * 2);
+        ctx.arc(x0 + 34, y0 + 13, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+    }
+
+    // ACT 4: Flip (Theme toggle pulse)
+    function renderAct4Flip(cx, cy, a, progress, stroke, accent) {
+      ctx.save();
+      // Wave pulse
+      const r = (progress * width * 0.8);
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 1 - progress;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Dual rotating rings
+      ctx.strokeStyle = stroke;
+      ctx.globalAlpha = 0.8;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, 90, 90, a, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // Stage update UI synchronizer
+    function updateStageUI(idx) {
+      const stage = STAGES[idx];
+      document.querySelectorAll('.btn-stage-pill').forEach((btn, i) => {
+        btn.classList.toggle('active', i === idx);
+      });
+
+      document.getElementById('actLabel').textContent = stage.label;
+      document.getElementById('stageHeadline').textContent = stage.title;
+      document.getElementById('navStageTicker').textContent = stage.name;
+      document.getElementById('navBarTicker').textContent = stage.ticker;
+      document.getElementById('compCounter').textContent = stage.compCount.toLocaleString();
+      document.getElementById('compCycleTag').textContent = stage.cycleTag;
+
+      const overlays = document.getElementById('stackOverlays');
+      if (idx === 2) {
+        overlays.classList.add('visible');
+      } else {
+        overlays.classList.remove('visible');
+      }
+
+      // Automatically flip theme in Act 4
+      if (idx === 3) {
+        document.documentElement.classList.add('dark');
+      } else if (idx === 0) {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function jumpToStage(idx) {
+      currentStageIndex = idx;
+      stageStartTime = performance.now();
+      updateStageUI(idx);
+    }
+
+    function togglePlayback() {
+      isPlaying = !isPlaying;
+      document.getElementById('playPauseBtn').textContent = isPlaying ? 'PAUSE ||' : 'PLAY ▶';
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function copyInstallCmd() {
+      navigator.clipboard.writeText('cargo add runix-gpui');
+      document.getElementById('copyFeedback').textContent = '✓ Copied!';
+      setTimeout(() => {
+        document.getElementById('copyFeedback').textContent = '📋 Copy';
+      }, 2000);
+    }
+
+    function toggleCodeView(id) {
+      alert('Rust GPUI Component Definition:\\n\\ngpui::div()\\n  .flex()\\n  .items_center()\\n  .bg(cx.theme().surface)\\n  .child(...)');
+    }
+
+    // Start Animation Loop
+    updateStageUI(0);
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

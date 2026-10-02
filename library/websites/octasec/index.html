@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Octasec — Instant Bug Bounty Payouts on Solana & Stripe</title>
+
+  <!-- Robots & Privacy -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Newsreader (Serif) & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-light: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --primary-blue: #2347F0;
+      --primary-blue-hover: #1938D8;
+      --text-dark: #0F172A;
+      --text-muted: #64748B;
+      --border-light: #E2E8F0;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* TOP NAVBAR */
+    .top-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 50;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+
+    .brand-spiral-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .brand-title-text {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+      color: #1E293B;
+    }
+
+    .nav-tabs-pill {
+      display: flex;
+      background: #ECEFF3;
+      padding: 4px;
+      border-radius: 9999px;
+      gap: 4px;
+    }
+
+    .nav-tab-item {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-tab-item.active {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .nav-tab-num {
+      font-size: 0.7rem;
+      color: #94A3B8;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-link-subtle {
+      color: #475569;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .btn-nav-signin {
+      background: #E2E8F0;
+      color: #1E293B;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-nav-demo {
+      background: var(--primary-blue);
+      color: #FFFFFF;
+      padding: 0.55rem 1.35rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-nav-demo:hover {
+      background: var(--primary-blue-hover);
+    }
+
+    /* HERO SECTION */
+    .hero-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2.5rem 6rem;
+      display: grid;
+      grid-template-columns: 46% 54%;
+      gap: 3rem;
+      align-items: center;
+      min-height: 820px;
+      position: relative;
+    }
+
+    /* ISOMETRIC GRID SCHEMATIC BACKGROUND */
+    .isometric-grid-bg {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 60%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    /* HERO LEFT COPY */
+    .hero-copy {
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 4.8vw, 4.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: #0F172A;
+      margin-bottom: 2rem;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      max-width: 480px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-cta-blue {
+      background: var(--primary-blue);
+      color: #FFFFFF;
+      padding: 0.85rem 1.85rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(35, 71, 240, 0.3);
+      transition: all 0.2s;
+    }
+    .btn-cta-blue:hover {
+      background: var(--primary-blue-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-cta-gray {
+      background: #E2E8F0;
+      color: #1E293B;
+      padding: 0.85rem 1.65rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-cta-gray:hover {
+      background: #CBD5E1;
+    }
+
+    /* HERO RIGHT: 3D ISOMETRIC TERMINAL & HARDWARE PADS */
+    .hero-isometric-stage {
+      position: relative;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* FLOATING MACOS CODE TERMINAL */
+    .terminal-window {
+      position: absolute;
+      left: 10px;
+      top: 30px;
+      width: 320px;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      z-index: 30;
+      transition: transform 0.2s;
+    }
+    .terminal-window:hover {
+      transform: translateY(-4px);
+    }
+
+    .terminal-header {
+      padding: 10px 14px;
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #EF4444; }
+    .dot-yellow { background: #F59E0B; }
+    .dot-green { background: #10B981; }
+
+    .terminal-url-pill {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: #64748B;
+      background: #EDF2F7;
+      padding: 2px 10px;
+      border-radius: 9999px;
+    }
+
+    .terminal-subhead {
+      padding: 6px 14px;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: #64748B;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .terminal-code-body {
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.7;
+      color: #1E293B;
+      background: #FFFFFF;
+    }
+    .line-num {
+      color: #94A3B8;
+      margin-right: 8px;
+      user-select: none;
+    }
+    .token-pink {
+      color: #EC4899;
+      font-weight: 600;
+    }
+    .token-green {
+      color: #10B981;
+      font-weight: 600;
+    }
+    .token-total {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed #E2E8F0;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    /* 4 ISOMETRIC HARDWARE PADS */
+    .isometric-pad-field {
+      position: absolute;
+      right: 20px;
+      width: 480px;
+      height: 480px;
+      perspective: 1000px;
+    }
+
+    .iso-pad {
+      position: absolute;
+      width: 170px;
+      height: 130px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1px solid #E2E8F0;
+      box-shadow:
+        0 15px 30px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(255, 255, 255, 0.8),
+        0 8px 0 #CBD5E1;
+      transform: rotateX(55deg) rotateZ(-40deg);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .iso-pad:hover {
+      transform: rotateX(55deg) rotateZ(-40deg) translateZ(18px);
+      box-shadow:
+        0 25px 45px rgba(35, 71, 240, 0.2),
+        0 0 0 2px #2347F0,
+        0 14px 0 #1E3A8A;
+    }
+
+    .pad-top-left { top: 60px; left: 100px; }
+    .pad-top-right { top: 60px; right: 20px; }
+    .pad-bot-left { top: 240px; left: 20px; }
+    .pad-bot-right { top: 240px; right: 80px; }
+
+    .pad-button-inner {
+      width: 85%;
+      height: 70%;
+      background: #F8FAFC;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+      margin-bottom: 6px;
+    }
+
+    .pad-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0F172A;
+      font-family: var(--font-sans);
+    }
+
+    .pad-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* SECTION 2: DARK DEEP-DIVE PAYMENTS */
+    .section-deep-dive {
+      background: #080D10;
+      color: #FFFFFF;
+      padding: 7rem 2.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .deep-dive-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .deep-dive-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #64748B;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .deep-dive-header {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 3rem;
+      margin-bottom: 4rem;
+      align-items: flex-end;
+    }
+
+    .deep-dive-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 4.2vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+
+    .deep-dive-sub {
+      font-size: 0.95rem;
+      color: #94A3B8;
+      line-height: 1.6;
+    }
+
+    /* SETTLEMENT BOARD */
+    .settlement-board {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 2rem;
+      background: #0E151A;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .deep-dive-tab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #CBD5E1;
+      line-height: 1.5;
+    }
+    .check-box {
+      width: 16px;
+      height: 16px;
+      background: #FFFFFF;
+      border-radius: 4px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .settlement-panel {
+      background: #131D24;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 1.75rem;
+    }
+
+    .panel-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .panel-title-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .vol-bars {
+      display: flex;
+      gap: 4px;
+      margin: 1.5rem 0;
+    }
+    .vol-bar {
+      height: 24px;
+      width: 6px;
+      border-radius: 3px;
+      background: #1E293B;
+    }
+    .vol-bar.active {
+      background: #10B981;
+    }
+
+    .payout-button-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .btn-solana-network {
+      background: #FFFFFF;
+      color: #0F172A;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background: #040708;
+      color: #64748B;
+      padding: 3rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+      }
+      .deep-dive-header {
+        grid-template-columns: 1fr;
+      }
+      .settlement-board {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="top-nav">
+    <a href="#" class="brand-cluster">
+      <svg class="brand-spiral-icon" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="14" fill="#2347F0" opacity="0.15"/>
+        <path d="M16 6C10.48 6 6 10.48 6 16C6 21.52 10.48 26 16 26C21.52 26 26 21.52 26 16" stroke="#2347F0" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="5" fill="#2347F0"/>
+      </svg>
+      <span class="brand-title-text">Octasec</span>
+    </a>
+
+    <div class="nav-tabs-pill">
+      <a href="#platform" class="nav-tab-item active">Platform <span class="nav-tab-num">01</span></a>
+      <a href="#programs" class="nav-tab-item">For Programs <span class="nav-tab-num">02</span></a>
+      <a href="#researchers" class="nav-tab-item">For Researchers <span class="nav-tab-num">03</span></a>
+    </div>
+
+    <div class="nav-right-actions">
+      <a href="#pricing" class="nav-link-subtle">Pricing</a>
+      <a href="#docs" class="nav-link-subtle">Docs</a>
+      <a href="#signin" class="btn-nav-signin">Sign in</a>
+      <a href="#demo" class="btn-nav-demo">Book a demo &raquo;</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main class="hero-container">
+    <!-- ISOMETRIC WIREFRAME SCHEMATIC BACKGROUND -->
+    <svg class="isometric-grid-bg" viewBox="0 0 800 600" fill="none">
+      <path d="M 100 300 L 400 120 L 700 300 L 400 480 Z" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1.5"/>
+      <path d="M 250 210 L 550 390" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1.5"/>
+      <path d="M 250 390 L 550 210" stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1.5"/>
+    </svg>
+
+    <!-- LEFT EDITORIAL COPY -->
+    <div class="hero-copy">
+      <div class="hero-eyebrow">
+        <span>BUG BOUNTIES THAT PAY IN MINUTES $</span>
+      </div>
+
+      <h1 class="hero-title">
+        Approve a bounty.<br>
+        Researcher sees the money the same day.
+      </h1>
+
+      <p class="hero-desc">
+        Custodial USD via Stripe. On-chain USDC on Solana. Payouts arrive in minutes, not months.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#demo" class="btn-cta-blue">Book a demo &raquo;</a>
+        <a href="#live" class="btn-cta-gray">See a live program</a>
+      </div>
+    </div>
+
+    <!-- RIGHT 3D ISOMETRIC STAGE -->
+    <div class="hero-isometric-stage">
+      <!-- FLOATING CODE TERMINAL -->
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="mac-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="terminal-url-pill">octasec.com</div>
+          <div style="font-size: 0.7rem; color: #94A3B8;">&uarr; + ◫</div>
+        </div>
+
+        <div class="terminal-subhead">
+          <span>/researcher/ledger</span>
+          <span>▷ preview</span>
+        </div>
+
+        <div class="terminal-code-body">
+          <div><span class="line-num">1</span> <span class="token-pink">PREV_BALANCE</span> : 4,500 USDC</div>
+          <div><span class="line-num">2</span> <span class="token-green">DEPOSIT_IN</span> : +12,000 USDC</div>
+          <div><span class="line-num">3</span></div>
+          <div>..</div>
+          <div class="token-total">TOTAL : 16,500 USDC</div>
+        </div>
+      </div>
+
+      <!-- 4 INTERACTIVE ISOMETRIC HARDWARE PADS -->
+      <div class="isometric-pad-field">
+        <!-- Pad 1: Payment -->
+        <div class="iso-pad pad-top-right">
+          <div class="pad-button-inner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2347F0" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <span class="pad-label">Payment</span>
+        </div>
+
+        <!-- Pad 2: Balance Updates -->
+        <div class="iso-pad pad-bot-left">
+          <div class="pad-button-inner">
+            <span class="pad-val">$2,231</span>
+          </div>
+          <span class="pad-label">Balance updates</span>
+        </div>
+
+        <!-- Pad 3: USDC -->
+        <div class="iso-pad pad-top-left">
+          <div class="pad-button-inner">
+            <span class="pad-val" style="color: #2347F0;">USDC</span>
+          </div>
+          <span class="pad-label">Settlement</span>
+        </div>
+
+        <!-- Pad 4: Wallet Signature -->
+        <div class="iso-pad pad-bot-right">
+          <div class="pad-button-inner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="pad-label">Wallet signature</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SECTION 2: DARK THEME DEEP-DIVE PAYMENTS -->
+  <section class="section-deep-dive" id="platform">
+    <div class="deep-dive-container">
+      <div class="deep-dive-tag">PAYMENTS</div>
+      <div class="deep-dive-header">
+        <h2 class="deep-dive-title">
+          Approve a bounty.<br>
+          Researcher sees the money before lunch.
+        </h2>
+        <p class="deep-dive-sub">
+          Custodial USD through Stripe arrives in 1 to 2 business days. On-chain USDC hits the researcher's wallet within minutes of your approval signature.
+        </p>
+      </div>
+
+      <!-- LIVE SETTLEMENT DASHBOARD -->
+      <div class="settlement-board">
+        <div class="deep-dive-tab-list">
+          <div style="font-weight: 700; font-size: 1.15rem; color: #FFFFFF; margin-bottom: 0.5rem;">01 Deep-dive</div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <span>Auto-release the moment you sign</span>
+          </div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <span>USDC on Solana or USD via Stripe / PayPal in 43+ countries</span>
+          </div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <span>15% commission published, per-program override</span>
+          </div>
+        </div>
+
+        <div class="settlement-panel">
+          <div class="panel-meta-row">
+            <div class="panel-title-badge">
+              <span style="color: #2347F0;">❖</span>
+              <span>REP-0924 Settlement</span>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700;">$12,000 USDC</div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: #94A3B8;">Processable Volume</div>
+          <div class="vol-bars">
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar active"></div>
+            <div class="vol-bar"></div>
+            <div class="vol-bar"></div>
+            <div class="vol-bar"></div>
+            <div class="vol-bar"></div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 1.25rem;">
+            <span style="color: #94A3B8;">Base Bounty Awarded</span>
+            <span style="font-weight: 600;">$12,000.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem;">
+            <span style="color: #94A3B8;">Estimated Time to Wallet</span>
+            <span style="color: #10B981; font-weight: 600;">&lt; 2 Minutes</span>
+          </div>
+
+          <div class="payout-button-row">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: #94A3B8;">
+              <span style="color: #10B981;">●</span>
+              <span>AUTO-RELEASE ENABLED</span>
+            </div>
+            <button class="btn-solana-network">⚡ SOLANA NETWORK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div>&copy; 2026 Octasec Technologies Inc. Autonomous security payouts.</div>
+    <div>San Francisco &bull; New York &bull; Zurich</div>
+  </footer>
+
+</body>
+</html>

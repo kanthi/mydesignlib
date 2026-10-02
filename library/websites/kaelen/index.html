@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Kaelen Architecture — Homes Shaped by Light &amp; Land</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------
+       CSS RESET & DESIGN TOKENS
+    -------------------------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-page: #F6F5F2;
+      --bg-surface: #FFFFFF;
+      --bg-dark: #121415;
+      --bg-dark-elevated: #1B1E21;
+      --text-main: #121415;
+      --text-muted: #646C74;
+      --text-subtle: #98A1AA;
+      --border-light: rgba(18, 20, 21, 0.08);
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --accent-terracotta: #E55B32;
+      --accent-ochre: #C88D4E;
+      --accent-sage: #6B7C6E;
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* -------------------------------------------------------------
+       TYPOGRAPHY
+    -------------------------------------------------------------- */
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-main);
+    }
+
+    .mono-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* -------------------------------------------------------------
+       HEADER & NAVIGATION
+    -------------------------------------------------------------- */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
+    }
+
+    .site-header.scrolled {
+      background-color: rgba(246, 245, 242, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0.85rem 2.5rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-logo span.dot {
+      color: var(--accent-terracotta);
+    }
+
+    .nav-pill-wrapper {
+      display: flex;
+      align-items: center;
+      background: rgba(18, 20, 21, 0.04);
+      padding: 0.3rem 0.4rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(18, 20, 21, 0.06);
+    }
+
+    .nav-link {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.45rem 1.15rem;
+      border-radius: var(--radius-pill);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.35rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.25s var(--transition-smooth);
+    }
+
+    .btn-pill-dark {
+      background-color: var(--bg-dark);
+      color: #FFFFFF;
+    }
+
+    .btn-pill-dark:hover {
+      background-color: #23272A;
+      transform: translateY(-1px);
+    }
+
+    .btn-pill-outline {
+      background-color: transparent;
+      border-color: rgba(18, 20, 21, 0.25);
+      color: var(--text-main);
+    }
+
+    .btn-pill-outline:hover {
+      background-color: rgba(18, 20, 21, 0.05);
+      border-color: var(--text-main);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION (FAITHFUL TO REFERENCE)
+    -------------------------------------------------------------- */
+    .hero-section {
+      padding: 8rem 2.5rem 3rem;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .hero-top-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4rem;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3.2rem, 6.2vw, 6.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .hero-manifesto-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      max-width: 540px;
+      padding-bottom: 0.5rem;
+    }
+
+    .hero-manifesto-text {
+      font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+      line-height: 1.55;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    /* Hero Monumental Visual Container */
+    .hero-visual-card {
+      position: relative;
+      width: 100%;
+      height: 720px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      background-color: #2D3338;
+    }
+
+    .hero-visual-card img.hero-bg-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 45%;
+      transition: transform 1.2s var(--transition-smooth);
+    }
+
+    .hero-visual-card:hover img.hero-bg-photo {
+      transform: scale(1.015);
+    }
+
+    /* Hotspot Markers on Photo */
+    .hotspot-pin {
+      position: absolute;
+      z-index: 20;
+      cursor: pointer;
+    }
+
+    .hotspot-marker {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.4rem 0.95rem;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: all 0.25s var(--transition-smooth);
+    }
+
+    .hotspot-marker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-terracotta);
+      box-shadow: 0 0 0 4px rgba(229, 91, 50, 0.25);
+      animation: pulse 2.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(229, 91, 50, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(229, 91, 50, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(229, 91, 50, 0); }
+    }
+
+    .hotspot-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 260px;
+      padding: 1rem;
+      background: rgba(18, 20, 21, 0.94);
+      color: #FFFFFF;
+      border-radius: var(--radius-sm);
+      font-size: 0.775rem;
+      line-height: 1.45;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hotspot-tooltip h5 {
+      color: var(--accent-terracotta);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hotspot-pin:hover .hotspot-tooltip,
+    .hotspot-pin.active .hotspot-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Hotspot positions */
+    .hotspot-roof {
+      top: 18%;
+      left: 52%;
+    }
+
+    .hotspot-terrace {
+      top: 74%;
+      left: 68%;
+    }
+
+    .hotspot-wall {
+      top: 56%;
+      left: 22%;
+    }
+
+    /* Telemetry Card (Bottom-Left Frosted Overlay) */
+    .telemetry-card {
+      position: absolute;
+      bottom: 2rem;
+      left: 2.5rem;
+      width: 360px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: var(--radius-md);
+      padding: 1.75rem 2rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+      z-index: 20;
+    }
+
+    .telemetry-header {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-terracotta);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .telemetry-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.5rem;
+    }
+
+    .telemetry-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .telemetry-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-subtle);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .telemetry-val {
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Bottom-Right Hero Controls */
+    .hero-bottom-right {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      z-index: 20;
+    }
+
+    .solar-compass {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: rgba(18, 20, 21, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-pill);
+      padding: 0.5rem 1rem;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .compass-dial {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--accent-terracotta);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .compass-dial::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 5px;
+      background: var(--accent-terracotta);
+    }
+
+    .btn-explore-house {
+      background: #FFFFFF;
+      color: var(--text-main);
+      padding: 0.75rem 1.45rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transition: all 0.25s var(--transition-smooth);
+    }
+
+    .btn-explore-house:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    /* -------------------------------------------------------------
+       PROJECT DEEP DIVE / BLUEPRINT ELEVATION SECTION
+    -------------------------------------------------------------- */
+    .section-blueprint {
+      padding: 7rem 2.5rem;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .section-header-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 2rem;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-terracotta);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      max-width: 480px;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .blueprint-viewer-container {
+      background: #0E1113;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+    }
+
+    .blueprint-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .blueprint-filters {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-layer {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #98A1AA;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-layer:hover, .btn-layer.active {
+      background: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: #FFFFFF;
+    }
+
+    .blueprint-svg-wrapper {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    .blueprint-svg-wrapper img {
+      width: 100%;
+      height: auto;
+      max-height: 560px;
+      display: block;
+    }
+
+    /* Material Specimens Grid */
+    .specimens-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+      margin-top: 3.5rem;
+    }
+
+    .specimen-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      transition: transform 0.3s var(--transition-smooth), box-shadow 0.3s var(--transition-smooth);
+    }
+
+    .specimen-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    .specimen-img-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #EAE8E3;
+    }
+
+    .specimen-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .specimen-card:hover .specimen-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .specimen-meta {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .specimen-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent-terracotta);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .specimen-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .specimen-detail {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* -------------------------------------------------------------
+       STUDIO PHILOSOPHY / THE 4 SITE VECTORS
+    -------------------------------------------------------------- */
+    .section-philosophy {
+      padding: 7rem 2.5rem;
+      background: var(--bg-dark);
+      color: #FFFFFF;
+    }
+
+    .philosophy-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .philosophy-title-block {
+      max-width: 780px;
+      margin-bottom: 5rem;
+    }
+
+    .philosophy-title-block h2 {
+      color: #FFFFFF;
+      font-size: clamp(2.4rem, 4.4vw, 4.2rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .philosophy-title-block p {
+      color: #98A1AA;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .vectors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 3.5rem;
+    }
+
+    .vector-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vector-num {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent-terracotta);
+      margin-bottom: 1.2rem;
+    }
+
+    .vector-heading {
+      color: #FFFFFF;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.02em;
+    }
+
+    .vector-body {
+      color: #98A1AA;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    /* Performance Metrics Bar */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 5rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 3rem;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 4.2vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #FFFFFF;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-number span.plus {
+      color: var(--accent-terracotta);
+    }
+
+    .metric-sub {
+      font-size: 0.925rem;
+      color: #98A1AA;
+    }
+
+    /* -------------------------------------------------------------
+       FEATURED PROJECTS PORTFOLIO
+    -------------------------------------------------------------- */
+    .section-projects {
+      padding: 8rem 2.5rem;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .project-filter-bar {
+      display: flex;
+      gap: 0.65rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      padding: 0.55rem 1.35rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--bg-dark);
+      color: #FFFFFF;
+      border-color: var(--bg-dark);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3.5rem 2.5rem;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-thumb-wrap {
+      width: 100%;
+      height: 520px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      background: #D8D6D0;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--transition-smooth);
+    }
+
+    .project-card:hover .project-thumb-wrap img {
+      transform: scale(1.03);
+    }
+
+    .project-badge-top {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: rgba(18, 20, 21, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #FFFFFF;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }
+
+    .project-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-name {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .project-location {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .project-specs-line {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .project-specs-line span {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* -------------------------------------------------------------
+       THE JOURNAL / ESSAYS
+    -------------------------------------------------------------- */
+    .section-journal {
+      padding: 7rem 2.5rem;
+      background: #EFECE6;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .journal-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .journal-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      border: 1px solid rgba(18, 20, 21, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 360px;
+      transition: all 0.3s var(--transition-smooth);
+    }
+
+    .journal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+    }
+
+    .journal-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-terracotta);
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .journal-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.025em;
+    }
+
+    .journal-excerpt {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .journal-read-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* -------------------------------------------------------------
+       STUDIO VISIT & INQUIRY MODAL / DRAWER
+    -------------------------------------------------------------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 20, 21, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 640px;
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      position: relative;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+      animation: modalSlideUp 0.3s var(--transition-smooth);
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.75rem;
+      right: 1.75rem;
+      background: rgba(18, 20, 21, 0.06);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--text-main);
+      transition: background 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(18, 20, 21, 0.12);
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(18, 20, 21, 0.15);
+      background: #FAF9F6;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--text-main);
+      background: #FFFFFF;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------------- */
+    .site-footer {
+      background: var(--bg-dark);
+      color: #FFFFFF;
+      padding: 8rem 2.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .footer-top-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 6rem;
+    }
+
+    .footer-huge-mark {
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-huge-mark span.dot {
+      color: var(--accent-terracotta);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-terracotta);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      color: #98A1AA;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .studio-loc {
+      color: #98A1AA;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .studio-loc strong {
+      color: #FFFFFF;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #636B73;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+    -------------------------------------------------------------- */
+    @media (max-width: 1200px) {
+      .hero-top-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .vectors-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .specimens-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-top-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .site-header {
+        padding: 1rem 1.5rem;
+      }
+      .nav-pill-wrapper {
+        display: none;
+      }
+      .hero-section {
+        padding: 6.5rem 1.5rem 2rem;
+      }
+      .hero-visual-card {
+        height: 540px;
+      }
+      .telemetry-card {
+        left: 1.25rem;
+        bottom: 1.25rem;
+        right: 1.25rem;
+        width: auto;
+        padding: 1.25rem;
+      }
+      .hero-bottom-right {
+        display: none;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .journal-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-bar {
+        grid-template-columns: 1fr;
+        padding: 1.75rem;
+      }
+      .footer-top-row {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       SITE HEADER
+  =========================================== -->
+  <header class="site-header" id="siteHeader">
+    <a href="#hero" class="brand-logo">
+      kaelen<span class="dot">.</span>
+    </a>
+
+    <nav class="nav-pill-wrapper" aria-label="Main Navigation">
+      <a href="#hero" class="nav-link active">Home</a>
+      <a href="#blueprint" class="nav-link">Studio</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#philosophy" class="nav-link">Philosophy</a>
+      <a href="#journal" class="nav-link">Journal</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-pill btn-pill-dark" onclick="openStudioModal()">
+        Book a studio visit ↗
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       HERO SECTION (DIRECT REFERENCE IMPLEMENTATION)
+  =========================================== -->
+  <main id="mainContent">
+    <section class="hero-section" id="hero">
+      <div class="hero-top-row">
+        <!-- Monumental Hero Typography -->
+        <h1 class="hero-headline">
+          Homes<br>
+          Shaped By<br>
+          Light &amp; Land
+        </h1>
+
+        <!-- Studio Manifesto & CTAs -->
+        <div class="hero-manifesto-column">
+          <p class="hero-manifesto-text">
+            Kaelen is an independent architecture studio designing low-energy homes that read their site first — orientation, wind, views and ground — and build everything else around it.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-pill btn-pill-dark" onclick="openStudioModal()">
+              Start a project ↗
+            </button>
+            <a href="#projects" class="btn-pill btn-pill-outline">
+              View work
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monumental Hero Visual Card -->
+      <div class="hero-visual-card">
+        <img src="assets/hero-mendoza.jpg" alt="Casa Lúmen low-energy timber and glass residence in Mendoza landscape" class="hero-bg-photo" id="heroPhoto">
+
+        <!-- Interactive Hotspot 1: Cantilever Roof -->
+        <div class="hotspot-pin hotspot-roof" tabindex="0" role="button" aria-label="Cantilevered oak roof information">
+          <div class="hotspot-marker">
+            Cantilevered oak roof
+          </div>
+          <div class="hotspot-tooltip">
+            <h5>Solar Geometry Control</h5>
+            Calculated 4.2m glulam overhang that obstructs harsh high-angle summer sun (68°) while welcoming winter low-angle solar rays (32°) directly onto the thermal floor.
+          </div>
+        </div>
+
+        <!-- Interactive Hotspot 2: North Terrace -->
+        <div class="hotspot-pin hotspot-terrace" tabindex="0" role="button" aria-label="North-facing terrace information">
+          <div class="hotspot-marker">
+            North-facing terrace
+          </div>
+          <div class="hotspot-tooltip">
+            <h5>Solar Exposure &amp; Triple Glazing</h5>
+            Continuous full-height thermal envelope with triple-pane argon units (Ug = 0.58 W/m²K) maximizing winter passive heating and canyon vistas.
+          </div>
+        </div>
+
+        <!-- Interactive Hotspot 3: Rammed Earth Wall -->
+        <div class="hotspot-pin hotspot-wall" tabindex="0" role="button" aria-label="Rammed earth spine information">
+          <div class="hotspot-marker">
+            Rammed earth spine
+          </div>
+          <div class="hotspot-tooltip">
+            <h5>Passive Thermal Battery</h5>
+            450mm structural rammed earth wall cast from site-excavated clay. Absorbs ambient daily heat and re-radiates gentle warmth over cold Andean nights.
+          </div>
+        </div>
+
+        <!-- Floating Telemetry Card (Bottom-Left) -->
+        <div class="telemetry-card">
+          <div class="telemetry-header">
+            <span>FEATURED PROJECT</span>
+            <span>01 / 06</span>
+          </div>
+          <div class="telemetry-title">Casa Lúmen</div>
+          <div class="telemetry-grid">
+            <div class="telemetry-item">
+              <span class="telemetry-label">Location</span>
+              <span class="telemetry-val">Mendoza, AR</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">Area</span>
+              <span class="telemetry-val">320 m²</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">Energy</span>
+              <span class="telemetry-val">Passive house</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-label">Completed</span>
+              <span class="telemetry-val">2025</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom-Right Controls -->
+        <div class="hero-bottom-right">
+          <div class="solar-compass">
+            <div class="compass-dial"></div>
+            <span>32°53' S · AZ 348° · 1,150M</span>
+          </div>
+          <a href="#blueprint" class="btn-explore-house">
+            Explore the house ↓
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLUEPRINT & SOLAR SECTION ELEVATION
+    =========================================== -->
+    <section class="section-blueprint" id="blueprint">
+      <div class="section-header-split">
+        <div>
+          <span class="section-eyebrow">Case Study 01 · Technical Analysis</span>
+          <h2 class="section-title">Reading the Site First</h2>
+        </div>
+        <p class="section-desc">
+          Every line begins with micro-climate telemetry. We analyze seasonal sun angles, katabatic canyon breezes, and geological bedrock formations before drawing a single wall.
+        </p>
+      </div>
+
+      <!-- Blueprint Interactive Display -->
+      <div class="blueprint-viewer-container">
+        <div class="blueprint-toolbar">
+          <div class="blueprint-filters">
+            <button class="btn-layer active" onclick="setBlueprintLayer(this, 'all')">Full Envelope</button>
+            <button class="btn-layer" onclick="setBlueprintLayer(this, 'solar')">Solar Solstice (32°/68°)</button>
+            <button class="btn-layer" onclick="setBlueprintLayer(this, 'airflow')">Katabatic Ventilation</button>
+            <button class="btn-layer" onclick="setBlueprintLayer(this, 'thermal')">Rammed Earth Core</button>
+          </div>
+          <div class="mono-tag" style="color: #7E8790;">
+            CAD SCHEMATIC REF: KL-2025-ML-SEC-AA
+          </div>
+        </div>
+
+        <div class="blueprint-svg-wrapper">
+          <img src="assets/blueprint-elevation.svg" alt="Architectural cross section blueprint showing passive solar angles and ventilation airflow">
+        </div>
+      </div>
+
+      <!-- Material Specimens Grid -->
+      <div class="specimens-grid">
+        <div class="specimen-card">
+          <div class="specimen-img-wrap">
+            <img src="assets/specimen-oak.jpg" alt="Glulam structural oak specimen">
+          </div>
+          <div class="specimen-meta">
+            <span class="specimen-tag">Structure</span>
+            <div class="specimen-name">Engineered Glulam Oak</div>
+            <p class="specimen-detail">Sustainably harvested Alpine oak with zero-VOC biological bio-resins, offering high shear strength and negative carbon storage.</p>
+          </div>
+        </div>
+
+        <div class="specimen-card">
+          <div class="specimen-img-wrap">
+            <img src="assets/specimen-rammed-earth.jpg" alt="Site-quarried rammed earth specimen">
+          </div>
+          <div class="specimen-meta">
+            <span class="specimen-tag">Thermal Mass</span>
+            <div class="specimen-name">Rammed Earth Strata</div>
+            <p class="specimen-detail">Compacted local gravel, clay, and mineral sand excavated directly from the building foundation footprint.</p>
+          </div>
+        </div>
+
+        <div class="specimen-card">
+          <div class="specimen-img-wrap">
+            <img src="assets/specimen-granite.jpg" alt="Alpine bedrock granite specimen">
+          </div>
+          <div class="specimen-meta">
+            <span class="specimen-tag">Substructure</span>
+            <div class="specimen-name">Glacial Granite Pinning</div>
+            <p class="specimen-detail">Direct mechanical bedrock anchors that eliminate deep concrete grade beams, preserving natural hydrology.</p>
+          </div>
+        </div>
+
+        <div class="specimen-card">
+          <div class="specimen-img-wrap">
+            <img src="assets/specimen-acoustic-glass.jpg" alt="Acoustic triple glazed glass specimen">
+          </div>
+          <div class="specimen-meta">
+            <span class="specimen-tag">Envelope</span>
+            <div class="specimen-name">Argon Triple-Glazing</div>
+            <p class="specimen-detail">Ultra-clear low-iron acoustic glazing with soft-coat Low-E layers that reflect 92% of interior infrared thermal energy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         STUDIO PHILOSOPHY / THE 4 SITE VECTORS
+    =========================================== -->
+    <section class="section-philosophy" id="philosophy">
+      <div class="philosophy-inner">
+        <div class="philosophy-title-block">
+          <span class="section-eyebrow">Studio Manifesto</span>
+          <h2>The Four Vectors of Site-Responsive Architecture</h2>
+          <p>
+            Standard architecture imposes form onto the land. We do the inverse: we let the geographic, solar, and atmospheric forces of the parcel sculpt the envelope.
+          </p>
+        </div>
+
+        <div class="vectors-grid">
+          <div class="vector-col">
+            <span class="vector-num">01 / SOLAR GEOMETRY</span>
+            <h3 class="vector-heading">Orientation</h3>
+            <p class="vector-body">
+              Every roof pitch, overhang depth, and window placement is mathematically tuned to the solar zenith of the site's latitude, yielding free seasonal warmth and shade.
+            </p>
+          </div>
+
+          <div class="vector-col">
+            <span class="vector-num">02 / THERMAL SIPHONING</span>
+            <h3 class="vector-heading">Wind &amp; Climate</h3>
+            <p class="vector-body">
+              We leverage prevailing katabatic ridge currents to drive natural displacement ventilation, eliminating noisy, energy-intensive mechanical air conditioning.
+            </p>
+          </div>
+
+          <div class="vector-col">
+            <span class="vector-num">03 / GEOLOGICAL GRADE</span>
+            <h3 class="vector-heading">Ground &amp; Terrain</h3>
+            <p class="vector-body">
+              Rather than bulldozing terraces, we step structures down natural contours. Foundations are pin-mortised directly into bedrock, leaving subterranean aquifers undisturbed.
+            </p>
+          </div>
+
+          <div class="vector-col">
+            <span class="vector-num">04 / CIRCULAR MATERIALS</span>
+            <h3 class="vector-heading">Embodied Carbon</h3>
+            <p class="vector-body">
+              We prioritize mass timber, unreinforced stone, and unfired earthen blocks that store atmospheric carbon for centuries and return harmlessly to earth at end of life.
+            </p>
+          </div>
+        </div>
+
+        <!-- Performance Metrics Bar -->
+        <div class="metrics-bar">
+          <div class="metric-item">
+            <div class="metric-number">86<span class="plus">%</span></div>
+            <div class="metric-sub">Average space heating reduction compared to regional building codes</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-number">Net 0</div>
+            <div class="metric-sub">Operational lifecycle carbon rating achieved across all residential projects</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-number">100<span class="plus">%</span></div>
+            <div class="metric-sub">Passive House Institute certified envelopes engineered for 120-year lifespans</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURED PROJECTS PORTFOLIO
+    =========================================== -->
+    <section class="section-projects" id="projects">
+      <div class="section-header-split">
+        <div>
+          <span class="section-eyebrow">Selected Works · 2022–2026</span>
+          <h2 class="section-title">Built Specimens</h2>
+        </div>
+        <div class="project-filter-bar">
+          <button class="filter-btn active" onclick="filterProjects('all', this)">All Projects</button>
+          <button class="filter-btn" onclick="filterProjects('alpine', this)">Alpine &amp; Mountain</button>
+          <button class="filter-btn" onclick="filterProjects('coastal', this)">Coastal &amp; Fjord</button>
+          <button class="filter-btn" onclick="filterProjects('arid', this)">Arid &amp; Canyon</button>
+        </div>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: Casa Lúmen -->
+        <article class="project-card" data-category="arid" onclick="openProjectDetail('Casa Lúmen', 'Mendoza, AR', '320 m²', '2025', 'Passive House Plus', 'assets/hero-mendoza.jpg', 'Perched in the foothills of the Argentine Andes, Casa Lúmen integrates a 4.2m glulam oak canopy with a 450mm rammed-earth thermal spine, achieving net-zero operational energy.')">
+          <div class="project-thumb-wrap">
+            <img src="assets/hero-mendoza.jpg" alt="Casa Lúmen modern architecture">
+            <div class="project-badge-top">PASSIVE HOUSE PLUS</div>
+          </div>
+          <div class="project-info-row">
+            <h3 class="project-name">Casa Lúmen</h3>
+            <span class="project-location">Mendoza, Argentina</span>
+          </div>
+          <div class="project-specs-line">
+            <span>320 m²</span>
+            <span>·</span>
+            <span>2025</span>
+            <span>·</span>
+            <span>Glulam Oak &amp; Rammed Earth</span>
+          </div>
+        </article>
+
+        <!-- Project 2: Fjordhus Strand -->
+        <article class="project-card" data-category="coastal" onclick="openProjectDetail('Fjordhus Strand', 'Hardanger Fjord, Norway', '410 m²', '2024', 'BREEAM Outstanding', 'assets/project-fjordhus.jpg', 'Cantilevered over the cold waters of Hardanger Fjord, Fjordhus Strand utilizes dark carbonized timber and marine-grade low-E glazing to withstand extreme North Sea winter storms.')">
+          <div class="project-thumb-wrap">
+            <img src="assets/project-fjordhus.jpg" alt="Fjordhus Strand cantilevered residence in Norway">
+            <div class="project-badge-top">BREEAM OUTSTANDING</div>
+          </div>
+          <div class="project-info-row">
+            <h3 class="project-name">Fjordhus Strand</h3>
+            <span class="project-location">Hardanger, Norway</span>
+          </div>
+          <div class="project-specs-line">
+            <span>410 m²</span>
+            <span>·</span>
+            <span>2024</span>
+            <span>·</span>
+            <span>Carbonized Pine &amp; Marine Glass</span>
+          </div>
+        </article>
+
+        <!-- Project 3: Engadin Stone Sanctuary -->
+        <article class="project-card" data-category="alpine" onclick="openProjectDetail('Engadin Stone Sanctuary', 'St. Moritz, Switzerland', '480 m²', '2025', 'Minergie-P Eco', 'assets/project-engadin.jpg', 'Built into a 35-degree glacial slope in the Swiss Engadin valley, this alpine sanctuary is clad in locally extracted granite and vertical weathered larch slats with deep snow-load cantilevers.')">
+          <div class="project-thumb-wrap">
+            <img src="assets/project-engadin.jpg" alt="Engadin Stone Sanctuary in Swiss Alps">
+            <div class="project-badge-top">MINERGIE-P ECO</div>
+          </div>
+          <div class="project-info-row">
+            <h3 class="project-name">Engadin Sanctuary</h3>
+            <span class="project-location">St. Moritz, Switzerland</span>
+          </div>
+          <div class="project-specs-line">
+            <span>480 m²</span>
+            <span>·</span>
+            <span>2025</span>
+            <span>·</span>
+            <span>Alpine Granite &amp; Larch Slats</span>
+          </div>
+        </article>
+
+        <!-- Project 4: Atacama Solar Compound -->
+        <article class="project-card" data-category="arid" onclick="openProjectDetail('Atacama Solar Compound', 'San Pedro de Atacama, Chile', '260 m²', '2023', 'Net Zero Energy', 'assets/hero-mendoza.jpg', 'Constructed in the hyper-arid Atacama desert using thick unfired adobe and courtyards that generate natural diurnal convection currents.')">
+          <div class="project-thumb-wrap">
+            <img src="assets/hero-mendoza.jpg" alt="Atacama solar compound residence" style="filter: hue-rotate(15deg) contrast(1.05);">
+            <div class="project-badge-top">NET ZERO ENERGY</div>
+          </div>
+          <div class="project-info-row">
+            <h3 class="project-name">Atacama Compound</h3>
+            <span class="project-location">San Pedro, Chile</span>
+          </div>
+          <div class="project-specs-line">
+            <span>260 m²</span>
+            <span>·</span>
+            <span>2023</span>
+            <span>·</span>
+            <span>Unfired Adobe &amp; Shading Louvers</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CRITICAL PRACTICE / JOURNAL
+    =========================================== -->
+    <section class="section-journal" id="journal">
+      <div class="journal-inner">
+        <div class="section-header-split">
+          <div>
+            <span class="section-eyebrow">Essays &amp; Field Studies</span>
+            <h2 class="section-title">Critical Practice</h2>
+          </div>
+          <p class="section-desc">
+            We document our failures, field measurements, and thermal imaging data openly to advance low-energy building craft.
+          </p>
+        </div>
+
+        <div class="journal-grid">
+          <article class="journal-card">
+            <div>
+              <div class="journal-meta">ESSAY 04 · 8 MIN READ</div>
+              <h3 class="journal-title">Why Orientation Outperforms Insulation</h3>
+              <p class="journal-excerpt">
+                Adding inches of synthetic insulation offers diminishing thermodynamic returns. How micro-positioning along solar azimuth curves solves 70% of heat retention before insulation begins.
+              </p>
+            </div>
+            <a href="javascript:void(0)" class="journal-read-link" onclick="openStudioModal()">
+              Read Study Paper ↗
+            </a>
+          </article>
+
+          <article class="journal-card">
+            <div>
+              <div class="journal-meta">FIELD STUDY 02 · 11 MIN READ</div>
+              <h3 class="journal-title">The Sensory Acoustics of Heavy Timber</h3>
+              <p class="journal-excerpt">
+                Investigating the psychoacoustic calming effect of solid end-grain glulam ceilings in alpine residences during high-velocity wind storms.
+              </p>
+            </div>
+            <a href="javascript:void(0)" class="journal-read-link" onclick="openStudioModal()">
+              Read Study Paper ↗
+            </a>
+          </article>
+
+          <article class="journal-card">
+            <div>
+              <div class="journal-meta">CASE MONOGRAPH · 6 MIN READ</div>
+              <h3 class="journal-title">Zero-Cut Topography &amp; Glacial Bedrock</h3>
+              <p class="journal-excerpt">
+                Eliminating continuous concrete footing trenches through pneumatic diamond core drilling and stainless expansion rods anchored directly in gneiss bedrock.
+              </p>
+            </div>
+            <a href="javascript:void(0)" class="journal-read-link" onclick="openStudioModal()">
+              Read Study Paper ↗
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       STUDIO INQUIRY & VISIT MODAL
+  =========================================== -->
+  <div class="modal-backdrop" id="studioModal" onclick="handleBackdropClick(event)">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close-btn" onclick="closeStudioModal()" aria-label="Close dialog">&times;</button>
+      <div class="mono-tag" style="color: var(--accent-terracotta); margin-bottom: 0.5rem;">Kaelen Architecture</div>
+      <h3 class="modal-title" id="modalTitle">Book a Studio Visit</h3>
+      <p class="modal-desc">
+        We welcome clients, collaborators, and researchers to our physical workshops to examine material mockups, site models, and solar heliodon simulators.
+      </p>
+
+      <form onsubmit="handleInquirySubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="studioLocation">Studio Location</label>
+          <select class="form-select" id="studioLocation" required>
+            <option value="zurich">Zurich Studio — Dufourstrasse 42, 8008 Zürich</option>
+            <option value="mendoza">Mendoza Studio — Calle Belgrano 1140, Mendoza</option>
+            <option value="oslo">Oslo Studio — Havnepromenaden 18, 0150 Oslo</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clientName">Your Name</label>
+          <input type="text" class="form-input" id="clientName" placeholder="E.g. Elena Rostova" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clientEmail">Email Address</label>
+          <input type="email" class="form-input" id="clientEmail" placeholder="elena@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="projectType">Inquiry Type</label>
+          <select class="form-select" id="projectType">
+            <option value="residence">New Low-Energy Residence (Site-First)</option>
+            <option value="retreat">Alpine / Coastal Retreat Sanctuary</option>
+            <option value="cultural">Civic Pavilion or Adaptive Reuse</option>
+            <option value="research">Academic / Passive House Research</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="projectSite">Site Parcel Details (Optional)</label>
+          <input type="text" class="form-input" id="projectSite" placeholder="Location, approximate area, or terrain type">
+        </div>
+
+        <button type="submit" class="btn-pill btn-pill-dark" style="width: 100%; padding: 0.95rem; font-size: 0.95rem; margin-top: 0.75rem;">
+          Confirm Studio Appointment ↗
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Project Detail Modal -->
+  <div class="modal-backdrop" id="projectModal" onclick="handleBackdropClick(event)">
+    <div class="modal-box" style="max-width: 780px;" role="dialog" aria-modal="true">
+      <button class="modal-close-btn" onclick="closeProjectModal()" aria-label="Close dialog">&times;</button>
+      <div id="projectModalContent">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+  =========================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top-row">
+        <div>
+          <div class="footer-huge-mark">kaelen<span class="dot">.</span></div>
+          <p style="color: #98A1AA; max-width: 380px; font-size: 1.05rem; line-height: 1.6;">
+            Homes shaped by light and land. Dedicated to low-energy residential and landscape architecture since 2018.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#blueprint">Technical Analysis</a></li>
+            <li><a href="#projects">Built Works</a></li>
+            <li><a href="#philosophy">Manifesto</a></li>
+            <li><a href="#journal">Critical Practice</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Studios</h4>
+          <div class="studio-loc">
+            <strong>Zurich</strong>
+            Dufourstrasse 42<br>8008 Zürich, Switzerland
+          </div>
+          <div class="studio-loc">
+            <strong>Mendoza</strong>
+            Calle Belgrano 1140<br>M5500 Mendoza, Argentina
+          </div>
+          <div class="studio-loc">
+            <strong>Oslo</strong>
+            Havnepromenaden 18<br>0150 Oslo, Norway
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Affiliations</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)">Passive House Institute (PHI)</a></li>
+            <li><a href="javascript:void(0)">SIA Swiss Engineers &amp; Architects</a></li>
+            <li><a href="javascript:void(0)">BREEAM Sustainable Fellow</a></li>
+            <li><a href="javascript:void(0)">Mass Timber Research Council</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>&copy; 2026 Kaelen Architecture. All rights reserved. Private design specimen archive.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <span>ZURICH 11:20 CET</span>
+          <span>MENDOZA 07:20 ART</span>
+          <span>OSLO 11:20 CEST</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       VANILLA JAVASCRIPT
+  =========================================== -->
+  <script>
+    // Header shadow and backdrop blur on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('siteHeader');
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Studio Booking Modal logic
+    function openStudioModal() {
+      document.getElementById('studioModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStudioModal() {
+      document.getElementById('studioModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Project Detail Drawer / Modal logic
+    function openProjectDetail(name, location, area, year, badge, imageSrc, description) {
+      const content = document.getElementById('projectModalContent');
+      content.innerHTML = `
+        <div style="width: 100%; height: 320px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.75rem;">
+          <img src="${imageSrc}" alt="${name}" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="mono-tag" style="color: var(--accent-terracotta); margin-bottom: 0.4rem;">${badge} · ${year}</div>
+        <h3 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 0.35rem;">${name}</h3>
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">${location} — ${area}</div>
+        <p style="color: var(--text-main); font-size: 1rem; line-height: 1.65; margin-bottom: 1.75rem;">${description}</p>
+        <div style="display: flex; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+          <button class="btn-pill btn-pill-dark" onclick="closeProjectModal(); openStudioModal();">Request Project Monograph ↗</button>
+          <button class="btn-pill btn-pill-outline" onclick="closeProjectModal()">Close</button>
+        </div>
+      `;
+      document.getElementById('projectModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.classList.contains('modal-backdrop')) {
+        closeStudioModal();
+        closeProjectModal();
+      }
+    }
+
+    function handleInquirySubmit(e) {
+      e.preventDefault();
+      alert('Thank you for your interest in Kaelen Architecture. Our team will coordinate your studio visit consultation.');
+      closeStudioModal();
+    }
+
+    // Filter projects portfolio
+    function filterProjects(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Blueprint Layer switcher
+    function setBlueprintLayer(btn, layer) {
+      document.querySelectorAll('.btn-layer').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Keyboard support for modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeStudioModal();
+        closeProjectModal();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>TERRAQ ® — The Ground Truth for Heavy Industry</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-cockpit: #0F0E0A;
+      --bg-panel: #161410;
+      --bg-panel-elevated: #1F1C16;
+      --accent-orange: #E84A27;
+      --accent-rust: #D04826;
+      --accent-amber: #D97706;
+      --text-cream: #F2EDE4;
+      --text-dim: #7A756D;
+      --border-hud: rgba(242, 237, 228, 0.08);
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition-hud: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-cockpit);
+      color: var(--text-cream);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-color: var(--bg-cockpit);
+    }
+
+    /* -------------------------------------------------------------
+       TOP HUD STATUS & NAVIGATION
+    -------------------------------------------------------------- */
+    .hud-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.25rem 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 14, 10, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-hud);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .hamburger-icon {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger-icon span {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--text-cream);
+    }
+
+    .brand-logo-text {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-cream);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .brand-logo-text sup {
+      font-size: 0.6rem;
+      font-weight: 400;
+      color: var(--text-dim);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      transition: color var(--transition-hud);
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .nav-links a span.nav-idx {
+      font-size: 0.65rem;
+      opacity: 0.6;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-cream);
+    }
+
+    .hud-status-actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .live-model-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-orange);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .live-sq {
+      font-size: 0.65rem;
+      animation: pulseRed 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseRed {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    .clock-display {
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .btn-contact {
+      background: transparent;
+      border: 1px solid rgba(242, 237, 228, 0.2);
+      color: var(--text-cream);
+      padding: 0.45rem 1.15rem;
+      border-radius: 2px;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all var(--transition-hud);
+    }
+
+    .btn-contact:hover {
+      background: var(--text-cream);
+      color: #000000;
+    }
+
+    /* -------------------------------------------------------------
+       FULLSCREEN 3D WEBGL HERO VIEWPORT
+    -------------------------------------------------------------- */
+    .hero-viewport-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 750px;
+      overflow: hidden;
+      background: var(--bg-cockpit);
+    }
+
+    #webglCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: grab;
+    }
+
+    #webglCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Tactical HUD Overlays */
+    .hud-overlay-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      padding: 5.75rem 2.75rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Sub-header telemetry line */
+    .hud-top-telemetry {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border-hud);
+      padding-bottom: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .sub-col-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .sub-col-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.2rem;
+    }
+
+    .hud-fig-tag {
+      color: var(--text-cream);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    /* Hero Text Block (Pointer Events Enabled) */
+    .hero-content-panel {
+      pointer-events: auto;
+      max-width: 580px;
+      margin-top: auto;
+      margin-bottom: 2rem;
+    }
+
+    .hero-sector-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    .hero-main-title {
+      font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.5rem;
+    }
+
+    .title-bright {
+      color: var(--text-cream);
+    }
+
+    .title-muted {
+      color: #6B665F;
+    }
+
+    .hero-subhead {
+      color: var(--text-dim);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-bottom: 2.25rem;
+      max-width: 480px;
+    }
+
+    /* CTA cluster */
+    .cta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn-engage-wrapper {
+      display: flex;
+      align-items: stretch;
+      cursor: pointer;
+    }
+
+    .btn-engage {
+      background: #D9D2C7;
+      color: #111111;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.85rem 1.4rem;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition-hud);
+    }
+
+    .btn-engage:hover {
+      background: #FFFFFF;
+    }
+
+    .btn-arrow-box {
+      background: var(--accent-orange);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.95rem;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .btn-explore-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      transition: color var(--transition-hud);
+    }
+
+    .btn-explore-link:hover {
+      color: var(--text-cream);
+    }
+
+    /* Canvas interaction hint */
+    .canvas-orbit-hint {
+      position: absolute;
+      bottom: 6rem;
+      right: 2.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: rgba(242, 237, 228, 0.35);
+      pointer-events: none;
+    }
+
+    /* Bottom Sector Switcher Bar */
+    .hud-bottom-telemetry {
+      pointer-events: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      border-top: 1px solid var(--border-hud);
+      padding-top: 1.25rem;
+      gap: 1.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .telemetry-digits-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 3.5rem;
+    }
+
+    .telemetry-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .telemetry-label {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .telemetry-val {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-cream);
+      letter-spacing: 0.04em;
+    }
+
+    .sector-tab-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5rem;
+    }
+
+    .sector-tabs-list {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .btn-sector-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: left;
+      transition: color var(--transition-hud);
+      padding: 0;
+    }
+
+    .btn-sector-tab .tab-idx {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+    }
+
+    .btn-sector-tab:hover {
+      color: var(--text-cream);
+    }
+
+    .btn-sector-tab.active {
+      color: var(--text-cream);
+    }
+
+    .btn-sector-tab.active .tab-idx {
+      color: var(--accent-orange);
+    }
+
+    .tab-arrows {
+      display: flex;
+      gap: 0.5rem;
+      border-left: 1px solid var(--border-hud);
+      padding-left: 1.5rem;
+      align-items: center;
+    }
+
+    .btn-arrow-nav {
+      background: transparent;
+      border: 1px solid var(--border-hud);
+      color: var(--text-dim);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      transition: all var(--transition-hud);
+    }
+
+    .btn-arrow-nav:hover {
+      color: var(--text-cream);
+      border-color: rgba(242, 237, 228, 0.3);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: PLATFORM CAPABILITIES
+    -------------------------------------------------------------- */
+    .section-capabilities {
+      padding: 7rem 2.75rem;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-orange);
+      letter-spacing: 0.12em;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 3.5rem;
+      color: var(--text-cream);
+    }
+
+    .caps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .cap-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hud);
+      border-radius: 4px;
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+      transition: border-color var(--transition-hud);
+    }
+
+    .cap-card:hover {
+      border-color: rgba(232, 74, 39, 0.4);
+    }
+
+    .cap-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.25rem;
+    }
+
+    .cap-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--text-cream);
+    }
+
+    .cap-body {
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: FIELD REPORTS
+    -------------------------------------------------------------- */
+    .section-reports {
+      padding: 7rem 2.75rem;
+      background: #0B0A07;
+      border-top: 1px solid var(--border-hud);
+      border-bottom: 1px solid var(--border-hud);
+    }
+
+    .reports-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .report-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hud);
+      border-radius: 4px;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .report-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .report-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.35;
+      color: var(--text-cream);
+    }
+
+    .report-desc {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------------- */
+    .site-footer {
+      background: var(--bg-cockpit);
+      padding: 5rem 2.75rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* Contact Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 14, 10, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hud);
+      width: 100%;
+      max-width: 560px;
+      border-radius: 4px;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      color: var(--text-cream);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--bg-cockpit);
+      border: 1px solid var(--border-hud);
+      border-radius: 2px;
+      color: var(--text-cream);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      margin-bottom: 1.2rem;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-orange);
+    }
+
+    @media (max-width: 1024px) {
+      .caps-grid { grid-template-columns: repeat(2, 1fr); }
+      .reports-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hud-header { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hud-overlay-layer { padding: 5rem 1.5rem 1.5rem; }
+      .caps-grid { grid-template-columns: 1fr; }
+      .telemetry-digits-group { gap: 1.5rem; }
+      .sector-tab-container { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Tactical HUD Navigation -->
+  <header class="hud-header">
+    <div class="brand-block">
+      <div class="hamburger-icon" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <a href="#" class="brand-logo-text">TERRAQ <sup>&reg;</sup></a>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#capabilities">PLATFORM <span class="nav-idx">01</span></a></li>
+      <li><a href="#reports">FIELD REPORTS <span class="nav-idx">02</span></a></li>
+      <li><a href="#sectors">SECTORS <span class="nav-idx">03</span></a></li>
+      <li><a href="#footer">COMPANY <span class="nav-idx">04</span></a></li>
+    </ul>
+
+    <div class="hud-status-actions">
+      <div class="live-model-indicator">
+        <span class="live-sq">&#9632;</span>
+        <span>LIVE MODEL</span>
+      </div>
+      <div class="clock-display" id="liveClock">21:53:01 LOCAL</div>
+      <button class="btn-contact" onclick="openContactModal()">CONTACT</button>
+    </div>
+  </header>
+
+  <!-- Fullscreen 3D WebGL Hero Section -->
+  <section class="hero-viewport-container" id="sectors">
+    <canvas id="webglCanvas"></canvas>
+
+    <div class="canvas-orbit-hint">DRAG TO ORBIT · ↵ TO NAVIGATE</div>
+
+    <div class="hud-overlay-layer">
+      <!-- Hairline Telemetry Rule -->
+      <div class="hud-top-telemetry">
+        <div class="sub-col-left">
+          <div class="hud-fig-tag" id="hudFigTag">FIG. 01 — PIT 07 / POINT CLOUD</div>
+          <div>LOCAL GRID · 1 : 4000</div>
+        </div>
+        <div class="sub-col-right">
+          <div>YAW <span id="yawVal">339°</span> · PITCH <span id="pitchVal">43°</span></div>
+          <div>REINDEXING · 064%</div>
+        </div>
+      </div>
+
+      <!-- Hero Story Content -->
+      <div class="hero-content-panel">
+        <div class="hero-sector-tag" id="sectorTag">
+          (01) CAPTURE · PIT 07 · LIVE LIDAR
+        </div>
+        <h1 class="hero-main-title" id="heroHeadline">
+          <span class="title-bright">The ground truth</span><br>
+          <span class="title-muted">for heavy industry.</span>
+        </h1>
+        <p class="hero-subhead" id="heroSubhead">
+          Terraq turns LiDAR scans, sensors and machine telemetry into one live model of your operation — measured to the millimetre.
+        </p>
+        <div class="cta-row">
+          <div class="btn-engage-wrapper" onclick="openContactModal()">
+            <button class="btn-engage">ENGAGE DATA OPS</button>
+            <div class="btn-arrow-box">&rarr;</div>
+          </div>
+          <a href="#capabilities" class="btn-explore-link">EXPLORE A LIVE MODEL &#8599;</a>
+        </div>
+      </div>
+
+      <!-- Bottom Telemetry & Sector Tabs -->
+      <div class="hud-bottom-telemetry">
+        <div class="telemetry-digits-group">
+          <div class="telemetry-cell">
+            <div class="telemetry-label">POINTS CAPTURED</div>
+            <div class="telemetry-val" id="stat1Val">405 975 000</div>
+          </div>
+          <div class="telemetry-cell">
+            <div class="telemetry-label">COVERAGE</div>
+            <div class="telemetry-val" id="stat2Val">100.0%</div>
+          </div>
+          <div class="telemetry-cell">
+            <div class="telemetry-label">EXCAVATED VOLUME</div>
+            <div class="telemetry-val" id="stat3Val">5.47 M M&sup3;</div>
+          </div>
+        </div>
+
+        <div class="sector-tab-container">
+          <div class="sector-tabs-list">
+            <button class="btn-sector-tab active" onclick="switchSector(0)">
+              <span class="tab-idx">01</span>
+              <span>CAPTURE</span>
+            </button>
+            <button class="btn-sector-tab" onclick="switchSector(1)">
+              <span class="tab-idx">02</span>
+              <span>ENERGY</span>
+            </button>
+            <button class="btn-sector-tab" onclick="switchSector(2)">
+              <span class="tab-idx">03</span>
+              <span>LOGISTICS</span>
+            </button>
+            <button class="btn-sector-tab" onclick="switchSector(3)">
+              <span class="tab-idx">04</span>
+              <span>ARCHIVE</span>
+            </button>
+          </div>
+
+          <div class="tab-arrows">
+            <button class="btn-arrow-nav" onclick="prevSector()">&larr;</button>
+            <button class="btn-arrow-nav" onclick="nextSector()">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Capabilities -->
+  <section class="section-capabilities" id="capabilities">
+    <span class="section-eyebrow">INDUSTRIAL SPATIAL INFRASTRUCTURE</span>
+    <h2 class="section-title">Engineered for Millimetre Precision</h2>
+
+    <div class="caps-grid">
+      <div class="cap-card">
+        <div>
+          <div class="cap-num">01 / VOLUMETRIC INGESTION</div>
+          <h3 class="cap-name">High-Density LiDAR</h3>
+          <p class="cap-body">
+            Stream point clouds directly from airborne UAVs, terrestrial laser scanners, and mobile surveying units. Ingest over 400M spatial points per second with zero decimation.
+          </p>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div>
+          <div class="cap-num">02 / CONTINUOUS CALIBRATION</div>
+          <h3 class="cap-name">Sub-Millimetre Registration</h3>
+          <p class="cap-body">
+            Automated sensor fusion registers multi-pass laser sweeps against previous ground surveys, correcting thermal drift and atmospheric distortion instantly.
+          </p>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div>
+          <div class="cap-num">03 / TELEMETRY OVERLAY</div>
+          <h3 class="cap-name">Live IoT &amp; SCADA Sync</h3>
+          <p class="cap-body">
+            Overlay vibration sensors, pipeline flow rates, and haul truck GPS coordinates directly onto the physical 3D mesh for comprehensive situational awareness.
+          </p>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div>
+          <div class="cap-num">04 / TIME-TRAVEL VOLUMETRICS</div>
+          <h3 class="cap-name">Delta Heatmaps</h3>
+          <p class="cap-body">
+            Compare cut-and-fill volumes across historical scans with colorized deviation heatmaps, identifying structural subsidence and unapproved excavations in seconds.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Field Reports -->
+  <section class="section-reports" id="reports">
+    <div class="reports-inner">
+      <span class="section-eyebrow">VERIFIED INDUSTRIAL DEPLOYMENTS</span>
+      <h2 class="section-title">Field Reports</h2>
+
+      <div class="reports-grid">
+        <article class="report-card">
+          <div>
+            <div class="report-meta">REPORT 09 · OPEN PIT MINING</div>
+            <h3 class="report-title">Pilbara Iron Ore: 0.2% Volumetric Delta Reconciliation</h3>
+            <p class="report-desc">
+              Replacing quarterly aerial photogrammetry with daily drone LiDAR automated stockpile reconciliation across 14 mining benches.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-orange); cursor: pointer;">
+            DOWNLOAD TELEMETRY DATA SHEET &#8599;
+          </div>
+        </article>
+
+        <article class="report-card">
+          <div>
+            <div class="report-meta">REPORT 14 · PETROCHEMICAL REFINERY</div>
+            <h3 class="report-title">Rotterdam Tank Farm: Automated Flange &amp; Weld Tagging</h3>
+            <p class="report-desc">
+              Over 28,000 refinery valves and pipe connections scanned and indexed into an auditable spatial digital twin with zero shutdown time.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-orange); cursor: pointer;">
+            DOWNLOAD TELEMETRY DATA SHEET &#8599;
+          </div>
+        </article>
+
+        <article class="report-card">
+          <div>
+            <div class="report-meta">REPORT 22 · INTERMODAL LOGISTICS</div>
+            <h3 class="report-title">Antwerp Gateway: Predictive Crane &amp; Yard Optimization</h3>
+            <p class="report-desc">
+              Live spatial tracking of 45,000 container slots reduced crane idle moves by 18.4% and cut container dwell times across all shifts.
+            </p>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-orange); cursor: pointer;">
+            DOWNLOAD TELEMETRY DATA SHEET &#8599;
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="contactModal" onclick="handleBackdropClick(event)">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close dialog">&times;</button>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-orange); margin-bottom: 0.4rem;">TERRAQ SPATIAL PLATFORM</div>
+      <h3 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-cream);">Request Live Sector Model</h3>
+      <p style="color: var(--text-dim); font-size: 0.88rem; margin-bottom: 1.75rem;">
+        Connect with our field engineering team to test Terraq on your site LiDAR point clouds.
+      </p>
+
+      <form onsubmit="handleInquirySubmit(event)">
+        <input type="text" class="form-input" placeholder="FULL NAME" required>
+        <input type="email" class="form-input" placeholder="ENTERPRISE EMAIL" required>
+        <input type="text" class="form-input" placeholder="INDUSTRIAL SECTOR (MINING, ENERGY, MARITIME)">
+        <button type="submit" class="btn-engage" style="width: 100%; justify-content: center; padding: 1rem;">
+          SCHEDULE PLATFORM DEMO &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="footer">
+    <div class="footer-inner">
+      <div style="display: flex; align-items: baseline; gap: 2rem;">
+        <span style="font-weight: 800; color: var(--text-cream); font-size: 1rem;">TERRAQ <sup>&reg;</sup></span>
+        <span>&copy; 2026 TERRAQ SPATIAL TECHNOLOGIES. PRIVATE SPECIMEN ARCHIVE.</span>
+      </div>
+
+      <div style="display: flex; gap: 2rem;">
+        <span>LATENCY: 4MS</span>
+        <span>COORDINATES: WGS 84</span>
+        <span>PRECISION: &plusmn;0.002M</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       THREE.JS WEBGL ENGINE
+  =========================================== -->
+  <script>
+    // Live Clock (LOCAL format matching reference)
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClock').textContent = `${h}:${m}:${s} LOCAL`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Sector Definitions
+    const SECTORS = [
+      {
+        fig: 'FIG. 01 — PIT 07 / POINT CLOUD',
+        tag: '(01) CAPTURE · PIT 07 · LIVE LIDAR',
+        title: '<span class="title-bright">The ground truth</span><br><span class="title-muted">for heavy industry.</span>',
+        subhead: 'Terraq turns LiDAR scans, sensors and machine telemetry into one live model of your operation — measured to the millimetre.',
+        stat1: '405 975 000', stat2: '100.0%', stat3: '5.47 M M³'
+      },
+      {
+        fig: 'FIG. 02 — TANK FARM 3 / ASSET TWIN',
+        tag: '(02) ENERGY · TANK FARM 3 · ASSET TWIN',
+        title: '<span class="title-bright">Every flange,</span><br><span class="title-muted">on the record.</span>',
+        subhead: 'Tanks, racks and flare lines become tagged assets — inspected, versioned and compared against every previous scan.',
+        stat1: '28 412 000', stat2: '99.8%', stat3: '4.2 BAR'
+      },
+      {
+        fig: 'FIG. 03 — TERMINAL 2 / YARD MODEL',
+        tag: '(03) LOGISTICS · TERMINAL 2 · YARD MODEL',
+        title: '<span class="title-bright">Yard data,</span><br><span class="title-muted">down to the box.</span>',
+        subhead: 'Every container, crane move and dwell hour is captured as it happens — so the yard is planned before the ship docks.',
+        stat1: '18 460 310', stat2: '99.4%', stat3: '14.2 HRS'
+      },
+      {
+        fig: 'FIG. 04 — INDEX 7F / ARCHIVE',
+        tag: '(04) ARCHIVE · INDEX 7F · COLD STORAGE',
+        title: '<span class="title-bright">Indexed.</span><br><span class="title-muted">Queryable.</span>',
+        subhead: 'All of it lands in one industrial archive — compressed, replicated and answerable in milliseconds, twenty-five years on.',
+        stat1: '2.3 PB', stat2: '100.0%', stat3: '11 MS'
+      }
+    ];
+
+    let currentSector = 0;
+
+    // WebGL Three.js Setup
+    const canvas = document.getElementById('webglCanvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0F0E0A, 0.007);
+
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(0, 52, 85);
+    camera.lookAt(18, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const sceneGroup = new THREE.Group();
+    // Shift point cloud into the right half of the screen
+    sceneGroup.position.set(22, -2, 0);
+    scene.add(sceneGroup);
+
+    // ==========================================
+    // EXACT LIDAR POINT CLOUD GENERATOR (PIT 07)
+    // ==========================================
+    function createPitPointCloud() {
+      const group = new THREE.Group();
+      const count = 30000;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+
+      const cWhite = new THREE.Color(0xF5EBE1); // Core bright cream
+      const cPeach = new THREE.Color(0xFFA07A); // Light copper
+      const cOrange = new THREE.Color(0xE84A27); // Accent orange-red
+      const cRust = new THREE.Color(0x9E3B1B);  // Deep rust
+      const cUmber = new THREE.Color(0x4A3B32); // Basalt dark brown
+
+      let ptr = 0;
+
+      // 1. Central vertical deep pit shaft column (dense bright points)
+      const coreCount = 7000;
+      for (let i = 0; i < coreCount; i++) {
+        const u = Math.random();
+        const r = Math.pow(u, 1.8) * 5.5;
+        const theta = Math.random() * Math.PI * 2;
+        // Elongated along Z axis
+        const x = Math.cos(theta) * r * 0.7;
+        const z = Math.sin(theta) * r * 1.5 - 2;
+        const y = (Math.random() - 0.5) * 36;
+
+        positions[ptr * 3] = x;
+        positions[ptr * 3 + 1] = y;
+        positions[ptr * 3 + 2] = z;
+
+        // Color: brighter white at the vertical core
+        const interp = Math.min(1, r / 5.5);
+        const col = cWhite.clone().lerp(cPeach, interp);
+        colors[ptr * 3] = col.r;
+        colors[ptr * 3 + 1] = col.g;
+        colors[ptr * 3 + 2] = col.b;
+        ptr++;
+      }
+
+      // 2. Stepped terraced quarry benches (concentric terracettes)
+      const benchCount = 19000;
+      const numTiers = 8;
+      for (let i = 0; i < benchCount; i++) {
+        const tier = Math.floor(Math.random() * numTiers);
+        const baseRadius = 7 + tier * 4.2;
+        const rJitter = (Math.random() - 0.5) * 2.8;
+        const r = baseRadius + rJitter;
+        const theta = Math.random() * Math.PI * 2;
+
+        // Elongated elliptical pit
+        const x = Math.cos(theta) * r * 0.85;
+        const z = Math.sin(theta) * r * 1.25;
+        // Stepped height per tier + bench slope
+        const tierY = -14 + tier * 3.6 + (Math.random() - 0.5) * 1.2;
+
+        positions[ptr * 3] = x;
+        positions[ptr * 3 + 1] = tierY;
+        positions[ptr * 3 + 2] = z;
+
+        const normR = tier / numTiers;
+        let col;
+        if (normR < 0.25) col = cPeach.clone().lerp(cOrange, normR * 4);
+        else if (normR < 0.7) col = cOrange.clone().lerp(cRust, (normR - 0.25) * 2.2);
+        else col = cRust.clone().lerp(cUmber, (normR - 0.7) * 3.3);
+
+        colors[ptr * 3] = col.r;
+        colors[ptr * 3 + 1] = col.g;
+        colors[ptr * 3 + 2] = col.b;
+        ptr++;
+      }
+
+      // 3. Ambient airborne LiDAR dust & outer survey spray
+      const ambientCount = 4000;
+      for (let i = 0; i < ambientCount; i++) {
+        const r = 28 + Math.random() * 24;
+        const theta = Math.random() * Math.PI * 2;
+        const x = Math.cos(theta) * r * 0.9;
+        const z = Math.sin(theta) * r * 1.3;
+        const y = 8 + (Math.random() - 0.5) * 16;
+
+        positions[ptr * 3] = x;
+        positions[ptr * 3 + 1] = y;
+        positions[ptr * 3 + 2] = z;
+
+        colors[ptr * 3] = cUmber.r;
+        colors[ptr * 3 + 1] = cUmber.g;
+        colors[ptr * 3 + 2] = cUmber.b;
+        ptr++;
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.85,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.88
+      });
+
+      const points = new THREE.Points(geometry, material);
+      group.add(points);
+
+      // 4. Ground Compass Dial Reticle Ring (elliptical line with ticks)
+      const compassGroup = new THREE.Group();
+      const ringGeom = new THREE.BufferGeometry();
+      const ringPts = [];
+      const numSegments = 120;
+      for (let i = 0; i <= numSegments; i++) {
+        const theta = (i / numSegments) * Math.PI * 2;
+        ringPts.push(new THREE.Vector3(Math.cos(theta) * 34, -14, Math.sin(theta) * 44));
+      }
+      ringGeom.setFromPoints(ringPts);
+      const ringMat = new THREE.LineBasicMaterial({
+        color: 0x3A332A,
+        transparent: true,
+        opacity: 0.65
+      });
+      const ringLine = new THREE.Line(ringGeom, ringMat);
+      compassGroup.add(ringLine);
+
+      // Ticks around compass
+      for (let i = 0; i < 36; i++) {
+        const theta = (i / 36) * Math.PI * 2;
+        const isCardinal = (i % 9 === 0);
+        const len = isCardinal ? 2.5 : 1.2;
+        const r1x = Math.cos(theta) * 34;
+        const r1z = Math.sin(theta) * 44;
+        const r2x = Math.cos(theta) * (34 + len);
+        const r2z = Math.sin(theta) * (44 + len * 1.3);
+        const tickGeom = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(r1x, -14, r1z),
+          new THREE.Vector3(r2x, -14, r2z)
+        ]);
+        const tickMat = new THREE.LineBasicMaterial({
+          color: isCardinal ? 0xE84A27 : 0x4A3E34,
+          transparent: true,
+          opacity: 0.7
+        });
+        compassGroup.add(new THREE.Line(tickGeom, tickMat));
+      }
+      group.add(compassGroup);
+
+      return group;
+    }
+
+    // Secondary Sector Models (Energy, Logistics, Archive)
+    function createTankFarmModel() {
+      const group = new THREE.Group();
+      const tankMat = new THREE.MeshBasicMaterial({ color: 0xE84A27, wireframe: true, transparent: true, opacity: 0.65 });
+      const pipeMat = new THREE.MeshBasicMaterial({ color: 0xF2EDE4, wireframe: true, transparent: true, opacity: 0.45 });
+
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          const tank = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, 18, 16), tankMat);
+          tank.position.set(i * 24, -4, j * 24);
+          group.add(tank);
+
+          const pipe = new THREE.Mesh(new THREE.BoxGeometry(24, 0.8, 0.8), pipeMat);
+          pipe.position.set(i * 24, -10, j * 24);
+          group.add(pipe);
+        }
+      }
+      return group;
+    }
+
+    function createLogisticsModel() {
+      const group = new THREE.Group();
+      const colors = [0xE84A27, 0xD97706, 0xF2EDE4, 0x554A3E];
+      for (let x = -3; x <= 3; x++) {
+        for (let z = -2; z <= 2; z++) {
+          const count = Math.floor(Math.random() * 4) + 1;
+          for (let y = 0; y < count; y++) {
+            const col = colors[Math.floor(Math.random() * colors.length)];
+            const box = new THREE.Mesh(
+              new THREE.BoxGeometry(6.5, 3.2, 13),
+              new THREE.MeshBasicMaterial({ color: col, wireframe: true, transparent: true, opacity: 0.7 })
+            );
+            box.position.set(x * 8.5, -12 + y * 3.5, z * 15);
+            group.add(box);
+          }
+        }
+      }
+      return group;
+    }
+
+    function createArchiveModel() {
+      const group = new THREE.Group();
+      const rackMat = new THREE.MeshBasicMaterial({ color: 0xE84A27, wireframe: true, transparent: true, opacity: 0.7 });
+      for (let i = -4; i <= 4; i++) {
+        const rackL = new THREE.Mesh(new THREE.BoxGeometry(4, 26, 6), rackMat);
+        rackL.position.set(-16, 0, i * 13);
+        group.add(rackL);
+        const rackR = new THREE.Mesh(new THREE.BoxGeometry(4, 26, 6), rackMat);
+        rackR.position.set(16, 0, i * 13);
+        group.add(rackR);
+      }
+      return group;
+    }
+
+    const sceneModels = [
+      createPitPointCloud(),
+      createTankFarmModel(),
+      createLogisticsModel(),
+      createArchiveModel()
+    ];
+
+    sceneGroup.add(sceneModels[0]);
+
+    // Sector Switcher
+    function switchSector(idx) {
+      currentSector = idx;
+      const data = SECTORS[idx];
+
+      document.querySelectorAll('.btn-sector-tab').forEach((b, i) => {
+        b.classList.toggle('active', i === idx);
+      });
+
+      document.getElementById('hudFigTag').textContent = data.fig;
+      document.getElementById('sectorTag').textContent = data.tag;
+      document.getElementById('heroHeadline').innerHTML = data.title;
+      document.getElementById('heroSubhead').textContent = data.subhead;
+      document.getElementById('stat1Val').textContent = data.stat1;
+      document.getElementById('stat2Val').textContent = data.stat2;
+      document.getElementById('stat3Val').textContent = data.stat3;
+
+      while (sceneGroup.children.length > 0) {
+        sceneGroup.remove(sceneGroup.children[0]);
+      }
+      sceneGroup.add(sceneModels[idx]);
+    }
+
+    function nextSector() {
+      switchSector((currentSector + 1) % SECTORS.length);
+    }
+    function prevSector() {
+      switchSector((currentSector - 1 + SECTORS.length) % SECTORS.length);
+    }
+
+    // Mouse Drag Orbit & Live Telemetry
+    let isMouseDown = false;
+    let lastX = 0, lastY = 0;
+    let rotY = 5.92; // initial yaw ~339°
+    let rotX = 0.22; // initial pitch ~43°
+
+    canvas.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      rotY += dx * 0.006;
+      rotX += dy * 0.006;
+      rotX = Math.max(-0.6, Math.min(0.8, rotX));
+    });
+
+    window.addEventListener('mouseup', () => { isMouseDown = false; });
+
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isMouseDown = true;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
+      }
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (!isMouseDown || e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - lastX;
+      const dy = e.touches[0].clientY - lastY;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+      rotY += dx * 0.006;
+      rotX += dy * 0.006;
+    });
+    window.addEventListener('touchend', () => { isMouseDown = false; });
+
+    // Render loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (!isMouseDown) {
+        rotY += 0.0012; // subtle continuous orbit
+      }
+
+      sceneGroup.rotation.y = rotY;
+      sceneGroup.rotation.x = rotX;
+
+      // Update Live Telemetry YAW and PITCH readouts
+      const degY = Math.floor(((rotY * 180 / Math.PI) % 360 + 360) % 360);
+      const degX = Math.floor(43 + rotX * 30);
+      document.getElementById('yawVal').textContent = `${String(degY).padStart(3, '0')}°`;
+      document.getElementById('pitchVal').textContent = `${String(degX).padStart(2, '0')}°`;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Modal
+    function openContactModal() {
+      document.getElementById('contactModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeContactModal() {
+      document.getElementById('contactModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleBackdropClick(e) {
+      if (e.target.classList.contains('modal-backdrop')) closeContactModal();
+    }
+    function handleInquirySubmit(e) {
+      e.preventDefault();
+      alert('Inquiry logged into Terraq Field Dispatch. An industrial solution architect will contact you shortly.');
+      closeContactModal();
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeContactModal();
+    });
+  </script>
+</body>
+</html>
