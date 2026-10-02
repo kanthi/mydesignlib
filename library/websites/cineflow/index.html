@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Cineflow — Cloud Operating System for Independent Cinema</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP & Lenis Smooth Scroll CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --c-bg: #0D0D11;
+      --c-bg-card: #14141A;
+      --c-bg-surface: #191922;
+      --c-cream: #F4EFE6;
+      --c-amber: #D4A574;
+      --c-crimson: #D92B4B;
+      --c-blue: #5072C4;
+      --c-text-muted: #8E92A4;
+      --c-hairline: rgba(255, 255, 255, 0.12);
+
+      --f-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --f-tech: 'Space Grotesk', sans-serif;
+      --f-mono: 'JetBrains Mono', monospace;
+      --f-body: 'Inter', -apple-system, sans-serif;
+
+      --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    body {
+      background-color: var(--c-bg);
+      color: var(--c-cream);
+      font-family: var(--f-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Architectural Grid Guide Lines */
+    .grid-lines-container {
+      position: fixed;
+      inset: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+      pointer-events: none;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      opacity: 0.3;
+    }
+    .grid-line {
+      width: 1px;
+      height: 100%;
+      background: var(--c-hairline);
+    }
+
+    /* Header Nav */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(13, 13, 17, 0.85);
+      border-bottom: 1px solid var(--c-hairline);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--c-cream);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+    }
+
+    .brand-title {
+      font-family: var(--f-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-item {
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      color: var(--c-text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-item:hover {
+      color: var(--c-cream);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Cineflow Outline Button with Bracket Corners */
+    .btn-bracket {
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--c-cream);
+      text-decoration: none;
+      padding: 0.55rem 1.25rem;
+      background: transparent;
+      border: 1px solid var(--c-hairline);
+      border-radius: 4px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s var(--ease-cinema);
+      cursor: pointer;
+    }
+
+    .btn-bracket:hover {
+      background: var(--c-cream);
+      color: var(--c-bg);
+      border-color: var(--c-cream);
+    }
+
+    .btn-bracket-primary {
+      background: var(--c-amber);
+      color: var(--c-bg);
+      border-color: var(--c-amber);
+    }
+
+    .btn-bracket-primary:hover {
+      background: #E5B888;
+      border-color: #E5B888;
+      color: var(--c-bg);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 100vh;
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-spotlight {
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 800px;
+      background: radial-gradient(ellipse at center, rgba(244, 239, 230, 0.15) 0%, rgba(212, 165, 116, 0.05) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      max-width: 1050px;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .superscript-tag {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-amber);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      background: rgba(212, 165, 116, 0.1);
+      border: 1px solid rgba(212, 165, 116, 0.25);
+      border-radius: 9999px;
+    }
+
+    .hero-title {
+      font-family: var(--f-display);
+      font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--c-cream);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--c-text-muted);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Live Interactive Reserved Seating Stage */
+    .seating-stage-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 4rem auto 0;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      z-index: 2;
+    }
+
+    .cinema-screen-arc {
+      width: 100%;
+      height: 60px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .screen-line {
+      width: 75%;
+      height: 6px;
+      border-radius: 50% 50% 0 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(244, 239, 230, 0.9) 50%, transparent 100%);
+      box-shadow: 0 0 25px rgba(244, 239, 230, 0.8);
+    }
+
+    .screen-label {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      color: var(--c-text-muted);
+      letter-spacing: 0.15em;
+      margin-top: 0.6rem;
+    }
+
+    .seats-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    .seat-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .row-label {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-text-muted);
+      width: 20px;
+      text-align: center;
+    }
+
+    .seat-btn {
+      width: 28px;
+      height: 24px;
+      border-radius: 6px 6px 3px 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .seat-btn:hover {
+      background: rgba(212, 165, 116, 0.5);
+      border-color: var(--c-amber);
+      transform: scale(1.15);
+    }
+
+    .seat-btn.selected {
+      background: var(--c-amber);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 10px var(--c-amber);
+    }
+
+    .seat-btn.occupied {
+      background: #252530;
+      border-color: #2F2F3D;
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .seat-btn.vip {
+      border-color: var(--c-crimson);
+    }
+
+    .seat-btn.accessible {
+      border-color: var(--c-blue);
+    }
+
+    .seating-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.7rem;
+      color: var(--c-text-muted);
+    }
+
+    .legend-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .legend-box {
+      width: 14px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .seating-tally-bar {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--c-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .tally-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+    }
+
+    .tally-title {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .tally-meta {
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      color: var(--c-amber);
+    }
+
+    /* Live Ticker Section */
+    .ticker-section {
+      width: 100%;
+      border-top: 1px solid var(--c-hairline);
+      border-bottom: 1px solid var(--c-hairline);
+      background: #101015;
+      padding: 3.5rem 1.5rem;
+    }
+
+    .ticker-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .ticker-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ticker-counter {
+      font-family: var(--f-display);
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--c-cream);
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .ticker-tag {
+      font-family: var(--f-mono);
+      font-size: 0.82rem;
+      color: var(--c-amber);
+    }
+
+    .ticker-sub {
+      font-size: 0.9rem;
+      color: var(--c-text-muted);
+    }
+
+    .ticker-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-num {
+      font-family: var(--f-tech);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--c-cream);
+    }
+
+    .stat-lbl {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Features Tab System (Directional animation physics) */
+    .features-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 7rem 1.5rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .section-headline-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tabs-nav-bar {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--c-hairline);
+    }
+
+    .tab-btn {
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--c-text-muted);
+      background: transparent;
+      border: 1px solid var(--c-hairline);
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--c-cream);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .tab-btn.is--active {
+      background: var(--c-cream);
+      color: var(--c-bg);
+      border-color: var(--c-cream);
+    }
+
+    .tabs-viewport {
+      position: relative;
+      min-height: 460px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+    }
+
+    .tab-panel {
+      position: absolute;
+      inset: 0;
+      padding: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 3rem;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-cinema), transform 0.4s var(--ease-cinema);
+    }
+
+    .tab-panel.is--active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .tab-panel.is-leaving-left {
+      transform: translateX(-60px);
+    }
+
+    .tab-panel.is-leaving-right {
+      transform: translateX(60px);
+    }
+
+    .tab-panel-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .panel-num {
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      color: var(--c-amber);
+    }
+
+    .panel-title {
+      font-family: var(--f-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .panel-desc {
+      font-size: 0.95rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+    }
+
+    .panel-visual-box {
+      background: #0B0B0E;
+      border-radius: 12px;
+      border: 1px solid var(--c-hairline);
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Projects Slider (Carousel scroll layout) */
+    .projects-section {
+      width: 100%;
+      background: #101015;
+      border-top: 1px solid var(--c-hairline);
+      border-bottom: 1px solid var(--c-hairline);
+      padding: 7rem 1.5rem;
+    }
+
+    .projects-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .slider-controls {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .ctrl-arrow-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--c-hairline);
+      background: transparent;
+      color: var(--c-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-arrow-btn:hover {
+      background: var(--c-cream);
+      color: var(--c-bg);
+      border-color: var(--c-cream);
+    }
+
+    .projects-slider-track {
+      display: flex;
+      gap: 1.75rem;
+      transition: transform 0.5s var(--ease-cinema);
+    }
+
+    .project-card {
+      flex: 0 0 320px;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212, 165, 116, 0.5);
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.05) brightness(0.95);
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover .project-thumb {
+      transform: scale(1.03);
+    }
+
+    .project-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      background: #14141A;
+    }
+
+    .project-cat {
+      font-family: var(--f-mono);
+      font-size: 0.68rem;
+      color: var(--c-amber);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .project-name {
+      font-family: var(--f-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--c-cream);
+    }
+
+    /* Partner Manifesto Banner */
+    .partner-banner-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 7rem 1.5rem;
+      width: 100%;
+    }
+
+    .partner-banner-card {
+      background: radial-gradient(ellipse at 80% 0%, rgba(212, 165, 116, 0.2) 0%, transparent 60%), #14141C;
+      border: 1px solid rgba(212, 165, 116, 0.3);
+      border-radius: 20px;
+      padding: 4.5rem 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .partner-banner-text {
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .partner-title {
+      font-family: var(--f-display);
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .partner-desc {
+      font-size: 1.05rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .site-footer {
+      width: 100%;
+      border-top: 1px solid var(--c-hairline);
+      background: #09090C;
+      padding: 4rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-tickets {
+      font-family: var(--f-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--c-cream);
+    }
+
+    .footer-meta {
+      font-family: var(--f-mono);
+      font-size: 0.72rem;
+      color: var(--c-amber);
+    }
+
+    @media (max-width: 900px) {
+      .ticker-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .tab-panel {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+      .partner-banner-card {
+        padding: 2.5rem 2rem;
+      }
+      .header-nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Lines -->
+  <div class="grid-lines-container">
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+    <div class="grid-line"></div>
+  </div>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#hero" class="brand-link">
+        <svg class="brand-mark" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="12" stroke="#D4A574" stroke-width="2"/>
+          <path d="M 14 6 L 14 22 M 6 14 L 22 14" stroke="#D4A574" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <circle cx="14" cy="14" r="4" fill="#F4EFE6"/>
+        </svg>
+        <span class="brand-title">Cineflow</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="#features" class="nav-item">Platform</a>
+        <a href="#seating" class="nav-item">Reserved Seating</a>
+        <a href="#projects" class="nav-item">Initiatives</a>
+        <a href="#partner" class="nav-item">For Festivals</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="../../index.html" class="btn-bracket">← Library</a>
+        <a href="#partner" class="btn-bracket btn-bracket-primary">Book a Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Hero Spotlight Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-spotlight"></div>
+      <div class="hero-content">
+        <span class="superscript-tag">[THE OPERATING SYSTEM FOR INDEPENDENT CINEMA]</span>
+        <h1 class="hero-title">The modern operating system for independent cinema &amp; festivals</h1>
+        <p class="hero-subtitle">Cloud ticketing, reserved seating, concessions POS, and automated DCI compliance engineered for theaters.</p>
+        
+        <div class="hero-cta-group">
+          <a href="#partner" class="btn-bracket btn-bracket-primary" style="padding: 0.8rem 1.8rem; font-size: 0.85rem;">Schedule Cinema Demo →</a>
+          <a href="#seating" class="btn-bracket" style="padding: 0.8rem 1.8rem; font-size: 0.85rem;">Try Reserved Seating ↓</a>
+        </div>
+      </div>
+
+      <!-- Interactive Reserved Seating Stage -->
+      <div id="seating" class="seating-stage-container">
+        <div class="cinema-screen-arc">
+          <div class="screen-line"></div>
+          <span class="screen-label">MAIN THEATRE SCREEN // 4K LASER PROJECTION</span>
+        </div>
+
+        <div class="seats-grid" id="seatsGrid">
+          <!-- Dynamically populated rows A-F -->
+        </div>
+
+        <div class="seating-legend">
+          <div class="legend-indicator">
+            <div class="legend-box" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);"></div>
+            <span>Available ($14.50)</span>
+          </div>
+          <div class="legend-indicator">
+            <div class="legend-box" style="background: var(--c-amber);"></div>
+            <span>Selected</span>
+          </div>
+          <div class="legend-indicator">
+            <div class="legend-box" style="background: #252530; opacity: 0.5;"></div>
+            <span>Reserved</span>
+          </div>
+          <div class="legend-indicator">
+            <div class="legend-box" style="border: 2px solid var(--c-crimson);"></div>
+            <span>VIP Lounge ($18.00)</span>
+          </div>
+          <div class="legend-indicator">
+            <div class="legend-box" style="border: 2px solid var(--c-blue);"></div>
+            <span>ADA Accessible</span>
+          </div>
+        </div>
+
+        <div class="seating-tally-bar">
+          <div class="tally-info">
+            <span class="tally-title" id="tallyCount">0 Seats Selected</span>
+            <span class="tally-meta" id="tallySeats">Click any seat to simulate real-time box office booking</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <span style="font-family: var(--f-display); font-size: 1.4rem; font-weight: 800;" id="tallyPrice">$0.00</span>
+            <button class="btn-bracket btn-bracket-primary" onclick="simulateReserve()">Instant Checkout Demo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Live Ticket Ticker Section -->
+    <section class="ticker-section">
+      <div class="ticker-inner">
+        <div class="ticker-main">
+          <div class="ticker-counter">
+            <span id="liveCounter">8,421,950</span>
+            <span class="ticker-tag">[+ counting]</span>
+          </div>
+          <p class="ticker-sub">Tickets processed through Cineflow cloud box office</p>
+        </div>
+
+        <div class="ticker-stat">
+          <span class="stat-num">450+</span>
+          <span class="stat-lbl">Screens Worldwide</span>
+        </div>
+
+        <div class="ticker-stat">
+          <span class="stat-num">99.99%</span>
+          <span class="stat-lbl">Uptime SLA</span>
+        </div>
+
+        <div class="ticker-stat">
+          <span class="stat-num">0%</span>
+          <span class="stat-lbl">Scalping Surcharge</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Seamless Suite of Features (Directional Tabs) -->
+    <section id="features" class="features-section">
+      <div class="section-headline-group">
+        <span class="superscript-tag">[PLATFORM CAPABILITIES]</span>
+        <h2 style="font-family: var(--f-display); font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em;">Seamless Suite of Features</h2>
+        <p style="color: var(--c-text-muted); max-width: 650px;">From front-of-house ticket scanners to back-office Comscore EDI filings, every operational layer runs through one unified dashboard.</p>
+      </div>
+
+      <div class="tabs-nav-bar">
+        <button class="tab-btn is--active" onclick="switchTab(0, this)">01. Cloud Box Office</button>
+        <button class="tab-btn" onclick="switchTab(1, this)">02. Reserved Seating</button>
+        <button class="tab-btn" onclick="switchTab(2, this)">03. Concessions &amp; KDS</button>
+        <button class="tab-btn" onclick="switchTab(3, this)">04. Festival Scheduling</button>
+        <button class="tab-btn" onclick="switchTab(4, this)">05. Studio Box Office EDI</button>
+      </div>
+
+      <div class="tabs-viewport">
+        <!-- Panel 0 -->
+        <div class="tab-panel is--active" id="tab0">
+          <div class="tab-panel-info">
+            <span class="panel-num">MODULE 01 // TABLET &amp; DESKTOP POS</span>
+            <h3 class="panel-title">iPad Box Office &amp; Rapid Barcode Scanners</h3>
+            <p class="panel-desc">Fast, offline-resilient ticketing with zero lag during rush periods. Supports split tenders, loyalty redemption, physical ticket printing, and Apple Wallet passes in under 2 seconds per transaction.</p>
+            <ul style="color: var(--c-text-muted); font-size: 0.88rem; list-style: disc; margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li>Automatic offline transaction caching</li>
+              <li>Integrated EMV and contactless NFC readers</li>
+              <li>Staff permission tiers and cash drawer reconciliation</li>
+            </ul>
+          </div>
+          <div class="panel-visual-box">
+            <svg viewBox="0 0 400 240" width="100%" fill="none">
+              <rect x="40" y="20" width="320" height="200" rx="16" fill="#14141C" stroke="var(--c-hairline)"/>
+              <rect x="60" y="40" width="180" height="30" rx="6" fill="#22222E"/>
+              <text x="75" y="60" fill="#D4A574" font-family="'JetBrains Mono'" font-size="12">BOX OFFICE ACTIVE</text>
+              <rect x="60" y="85" width="280" height="20" rx="4" fill="#1A1A24"/>
+              <rect x="60" y="115" width="280" height="20" rx="4" fill="#1A1A24"/>
+              <rect x="60" y="145" width="280" height="20" rx="4" fill="#1A1A24"/>
+              <rect x="240" y="180" width="100" height="30" rx="6" fill="#D4A574"/>
+              <text x="260" y="200" fill="#0D0D11" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="12">PRINT PASS</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Panel 1 -->
+        <div class="tab-panel" id="tab1">
+          <div class="tab-panel-info">
+            <span class="panel-num">MODULE 02 // SEAT MATRIX</span>
+            <h3 class="panel-title">Dynamic Reserved Seating Engine</h3>
+            <p class="panel-desc">Visual auditorium builder supporting multi-tier pricing, ADA accessibility allocations, automatic buffer seating, and real-time synchronized holds across web and box office.</p>
+            <ul style="color: var(--c-text-muted); font-size: 0.88rem; list-style: disc; margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li>Curved widescreen visual geometry representation</li>
+              <li>Real-time websocket seat hold synchronization</li>
+              <li>Balcony, loge, and private screening room mapping</li>
+            </ul>
+          </div>
+          <div class="panel-visual-box">
+            <svg viewBox="0 0 360 200" fill="none">
+              <path d="M 40 40 Q 180 80 320 40" stroke="#D4A574" stroke-width="4"/>
+              <text x="180" y="30" fill="#A0A5B5" font-family="'JetBrains Mono'" font-size="11" text-anchor="middle">SCREEN HORIZON</text>
+              <circle cx="80" cy="120" r="10" fill="#5072C4"/>
+              <circle cx="120" cy="120" r="10" fill="#D4A574"/>
+              <circle cx="160" cy="120" r="10" fill="#D4A574"/>
+              <circle cx="200" cy="120" r="10" fill="#D4A574"/>
+              <circle cx="240" cy="120" r="10" fill="#D4A574"/>
+              <circle cx="280" cy="120" r="10" fill="#D92B4B"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div class="tab-panel" id="tab2">
+          <div class="tab-panel-info">
+            <span class="panel-num">MODULE 03 // FOOD &amp; BEVERAGE</span>
+            <h3 class="panel-title">Concessions POS &amp; Kitchen Display</h3>
+            <p class="panel-desc">Combine ticket sales with popcorn, gourmet snacks, and craft beer orders on a single ticket. Direct digital dispatch to bar and kitchen prep stations.</p>
+          </div>
+          <div class="panel-visual-box">
+            <svg viewBox="0 0 360 200" fill="none">
+              <rect x="50" y="40" width="120" height="120" rx="8" fill="#1A1A24" stroke="var(--c-hairline)"/>
+              <text x="65" y="70" fill="#D4A574" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="14">ORDER #402</text>
+              <text x="65" y="100" fill="#A0A5B5" font-size="11">Large Popcorn ×2</text>
+              <text x="65" y="120" fill="#A0A5B5" font-size="11">Draft Cider ×1</text>
+              <rect x="190" y="40" width="120" height="120" rx="8" fill="#1A1A24" stroke="var(--c-hairline)"/>
+              <text x="205" y="70" fill="#5072C4" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="14">ORDER #403</text>
+              <text x="205" y="100" fill="#A0A5B5" font-size="11">Pretzel Bites ×1</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Panel 3 -->
+        <div class="tab-panel" id="tab3">
+          <div class="tab-panel-info">
+            <span class="panel-num">MODULE 04 // FESTIVALS</span>
+            <h3 class="panel-title">Multi-Venue Festival Pass Management</h3>
+            <p class="panel-desc">All-access badges, rush lines, tiered screening passes, and accreditation portal for filmmakers, press, and festival attendees.</p>
+          </div>
+          <div class="panel-visual-box">
+            <div style="background: #181822; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--c-amber); width: 220px; text-align: center;">
+              <span style="font-family: var(--f-mono); font-size: 0.65rem; color: var(--c-amber);">VIP ALL-ACCESS PASS</span>
+              <h4 style="font-family: var(--f-display); font-size: 1.1rem; margin: 0.5rem 0;">INDIE FEST 2026</h4>
+              <div style="background: #000; height: 35px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.2em;">||| | |||| | ||</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 4 -->
+        <div class="tab-panel" id="tab4">
+          <div class="tab-panel-info">
+            <span class="panel-num">MODULE 05 // COMPLIANCE</span>
+            <h3 class="panel-title">Automated Studio EDI &amp; Comscore Filings</h3>
+            <p class="panel-desc">Zero manual spreadsheet entry. Automatic nightly box office settlement uploads directly to major studios and Comscore/Rentrak.</p>
+          </div>
+          <div class="panel-visual-box">
+            <div style="font-family: var(--f-mono); font-size: 0.8rem; color: #9FE814; background: #06090D; padding: 1.5rem; border-radius: 8px; border: 1px solid #1E3020; width: 280px;">
+              <div>&gt; COMSCORE_SYNC_V4: OK</div>
+              <div>&gt; THEATRE_ID: #8492-DAVIS</div>
+              <div>&gt; GROSS_BOX_OFFICE: $24,850.00</div>
+              <div>&gt; TRANSMISSION: VERIFIED 23:59:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Projects & Initiatives Slider -->
+    <section id="projects" class="projects-section">
+      <div class="projects-container">
+        <div class="projects-header">
+          <div>
+            <span class="superscript-tag">[CULTURAL INITIATIVES]</span>
+            <h2 style="font-family: var(--f-display); font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin-top: 0.5rem;">Independent Film Initiatives</h2>
+          </div>
+
+          <div class="slider-controls">
+            <button class="ctrl-arrow-btn" onclick="slideProjects(-1)" aria-label="Previous Project">←</button>
+            <button class="ctrl-arrow-btn" onclick="slideProjects(1)" aria-label="Next Project">→</button>
+          </div>
+        </div>
+
+        <div style="overflow: hidden; width: 100%;">
+          <div class="projects-slider-track" id="projectTrack">
+            <!-- Card 1 -->
+            <div class="project-card">
+              <img src="assets/project_never_die.jpg" alt="Movies Never Die Project" class="project-thumb">
+              <div class="project-info">
+                <span class="project-cat">RETROSPECTIVE SHOWTIME</span>
+                <h4 class="project-name">Movies Never Die</h4>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="project-card">
+              <img src="assets/project_restoration.jpg" alt="Lost Films Restoration" class="project-thumb">
+              <div class="project-info">
+                <span class="project-cat">ARCHIVAL 4K INITIATIVE</span>
+                <h4 class="project-name">Lost Films Series</h4>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="project-card">
+              <img src="assets/project_festival.jpg" alt="Midnight Indie Fest" class="project-thumb">
+              <div class="project-info">
+                <span class="project-cat">SIMULCAST PREMIERE</span>
+                <h4 class="project-name">Midnight Indie Fest</h4>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="project-card">
+              <img src="assets/project_soundtrack.jpg" alt="Live Score Orchestral" class="project-thumb">
+              <div class="project-info">
+                <span class="project-cat">ACOUSTIC ENSEMBLE</span>
+                <h4 class="project-name">Live Score Series</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Partner Manifesto Banner -->
+    <section id="partner" class="partner-banner-section">
+      <div class="partner-banner-card">
+        <div class="partner-banner-text">
+          <span class="superscript-tag" style="background: rgba(212,165,116,0.15); border-color: var(--c-amber);">[YOUR PARTNER IN CINEMA]</span>
+          <h2 class="partner-title">A devoted advocate for the future of independent cinema.</h2>
+          <p class="partner-desc">Independent theaters are the cultural anchors of our neighborhoods. We charge no predatory per-ticket fees and give you complete control of your customer data.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <button class="btn-bracket btn-bracket-primary" style="padding: 1rem 2.2rem; font-size: 0.95rem;" onclick="alert('Demo booked! Our cinema operations team will connect with your theatre manager.')">Book a Theatre Demo →</button>
+          <a href="#hero" class="btn-bracket" style="padding: 0.8rem 1.8rem; text-align: center;">Hosting a Festival? View Pass Engine</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with gridlines and ticket counter -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-tickets">8,421,950 Tickets Sold</span>
+        <span class="footer-meta">[And counting across independent screens]</span>
+      </div>
+
+      <div style="display: flex; gap: 2rem;">
+        <a href="#hero" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Platform</a>
+        <a href="#seating" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Reserved Seating</a>
+        <a href="#projects" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Initiatives</a>
+        <a href="../../index.html" style="color: var(--c-amber); text-decoration: none; font-size: 0.84rem;">Design Library</a>
+      </div>
+
+      <div style="font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-text-muted);">
+        © 2026 Cineflow, Inc. Fictional design template.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lenis Smooth Scroll
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } catch(e) {
+      console.log('Lenis init smooth scroll fallback');
+    }
+
+    // GSAP ScrollTrigger Animations
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.from(".hero-content > *", {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power3.out"
+      });
+
+      gsap.from(".seating-stage-container", {
+        scrollTrigger: {
+          trigger: ".seating-stage-container",
+          start: "top 80%"
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+    }
+
+    // Interactive Seating Chart Generator
+    const rows = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const seatsPerRow = 14;
+    const grid = document.getElementById('seatsGrid');
+    let selectedSeats = [];
+
+    rows.forEach((rowLetter, rIdx) => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'seat-row';
+
+      const labelLeft = document.createElement('span');
+      labelLeft.className = 'row-label';
+      labelLeft.innerText = rowLetter;
+      rowDiv.appendChild(labelLeft);
+
+      for (let s = 1; s <= seatsPerRow; s++) {
+        // Leave aisle in middle
+        if (s === 4 || s === 12) {
+          const aisle = document.createElement('div');
+          aisle.style.width = '14px';
+          rowDiv.appendChild(aisle);
+        }
+
+        const seat = document.createElement('button');
+        seat.className = 'seat-btn';
+        seat.dataset.seat = `${rowLetter}${s}`;
+        
+        // Mark VIP row
+        if (rowLetter === 'A') seat.classList.add('vip');
+        // Mark Accessible
+        if (rowLetter === 'F' && (s === 1 || s === 14)) seat.classList.add('accessible');
+        // Randomly simulate occupied seats
+        if ((rIdx * 7 + s * 3) % 5 === 0 && !(rowLetter === 'C' && s === 7)) {
+          seat.classList.add('occupied');
+        }
+
+        seat.onclick = () => toggleSeat(seat, `${rowLetter}${s}`, rowLetter === 'A' ? 18.0 : 14.5);
+        rowDiv.appendChild(seat);
+      }
+
+      const labelRight = document.createElement('span');
+      labelRight.className = 'row-label';
+      labelRight.innerText = rowLetter;
+      rowDiv.appendChild(labelRight);
+
+      grid.appendChild(rowDiv);
+    });
+
+    function toggleSeat(btn, seatId, price) {
+      if (btn.classList.contains('occupied')) return;
+      const idx = selectedSeats.findIndex(s => s.id === seatId);
+      if (idx > -1) {
+        selectedSeats.splice(idx, 1);
+        btn.classList.remove('selected');
+      } else {
+        selectedSeats.push({ id: seatId, price });
+        btn.classList.add('selected');
+      }
+      updateTally();
+    }
+
+    function updateTally() {
+      const count = selectedSeats.length;
+      document.getElementById('tallyCount').innerText = `${count} Seat${count === 1 ? '' : 's'} Selected`;
+      const seatNames = selectedSeats.map(s => s.id).join(', ');
+      document.getElementById('tallySeats').innerText = count > 0 ? `Seats: ${seatNames}` : 'Click any seat to simulate real-time box office booking';
+      const total = selectedSeats.reduce((acc, s) => acc + s.price, 0);
+      document.getElementById('tallyPrice').innerText = `$${total.toFixed(2)}`;
+    }
+
+    function simulateReserve() {
+      if (selectedSeats.length === 0) {
+        alert('Please select at least 1 seat first!');
+        return;
+      }
+      alert(`Reserved ${selectedSeats.length} seat(s): ${selectedSeats.map(s=>s.id).join(', ')} for ${document.getElementById('tallyPrice').innerText}! Instant barcode passes sent.`);
+    }
+
+    // Directional Tab Switcher
+    let currentTab = 0;
+    function switchTab(newTab, btn) {
+      if (currentTab === newTab) return;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is--active'));
+      btn.classList.add('is--active');
+
+      const oldPanel = document.getElementById(`tab${currentTab}`);
+      const nextPanel = document.getElementById(`tab${newTab}`);
+
+      // Direction
+      if (newTab > currentTab) {
+        oldPanel.className = 'tab-panel is-leaving-left';
+        nextPanel.className = 'tab-panel is--active';
+      } else {
+        oldPanel.className = 'tab-panel is-leaving-right';
+        nextPanel.className = 'tab-panel is--active';
+      }
+
+      currentTab = newTab;
+    }
+
+    // Horizontal Project Slider
+    let sliderOffset = 0;
+    function slideProjects(direction) {
+      const track = document.getElementById('projectTrack');
+      sliderOffset += direction * 340;
+      if (sliderOffset > 0) sliderOffset = 0;
+      if (sliderOffset < -680) sliderOffset = -680;
+      track.style.transform = `translateX(${sliderOffset}px)`;
+    }
+
+    // Live Rolling Counter Simulation
+    let countNum = 8421950;
+    setInterval(() => {
+      countNum += Math.floor(Math.random() * 3) + 1;
+      document.getElementById('liveCounter').innerText = countNum.toLocaleString();
+    }, 3500);
+  </script>
+</body>
+</html>
