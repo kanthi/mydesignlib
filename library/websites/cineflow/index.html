@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <title>Cineflow — Cloud Operating System for Independent Cinema</title>
+  <title>Cineflow — Operating System for Independent Cinema</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
@@ -16,135 +16,148 @@
     gtag('config', 'G-Z97ZD3EVSF');
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Typography: Syne, Space Grotesk, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- GSAP & Lenis Smooth Scroll CDN -->
+  <!-- GSAP & Lenis CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
   <style>
-    *, *::before, *::after {
+    :root {
+      --f-display: 'Cinzel', serif;
+      --f-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --f-mono: 'Space Mono', monospace;
+
+      --c-bg: #0D0E12;
+      --c-bg-card: #14151B;
+      --c-bg-card-hover: #1A1C24;
+      --c-hairline: #222530;
+      --c-hairline-bright: #323646;
+
+      --c-text: #F4EFE6;
+      --c-text-muted: #8E93A0;
+      --c-text-subtle: #565A68;
+
+      --c-gold: #D4A574;
+      --c-amber: #F59E0B;
+      --c-red: #E63946;
+    }
+
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    :root {
-      --c-bg: #0D0D11;
-      --c-bg-card: #14141A;
-      --c-bg-surface: #191922;
-      --c-cream: #F4EFE6;
-      --c-amber: #D4A574;
-      --c-crimson: #D92B4B;
-      --c-blue: #5072C4;
-      --c-text-muted: #8E92A4;
-      --c-hairline: rgba(255, 255, 255, 0.12);
-
-      --f-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      --f-tech: 'Space Grotesk', sans-serif;
-      --f-mono: 'JetBrains Mono', monospace;
-      --f-body: 'Inter', -apple-system, sans-serif;
-
-      --ease-cinema: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    html.lenis, html.lenis body {
-      height: auto;
-    }
-    .lenis.lenis-smooth {
-      scroll-behavior: auto !important;
-    }
-
     body {
       background-color: var(--c-bg);
-      color: var(--c-cream);
+      color: var(--c-text);
       font-family: var(--f-body);
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
-    /* Architectural Grid Guide Lines */
-    .grid-lines-container {
-      position: fixed;
-      inset: 0;
-      max-width: 1400px;
-      margin: 0 auto;
-      pointer-events: none;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      opacity: 0.3;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
-    .grid-line {
-      width: 1px;
-      height: 100%;
-      background: var(--c-hairline);
+
+    .u-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Top Marquee News Ticker */
+    .ticker {
+      background: #08090C;
+      border-bottom: 1px solid var(--c-hairline);
+      padding: 0.65rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 100;
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 3rem;
+      animation: tickerLoop 32s linear infinite;
+    }
+
+    @keyframes tickerLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+    }
+
+    .ticker-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-amber);
+      box-shadow: 0 0 8px var(--c-amber);
+    }
+
+    .ticker-label {
+      font-family: var(--f-mono);
+      color: var(--c-gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ticker-text {
+      color: var(--c-text-muted);
     }
 
     /* Header Nav */
-    .site-header {
-      position: fixed;
+    .header {
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(13, 13, 17, 0.85);
+      z-index: 90;
+      background: rgba(13, 14, 18, 0.88);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--c-hairline);
     }
 
     .header-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 1.1rem 2rem;
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .brand-link {
+    .logo-wrap {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      text-decoration: none;
-      color: var(--c-cream);
     }
 
-    .brand-mark {
-      width: 28px;
-      height: 28px;
+    .logo-sprocket {
+      width: 26px;
+      height: 26px;
+      fill: var(--c-gold);
     }
 
-    .brand-title {
+    .logo-brand {
       font-family: var(--f-display);
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .nav-item {
-      font-family: var(--f-mono);
-      font-size: 0.78rem;
-      color: var(--c-text-muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
-      letter-spacing: 0.04em;
-    }
-
-    .nav-item:hover {
-      color: var(--c-cream);
+      letter-spacing: 0.12em;
+      color: var(--c-text);
     }
 
     .header-actions {
@@ -153,1171 +166,956 @@
       gap: 1rem;
     }
 
-    /* Cineflow Outline Button with Bracket Corners */
-    .btn-bracket {
-      font-family: var(--f-mono);
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--c-cream);
-      text-decoration: none;
-      padding: 0.55rem 1.25rem;
-      background: transparent;
-      border: 1px solid var(--c-hairline);
-      border-radius: 4px;
-      position: relative;
+    .btn-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: all 0.25s var(--ease-cinema);
-      cursor: pointer;
-    }
-
-    .btn-bracket:hover {
-      background: var(--c-cream);
-      color: var(--c-bg);
-      border-color: var(--c-cream);
-    }
-
-    .btn-bracket-primary {
-      background: var(--c-amber);
-      color: var(--c-bg);
-      border-color: var(--c-amber);
-    }
-
-    .btn-bracket-primary:hover {
-      background: #E5B888;
-      border-color: #E5B888;
-      color: var(--c-bg);
-    }
-
-    /* Hero Section */
-    .hero-section {
-      min-height: 100vh;
-      padding-top: 8rem;
-      padding-bottom: 5rem;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .hero-spotlight {
-      position: absolute;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1000px;
-      height: 800px;
-      background: radial-gradient(ellipse at center, rgba(244, 239, 230, 0.15) 0%, rgba(212, 165, 116, 0.05) 45%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-content {
-      max-width: 1050px;
-      padding: 0 1.5rem;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .superscript-tag {
-      font-family: var(--f-mono);
-      font-size: 0.72rem;
-      color: var(--c-amber);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.8rem;
-      background: rgba(212, 165, 116, 0.1);
-      border: 1px solid rgba(212, 165, 116, 0.25);
-      border-radius: 9999px;
-    }
-
-    .hero-title {
-      font-family: var(--f-display);
-      font-size: clamp(2.8rem, 6.5vw, 5.2rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      color: var(--c-cream);
-    }
-
-    .hero-subtitle {
-      font-size: clamp(1.05rem, 2vw, 1.25rem);
-      color: var(--c-text-muted);
-      max-width: 760px;
-      line-height: 1.6;
-    }
-
-    .hero-cta-group {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    /* Live Interactive Reserved Seating Stage */
-    .seating-stage-container {
-      width: 100%;
-      max-width: 1100px;
-      margin: 4rem auto 0;
-      background: var(--c-bg-card);
-      border: 1px solid var(--c-hairline);
-      border-radius: 16px;
-      padding: 2.5rem 2rem;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      position: relative;
-      z-index: 2;
-    }
-
-    .cinema-screen-arc {
-      width: 100%;
-      height: 60px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-
-    .screen-line {
-      width: 75%;
-      height: 6px;
-      border-radius: 50% 50% 0 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(244, 239, 230, 0.9) 50%, transparent 100%);
-      box-shadow: 0 0 25px rgba(244, 239, 230, 0.8);
-    }
-
-    .screen-label {
-      font-family: var(--f-mono);
-      font-size: 0.68rem;
-      color: var(--c-text-muted);
-      letter-spacing: 0.15em;
-      margin-top: 0.6rem;
-    }
-
-    .seats-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      align-items: center;
-      margin: 1.5rem 0;
-    }
-
-    .seat-row {
-      display: flex;
-      align-items: center;
       gap: 0.6rem;
+      padding: 0.6rem 1.35rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
 
-    .row-label {
-      font-family: var(--f-mono);
-      font-size: 0.72rem;
-      color: var(--c-text-muted);
-      width: 20px;
-      text-align: center;
+    .btn-pill-black {
+      background: #14151B;
+      color: var(--c-text);
+      border: 1px solid var(--c-hairline-bright);
     }
 
-    .seat-btn {
-      width: 28px;
-      height: 24px;
-      border-radius: 6px 6px 3px 3px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      cursor: pointer;
-      transition: all 0.15s ease;
+    .btn-pill-black:hover {
+      background: #1D1F28;
+    }
+
+    .btn-pill-base {
+      background: var(--c-text);
+      color: #0D0E12;
+      border: 1px solid var(--c-text);
+    }
+
+    .btn-pill-base:hover {
+      background: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    /* Stage Hero Section */
+    .stage {
       position: relative;
-    }
-
-    .seat-btn:hover {
-      background: rgba(212, 165, 116, 0.5);
-      border-color: var(--c-amber);
-      transform: scale(1.15);
-    }
-
-    .seat-btn.selected {
-      background: var(--c-amber);
-      border-color: #FFFFFF;
-      box-shadow: 0 0 10px var(--c-amber);
-    }
-
-    .seat-btn.occupied {
-      background: #252530;
-      border-color: #2F2F3D;
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-
-    .seat-btn.vip {
-      border-color: var(--c-crimson);
-    }
-
-    .seat-btn.accessible {
-      border-color: var(--c-blue);
-    }
-
-    .seating-legend {
+      min-height: 85vh;
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
-      font-family: var(--f-mono);
-      font-size: 0.7rem;
-      color: var(--c-text-muted);
-    }
-
-    .legend-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .legend-box {
-      width: 14px;
-      height: 12px;
-      border-radius: 3px;
-    }
-
-    .seating-tally-bar {
-      margin-top: 1.75rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--c-hairline);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .tally-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.2rem;
-    }
-
-    .tally-title {
-      font-family: var(--f-display);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .tally-meta {
-      font-family: var(--f-mono);
-      font-size: 0.75rem;
-      color: var(--c-amber);
-    }
-
-    /* Live Ticker Section */
-    .ticker-section {
-      width: 100%;
-      border-top: 1px solid var(--c-hairline);
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
       border-bottom: 1px solid var(--c-hairline);
-      background: #101015;
-      padding: 3.5rem 1.5rem;
     }
 
-    .ticker-inner {
-      max-width: 1400px;
+    .stage-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.85;
+    }
+
+    .stage-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .stage-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .stage-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1360px;
+      width: 100%;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 2.5rem;
-      align-items: center;
     }
 
-    .ticker-main {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .ticker-counter {
-      font-family: var(--f-display);
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--c-cream);
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-    }
-
-    .ticker-tag {
+    .stage-eyebrow {
       font-family: var(--f-mono);
       font-size: 0.82rem;
-      color: var(--c-amber);
+      color: var(--c-gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+      display: inline-block;
     }
 
-    .ticker-sub {
-      font-size: 0.9rem;
-      color: var(--c-text-muted);
-    }
-
-    .ticker-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .stat-num {
-      font-family: var(--f-tech);
-      font-size: 1.85rem;
-      font-weight: 700;
-      color: var(--c-cream);
-    }
-
-    .stat-lbl {
-      font-family: var(--f-mono);
-      font-size: 0.72rem;
-      color: var(--c-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* Features Tab System (Directional animation physics) */
-    .features-section {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 7rem 1.5rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 3.5rem;
-    }
-
-    .section-headline-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .tabs-nav-bar {
-      display: flex;
-      gap: 0.75rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--c-hairline);
-    }
-
-    .tab-btn {
-      font-family: var(--f-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--c-text-muted);
-      background: transparent;
-      border: 1px solid var(--c-hairline);
-      padding: 0.6rem 1.25rem;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .tab-btn:hover {
-      color: var(--c-cream);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .tab-btn.is--active {
-      background: var(--c-cream);
-      color: var(--c-bg);
-      border-color: var(--c-cream);
-    }
-
-    .tabs-viewport {
-      position: relative;
-      min-height: 460px;
-      overflow: hidden;
-      border-radius: 16px;
-      background: var(--c-bg-card);
-      border: 1px solid var(--c-hairline);
-    }
-
-    .tab-panel {
-      position: absolute;
-      inset: 0;
-      padding: 3.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1.25fr;
-      gap: 3rem;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s var(--ease-cinema), transform 0.4s var(--ease-cinema);
-    }
-
-    .tab-panel.is--active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(0);
-    }
-
-    .tab-panel.is-leaving-left {
-      transform: translateX(-60px);
-    }
-
-    .tab-panel.is-leaving-right {
-      transform: translateX(60px);
-    }
-
-    .tab-panel-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .panel-num {
-      font-family: var(--f-mono);
-      font-size: 0.78rem;
-      color: var(--c-amber);
-    }
-
-    .panel-title {
+    .stage-title {
       font-family: var(--f-display);
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
+      font-size: 4.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      max-width: 820px;
+      margin-bottom: 1.8rem;
     }
 
-    .panel-desc {
-      font-size: 0.95rem;
+    .stage-title-subheading {
+      font-size: 2.2rem;
+      color: var(--c-text-muted);
+      display: block;
+      margin-bottom: 0.5rem;
+      font-family: var(--f-body);
+      font-weight: 500;
+    }
+
+    .stage-paragraph {
+      font-size: 1.25rem;
+      color: var(--c-text-muted);
+      max-width: 580px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Micro Line Corner-Bracket Frame */
+    .micro-frame {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--c-hairline);
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      color: var(--c-gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .micro-frame::before {
+      content: '';
+      position: absolute;
+      top: -3px; left: -3px;
+      width: 6px; height: 6px;
+      border-top: 2px solid var(--c-gold);
+      border-left: 2px solid var(--c-gold);
+    }
+
+    .micro-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; right: -3px;
+      width: 6px; height: 6px;
+      border-bottom: 2px solid var(--c-gold);
+      border-right: 2px solid var(--c-gold);
+    }
+
+    /* Section Intro */
+    .intro-section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+      position: relative;
+    }
+
+    .intro-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      max-width: 1040px;
+      margin-bottom: 3rem;
+    }
+
+    .u-font-grey {
+      color: var(--c-text-muted);
+      font-weight: 400;
+    }
+
+    /* 5-Photo Asymmetric Parallax Gallery */
+    .gallery-5-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+      align-items: center;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--c-hairline);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      top: 0.8rem;
+      left: 0.8rem;
+      font-family: var(--f-mono);
+      font-size: 0.7rem;
+      color: #FFFFFF;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+    }
+
+    .gal-1 { grid-column: 1 / 4; height: 380px; }
+    .gal-2 { grid-column: 4 / 7; height: 300px; }
+    .gal-3 { grid-column: 7 / 10; height: 420px; }
+    .gal-4 { grid-column: 10 / 13; height: 280px; }
+
+    /* Features Section */
+    .features-section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+      position: relative;
+    }
+
+    .features-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: flex-end;
+      margin-bottom: 5rem;
+    }
+
+    .features-title {
+      font-family: var(--f-display);
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .features-desc {
+      font-size: 1.1rem;
       color: var(--c-text-muted);
       line-height: 1.6;
     }
 
-    .panel-visual-box {
-      background: #0B0B0E;
-      border-radius: 12px;
-      border: 1px solid var(--c-hairline);
-      height: 340px;
+    /* 15 Features Table */
+    .features-table-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .features-list {
+      list-style: none;
       display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--c-hairline);
+    }
+
+    .features-list li {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      position: relative;
+      transition: padding-left 0.2s ease, color 0.2s ease;
+    }
+
+    .features-list li:hover {
+      padding-left: 0.5rem;
+      color: var(--c-gold);
+    }
+
+    .feature-index {
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      color: var(--c-text-subtle);
+    }
+
+    /* Survey Diagram (54% vs 36%) */
+    .survey-diagram {
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+      border-radius: 12px;
+      padding: 3rem 2.5rem;
+      margin-top: 4rem;
+    }
+
+    .survey-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .survey-sub {
+      font-size: 0.95rem;
+      color: var(--c-text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .bar-item {
+      margin-bottom: 1.8rem;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.85rem;
+    }
+
+    .bar-track {
+      height: 8px;
+      background: #1F222C;
+      border-radius: 4px;
       overflow: hidden;
     }
 
-    /* Projects Slider (Carousel scroll layout) */
-    .projects-section {
-      width: 100%;
-      background: #101015;
-      border-top: 1px solid var(--c-hairline);
-      border-bottom: 1px solid var(--c-hairline);
-      padding: 7rem 1.5rem;
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .projects-container {
-      max-width: 1400px;
+    .bar-fill-gold { background: var(--c-gold); width: 54%; }
+    .bar-fill-muted { background: var(--c-text-subtle); width: 36%; }
+
+    /* Spotlight MacBook Section */
+    .spotlight-section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+      text-align: center;
+    }
+
+    .spotlight-title {
+      font-family: var(--f-display);
+      font-size: 3.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .spotlight-subtitle {
+      font-size: 1.2rem;
+      color: var(--c-gold);
+      font-family: var(--f-mono);
+      margin-bottom: 4rem;
+    }
+
+    .macbook-stage {
+      max-width: 1040px;
       margin: 0 auto;
+    }
+
+    .macbook-stage img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Audience Engine Section (Odometer 75%) */
+    .engine-section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+    }
+
+    .engine-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 8rem;
+    }
+
+    .engine-num {
+      font-family: var(--f-mono);
+      color: var(--c-gold);
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .engine-title {
+      font-family: var(--f-display);
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .engine-desc {
+      font-size: 1.05rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+    }
+
+    .circle-stat-card {
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+      border-radius: 16px;
+      padding: 3.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .circle-svg-wrap {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 2rem;
+      position: relative;
       display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circle-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .circle-meter {
+      stroke-dasharray: 565;
+      stroke-dashoffset: 141; /* 75% fill */
+      stroke: var(--c-gold);
+      stroke-width: 8;
+      stroke-linecap: round;
+      fill: none;
+      transition: stroke-dashoffset 1.5s ease;
+    }
+
+    .odometer-number {
+      position: absolute;
+      font-family: var(--f-display);
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--c-text);
+    }
+
+    /* Initiatives & Projects Slider */
+    .projects-section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--c-hairline);
     }
 
     .projects-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+      margin-bottom: 3.5rem;
     }
 
-    .slider-controls {
+    .slider-btn-group {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.8rem;
     }
 
-    .ctrl-arrow-btn {
-      width: 44px;
-      height: 44px;
+    .ctrl-btn {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: 1px solid var(--c-hairline);
-      background: transparent;
-      color: var(--c-cream);
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline-bright);
+      color: var(--c-text);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      font-size: 1.2rem;
       transition: all 0.2s ease;
     }
 
-    .ctrl-arrow-btn:hover {
-      background: var(--c-cream);
-      color: var(--c-bg);
-      border-color: var(--c-cream);
+    .ctrl-btn:hover {
+      background: var(--c-hairline-bright);
+      border-color: var(--c-gold);
     }
 
-    .projects-slider-track {
-      display: flex;
-      gap: 1.75rem;
-      transition: transform 0.5s var(--ease-cinema);
+    .projects-slider {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
 
     .project-card {
-      flex: 0 0 320px;
       background: var(--c-bg-card);
       border: 1px solid var(--c-hairline);
       border-radius: 12px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
       transition: transform 0.3s ease, border-color 0.3s ease;
-      cursor: pointer;
     }
 
     .project-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(212, 165, 116, 0.5);
+      transform: translateY(-4px);
+      border-color: var(--c-gold);
     }
 
-    .project-thumb {
-      width: 100%;
+    .project-img-wrap {
       height: 380px;
+      overflow: hidden;
+    }
+
+    .project-img-wrap img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      display: block;
-      filter: contrast(1.05) brightness(0.95);
-      transition: transform 0.4s ease;
     }
 
-    .project-card:hover .project-thumb {
-      transform: scale(1.03);
-    }
-
-    .project-info {
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      background: #14141A;
+    .project-body {
+      padding: 2rem;
     }
 
     .project-cat {
       font-family: var(--f-mono);
-      font-size: 0.68rem;
-      color: var(--c-amber);
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      color: var(--c-gold);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      display: block;
     }
 
-    .project-name {
+    .project-title {
       font-family: var(--f-display);
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--c-cream);
     }
 
-    /* Partner Manifesto Banner */
-    .partner-banner-section {
-      max-width: 1400px;
+    /* Testimonial Quote Section */
+    .quote-section {
+      padding: 7rem 0;
+      border-bottom: 1px solid var(--c-hairline);
+      text-align: center;
+    }
+
+    .quote-box {
+      max-width: 900px;
       margin: 0 auto;
-      padding: 7rem 1.5rem;
-      width: 100%;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-hairline);
+      padding: 4rem;
+      position: relative;
     }
 
-    .partner-banner-card {
-      background: radial-gradient(ellipse at 80% 0%, rgba(212, 165, 116, 0.2) 0%, transparent 60%), #14141C;
-      border: 1px solid rgba(212, 165, 116, 0.3);
-      border-radius: 20px;
-      padding: 4.5rem 3.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 3rem;
-      flex-wrap: wrap;
+    .quote-box::before {
+      content: '';
+      position: absolute;
+      top: -4px; left: -4px;
+      width: 12px; height: 12px;
+      border-top: 3px solid var(--c-gold);
+      border-left: 3px solid var(--c-gold);
     }
 
-    .partner-banner-text {
-      max-width: 700px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .quote-box::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; right: -4px;
+      width: 12px; height: 12px;
+      border-bottom: 3px solid var(--c-gold);
+      border-right: 3px solid var(--c-gold);
     }
 
-    .partner-title {
-      font-family: var(--f-display);
-      font-size: clamp(2rem, 3.8vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
+    .quote-text {
+      font-size: 1.8rem;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 2rem;
+      font-style: italic;
     }
 
-    .partner-desc {
-      font-size: 1.05rem;
-      color: var(--c-text-muted);
-      line-height: 1.6;
+    .quote-author {
+      font-family: var(--f-mono);
+      font-size: 0.85rem;
+      color: var(--c-gold);
+      letter-spacing: 0.08em;
     }
 
     /* Footer */
-    .site-footer {
-      width: 100%;
-      border-top: 1px solid var(--c-hairline);
-      background: #09090C;
-      padding: 4rem 1.5rem;
+    .footer {
+      padding: 6rem 0 3rem;
+      background: #08090C;
     }
 
     .footer-inner {
-      max-width: 1400px;
-      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--c-hairline);
     }
 
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .footer-tickets {
-      font-family: var(--f-display);
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--c-cream);
-    }
-
-    .footer-meta {
+    .footer-copy {
       font-family: var(--f-mono);
-      font-size: 0.72rem;
-      color: var(--c-amber);
+      font-size: 0.78rem;
+      color: var(--c-text-subtle);
     }
 
+    /* Responsive */
     @media (max-width: 900px) {
-      .ticker-inner {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      .tab-panel {
-        grid-template-columns: 1fr;
-        padding: 2rem;
-      }
-      .partner-banner-card {
-        padding: 2.5rem 2rem;
-      }
-      .header-nav {
-        display: none;
-      }
+      .stage-title { font-size: 2.8rem; }
+      .stage-bg { display: none; }
+      .features-header { grid-template-columns: 1fr; }
+      .features-table-wrap { grid-template-columns: 1fr; }
+      .gallery-5-grid { grid-template-columns: 1fr 1fr; }
+      .gal-1, .gal-2, .gal-3, .gal-4 { grid-column: auto; height: 260px; }
+      .engine-block { grid-template-columns: 1fr; }
+      .projects-slider { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Lines -->
-  <div class="grid-lines-container">
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
-    <div class="grid-line"></div>
+  <!-- Top Marquee News Ticker -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-label">[LATEST NEWS]</span>
+        <span class="ticker-text">We're proud to be the Marquee Sponsor of the 2026 Independent Film Exhibition (IND/EX) conference</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-label">[PLATFORM UPDATE]</span>
+        <span class="ticker-text">Cineflow 4.2 rolling out automated Comscore EDI settlements and 35mm repertory series scheduling</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-label">[LATEST NEWS]</span>
+        <span class="ticker-text">We're proud to be the Marquee Sponsor of the 2026 Independent Film Exhibition (IND/EX) conference</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Sticky Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="#hero" class="brand-link">
-        <svg class="brand-mark" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="12" stroke="#D4A574" stroke-width="2"/>
-          <path d="M 14 6 L 14 22 M 6 14 L 22 14" stroke="#D4A574" stroke-width="1.5" stroke-dasharray="2 2"/>
-          <circle cx="14" cy="14" r="4" fill="#F4EFE6"/>
+  <!-- Header Nav -->
+  <header class="header">
+    <div class="u-container header-inner">
+      <a href="index.html" class="logo-wrap">
+        <svg class="logo-sprocket" viewBox="0 0 24 24">
+          <rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="7" cy="7" r="1.8"/>
+          <circle cx="17" cy="7" r="1.8"/>
+          <circle cx="7" cy="17" r="1.8"/>
+          <circle cx="17" cy="17" r="1.8"/>
+          <circle cx="12" cy="12" r="2.5"/>
         </svg>
-        <span class="brand-title">Cineflow</span>
+        <span class="logo-brand">CINEFLOW</span>
       </a>
 
-      <nav class="header-nav">
-        <a href="#features" class="nav-item">Platform</a>
-        <a href="#seating" class="nav-item">Reserved Seating</a>
-        <a href="#projects" class="nav-item">Initiatives</a>
-        <a href="#partner" class="nav-item">For Festivals</a>
-      </nav>
-
       <div class="header-actions">
-        <a href="../../index.html" class="btn-bracket">← Library</a>
-        <a href="#partner" class="btn-bracket btn-bracket-primary">Book a Demo</a>
+        <a href="../../index.html" class="btn-pill btn-pill-black">← Library</a>
+        <a href="#initiatives" class="btn-pill btn-pill-black">Festival Info</a>
+        <a href="#partner" class="btn-pill btn-pill-base">Contact us ↗</a>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- 1. Hero Spotlight Section -->
-    <section id="hero" class="hero-section">
-      <div class="hero-spotlight"></div>
-      <div class="hero-content">
-        <span class="superscript-tag">[THE OPERATING SYSTEM FOR INDEPENDENT CINEMA]</span>
-        <h1 class="hero-title">The modern operating system for independent cinema &amp; festivals</h1>
-        <p class="hero-subtitle">Cloud ticketing, reserved seating, concessions POS, and automated DCI compliance engineered for theaters.</p>
-        
-        <div class="hero-cta-group">
-          <a href="#partner" class="btn-bracket btn-bracket-primary" style="padding: 0.8rem 1.8rem; font-size: 0.85rem;">Schedule Cinema Demo →</a>
-          <a href="#seating" class="btn-bracket" style="padding: 0.8rem 1.8rem; font-size: 0.85rem;">Try Reserved Seating ↓</a>
+  <!-- Stage Hero Section with Film Sprocket Stencil Overlay -->
+  <section class="stage">
+    <div class="stage-bg">
+      <img src="assets/hero_portrait.jpg" alt="Vintage 35mm Cinema Still">
+      <div class="stage-overlay">
+        <img src="assets/sprocket_stencil.svg" alt="Sprocket Stencil Overlay" style="width: 100%; height: 100%;">
+      </div>
+    </div>
+
+    <div class="stage-content">
+      <span class="stage-eyebrow">[THE OPERATING SYSTEM FOR INDEPENDENT CINEMA]</span>
+      <h1 class="stage-title">
+        <span class="stage-title-subheading">Ticketing for the new era of</span>
+        independent cinemas
+      </h1>
+      <p class="stage-paragraph">More than a platform, we're your partner. Crafted in collaboration with the independent theaters and film festivals restoring cultural community.</p>
+
+      <div class="micro-frame">
+        <span>Empower your team</span>
+        <span>•</span>
+        <span>Impress your audience</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Intro & 5-Photo Editorial Parallax Gallery -->
+  <section class="intro-section">
+    <div class="u-container">
+      <h2 class="intro-title">
+        This is a time of rebirth for collective film culture.<br>
+        <span class="u-font-grey">We empower the cinema teams leading this movement with a modern point-of-sale system designed for ease and versatility.</span>
+      </h2>
+
+      <!-- 5-Photo Asymmetric Parallax Gallery -->
+      <div class="gallery-5-grid">
+        <div class="gallery-item gal-1">
+          <span class="gallery-caption">[Vidiots]</span>
+          <img src="assets/vidiots_marquee.jpg" alt="Vidiots Cinema Marquee">
+        </div>
+        <div class="gallery-item gal-2">
+          <span class="gallery-caption">[Davis Theater]</span>
+          <img src="assets/davis_theater.jpg" alt="Davis Theater Interior">
+        </div>
+        <div class="gallery-item gal-3">
+          <span class="gallery-caption">[Nitehawk Cinema]</span>
+          <img src="assets/nitehawk_cinema.jpg" alt="Nitehawk Dine-in Cinema">
+        </div>
+        <div class="gallery-item gal-4">
+          <span class="gallery-caption">[The Frida Cinema]</span>
+          <img src="assets/frida_cinema.jpg" alt="The Frida Cinema Audience">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Seamless Suite of Features & Diagram -->
+  <section class="features-section">
+    <div class="u-container">
+      <div class="features-header">
+        <div>
+          <span class="stage-eyebrow">[PLATFORM CAPABILITIES]</span>
+          <h2 class="features-title">Seamless Suite of Features</h2>
+        </div>
+        <p class="features-desc">By truly listening to cinema teams and valuing their insights, we uncover opportunities to introduce more refined solutions, easing their demanding workflows and elevating the audience experience.</p>
+      </div>
+
+      <!-- 15 Features Table -->
+      <div class="features-table-wrap">
+        <ul class="features-list">
+          <li><span>Customizable Website</span><span class="feature-index">01</span></li>
+          <li><span>Ticket Sales &amp; Reserved Seating</span><span class="feature-index">02</span></li>
+          <li><span>Easy 1-Click Checkout</span><span class="feature-index">03</span></li>
+          <li><span>Showtimes Scheduler</span><span class="feature-index">04</span></li>
+          <li><span>Film Series &amp; Retrospectives</span><span class="feature-index">05</span></li>
+          <li><span>Interactive Calendar</span><span class="feature-index">06</span></li>
+          <li><span>iPad Box Office Station</span><span class="feature-index">07</span></li>
+          <li><span>Sales Reports &amp; Charts</span><span class="feature-index">08</span></li>
+        </ul>
+
+        <ul class="features-list">
+          <li><span>Memberships &amp; Donor Tiers</span><span class="feature-index">09</span></li>
+          <li><span>Campaigns &amp; Promotion Codes</span><span class="feature-index">10</span></li>
+          <li><span>Donations &amp; Cultural Grants</span><span class="feature-index">11</span></li>
+          <li><span>Gift Cards &amp; Concessions</span><span class="feature-index">12</span></li>
+          <li><span>Ticket Scanner Mobile App</span><span class="feature-index">13</span></li>
+          <li><span>Festival Pass Extension</span><span class="feature-index">14</span></li>
+          <li><span>24/7 Dedicated Concierge Support</span><span class="feature-index">15</span></li>
+        </ul>
+      </div>
+
+      <!-- Survey Diagram (54% vs 36%) -->
+      <div class="survey-diagram">
+        <h3 class="survey-title">Moviegoers rely on theater websites</h3>
+        <p class="survey-sub">more than social media to find out about movies</p>
+
+        <div class="bar-item">
+          <div class="bar-meta">
+            <span>THEATRE WEBSITES</span>
+            <span style="color: var(--c-gold); font-weight: 700;">54%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill bar-fill-gold"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-meta">
+            <span>SOCIAL MEDIA</span>
+            <span>36%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill bar-fill-muted"></div>
+          </div>
+        </div>
+
+        <div style="font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-text-subtle); margin-top: 1.5rem;">
+          *2025 national audience survey [AvenueISR Independent Exhibition Data]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Spotlight MacBook Screen -->
+  <section class="spotlight-section">
+    <div class="u-container">
+      <span class="stage-eyebrow">[CURATION THROUGH DESIGN]</span>
+      <h2 class="spotlight-title">Bold Websites</h2>
+      <div class="spotlight-subtitle">✦ from digital screens to the big screen ✦</div>
+
+      <div class="macbook-stage">
+        <img src="assets/macbook_frame.svg" alt="Cineflow MacBook Website Interface">
+      </div>
+
+      <p style="max-width: 740px; margin: 3rem auto 0; font-size: 1.15rem; color: var(--c-text-muted); line-height: 1.6;">
+        Captivate audiences with bold immersive layouts that celebrate the art of curation through visual tracks of new releases, repertory titles, film series, retrospectives, and special events.
+      </p>
+    </div>
+  </section>
+
+  <!-- Section 4: Audience Engine (Memberships & Odometer 75%) -->
+  <section class="engine-section">
+    <div class="u-container">
+      <!-- Engine Block 1 -->
+      <div class="engine-block">
+        <div>
+          <span class="engine-num">AUDIENCE ENGINE (01)</span>
+          <h2 class="engine-title">Versatile Memberships</h2>
+          <p class="engine-desc">Attract a vibrant and devoted base of members through monthly and annual membership plans that reward their long-term support with tailored discounts and premium benefits.</p>
+        </div>
+
+        <div class="gallery-item" style="height: 380px;">
+          <img src="assets/davis_theater.jpg" alt="Audience Membership Screening">
         </div>
       </div>
 
-      <!-- Interactive Reserved Seating Stage -->
-      <div id="seating" class="seating-stage-container">
-        <div class="cinema-screen-arc">
-          <div class="screen-line"></div>
-          <span class="screen-label">MAIN THEATRE SCREEN // 4K LASER PROJECTION</span>
-        </div>
-
-        <div class="seats-grid" id="seatsGrid">
-          <!-- Dynamically populated rows A-F -->
-        </div>
-
-        <div class="seating-legend">
-          <div class="legend-indicator">
-            <div class="legend-box" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);"></div>
-            <span>Available ($14.50)</span>
-          </div>
-          <div class="legend-indicator">
-            <div class="legend-box" style="background: var(--c-amber);"></div>
-            <span>Selected</span>
-          </div>
-          <div class="legend-indicator">
-            <div class="legend-box" style="background: #252530; opacity: 0.5;"></div>
-            <span>Reserved</span>
-          </div>
-          <div class="legend-indicator">
-            <div class="legend-box" style="border: 2px solid var(--c-crimson);"></div>
-            <span>VIP Lounge ($18.00)</span>
-          </div>
-          <div class="legend-indicator">
-            <div class="legend-box" style="border: 2px solid var(--c-blue);"></div>
-            <span>ADA Accessible</span>
-          </div>
-        </div>
-
-        <div class="seating-tally-bar">
-          <div class="tally-info">
-            <span class="tally-title" id="tallyCount">0 Seats Selected</span>
-            <span class="tally-meta" id="tallySeats">Click any seat to simulate real-time box office booking</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <span style="font-family: var(--f-display); font-size: 1.4rem; font-weight: 800;" id="tallyPrice">$0.00</span>
-            <button class="btn-bracket btn-bracket-primary" onclick="simulateReserve()">Instant Checkout Demo</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. Live Ticket Ticker Section -->
-    <section class="ticker-section">
-      <div class="ticker-inner">
-        <div class="ticker-main">
-          <div class="ticker-counter">
-            <span id="liveCounter">8,421,950</span>
-            <span class="ticker-tag">[+ counting]</span>
-          </div>
-          <p class="ticker-sub">Tickets processed through Cineflow cloud box office</p>
-        </div>
-
-        <div class="ticker-stat">
-          <span class="stat-num">450+</span>
-          <span class="stat-lbl">Screens Worldwide</span>
-        </div>
-
-        <div class="ticker-stat">
-          <span class="stat-num">99.99%</span>
-          <span class="stat-lbl">Uptime SLA</span>
-        </div>
-
-        <div class="ticker-stat">
-          <span class="stat-num">0%</span>
-          <span class="stat-lbl">Scalping Surcharge</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. Seamless Suite of Features (Directional Tabs) -->
-    <section id="features" class="features-section">
-      <div class="section-headline-group">
-        <span class="superscript-tag">[PLATFORM CAPABILITIES]</span>
-        <h2 style="font-family: var(--f-display); font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em;">Seamless Suite of Features</h2>
-        <p style="color: var(--c-text-muted); max-width: 650px;">From front-of-house ticket scanners to back-office Comscore EDI filings, every operational layer runs through one unified dashboard.</p>
-      </div>
-
-      <div class="tabs-nav-bar">
-        <button class="tab-btn is--active" onclick="switchTab(0, this)">01. Cloud Box Office</button>
-        <button class="tab-btn" onclick="switchTab(1, this)">02. Reserved Seating</button>
-        <button class="tab-btn" onclick="switchTab(2, this)">03. Concessions &amp; KDS</button>
-        <button class="tab-btn" onclick="switchTab(3, this)">04. Festival Scheduling</button>
-        <button class="tab-btn" onclick="switchTab(4, this)">05. Studio Box Office EDI</button>
-      </div>
-
-      <div class="tabs-viewport">
-        <!-- Panel 0 -->
-        <div class="tab-panel is--active" id="tab0">
-          <div class="tab-panel-info">
-            <span class="panel-num">MODULE 01 // TABLET &amp; DESKTOP POS</span>
-            <h3 class="panel-title">iPad Box Office &amp; Rapid Barcode Scanners</h3>
-            <p class="panel-desc">Fast, offline-resilient ticketing with zero lag during rush periods. Supports split tenders, loyalty redemption, physical ticket printing, and Apple Wallet passes in under 2 seconds per transaction.</p>
-            <ul style="color: var(--c-text-muted); font-size: 0.88rem; list-style: disc; margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
-              <li>Automatic offline transaction caching</li>
-              <li>Integrated EMV and contactless NFC readers</li>
-              <li>Staff permission tiers and cash drawer reconciliation</li>
-            </ul>
-          </div>
-          <div class="panel-visual-box">
-            <svg viewBox="0 0 400 240" width="100%" fill="none">
-              <rect x="40" y="20" width="320" height="200" rx="16" fill="#14141C" stroke="var(--c-hairline)"/>
-              <rect x="60" y="40" width="180" height="30" rx="6" fill="#22222E"/>
-              <text x="75" y="60" fill="#D4A574" font-family="'JetBrains Mono'" font-size="12">BOX OFFICE ACTIVE</text>
-              <rect x="60" y="85" width="280" height="20" rx="4" fill="#1A1A24"/>
-              <rect x="60" y="115" width="280" height="20" rx="4" fill="#1A1A24"/>
-              <rect x="60" y="145" width="280" height="20" rx="4" fill="#1A1A24"/>
-              <rect x="240" y="180" width="100" height="30" rx="6" fill="#D4A574"/>
-              <text x="260" y="200" fill="#0D0D11" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="12">PRINT PASS</text>
+      <!-- Engine Block 2: 75% Circle Odometer -->
+      <div class="engine-block">
+        <div class="circle-stat-card">
+          <div class="circle-svg-wrap">
+            <svg class="circle-svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="90" stroke="#1F222C" stroke-width="8" fill="none"/>
+              <circle class="circle-meter" cx="100" cy="100" r="90"/>
             </svg>
+            <div class="odometer-number">75%</div>
           </div>
+
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem;">Increase in ticketing &amp; F&amp;B sales</h3>
+          <p style="font-size: 0.88rem; color: var(--c-text-muted); line-height: 1.5;">when engaging "lapsed" customers who had not returned to the theater in the past year with automated marketing campaigns</p>
         </div>
 
-        <!-- Panel 1 -->
-        <div class="tab-panel" id="tab1">
-          <div class="tab-panel-info">
-            <span class="panel-num">MODULE 02 // SEAT MATRIX</span>
-            <h3 class="panel-title">Dynamic Reserved Seating Engine</h3>
-            <p class="panel-desc">Visual auditorium builder supporting multi-tier pricing, ADA accessibility allocations, automatic buffer seating, and real-time synchronized holds across web and box office.</p>
-            <ul style="color: var(--c-text-muted); font-size: 0.88rem; list-style: disc; margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
-              <li>Curved widescreen visual geometry representation</li>
-              <li>Real-time websocket seat hold synchronization</li>
-              <li>Balcony, loge, and private screening room mapping</li>
-            </ul>
-          </div>
-          <div class="panel-visual-box">
-            <svg viewBox="0 0 360 200" fill="none">
-              <path d="M 40 40 Q 180 80 320 40" stroke="#D4A574" stroke-width="4"/>
-              <text x="180" y="30" fill="#A0A5B5" font-family="'JetBrains Mono'" font-size="11" text-anchor="middle">SCREEN HORIZON</text>
-              <circle cx="80" cy="120" r="10" fill="#5072C4"/>
-              <circle cx="120" cy="120" r="10" fill="#D4A574"/>
-              <circle cx="160" cy="120" r="10" fill="#D4A574"/>
-              <circle cx="200" cy="120" r="10" fill="#D4A574"/>
-              <circle cx="240" cy="120" r="10" fill="#D4A574"/>
-              <circle cx="280" cy="120" r="10" fill="#D92B4B"/>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Panel 2 -->
-        <div class="tab-panel" id="tab2">
-          <div class="tab-panel-info">
-            <span class="panel-num">MODULE 03 // FOOD &amp; BEVERAGE</span>
-            <h3 class="panel-title">Concessions POS &amp; Kitchen Display</h3>
-            <p class="panel-desc">Combine ticket sales with popcorn, gourmet snacks, and craft beer orders on a single ticket. Direct digital dispatch to bar and kitchen prep stations.</p>
-          </div>
-          <div class="panel-visual-box">
-            <svg viewBox="0 0 360 200" fill="none">
-              <rect x="50" y="40" width="120" height="120" rx="8" fill="#1A1A24" stroke="var(--c-hairline)"/>
-              <text x="65" y="70" fill="#D4A574" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="14">ORDER #402</text>
-              <text x="65" y="100" fill="#A0A5B5" font-size="11">Large Popcorn ×2</text>
-              <text x="65" y="120" fill="#A0A5B5" font-size="11">Draft Cider ×1</text>
-              <rect x="190" y="40" width="120" height="120" rx="8" fill="#1A1A24" stroke="var(--c-hairline)"/>
-              <text x="205" y="70" fill="#5072C4" font-family="'Plus Jakarta Sans'" font-weight="700" font-size="14">ORDER #403</text>
-              <text x="205" y="100" fill="#A0A5B5" font-size="11">Pretzel Bites ×1</text>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Panel 3 -->
-        <div class="tab-panel" id="tab3">
-          <div class="tab-panel-info">
-            <span class="panel-num">MODULE 04 // FESTIVALS</span>
-            <h3 class="panel-title">Multi-Venue Festival Pass Management</h3>
-            <p class="panel-desc">All-access badges, rush lines, tiered screening passes, and accreditation portal for filmmakers, press, and festival attendees.</p>
-          </div>
-          <div class="panel-visual-box">
-            <div style="background: #181822; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--c-amber); width: 220px; text-align: center;">
-              <span style="font-family: var(--f-mono); font-size: 0.65rem; color: var(--c-amber);">VIP ALL-ACCESS PASS</span>
-              <h4 style="font-family: var(--f-display); font-size: 1.1rem; margin: 0.5rem 0;">INDIE FEST 2026</h4>
-              <div style="background: #000; height: 35px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.2em;">||| | |||| | ||</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Panel 4 -->
-        <div class="tab-panel" id="tab4">
-          <div class="tab-panel-info">
-            <span class="panel-num">MODULE 05 // COMPLIANCE</span>
-            <h3 class="panel-title">Automated Studio EDI &amp; Comscore Filings</h3>
-            <p class="panel-desc">Zero manual spreadsheet entry. Automatic nightly box office settlement uploads directly to major studios and Comscore/Rentrak.</p>
-          </div>
-          <div class="panel-visual-box">
-            <div style="font-family: var(--f-mono); font-size: 0.8rem; color: #9FE814; background: #06090D; padding: 1.5rem; border-radius: 8px; border: 1px solid #1E3020; width: 280px;">
-              <div>&gt; COMSCORE_SYNC_V4: OK</div>
-              <div>&gt; THEATRE_ID: #8492-DAVIS</div>
-              <div>&gt; GROSS_BOX_OFFICE: $24,850.00</div>
-              <div>&gt; TRANSMISSION: VERIFIED 23:59:00</div>
-            </div>
-          </div>
+        <div>
+          <span class="engine-num">AUDIENCE ENGINE (02)</span>
+          <h2 class="engine-title">Smarter Promotions</h2>
+          <p class="engine-desc">Inspire audiences to return more frequently with compelling discount codes delivered through advanced marketing campaigns based on visit history and past movie attendance.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 4. Projects & Initiatives Slider -->
-    <section id="projects" class="projects-section">
-      <div class="projects-container">
-        <div class="projects-header">
-          <div>
-            <span class="superscript-tag">[CULTURAL INITIATIVES]</span>
-            <h2 style="font-family: var(--f-display); font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin-top: 0.5rem;">Independent Film Initiatives</h2>
+  <!-- Section 5: Initiatives & Projects Carousel -->
+  <section id="initiatives" class="projects-section">
+    <div class="u-container">
+      <div class="projects-header">
+        <div>
+          <span class="stage-eyebrow">[INDUSTRY ADVOCACY]</span>
+          <h2 style="font-family: var(--f-display); font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em;">Initiatives &amp; Projects</h2>
+        </div>
+
+        <div class="slider-btn-group">
+          <button class="ctrl-btn" onclick="rotateProjects(-1)" aria-label="Previous">←</button>
+          <button class="ctrl-btn" onclick="rotateProjects(1)" aria-label="Next">→</button>
+        </div>
+      </div>
+
+      <div class="projects-slider" id="projectSlider">
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="assets/project_ahc.jpg" alt="Art House Convergence">
           </div>
-
-          <div class="slider-controls">
-            <button class="ctrl-arrow-btn" onclick="slideProjects(-1)" aria-label="Previous Project">←</button>
-            <button class="ctrl-arrow-btn" onclick="slideProjects(1)" aria-label="Next Project">→</button>
+          <div class="project-body">
+            <span class="project-cat">PROUD SPONSOR</span>
+            <h3 class="project-title">Lead Sponsor of AHC 2025</h3>
           </div>
-        </div>
+        </article>
 
-        <div style="overflow: hidden; width: 100%;">
-          <div class="projects-slider-track" id="projectTrack">
-            <!-- Card 1 -->
-            <div class="project-card">
-              <img src="assets/project_never_die.jpg" alt="Movies Never Die Project" class="project-thumb">
-              <div class="project-info">
-                <span class="project-cat">RETROSPECTIVE SHOWTIME</span>
-                <h4 class="project-name">Movies Never Die</h4>
-              </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="project-card">
-              <img src="assets/project_restoration.jpg" alt="Lost Films Restoration" class="project-thumb">
-              <div class="project-info">
-                <span class="project-cat">ARCHIVAL 4K INITIATIVE</span>
-                <h4 class="project-name">Lost Films Series</h4>
-              </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="project-card">
-              <img src="assets/project_festival.jpg" alt="Midnight Indie Fest" class="project-thumb">
-              <div class="project-info">
-                <span class="project-cat">SIMULCAST PREMIERE</span>
-                <h4 class="project-name">Midnight Indie Fest</h4>
-              </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="project-card">
-              <img src="assets/project_soundtrack.jpg" alt="Live Score Orchestral" class="project-thumb">
-              <div class="project-info">
-                <span class="project-cat">ACOUSTIC ENSEMBLE</span>
-                <h4 class="project-name">Live Score Series</h4>
-              </div>
-            </div>
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="assets/project_covid.jpg" alt="Lost Films of Covid">
           </div>
+          <div class="project-body">
+            <span class="project-cat">RETURN TO THE BIG SCREEN</span>
+            <h3 class="project-title">Lost Films of Covid Series</h3>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-img-wrap">
+            <img src="assets/project_mnd.jpg" alt="Movies Never Die">
+          </div>
+          <div class="project-body">
+            <span class="project-cat">GLOW IN THE DARK AT SHOWTIME</span>
+            <h3 class="project-title">Movies Never Die</h3>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Client Testimonial Quote -->
+  <section class="quote-section">
+    <div class="u-container">
+      <div class="quote-box">
+        <p class="quote-text">"Cineflow has been instrumental in the growth of the Davis Theater with flexible tools, dedicated support, and innovative ticketing features."</p>
+        <div class="quote-author">Peter Kuli, Program Director · Davis Theater</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="partner" class="footer">
+    <div class="u-container">
+      <div class="footer-inner">
+        <div class="logo-wrap">
+          <svg class="logo-sprocket" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="7" cy="7" r="1.8"/>
+            <circle cx="17" cy="7" r="1.8"/>
+            <circle cx="7" cy="17" r="1.8"/>
+            <circle cx="17" cy="17" r="1.8"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+          <span class="logo-brand">CINEFLOW</span>
+        </div>
+
+        <div style="display: flex; gap: 2rem; font-size: 0.85rem; color: var(--c-text-muted);">
+          <a href="#initiatives">Festivals</a>
+          <a href="#initiatives">Initiatives</a>
+          <a href="mailto:info@cineflow.cinema">Contact us</a>
         </div>
       </div>
-    </section>
 
-    <!-- 5. Partner Manifesto Banner -->
-    <section id="partner" class="partner-banner-section">
-      <div class="partner-banner-card">
-        <div class="partner-banner-text">
-          <span class="superscript-tag" style="background: rgba(212,165,116,0.15); border-color: var(--c-amber);">[YOUR PARTNER IN CINEMA]</span>
-          <h2 class="partner-title">A devoted advocate for the future of independent cinema.</h2>
-          <p class="partner-desc">Independent theaters are the cultural anchors of our neighborhoods. We charge no predatory per-ticket fees and give you complete control of your customer data.</p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          <button class="btn-bracket btn-bracket-primary" style="padding: 1rem 2.2rem; font-size: 0.95rem;" onclick="alert('Demo booked! Our cinema operations team will connect with your theatre manager.')">Book a Theatre Demo →</button>
-          <a href="#hero" class="btn-bracket" style="padding: 0.8rem 1.8rem; text-align: center;">Hosting a Festival? View Pass Engine</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer with gridlines and ticket counter -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-tickets">8,421,950 Tickets Sold</span>
-        <span class="footer-meta">[And counting across independent screens]</span>
-      </div>
-
-      <div style="display: flex; gap: 2rem;">
-        <a href="#hero" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Platform</a>
-        <a href="#seating" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Reserved Seating</a>
-        <a href="#projects" style="color: var(--c-text-muted); text-decoration: none; font-size: 0.84rem;">Initiatives</a>
-        <a href="../../index.html" style="color: var(--c-amber); text-decoration: none; font-size: 0.84rem;">Design Library</a>
-      </div>
-
-      <div style="font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-text-muted);">
-        © 2026 Cineflow, Inc. Fictional design template.
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+        <span class="footer-copy">© 2026 Cineflow Technologies Inc. All rights reserved.</span>
+        <span class="footer-copy">The Operating System for Independent Cinema</span>
       </div>
     </div>
   </footer>
 
   <script>
-    // Initialize Lenis Smooth Scroll
-    let lenis;
-    try {
-      lenis = new Lenis({
+    // Smooth scroll using Lenis
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({
         duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: 'vertical',
-        smoothWheel: true
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
       });
       function raf(time) {
         lenis.raf(time);
         requestAnimationFrame(raf);
       }
       requestAnimationFrame(raf);
-    } catch(e) {
-      console.log('Lenis init smooth scroll fallback');
     }
 
-    // GSAP ScrollTrigger Animations
-    if (typeof gsap !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.from(".hero-content > *", {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power3.out"
-      });
-
-      gsap.from(".seating-stage-container", {
-        scrollTrigger: {
-          trigger: ".seating-stage-container",
-          start: "top 80%"
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out"
+    // Projects Slider Interaction
+    let currentSlide = 0;
+    function rotateProjects(direction) {
+      const slider = document.getElementById('projectSlider');
+      const cards = slider.querySelectorAll('.project-card');
+      currentSlide = (currentSlide + direction + cards.length) % cards.length;
+      cards.forEach((card, idx) => {
+        card.style.opacity = (idx === currentSlide || idx === (currentSlide + 1) % cards.length) ? '1' : '0.6';
       });
     }
-
-    // Interactive Seating Chart Generator
-    const rows = ['A', 'B', 'C', 'D', 'E', 'F'];
-    const seatsPerRow = 14;
-    const grid = document.getElementById('seatsGrid');
-    let selectedSeats = [];
-
-    rows.forEach((rowLetter, rIdx) => {
-      const rowDiv = document.createElement('div');
-      rowDiv.className = 'seat-row';
-
-      const labelLeft = document.createElement('span');
-      labelLeft.className = 'row-label';
-      labelLeft.innerText = rowLetter;
-      rowDiv.appendChild(labelLeft);
-
-      for (let s = 1; s <= seatsPerRow; s++) {
-        // Leave aisle in middle
-        if (s === 4 || s === 12) {
-          const aisle = document.createElement('div');
-          aisle.style.width = '14px';
-          rowDiv.appendChild(aisle);
-        }
-
-        const seat = document.createElement('button');
-        seat.className = 'seat-btn';
-        seat.dataset.seat = `${rowLetter}${s}`;
-        
-        // Mark VIP row
-        if (rowLetter === 'A') seat.classList.add('vip');
-        // Mark Accessible
-        if (rowLetter === 'F' && (s === 1 || s === 14)) seat.classList.add('accessible');
-        // Randomly simulate occupied seats
-        if ((rIdx * 7 + s * 3) % 5 === 0 && !(rowLetter === 'C' && s === 7)) {
-          seat.classList.add('occupied');
-        }
-
-        seat.onclick = () => toggleSeat(seat, `${rowLetter}${s}`, rowLetter === 'A' ? 18.0 : 14.5);
-        rowDiv.appendChild(seat);
-      }
-
-      const labelRight = document.createElement('span');
-      labelRight.className = 'row-label';
-      labelRight.innerText = rowLetter;
-      rowDiv.appendChild(labelRight);
-
-      grid.appendChild(rowDiv);
-    });
-
-    function toggleSeat(btn, seatId, price) {
-      if (btn.classList.contains('occupied')) return;
-      const idx = selectedSeats.findIndex(s => s.id === seatId);
-      if (idx > -1) {
-        selectedSeats.splice(idx, 1);
-        btn.classList.remove('selected');
-      } else {
-        selectedSeats.push({ id: seatId, price });
-        btn.classList.add('selected');
-      }
-      updateTally();
-    }
-
-    function updateTally() {
-      const count = selectedSeats.length;
-      document.getElementById('tallyCount').innerText = `${count} Seat${count === 1 ? '' : 's'} Selected`;
-      const seatNames = selectedSeats.map(s => s.id).join(', ');
-      document.getElementById('tallySeats').innerText = count > 0 ? `Seats: ${seatNames}` : 'Click any seat to simulate real-time box office booking';
-      const total = selectedSeats.reduce((acc, s) => acc + s.price, 0);
-      document.getElementById('tallyPrice').innerText = `$${total.toFixed(2)}`;
-    }
-
-    function simulateReserve() {
-      if (selectedSeats.length === 0) {
-        alert('Please select at least 1 seat first!');
-        return;
-      }
-      alert(`Reserved ${selectedSeats.length} seat(s): ${selectedSeats.map(s=>s.id).join(', ')} for ${document.getElementById('tallyPrice').innerText}! Instant barcode passes sent.`);
-    }
-
-    // Directional Tab Switcher
-    let currentTab = 0;
-    function switchTab(newTab, btn) {
-      if (currentTab === newTab) return;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is--active'));
-      btn.classList.add('is--active');
-
-      const oldPanel = document.getElementById(`tab${currentTab}`);
-      const nextPanel = document.getElementById(`tab${newTab}`);
-
-      // Direction
-      if (newTab > currentTab) {
-        oldPanel.className = 'tab-panel is-leaving-left';
-        nextPanel.className = 'tab-panel is--active';
-      } else {
-        oldPanel.className = 'tab-panel is-leaving-right';
-        nextPanel.className = 'tab-panel is--active';
-      }
-
-      currentTab = newTab;
-    }
-
-    // Horizontal Project Slider
-    let sliderOffset = 0;
-    function slideProjects(direction) {
-      const track = document.getElementById('projectTrack');
-      sliderOffset += direction * 340;
-      if (sliderOffset > 0) sliderOffset = 0;
-      if (sliderOffset < -680) sliderOffset = -680;
-      track.style.transform = `translateX(${sliderOffset}px)`;
-    }
-
-    // Live Rolling Counter Simulation
-    let countNum = 8421950;
-    setInterval(() => {
-      countNum += Math.floor(Math.random() * 3) + 1;
-      document.getElementById('liveCounter').innerText = countNum.toLocaleString();
-    }, 3500);
   </script>
 </body>
 </html>
