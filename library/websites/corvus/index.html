@@ -132,22 +132,22 @@
        3. GLOBAL HEADER
        ------------------------------------------------------------- */
     .site-nav {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 900;
-      padding: 1.75rem 0;
-      transition: all 0.3s ease;
-    }
-
-    .site-nav.scrolled {
-      position: fixed;
-      padding: 1rem 0;
+      padding: 1.15rem 0;
       background: rgba(15, 21, 14, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .site-nav.scrolled {
+      padding: 0.9rem 0;
+      background: rgba(13, 18, 12, 0.95);
     }
 
     .nav-inner {
@@ -259,79 +259,151 @@
     }
 
     /* -------------------------------------------------------------
-       4. HERO SECTION
+       4. HERO SECTION (CINEMATIC AVIAN SENTINEL)
        ------------------------------------------------------------- */
     .hero-canopy-section {
       min-height: 100vh;
       position: relative;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      justify-content: flex-end;
       padding-top: clamp(6.5rem, 12vw, 8.5rem);
-      padding-bottom: clamp(4rem, 8vw, 6rem);
-      background-image: url('assets/canopy-bg.jpg');
-      background-size: cover;
-      background-position: center;
+      padding-bottom: clamp(3.5rem, 6vw, 5rem);
+      background-color: var(--bg-canopy);
       overflow: hidden;
     }
 
-    /* Atmospheric Sunbeams & Shadow Vignette */
-    .hero-canopy-section::before {
-      content: '';
+    /* Full-bleed background video container */
+    .hero-video-bg-container {
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse at 80% 15%, rgba(245, 198, 110, 0.18) 0%, transparent 60%),
-        linear-gradient(to bottom, rgba(16, 23, 15, 0.25) 0%, rgba(16, 23, 15, 0.85) 85%, var(--bg-canopy) 100%);
-      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-sentinel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+      filter: contrast(1.02) saturate(1.04);
+    }
+
+    /* Atmospheric Sunbeams & Shadow Vignettes to seamlessly fuse video with layout */
+    .hero-top-vignette {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 140px;
+      background: linear-gradient(to bottom, #0f150e 0%, #0f150e 85px, rgba(15, 21, 14, 0.65) 110px, transparent 140px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-bottom-vignette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: clamp(120px, 18vw, 220px);
+      background: linear-gradient(to top, var(--bg-canopy) 0%, rgba(20, 27, 19, 0.8) 55%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
     }
 
     /* Giant Layered Watermark Wordmark */
     .hero-watermark-wordmark {
       position: absolute;
-      top: 36%;
+      top: 32%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-serif);
-      font-size: clamp(8rem, 21vw, 22rem);
+      font-size: clamp(7rem, 20vw, 21rem);
       font-weight: 700;
       letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.12);
       user-select: none;
       pointer-events: none;
       z-index: 2;
       line-height: 1;
       white-space: nowrap;
-      text-shadow: 0 0 60px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Centered Avian Sentinel Visual */
-    .hero-sentinel-center {
+    /* Floating Replay & Sentinel Telemetry Bar */
+    .hero-flight-controls {
       position: absolute;
-      top: 54%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(340px, 48vw, 680px);
-      z-index: 3;
-      pointer-events: none;
+      bottom: 1.5rem;
+      right: clamp(1.25rem, 3.5vw, 2.5rem);
+      z-index: 10;
       display: flex;
-      justify-content: center;
       align-items: center;
-      animation: sentinel-subtle-hover 6s ease-in-out infinite alternate;
+      gap: 0.85rem;
+      flex-wrap: wrap;
     }
 
-    .hero-sentinel-img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.65));
-      -webkit-mask-image: radial-gradient(ellipse 62% 72% at 50% 50%, black 35%, rgba(0, 0, 0, 0.75) 65%, transparent 94%);
-      mask-image: radial-gradient(ellipse 62% 72% at 50% 50%, black 35%, rgba(0, 0, 0, 0.75) 65%, transparent 94%);
+    .btn-replay-flight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(18, 25, 17, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 0.5rem 1.05rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
 
-    @keyframes sentinel-subtle-hover {
-      0% { transform: translate(-50%, -50%) translateY(0px); }
-      100% { transform: translate(-50%, -50%) translateY(-10px); }
+    .btn-replay-flight:hover {
+      background: rgba(26, 36, 24, 0.95);
+      color: #ffffff;
+      border-color: var(--accent-amber);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(226, 179, 91, 0.25);
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(18, 25, 17, 0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-full);
+      padding: 0.5rem 0.95rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-sage);
+    }
+
+    .live-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-live 2s infinite;
+    }
+
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
     }
 
     /* Hero Two-Column Grid */
@@ -1297,7 +1369,7 @@
       padding: 0.75rem 1.45rem;
       border-radius: var(--radius-full);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      z-index: 1000;
+      z-index: 2500;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.3s ease;
@@ -1308,6 +1380,184 @@
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+    }
+
+    /* Modal & Drawer Component Styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 15, 10, 0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #141d13;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 540px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(226, 179, 91, 0.15);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.25s var(--ease-fluid);
+      position: relative;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .modal-close-btn {
+      font-size: 1.75rem;
+      line-height: 1;
+      color: var(--text-secondary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: #ffffff;
+    }
+
+    .modal-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-code-box {
+      background: #090d09;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-amber);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-copy-code {
+      background: rgba(226, 179, 91, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(226, 179, 91, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy-code:hover {
+      background: var(--accent-amber);
+      color: #141d13;
+    }
+
+    .modal-spec-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .spec-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.85rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+
+    .spec-pill strong {
+      color: #ffffff;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost-modal {
+      background: none;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      border-radius: var(--radius-full);
+      padding: 0.85rem 1.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ghost-modal:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+    }
+
+    /* Telemetry Side Drawer */
+    .drawer-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 540px;
+      background: #141d13;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 2.5rem 2rem;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open .drawer-panel {
+      transform: translateX(0);
     }
   </style>
 </head>
@@ -1351,15 +1601,42 @@
          2. HERO SECTION
          ============================================================= -->
     <section class="hero-canopy-section" id="hero">
-      <!-- Monumental Watermark Wordmark Behind Sentinel -->
-      <div class="hero-watermark-wordmark" aria-hidden="true">CORVUS</div>
-
-      <!-- Centered Avian Sentinel -->
-      <div class="hero-sentinel-center">
-        <img src="assets/hero-sentinel.png" alt="Corvus Sentinel in alert canopy stance" class="hero-sentinel-img" width="810" height="950" />
+      <!-- Full-bleed background video container with sun-shafted flight -->
+      <div class="hero-video-bg-container">
+        <video
+          id="heroSentinelVideo"
+          class="hero-sentinel-video"
+          autoplay
+          muted
+          playsinline
+          preload="auto"
+          poster="assets/canopy-bg.jpg"
+        >
+          <source src="assets/hero-sentinel.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-top-vignette"></div>
+        <div class="hero-bottom-vignette"></div>
       </div>
 
-      <div class="container hero-content-grid">
+      <!-- Monumental Watermark Wordmark Behind Sentinel -->
+      <div class="hero-watermark-wordmark" id="heroWatermark" aria-hidden="true">CORVUS</div>
+
+      <!-- Floating Flight Controls & Live Status Tag -->
+      <div class="hero-flight-controls">
+        <div class="live-status-pill">
+          <span class="live-dot-pulse"></span>
+          <span>Sentinel Active &middot; 12ms Response</span>
+        </div>
+        <button class="btn-replay-flight" id="btnReplayFlight" onclick="replaySentinelFlight()" title="Watch sentinel flight entrance again">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>Replay Flight</span>
+        </button>
+      </div>
+
+      <div class="container hero-content-grid" id="heroContentGrid">
         <!-- Left Editorial Column -->
         <div class="hero-editorial-left">
           <div class="hero-signal-kicker">
@@ -1377,7 +1654,7 @@
           </p>
 
           <div class="hero-cta-bar">
-            <button class="btn-amber-pill" onclick="triggerAction('Start Free')">Start free</button>
+            <button class="btn-amber-pill" onclick="openInstallModal()">Start free</button>
             <a href="#simulator" class="link-watch-system">
               <span>Watch the system</span>
               <span style="font-size: 1.1rem;">↗</span>
@@ -1401,7 +1678,7 @@
           <!-- Dual Chamfered Kraft Cards -->
           <div class="kraft-cards-group">
             <!-- Card 1: Detection -->
-            <div class="kraft-card" onclick="triggerAction('Detection Spec')">
+            <div class="kraft-card" onclick="openTelemetryDrawer('detection')">
               <div class="kraft-tab-header">
                 <span class="kraft-tab-badge">Detection</span>
               </div>
@@ -1414,7 +1691,7 @@
             </div>
 
             <!-- Card 2: Coverage -->
-            <div class="kraft-card" onclick="triggerAction('Coverage Spec')">
+            <div class="kraft-card" onclick="openTelemetryDrawer('coverage')">
               <div class="kraft-tab-header">
                 <span class="kraft-tab-badge">Coverage</span>
               </div>
@@ -1779,6 +2056,59 @@
     </div>
   </footer>
 
+  <!-- =============================================================
+       MODAL: QUICKSTART INSTALL
+       ============================================================= -->
+  <div class="modal-backdrop" id="modalInstall" onclick="if(event.target===this)closeInstallModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <div class="sentinel-arc-mark" style="width:22px;height:22px;">
+            <svg viewBox="0 0 24 24"><path d="M4 18C4 11 9 6 16 6"/><path d="M8 18C8 13.5 11.5 10 16 10"/><circle cx="17.5" cy="8" r="1.5" fill="var(--accent-amber)" stroke="none"/></svg>
+          </div>
+          <h3 class="modal-title">Deploy Corvus Sentinel</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeInstallModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Single-command eBPF agent initialization. Instant node discovery and autonomous anomaly containment in &lt;12ms with zero human intervention.
+        </p>
+        <div class="modal-code-box">
+          <code>curl -sSL https://get.corvus.security | sh</code>
+          <button class="btn-copy-code" onclick="copyInstallCmd()">Copy</button>
+        </div>
+        <div class="modal-spec-grid">
+          <div class="spec-pill"><span>Kernel Engine:</span> <strong>Linux 5.8+ (eBPF bytecode)</strong></div>
+          <div class="spec-pill"><span>Overhead:</span> <strong>&lt;0.2% CPU / 18MB RAM</strong></div>
+          <div class="spec-pill"><span>Response Latency:</span> <strong>12ms Process Isolation</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-amber-pill" onclick="triggerAction('Download Air-Gap Package')">Download Air-Gap Tarball</button>
+        <button class="btn-ghost-modal" onclick="closeInstallModal()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       DRAWER: TELEMETRY INSPECTION
+       ============================================================= -->
+  <div class="modal-backdrop" id="drawerTelemetry" onclick="if(event.target===this)closeTelemetryDrawer()">
+    <div class="drawer-panel">
+      <div class="modal-header">
+        <div>
+          <span class="section-kicker" id="drawerKicker" style="font-size:0.75rem; color:var(--accent-amber);">TELEMETRY DEEP DIVE</span>
+          <h3 class="modal-title" id="drawerTitle">12ms Autonomous Detection</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeTelemetryDrawer()">&times;</button>
+      </div>
+      <div class="modal-body" id="drawerBody">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast-pill-alert" id="toastAlert">Copied to clipboard.</div>
 
@@ -1796,7 +2126,120 @@
       }
     });
 
-    // 2. Interactive Alert Noise Simulator
+    // 2. Sentinel Flight Video Freeze & Replay Control
+    const heroVideo = document.getElementById('heroSentinelVideo');
+    if (heroVideo) {
+      // Plays once and freezes into its own final frame (~7.35s) so the join never shows
+      heroVideo.addEventListener('timeupdate', () => {
+        if (heroVideo.currentTime >= 7.35) {
+          heroVideo.pause();
+        }
+      });
+      heroVideo.addEventListener('ended', () => {
+        heroVideo.pause();
+      });
+      // Handle prefers-reduced-motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        heroVideo.currentTime = 7.35;
+        heroVideo.pause();
+      }
+    }
+
+    function replaySentinelFlight() {
+      if (heroVideo) {
+        heroVideo.currentTime = 0;
+        heroVideo.play();
+        showToast('Replaying Sentinel Flight Entrance...');
+      }
+    }
+
+    // 3. Telemetry Drawer & Install Modal Logic
+    const modalInstall = document.getElementById('modalInstall');
+    const drawerTelemetry = document.getElementById('drawerTelemetry');
+    const drawerTitle = document.getElementById('drawerTitle');
+    const drawerKicker = document.getElementById('drawerKicker');
+    const drawerBody = document.getElementById('drawerBody');
+
+    function openInstallModal() {
+      if (modalInstall) modalInstall.classList.add('open');
+    }
+
+    function closeInstallModal() {
+      if (modalInstall) modalInstall.classList.remove('open');
+    }
+
+    function copyInstallCmd() {
+      navigator.clipboard.writeText('curl -sSL https://get.corvus.security | sh').then(() => {
+        showToast('Command copied: curl -sSL https://get.corvus.security | sh');
+      }).catch(() => {
+        showToast('Command copied to clipboard.');
+      });
+    }
+
+    const telemetrySpecs = {
+      detection: {
+        kicker: 'KERNEL TELEMETRY PIPELINE',
+        title: '12ms Autonomous Detection Trace',
+        html: `
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; background: #0a0f0a; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem; line-height: 1.7;">
+            <div style="color: #6ee7b7; margin-bottom: 0.5rem;">[T+0.0ms] PACKET_INGRESS: Raw socket buffer evaluated</div>
+            <div style="color: #93c5fd; margin-bottom: 0.5rem;">[T+2.4ms] EBPF_VERIFIER: 4,000 heuristic bytecode signatures</div>
+            <div style="color: #fde047; margin-bottom: 0.5rem;">[T+6.1ms] MEMORY_GUARD: Anonymous mmap anomaly flagged</div>
+            <div style="color: #f87171; margin-bottom: 0.5rem;">[T+11.8ms] CONTAINMENT: Process PID isolated via seccomp</div>
+            <div style="color: var(--accent-amber); font-weight: 700;">[T+12.0ms] SENTINEL_SEALED: Cryptographic audit generated</div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
+            Corvus deploys directly into the Linux ring-0 kernel through sandboxed eBPF bytecode. Unlike user-space daemons that suffer from context-switching delays, Corvus identifies and suppresses memory-injection exploits before syscall return.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn-amber-pill" onclick="openInstallModal()" style="font-size: 0.8rem; padding: 0.65rem 1.25rem;">Deploy on Cluster</button>
+            <button class="btn-ghost-modal" onclick="closeTelemetryDrawer()">Close Trace</button>
+          </div>
+        `
+      },
+      coverage: {
+        kicker: 'CONTAINMENT SLA & PROOF',
+        title: '99.98% Autonomous Suppression',
+        html: `
+          <div style="background: #0a0f0a; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">ACTIVE NODES</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #fff;">142,800+</div>
+              </div>
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">FALSE-PAGING SLA</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: var(--accent-amber);">0.02%</div>
+              </div>
+            </div>
+            <div style="font-size: 0.82rem; color: #a7b39e; line-height: 1.5;">
+              Over 320 global security teams run Corvus in live sovereign production without human pager alerts.
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
+            Every anomalous container, sidecar injection, and privilege escalation is quarantined inside isolated cgroups. The remaining cluster workload proceeds with zero interruption.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn-amber-pill" onclick="openInstallModal()" style="font-size: 0.8rem; padding: 0.65rem 1.25rem;">Get Access</button>
+            <button class="btn-ghost-modal" onclick="closeTelemetryDrawer()">Close</button>
+          </div>
+        `
+      }
+    };
+
+    function openTelemetryDrawer(type) {
+      const data = telemetrySpecs[type] || telemetrySpecs.detection;
+      drawerKicker.textContent = data.kicker;
+      drawerTitle.textContent = data.title;
+      drawerBody.innerHTML = data.html;
+      drawerTelemetry.classList.add('open');
+    }
+
+    function closeTelemetryDrawer() {
+      if (drawerTelemetry) drawerTelemetry.classList.remove('open');
+    }
+
+    // 4. Interactive Alert Noise Simulator
     const chipsContainer = document.getElementById('chipsContainer');
     const metricIngress = document.getElementById('metricIngress');
     const metricPaged = document.getElementById('metricPaged');
@@ -1849,7 +2292,7 @@
     // Initialize Simulator at 95%
     updateNoiseSim(95);
 
-    // 3. FAQ Accordion Interaction
+    // 5. FAQ Accordion Interaction
     function toggleFaq(btn) {
       const item = btn.parentElement;
       const isActive = item.classList.contains('active');
@@ -1859,7 +2302,7 @@
       }
     }
 
-    // 4. CLI Copy Action
+    // 6. CLI Copy Action
     function copyCli() {
       const text = document.getElementById('cliCommand').textContent;
       navigator.clipboard.writeText(text).then(() => {
@@ -1869,7 +2312,7 @@
       });
     }
 
-    // 5. Toast Feedback
+    // 7. Toast Feedback
     let toastTimer = null;
     function showToast(msg) {
       const toast = document.getElementById('toastAlert');
