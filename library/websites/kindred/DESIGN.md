@@ -1,13 +1,13 @@
 # Kindred — Design System Specification
 
 ## Brand Overview
-**Kindred** is an umbrella technology collective crafting calm, intentional digital products for the rhythm of modern family life. Rooted in dignity, patience, and generational care, Kindred rejects hyper-engaging dopamine loops in favor of enduring, calm utility across parenting, eldercare coordination, and shared household routines.
+**Kindred** is an umbrella technology collective crafting calm, intentional digital products for the rhythm of modern family life. Rooted in dignity, patience, and generational care, Kindred builds enduring tools across parenting, co-parenting coordination, household scheduling, and family communication.
 
 ## Visual Tone & Principles
-- **Editorial & Restrained:** Grounded by authoritative yet warm display serif typography reminiscent of vintage bookcraft and thoughtful quarterly journals.
-- **Airy & Unhurried:** Generous vertical rhythm (`80px`–`120px` section padding) and single wide-column reading paths.
-- **Warm Tactility:** Linen background (`#f9f6f2`), deep plum ink typography (`#512731`), soft buttery yellow accent panels (`#f7eaa5`), and muted amethyst secondary notes (`#a48c94`).
-- **Human Bookends:** Rounded candid photography tiles (8px radius) anchored at viewport margins to frame conversational headlines without cluttering the reading path.
+- **Editorial Warmth:** High-contrast editorial display serif (`Cormorant Garamond` / `Playfair Display`) paired with clean geometric sans (`DM Sans`).
+- **Warm Tactile Canvas:** Warm linen background (`#F8F4EE`), deep rich plum ink (`#421721`), vibrant peach/coral accents (`#FDA76E` and `#FCAB72`), and a calming taupe-greige section backdrop (`#E6DED5`).
+- **Authentic Candid Photography:** Real, candid human photography of everyday family life (cooking, laughing, playing outdoors, walking to school) framed as corner bookends and full-bleed split cards.
+- **50/50 Split Pastel Product Cards:** Curated four-product portfolio displayed in 50/50 horizontal split cards pairing real photography with muted pastel color blocks (slate blue `#A7AEBA`, sage green `#B0B490`, dusty mauve `#C9ACAA`, and soft butter yellow `#F5E795`).
 
 ---
 
@@ -16,80 +16,72 @@
 ### Color Palette
 ```css
 :root {
-  /* Core Canvas & Text */
-  --color-neutral: #f9f6f2;                /* Warm linen canvas */
-  --color-surface: var(--color-neutral);
-  --color-primary: #512731;                /* Deep plum ink */
-  --color-on-surface: var(--color-primary);
+  /* Canvas & Ink */
+  --color-canvas: #F8F4EE;         /* Warm pale linen canvas */
+  --color-ink: #421721;            /* Deep plum ink for text, rules, and borders */
+  --color-peach-card: #FDA76E;     /* Warm apricot-peach for About card */
+  --color-brands-bg: #E6DED5;      /* Warm taupe-greige canvas for Brands section */
+  --color-careers-bg: #FCAB72;     /* Warm apricot-coral for Join Our Team banner */
+  --color-footer-bg: #FAF6F1;      /* Clean neutral linen footer */
 
-  /* Accents & Highlights */
-  --color-secondary: #f7eaa5;              /* Soft butter yellow accent */
-  --color-brand-gothic-amethyst: #a48c94;  /* Dusty mauve / amethyst */
-  --color-rule: rgba(81, 39, 49, 0.16);   /* Subtle plum rule */
-  --color-rule-solid: #512731;             /* Solid vertical accent rule */
-
-  /* Elevation */
-  --shadow-sm: 0 4px 14px rgba(81, 39, 49, 0.08);
-  --shadow-md: 0 10px 28px rgba(81, 39, 49, 0.12);
+  /* Brand Cards Pastel Themes */
+  --color-card-blue: #A7AEBA;      /* HearthCare: Slate Blue */
+  --color-card-green: #B0B490;     /* Nook: Sage Green */
+  --color-card-mauve: #C9ACAA;     /* KinLink: Dusty Mauve */
+  --color-card-yellow: #F5E795;    /* RouteCare: Soft Butter Yellow */
 
   /* Radii */
-  --radius-button: 5px;
-  --radius-card: 8px;
-  --radius-tile: 8px;
-
-  /* Spacing Scale */
-  --space-xs: 8px;
-  --space-sm: 20px;
-  --space-md: 46px;
-  --space-lg: 80px;
-  --space-xl: 110px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
 }
 ```
 
-### Typography Hierarchy
-- **Display Serif (Headlines):** `Playfair Display`, `Cormorant Garamond`, Georgia, serif
-  - `headline-lg`: `110px` / `1.15` line-height, 400 weight (Hero display)
-  - `headline-md`: `72px` / `1.25` line-height, 400 weight (Section titles)
-  - `headline-sm`: `47px` / `1.35` line-height, 400 weight (Careers banner & feature leads)
-- **Geometric Sans (Body, Kickers & Navigation):** `DM Sans`, Inter, -apple-system, sans-serif
-  - `headline-xs / kicker`: `18px`–`24px`, uppercase, `0.08em` tracking, 500 weight
-  - `body-lg / lead`: `20px` / `1.6` line-height, 400 weight
-  - `body-md`: `16px` / `1.6` line-height, 400 weight
-  - `nav / button`: `16px` / `1.2`, 500 weight
+### Typography Scale
+- **Display Serif:** `Cormorant Garamond`, `Playfair Display`, serif
+  - Hero Headline: `clamp(52px, 6.2vw, 84px)`, `line-height: 1.12`
+  - Section Headings: `clamp(40px, 4.4vw, 58px)`, `line-height: 1.18`
+  - Product Card Headings: `26px`, `line-height: 1.28`
+- **Body Sans:** `DM Sans`, -apple-system, sans-serif
+  - Kickers: `13px`, uppercase, `0.12em` letter-spacing with leading horizontal rule `—`
+  - Body Text: `17px`, `line-height: 1.6`
+  - Navigation & Buttons: `14px`–`15px`, `font-weight: 500`
 
 ---
 
 ## Component Architecture
 
 1. **Global Header:**
-   - Wordmark left in serif (`Playfair Display`, 24px) paired with subtle subscript pill.
-   - Centered navigation links (`About`, `Collective Brands`, `Philosophy`, `Careers`) with plum underline hover transitions.
-   - Far-right prominent text-link button: "View Open Roles →" with subtle plum border.
+   - Left: Wordmark in serif (`Kindred`).
+   - Center: Inline navigation (`About`, `Brands`, `Careers`).
+   - Right: "View Open Roles" button with 1px plum border and solid linen fill.
 
-2. **Hero Display with Corner Photo Framing:**
-   - Centered oversized two-line serif headline (`110px`) in plum ink.
-   - Symmetrically anchored candid photo tiles at top-left and top-right margins with 8px radius and soft shadow, framing the headline without encroaching on text flow.
+2. **Hero Display with Real Corner Photo Framing:**
+   - Top-left photo: Mother carrying daughter on back laughing outdoors (`border-radius: 0 16px 16px 0`).
+   - Top-right photo: Parents and daughter baking pizza in kitchen (`border-radius: 0 0 0 16px`).
+   - Center headline: "We believe in / putting families first" in 80px display serif.
+   - Lead copy block: 1.5px vertical plum rule with indented paragraph and dual inline text links with filled circular arrow badges (`↗`).
+   - Right photo: Portrait tile of father carrying child on shoulders with smiling grandmother.
 
-3. **Lead Copy Callout (Two-Column):**
-   - Left column: 1px deep plum vertical rule with `20px` inset, containing 20px lead editorial copy and two link-style CTAs with hover arrow nudges ("Explore Brands", "Open Roles").
-   - Right column: Portrait candid photography card with subtle plum caption.
+3. **About Section (Two Equal Cards):**
+   - Left card: Father and son playing soccer on green grass (`border-radius: 18px`).
+   - Right card: Solid `#FDA76E` peach card with `— ABOUT` kicker, 52px serif headline ("Working in harmony with families to simplify daily life"), and thoughtful body paragraph.
 
-4. **Philosophy & About Grid:**
-   - Kicker overline tag in uppercase geometric sans.
-   - Mid-size headline (`72px`) paired with two-column narrative and a soft butter yellow accent card (`#f7eaa5`) highlighting the Kindred Operating Manifesto.
+4. **Brands Section (Warm Taupe `#E6DED5`):**
+   - Header with `— BRANDS` kicker and two-column layout.
+   - 2x2 grid of 50/50 split cards pairing candid photos with solid pastel color blocks:
+     - **HearthCare**: Slate Blue (`#A7AEBA`) — "The world's leading co-parenting app"
+     - **Nook**: Sage Green (`#B0B490`) — "The leading family organization app"
+     - **KinLink**: Dusty Mauve (`#C9ACAA`) — "The top global family communication & coordination app"
+     - **RouteCare**: Soft Yellow (`#F5E795`) — "The fast & simple way to create personalized parenting schedules"
+   - Each card features a bottom divider with brand wordmark and circular arrow badge `↗`.
 
-5. **Collective Portfolio Brands Row:**
-   - Curated showcase of Kindred's 4 core family technology initiatives:
-     - **Hearth**: Household rhythm and shared family calendar.
-     - **Nook**: Postpartum and early childhood milestone journaling.
-     - **Tether**: Intergenerational care and elder wellbeing check-ins.
-     - **Cradle**: Pediatric nutrition and holistic developmental tracking.
-   - Interactive hover cards with plum arrow transitions and category badges.
+5. **Careers Section (#FCAB72 Apricot-Peach):**
+   - Centered "Join our Team" headline and subhead with `Open Roles ↗` link button.
+   - Horizontal team photo strip (`team-stairs.jpg`, `team-event.jpg`, `team-chat.jpg`).
+   - 8 pagination dots.
 
-6. **Careers Callout Banner:**
-   - High-contrast highlight container in `--color-secondary` (`#f7eaa5`).
-   - `46px` internal padding, `8px` rounded corners.
-   - Serif `47px` headline paired with prominent action link.
-
-7. **Footer:**
-   - Clean, stacked editorial links, contact channel (`hello@kindredcare.co`), copyright 2026, and noindex/privacy notes.
+6. **Global Footer (#FAF6F1):**
+   - Columns for Brands, Contact, and geometric optical pinwheel SVG brand mark.
+   - Bottom row with copyright, Site Credits link, and LinkedIn icon.
