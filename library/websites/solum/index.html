@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solum Reserve — The 2,140m Single Bean Chronometer</title>
+  <meta name="description" content="Cultivated at 2,140 meters in the Colombian Andes. Roasted with chronometric horology precision. An ultra-luxury single-lot coffee bean launched as a precision instrument." />
+  
+  <!-- Privacy & Robot Directives -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN TOKENS & RESET
+       ------------------------------------------------------------- */
+    :root {
+      --bg: #060709;
+      --bg-surface: #0c0e13;
+      --bg-card: rgba(18, 20, 26, 0.75);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.15);
+      --border-gold: rgba(197, 160, 89, 0.35);
+      
+      --gold: #c5a059;
+      --gold-bright: #e7c77e;
+      --gold-dim: #7f6432;
+      --gold-glow: rgba(197, 160, 89, 0.12);
+      
+      --text: #f5f4ef;
+      --text-muted: #8e8f99;
+      --text-dim: #555763;
+      --text-gold: #d4b472;
+
+      --thermal-cyan: #22d3ee;
+      --thermal-amber: #f59e0b;
+      --thermal-crimson: #ef4444;
+
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --header-h: 72px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg);
+      overflow-x: hidden;
+      position: relative;
+      selection-background-color: var(--gold);
+      selection-color: var(--bg);
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    /* -------------------------------------------------------------
+       CUSTOM CURSOR & AMBIENT SCAN GRID
+       ------------------------------------------------------------- */
+    .crosshair-cursor {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: width 0.2s var(--ease-out), height 0.2s var(--ease-out), border-color 0.2s;
+      mix-blend-mode: difference;
+    }
+    .crosshair-cursor::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: var(--gold-bright);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+    .crosshair-cursor.hovering {
+      width: 52px;
+      height: 52px;
+      border-color: var(--gold-bright);
+      background: rgba(197, 160, 89, 0.08);
+    }
+
+    .ambient-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* -------------------------------------------------------------
+       HEADER & NAVIGATION BAR
+       ------------------------------------------------------------- */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(6, 7, 9, 0.7);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--gold);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-mark::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px dashed var(--gold-bright);
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.22em;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .brand-edition {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      padding: 2px 8px;
+      border: 1px solid var(--border-gold);
+      border-radius: 2px;
+      background: var(--gold-glow);
+    }
+
+    .nav-stats-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .telemetry-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .telemetry-label {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .telemetry-val {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .telemetry-val.gold {
+      color: var(--text-gold);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .audio-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+    .audio-btn:hover {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+    .audio-wave {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 12px;
+    }
+    .audio-bar {
+      width: 2px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 1px;
+      transition: height 0.2s ease;
+    }
+    .audio-btn.active .audio-bar:nth-child(1) { animation: wave 0.8s infinite ease-in-out alternate; }
+    .audio-btn.active .audio-bar:nth-child(2) { animation: wave 0.8s 0.2s infinite ease-in-out alternate; }
+    .audio-btn.active .audio-bar:nth-child(3) { animation: wave 0.8s 0.4s infinite ease-in-out alternate; }
+
+    @keyframes wave {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    .reserve-pill-btn {
+      background: linear-gradient(135deg, #d4b472 0%, #aa843c 100%);
+      color: #060709;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 10px 22px;
+      border-radius: 4px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-transform: uppercase;
+    }
+    .reserve-pill-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(197, 160, 89, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       SCROLLYTELLING CONTAINER & STAGES
+       ------------------------------------------------------------- */
+    .scrolly-container {
+      position: relative;
+      width: 100%;
+      height: 600vh; /* 6 full viewport heights for 5 sequential beats + finale */
+    }
+
+    .scrolly-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* The interactive canvas rendering the bean, lasers, and particles */
+    #bean-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 12;
+      pointer-events: all;
+    }
+
+    /* Photographic overlay fallback / blend */
+    .photo-overlay-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 11;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+    .photo-overlay-img {
+      max-width: 480px;
+      max-height: 480px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.9));
+    }
+
+    /* Radial luxury vignette */
+    .stage-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.04) 0%, rgba(6, 7, 9, 0.6) 50%, rgba(6, 7, 9, 0.98) 100%);
+      pointer-events: none;
+      z-index: 13;
+    }
+
+    /* Chronometer compass rings */
+    .compass-calipers {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      transform: translate(-50%, -50%);
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 14;
+      transition: transform 0.5s var(--ease-out);
+    }
+    .compass-calipers::before {
+      content: '';
+      position: absolute;
+      inset: 30px;
+      border: 1px solid rgba(197, 160, 89, 0.15);
+      border-radius: 50%;
+    }
+    .caliper-tick {
+      position: absolute;
+      width: 1px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      top: 0;
+      left: 50%;
+      transform-origin: 0 300px;
+    }
+
+    /* HUD overlay telemetry */
+    .stage-hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      padding: calc(var(--header-h) + 32px) 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hud-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--text-gold);
+      background: rgba(197, 160, 89, 0.06);
+      border: 1px solid var(--border-gold);
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+    .hud-pulse {
+      width: 6px;
+      height: 6px;
+      background: var(--gold-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--gold);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .chronometer-dial {
+      font-family: var(--font-mono);
+      text-align: right;
+    }
+    .dial-seconds {
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+    .dial-sub {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.14em;
+    }
+
+    /* Narrative Beat Content Cards */
+    .narrative-card-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .narrative-card {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+      max-width: 440px;
+      pointer-events: all;
+    }
+
+    .narrative-card.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Beat 1 Position: Bottom Left */
+    .beat-card-1 {
+      bottom: 60px;
+      left: 60px;
+    }
+
+    /* Beat 2 Position: Center Right */
+    .beat-card-2 {
+      top: 38%;
+      right: 60px;
+    }
+
+    /* Beat 3 Position: Center Left */
+    .beat-card-3 {
+      top: 38%;
+      left: 60px;
+    }
+
+    /* Beat 4 Position: Bottom Right */
+    .beat-card-4 {
+      bottom: 60px;
+      right: 60px;
+    }
+
+    /* Beat 5 Position: Bottom Center */
+    .beat-card-5 {
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      text-align: center;
+      max-width: 580px;
+    }
+    .beat-card-5.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .card-roman {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+      line-height: 1.15;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+    }
+
+    .card-metric-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .metric-value.gold {
+      color: var(--gold-bright);
+    }
+
+    /* Interactive Thermal Scanner HUD Widget */
+    .thermal-lens-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 8px 14px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #fca5a5;
+    }
+    .thermal-lens-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--thermal-crimson);
+      box-shadow: 0 0 10px var(--thermal-crimson);
+    }
+
+    /* Scroll Progress Track */
+    .scroll-progress-line {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 180px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 22;
+    }
+    .scroll-progress-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--gold-bright), var(--gold-dim));
+      transition: height 0.1s linear;
+    }
+    .beat-indicators {
+      position: absolute;
+      left: 42px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      z-index: 22;
+    }
+    .beat-dot {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .beat-dot.active {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .beat-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 2: ROASTING CHRONOMETRY PROFILE (TELEMETRY GRAPH)
+       ------------------------------------------------------------- */
+    .section-telemetry {
+      position: relative;
+      background: var(--bg);
+      border-top: 1px solid var(--border-subtle);
+      padding: 120px 48px;
+      z-index: 30;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      max-width: 780px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .section-subtext {
+      color: var(--text-muted);
+      max-width: 640px;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      margin-bottom: 60px;
+    }
+
+    /* SVG Curve Graph Card */
+    .graph-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      margin-bottom: 60px;
+    }
+
+    .graph-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 20px;
+    }
+
+    .graph-title {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text);
+      letter-spacing: 0.08em;
+    }
+
+    .graph-legend {
+      display: flex;
+      gap: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+    }
+    .legend-color {
+      width: 12px;
+      height: 3px;
+      border-radius: 2px;
+    }
+    .legend-color.bean-temp { background: var(--gold); }
+    .legend-color.ror { background: var(--thermal-cyan); }
+
+    .graph-svg-container {
+      width: 100%;
+      height: 320px;
+      position: relative;
+    }
+
+    .graph-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 3: SPECIFICATIONS MATRIX (HOROLOGY SHEET)
+       ------------------------------------------------------------- */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 100px;
+    }
+
+    .spec-box {
+      background: rgba(14, 16, 21, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .spec-box:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
+    .spec-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 14px;
+    }
+    .spec-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .spec-value {
+      font-family: var(--font-mono);
+      font-size: 1.45rem;
+      color: var(--text-gold);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .spec-detail {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 4: ACQUISITION & THE CNC CAPSULE
+       ------------------------------------------------------------- */
+    .acquisition-banner {
+      background: linear-gradient(135deg, rgba(22, 24, 32, 0.9) 0%, rgba(10, 11, 15, 0.95) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 64px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(197, 160, 89, 0.3);
+    }
+
+    .acq-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .acq-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--gold-bright);
+      letter-spacing: 0.2em;
+    }
+
+    .acq-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .acq-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .acq-pricing {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .price-value {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .price-unit {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .acq-button-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .btn-primary-reserve {
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
+      color: #060709;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 16px 36px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+    .btn-primary-reserve:hover {
+      box-shadow: 0 0 30px rgba(197, 160, 89, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary-cert {
+      border: 1px solid var(--border-light);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      padding: 16px 28px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      transition: border-color 0.3s;
+    }
+    .btn-secondary-cert:hover {
+      border-color: var(--gold);
+      color: var(--text-gold);
+    }
+
+    .capsule-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed var(--border-subtle);
+      border-radius: 6px;
+      padding: 40px;
+      background: radial-gradient(circle, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
+      text-align: center;
+    }
+
+    .capsule-render-container {
+      width: 100%;
+      max-width: 380px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .capsule-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));
+    }
+
+    .capsule-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+      letter-spacing: 0.12em;
+    }
+
+    /* -------------------------------------------------------------
+       SITE FOOTER
+       ------------------------------------------------------------- */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .footer-left {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--text);
+      letter-spacing: 0.15em;
+    }
+
+    /* -------------------------------------------------------------
+       MODAL / DIALOG (ACQUISITION DRAWER)
+       ------------------------------------------------------------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 7, 9, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      max-width: 540px;
+      width: 100%;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+      transform: translateY(20px);
+      transition: transform 0.3s var(--ease-out);
+    }
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+    .modal-close-btn:hover { color: var(--text); }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .modal-sub {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    .reserve-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .form-input {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .form-submit-btn {
+      background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
+      color: #060709;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 14px;
+      border-radius: 4px;
+      margin-top: 12px;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .form-submit-btn:hover { opacity: 0.9; }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ------------------------------------------------------------- */
+    @media (max-width: 900px) {
+      .site-header { padding: 0 20px; }
+      .nav-stats-telemetry { display: none; }
+      .stage-hud { padding: calc(var(--header-h) + 16px) 20px 24px; }
+      .beat-card-1, .beat-card-2, .beat-card-3, .beat-card-4 {
+        top: auto !important;
+        right: auto !important;
+        bottom: 40px !important;
+        left: 20px !important;
+        right: 20px !important;
+        max-width: calc(100vw - 40px);
+      }
+      .scroll-progress-line, .beat-indicators { display: none; }
+      .acquisition-banner { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
+      .section-telemetry { padding: 80px 20px; }
+      .site-footer { flex-direction: column; gap: 24px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Crosshair Cursor -->
+  <div class="crosshair-cursor" id="crosshair"></div>
+
+  <!-- Ambient Layout Grid -->
+  <div class="ambient-grid"></div>
+
+  <!-- Header Navigation -->
+  <header class="site-header">
+    <div class="brand-group">
+      <div class="brand-mark"></div>
+      <div class="brand-name">SOLUM</div>
+      <div class="brand-edition">EDITION 01</div>
+    </div>
+
+    <div class="nav-stats-telemetry">
+      <div class="telemetry-item">
+        <span class="telemetry-label">Terroir Altitude</span>
+        <span class="telemetry-val gold">2,140 M AMSL</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="telemetry-label">Varietal</span>
+        <span class="telemetry-val">Gesha Micro-Lot</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="telemetry-label">Chronometer Batch</span>
+        <span class="telemetry-val">CAL-2026.01</span>
+      </div>
+      <div class="telemetry-item">
+        <span class="telemetry-label">Certified SCAA</span>
+        <span class="telemetry-val gold">94.2 PTS</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="audio-btn" id="audioToggle" aria-label="Toggle Chronometer Sound">
+        <div class="audio-wave">
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+        </div>
+        <span id="audioLabel">MUTE</span>
+      </button>
+
+      <button class="reserve-pill-btn" onclick="openReserveModal()">RESERVE LOT</button>
+    </div>
+  </header>
+
+  <!-- Main Scrollytelling Pinned Stage -->
+  <div class="scrolly-container" id="scrollyContainer">
+    <div class="scrolly-stage" id="stickyStage">
+
+      <!-- Interactive 3D Canvas -->
+      <canvas id="bean-canvas"></canvas>
+
+      <!-- High-res photographic blend layer -->
+      <div class="photo-overlay-layer" id="photoLayer">
+        <img src="assets/hero-bean.jpg" alt="Solum Reserve Bean Macro" class="photo-overlay-img" id="photoImg" />
+      </div>
+
+      <!-- Stage Vignette Gradient -->
+      <div class="stage-vignette"></div>
+
+      <!-- Caliper Ring -->
+      <div class="compass-calipers" id="caliperRing"></div>
+
+      <!-- Telemetry HUD Overlay -->
+      <div class="stage-hud">
+        <div class="hud-top-row">
+          <div class="hud-badge">
+            <span class="hud-pulse"></span>
+            <span id="hudStateText">STAGE I — ORIGIN CHRONOMETER</span>
+          </div>
+
+          <div class="chronometer-dial">
+            <div class="dial-seconds" id="dialSeconds">00.00s</div>
+            <div class="dial-sub">CHRONOMETRIC ELAPSED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Line -->
+      <div class="scroll-progress-line">
+        <div class="scroll-progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="beat-indicators">
+        <div class="beat-dot active" data-beat="0">I. ORIGIN</div>
+        <div class="beat-dot" data-beat="1">II. SURFACE</div>
+        <div class="beat-dot" data-beat="2">III. THERMAL</div>
+        <div class="beat-dot" data-beat="3">IV. CELLULAR</div>
+        <div class="beat-dot" data-beat="4">V. CAPSULE</div>
+      </div>
+
+      <!-- Narrative Beat Cards -->
+      <div class="narrative-card-container">
+        
+        <!-- Beat 1: Origin -->
+        <div class="narrative-card beat-card-1 active" id="card0">
+          <div class="card-roman">CHAPTER I</div>
+          <h1 class="card-title">The Monolith Bean.</h1>
+          <p class="card-desc">
+            Cultivated above the cloud line at 2,140 meters in Huila, Colombia. Harvested at peak sugar brix and treated not as a consumable crop, but as an irreplaceable single-unit horology specimen.
+          </p>
+          <div class="card-metrics">
+            <div class="card-metric-block">
+              <span class="metric-label">Coordinates</span>
+              <span class="metric-value">04°12'09"N 75°41'W</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Lot Allocation</span>
+              <span class="metric-value gold">500 Units</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beat 2: Surface -->
+        <div class="narrative-card beat-card-2" id="card1">
+          <div class="card-roman">CHAPTER II</div>
+          <h2 class="card-title">Micro-Fissure Topography.</h2>
+          <p class="card-desc">
+            Laser interferometry reveals the central crease depth of 1.42 millimeters. The silverskin chaff is vacuum-stripped at 60 millibar to expose pure caramelized lipid oils with zero scorch marks.
+          </p>
+          <div class="card-metrics">
+            <div class="card-metric-block">
+              <span class="metric-label">Crease Depth</span>
+              <span class="metric-value">1.42 mm</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Moisture Loss</span>
+              <span class="metric-value gold">10.4%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beat 3: Thermal Inflection -->
+        <div class="narrative-card beat-card-3" id="card2">
+          <div class="card-roman">CHAPTER III</div>
+          <h2 class="card-title">Thermodynamic Inflection.</h2>
+          <p class="card-desc">
+            Roasted using convective laminar helium-gas heating. First crack occurs precisely at 204.2°C, halted with liquid nitrogen quenching within an 800-millisecond precision window.
+          </p>
+          <div class="card-metrics">
+            <div class="card-metric-block">
+              <span class="metric-label">First Crack Temp</span>
+              <span class="metric-value">204.2°C</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Dev Time Ratio</span>
+              <span class="metric-value gold">14.8%</span>
+            </div>
+          </div>
+          <div class="thermal-lens-hint">
+            <span class="thermal-lens-dot"></span>
+            <span>HOVER / DRAG CURSOR OVER BEAN TO ENGAGE THERMAL INFRARED SCAN</span>
+          </div>
+        </div>
+
+        <!-- Beat 4: Cellular Cross-Section -->
+        <div class="narrative-card beat-card-4" id="card3">
+          <div class="card-roman">CHAPTER IV</div>
+          <h2 class="card-title">Cellular Honeycomb.</h2>
+          <p class="card-desc">
+            Sub-micron porous cellulose matrix preserves delicate jasmonic acid, bergamot esters, and crystalline sucrose without cellular collapse. An internal lattice built for optimal water extraction kinetics.
+          </p>
+          <div class="card-metrics">
+            <div class="card-metric-block">
+              <span class="metric-label">Lipid Retention</span>
+              <span class="metric-value">15.8%</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Extraction Yield</span>
+              <span class="metric-value gold">22.4%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beat 5: Hermetic Capsule -->
+        <div class="narrative-card beat-card-5" id="card4">
+          <div class="card-roman">CHAPTER V</div>
+          <h2 class="card-title">Hermetic Vault Allotment.</h2>
+          <p class="card-desc">
+            Each individual bean is encapsulated inside a CNC-machined 6061-T6 aerospace aluminum cylindrical vault, backfilled with 99.99% pressurized medical-grade nitrogen under a sapphire crystal crystal optic port.
+          </p>
+          <div class="card-metrics" style="grid-template-columns: repeat(3, 1fr); max-width: 480px; margin: 0 auto;">
+            <div class="card-metric-block">
+              <span class="metric-label">Optic Crystal</span>
+              <span class="metric-value">Sapphire</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Atmosphere</span>
+              <span class="metric-value">N₂ 99.99%</span>
+            </div>
+            <div class="card-metric-block">
+              <span class="metric-label">Edition</span>
+              <span class="metric-value gold">001 / 500</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 2: Roasting Chronometry Curve -->
+  <section class="section-telemetry">
+    <div class="section-tag">PRECISION TELEMETRY</div>
+    <h2 class="section-heading">The Chronometric Roasting Profile.</h2>
+    <p class="section-subtext">
+      Culinary roasting relies on human smell and sound. Solum Reserve calculates heat transfer down to 10-millisecond telemetry cycles, balancing the rate of rise (RoR) to preserve rare floral monoterpenes.
+    </p>
+
+    <div class="graph-card">
+      <div class="graph-card-header">
+        <div class="graph-title">BATCH CURVE: CAL-2026.01 · LOT 04-HUILA</div>
+        <div class="graph-legend">
+          <div class="legend-item">
+            <span class="legend-color bean-temp"></span>
+            <span>Bean Temp (°C)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color ror"></span>
+            <span>Rate of Rise (°C/min)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-svg-container">
+        <svg class="graph-svg" viewBox="0 0 1000 300" preserveAspectRatio="none">
+          <!-- Background Grid Lines -->
+          <line x1="0" y1="50" x2="1000" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+          <line x1="0" y1="120" x2="1000" y2="120" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+          <line x1="0" y1="190" x2="1000" y2="190" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+          <line x1="0" y1="260" x2="1000" y2="260" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+
+          <line x1="250" y1="0" x2="250" y2="300" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4" />
+          <line x1="550" y1="0" x2="550" y2="300" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4" />
+          <line x1="850" y1="0" x2="850" y2="300" stroke="rgba(197,160,89,0.2)" stroke-width="1" stroke-dasharray="4,4" />
+
+          <!-- Bean Temp Curve -->
+          <path d="M 0,260 C 150,250 250,210 400,160 C 550,110 700,75 850,55 C 920,48 980,45 1000,45" 
+                fill="none" stroke="url(#goldGradient)" stroke-width="3" />
+
+          <!-- Rate of Rise Curve -->
+          <path d="M 0,100 C 120,60 250,85 450,140 C 650,195 850,240 1000,265" 
+                fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6,4" />
+
+          <!-- Inflection Point Markers -->
+          <circle cx="250" cy="210" r="4" fill="#c5a059" />
+          <text x="250" y="195" fill="#8e8f99" font-family="JetBrains Mono" font-size="11" text-anchor="middle">DRYING (148°C)</text>
+
+          <circle cx="550" cy="110" r="4" fill="#c5a059" />
+          <text x="550" y="95" fill="#8e8f99" font-family="JetBrains Mono" font-size="11" text-anchor="middle">MAILLARD (168°C)</text>
+
+          <circle cx="850" cy="55" r="5" fill="#f59e0b" />
+          <text x="850" y="40" fill="#e7c77e" font-family="JetBrains Mono" font-size="11" text-anchor="middle" font-weight="700">FIRST CRACK (204.2°C)</text>
+
+          <!-- Gradient Def -->
+          <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#7f6432" />
+              <stop offset="60%" stop-color="#c5a059" />
+              <stop offset="100%" stop-color="#e7c77e" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Specifications Grid -->
+    <div class="specs-grid">
+      <div class="spec-box">
+        <div class="spec-num">SPEC 01 // ORTHOGRAPHY</div>
+        <div class="spec-name">Terroir Micro-Climate</div>
+        <div class="spec-value">Volcanic Andosol</div>
+        <div class="spec-detail">Deep organic mineral ash with a constant 5.8 pH balance, sheltered by high-canopy cloud forests in Pitalito.</div>
+      </div>
+
+      <div class="spec-box">
+        <div class="spec-num">SPEC 02 // SPECTROMETRY</div>
+        <div class="spec-name">Color Grading Index</div>
+        <div class="spec-value">68.4 Agtron</div>
+        <div class="spec-detail">Calibrated via infrared reflectance spectrophotometer to ensure uniform light-cinnamon caramelization.</div>
+      </div>
+
+      <div class="spec-box">
+        <div class="spec-num">SPEC 03 // EXTRACTION</div>
+        <div class="spec-name">Kinetic Brew Barometric</div>
+        <div class="spec-value">9.2 BAR · 93.5°C</div>
+        <div class="spec-detail">Engineered specifically for flat-profile 98mm SSP burr extractions with a 1:2.4 extraction ratio over 27 seconds.</div>
+      </div>
+
+      <div class="spec-box">
+        <div class="spec-num">SPEC 04 // SENSORY</div>
+        <div class="spec-name">Aromatic Signature</div>
+        <div class="spec-value">Jasmine & Bergamot</div>
+        <div class="spec-detail">Followed by white peach, Meyer lemon zest, and an extended cooling finish of crystallised elderflower honey.</div>
+      </div>
+    </div>
+
+    <!-- Acquisition Banner -->
+    <div class="acquisition-banner">
+      <div class="acq-content">
+        <div class="acq-tag">LIMITED HOROLOGY ALLOCATION</div>
+        <h2 class="acq-title">Acquire Edition 01.</h2>
+        <p class="acq-text">
+          A single certified Solum Gesha bean sealed inside the numbered 6061-T6 aluminum hermetic capsule, complete with precision optical calibration certificate and lot provenance dossier.
+        </p>
+
+        <div class="acq-pricing">
+          <div class="price-value">$180</div>
+          <div class="price-unit">USD / ALLOTMENT SPECIMEN</div>
+        </div>
+
+        <div class="acq-button-row">
+          <button class="btn-primary-reserve" onclick="openReserveModal()">RESERVE CAPSULE</button>
+          <button class="btn-secondary-cert" onclick="openCertModal()">VIEW CERTIFICATE</button>
+        </div>
+      </div>
+
+      <div class="capsule-visual">
+        <div class="capsule-render-container">
+          <img src="assets/vial-box.jpg" alt="Solum CNC Capsule" class="capsule-image" id="capsuleImg" />
+        </div>
+        <div class="capsule-meta">CNC MILLED TITANIUM & SAPPHIRE · INDIVIDUALLY SERIALIZED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <div class="footer-brand">SOLUM RESERVE</div>
+      <span>HUILA, COLOMBIA // GENEVA SPECIFICATIONS</span>
+    </div>
+    <div class="footer-right">
+      <span>© 2026 SOLUM HOROLOGY ROASTERS. ALL RIGHTS RESERVED.</span>
+    </div>
+  </footer>
+
+  <!-- Reservation Modal -->
+  <div class="modal-backdrop" id="reserveModal" onclick="closeOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeReserveModal()">✕</button>
+      <h3 class="modal-title">Request Allocation</h3>
+      <div class="modal-sub">SOLUM RESERVE EDITION 01 · 500 UNITS GLOBAL</div>
+
+      <form class="reserve-form" onsubmit="handleReserveSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name / Collector Designation</label>
+          <input type="text" class="form-input" placeholder="e.g. Marcus Vance" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Secure Dispatch Email</label>
+          <input type="email" class="form-input" placeholder="collector@domain.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Serial Allocation</label>
+          <input type="text" class="form-input" placeholder="e.g. Serial #042 or Next Available" />
+        </div>
+        <button type="submit" class="form-submit-btn">CONFIRM ALLOCATION REQUEST</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Audio Synthesis & Interactive Engine Scripts -->
+  <script>
+    /* =============================================================
+       1. WEB AUDIO ESCAPEMENT ENGINE (Procedural Luxury Watch Ticks)
+       ============================================================= */
+    let audioCtx = null;
+    let isAudioActive = false;
+    let lastTickTime = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playChronometerTick(highPitch = false) {
+      if (!isAudioActive || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      if (now - lastTickTime < 0.08) return; // limit tick frequency
+      lastTickTime = now;
+
+      // High-precision horology escapement click
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(highPitch ? 3200 : 2400, now);
+      filter.Q.setValueAtTime(8, now);
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(highPitch ? 1800 : 1200, now);
+      osc.frequency.exponentialRampToValueAtTime(80, now + 0.015);
+
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.025);
+    }
+
+    const audioToggle = document.getElementById('audioToggle');
+    const audioLabel = document.getElementById('audioLabel');
+
+    audioToggle.addEventListener('click', () => {
+      initAudio();
+      isAudioActive = !isAudioActive;
+      audioToggle.classList.toggle('active', isAudioActive);
+      audioLabel.textContent = isAudioActive ? 'AUDIO 60Hz' : 'MUTE';
+      if (isAudioActive) playChronometerTick(true);
+    });
+
+    /* =============================================================
+       2. CUSTOM CROSSHAIR CURSOR
+       ============================================================= */
+    const crosshair = document.getElementById('crosshair');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let curX = mouseX;
+    let curY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function renderCursor() {
+      curX += (mouseX - curX) * 0.2;
+      curY += (mouseY - curY) * 0.2;
+      crosshair.style.left = `${curX}px`;
+      crosshair.style.top = `${curY}px`;
+      requestAnimationFrame(renderCursor);
+    }
+    requestAnimationFrame(renderCursor);
+
+    document.querySelectorAll('button, a, .beat-dot, input').forEach(el => {
+      el.addEventListener('mouseenter', () => crosshair.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => crosshair.classList.remove('hovering'));
+    });
+
+    /* =============================================================
+       3. HIGH-PERFORMANCE PROCEDURAL 3D BEAN & THERMAL CANVAS
+       ============================================================= */
+    const canvas = document.getElementById('bean-canvas');
+    const ctx = canvas.getContext('2d');
+    const photoLayer = document.getElementById('photoLayer');
+    const photoImg = document.getElementById('photoImg');
+    const caliperRing = document.getElementById('caliperRing');
+
+    let width = 0;
+    let height = 0;
+    let scrollFraction = 0;
+    let isThermalActive = false;
+    let thermalProgress = 0;
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Generate caliper ticks
+    for (let i = 0; i < 60; i++) {
+      const tick = document.createElement('div');
+      tick.className = 'caliper-tick';
+      tick.style.transform = `rotate(${i * 6}deg)`;
+      if (i % 5 === 0) {
+        tick.style.height = '14px';
+        tick.style.background = 'rgba(197, 160, 89, 0.6)';
+      }
+      caliperRing.appendChild(tick);
+    }
+
+    // Particle field background
+    const PARTICLE_COUNT = 60;
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      size: Math.random() * 1.8 + 0.5,
+      speed: Math.random() * 0.0003 + 0.0001,
+      alpha: Math.random() * 0.4 + 0.1
+    }));
+
+    // Mouse proximity for thermal scan
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const cx = width / 2;
+      const cy = height / 2;
+      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      if (dist < 180) {
+        isThermalActive = true;
+      } else {
+        isThermalActive = false;
+      }
+    });
+    canvas.addEventListener('mouseleave', () => { isThermalActive = false; });
+
+    function drawBean(progress) {
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. Draw subtle ambient particle telemetry
+      particles.forEach(p => {
+        p.y -= p.speed;
+        if (p.y < 0) p.y = 1;
+        ctx.fillStyle = `rgba(197, 160, 89, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x * width, p.y * height, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // Calculate camera / zoom transforms across the 5 beats
+      // Beat 0: Overview (progress 0.0 - 0.2)
+      // Beat 1: Zoom into surface (0.2 - 0.4)
+      // Beat 2: Thermal cross-section (0.4 - 0.6)
+      // Beat 3: Cellular structure (0.6 - 0.8)
+      // Beat 4: Capsule seal (0.8 - 1.0)
+      
+      let scale = 1.0;
+      let rotAngle = progress * Math.PI * 2.5;
+
+      if (progress < 0.2) {
+        scale = 1.0 + progress * 0.5;
+      } else if (progress < 0.4) {
+        scale = 1.1 + (progress - 0.2) * 1.5;
+      } else if (progress < 0.6) {
+        scale = 1.4;
+      } else if (progress < 0.8) {
+        scale = 1.3 - (progress - 0.6) * 0.8;
+      } else {
+        scale = 0.95;
+      }
+
+      // Smooth thermal transition
+      if (isThermalActive || (progress >= 0.4 && progress < 0.65)) {
+        thermalProgress += (1 - thermalProgress) * 0.1;
+      } else {
+        thermalProgress += (0 - thermalProgress) * 0.1;
+      }
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotAngle * 0.15);
+      ctx.scale(scale, scale);
+
+      // Base dimensions of the Gesha bean
+      const beanW = 200;
+      const beanH = 135;
+
+      // 2. Draw Procedural 3D Bean Body with Specular Curvature
+      ctx.save();
+      ctx.beginPath();
+      // Organic rounded bean silhouette
+      ctx.moveTo(-beanW * 0.8, -beanH * 0.3);
+      ctx.bezierCurveTo(-beanW * 0.9, -beanH * 0.8, beanW * 0.2, -beanH * 0.95, beanW * 0.85, -beanH * 0.2);
+      ctx.bezierCurveTo(beanW * 1.05, beanH * 0.4, -beanW * 0.1, beanH * 0.95, -beanW * 0.75, beanH * 0.5);
+      ctx.closePath();
+
+      // Dynamic Shading: Normal Roasted Chocolate vs Thermal False Color
+      const grad = ctx.createRadialGradient(-30, -40, 20, 0, 0, 180);
+      if (thermalProgress > 0.05) {
+        // Infrared false-color thermal gradient
+        grad.addColorStop(0, `rgba(255, 235, 150, ${0.9 * thermalProgress + 0.1})`);
+        grad.addColorStop(0.3, `rgba(239, 68, 68, ${0.85 * thermalProgress + 0.15})`);
+        grad.addColorStop(0.65, `rgba(180, 20, 80, ${0.75 * thermalProgress + 0.25})`);
+        grad.addColorStop(1, `rgba(34, 211, 238, ${0.6 * thermalProgress + 0.4})`);
+      } else {
+        // Deep caramelized Gesha roast mahogany & gold rim specular
+        grad.addColorStop(0, '#5a3d28');
+        grad.addColorStop(0.4, '#2c1c14');
+        grad.addColorStop(0.85, '#150c08');
+        grad.addColorStop(1, '#080503');
+      }
+
+      ctx.fillStyle = grad;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 40;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // 3. Gold Specular Rim Accent
+      ctx.strokeStyle = `rgba(197, 160, 89, ${0.4 - thermalProgress * 0.2})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 4. Central Fissure / Crease with Depth
+      ctx.beginPath();
+      ctx.moveTo(-beanW * 0.72, -10);
+      ctx.bezierCurveTo(-beanW * 0.2, 18, beanW * 0.1, -16, beanW * 0.76, 5);
+      ctx.strokeStyle = thermalProgress > 0.2 ? '#ffed4a' : 'rgba(10, 6, 4, 0.95)';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Silverskin Chaff Core inside crease
+      ctx.beginPath();
+      ctx.moveTo(-beanW * 0.65, -8);
+      ctx.bezierCurveTo(-beanW * 0.15, 14, beanW * 0.12, -12, beanW * 0.68, 4);
+      ctx.strokeStyle = thermalProgress > 0.2 ? '#ffffff' : 'rgba(212, 180, 114, 0.45)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 5. Thermal Isotherm Contour Rings if Thermal Active
+      if (thermalProgress > 0.02) {
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.35 * thermalProgress})`;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 6]);
+        
+        ctx.beginPath();
+        ctx.ellipse(-15, -10, 100, 65, 0.15, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(-10, -5, 60, 38, 0.15, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+      }
+
+      // 6. Cellular Micro-Lattice Overlay (Beat 4: progress 0.6 - 0.8)
+      if (progress > 0.55 && progress < 0.82) {
+        const latticeAlpha = Math.sin(((progress - 0.55) / 0.27) * Math.PI) * 0.6;
+        ctx.strokeStyle = `rgba(197, 160, 89, ${latticeAlpha})`;
+        ctx.lineWidth = 0.8;
+        const hexSize = 14;
+        for (let q = -4; q <= 4; q++) {
+          for (let r = -3; r <= 3; r++) {
+            const hx = q * hexSize * 1.5;
+            const hy = (r * hexSize * Math.sqrt(3)) + (q % 2 ? (hexSize * Math.sqrt(3) / 2) : 0);
+            if (Math.hypot(hx, hy) < 95) {
+              ctx.beginPath();
+              for (let a = 0; a < 6; a++) {
+                const angle = (a * Math.PI) / 3;
+                const vx = hx + hexSize * 0.5 * Math.cos(angle);
+                const vy = hy + hexSize * 0.5 * Math.sin(angle);
+                if (a === 0) ctx.moveTo(vx, vy);
+                else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath();
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      ctx.restore(); // end bean body
+
+      // 7. Rotating Horology Caliper Arcs & Laser Telemetry Rings
+      ctx.save();
+      ctx.rotate(-rotAngle * 0.3);
+      ctx.strokeStyle = 'rgba(197, 160, 89, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([8, 12]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 220, 0, Math.PI * 1.4);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.beginPath();
+      ctx.arc(0, 0, 260, Math.PI * 0.5, Math.PI * 1.8);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      ctx.restore(); // end center transform
+    }
+
+    /* =============================================================
+       4. SCROLL DRIVER & BEAT DISPATCHER
+       ============================================================= */
+    const scrollyContainer = document.getElementById('scrollyContainer');
+    const dialSeconds = document.getElementById('dialSeconds');
+    const hudStateText = document.getElementById('hudStateText');
+    const progressFill = document.getElementById('progressFill');
+
+    const cards = [
+      document.getElementById('card0'),
+      document.getElementById('card1'),
+      document.getElementById('card2'),
+      document.getElementById('card3'),
+      document.getElementById('card4')
+    ];
+
+    const beatDots = document.querySelectorAll('.beat-dot');
+
+    const hudTitles = [
+      "STAGE I — ORIGIN CHRONOMETER",
+      "STAGE II — MICRO-FISSURE TOPOGRAPHY",
+      "STAGE III — THERMODYNAMIC INFLECTION",
+      "STAGE IV — CELLULAR LATTICE",
+      "STAGE V — HERMETIC CAPSULE SEAL"
+    ];
+
+    let currentBeat = 0;
+
+    function onScroll() {
+      const rect = scrollyContainer.getBoundingClientRect();
+      const totalScrollable = scrollyContainer.offsetHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+
+      scrollFraction = progress;
+
+      // Update chronometer seconds (0.00s -> 60.00s)
+      const secs = (progress * 60).toFixed(2);
+      dialSeconds.textContent = `${secs.padStart(5, '0')}s`;
+
+      // Update vertical progress line
+      progressFill.style.height = `${progress * 100}%`;
+
+      // Caliper compass rotation
+      caliperRing.style.transform = `translate(-50%, -50%) rotate(${progress * 180}deg)`;
+
+      // Determine active beat (5 beats from 0 to 4)
+      const beatIndex = Math.min(4, Math.floor(progress * 5));
+      if (beatIndex !== currentBeat) {
+        currentBeat = beatIndex;
+        hudStateText.textContent = hudTitles[currentBeat];
+        playChronometerTick(currentBeat === 4);
+
+        // Update card active classes
+        cards.forEach((c, idx) => {
+          c.classList.toggle('active', idx === currentBeat);
+        });
+
+        // Update dot active classes
+        beatDots.forEach((d, idx) => {
+          d.classList.toggle('active', idx === currentBeat);
+        });
+      }
+
+      // If photo assets exist, cross-fade gently for extra photorealism on Beat 1 & Beat 5
+      if (photoImg.complete && photoImg.naturalHeight !== 0) {
+        if (progress < 0.15) {
+          photoLayer.style.opacity = (1 - (progress / 0.15)) * 0.45;
+        } else {
+          photoLayer.style.opacity = 0;
+        }
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Interactive beat dot jump clicks
+    beatDots.forEach(d => {
+      d.addEventListener('click', () => {
+        const targetBeat = parseInt(d.dataset.beat, 10);
+        const totalScrollable = scrollyContainer.offsetHeight - window.innerHeight;
+        const targetScroll = scrollyContainer.offsetTop + (targetBeat / 4.5) * totalScrollable;
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      });
+    });
+
+    // Main animation loop
+    function loop() {
+      drawBean(scrollFraction);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    /* =============================================================
+       5. RESERVATION MODAL CONTROLS
+       ============================================================= */
+    const reserveModal = document.getElementById('reserveModal');
+
+    function openReserveModal() {
+      reserveModal.classList.add('open');
+      playChronometerTick(true);
+    }
+
+    function closeReserveModal() {
+      reserveModal.classList.remove('open');
+    }
+
+    function closeOnBackdrop(e) {
+      if (e.target === reserveModal) {
+        closeReserveModal();
+      }
+    }
+
+    function openCertModal() {
+      alert("SOLUM RESERVE ALLOCATION CERTIFICATE\n\nBatch: CAL-2026.01\nOrigin: Huila, Colombia (2,140m AMSL)\nDensity: 0.68 g/mL\nAgtron: 68.4\nCapsule Alloy: 6061-T6 Aluminum with Sapphire Port\nSealed under 99.99% Grade N₂");
+    }
+
+    function handleReserveSubmit(e) {
+      e.preventDefault();
+      alert("Allocation inquiry recorded. The Solum concierge desk will contact you with secure lot verification.");
+      closeReserveModal();
+    }
+  </script>
+</body>
+</html>
