@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Vaelis — AI-Native Command & Control for Sovereign Defense</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Space Grotesk, Inter, Fragment Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Colors */
+      --bg-canvas-dark: #0a0b0d;
+      --bg-card-dark: #121418;
+      --bg-card-dark-hover: #181b22;
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --border-dark-subtle: rgba(255, 255, 255, 0.06);
+
+      --bg-canvas-light: #fbfbfc;
+      --bg-card-light: #ffffff;
+      --bg-card-subtle: #f3f5f8;
+      --border-light: #e4e7eb;
+      --border-light-subtle: #eeeff2;
+
+      --text-dark-primary: #ffffff;
+      --text-dark-secondary: rgba(255, 255, 255, 0.72);
+      --text-dark-muted: rgba(255, 255, 255, 0.44);
+
+      --text-light-primary: #0f1115;
+      --text-light-secondary: #4b525d;
+      --text-light-muted: #848d9a;
+
+      --accent-cobalt: #1e5bf0;
+      --accent-cobalt-hover: #1447c8;
+      --accent-cobalt-light: rgba(30, 91, 240, 0.08);
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+
+      /* Typography */
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Fragment Mono', monospace, ui-monospace;
+
+      /* Radii */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      --shadow-elevated: 0 16px 40px -10px rgba(0, 0, 0, 0.12);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-canvas-dark);
+      color: var(--text-dark-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-canvas-dark);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Fixed Tactical Header */
+    .tactical-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      background: rgba(10, 11, 13, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      padding: 3px 7px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-dark-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.75);
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-link svg {
+      opacity: 0.5;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .nav-link:hover svg {
+      opacity: 1;
+      transform: translateY(1px);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .telemetry-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .telemetry-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+      animation: pulse-dot 2.4s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .btn-briefing {
+      background: #ffffff;
+      color: #0a0b0d;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: 9px 20px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-briefing:hover {
+      background: #ededed;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-briefing svg {
+      transition: transform 0.2s ease;
+    }
+
+    .btn-briefing:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* Mobile hamburger */
+    .mobile-menu-btn {
+      display: none;
+      color: #fff;
+      font-size: 1.25rem;
+      padding: 6px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      min-height: 94vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 120px 48px 60px;
+      background-color: var(--bg-canvas-dark);
+      overflow: hidden;
+    }
+
+    .hero-bg-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      filter: brightness(0.88) contrast(1.1);
+      transform: scale(1.02);
+      transition: transform 10s ease-out;
+    }
+
+    .hero-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 11, 13, 0.45) 0%,
+        rgba(10, 11, 13, 0.15) 30%,
+        rgba(10, 11, 13, 0.75) 75%,
+        #0a0b0d 100%
+      );
+    }
+
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+
+    .hero-content-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 48px;
+    }
+
+    .hero-text-block {
+      max-width: 720px;
+    }
+
+    .hero-classification-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      background: rgba(10, 11, 13, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 24px;
+    }
+
+    .hero-classification-badge span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-amber);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 24px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 580px;
+      margin-bottom: 36px;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn-primary {
+      background: #ffffff;
+      color: #0a0b0d;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 14px 26px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-btn-primary:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.22);
+    }
+
+    .hero-btn-secondary {
+      background: rgba(18, 20, 24, 0.65);
+      color: #ffffff;
+      backdrop-filter: blur(12px);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 14px 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .hero-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Picture-in-picture video card */
+    .pip-video-card {
+      width: 320px;
+      background: rgba(18, 20, 24, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-elevated);
+      cursor: pointer;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .pip-video-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .pip-media-box {
+      position: relative;
+      width: 100%;
+      height: 175px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .pip-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .pip-video-card:hover .pip-img {
+      transform: scale(1.05);
+    }
+
+    .pip-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(10, 11, 13, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .pip-video-card:hover .pip-play-btn {
+      background: #ffffff;
+      color: #0a0b0d;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .pip-live-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pip-live-badge .rec-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    .pip-info-box {
+      padding: 14px 16px;
+    }
+
+    .pip-card-title {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: #ffffff;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .pip-card-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dark-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Transition docking curve into light operational canvas */
+    .docking-container {
+      position: relative;
+      background: var(--bg-canvas-light);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      color: var(--text-light-primary);
+      margin-top: -24px;
+      z-index: 10;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .docking-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 96px 48px;
+    }
+
+    /* Vision / Doctrine Section */
+    .vision-section {
+      padding-bottom: 96px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--accent-cobalt);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-eyebrow::before {
+      content: "■";
+      font-size: 0.75rem;
+    }
+
+    .vision-statement {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3.8vw, 3.25rem);
+      font-weight: 500;
+      line-height: 1.22;
+      letter-spacing: -0.025em;
+      color: var(--text-light-primary);
+      max-width: 1180px;
+    }
+
+    .vision-highlight {
+      color: var(--accent-cobalt);
+      font-weight: 600;
+    }
+
+    .vision-substatement {
+      margin-top: 32px;
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      line-height: 1.65;
+      color: var(--text-light-secondary);
+      max-width: 880px;
+    }
+
+    /* Operational Principles Bento Section */
+    .principles-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .section-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      gap: 32px;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.4vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--text-light-primary);
+    }
+
+    .section-desc-compact {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text-light-secondary);
+      max-width: 480px;
+      line-height: 1.55;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-3px);
+      border-color: #cbd2dc;
+      box-shadow: var(--shadow-card);
+    }
+
+    .bento-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .bento-hud-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light-primary);
+    }
+
+    .bento-index {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-light-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .bento-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--text-light-primary);
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .bento-text {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-light-secondary);
+    }
+
+    .bento-pill-feature {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card-subtle);
+      color: var(--text-light-secondary);
+      border: 1px solid var(--border-light);
+      margin-top: 20px;
+      width: fit-content;
+    }
+
+    /* Core Platform Showcase: "Strata Core" */
+    .platform-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .platform-interactive-frame {
+      background: #0f1115;
+      border-radius: var(--radius-xl);
+      border: 1px solid #232730;
+      overflow: hidden;
+      box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      margin-top: 48px;
+    }
+
+    .frame-top-bar {
+      height: 48px;
+      background: #14171d;
+      border-bottom: 1px solid #232730;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .window-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a2f3b;
+    }
+
+    .frame-session-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.65);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .frame-status-tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(5, 150, 105, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(5, 150, 105, 0.4);
+    }
+
+    .frame-body {
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      height: 560px;
+      background: #0a0b0d;
+    }
+
+    /* Left Sidebar */
+    .frame-sidebar-left {
+      background: #101217;
+      border-right: 1px solid #1c2029;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar-heading {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 14px;
+    }
+
+    .layer-item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .layer-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.75);
+      background: transparent;
+      transition: background 0.15s ease;
+      cursor: pointer;
+    }
+
+    .layer-item.active {
+      background: rgba(30, 91, 240, 0.18);
+      color: #fff;
+      border: 1px solid rgba(30, 91, 240, 0.4);
+    }
+
+    .layer-item:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .layer-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Center Tactical Workspace Map */
+    .frame-workspace-center {
+      position: relative;
+      background: #060709;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tactical-svg-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .tactical-map-toolbar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .tactical-pill-stat {
+      pointer-events: auto;
+      background: rgba(16, 18, 23, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tactical-pill-stat .indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+
+    /* Right Telemetry Column */
+    .frame-sidebar-right {
+      background: #101217;
+      border-left: 1px solid #1c2029;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .threat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+
+    .threat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .threat-level {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .threat-title {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .threat-desc {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.45;
+    }
+
+    .terminal-output-log {
+      flex: 1;
+      background: #08090b;
+      border: 1px solid #1c2029;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: #798394;
+      overflow-y: auto;
+    }
+
+    .terminal-line.success {
+      color: #10b981;
+    }
+    .terminal-line.info {
+      color: #38bdf8;
+    }
+    .terminal-line.warning {
+      color: #fbbf24;
+    }
+
+    /* Solutions Section with Interactive Switcher */
+    .solutions-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .solutions-tabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 40px 0;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .solution-tab-btn {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text-light-muted);
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .solution-tab-btn .tab-num {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      opacity: 0.7;
+    }
+
+    .solution-tab-btn.active {
+      color: var(--text-light-primary);
+      background: var(--bg-card-subtle);
+      font-weight: 600;
+    }
+
+    .solution-tab-btn:hover:not(.active) {
+      color: var(--text-light-secondary);
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .solution-content-card {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 48px;
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 56px;
+      box-shadow: var(--shadow-card);
+      align-items: center;
+    }
+
+    .solution-left-text {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .solution-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 2.8vw, 2.35rem);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-light-primary);
+    }
+
+    .solution-lead-desc {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-light-secondary);
+    }
+
+    .solution-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 10px 0 20px;
+    }
+
+    .solution-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text-light-secondary);
+      line-height: 1.5;
+    }
+
+    .solution-bullet-item svg {
+      color: var(--accent-cobalt);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .solution-right-visual {
+      background: #0f1115;
+      border-radius: var(--radius-lg);
+      border: 1px solid #242832;
+      padding: 28px;
+      color: #fff;
+      box-shadow: var(--shadow-elevated);
+      position: relative;
+      overflow: hidden;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .visual-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .visual-body-diagram {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0;
+    }
+
+    .stream-node-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+
+    .stream-name {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stream-rate {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #38bdf8;
+    }
+
+    .fusion-core-node {
+      background: linear-gradient(135deg, rgba(30, 91, 240, 0.25), rgba(5, 150, 105, 0.25));
+      border: 1px solid rgba(30, 91, 240, 0.5);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .fusion-core-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .fusion-core-status {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #34d399;
+    }
+
+    /* Interoperability & Security Section */
+    .interop-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .interop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .interop-card {
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .interop-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-cobalt-light);
+      color: var(--accent-cobalt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .interop-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-light-primary);
+      margin-bottom: 12px;
+    }
+
+    .interop-text {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-light-secondary);
+    }
+
+    .interop-standards-taglist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 24px;
+    }
+
+    .std-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      color: var(--text-light-secondary);
+    }
+
+    /* Impact & Field Deployments */
+    .impact-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .impact-showcase-box {
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 56px;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .impact-quote-mark {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--accent-cobalt);
+      margin-bottom: -16px;
+    }
+
+    .impact-quote-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--text-light-primary);
+      margin-bottom: 28px;
+      letter-spacing: -0.015em;
+    }
+
+    .impact-attribution {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .impact-officer-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-light-secondary);
+    }
+
+    .impact-officer-info .name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-light-primary);
+    }
+
+    .impact-officer-info .role {
+      font-size: 0.85rem;
+      color: var(--text-light-muted);
+    }
+
+    .impact-metrics-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .metric-card-item {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: transform 0.2s ease;
+    }
+
+    .metric-card-item:hover {
+      transform: translateX(4px);
+    }
+
+    .metric-big-num {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: var(--accent-cobalt);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+
+    .metric-label-text {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-light-secondary);
+      font-weight: 500;
+    }
+
+    /* Dispatches / Newsroom */
+    .news-section {
+      padding: 96px 0;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .news-card {
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-3px);
+      border-color: #cbd2dc;
+      box-shadow: var(--shadow-card);
+    }
+
+    .news-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .news-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-light);
+      color: var(--text-light-secondary);
+    }
+
+    .news-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-light-muted);
+    }
+
+    .news-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text-light-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .news-excerpt {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text-light-secondary);
+    }
+
+    .news-read-link {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent-cobalt);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 24px;
+      transition: gap 0.2s ease;
+    }
+
+    .news-card:hover .news-read-link {
+      gap: 10px;
+    }
+
+    /* Final Mission Briefing CTA Section */
+    .cta-banner-section {
+      background: #0a0b0d;
+      border-radius: var(--radius-xl);
+      padding: 80px 48px;
+      color: #fff;
+      text-align: center;
+      margin-top: 64px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner-section::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse at center, rgba(30, 91, 240, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.8vw, 3.25rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .cta-subhead {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    /* Tactical Command Footer */
+    .tactical-footer {
+      background: #0a0b0d;
+      color: #fff;
+      padding: 80px 48px 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .footer-top-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 64px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-brand-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-dark-secondary);
+      max-width: 320px;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 18px;
+    }
+
+    .footer-link-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-link {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.15s ease;
+    }
+
+    .footer-link:hover {
+      color: #fff;
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 36px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-dark-muted);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .classification-seal {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .classification-seal span.marker {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-emerald);
+      border-radius: 2px;
+    }
+
+    /* Modal Systems */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(10, 11, 13, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #121418;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      padding: 40px;
+      color: #fff;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.25rem;
+      padding: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-dark-secondary);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: #08090b;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent-cobalt);
+    }
+
+    .form-submit-btn {
+      width: 100%;
+      background: #ffffff;
+      color: #0a0b0d;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      margin-top: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .form-submit-btn:hover {
+      background: #ededed;
+    }
+
+    /* Video Player Modal */
+    .video-modal-dialog {
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 860px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .video-sim-screen {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: #0a0b0d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-sim-backdrop {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+
+    .video-hud-overlay {
+      position: absolute;
+      inset: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 40%, rgba(0,0,0,0.85) 100%);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #fff;
+    }
+
+    .video-telemetry-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .video-waveform-row {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 24px;
+    }
+
+    .waveform-bar {
+      width: 3px;
+      background: var(--accent-cobalt);
+      border-radius: 2px;
+      animation: sound-wave 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes sound-wave {
+      0% { height: 4px; }
+      100% { height: 22px; }
+    }
+
+    /* Responsive media queries */
+    @media (max-width: 1024px) {
+      .hero-content-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .pip-video-card {
+        width: 100%;
+        max-width: 380px;
+      }
+      .frame-body {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .frame-sidebar-left, .frame-sidebar-right {
+        display: none;
+      }
+      .frame-workspace-center {
+        height: 420px;
+      }
+      .solution-content-card {
+        grid-template-columns: 1fr;
+        padding: 36px;
+      }
+      .interop-grid, .news-grid {
+        grid-template-columns: 1fr;
+      }
+      .impact-showcase-box {
+        grid-template-columns: 1fr;
+        padding: 36px;
+      }
+      .footer-top-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .tactical-header {
+        padding: 0 20px;
+      }
+      .nav-links, .telemetry-indicator {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .hero-section {
+        padding: 100px 24px 40px;
+      }
+      .docking-inner {
+        padding: 64px 24px;
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footer-top-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Tactical Header -->
+  <header class="tactical-header" id="navbar">
+    <div class="brand-group">
+      <div class="brand-mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.6"/>
+          <path d="M2 12L12 17L22 12" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="brand-name">Vaelis</span>
+      <span class="brand-tag">Sovereign C2</span>
+    </div>
+
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a href="#vision" class="nav-link">Doctrine</a>
+        </li>
+        <li>
+          <a href="#principles" class="nav-link">Principles</a>
+        </li>
+        <li>
+          <a href="#platform" class="nav-link">Strata Core</a>
+        </li>
+        <li>
+          <a href="#solutions" class="nav-link">Capabilities</a>
+        </li>
+        <li>
+          <a href="#interop" class="nav-link">Interoperability</a>
+        </li>
+        <li>
+          <a href="#impact" class="nav-link">Validation</a>
+        </li>
+        <li>
+          <a href="#news" class="nav-link">Dispatches</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="telemetry-indicator" title="Global Tactical Datalink Nominal">
+        <span class="telemetry-dot"></span>
+        <span id="zulu-clock">LINK NOMINAL // 16:48:02Z</span>
+      </div>
+      <button class="btn-briefing" onclick="openBriefingModal()">
+        <span>Request Briefing</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+      <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Open Navigation Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-container">
+      <img src="assets/hero-terrain.jpg" alt="Aerial reconnaissance topography of mountain canyon terrain" class="hero-bg-image" />
+      <div class="hero-gradient-overlay"></div>
+      <div class="hero-grid-lines"></div>
+    </div>
+
+    <div class="hero-content-wrap">
+      <div class="hero-text-block">
+        <div class="hero-classification-badge">
+          <span class="dot"></span>
+          <span>Next-Generation Operational Architecture</span>
+        </div>
+        <h1 class="hero-title">Building the next operational advantage for sovereign defense</h1>
+        <p class="hero-subtitle">AI-native command and control for joint forces, forward tactical headquarters, and allied multi-domain operations.</p>
+        <div class="hero-cta-group">
+          <button class="hero-btn-primary" onclick="openBriefingModal()">
+            <span>Request a Briefing</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+          <a href="#platform" class="hero-btn-secondary">
+            <span>Explore Strata OS ↓</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Picture-in-picture video card -->
+      <div class="pip-video-card" onclick="openVideoModal()" role="button" aria-label="Play Field Manifesto Film">
+        <div class="pip-media-box">
+          <img src="assets/pip-thumb.jpg" alt="Field reconnaissance patrol advancing on perimeter" class="pip-img" />
+          <div class="pip-live-badge">
+            <span class="rec-dot"></span>
+            <span>Manifesto Film</span>
+          </div>
+          <div class="pip-play-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+        </div>
+        <div class="pip-info-box">
+          <h3 class="pip-card-title">The Autonomous Headquarters: Accelerating the OODA Loop</h3>
+          <div class="pip-card-meta">
+            <span>RUNTIME 03:42</span>
+            <span>4K // 60 FPS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Docking Transition Container (Light Operational Canvas) -->
+  <main class="docking-container">
+    <div class="docking-inner">
+
+      <!-- Vision / Doctrine Section -->
+      <section class="vision-section" id="vision">
+        <div class="section-eyebrow">Our Doctrine</div>
+        <h2 class="vision-statement">
+          Today, joint staff officers reassemble the operational picture from scratch every rotation. Our platform is built on the inverse doctrine: <span class="vision-highlight">context compounds</span>.
+        </h2>
+        <p class="vision-substatement">
+          The stronger your command post’s foundation, the better every plan, brief, and tactical decision on top of it — and the smarter the AI working alongside your commanders.
+        </p>
+      </section>
+
+      <!-- Operational Principles Bento Section -->
+      <section class="principles-section" id="principles">
+        <div class="section-header-row">
+          <div>
+            <div class="section-eyebrow">Operational Principles</div>
+            <h2 class="section-heading">Built for the Modern Battlefield</h2>
+          </div>
+          <p class="section-desc-compact">
+            Engineered from doctrine upward for contested electronic environments, degraded communications, and high-tempo multi-domain combat.
+          </p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Card 1 -->
+          <div class="bento-card">
+            <div>
+              <div class="bento-card-top">
+                <div class="bento-hud-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path>
+                    <circle cx="12" cy="12" r="10" stroke-dasharray="2 3"></circle>
+                  </svg>
+                </div>
+                <span class="bento-index">01 // ETHICS &amp; CONTROL</span>
+              </div>
+              <h3 class="bento-title">Command Remains Human</h3>
+              <p class="bento-text">
+                AI handles high-volume sensor analysis, multi-spectral correlation, and branch prediction — never command authority. Every output is transparent, source-traced, and contestable by human leadership.
+              </p>
+            </div>
+            <div class="bento-pill-feature">
+              <span>● Traceable Proof Chain</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bento-card">
+            <div>
+              <div class="bento-card-top">
+                <div class="bento-hud-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                  </svg>
+                </div>
+                <span class="bento-index">02 // ARCHITECTURE</span>
+              </div>
+              <h3 class="bento-title">Works With Your Stack</h3>
+              <p class="bento-text">
+                Integrates natively across legacy C2 platforms, Battlefield Management Systems (BMS), Link 16 datalinks, and allied GIS environments without requiring rip-and-replace infrastructure.
+              </p>
+            </div>
+            <div class="bento-pill-feature">
+              <span>● Zero-Disruption Ingestion</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bento-card">
+            <div>
+              <div class="bento-card-top">
+                <div class="bento-hud-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </div>
+                <span class="bento-index">03 // COMPOUNDING KNOWLEDGE</span>
+              </div>
+              <h3 class="bento-title">Smarter With Every Mission</h3>
+              <p class="bento-text">
+                Every operational order drafted, simulation branch wargamed, and tactical sensor packet integrated is preserved in an immutable, queryable semantic index. Your HQ compounds institutional intelligence with every deployment.
+              </p>
+            </div>
+            <div class="bento-pill-feature">
+              <span>● Institutional Memory Core</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bento-card">
+            <div>
+              <div class="bento-card-top">
+                <div class="bento-hud-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <span class="bento-index">04 // SURVIVABILITY</span>
+              </div>
+              <h3 class="bento-title">Secure &amp; Air-Gapped by Default</h3>
+              <p class="bento-text">
+                Defense-grade hardware compartmentalization, multi-level security (MLS) tag enforcement, and fully air-gapped tactical edge server deployment with zero external telemetry leakage.
+              </p>
+            </div>
+            <div class="bento-pill-feature">
+              <span>● NATO Secret / MLS Ready</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Platform Showcase Section: "Strata Core" -->
+      <section class="platform-section" id="platform">
+        <div class="section-eyebrow">Our Platform Strata</div>
+        <h2 class="section-heading">Plan, conduct, and learn with Strata</h2>
+        <p class="vision-substatement" style="font-size: 1.15rem; margin-top: 18px;">
+          Strata is the sovereign operational workspace for modern headquarters. Underneath every interactive view is a deterministic data core. Tactical workflows run directly on it, drawing from unified situational memory.
+        </p>
+
+        <!-- Interactive Platform Simulation Frame -->
+        <div class="platform-interactive-frame">
+          <div class="frame-top-bar">
+            <div class="window-dots">
+              <span class="window-dot" style="background:#ef4444;"></span>
+              <span class="window-dot" style="background:#f59e0b;"></span>
+              <span class="window-dot" style="background:#10b981;"></span>
+            </div>
+            <div class="frame-session-title">
+              <span>STRATA OS // TAC-OP-WORKSPACE // SECTOR-NORTH-04</span>
+              <span class="frame-status-tag">REAL-TIME INFERENCE: ACTIVE</span>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #848d9a;">
+              LAT 48.8566N // LON 2.3522E
+            </div>
+          </div>
+
+          <div class="frame-body">
+            <!-- Sidebar Left -->
+            <div class="frame-sidebar-left">
+              <div>
+                <div class="sidebar-heading">Active Ingest Streams</div>
+                <ul class="layer-item-list">
+                  <li class="layer-item active" onclick="switchLayer(this, 'all')">
+                    <span>Multi-Spectral Fused</span>
+                    <span class="layer-count">248 pkts/s</span>
+                  </li>
+                  <li class="layer-item" onclick="switchLayer(this, 'isr')">
+                    <span>Tactical ISR Feeds</span>
+                    <span class="layer-count">12 Drones</span>
+                  </li>
+                  <li class="layer-item" onclick="switchLayer(this, 'sigint')">
+                    <span>SIGINT Emitters</span>
+                    <span class="layer-count">47 Nodes</span>
+                  </li>
+                  <li class="layer-item" onclick="switchLayer(this, 'radar')">
+                    <span>Phased-Array Radar</span>
+                    <span class="layer-count">3 Batteries</span>
+                  </li>
+                  <li class="layer-item" onclick="switchLayer(this, 'blue')">
+                    <span>Blue Force Tracking</span>
+                    <span class="layer-count">854 Units</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div style="border-top: 1px solid #1c2029; padding-top: 16px;">
+                <div class="sidebar-heading">Latency Metric</div>
+                <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #34d399; font-weight: 700;">
+                  18.4 ms
+                </div>
+                <div style="font-size: 0.72rem; color: #798394;">Sensor-to-Shooter Routing</div>
+              </div>
+            </div>
+
+            <!-- Workspace Center -->
+            <div class="frame-workspace-center">
+              <div class="tactical-map-toolbar">
+                <div class="tactical-pill-stat">
+                  <span class="indicator"></span>
+                  <span id="canvas-status">COMMON OPERATIONAL PICTURE (COP)</span>
+                </div>
+                <div class="tactical-pill-stat">
+                  <span>EW CONTEST LEVEL: LOW</span>
+                </div>
+              </div>
+
+              <!-- Animated Tactical SVG Map Grid -->
+              <svg class="tactical-svg-canvas" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  </pattern>
+                  <radialGradient id="radar-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#1e5bf0" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#1e5bf0" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+
+                <!-- Range rings -->
+                <circle cx="300" cy="200" r="70" fill="none" stroke="rgba(30,91,240,0.18)" stroke-width="1" stroke-dasharray="3 3"/>
+                <circle cx="300" cy="200" r="140" fill="none" stroke="rgba(30,91,240,0.12)" stroke-width="1"/>
+                <circle cx="300" cy="200" r="210" fill="none" stroke="rgba(30,91,240,0.06)" stroke-width="1"/>
+
+                <!-- Sweep line -->
+                <line x1="300" y1="200" x2="480" y2="90" stroke="rgba(30,91,240,0.4)" stroke-width="1.5">
+                  <animateTransform attributeName="transform" type="rotate" from="0 300 200" to="360 300 200" dur="8s" repeatCount="indefinite"/>
+                </line>
+
+                <!-- Tactical nodes & tracks -->
+                <!-- Friendly HQ -->
+                <g transform="translate(300, 200)">
+                  <rect x="-8" y="-8" width="16" height="16" fill="#1e5bf0" rx="3"/>
+                  <text x="14" y="4" fill="#ffffff" font-size="10" font-family="Fragment Mono">HQ-MAIN [VAL-1]</text>
+                </g>
+
+                <!-- Blue Force Units -->
+                <g transform="translate(210, 140)">
+                  <polygon points="0,-7 7,7 -7,7" fill="#38bdf8"/>
+                  <text x="10" y="4" fill="#38bdf8" font-size="9" font-family="Fragment Mono">B-COY (MECH)</text>
+                </g>
+                <g transform="translate(380, 260)">
+                  <polygon points="0,-7 7,7 -7,7" fill="#38bdf8"/>
+                  <text x="10" y="4" fill="#38bdf8" font-size="9" font-family="Fragment Mono">C-COY (RECON)</text>
+                </g>
+
+                <!-- Detected Threat Vector -->
+                <g transform="translate(420, 130)">
+                  <circle cx="0" cy="0" r="5" fill="#ef4444"/>
+                  <circle cx="0" cy="0" r="14" fill="none" stroke="#ef4444" stroke-width="1">
+                    <animate attributeName="r" values="6;20;6" dur="2s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="12" y="4" fill="#ef4444" font-size="9" font-family="Fragment Mono">UNIDENTIFIED EMITTER #7</text>
+                  <!-- Vector correlation line -->
+                  <line x1="0" y1="0" x2="-115" y2="65" stroke="rgba(239,68,68,0.4)" stroke-width="1" stroke-dasharray="4 2"/>
+                </g>
+
+                <!-- Flight Path Corridor -->
+                <path d="M 120 330 Q 230 250 300 200 T 420 130" fill="none" stroke="rgba(52,211,153,0.35)" stroke-width="2" stroke-dasharray="6 4"/>
+              </svg>
+            </div>
+
+            <!-- Sidebar Right -->
+            <div class="frame-sidebar-right">
+              <div>
+                <div class="sidebar-heading">Threat Evaluation</div>
+                <div class="threat-card">
+                  <div class="threat-header">
+                    <span class="threat-title">Sector 4 Correlation</span>
+                    <span class="threat-level">PRIORITY 1</span>
+                  </div>
+                  <p class="threat-desc">
+                    EW signature correlates with non-allied phased radar emitter at 14.8 km bearing 042°. Recommended counter-measure: Vector Recon Alpha.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <div class="sidebar-heading">Operational Log</div>
+                <div class="terminal-output-log" id="terminal-stream">
+                  <div class="terminal-line info">[16:47:58Z] STANAG 4586 link established</div>
+                  <div class="terminal-line success">[16:48:00Z] Fused 12 drone feeds into terrain mesh</div>
+                  <div class="terminal-line warning">[16:48:02Z] Emitter #7 flagged: LOS obscured 30%</div>
+                  <div class="terminal-line info">[16:48:04Z] COA Branch 3 probability: 94.2%</div>
+                  <div class="terminal-line">[16:48:06Z] Automatic OPORD sync to Forward Nodes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Solutions In Strata Interactive Module -->
+      <section class="solutions-section" id="solutions">
+        <div class="section-eyebrow">Solutions in Strata</div>
+        <h2 class="section-heading">Operational Capabilities Designed for Velocity</h2>
+        
+        <!-- Tab navigation -->
+        <div class="solutions-tabs-bar" role="tablist">
+          <button class="solution-tab-btn active" onclick="selectSolution(0)">
+            <span class="tab-num">01</span>
+            <span>Understand the Battlefield</span>
+          </button>
+          <button class="solution-tab-btn" onclick="selectSolution(1)">
+            <span class="tab-num">02</span>
+            <span>Mission Planning &amp; COA</span>
+          </button>
+          <button class="solution-tab-btn" onclick="selectSolution(2)">
+            <span class="tab-num">03</span>
+            <span>After Action Review (AAR)</span>
+          </button>
+          <button class="solution-tab-btn" onclick="selectSolution(3)">
+            <span class="tab-num">04</span>
+            <span>Force Tracking &amp; Geolocation</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Solution Card -->
+        <div class="solution-content-card" id="solution-card">
+          <div class="solution-left-text">
+            <span class="section-eyebrow" id="sol-tag">01 // SITUATIONAL FUSION</span>
+            <h3 class="solution-headline" id="sol-headline">Turn Fragmented Intelligence Into Immediate Clarity</h3>
+            <p class="solution-lead-desc" id="sol-desc">
+              Fuse multi-source intelligence into a single coherent operational picture in real-time. Ingest ISR video, SIGINT intercepts, HUMINT cables, and satellite imagery without manual reconciliation.
+            </p>
+            <ul class="solution-bullets" id="sol-bullets">
+              <li class="solution-bullet-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Automated multi-spectral telemetry correlation across sensor clouds</span>
+              </li>
+              <li class="solution-bullet-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Zero manual map stitching or competing versions of tactical truth</span>
+              </li>
+              <li class="solution-bullet-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Sub-second alerts on anomalous troop movements and emitter bursts</span>
+              </li>
+            </ul>
+            <button class="btn-briefing" style="background:#0a0b0d; color:#fff; width:fit-content;" onclick="openBriefingModal()">
+              <span>Schedule Capability Briefing</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+
+          <!-- Dynamic Visual Display -->
+          <div class="solution-right-visual" id="sol-visual">
+            <div class="visual-header">
+              <span>ACTIVE INGEST ENGINE: 4 DATA DOMAINS</span>
+              <span>FEED STATUS: 100% ONLINE</span>
+            </div>
+            <div class="visual-body-diagram">
+              <div class="stream-node-row">
+                <div class="stream-name">
+                  <span style="color:#38bdf8;">■</span> ISR Drone Streams (H.265 / KLV)
+                </div>
+                <span class="stream-rate">62.4 Mb/s</span>
+              </div>
+              <div class="stream-node-row">
+                <div class="stream-name">
+                  <span style="color:#fbbf24;">■</span> SIGINT Spectral Intercepts
+                </div>
+                <span class="stream-rate">1.4k events/s</span>
+              </div>
+              <div class="stream-node-row">
+                <div class="stream-name">
+                  <span style="color:#34d399;">■</span> Synthetic Aperture Radar (SAR)
+                </div>
+                <span class="stream-rate">0.5m GSD</span>
+              </div>
+              
+              <div class="fusion-core-node">
+                <div class="fusion-core-title">Strata Fusion Core</div>
+                <div class="fusion-core-status">Continuous Deterministic State Synthesis</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #798394; display:flex; justify-content:space-between;">
+              <span>PIPELINE LATENCY: 2.1 ms</span>
+              <span>CLASSIFICATION: NATO RESTRICTED</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interoperability & Security Grid -->
+      <section class="interop-section" id="interop">
+        <div class="section-eyebrow">Architecture &amp; Standards</div>
+        <h2 class="section-heading">Natively Interoperable. Cryptographically Audited.</h2>
+        <p class="vision-substatement" style="font-size: 1.15rem; margin-top: 14px;">
+          Built for joint coalitions and NATO interoperability. Zero vendor lock-in, zero proprietary silos.
+        </p>
+
+        <div class="interop-grid">
+          <div class="interop-card">
+            <div>
+              <div class="interop-icon-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <h3 class="interop-title">Allied Protocol Native</h3>
+              <p class="interop-text">
+                Native compliance with NATO STANAG and open tactical messaging architectures. Ingests and publishes across disparate joint services seamlessly.
+              </p>
+            </div>
+            <div class="interop-standards-taglist">
+              <span class="std-tag">STANAG 4586</span>
+              <span class="std-tag">Link 16</span>
+              <span class="std-tag">CoT / Cursor-on-Target</span>
+              <span class="std-tag">OGC WMS/WFS</span>
+            </div>
+          </div>
+
+          <div class="interop-card">
+            <div>
+              <div class="interop-icon-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <h3 class="interop-title">Cryptographic Auditability</h3>
+              <p class="interop-text">
+                Every prompt, synthetic recommendation, and commander override is signed with hardware security modules (HSM) creating an immutable chain of custody.
+              </p>
+            </div>
+            <div class="interop-standards-taglist">
+              <span class="std-tag">FIPS 140-3</span>
+              <span class="std-tag">Zero Trust (NIST SP 800-207)</span>
+              <span class="std-tag">MLS Compartmentalized</span>
+            </div>
+          </div>
+
+          <div class="interop-card">
+            <div>
+              <div class="interop-icon-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <h3 class="interop-title">Forward Disconnected Edge</h3>
+              <p class="interop-text">
+                Deployable to low-SWaP ruggedized tactical edge servers inside command vehicles, patrol craft, or austere field bunkers with automatic mesh re-synchronization.
+              </p>
+            </div>
+            <div class="interop-standards-taglist">
+              <span class="std-tag">Low-SWaP Edge</span>
+              <span class="std-tag">Air-Gap Local Inference</span>
+              <span class="std-tag">Mesh Sync</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Field Impact & Validation Section -->
+      <section class="impact-section" id="impact">
+        <div class="section-eyebrow">Field Validation</div>
+        <h2 class="section-heading">Operational Velocity Under Pressure</h2>
+
+        <div class="impact-showcase-box" style="margin-top: 48px;">
+          <div>
+            <div class="impact-quote-mark">&ldquo;</div>
+            <p class="impact-quote-text">
+              Far beyond a conventional GIS overlay. What our staff previously spent 90 minutes assembling by hand, Vaelis correlates in under 4 minutes with complete verification trails.
+            </p>
+            <div class="impact-attribution">
+              <div class="impact-officer-avatar">MV</div>
+              <div class="impact-officer-info">
+                <div class="name">Lieutenant Colonel M. Vance</div>
+                <div class="role">Chief of Staff, Allied Joint Command Exercise 2026</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="impact-metrics-col">
+            <div class="metric-card-item">
+              <div class="metric-big-num">4.8×</div>
+              <div class="metric-label-text">Faster Operational Order (OPORD) Synthesis</div>
+            </div>
+            <div class="metric-card-item">
+              <div class="metric-big-num">12×</div>
+              <div class="metric-label-text">Faster Terrain &amp; Line-of-Sight (LOS) Calculation</div>
+            </div>
+            <div class="metric-card-item">
+              <div class="metric-big-num">25s</div>
+              <div class="metric-label-text">Multi-Threat Correlation &amp; Vector Alert</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dispatches / Newsroom -->
+      <section class="news-section" id="news">
+        <div class="section-header-row">
+          <div>
+            <div class="section-eyebrow">Dispatches &amp; Briefings</div>
+            <h2 class="section-heading">Newsroom &amp; Technical Analysis</h2>
+          </div>
+          <button class="btn-briefing" style="background:var(--bg-card-subtle); color:var(--text-light-primary); border:1px solid var(--border-light);" onclick="alert('Viewing all field dispatches & press releases')">
+            <span>View Full Archive</span>
+          </button>
+        </div>
+
+        <div class="news-grid">
+          <!-- Article 1 -->
+          <article class="news-card" onclick="alert('Opening dispatch: Series A Sovereign Defense Scale')">
+            <div>
+              <div class="news-badge-row">
+                <span class="news-tag">Press Release</span>
+                <span class="news-date">JUN 17, 2026</span>
+              </div>
+              <h3 class="news-title">Vaelis raises €34M Series A to scale AI-native command platforms across allied NATO forces</h3>
+              <p class="news-excerpt">Funding led by top European defense and deep-tech venture syndicates to accelerate air-gapped deployments across joint headquarters.</p>
+            </div>
+            <span class="news-read-link">Read dispatch →</span>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-card" onclick="alert('Opening dispatch: Strategic AeroDefense Integration')">
+            <div>
+              <div class="news-badge-row">
+                <span class="news-tag">Partnership</span>
+                <span class="news-date">JUN 18, 2026</span>
+              </div>
+              <h3 class="news-title">AeroDefense Consortium and Vaelis announce joint integration for tactical decision superiority</h3>
+              <p class="news-excerpt">Deep integration of Strata OS with airborne early-warning systems and unmanned drone swarms for sub-second sensor-to-shooter loops.</p>
+            </div>
+            <span class="news-read-link">Read dispatch →</span>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-card" onclick="alert('Opening dispatch: Whitepaper on Contested Networks')">
+            <div>
+              <div class="news-badge-row">
+                <span class="news-tag">Technical Paper</span>
+                <span class="news-date">MAY 29, 2026</span>
+              </div>
+              <h3 class="news-title">Engineering battlefield-ready AI: Resilience in electronic-warfare contested environments</h3>
+              <p class="news-excerpt">Architectural design patterns for deterministic local inference when satellite links are severed and GPS signals are actively jammed.</p>
+            </div>
+            <span class="news-read-link">Read dispatch →</span>
+          </article>
+        </div>
+
+        <!-- Final CTA Banner -->
+        <div class="cta-banner-section">
+          <div class="section-eyebrow" style="color:#fff; justify-content:center;">Ready to Deploy</div>
+          <h2 class="cta-title">Upgrade Your Headquarters' Decision Velocity</h2>
+          <p class="cta-subhead">
+            Experience Strata OS in an air-gapped simulation tailored to your division's operational environment and existing C2 architecture.
+          </p>
+          <button class="hero-btn-primary" style="margin: 0 auto;" onclick="openBriefingModal()">
+            <span>Request a Sovereign Briefing</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Tactical Command Footer -->
+  <footer class="tactical-footer">
+    <div class="footer-inner">
+      <div class="footer-top-row">
+        <div class="footer-brand-col">
+          <div class="brand-group">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.6"/>
+              <path d="M2 12L12 17L22 12" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>
+            </svg>
+            <span class="footer-brand-title">Vaelis Systems</span>
+          </div>
+          <p class="footer-desc">
+            Next-generation command-and-control operating software for sovereign defense, intelligence agencies, and allied joint forces.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: rgba(255,255,255,0.45);">
+            Offices in Paris, London, and Munich.
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Platform</h4>
+          <ul class="footer-link-list">
+            <li><a href="#platform" class="footer-link">Strata OS</a></li>
+            <li><a href="#solutions" class="footer-link">Battlefield Fusion</a></li>
+            <li><a href="#solutions" class="footer-link">Mission Planner</a></li>
+            <li><a href="#solutions" class="footer-link">Telemetry AAR</a></li>
+            <li><a href="#solutions" class="footer-link">Force Tracking</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Standards</h4>
+          <ul class="footer-link-list">
+            <li><a href="#interop" class="footer-link">STANAG 4586</a></li>
+            <li><a href="#interop" class="footer-link">Link 16 Integration</a></li>
+            <li><a href="#interop" class="footer-link">Multi-Level Security</a></li>
+            <li><a href="#interop" class="footer-link">Air-Gapped Node</a></li>
+            <li><a href="#interop" class="footer-link">Zero Trust Proof</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-link-list">
+            <li><a href="#vision" class="footer-link">Our Doctrine</a></li>
+            <li><a href="#impact" class="footer-link">Field Validation</a></li>
+            <li><a href="#news" class="footer-link">Dispatches</a></li>
+            <li><a href="#hero" class="footer-link">Manifesto Film</a></li>
+            <li><a href="mailto:contact@vaelis.defense.example" class="footer-link">Careers (Clearance Req)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Security &amp; Legal</h4>
+          <ul class="footer-link-list">
+            <li><a href="javascript:void(0)" class="footer-link" onclick="alert('Vaelis operates under sovereign encryption and NATO security compliance.')">Compliance Audit</a></li>
+            <li><a href="javascript:void(0)" class="footer-link" onclick="alert('Responsible disclosure: security@vaelis.defense.example')">Security Advisory</a></li>
+            <li><a href="javascript:void(0)" class="footer-link" onclick="alert('Privacy statement: personal static design archive.')">Privacy Policy</a></li>
+            <li><a href="javascript:void(0)" class="footer-link" onclick="alert('Terms of service apply to authorized institutional defense personnel.')">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="classification-seal">
+          <span class="marker"></span>
+          <span>UNCLASSIFIED // PROFESSIONAL DEFENSE PROCUREMENT SPECIMEN</span>
+        </div>
+        <div>
+          &copy; 2026 Vaelis Systems Inc. Personal static design archive template.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Briefing Modal -->
+  <div class="modal-overlay" id="briefing-modal" onclick="closeBriefingModalOnBg(event)">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-head">
+      <button class="modal-close-btn" onclick="closeBriefingModal()" aria-label="Close dialog">✕</button>
+      <div class="section-eyebrow" style="color:var(--accent-cobalt);">Tactical Inquiry</div>
+      <h3 class="modal-title" id="modal-head">Request an Operational Briefing</h3>
+      <p class="modal-subtitle">
+        Schedule a classified or unclassified technical demonstration of Strata OS with our defense solutions team.
+      </p>
+
+      <form onsubmit="handleBriefingSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="org-input">Defense Ministry / Armed Force / Organization</label>
+          <input type="text" id="org-input" class="form-input" placeholder="e.g. Allied Joint Command / MoD" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email-input">Official Official Email Address</label>
+          <input type="email" id="email-input" class="form-input" placeholder="officer@organization.mil" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="clearance-select">Clearance Level of Intended Briefing</label>
+          <select id="clearance-select" class="form-select">
+            <option value="unclassified">Unclassified / Technical Architecture Overview</option>
+            <option value="restricted">National Restricted / NATO Restricted</option>
+            <option value="secret">Confidential / Secret Clearance Track</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="domain-select">Primary Operational Domain</label>
+          <select id="domain-select" class="form-select">
+            <option value="joint">Joint Multi-Domain Headquarters (All Services)</option>
+            <option value="land">Land Force &amp; Brigade Command Post</option>
+            <option value="air">Air Operations &amp; Air Defense Command</option>
+            <option value="maritime">Naval Task Force / Maritime Tactical C2</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit-btn">Transmit Briefing Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Video Manifesto Modal -->
+  <div class="modal-overlay" id="video-modal" onclick="closeVideoModalOnBg(event)">
+    <div class="video-modal-dialog">
+      <button class="modal-close-btn" style="z-index:10;" onclick="closeVideoModal()" aria-label="Close video">✕</button>
+      <div class="video-sim-screen">
+        <img src="assets/pip-thumb.jpg" alt="Tactical field reconnaissance" class="video-sim-backdrop" />
+        <div class="video-hud-overlay">
+          <div class="video-telemetry-bar">
+            <span>VAELIS MANIFESTO // STREAM #429-A</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="pip-live-badge" style="position:static;">LIVE PLAYBACK</span>
+              <span>1080P // STANAG ENCRYPTED</span>
+            </div>
+          </div>
+
+          <div style="text-align:center; padding: 40px 0;">
+            <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+              &ldquo;The battlefield does not wait for synthesis.&rdquo;
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8; margin-top: 8px;">
+              FIELD DIRECTIVE: ACCELERATING THE SOVEREIGN OODA LOOP
+            </div>
+          </div>
+
+          <div class="video-telemetry-bar">
+            <div class="video-waveform-row">
+              <span class="waveform-bar" style="animation-delay: 0.1s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.3s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.2s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.5s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.4s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.6s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.2s;"></span>
+              <span class="waveform-bar" style="animation-delay: 0.5s;"></span>
+              <span style="margin-left: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.7);">AUDIO ENCRYPTED // BITRATE 320 KBPS</span>
+            </div>
+            <span>01:14 / 03:42</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Live Zulu / UTC Clock
+    function updateZuluClock() {
+      const now = new Date();
+      const h = String(now.getUTCHours()).padStart(2, '0');
+      const m = String(now.getUTCMinutes()).padStart(2, '0');
+      const s = String(now.getUTCSeconds()).padStart(2, '0');
+      const clockEl = document.getElementById('zulu-clock');
+      if (clockEl) {
+        clockEl.textContent = `LINK NOMINAL // ${h}:${m}:${s}Z`;
+      }
+    }
+    setInterval(updateZuluClock, 1000);
+    updateZuluClock();
+
+    // Solutions Tab Data & Switcher
+    const solutionData = [
+      {
+        tag: "01 // SITUATIONAL FUSION",
+        headline: "Turn Fragmented Intelligence Into Immediate Clarity",
+        desc: "Fuse multi-source intelligence into a single coherent operational picture in real-time. Ingest ISR video, SIGINT intercepts, HUMINT cables, and satellite imagery without manual reconciliation.",
+        bullets: [
+          "Automated multi-spectral telemetry correlation across sensor clouds",
+          "Zero manual map stitching or competing versions of tactical truth",
+          "Sub-second alerts on anomalous troop movements and emitter bursts"
+        ],
+        streams: [
+          { name: "ISR Drone Streams (H.265 / KLV)", rate: "62.4 Mb/s", color: "#38bdf8" },
+          { name: "SIGINT Spectral Intercepts", rate: "1.4k events/s", color: "#fbbf24" },
+          { name: "Synthetic Aperture Radar (SAR)", rate: "0.5m GSD", color: "#34d399" }
+        ],
+        coreTitle: "Strata Fusion Core",
+        coreStatus: "Continuous Deterministic State Synthesis"
+      },
+      {
+        tag: "02 // OPERATIONAL ORDER SYNTHESIS",
+        headline: "Accelerate Course of Action (COA) Wargaming",
+        desc: "Transform commander's intent into executable 5-paragraph NATO OPORDs in minutes. Simulate dozens of logistical and maneuver branches against simulated adversary doctrine.",
+        bullets: [
+          "Autonomous 5-paragraph operational order generation with citation trails",
+          "Logistics fuel, ammunition, and casualty evacuation synchronization",
+          "Branch probability modeling under active electronic countermeasures"
+        ],
+        streams: [
+          { name: "COA Branch Alpha (High Tempo)", rate: "Prob: 91.4%", color: "#34d399" },
+          { name: "COA Branch Bravo (Flank Sec)", rate: "Prob: 84.2%", color: "#38bdf8" },
+          { name: "Adversary Counter-Sim", rate: "Sims: 10,000/s", color: "#f87171" }
+        ],
+        coreTitle: "Tactical Branch Simulator",
+        coreStatus: "OODA Velocity: 4.8× Multiplier Active"
+      },
+      {
+        tag: "03 // COMPOUND KNOWLEDGE",
+        headline: "Automated Mission Debrief & Doctrine Ingestion",
+        desc: "Close the loop on tactical lessons learned. Strata ingests mission telemetry, radio transcripts, and flight logs to automatically formulate AAR debriefs with zero data loss.",
+        bullets: [
+          "Discrepancy detection between planned OPORD vs actual field execution",
+          "Automated tactical debrief generation within 60 seconds of mission RTB",
+          "Semantic cross-mission knowledge retrieval across previous operational rotations"
+        ],
+        streams: [
+          { name: "Airborne Telemetry Ingest", rate: "100% Parsed", color: "#38bdf8" },
+          { name: "C2 Radio Speech-to-Text", rate: "Zero Packet Loss", color: "#34d399" },
+          { name: "Deviation Variance Audit", rate: "3 Alerts Flagged", color: "#fbbf24" }
+        ],
+        coreTitle: "Institutional Memory Engine",
+        coreStatus: "Doctrine Corpus: 14,820 Missions Indexed"
+      },
+      {
+        tag: "04 // SENSOR-TO-SHOOTER",
+        headline: "High-Precision Force Tracking & Mesh Routing",
+        desc: "Real-time blue force tracking and dynamic mesh datalink routing even across intermittent, low-bandwidth military radios in contested environments.",
+        bullets: [
+          "Sub-second target coordinate generation and handoff to tactical effectors",
+          "Automatic fallback to peer-to-peer ad-hoc mesh when satellites are jammed",
+          "MIL-STD-2525D / APP-6 tactical military symbology compliance"
+        ],
+        streams: [
+          { name: "Link 16 Tactical Grid", rate: "Slot Latency: 4ms", color: "#38bdf8" },
+          { name: "Forward Mesh Repeaters", rate: "99.98% Reachability", color: "#34d399" },
+          { name: "Target Acquisition Vector", rate: "Sub-Second Handshake", color: "#f87171" }
+        ],
+        coreTitle: "Sensor-To-Shooter Datalink",
+        coreStatus: "Contested Mesh Mode: Resilient"
+      }
+    ];
+
+    function selectSolution(index) {
+      const tabs = document.querySelectorAll('.solution-tab-btn');
+      tabs.forEach((tab, i) => {
+        if (i === index) tab.classList.add('active');
+        else tab.classList.remove('active');
+      });
+
+      const d = solutionData[index];
+      document.getElementById('sol-tag').textContent = d.tag;
+      document.getElementById('sol-headline').textContent = d.headline;
+      document.getElementById('sol-desc').textContent = d.desc;
+
+      const bulletsContainer = document.getElementById('sol-bullets');
+      bulletsContainer.innerHTML = d.bullets.map(b => `
+        <li class="solution-bullet-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>${b}</span>
+        </li>
+      `).join('');
+
+      const visual = document.getElementById('sol-visual');
+      const streamsHtml = d.streams.map(s => `
+        <div class="stream-node-row">
+          <div class="stream-name">
+            <span style="color:${s.color};">■</span> ${s.name}
+          </div>
+          <span class="stream-rate">${s.rate}</span>
+        </div>
+      `).join('');
+
+      visual.innerHTML = `
+        <div class="visual-header">
+          <span>ACTIVE PIPELINE // MODULE ${String(index + 1).padStart(2, '0')}</span>
+          <span>INTEGRITY: NOMINAL</span>
+        </div>
+        <div class="visual-body-diagram">
+          ${streamsHtml}
+          <div class="fusion-core-node">
+            <div class="fusion-core-title">${d.coreTitle}</div>
+            <div class="fusion-core-status">${d.coreStatus}</div>
+          </div>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #798394; display:flex; justify-content:space-between;">
+          <span>SEC LEVEL: MULTI-DOMAIN</span>
+          <span>AIR-GAP STATE: ENFORCED</span>
+        </div>
+      `;
+    }
+
+    // Interactive terminal line appending simulation
+    const terminalLogs = [
+      { text: "[16:48:10Z] Ingesting SAR pass over Sector Echo", type: "info" },
+      { text: "[16:48:14Z] Blue force battery 3 telemetry validated", type: "success" },
+      { text: "[16:48:18Z] Cross-correlating with STANAG 4586 feed", type: "info" },
+      { text: "[16:48:22Z] Airspace deconfliction cleared in 1.4s", type: "success" },
+      { text: "[16:48:26Z] Emitter classification confidence: 98.7%", type: "warning" }
+    ];
+    let logIdx = 0;
+    setInterval(() => {
+      const term = document.getElementById('terminal-stream');
+      if (term) {
+        const item = terminalLogs[logIdx % terminalLogs.length];
+        const line = document.createElement('div');
+        line.className = `terminal-line ${item.type}`;
+        line.textContent = item.text;
+        term.appendChild(line);
+        if (term.children.length > 8) {
+          term.removeChild(term.children[0]);
+        }
+        term.scrollTop = term.scrollHeight;
+        logIdx++;
+      }
+    }, 4500);
+
+    // Interactive Layer Switcher in OS frame
+    function switchLayer(el, type) {
+      document.querySelectorAll('.layer-item').forEach(li => li.classList.remove('active'));
+      el.classList.add('active');
+      const statusEl = document.getElementById('canvas-status');
+      if (statusEl) {
+        statusEl.textContent = `LAYER VIEW: ${el.querySelector('span').textContent.toUpperCase()}`;
+      }
+    }
+
+    // Modal Controls
+    function openBriefingModal() {
+      document.getElementById('briefing-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBriefingModal() {
+      document.getElementById('briefing-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeBriefingModalOnBg(e) {
+      if (e.target.id === 'briefing-modal') {
+        closeBriefingModal();
+      }
+    }
+
+    function handleBriefingSubmit(e) {
+      e.preventDefault();
+      const org = document.getElementById('org-input').value;
+      alert(`Briefing inquiry transmitted for ${org}. An authorized defense liaison will verify institutional credentials via secure protocol.`);
+      closeBriefingModal();
+    }
+
+    function openVideoModal() {
+      document.getElementById('video-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+      document.getElementById('video-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeVideoModalOnBg(e) {
+      if (e.target.id === 'video-modal') {
+        closeVideoModal();
+      }
+    }
+
+    function toggleMobileNav() {
+      const nav = document.querySelector('.nav-links');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'flex';
+        nav.style.flexDirection = 'column';
+        nav.style.position = 'absolute';
+        nav.style.top = '68px';
+        nav.style.left = '0';
+        nav.style.right = '0';
+        nav.style.background = '#0a0b0d';
+        nav.style.padding = '24px';
+        nav.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+      }
+    }
+  </script>
+</body>
+</html>
