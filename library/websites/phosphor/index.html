@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="description" content="Phosphor is a dark board where files, tasks, and a lamp turn into one note." />
+  <title>Phosphor</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E6FF55'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --surface-page: #000000;
+      --surface-card: #141414;
+      --surface-raise: #1c1c1c;
+      --text-primary: #f3f3ee;
+      --text-secondary: #8a8a84;
+      --border: rgba(255, 255, 255, 0.06);
+      --line: rgba(255, 255, 255, 0.2);
+      --phosphor: #e6ff55;
+      --on-accent: #141414;
+      --font: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--surface-page); color: var(--text-primary); }
+    body {
+      min-height: 100vh;
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    ::selection { background: var(--phosphor); color: var(--on-accent); }
+    :focus-visible { outline: 2px solid var(--phosphor); outline-offset: 3px; }
+    button { font-family: inherit; }
+    svg { display: block; overflow: visible; }
+
+    .sr {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .skip {
+      position: absolute; left: 16px; top: -48px; z-index: 20;
+      background: var(--phosphor); color: var(--on-accent);
+      padding: 8px 12px; border-radius: 999px; font-weight: 600; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    main { height: 100vh; }
+    .board {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.558fr 1fr;
+      column-gap: 18px;
+      padding: clamp(28px, 8.6vh, 96px) clamp(28px, 7.4vw, 128px);
+    }
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+      min-height: 0;
+    }
+    .card {
+      position: relative;
+      flex: 1 1 0;
+      min-height: 0;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+    .col-mid .collaborate { flex: 1.689 1 0; }
+    .col-mid .process { flex: 1 1 0; }
+    .card:hover { border-color: rgba(230, 255, 85, 0.28); }
+
+    .art { position: absolute; inset: 0; }
+    .art > svg:not(.lamp):not(.leads) { width: 100%; height: 100%; }
+    [hidden] { display: none !important; }
+    .copy {
+      position: absolute;
+      left: 22px;
+      right: 18px;
+      bottom: 18px;
+      z-index: 3;
+    }
+    .copy h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .copy p {
+      margin: 5px 0 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .line { fill: none; stroke: var(--line); stroke-width: 1.15; }
+    .nick {
+      fill: none; stroke: var(--phosphor); stroke-width: 1.7; stroke-linecap: round;
+      filter: drop-shadow(0 0 3px rgba(230, 255, 85, 0.85));
+    }
+    .plate { fill: #1b1b1b; stroke: rgba(255, 255, 255, 0.14); stroke-width: 1; }
+    .ink { fill: none; stroke: #8d8d86; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; }
+    .hex {
+      fill: #191919;
+      stroke: rgba(255, 255, 255, 0.16);
+      stroke-width: 1.15;
+      filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.55));
+    }
+    .hex.hot { stroke: var(--phosphor); stroke-width: 1.35; fill: #161616; }
+    .fig { fill: #5e5e58; }
+    .fig.dim { fill: #3e3e3a; }
+    .fig.mid { fill: #73736c; }
+    .fig.hot { fill: var(--phosphor); }
+
+    .core {
+      filter: drop-shadow(0 0 8px rgba(230, 255, 85, 0.72));
+    }
+    .glow { fill: var(--phosphor); opacity: 0.34; }
+
+    .beam {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 78%;
+      transform-origin: 100% 0;
+      pointer-events: none;
+      z-index: 1;
+      -webkit-mask-image: linear-gradient(218deg, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 70%);
+      mask-image: linear-gradient(218deg, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 70%);
+    }
+    .cone { position: absolute; inset: 0; }
+    .cone.hard {
+      background: linear-gradient(222deg, rgba(255, 250, 196, 0.5), rgba(230, 255, 85, 0.2) 42%, transparent 74%);
+      clip-path: polygon(18% 0, 100% 0, 100% 64%, 0 100%, 0 24%);
+      filter: blur(42px);
+    }
+    .cone.soft {
+      background: radial-gradient(85% 90% at 100% 0%, rgba(255, 248, 190, 0.5), rgba(230, 255, 85, 0.14) 30%, transparent 64%);
+      filter: blur(8px);
+    }
+    .art .lamp {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      width: 36px;
+      height: 24px;
+      z-index: 4;
+      transform: rotate(18deg);
+      transform-origin: 70% 20%;
+    }
+    .art .leads {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 36%;
+      width: 100%;
+      height: 22%;
+      z-index: 1;
+    }
+    .panel {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -46%);
+      width: min(228px, 74%);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 12px;
+      padding: 12px 12px 11px;
+      background: #121212;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.4);
+    }
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(216deg, rgba(230, 255, 85, 0.2), transparent 52%);
+    }
+    .panel b {
+      display: block;
+      color: var(--phosphor);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .meter i, .cols i {
+      display: block;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .meter i { margin-top: 7px; }
+    .meter i.hot {
+      width: 42%;
+      margin-top: 6px;
+      background: var(--phosphor);
+      box-shadow: 0 0 6px rgba(230, 255, 85, 0.65);
+    }
+    .meter i.mid { width: 68%; }
+    .meter i.short { width: 36%; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; padding-top: 2px; }
+    .cols i:nth-child(odd) { width: 100%; }
+    .cols i:nth-child(even) { width: 86%; }
+    .cols i:nth-child(3),
+    .cols i:nth-child(4) { width: 72%; }
+
+    .gen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px 78px;
+    }
+    .gen-top { display: flex; align-items: center; }
+    .gnode {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+      display: grid;
+      place-items: center;
+    }
+    .gnode svg { width: 18px; height: 18px; }
+    .wire {
+      width: 34px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.28);
+      position: relative;
+    }
+    .wire::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      width: 8px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--phosphor);
+      box-shadow: 0 0 6px var(--phosphor);
+    }
+    .wire.l::after { right: -1px; }
+    .wire.r::after { left: -1px; }
+    .spark {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #161616;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 18px rgba(230, 255, 85, 0.18), 0 10px 18px rgba(0, 0, 0, 0.4);
+      display: grid;
+      place-items: center;
+    }
+    .spark svg { width: 30px; height: 30px; filter: drop-shadow(0 0 5px rgba(230, 255, 85, 0.75)); }
+    .bridge {
+      position: relative;
+      height: 42px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+    .dots { display: flex; gap: 4px; height: 4px; }
+    .dots i {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .stem {
+      width: 1px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.42);
+    }
+    .note {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      font-size: 12.5px;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+    .pill-wrap { position: relative; }
+    .gen-btn {
+      appearance: none;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(243, 243, 238, 0.72);
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+    }
+    .gen-btn:hover { border-color: var(--phosphor); }
+    .gen-btn[aria-pressed="true"] {
+      background: var(--phosphor);
+      color: var(--on-accent);
+      border-color: var(--phosphor);
+    }
+    .cursor {
+      position: absolute;
+      right: 4px;
+      bottom: -12px;
+      width: 15px;
+      height: 15px;
+      pointer-events: none;
+    }
+    .gen.is-on .dots,
+    .gen.is-on .stem,
+    .gen.is-on .cursor { visibility: hidden; }
+
+    .foot {
+      padding: 8px 24px 28px;
+      text-align: center;
+    }
+    .foot p { margin: 0; color: var(--text-secondary); font-size: 13px; }
+    .foot a { color: inherit; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .beam { animation: sweep 9.5s ease-in-out infinite alternate; }
+      .glow { animation: bolt 4.8s ease-in-out infinite; }
+      .core { animation: hexpulse 5.6s ease-in-out infinite; }
+    }
+    @keyframes sweep {
+      from { transform: rotate(-7deg); opacity: 0.78; }
+      to { transform: rotate(6deg); opacity: 1; }
+    }
+    @keyframes bolt {
+      0%, 100% { opacity: 0.22; }
+      50% { opacity: 0.55; }
+    }
+    @keyframes hexpulse {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(230, 255, 85, 0.45)); }
+      50% { filter: drop-shadow(0 0 16px rgba(230, 255, 85, 0.95)); }
+    }
+
+    @media (max-width: 800px) {
+      main { height: auto; }
+      .board {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+      }
+      .col { display: contents; }
+      .card { min-height: 320px; flex: none; }
+      .collaborate { min-height: 420px; }
+      #capture { order: 1; }
+      #collaborate { order: 2; }
+      #monitor { order: 3; }
+      #automate { order: 4; }
+      #process { order: 5; }
+      #generate-card { order: 6; }
+      .note { white-space: normal; text-align: center; padding: 0 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="sr" width="0" height="0" aria-hidden="true">
+    <defs>
+      <linearGradient id="yellow" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f4ffb0" />
+        <stop offset="0.45" stop-color="#e6ff55" />
+        <stop offset="1" stop-color="#c6e040" />
+      </linearGradient>
+      <filter id="bloom" x="-60%" y="-60%" width="220%" height="220%">
+        <feDropShadow dx="0" dy="0" stdDeviation="3.2" flood-color="#e6ff55" flood-opacity="0.7" />
+      </filter>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#board">Skip to board</a>
+  <main id="board">
+    <h1 class="sr">Phosphor</h1>
+    <div class="board">
+      <div class="col">
+        <article class="card" id="capture">
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 360 430" preserveAspectRatio="xMidYMid meet">
+              <path class="line" d="M45 56 V86 H180 V132" />
+              <path class="line" d="M121 56 V104 H180" />
+              <path class="line" d="M239 56 V104 H180" />
+              <path class="line" d="M315 56 V86 H180" />
+              <path class="nick" d="M121 90 V104" />
+              <path class="nick" d="M239 90 V104" />
+              <path class="nick" d="M180 116 V130" />
+              <g>
+                <rect class="plate" x="28" y="24" width="34" height="26" rx="6" />
+                <path class="ink" d="M36 34 h8 l2 2 h8 v8 H36 z" />
+                <rect class="plate" x="104" y="24" width="34" height="26" rx="6" />
+                <path class="ink" d="M112 32 h16 M112 37 h16 M112 42 h10" />
+                <rect class="plate" x="222" y="24" width="34" height="26" rx="6" />
+                <path class="ink" d="M230 32 h8 l4 4 v8 h-12 z" />
+                <rect class="plate" x="298" y="24" width="34" height="26" rx="6" />
+                <path class="ink" d="M306 34 h8 l2 2 h8 v8 h-18 z" />
+              </g>
+              <rect class="plate" x="156" y="132" width="48" height="48" rx="12" />
+              <path class="ink" d="M180 162 V146 M173 153 l7-7 7 7 M168 164 h24" />
+              <path class="line" d="M180 180 V214" />
+              <path class="nick" d="M180 190 V204" />
+              <g filter="url(#bloom)">
+                <rect x="156" y="214" width="48" height="48" rx="12" fill="#e6ff55" />
+              </g>
+              <path fill="#16160c" d="M166 228 h9 l2.4 2.6 h11 v14.2 H166 z" />
+              <path fill="#16160c" d="M192.2 238.2 h2.7 v3.5 h3.5 v2.7 h-3.5 v3.5 h-2.7 v-3.5 h-3.5 v-2.7 h3.5 z" />
+            </svg>
+          </div>
+          <div class="copy">
+            <h2>Capture Inputs</h2>
+            <p>Files, a note, or a source. They land together.</p>
+          </div>
+        </article>
+
+        <article class="card" id="automate">
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 360 430" preserveAspectRatio="xMidYMid meet">
+              <g stroke="rgba(255,255,255,0.09)" stroke-width="1.25" stroke-linecap="round">
+                <line x1="148" y1="92" x2="212" y2="92" />
+                <line x1="156" y1="100" x2="204" y2="100" />
+                <line x1="164" y1="108" x2="196" y2="108" />
+                <line x1="26" y1="168" x2="48" y2="168" />
+                <line x1="30" y1="178" x2="54" y2="178" />
+                <line x1="26" y1="188" x2="46" y2="188" />
+                <line x1="334" y1="168" x2="312" y2="168" />
+                <line x1="330" y1="178" x2="306" y2="178" />
+                <line x1="334" y1="188" x2="314" y2="188" />
+              </g>
+              <rect x="92" y="166" width="176" height="26" rx="6" fill="#101010" />
+              <rect x="78" y="168" width="22" height="22" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.14)" />
+              <rect x="260" y="168" width="22" height="22" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.14)" />
+              <circle cx="89" cy="179" r="1.5" fill="#c8c8c2" />
+              <circle cx="271" cy="179" r="1.5" fill="#c8c8c2" />
+              <path class="line" d="M100 179 H148" />
+              <path class="line" d="M260 179 H212" />
+              <path class="nick" d="M118 179 H130" />
+              <path class="nick" d="M242 179 H230" />
+              <circle class="glow" cx="180" cy="179" r="42" />
+              <circle cx="180" cy="179" r="28" fill="#141414" stroke="rgba(230,255,85,0.72)" stroke-width="1.25" />
+              <path fill="url(#yellow)" d="M188 162 172 180 h8 l-3 16 16-20 h-8 z" />
+              <g fill="#e6ff55">
+                <circle cx="148" cy="158" r="1.3" opacity="0.75" />
+                <circle cx="214" cy="198" r="1.2" opacity="0.55" />
+                <circle cx="206" cy="150" r="1.15" opacity="0.4" />
+                <circle cx="156" cy="196" r="1.1" opacity="0.35" />
+              </g>
+            </svg>
+          </div>
+          <div class="copy">
+            <h2>Automate Tasks</h2>
+            <p>When the rule is met, the next step fires.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col col-mid">
+        <article class="card collaborate" id="collaborate">
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 580 510" preserveAspectRatio="xMidYMid meet">
+              <g transform="translate(290,214) scale(1.38) translate(-290,-150)">
+                <line class="line" x1="198" y1="150" x2="214" y2="150" />
+                <line class="line" x1="366" y1="150" x2="382" y2="150" />
+                <polygon class="hex" points="264.8,80.3 287.3,93.3 287.3,119.3 264.8,132.3 242.3,119.3 242.3,93.3" />
+                <polygon class="hex" points="315.2,80.3 337.7,93.3 337.7,119.3 315.2,132.3 292.7,119.3 292.7,93.3" />
+                <polygon class="hex" points="239.6,124.0 262.1,137.0 262.1,163.0 239.6,176.0 217.0,163.0 217.0,137.0" />
+                <polygon class="hex" points="340.4,124.0 363.0,137.0 363.0,163.0 340.4,176.0 317.9,163.0 317.9,137.0" />
+                <polygon class="hex" points="264.8,167.7 287.3,180.7 287.3,206.7 264.8,219.7 242.3,206.7 242.3,180.7" />
+                <polygon class="hex" points="315.2,167.7 337.7,180.7 337.7,206.7 315.2,219.7 292.7,206.7 292.7,180.7" />
+                <polygon class="hex" points="177.7,130.0 195.0,140.0 195.0,160.0 177.7,170.0 160.4,160.0 160.4,140.0" />
+                <polygon class="hex" points="402.3,130.0 419.6,140.0 419.6,160.0 402.3,170.0 385.0,160.0 385.0,140.0" />
+                <g class="fig dim" transform="translate(253,94)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig" transform="translate(303,94)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig mid" transform="translate(228,138)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig" transform="translate(328,138)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig dim" transform="translate(253,182)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig mid" transform="translate(303,182)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig" transform="translate(168,140) scale(0.85)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="fig dim" transform="translate(392,140) scale(0.85)"><circle cx="8" cy="5.2" r="2.5" /><path d="M2.4 15c.55-2.8 2.2-4.2 5.6-4.2s5.05 1.4 5.6 4.2z" /></g>
+                <g class="core">
+                  <circle cx="290" cy="150" r="36" fill="#e6ff55" opacity="0.16" />
+                  <polygon class="hex hot" points="290.0,124.0 312.5,137.0 312.5,163.0 290.0,176.0 267.5,163.0 267.5,137.0" />
+                  <g class="fig hot" transform="translate(278,136)">
+                    <circle cx="12" cy="7.2" r="3.5" />
+                    <path d="M4 20.5c.8-4 3.2-6 8-6s7.2 2 8 6z" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="copy">
+            <h2>Collaborate in Real Time</h2>
+            <p>The group shares one view of the work.</p>
+          </div>
+        </article>
+
+        <article class="card process" id="process">
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 580 300" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="290" cy="168" rx="120" ry="16" fill="#000" opacity="0.45" />
+              <ellipse cx="330" cy="62" rx="48" ry="18" fill="#e6ff55" opacity="0.14" />
+              <rect x="132" y="92" width="28" height="72" rx="8" fill="#171717" stroke="rgba(255,255,255,0.12)" />
+              <rect x="420" y="92" width="28" height="72" rx="8" fill="#171717" stroke="rgba(255,255,255,0.12)" />
+              <circle cx="128" cy="128" r="3.2" fill="#d5d5ce" />
+              <circle cx="452" cy="128" r="3.2" fill="#d5d5ce" />
+              <g transform="translate(312,70) rotate(-14)">
+                <rect width="46" height="15" rx="3" fill="#e6ff55" />
+              </g>
+              <g transform="translate(350,64) rotate(10)">
+                <rect width="34" height="13" rx="3" fill="#f3ff9a" />
+              </g>
+              <rect x="176" y="78" width="228" height="112" rx="18" fill="#161616" stroke="rgba(255,255,255,0.2)" stroke-width="1.25" />
+              <rect x="190" y="92" width="200" height="84" rx="8" fill="#101010" />
+              <g stroke-linecap="round">
+                <line x1="206" y1="110" x2="262" y2="110" stroke="rgba(255,255,255,0.22)" stroke-width="2.2" />
+                <line x1="206" y1="124" x2="250" y2="124" stroke="#e6ff55" stroke-width="2.2" />
+                <line x1="206" y1="138" x2="238" y2="138" stroke="rgba(255,255,255,0.16)" stroke-width="2.2" />
+                <line x1="206" y1="156" x2="228" y2="156" stroke="#e6ff55" stroke-width="2.2" />
+                <line x1="314" y1="110" x2="366" y2="110" stroke="#e6ff55" stroke-width="2.2" />
+                <line x1="314" y1="124" x2="354" y2="124" stroke="rgba(255,255,255,0.18)" stroke-width="2.2" />
+                <line x1="314" y1="138" x2="346" y2="138" stroke="#e6ff55" stroke-width="2.2" />
+                <line x1="314" y1="156" x2="334" y2="156" stroke="rgba(255,255,255,0.14)" stroke-width="2.2" />
+              </g>
+              <g stroke="rgba(255,255,255,0.88)" stroke-width="1.25">
+                <line x1="290" y1="98" x2="290" y2="168" />
+                <line x1="204" y1="132" x2="376" y2="132" />
+              </g>
+            </svg>
+          </div>
+          <div class="copy">
+            <h2>Process Data</h2>
+            <p>The pile is read, cleaned, and set in order.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col">
+        <article class="card" id="monitor">
+          <div class="art" aria-hidden="true">
+            <div class="beam">
+              <div class="cone soft"></div>
+              <div class="cone hard"></div>
+            </div>
+            <svg class="lamp" viewBox="0 0 64 36">
+              <path d="M4 8 h38 l-7 14 H12 z" fill="#f4f1de" />
+              <path d="M18 22 h12 v3.5 H18 z" fill="#d9d3b0" />
+              <path d="M22 25.5 h5 v6 h-5 z" fill="#b7b28a" />
+            </svg>
+            <svg class="leads" viewBox="0 0 360 200" preserveAspectRatio="none">
+              <path class="line" d="M16 96 H52 V112 H86" />
+              <path class="line" d="M344 96 H308 V112 H274" />
+              <rect x="2" y="88" width="16" height="16" rx="4" fill="#1c1c1c" stroke="rgba(255,255,255,0.22)" />
+              <rect x="342" y="88" width="16" height="16" rx="4" fill="#1c1c1c" stroke="rgba(255,255,255,0.22)" />
+            </svg>
+            <div class="panel">
+              <div class="meter">
+                <b>60%</b>
+                <i class="hot"></i>
+                <i class="mid"></i>
+                <i class="short"></i>
+              </div>
+              <div class="cols"><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <div class="copy">
+            <h2>Monitor Activity</h2>
+            <p>Updates, tasks, and how fast the work moves.</p>
+          </div>
+        </article>
+
+        <article class="card" id="generate-card">
+          <div class="art gen">
+            <div class="gen-top" aria-hidden="true">
+              <span class="gnode">
+                <svg viewBox="0 0 24 24">
+                  <path class="ink" d="M7 3.5 h7 l4 4 V20.5 H7 z" />
+                  <path class="ink" d="M14 3.5 V8 h4 M9.5 12.5 h6 M9.5 16 h4" />
+                </svg>
+              </span>
+              <span class="wire l"></span>
+              <span class="spark">
+                <svg viewBox="0 0 32 32">
+                  <path fill="url(#yellow)" d="M16 2.2 18.6 12.2 28.6 15.2 18.6 18.2 16 28.2 13.4 18.2 3.4 15.2 13.4 12.2 Z" />
+                  <path fill="#f4ffb0" d="M24.6 4.6 25.5 7.6 28.6 8.5 25.5 9.4 24.6 12.4 23.7 9.4 20.6 8.5 23.7 7.6 Z" />
+                </svg>
+              </span>
+              <span class="wire r"></span>
+              <span class="gnode">
+                <svg viewBox="0 0 24 24">
+                  <path class="ink" d="M4 9.5 h6.5 l2 2 H20 V19.5 H4 z" />
+                </svg>
+              </span>
+            </div>
+            <div class="bridge">
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="stem" aria-hidden="true"></span>
+              <p class="note" id="note" hidden>Twelve files became one note.</p>
+            </div>
+            <div class="pill-wrap">
+              <button class="gen-btn" type="button" id="generate" aria-pressed="false" aria-controls="note">Click to generate</button>
+              <svg class="cursor" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="#f4f4f1" stroke="#141414" stroke-width="0.6" d="M3 1.4 3 12.4 6.4 9.3 9.4 14.4 11.4 13.4 8.4 8.5 12.6 8.2 Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="copy">
+            <h2>Generate Insights</h2>
+            <p>A short report, when you ask for it.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <p>Sample template · <a href="mailto:board@phosphor.example">board@phosphor.example</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById("generate");
+      var note = document.getElementById("note");
+      var gen = btn.closest(".gen");
+      btn.addEventListener("click", function () {
+        var on = btn.getAttribute("aria-pressed") !== "true";
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        note.hidden = !on;
+        gen.classList.toggle("is-on", on);
+      });
+    })();
+  </script>
+</body>
+</html>

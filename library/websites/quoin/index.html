@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="description" content="Quoin is an inference desk for voice and still pictures. The slow turn is written on the evening ledger." />
+  <title>Quoin — The evening desk</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Bodoni Moda", "Didot", "Bodoni MT", serif;
+      --font-body: "Public Sans", "Avenir Next", sans-serif;
+      --surface-field: #3A3D34;
+      --surface-navy: #263044;
+      --surface-panel: #141613;
+      --surface-card: #06101E;
+      --surface-paper: #E3DDD0;
+      --surface-chart: #504228;
+      --action-foil: #C4A56A;
+      --chart-bar: #D0A34B;
+      --chart-rest: #8A7A52;
+      --metal: #E8E4DA;
+      --text-on-paper: #161616;
+      --text-muted: #8A847A;
+      --text-on-paper-muted: #5E584E;
+      --text-quiet: #2C4368;
+      --text-display: clamp(1.85rem, 3.2vw, 3.05rem);
+      --text-sheet: clamp(2.4rem, 4.4vw, 4rem);
+      --section-y: clamp(4.5rem, 9vw, 7rem);
+      --wrap: min(1120px, calc(100% - 2.5rem));
+      --radius-sheet: 0;
+      --radius-instrument: 8px;
+      --radius-pill: 2px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 220ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--surface-field);
+      color: var(--metal);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--action-foil); color: var(--text-on-paper); }
+    :focus-visible { outline: 2px solid var(--action-foil); outline-offset: 3px; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    h1, h2, p { margin: 0; }
+    .skip {
+      position: absolute; left: 12px; top: -48px; z-index: 20;
+      background: var(--surface-paper); color: var(--text-on-paper);
+      padding: 10px 14px; text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+    .display {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-optical-sizing: auto;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      line-height: 0.92;
+      text-wrap: balance;
+    }
+    .label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .nums { font-variant-numeric: tabular-nums; }
+
+    .bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px max(4.2vw, 52px); position: relative; z-index: 5;
+      min-height: 72px;
+    }
+    .word {
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-size: 0.95rem;
+      color: var(--metal);
+    }
+    .links { display: flex; gap: 4px; }
+    .links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 10px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--metal);
+    }
+    .links a:hover { color: var(--action-foil); }
+    .bar-end { display: flex; align-items: center; gap: 10px; }
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      color: var(--metal);
+      border: 1px solid rgba(232, 228, 218, 0.4);
+      height: 44px;
+      padding: 0 14px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font: 500 0.68rem/1 var(--font-body);
+      cursor: pointer;
+    }
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 44px; padding: 0 16px 0 12px;
+      background: var(--surface-panel); color: var(--metal);
+      border: 0; border-radius: var(--radius-pill);
+      text-decoration: none; cursor: pointer;
+      font: 500 0.68rem/1 var(--font-body);
+      letter-spacing: 0.16em; text-transform: uppercase;
+      transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), color var(--dur) var(--ease);
+    }
+    .pill:hover { background: #000; }
+    .pill:active { transform: scale(0.98); }
+    .pill-ghost {
+      background: transparent;
+      color: var(--text-on-paper);
+      border: 1px solid rgba(22, 22, 22, 0.35);
+    }
+    .pill-ghost:hover { background: transparent; color: var(--text-on-paper); border-color: var(--text-on-paper); }
+    .diamond {
+      width: 14px; height: 14px; flex: 0 0 14px;
+    }
+
+    .ground { position: relative; }
+    .thread {
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.16) 0 1px,
+        rgba(255, 255, 255, 0.03) 1px 2px,
+        transparent 2px 7px
+      );
+    }
+    .opening {
+      position: relative;
+      margin-top: -72px;
+      padding-top: 72px;
+      min-height: 100dvh;
+      background-color: var(--surface-field);
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255, 250, 240, 0.05) 0 1px,
+        rgba(0, 0, 0, 0.34) 1px 2px,
+        transparent 2px 4px,
+        rgba(0, 0, 0, 0.18) 4px 5px,
+        transparent 5px 9px
+      );
+    }
+    .ornament, .crescent {
+      position: absolute; z-index: 6; pointer-events: none; display: block;
+    }
+    .ornament { width: 26px; height: 26px; color: var(--metal); }
+    .ornament.nw { top: 18px; left: 20px; }
+    .ornament.ne { top: 18px; right: 20px; transform: scaleX(-1); }
+    .ornament.sw { bottom: 18px; left: 20px; transform: scaleY(-1); }
+    .ornament.se { bottom: 18px; right: 20px; transform: scale(-1); }
+    .hero {
+      min-height: calc(100dvh - 72px);
+      display: grid;
+      place-items: center;
+      padding: 10px 3.5vw 28px;
+    }
+    .panel {
+      position: relative;
+      width: min(1240px, calc(100% - 4vw));
+      aspect-ratio: 16 / 8.15;
+      background: var(--surface-panel);
+      display: grid;
+      grid-template-columns: 1.05fr 0.92fr 0.95fr;
+      align-items: center;
+      gap: 8px;
+      padding: 7% 5.2%;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: "";
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 36% 46%, transparent 108px, rgba(232, 228, 218, 0.07) 109px, transparent 110px),
+        radial-gradient(circle at 58% 58%, transparent 156px, rgba(232, 228, 218, 0.055) 157px, transparent 158px),
+        radial-gradient(circle at 48% 36%, transparent 64px, rgba(232, 228, 218, 0.05) 65px, transparent 66px),
+        radial-gradient(circle at 72% 32%, transparent 36px, rgba(232, 228, 218, 0.05) 37px, transparent 38px),
+        radial-gradient(circle at 28% 72%, transparent 48px, rgba(232, 228, 218, 0.045) 49px, transparent 50px);
+    }
+    .crescent { width: 22px; height: 22px; z-index: 2; color: var(--metal); }
+    .crescent.nw { top: 16px; left: 16px; }
+    .crescent.ne { top: 16px; right: 16px; transform: scaleX(-1); }
+    .crescent.sw { bottom: 16px; left: 16px; transform: scaleY(-1); }
+    .crescent.se { bottom: 16px; right: 16px; transform: scale(-1); }
+    .hero-copy h1 {
+      font-size: clamp(2.05rem, 3.55vw, 3.4rem);
+      line-height: 0.9;
+      position: relative;
+    }
+    .caption {
+      font-size: 0.78rem; line-height: 1.45; color: var(--text-muted);
+      max-width: 26ch; position: relative;
+    }
+    .hero-copy, .hero-note { position: relative; z-index: 1; }
+    .medallion {
+      width: min(268px, 100%);
+      height: auto;
+      aspect-ratio: 1;
+      align-self: center;
+      justify-self: center;
+      position: relative;
+      z-index: 1;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .seal { width: min(140px, 100%); margin: 0 auto; position: relative; z-index: 1; border-radius: 50%; object-fit: cover; }
+    .seal-sm { width: 92px; height: 92px; }
+
+    .navy { background: var(--surface-navy); }
+    .navy.thread {
+      background-image:
+        repeating-linear-gradient(90deg, rgba(0,0,0,.22) 0 1px, transparent 1px 7px);
+      background-color: var(--surface-navy);
+    }
+    .band { padding: var(--section-y) 0; }
+    .wrap { width: var(--wrap); margin: 0 auto; }
+
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(16px, 2vw, 28px);
+    }
+    .tile {
+      position: relative; aspect-ratio: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: space-between;
+      padding: clamp(1.25rem, 3vw, 2.4rem);
+      text-align: center; overflow: hidden;
+    }
+    .tile-navy { background: var(--surface-card); color: var(--metal); }
+    .crop {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: clamp(4.5rem, 8vw, 8.5rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-quiet);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    .tile-foot { position: relative; z-index: 1; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+    .disc {
+      position: relative; z-index: 1;
+      width: min(46%, 220px); aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #2a2a2a, #050505 62%);
+      box-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 8px 18px rgba(0,0,0,.35);
+      display: grid; place-items: center;
+    }
+    .disc .seal { width: 78%; }
+
+    .sheet {
+      position: relative;
+      background:
+        radial-gradient(rgba(90, 70, 40, 0.07) 0.6px, transparent 0.7px),
+        linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.03));
+      background-size: 4px 4px, 100% 100%;
+      background-color: var(--surface-paper);
+      color: var(--text-on-paper);
+      border-radius: var(--radius-sheet);
+    }
+    .sheet .frame {
+      position: absolute; inset: 12px;
+      border: 1px solid rgba(22, 22, 22, 0.16);
+      pointer-events: none; z-index: 1;
+    }
+    .sheet-inner { position: relative; z-index: 2; }
+    .nick {
+      position: absolute; width: 74px; height: 74px; z-index: 3; pointer-events: none;
+      background: center / contain no-repeat url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23F4E7C8'/><stop offset='0.5' stop-color='%23C4A56A'/><stop offset='1' stop-color='%238C6B38'/></linearGradient></defs><path fill='url(%23g)' d='M0 0h54c-1 8-7 6-11 13-7-1-9 7-17 5-1 9-7 7-9 16 0-2 2 12-6 18C4 36 0 16 0 0z'/><path d='M8 4c8 1 12 8 13 16' fill='none' stroke='%236B5428' stroke-width='0.7' opacity='.8'/></svg>");
+    }
+    .nick.tl { top: -8px; left: -8px; }
+    .nick.tr { top: -8px; right: -8px; transform: scaleX(-1); }
+    .nick.bl { bottom: -8px; left: -8px; transform: scaleY(-1); }
+    .nick.br { bottom: -8px; right: -8px; transform: scale(-1); }
+    .tile.sheet { overflow: visible; }
+    .paper-title { font-size: var(--text-sheet); max-width: 12ch; }
+    .paper-caption { font-size: 0.78rem; line-height: 1.45; color: var(--text-on-paper-muted); max-width: 28ch; }
+
+    .routes-head { padding: clamp(1.6rem, 4vw, 3rem) clamp(1.4rem, 4vw, 3rem) 0; }
+    .routes-head h2 { font-size: clamp(2.2rem, 4.6vw, 3.6rem); }
+    .with-rule { display: flex; align-items: center; gap: 14px; margin-top: 0.15em; }
+    .hair { width: 72px; height: 1px; background: var(--text-on-paper); display: block; }
+    .ways {
+      display: grid; grid-template-columns: minmax(160px, 200px) 1fr;
+      gap: 28px; align-items: end;
+      padding: 28px clamp(1.4rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3rem);
+    }
+    .rail p { font-size: 0.92rem; line-height: 1.45; color: var(--text-on-paper-muted); margin-bottom: 18px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 44px; padding: 0 14px;
+      background: var(--surface-panel); color: var(--metal);
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card {
+      background: var(--surface-card); color: var(--metal);
+      padding: 18px 16px 20px;
+      border: 1px solid rgba(232, 228, 218, 0.08);
+      display: flex; flex-direction: column; gap: 14px;
+      min-height: 340px;
+      transition: border-color var(--dur) var(--ease);
+    }
+    .card:hover { border-color: rgba(196, 165, 106, 0.65); }
+    .card h3 { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+    .card p { font-size: 0.92rem; line-height: 1.45; color: #C8C2B6; margin-top: auto; }
+    .burst {
+      width: 168px; height: 168px; margin: 8px auto;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #06101e 0 47%, transparent 48%),
+        repeating-conic-gradient(from -0.3deg, #07111e 0 4.2deg, #d7deea 4.2deg 4.85deg);
+      display: grid; place-items: center;
+    }
+    .burst img {
+      width: 98px; height: 98px; border-radius: 50%; object-fit: cover;
+    }
+
+    .ledger-stage {
+      display: grid; grid-template-columns: 1.08fr 0.92fr;
+      min-height: 560px; position: relative;
+    }
+    .ledger-paper { padding: clamp(1.8rem, 4vw, 3.2rem); display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+    .ledger-paper h2 { font-size: clamp(2.5rem, 4.2vw, 3.8rem); max-width: 12ch; }
+    .ledger-paper .lead { max-width: 34ch; color: var(--text-on-paper-muted); }
+    .modes { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ledger-plate {
+      position: relative; background: var(--surface-panel); overflow: hidden; min-height: 460px;
+    }
+    .ghost {
+      position: absolute; right: -0.4em; top: 6%;
+      font-family: var(--font-display); font-weight: 500;
+      font-size: clamp(5rem, 9vw, 8rem);
+      letter-spacing: -0.03em; text-transform: uppercase;
+      color: rgba(232, 228, 218, 0.07); pointer-events: none; white-space: nowrap;
+    }
+    .seal-float {
+      position: absolute; right: 6%; top: 7%; width: 132px; height: 132px; z-index: 1;
+      border-radius: 50%; object-fit: cover;
+    }
+    .chart {
+      position: absolute; left: -12%; top: 22%; width: min(440px, 96%);
+      background: var(--surface-chart); color: var(--metal);
+      border-radius: var(--radius-instrument);
+      padding: 16px 16px 14px; z-index: 2;
+    }
+    .chart-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .chart .k { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: #E4D7B8; }
+    .chip {
+      font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+      border: 1px solid rgba(232, 228, 218, 0.28);
+      border-radius: 99px; padding: 4px 8px; color: #E4D7B8;
+    }
+    .figure-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin: 8px 0 12px; }
+    .big { font-size: clamp(2.4rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+    .big small { font-size: 0.42em; letter-spacing: 0; margin-left: 4px; color: #E4D7B8; }
+    .side { display: flex; flex-direction: column; gap: 2px; text-align: right; font-size: 0.72rem; color: #E4D7B8; }
+    .plot { position: relative; height: 120px; }
+    .bars { display: flex; align-items: flex-end; gap: 3px; height: 100%; }
+    .bars span {
+      flex: 1 1 0; height: var(--h); background: var(--chart-rest);
+      transform-origin: bottom; min-height: 2px;
+    }
+    .bars span.hot { background: var(--chart-bar); }
+    .baseline { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgba(208, 163, 75, 0.7); }
+    .vline {
+      position: absolute; top: 16px; bottom: 0; left: var(--x);
+      border-left: 1px dashed rgba(232, 228, 218, 0.45);
+      font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: #E4D7B8;
+    }
+    .vline.slo { border-left-color: var(--chart-bar); color: var(--chart-bar); }
+    .axis { display: flex; justify-content: space-between; font-size: 0.65rem; color: #CDBFA0; margin-top: 4px; }
+    .chart-foot { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(232, 228, 218, 0.12); }
+    .chart-foot ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .chart-foot li { display: flex; justify-content: space-between; gap: 8px; font-size: 0.75rem; }
+    .tag { color: #E4D7B8; }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(232, 228, 218, 0.2);
+    }
+    .step { padding: 22px 8px 8px 0; border-top: 0; }
+    .step + .step { padding-left: 22px; }
+    .step .idx { font-family: var(--font-display); font-size: 1.4rem; color: var(--action-foil); }
+    .step h3 { font-size: 1.15rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin: 8px 0; }
+    .step p { color: #C9C3B8; max-width: 32ch; font-size: 0.95rem; }
+    .quote {
+      margin-top: 36px; padding-top: 18px;
+      border-top: 1px solid rgba(232, 228, 218, 0.2);
+      max-width: 46ch;
+    }
+    .quote p { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.25; text-transform: none; letter-spacing: 0; }
+    .quote span { display: block; margin-top: 8px; color: var(--text-muted); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .close-sheet { width: min(760px, var(--wrap)); margin: 0 auto; }
+    .close-grid {
+      display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: center;
+      padding: clamp(1.6rem, 4vw, 2.6rem);
+    }
+    .close-grid h2 { font-size: clamp(2rem, 4vw, 3rem); max-width: 14ch; margin: 8px 0 10px; }
+    .close-grid .lead { color: var(--text-on-paper-muted); margin-bottom: 16px; max-width: 38ch; }
+
+    .foot {
+      display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between;
+      width: var(--wrap); margin: 0 auto; padding: 22px 0 32px;
+      color: var(--text-muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .foot a { color: var(--metal); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .panel { animation: rise 800ms var(--ease) both; }
+      .bars span { animation: grow 700ms var(--ease) both; }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes grow {
+      from { transform: scaleY(0.04); }
+      to { transform: scaleY(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 1040px) {
+      .ledger-stage { grid-template-columns: 1fr; }
+      .ledger-plate { min-height: 0; overflow: visible; padding: 28px 0 8px; }
+      .ghost { font-size: 4.5rem; top: 0; }
+      .chart { position: relative; left: 0; top: 0; width: min(520px, calc(100% - 24px)); margin: 72px auto 0; }
+      .ways { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .panel { aspect-ratio: auto; grid-template-columns: 1fr; padding: 64px 22px 28px; gap: 22px; }
+      .hero { min-height: 0; }
+      .opening { min-height: 0; margin-top: 0; padding-top: 0; }
+      .medallion { width: min(220px, 64vw); }
+      .split { grid-template-columns: 1fr; }
+      .tile { aspect-ratio: auto; min-height: 420px; }
+      .cards { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 18px; }
+      .step + .step { padding-left: 0; }
+      .close-grid { grid-template-columns: 1fr; }
+      .close-grid .seal { width: 96px; }
+    }
+    @media (max-width: 760px) {
+      .nav-toggle { display: inline-flex; align-items: center; }
+      .links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; background: var(--surface-field);
+        padding: 8px 20px 16px;
+        border-bottom: 1px solid rgba(232, 228, 218, 0.2);
+      }
+      .links.is-open { display: flex; }
+      .chart-foot { grid-template-columns: 1fr; }
+      .seal-float { width: 88px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#desk">Skip to content</a>
+  <header class="bar">
+    <a class="word" href="#desk">Quoin</a>
+    <nav class="links" id="nav" aria-label="Primary">
+      <a href="#desk">Desk</a>
+      <a href="#routes">Routes</a>
+      <a href="#ledger">Ledger</a>
+      <a href="#setting">Setting</a>
+    </nav>
+    <div class="bar-end">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+      <a class="pill" href="mailto:desk@quoin.example?subject=Evening%20desk">
+        <svg class="diamond" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.2 12 12 21.5 8.8 12Z" fill="#C4A56A"/></svg>
+        Open a desk
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="opening">
+      <svg class="ornament nw" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+      <svg class="ornament ne" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+      <svg class="ornament sw" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+      <svg class="ornament se" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+      <section class="hero" id="desk" aria-labelledby="hero-title">
+        <div class="panel">
+          <svg class="crescent nw" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+          <svg class="crescent ne" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+          <svg class="crescent sw" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+          <svg class="crescent se" viewBox="0 0 36 40" aria-hidden="true"><path fill="currentColor" d="M25 3.2C16.2 5.4 10.2 12 10.2 19.6S16.2 33.6 25 35.6C15.4 33.6 8.4 27 8.4 19.6S15.4 5.4 25 3.2z"/></svg>
+          <div class="hero-copy">
+            <h1 class="display" id="hero-title">The room<br />does not<br />wait.</h1>
+          </div>
+          <img class="medallion" src="assets/sun-medallion.png" width="800" height="800" alt="Silver sun medallion" />
+          <p class="caption hero-note">Quoin sets each token on a live desk. Voice and still pictures share one ledger, and the slow turn is written down.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="band navy thread" id="routes" aria-labelledby="routes-title">
+      <div class="wrap">
+        <article class="sheet">
+          <span class="nick tl" aria-hidden="true"></span>
+          <span class="nick tr" aria-hidden="true"></span>
+          <span class="nick bl" aria-hidden="true"></span>
+          <span class="nick br" aria-hidden="true"></span>
+          <i class="frame" aria-hidden="true"></i>
+          <div class="sheet-inner">
+            <div class="routes-head">
+              <h2 class="display" id="routes-title">Three routes</h2>
+              <div class="with-rule">
+                <svg class="diamond" viewBox="0 0 24 24" aria-hidden="true" style="width:22px;height:22px"><path d="M12 2.5 15.2 12 12 21.5 8.8 12Z" fill="none" stroke="#C4A56A"/><path d="M12 7.2 13.6 12 12 16.8 10.4 12Z" fill="#C4A56A"/></svg>
+                <i class="hair" aria-hidden="true"></i>
+                <span class="display" style="font-size:clamp(2.2rem, 4.6vw, 3.6rem)">Desk, room, ledger</span>
+              </div>
+            </div>
+            <div class="ways">
+              <div class="rail">
+                <p>Stay on the evening desk, keep a room of your own, or read the page where the tail is counted.</p>
+                <p class="badge"><svg class="diamond" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.5 12 12 21 9.5 12Z" fill="#C4A56A"/></svg> Voice &amp; picture</p>
+              </div>
+              <div class="cards">
+                <article class="card">
+                  <h3>Desk</h3>
+                  <div class="burst">
+                    <img src="assets/coin-bird.png" width="360" height="360" alt="Silver coin engraved with a bird" />
+                  </div>
+                  <p>A warm desk already in service. Quoin holds the scale and writes the evening page.</p>
+                </article>
+                <article class="card">
+                  <h3>Room</h3>
+                  <div class="burst">
+                    <img src="assets/coin-hound.png" width="360" height="360" alt="Silver coin engraved with a hound" />
+                  </div>
+                  <p>The same desk, set in your rooms. The keys stay in the house.</p>
+                </article>
+                <article class="card">
+                  <h3>Ledger</h3>
+                  <div class="burst">
+                    <img src="assets/coin-wave.png" width="360" height="360" alt="Silver coin engraved with a wave" />
+                  </div>
+                  <p>Voice and picture share one page. The slow turn is written as a number.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="band ground thread" id="ledger" aria-labelledby="ledger-title">
+      <div class="wrap">
+        <div class="ledger-stage">
+          <article class="sheet ledger-paper">
+            <span class="nick tl" aria-hidden="true"></span>
+            <span class="nick bl" aria-hidden="true"></span>
+            <i class="frame" aria-hidden="true"></i>
+            <div class="sheet-inner">
+              <p class="label">Evening ledger</p>
+              <h2 class="display" id="ledger-title">The slow turn is written down.</h2>
+              <p class="lead">Voice and picture share one page. The tail is a number, not a rumor.</p>
+              <div class="modes" role="group" aria-label="Ledger mode">
+                <button type="button" class="pill is-on" data-mode="voice" aria-pressed="true">
+                  <svg class="diamond" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.5 12 12 21 9.5 12Z" fill="#C4A56A"/></svg>
+                  Voice
+                </button>
+                <button type="button" class="pill pill-ghost" data-mode="picture" aria-pressed="false">Picture</button>
+              </div>
+            </div>
+          </article>
+          <div class="ledger-plate" aria-hidden="false">
+            <p class="ghost" aria-hidden="true">Quoin</p>
+            <img class="seal-float" src="assets/sun-medallion.png" width="800" height="800" alt="" />
+            <article class="chart" aria-labelledby="chart-label">
+              <div class="chart-top">
+                <p class="k" id="chart-label">Time to first token</p>
+                <p class="chip nums" id="chip">42k turns</p>
+              </div>
+              <div class="figure-row">
+                <p class="big nums" aria-live="polite"><span id="ms">128</span><small>ms</small></p>
+                <p class="side nums"><span id="slo">SLO 200 ms</span><span id="p99">p99 318 ms</span></p>
+              </div>
+              <div class="plot" aria-hidden="true">
+                <div class="bars" id="bars">
+                  <span style="--h:10%"></span><span style="--h:16%"></span><span style="--h:24%"></span><span style="--h:36%"></span>
+                  <span style="--h:48%"></span><span style="--h:62%"></span><span style="--h:76%"></span><span style="--h:88%"></span>
+                  <span style="--h:100%"></span><span style="--h:94%"></span><span style="--h:82%"></span><span style="--h:68%"></span>
+                  <span style="--h:52%"></span><span style="--h:38%"></span><span class="hot" style="--h:28%"></span><span class="hot" style="--h:20%"></span>
+                  <span class="hot" style="--h:15%"></span><span class="hot" style="--h:11%"></span><span class="hot" style="--h:8%"></span><span class="hot" style="--h:6%"></span>
+                  <span class="hot" style="--h:5%"></span><span class="hot" style="--h:4%"></span><span class="hot" style="--h:3%"></span><span class="hot" style="--h:3%"></span>
+                </div>
+                <i class="baseline"></i>
+                <span class="vline" id="m50" style="--x:32%">p50</span>
+                <span class="vline slo" id="mslo" style="--x:50%">SLO</span>
+                <span class="vline" id="m99" style="--x:80%">p99</span>
+              </div>
+              <div class="axis nums"><span>0</span><span>200 ms</span><span>400 ms</span></div>
+              <div class="chart-foot">
+                <div>
+                  <p class="k">Slowest turns</p>
+                  <ul class="nums" id="slow"></ul>
+                </div>
+                <div>
+                  <p class="k">Last hour</p>
+                  <ul class="nums" id="hour"></ul>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band navy thread" id="setting" aria-labelledby="set-title">
+      <div class="wrap">
+        <p class="label">How a turn is set</p>
+        <h2 class="display" id="set-title" style="font-size:clamp(2rem, 4vw, 3rem); margin:10px 0 28px;">Hear, set, release.</h2>
+        <div class="steps">
+          <article class="step">
+            <p class="idx">01</p>
+            <h3>Hear</h3>
+            <p>The voice in the room, or one still frame.</p>
+          </article>
+          <article class="step">
+            <p class="idx">02</p>
+            <h3>Set</h3>
+            <p>Tokens land on the desk. The clock starts at the first.</p>
+          </article>
+          <article class="step">
+            <p class="idx">03</p>
+            <h3>Release</h3>
+            <p>The answer returns. The tail stays on the page.</p>
+          </article>
+        </div>
+        <blockquote class="quote">
+          <p>“The nine o’clock read stayed inside one breath.”</p>
+          <span>Hale &amp; Morrow, night copy</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="band ground thread" id="close" aria-labelledby="close-title">
+      <article class="close-sheet sheet">
+        <span class="nick tl" aria-hidden="true"></span>
+        <span class="nick tr" aria-hidden="true"></span>
+        <span class="nick bl" aria-hidden="true"></span>
+        <span class="nick br" aria-hidden="true"></span>
+        <i class="frame" aria-hidden="true"></i>
+        <div class="sheet-inner close-grid">
+          <img class="seal" src="assets/sun-medallion.png" width="800" height="800" alt="" />
+          <div>
+            <p class="label">Evening book</p>
+            <h2 class="display" id="close-title">Open the evening desk.</h2>
+            <p class="lead">Write to the desk. The note opens in your mail.</p>
+            <a class="pill" href="mailto:desk@quoin.example?subject=Evening%20desk">
+              <svg class="diamond" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.2 12 12 21.5 8.8 12Z" fill="#C4A56A"/></svg>
+              Open a desk
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="foot">
+    <span>Sample template</span>
+    <span>Quoin</span>
+    <a href="mailto:desk@quoin.example">desk@quoin.example</a>
+  </footer>
+  <script>
+    (function () {
+      var toggle = document.querySelector(".nav-toggle");
+      var nav = document.getElementById("nav");
+      toggle.addEventListener("click", function () {
+        var open = nav.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.textContent = open ? "Close" : "Menu";
+      });
+      nav.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          nav.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.textContent = "Menu";
+        });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          nav.classList.remove("is-open");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.textContent = "Menu";
+        }
+      });
+
+      var modes = {
+        voice: {
+          ms: "128", chip: "42k turns", slo: "SLO 200 ms", p99: "p99 318 ms",
+          marks: { p50: "32%", slo: "50%", p99: "80%" },
+          bars: [10,16,24,36,48,62,76,88,100,94,82,68,52,38,28,20,15,11,8,6,5,4,3,3],
+          hot: 14,
+          slow: [["18:04", "Hale read", "214 ms"], ["18:22", "Night desk", "188 ms"]],
+          hour: [["Median", "128 ms"], ["Tail", "318 ms"]]
+        },
+        picture: {
+          ms: "156", chip: "18k frames", slo: "SLO 200 ms", p99: "p99 360 ms",
+          marks: { p50: "39%", slo: "50%", p99: "90%" },
+          bars: [6,10,16,22,30,40,52,64,76,88,98,100,90,76,60,46,34,24,18,13,10,8,6,5],
+          hot: 16,
+          slow: [["18:11", "Frame 4", "241 ms"], ["18:40", "Margin", "209 ms"]],
+          hour: [["Median", "156 ms"], ["Tail", "360 ms"]]
+        }
+      };
+      var bars = document.getElementById("bars");
+      var slow = document.getElementById("slow");
+      var hour = document.getElementById("hour");
+      function paint(key) {
+        var m = modes[key];
+        document.getElementById("ms").textContent = m.ms;
+        document.getElementById("chip").textContent = m.chip;
+        document.getElementById("slo").textContent = m.slo;
+        document.getElementById("p99").textContent = m.p99;
+        document.getElementById("m50").style.setProperty("--x", m.marks.p50);
+        document.getElementById("mslo").style.setProperty("--x", m.marks.slo);
+        document.getElementById("m99").style.setProperty("--x", m.marks.p99);
+        var spans = bars.querySelectorAll("span");
+        m.bars.forEach(function (h, i) {
+          spans[i].style.setProperty("--h", h + "%");
+          spans[i].classList.toggle("hot", i >= m.hot);
+        });
+        slow.replaceChildren();
+        m.slow.forEach(function (row) {
+          var li = document.createElement("li");
+          li.innerHTML = "<span>" + row[0] + "</span><span class='tag'>" + row[1] + "</span><b>" + row[2] + "</b>";
+          slow.appendChild(li);
+        });
+        hour.replaceChildren();
+        m.hour.forEach(function (row) {
+          var li = document.createElement("li");
+          li.innerHTML = "<span>" + row[0] + "</span><b>" + row[1] + "</b>";
+          hour.appendChild(li);
+        });
+      }
+      document.querySelectorAll("[data-mode]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var key = btn.getAttribute("data-mode");
+          document.querySelectorAll("[data-mode]").forEach(function (b) {
+            var on = b === btn;
+            b.setAttribute("aria-pressed", on ? "true" : "false");
+            b.classList.toggle("pill-ghost", !on);
+            b.classList.toggle("is-on", on);
+          });
+          paint(key);
+        });
+      });
+      paint("voice");
+    })();
+  </script>
+</body>
+</html>

@@ -1,25 +1,86 @@
-# Prompt Specification — Phalanx (`phalanx-agy`)
+# Rebuild prompt — Phalanx (`phalanx-agy`)
 
-> Master prompt derived from Viktor Oddy's reference (`cyber-layer`), adapted for Phalanx.
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
 
-```text
-Build a single self-contained index.html that recreates this cybersecurity landing page pixel-faithfully. Fixed fullscreen black stage, left-locked typography, right-side looping video atmosphere, one-shot entrance choreography, and a mobile burger overlay. No frameworks. No scroll. No cards. No purple. No rounded pills.
+## Deliverable
+- Kind: website · Developer
+- Folder: `library/websites/phalanx-agy/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Vanilla HTML, CSS, and small JS. No bundler and no new framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
 
-## Document Shell & Fonts
-- Space Grotesk ('SG') for Display and Buttons
-- JetBrains Mono ('JB') for Navigation, Subcopy, and Metrics
-- Responsive canvas scaling via --s: min(100vw / 1505, 100vh / 700)
+## What it is
+Red-team cybersecurity & distributed defense infrastructure. Features fixed fullscreen black stage, right-side looping red matrix circuitry video, dual SVG color-grade filter pipeline, left-locked monospaced typography, and real-time defense telemetry stats.
 
-## Video Atmosphere & Color-Grade
-- Looping video:
-  https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_132544_b6ef0174-ed95-45ad-9a2f-ccb8acfbdce8.mp4
-  Poster: ./assets/poster.jpg
-- Multi-pass SVG color-grade filters (#grade and #grade2)
-- Video sync script ensuring primary and secondary layers stay in lockstep
+## Title
+Phalanx — Security Built Into Every System Layer
 
-## Layout & Components
-- Header: Inward 4-chevron crosshair logo mark, JetBrains Mono navigation, Signal Crimson CTA button.
-- Hero: Two masked headline lines: "Security built into" / "every system layer." Subcopy and action trigger.
-- Stats: 300+ Clients, 99% Satisfaction, $5M+ Protected Assets with gradient vertical dividers.
-- Fullscreen mobile drawer with red scaleX top rule and accordion navigation.
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap`
+
+## Tokens
+Put this `:root` block in the page CSS and use the variables. Do not swap the palette or the typefaces.
+
+```css
+  :root {
+  --s: min(100vw / 1505, 100vh / 700);
+  --red: #c81b1c;
+  --red-hover: #b01617;
+  --ink: #ffffff;
+  --sub: #e6e6e6;
+  --lab: #949494;
+  --bx: 60;
+  --by: 36;
+  --bs: 44;
+  --h1y: -12.5;
+  --suby: 167.5;
+  --numy: 19;
+  --laby: 74;
+  --font-sg: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-jb: 'JetBrains Mono', monospace;
+  }
+
+  :root {
+  --s: clamp(0.82px, min(100vw / 900, 100vh / 1200), 1.25px);
+  --bx: 56; --by: 33; --bs: 40;
+  --h1y: -10.25; --suby: 137.4; --numy: 15.6; --laby: 60.7;
+  }
+
+  :root {
+  --s: min(100vw / 430, 100vh / 620, 1.02px);
+  --bx: 26; --by: 21; --bs: 34;
+  --h1y: -7.1; --suby: 108; --numy: 13; --laby: 50;
+  }
 ```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+- header
+  - nav .main-nav
+    - a: Home → #top
+    - a: Resources → #resources
+    - a: Benefits → #benefits
+    - a: Contact → #contact
+  - button: Secure system
+- section .hero
+  - h1: Security built into every system layer
+  - p: Engineered to stay resilient, controlled, and uncompromised under pressure.
+  - button: Secure system
+- section .stats
+- button: Secure system →
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `assets/poster.jpg`
+- `index.html`
+- `preview.jpg`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

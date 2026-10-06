@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skein — Turn tangled work into a route you can trust.</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface-field: #0C0C0E;
+      --surface-card: #16161A;
+      --text: #F4F1EA;
+      --muted: #B7B2A8;
+      --line: rgba(244, 241, 234, .28);
+      --paper: #F7F6F3;
+      --ink: #141414;
+      --muted-ink: #5C5854;
+      --ring: #E3944A;
+      --line-ink: rgba(20, 20, 20, .14);
+      --font-display: "EB Garamond", Palatino, "Palatino Linotype", serif;
+      --font-ui: "Karla", "Avenir Next", "Segoe UI", sans-serif;
+      color-scheme: dark;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    figure { margin: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      margin: 0;
+      background: var(--surface-field);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.55;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button, input { font-family: inherit; }
+    ::selection { background: var(--ring); color: var(--ink); }
+    :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+    .skip {
+      position: absolute;
+      left: 16px;
+      top: -48px;
+      z-index: 4;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      color: var(--text);
+    }
+    .hero-photo,
+    .hero-shade {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-photo {
+      object-fit: cover;
+      object-position: center 55%;
+    }
+    .hero-shade {
+      background:
+        linear-gradient(to bottom, rgba(12, 12, 14, .82) 0%, rgba(12, 12, 14, .62) 16%, rgba(12, 12, 14, .30) 32%, rgba(12, 12, 14, 0) 46%),
+        linear-gradient(to top, #0C0C0E 0%, rgba(12, 12, 14, .92) 7%, rgba(12, 12, 14, .5) 14%, rgba(12, 12, 14, 0) 26%);
+      pointer-events: none;
+    }
+    .hero-layout {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      padding: 18px 36px 16px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      min-height: 44px;
+      flex-wrap: nowrap;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .mark { display: block; flex: none; }
+    .nav-toggle { display: none; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .btn-paper { background: #fff; color: var(--ink); font-weight: 700; }
+    .btn-paper:hover { background: #E4E0D6; color: var(--ink); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      font-weight: 500;
+      border-color: var(--line);
+    }
+    .btn-ghost:hover { background: rgba(244, 241, 234, .10); color: var(--text); }
+    button.btn { font-size: 0.95rem; font-weight: 500; }
+
+    .hero-copy { text-align: center; padding-top: 4px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      margin: 0 0 10px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: 0.01em;
+    }
+    h2.pill { margin-bottom: 0; }
+    .hero h1,
+    .close h2,
+    .why h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 3.7vw, 3.85rem);
+      line-height: 1.04;
+    }
+    .why h2,
+    .close h2 {
+      font-size: clamp(2rem, 3.2vw, 3.15rem);
+      line-height: 1.12;
+      max-width: 16em;
+    }
+    .close h2 { margin-inline: auto; }
+    .hero-sub {
+      margin: 10px auto 0;
+      max-width: 44rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .star { display: block; flex: none; }
+
+    .stage-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 0;
+      padding: 12px 0 8px;
+    }
+    .window {
+      width: min(1000px, 100%);
+      height: 448px;
+      max-height: 100%;
+      min-height: 0;
+      flex: 0 1 448px;
+      display: flex;
+      flex-direction: column;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 12px;
+      border: 1px solid rgba(20, 20, 20, .28);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .38);
+      overflow: hidden;
+    }
+    .window-bar {
+      flex: none;
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line-ink);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .window-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr) 210px;
+    }
+    .rail {
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+    }
+    .rail a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 8px;
+      color: rgba(244, 241, 234, .66);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border-left: 2px solid transparent;
+    }
+    .rail a.is-on { color: var(--paper); border-left-color: var(--paper); }
+    .rail a:hover { color: var(--paper); }
+    .canvas { position: relative; min-width: 0; background: #fff; }
+    .wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .wires path {
+      fill: none;
+      stroke: rgba(20, 20, 20, .55);
+      stroke-width: 1.25px;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+    .nodes {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .node {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%);
+      margin: 0;
+      z-index: 1;
+      background: var(--paper);
+      color: var(--ink);
+      border: 1px solid var(--line-ink);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .node.is-live {
+      border-color: transparent;
+      box-shadow: 0 0 0 2px var(--ring);
+    }
+    .cursor {
+      position: absolute;
+      left: 40%;
+      top: 78%;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      color: var(--ink);
+      pointer-events: none;
+    }
+    .cursor span {
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 6px 8px;
+      border-radius: 999px;
+    }
+    .inspector {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px;
+      border-left: 1px solid var(--line-ink);
+      background: var(--paper);
+    }
+    .inspector-title {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field span {
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--muted-ink);
+    }
+    .field input {
+      width: 100%;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--line-ink);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .field input:focus-visible { outline-color: var(--ink); outline-offset: 2px; }
+
+    .hero-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px 32px;
+      padding-top: 8px;
+    }
+    .power {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .marks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px 28px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .marks li {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.35rem;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--text);
+    }
+
+    .why, .routes, .close { padding: 104px 0; }
+    .why h2 { margin-top: 4px; }
+    .why-split {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 36rem);
+      gap: 48px;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .flow-card {
+      width: 280px;
+      height: 196px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .flow-canvas { position: relative; height: 100%; }
+    .flow-card .node { font-size: 0.75rem; padding: 6px 8px; }
+    .bubble {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      margin: 0;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      bottom: -6px;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid var(--ink);
+    }
+    .why-copy p { margin: 0 0 20px; max-width: 38rem; }
+    .route-list { list-style: none; margin: 28px 0 0; padding: 0; }
+    .route {
+      display: grid;
+      grid-template-columns: 4.5rem 9rem minmax(0, 1fr);
+      gap: 0.5rem 1.5rem;
+      align-items: baseline;
+      padding: 1.4rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .route:last-child { border-bottom: 1px solid var(--line); }
+    .num {
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .route h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+    .route p { margin: 0; }
+    .close { text-align: center; }
+    .close .btn { margin-top: 28px; }
+    .price-note { margin: 16px 0 0; color: var(--muted); }
+
+    footer { border-top: 1px solid var(--line); padding: 22px 0 32px; }
+    .foot {
+      display: flex;
+      align-items: center;
+      gap: 18px 28px;
+      flex-wrap: wrap;
+    }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+    .foot-links a,
+    .mail {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .foot-links a:hover,
+    .mail:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .mail { margin-left: auto; }
+    .sample { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+    #onboarding, #why, #routes, #price, #notes { scroll-margin-top: 20px; }
+
+    @media (max-width: 980px) {
+      .nav { gap: 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 0.88rem; }
+    }
+
+    @media (max-width: 920px) {
+      .window-body { grid-template-columns: 64px minmax(0, 1fr) 168px; }
+      .node { padding: 6px 8px; font-size: 0.75rem; }
+    }
+
+    @media (max-width: 799px) {
+      .hero { height: auto; min-height: 100vh; }
+      .hero-layout {
+        height: auto;
+        min-height: 100vh;
+        padding: 14px 16px 18px;
+      }
+      .nav { flex-wrap: wrap; gap: 8px 12px; }
+      .brand { font-size: 1.25rem; gap: 8px; }
+      .nav-toggle { display: inline-flex; }
+      .nav .btn { font-size: 0.85rem; padding: 0 12px; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        z-index: 3;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        min-width: 220px;
+        padding: 8px;
+        background: var(--surface-card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links a { padding: 0 12px; font-size: 0.95rem; }
+      .nav { position: relative; }
+      .window { height: auto; max-height: none; flex: none; }
+      .window-body { grid-template-columns: 1fr; }
+      .rail { flex-direction: row; padding: 0; }
+      .rail a {
+        flex: 1;
+        border-left: 0;
+        border-bottom: 2px solid transparent;
+      }
+      .rail a.is-on { border-bottom-color: var(--paper); }
+      .canvas { height: 250px; }
+      .inspector { border-left: 0; border-top: 1px solid var(--line-ink); }
+      .hero-foot { flex-direction: column; align-items: flex-start; }
+      .marks { justify-content: flex-start; }
+      .why-split { grid-template-columns: 1fr; gap: 28px; }
+      .flow-card { width: min(280px, 100%); }
+      .route { grid-template-columns: 3rem minmax(0, 1fr); }
+      .route p { grid-column: 2; }
+      .mail { margin-left: 0; }
+      .foot { align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .btn {
+        transition-property: background-color, color, border-color;
+        transition-duration: 180ms;
+        transition-timing-function: ease;
+      }
+      .node.is-live { animation: skein-ring 2.2s ease-in-out infinite; }
+      @keyframes skein-ring {
+        0%, 100% { box-shadow: 0 0 0 2px var(--ring); }
+        50% { box-shadow: 0 0 0 5px rgba(227, 148, 74, .38); }
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#why">Skip to the floor</a>
+  <div class="hero" id="top">
+    <img class="hero-photo" src="assets/bloom.jpg" alt="" width="1280" height="720" />
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hero-layout">
+      <header class="nav">
+        <a class="brand" href="#top">
+          <svg class="mark" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+            <path d="M16 3 27.5 9.5v13L16 29 4.5 22.5v-13Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M9 16.5h4.2l2.2-3.9 3 7.6 2.2-3.7H24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Skein</span>
+        </a>
+        <button type="button" class="nav-toggle btn btn-ghost" aria-expanded="false" aria-controls="nav-links">Menu</button>
+        <nav id="nav-links" class="nav-links" aria-label="Sections">
+          <a href="#onboarding">Product</a>
+          <a href="#why">Use</a>
+          <a href="#routes">Routes</a>
+          <a href="#price">Price</a>
+          <a href="#notes">Notes</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#notes">Login</a>
+          <a class="btn btn-paper" href="mailto:hello@skein.example">Get started</a>
+        </div>
+      </header>
+
+      <div class="hero-copy">
+        <p class="pill">Routes for the floor</p>
+        <h1>Turn tangled work<br />into a route you can trust.</h1>
+        <p class="hero-sub">Keep each check on the step it guards, and hold the send until the floor agrees.</p>
+        <div class="hero-actions">
+          <a class="btn btn-paper" href="#routes">Explore the floor</a>
+          <p class="stars">
+            <svg class="star" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <path fill="currentColor" d="M8 1.2 9.85 5.55l4.75.48-3.58 3.2.99 4.72L8 11.7l-4.01 2.25.99-4.72L1.25 6.03l4.75-.48Z" />
+            </svg>
+            <span>4.8 · 500 notes</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="stage-slot">
+        <figure class="window" id="onboarding">
+          <figcaption class="window-bar">Onboarding</figcaption>
+          <div class="window-body">
+            <nav class="rail" aria-label="Floor rail">
+              <a class="is-on" href="#onboarding" aria-current="true">Now</a>
+              <a href="#route-hire">Hire</a>
+              <a href="#route-pay">Pay</a>
+              <a href="#route-close">Close</a>
+            </nav>
+            <div class="canvas">
+              <svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M16 30C24 30 25 64 33 64" />
+                <path d="M33 64C41 64 42 28 50 28" />
+                <path d="M50 28C58 28 59 68 67 68" />
+                <path d="M67 68C75 68 76 36 84 36" />
+              </svg>
+              <ol class="nodes" aria-label="Onboarding route">
+                <li class="node" style="--x:16%;--y:30%">Trigger</li>
+                <li class="node is-live" style="--x:33%;--y:64%">Check</li>
+                <li class="node" style="--x:50%;--y:28%">Write</li>
+                <li class="node" style="--x:67%;--y:68%">Wait</li>
+                <li class="node" style="--x:84%;--y:36%">Send</li>
+              </ol>
+              <p class="cursor">
+                <svg viewBox="0 0 14 16" width="14" height="16" aria-hidden="true">
+                  <path fill="currentColor" d="M1.2 1.1 1.2 12.4 4.3 9.7 7.1 14.8 9 13.9 6.2 8.7 10.8 8.6Z" />
+                </svg>
+                <span>good flow</span>
+              </p>
+            </div>
+            <aside class="inspector" aria-label="Check">
+              <p class="inspector-title">Check</p>
+              <label class="field">
+                <span>Passes if</span>
+                <input type="text" value="Packet complete" readonly autocomplete="off" />
+              </label>
+              <label class="field">
+                <span>If it fails</span>
+                <input type="text" value="Hold for a person" readonly autocomplete="off" />
+              </label>
+            </aside>
+          </div>
+        </figure>
+      </div>
+
+      <div class="hero-foot">
+        <p class="power">Powering routes across the floor</p>
+        <ul class="marks" aria-label="Floors on Skein">
+          <li>Dace</li>
+          <li>Yarrow</li>
+          <li>Kemp</li>
+          <li>Voss</li>
+          <li>Brindle</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="why" id="why" aria-label="Why Skein">
+      <div class="wrap">
+        <p class="pill">Why Skein</p>
+        <h2>As the route grows, most tools get hard to trust.</h2>
+        <div class="why-split">
+          <figure class="flow-card">
+            <div class="flow-canvas">
+              <svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M20 62C32 62 36 40 50 40" />
+                <path d="M50 40C64 40 66 66 80 66" />
+              </svg>
+              <span class="node" style="--x:20%;--y:62%">Trigger</span>
+              <span class="node" style="--x:50%;--y:40%">Check</span>
+              <span class="node" style="--x:80%;--y:66%">Send</span>
+              <p class="bubble">nice flow</p>
+            </div>
+          </figure>
+          <div class="why-copy">
+            <p>A short route is easy to trust. Skein keeps that honesty as steps are added: the check stays on the step it guards, and a send cannot skip the wait.</p>
+            <a class="btn btn-paper" href="#routes">View the routes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="routes" id="routes" aria-labelledby="routes-title">
+      <div class="wrap">
+        <h2 id="routes-title" class="pill">Routes</h2>
+        <ol class="route-list">
+          <li class="route" id="route-hire">
+            <span class="num">01</span>
+            <h3>Hire</h3>
+            <p>Open the role, collect the packet, and send the offer only after each check has passed.</p>
+          </li>
+          <li class="route" id="route-pay">
+            <span class="num">02</span>
+            <h3>Pay</h3>
+            <p>Write the amount when the period ends, wait for a person, and send pay on the named day.</p>
+          </li>
+          <li class="route" id="route-close">
+            <span class="num">03</span>
+            <h3>Close</h3>
+            <p>Record what cleared, what is waiting, and which route needs a hand before the next cycle.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="close" id="close">
+      <div class="wrap">
+        <h2>Turn tangled work<br />into a route you can trust.</h2>
+        <a class="btn btn-paper" href="mailto:hello@skein.example">Get started</a>
+        <p class="price-note" id="price">Price follows the floor you describe. Start with a note.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="notes">
+    <div class="wrap foot">
+      <a class="brand" href="#top">
+        <svg class="mark" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+          <path d="M16 3 27.5 9.5v13L16 29 4.5 22.5v-13Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path d="M9 16.5h4.2l2.2-3.9 3 7.6 2.2-3.7H24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Skein</span>
+      </a>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="#onboarding">Product</a>
+        <a href="#why">Use</a>
+        <a href="#routes">Routes</a>
+        <a href="#price">Price</a>
+        <a href="#notes">Notes</a>
+      </nav>
+      <a class="mail" href="mailto:hello@skein.example">hello@skein.example</a>
+      <p class="sample">Sample template</p>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      var button = document.querySelector(".nav-toggle");
+      var links = document.getElementById("nav-links");
+      if (!button || !links) return;
+      button.addEventListener("click", function () {
+        var open = links.classList.toggle("is-open");
+        button.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      links.addEventListener("click", function (event) {
+        if (!event.target.closest("a")) return;
+        links.classList.remove("is-open");
+        button.setAttribute("aria-expanded", "false");
+      });
+    })();
+  </script>
+</body>
+</html>

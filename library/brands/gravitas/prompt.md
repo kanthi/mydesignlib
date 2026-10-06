@@ -1,0 +1,941 @@
+# Rebuild prompt — Gravitas (`gravitas`)
+
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
+
+## Deliverable
+- Kind: brand · Studio
+- Folder: `library/brands/gravitas/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Vanilla HTML, CSS, and small JS. No bundler and no new framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
+
+## What it is
+Spring-physics motion design library & brand system: signature live dual-wave oscilloscope (damping 24, stiffness 320), real-time search across 153 interactions (Interaction & Input, Feedback & State, Surface & Motion), interactive spring simulator, and copy-paste CSS, React, & AI prompts.
+
+## Title
+Gravitas — Spring-physics motion for web interfaces
+
+## Description meta
+A library of spring-driven micro-interactions for web apps. Copy the CSS or React, tune the physics, ship the motion.
+
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap`
+
+## Tokens
+Put this `:root` block in the page CSS and use the variables. Do not swap the palette or the typefaces.
+
+```css
+  :root {
+  /* Surfaces */
+  --graphite: #0e0e10; /* page background */
+  --graphite-2: #141417; /* raised surface */
+  --card: #1a1a1d; /* card surface */
+  --card-2: #232326; /* inset / track */
+  --line: #2a2a2e; /* hairline borders */
+  /* Ink */
+  --bone: #ede9e0; /* primary text */
+  --bone-dim: #a8a6a0; /* secondary text */
+  --bone-faint: #6e6c68; /* tertiary text */
+  /* Signal */
+  --amber: #ff8a00; /* primary accent */
+  --amber-deep: #b36200; /* accent shadow */
+  --wire: #5b8def; /* secondary / code accent */
+  --danger: #ff5c5c; /* error */
+  --ok: #4cd08a; /* success */
+  /* Type */
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+  /* Metrics */
+  --wrap: 1180px;
+  --radius: 14px;
+  --radius-sm: 9px;
+  /* Motion */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --glide: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+- header .site-header
+  - nav .nav-links
+    - a: Library → #library
+    - a: Physics → #physics
+    - a: About → #about
+    - button: Ecosystem ▾
+    - a: All 153 Interactions → #library
+    - a: Physics Engine → #physics
+    - a: Copy-Paste Workflow → #about
+  - a: GitHub ↗ → #
+  - nav .nav-links.mobile-nav-links “Mobile”
+    - a: Library → #library
+    - a: Physics → #physics
+    - a: About → #about
+- main #main
+  - section .hero
+    - h1: Motion that has weight.
+    - p: A library of interface animations built on spring physics instead of fixed-duration easing. Tune stiffness and damping, then copy the CSS, the React, or a ready-made AI prompt — and drop the motion straight into your app.
+    - a: Browse the library → #library
+    - a: How it works → #physics
+    - button: ✕
+  - p: No effects match “”.
+  - button: input
+  - button: loading
+  - button: hover
+  - button: currency
+  - button: 3d
+  - button: text
+  - section #library .section
+    - h2: Interaction & Input
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Hover near me
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Trigger
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Plan
+    - button: Build
+    - button: Ship
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Why springs ⌄
+    - p: Springs respond to interruption naturally — duration-based easing can't.
+    - button: Performance ⌄
+    - p: Pure CSS, no layout thrash, GPU-composited.
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Press anywhere
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Hold
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: 128
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Press me
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: ★
+    - button: ★
+    - button: ★
+    - button: ★
+    - button: ★
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - label: Email address
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: −
+    - button: +
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Spring
+    - button: Glide
+    - button: Bounce
+    - button: Decay
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Archive
+    - button: Delete
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Press me
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - label: Monthly
+    - label: Yearly
+    - label: Lifetime
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: ×
+    - button: ×
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: K
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: +
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: ◇
+    - button: ◒
+    - button: ✳
+    - button: ◈
+    - button: ⌁
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: STAY
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: K
+    - button: X
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: Liquid Glass
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: Day
+    - button: Week
+    - button: Month
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: ⌘ Open actions K
+    - button: ↗Share current view
+    - button: ◇Duplicate canvas
+    - button: ⌁Copy deep link
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: Airy
+    - button: Balanced
+    - button: Dense
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: Brief.pdf
+    - button: Frame.png
+    - button: Notes.md
+    - p: press & drag
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: Email
+    - button: Handle
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: hold to talk
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+  - section .section
+    - h2: Feedback & State
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - a: Hover this link → #
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Randomize
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Hover, then wait
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - label: Ship it on Friday
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Deploy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Load
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Randomize
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Notify
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Next
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Delete item
+    - button: Undo
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Save
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Push toast
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - label: Save
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - p: −mode: idle
+    - p: +mode: live
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+  - section .section
+    - h2: Surface & Motion
+    - button: Submit invalid
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Celebrate
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: Peel
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: React
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+    - button: View code
+    - button: CSS
+    - button: Prompt
+    - button: Copy
+  - section #physics .section
+    - h2: Two numbers, not a duration.
+    - p: Most CSS motion is built on duration + easing — a fixed time window forced through a curve. It looks fine until something interrupts it: a second click, a fast scroll, a resize. The animation either snaps or stutters, because a duration has no idea where the interruption left it.
+    - p: A spring has two numbers instead: stiffness (how hard it pulls toward the target) and damping (how much it resists oscillating). Interrupt it mid-motion and it just keeps integrating from its current velocity — no snap, no restart.
+    - label: stiffness
+    - label: damping
+    - button: Release
+  - section #about .section
+    - h2: Built for the copy-paste workflow.
+    - p: Every demo above ships in both plain CSS and React. No build step, no animation library dependency — take what you need, tune the two numbers in the readout, and move on. If you want to go deeper on the theory behind spring physics in interfaces, motion design courses like animations.dev are worth your time.
+- footer .site-footer
+  - a: GitHub → #
+  - a: Twitter → #
+
+## Fields
+Keep these controls, including ids and placeholders.
+- input[search] #effect-search placeholder='Search 153 effects…'
+- input[text] #demo-field-1 placeholder=' '
+- input[text]
+- input[text] placeholder='Type a password'
+- input[text] placeholder='Search…'
+- input[radio] name=plan-pills
+- input[checkbox] #speeddial-toggle
+- input[radio] name=swatch
+- input[text] placeholder='Add tag…'
+- textarea placeholder='Ask anything…'
+- input[checkbox]
+- input[text] placeholder='you@example.com'
+- input[range] #stiff-slider
+- input[range] #damp-slider
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `css/base.css`
+- `css/closing.css`
+- `css/effects-a.css`
+- `css/effects-b.css`
+- `css/effects-c.css`
+- `css/gallery.css`
+- `css/hero.css`
+- `index.html`
+- `js/main.js`
+- `js/physics-demo.js`
+- `js/search-index.js`
+- `preview.jpg`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Parley — Record talks. Stay on track.</title>
+  <meta name="description" content="Parley keeps a talk as notes, a summary, and the next step while people are still in the room." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='13' r='7.5' fill='none' stroke='%23141414' stroke-width='1.5'/%3E%3Ccircle cx='19' cy='19' r='7.5' fill='none' stroke='%23141414' stroke-width='1.5'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --surface-page: #F7F7F5;
+      --ink: #141414;
+      --muted: #5E675F;
+      --line: #E4E4E0;
+      --card: #FFFFFF;
+      --card-ink: #111111;
+      --on-ink: #F7F7F5;
+      --font-display: "Source Serif 4", Georgia, serif;
+      --font-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 180ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    figure { margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--surface-page);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+    .skip {
+      position: absolute; left: 16px; top: 16px; z-index: 100;
+      background: var(--ink); color: var(--on-ink);
+      padding: 10px 16px; border-radius: 999px;
+      font-weight: 500; font-size: 0.9rem;
+      transform: translateY(-160%);
+      transition: transform var(--dur) var(--ease);
+    }
+    .skip:focus { transform: translateY(0); }
+
+    /* Buttons */
+    .btn-ink {
+      display: inline-flex; align-items: center; justify-content: center;
+      background-color: var(--ink); color: var(--on-ink);
+      border: 1px solid transparent;
+      padding: 9px 18px; border-radius: 999px;
+      font-family: var(--font-ui); font-size: 0.9rem; font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-white {
+      display: inline-flex; align-items: center; justify-content: center;
+      background-color: var(--card); color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 9px 18px; border-radius: 999px;
+      font-family: var(--font-ui); font-size: 0.9rem; font-weight: 500;
+      cursor: pointer;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .btn-ink {
+        transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+      }
+      .btn-ink:hover {
+        background-color: var(--card); color: var(--ink); border-color: var(--line);
+      }
+      .btn-white {
+        transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+      }
+      .btn-white:hover {
+        background-color: var(--ink); color: var(--on-ink); border-color: transparent;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 800px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 82px 40px 24px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-bg img {
+        animation: kenburns 36s ease-in-out infinite alternate;
+      }
+    }
+    @keyframes kenburns {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
+    .hero-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        180deg,
+        rgba(247, 247, 245, 0.88) 0%,
+        rgba(247, 247, 245, 0.6) 30%,
+        rgba(247, 247, 245, 0.1) 60%,
+        rgba(20, 20, 20, 0.25) 85%,
+        rgba(20, 20, 20, 0.65) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Nav */
+    .nav-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 72px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-link {
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      position: relative;
+      padding: 4px 0;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%; height: 1px;
+      background-color: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-link::after {
+        transition: transform var(--dur) var(--ease);
+      }
+    }
+    .nav-link:hover::after, .nav-link:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-signin {
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+
+    .mobile-menu-list {
+      display: none;
+      position: absolute;
+      top: 68px; left: 20px; right: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 16px 36px rgba(20, 20, 20, 0.1);
+      z-index: 50;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mobile-menu-list.is-open { display: flex; }
+
+    /* Hero Center Copy */
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      max-width: 740px;
+      margin: 0 auto;
+      padding-top: 10px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--surface-page);
+      border: 1px solid var(--line);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .hero-title {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.4vw, 3.55rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .hero-sub {
+      margin: 0 auto 22px;
+      max-width: 580px;
+      font-size: 1.05rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Product Window */
+    .hero-window-wrap {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      max-width: 880px;
+      margin: 20px auto 0;
+    }
+    .product-window {
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 50px rgba(20, 20, 20, 0.16);
+      overflow: hidden;
+    }
+    .window-header {
+      height: 48px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: #FAFAF8;
+    }
+    .window-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .window-title .brand-mark { width: 18px; height: 18px; }
+    .window-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .user-avatar {
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600;
+      background: var(--surface-page);
+      color: var(--ink);
+    }
+
+    .window-body {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      min-height: 180px;
+      background: var(--card);
+    }
+    .window-sidebar {
+      border-right: 1px solid var(--line);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sidebar-item {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-item.is-current {
+      background: var(--surface-page);
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .window-main {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .main-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .main-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .stat-lockup {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .bars-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 70px;
+      padding-top: 14px;
+    }
+    .bar {
+      width: 7px;
+      background: var(--muted);
+      opacity: 0.65;
+      border-radius: 3px;
+    }
+    .bar:nth-child(1) { height: 32px; }
+    .bar:nth-child(2) { height: 54px; opacity: 0.9; }
+    .bar:nth-child(3) { height: 42px; }
+    .bar:nth-child(4) { height: 60px; background: var(--ink); opacity: 1; }
+    .bar:nth-child(5) { height: 48px; }
+
+    /* Wordmarks Footer on Grass */
+    .hero-footer {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      max-width: 960px;
+      margin: 16px auto 0;
+      text-align: center;
+      color: var(--on-ink);
+    }
+    .hero-footer-caption {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      text-shadow: 0 1px 3px rgba(20, 20, 20, 0.8);
+    }
+    .wordmarks-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 28px 40px;
+    }
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--on-ink);
+      letter-spacing: -0.01em;
+      text-shadow: 0 1px 4px rgba(20, 20, 20, 0.85);
+    }
+
+    /* Section: Use */
+    .section-use {
+      background: var(--card);
+      padding: 92px 40px;
+      border-bottom: 1px solid var(--line);
+    }
+    .measure {
+      max-width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+    .kicker {
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4vw, 3.35rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin: 0 0 54px;
+    }
+    .section-title em {
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .audience-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .audience-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 290px;
+      text-align: left;
+    }
+    .audience-card.founders {
+      background: var(--card-ink);
+      border-color: transparent;
+      color: var(--on-ink);
+    }
+    .card-head {
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+    .audience-card.founders .card-title {
+      color: var(--on-ink);
+    }
+    .card-desc {
+      font-size: 0.96rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .audience-card.founders .card-desc {
+      color: #C2C5BE;
+    }
+    .card-foot {
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .audience-card.founders .card-foot {
+      border-top-color: rgba(247, 247, 245, 0.16);
+    }
+    .card-stat {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--on-ink);
+    }
+    .card-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--on-ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .card-detail {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* Section: Method */
+    .section-method {
+      background: var(--surface-page);
+      padding: 88px 40px;
+      border-bottom: 1px solid var(--line);
+    }
+    .method-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+      padding-top: 40px;
+    }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+      color: var(--ink);
+    }
+    .step-desc {
+      font-size: 0.96rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Section: Close / Pricing */
+    .section-close {
+      background: var(--card);
+      padding: 96px 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .close-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 0 0 24px;
+      color: var(--ink);
+    }
+
+    /* Footer / Security */
+    .page-footer {
+      background: var(--surface-page);
+      padding: 64px 40px 48px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--line);
+    }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 28px;
+    }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 80px 20px 28px;
+      }
+      .nav-bar { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .nav-signin { display: none; }
+      .menu-toggle { display: block; }
+      .window-body { grid-template-columns: 1fr; }
+      .window-sidebar {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        overflow-x: auto;
+      }
+      .audience-cards { grid-template-columns: 1fr; }
+      .method-steps { grid-template-columns: 1fr; gap: 28px; }
+      .footer-top, .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="product">
+  <a class="skip" href="#use">Skip to content</a>
+
+  <header class="nav-bar">
+    <a class="brand-link" href="#product">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+        <circle cx="12" cy="12" r="7.5" />
+        <circle cx="20" cy="20" r="7.5" />
+      </svg>
+      <span>Parley</span>
+    </a>
+    <nav class="nav-menu" aria-label="Main Navigation">
+      <a class="nav-link" href="#product">Product</a>
+      <a class="nav-link" href="#use">Use</a>
+      <a class="nav-link" href="#method">Notes</a>
+      <a class="nav-link" href="#security">Security</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="nav-signin" type="button">Sign in</button>
+      <a class="btn-ink" href="mailto:hello@parley.example">Start free</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" id="menu-btn">Menu</button>
+    </div>
+    <div class="mobile-menu-list" id="mobile-menu">
+      <a class="nav-link" href="#product">Product</a>
+      <a class="nav-link" href="#use">Use</a>
+      <a class="nav-link" href="#method">Notes</a>
+      <a class="nav-link" href="#security">Security</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="mailto:hello@parley.example">Sign in</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="assets/hills.jpg" alt="Soft rolling hills under atmospheric daylight" />
+    </div>
+    <div class="hero-scrim"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">A meeting · Kept by 20 desks</div>
+      <h1 class="hero-title">Record talks. Stay on track.</h1>
+      <p class="hero-sub">Notes, a summary, and the next step, taken while the room is still talking.</p>
+      <div class="hero-cta">
+        <a class="btn-ink" href="mailto:hello@parley.example">Get started</a>
+        <a class="btn-white" href="mailto:hello@parley.example">Book a call</a>
+      </div>
+    </div>
+
+    <div class="hero-window-wrap">
+      <div class="product-window">
+        <div class="window-header">
+          <div class="window-title">
+            <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="12" cy="12" r="7.5" />
+              <circle cx="20" cy="20" r="7.5" />
+            </svg>
+            <span>Parley</span>
+          </div>
+          <div class="window-user">
+            <div class="user-avatar">IP</div>
+            <span>Ione Pell</span>
+          </div>
+        </div>
+        <div class="window-body">
+          <div class="window-sidebar">
+            <div class="sidebar-item is-current">Home</div>
+            <div class="sidebar-item">Talks</div>
+            <div class="sidebar-item">Schedule</div>
+            <div class="sidebar-item">Notes</div>
+          </div>
+          <div class="window-main">
+            <div class="main-head">
+              <div class="main-title">Meeting reports</div>
+              <div class="stat-lockup">
+                <span class="stat-number">42 min</span>
+                <span class="stat-label">average</span>
+              </div>
+            </div>
+            <div class="bars-row">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-footer">
+      <div class="hero-footer-caption">Kept by a hundred rooms</div>
+      <div class="wordmarks-row">
+        <span class="wordmark">Wick</span>
+        <span class="wordmark">Orla</span>
+        <span class="wordmark">Nave</span>
+        <span class="wordmark">Pell</span>
+        <span class="wordmark">Sable</span>
+        <span class="wordmark">Quill</span>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section-use" id="use">
+      <div class="measure">
+        <div class="kicker">For the people in the room</div>
+        <h2 class="section-title">A talk becomes a <em>list</em> you can run.</h2>
+        <div class="audience-cards">
+          <article class="audience-card">
+            <div class="card-head">
+              <h3 class="card-title">Desks</h3>
+              <p class="card-desc">Clear action points and agreed dates ready before the room moves on to the next topic.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-detail">45 rooms open daily</span>
+              <span class="card-detail">Automated action items</span>
+            </div>
+          </article>
+          <article class="audience-card founders">
+            <div class="card-head">
+              <h3 class="card-title">Founders</h3>
+              <p class="card-desc">Keep customer calls, board check-ins, and product syncs in one accountable timeline.</p>
+            </div>
+            <div class="card-foot">
+              <div class="card-stat">180 rooms</div>
+              <a class="card-link" href="#method">Read the note</a>
+            </div>
+          </article>
+          <article class="audience-card">
+            <div class="card-head">
+              <h3 class="card-title">Studios</h3>
+              <p class="card-desc">Creative reviews and design briefs preserved without interrupting creative momentum.</p>
+            </div>
+            <div class="card-foot">
+              <span class="card-detail">60 studios live</span>
+              <span class="card-detail">Seamless audio capture</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-method" id="method">
+      <div class="measure">
+        <div class="kicker">Method</div>
+        <h2 class="section-title">Three steps to clean decisions.</h2>
+        <ol class="method-steps">
+          <li>
+            <div class="step-num">01</div>
+            <h3 class="step-title">Listen</h3>
+            <p class="step-desc">Passive acoustic capture records natural conversational cadence without requiring explicit cues.</p>
+          </li>
+          <li>
+            <div class="step-num">02</div>
+            <h3 class="step-title">Mark</h3>
+            <p class="step-desc">Identifies key decisions, open questions, and owners in real-time as they emerge in dialogue.</p>
+          </li>
+          <li>
+            <div class="step-num">03</div>
+            <h3 class="step-title">Send</h3>
+            <p class="step-desc">Delivers structured meeting records directly to participants the instant the conversation concludes.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section-close" id="pricing">
+      <div class="measure">
+        <h2 class="close-title">Record talks. Stay on track.</h2>
+        <a class="btn-ink" href="mailto:hello@parley.example">Get started</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer" id="security">
+    <div class="measure">
+      <div class="footer-top">
+        <a class="brand-link" href="#product">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3">
+            <circle cx="12" cy="12" r="7.5" />
+            <circle cx="20" cy="20" r="7.5" />
+          </svg>
+          <span>Parley</span>
+        </a>
+        <div class="footer-links">
+          <a href="#product">Product</a>
+          <a href="#use">Use</a>
+          <a href="#method">Notes</a>
+          <a href="#security">Security</a>
+          <a href="#pricing">Pricing</a>
+          <a href="mailto:hello@parley.example">hello@parley.example</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Notes stay with the desks that were in the room. End-to-end isolated storage.</div>
+        <div>Sample template</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById("menu-btn");
+      var menu = document.getElementById("mobile-menu");
+      if (!btn || !menu) return;
+      btn.addEventListener("click", function () {
+        var open = menu.classList.toggle("is-open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        btn.textContent = open ? "Close" : "Menu";
+      });
+      menu.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          menu.classList.remove("is-open");
+          btn.setAttribute("aria-expanded", "false");
+          btn.textContent = "Menu";
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

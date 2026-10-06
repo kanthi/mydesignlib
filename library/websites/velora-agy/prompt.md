@@ -1,69 +1,257 @@
-# Prompt Specification — Velora HR (`velora-agy`)
+# Rebuild prompt — Velora HR (`velora-agy`)
 
-> Master technical and architectural prompt that defines Velora HR.
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
 
-```text
-Build a standalone modern high-converting SaaS landing page that recreates this reference EXACTLY. Do not invent unrelated sections, extra overlays, or generic slop. Match structure, typography, spacing, concentric border radii, color palettes, and micro-interactions.
+## Deliverable
+- Kind: website · SaaS
+- Folder: `library/websites/velora-agy/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Keep the stack already in this folder (package.json, source, and built assets). Do not convert it to a different framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
 
-STACK
-- Vite + React 18 + TypeScript + Tailwind CSS 3
-- Lucide React icons: ArrowRight, Calendar, Clock, User, MoreHorizontal, Play, Pause, Menu, X, Shield, Lock, Award, Globe, Database, GitPullRequest, Users, CheckCircle2, ChevronDown
-- Path alias @ -> src
-- Single App architecture. Built with relative asset paths suitable for static delivery.
+## What it is
+Next-generation workforce operating system & people operations platform — deep wine sangria gradient header with glowing crimson horizon arc, floating executive video briefing stage, clean white alternating feature suite with interactive leave request simulator, shift scheduling matrix, records ledger, and 3D isometric ROI pillars.
 
-BRAND & IDENTITY
-- Rebrand: Velora HR (id: "velora-agy")
-- Tagline: "Manpower your workforce with an HR system"
-- Subhead: "Velora HR gives you full control, automation, and visibility, so you can build stronger teams, simplify workflows, and focus on growth."
-- Accent Color: Vivid Coral Red (#eb4438, hover #d73328)
-- Background Hero: Deep Wine Sangria Radial Gradient (#4a0d24 -> #260612 -> #1c040c)
-- Distinctive Element: Luminous elliptical crimson arc behind hero title (radial gradient with blur-3xl)
+## Title
+Velora HR — Manpower Your Workforce With An HR System
 
-PAGE ARCHITECTURE & SECTIONS
-1. Top Navigation:
-   - Left: Kinetic geometric 'V' mark + "velora.hr" wordmark
-   - Center: Product (dropdown), Solutions, Pricing, About, Resources (dropdown)
-   - Right: "Log in" link, "Try 14 days for free" solid white rounded pill button, Mobile hamburger toggle
-2. Hero Stage:
-   - Two CTAs: Solid Coral "Start Free Trial →" + Ghost Outline "Schedule A Consultation →"
-   - Floating Dark Dashboard Window (#11141a):
-     - Window chrome dots (red, yellow, green) + Breadcrumb path
-     - Left Sidebar: Overview, Team Clips, Highlights, Projects, Channels, Settings
-     - Video Player: Showing Elena Rostova (VP People & Culture) presentation, live broadcast badge, interactive play/pause button with ripple glow, and time scrubber overlay (04:18 / 12:45)
-3. Social Proof Ticker:
-   - "Trusted by leading companies worldwide"
-   - Fictional vector partner brand marks: kinetiq, synthetix, aether, vanguard, lumina, hyperion
-4. Manifesto Headline:
-   - "Less time managing, more time achieving."
-   - "Automate manual work, simplify HR processes, and free up your team's time to focus on what really matters: growing your business. Velora HR handles the paperwork."
-5. Three Alternating 2-Column Feature Sections:
-   - Section 4A (Employee panels):
-     - Left: Red dot tag "⦿ Employee panels", Title "Working time and leave requests? Employees", Body, "Learn more explore →"
-     - Right: Coral card shell (#eb4438) with top circular icon tabs (Calendar, Time, User, More), white form box with working dropdown, radio chip selectors ("Absence", "Secure Storage" active, "Remote work"), handover note input, and "Confirm" button with live success toast
-   - Section 4B (Work scheduling - Reversed):
-     - Left: Interactive Shift Scheduling calendar table card with Department filter ("Administration", "Engineering", "Operations", "Design"), tab switches ("Calendar", "List of requests", "List of employees"), KPI badges ("Total: 260", "Planned: 80.5H", "Overtime: 80.5H", "January - 2026"), and colored shift chips (08-16 blue, 09-17 cyan, 12-20 purple, OFF gray)
-     - Right: Red dot tag "⦿ Work scheduling", Title "Plan shifts without confusion or endless follow-ups", Body, "Learn more explore →"
-   - Section 4C (Records and reports):
-     - Left: Red dot tag "⦿ Records and reports", Title "From manual to magical: automate and manual calculations in Excel", Body, "Learn more explore →"
-     - Right: Timesheet ledger card with user avatar (James Brown, HR Manager), "Work time" badge, and clean tabular calculation logs (Date, Start time, End time)
-6. Results & 3D Isometric Proof Section (Deep Wine Background):
-   - "These aren't promises. These are real results from our client" + Coral pill CTA
-   - Three 3D Isometric Columns with perspective tilt, illuminated top facets, and vertical embossed typography:
-     - "80% HR DEPARTMENT" (Workload reduction)
-     - "65% OF MANAGERS' HOURS" (Scheduling follow-ups saved)
-     - "12X REPETITIVE WORK" (Payroll export acceleration)
-7. HR Control Center:
-   - "Your HR control center."
-   - 3 clean white cards: Data, Processes, People with coral icons and bullet lists
-8. Enterprise Security & Trust:
-   - "Data security is our top priority."
-   - SOC2 Type II, GDPR Compliant, ISO 27001 Certified, 256-Bit SSL Encryption badges
-9. Conversion Banner & Modal:
-   - Wine banner with coral button: "Ready to manpower your workforce?"
-   - Interactive 14-day free trial modal with form inputs and Escape key support
-10. Footer:
-    - 4-column modern enterprise layout with brand description, links, and copyright citation
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap`
 
-DELIVER
-Working Vite + React 18 + TS app: index.html, index.src.html, App.tsx, index.css, vite.config.ts, tailwind.config.js, package.json, preview.jpg. Production build bundled in place.
+## Tailwind colors
+Keep these color names and values.
+
+```js
+colors: {
+        wine: {
+          dark: '#1c040c',
+          base: '#260612',
+          elevated: '#36091a',
+          glow: '#5e0f2b',
+        },
+        coral: {
+          DEFAULT: '#eb4438',
+          hover: '#d73328',
+          subtle: 'rgba(235, 68, 56, 0.12)',
+          glow: 'rgba(235, 68, 56, 0.35)',
+        },
+        ink: {
+          900: '#111827',
+          700: '#374151',
+          500: '#6b7280',
+          300: '#d1d5db',
+          100: '#f3f4f6',
+        }
+      }
 ```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+- header
+  - nav “Main Navigation”
+    - a: velora.hr → #top
+    - button: Product
+    - a: Employee Panels → #features
+    - a: Shift Scheduling → #scheduling
+    - a: Records & Payroll → #reports
+    - a: HR Control Center → #control-center
+    - a: Solutions → #features
+    - a: Pricing → #metrics
+    - a: About → #control-center
+    - button: Resources
+    - a: Client ROI Metrics → #metrics
+    - a: Security & Trust → #security
+    - button: Log in
+    - button: Try 14 days for free
+  - h1: Manpower your workforce with an HR system
+  - p: Velora HR gives you full control, automation, and visibility, so you can build stronger teams, simplify workflows, and focus on growth.
+  - button: Start Free Trial
+  - button: Schedule A Consultation
+  - button: Export Stream ↗
+- section “Trusted companies”
+  - p: Trusted by leading companies worldwide
+- section #features
+  - h2: Less time managing, more time achieving.
+  - p: Automate manual work, simplify HR processes, and free up your team's time to focus on what really matters: growing your business. Velora HR handles the paperwork.
+- section
+  - h3: Working time and leave requests? Employees
+  - p: Automate manual work, simplify HR processes, and free up your team's time to focus on what really matters: growing your business.
+  - form
+    - h4: Add request
+    - option: Leave request (Paid Annual)
+    - option: Medical & Sick Absence
+    - option: Flexible Remote Day
+    - label: Handover / Team Note
+  - option: Administration
+  - option: Engineering
+  - option: Operations
+  - option: Design
+  - button: Clear
+  - table
+    - th: Member
+    - th: Mon 1
+    - th: Tue 2
+    - th: Wed 3
+    - th: Thu 4
+    - th: Fri 5
+    - th: Sat 6
+    - th: Sun 7
+    - td: Sarah Chen
+    - td: 08-16
+    - td: 08-16
+    - td: 08-16
+    - td: 09-17
+    - td: 09-17
+    - td: OFF
+    - td: OFF
+    - td: Marcus Vance
+    - td: 09-17
+    - td: 09-17
+    - td: 08-16
+    - td: 08-16
+    - td: 12-20
+    - td: 12-20
+    - td: OFF
+    - td: Amara Okafor
+    - td: OFF
+    - td: 08-16
+    - td: 08-16
+    - td: 09-17
+    - td: 09-17
+    - td: 09-17
+    - td: OFF
+  - h3: Plan shifts without confusion or endless follow-ups
+  - p: Set up the schedule and share it with your team — everyone sees when and how they're working. Leave and remote work requests flow automatically along a predefined approval path. You get clarity, up-to-date data, and no more sad spreadsheets.
+  - h3: From manual to magical: automate and manual calculations in Excel
+  - p: Set up the schedule and share it with your team — everyone sees when and how they're working. Leave and activity records flow automatically along a predefined approval path. You get clarity, up-to-date data, and no more sad spreadsheets.
+  - h5: James Brown
+  - table
+    - th: Date
+    - th: Start time
+    - th: End time
+    - td: 01.04.2026 (TUE)
+    - td: 08:00 - 16:00
+    - td: 04:00
+    - td: 02.04.2026 (WED)
+    - td: 08:00 - 16:00
+    - td: 08:00
+    - td: 03.04.2026 (THU)
+    - td: 08:00 - 16:00
+    - td: 08:00
+    - td: 04.04.2026 (FRI)
+    - td: 08:00 - 14:00
+    - td: 06:00
+    - td: 05.04.2026 (SAT)
+    - td: 09:00 - 13:00
+    - td: 04:00
+- section #metrics
+  - h2: These aren't promises. These are real results from our client
+  - p: Automate manual work, simplify HR processes, and free up your team's time to focus on what really matters: growing your business.
+  - button: See Case Studies
+  - p: 80% Reduction in routine repetitive onboarding paperwork
+  - p: 65% Saved on weekly manager scheduling follow-ups
+  - p: 12X Faster payroll calculation & export pipelines
+- section #control-center
+  - h2: Your HR control center.
+  - p: Whether you're a startup or enterprise, we have a solution for you.
+  - h4: Data
+  - ul
+    - li: • All employee data organized in one place
+    - li: • Automated reports
+    - li: • Export leave and working time data to payroll systems
+  - h4: Processes
+  - ul
+    - li: • Clear communication/information flow
+    - li: • Create, approve, and archive documents
+    - li: • No more spreadsheets printouts or dimension paperwork
+  - h4: People
+  - ul
+    - li: • Full overview of each team's records
+    - li: • Easy access to execution statistics
+    - li: • Fast leave, working hours and flexible work schedules
+- section #security
+  - h3: Data security is our top priority.
+  - p: Enterprise-grade encryption and global data privacy standards built into every layer.
+- section
+  - h2: Ready to manpower your workforce?
+  - p: Join forward-thinking companies scaling faster with Velora HR automation.
+  - button: Start Free 14-Day Trial
+- footer
+  - a: velora.hr → #top
+  - p: Next-generation workforce operating system. Unifying shift planning, leave automation, and labor intelligence.
+  - h5: Product
+  - ul
+    - li: Employee Panels
+    - li: Shift Scheduling
+    - li: Records & Payroll
+    - li: Control Center
+  - h5: Solutions
+  - ul
+    - li: Scaleups & Enterprises
+    - li: Shift-Based Teams
+    - li: Automated Payroll
+    - li: Enterprise Security
+  - h5: Company
+  - ul
+    - li: About Us
+    - li: Client Outcomes
+    - li: Security & Trust
+    - li: Contact Sales
+- a: Product & Features → #features
+- a: Shift Scheduling → #scheduling
+- a: Records & Payroll → #reports
+- a: Client Results → #metrics
+- a: Control Center → #control-center
+- a: Security → #security
+- h3: Launch Your Velora Workspace
+- p: Experience seamless employee scheduling, automatic leave workflows, and unified labor telemetry.
+- form
+  - label: Work Email
+  - label: Company Name
+  - label: Workforce Size
+  - option: 10 - 50 Employees
+  - option: 50 - 250 Employees
+  - option: 250 - 1,000 Employees
+  - option: 1,000+ Enterprise
+  - button: Provision Instance →
+
+## Images in the page
+- `./assets/hero_presenter.jpg — Elena Rostova presenting Velora workforce strategy`
+
+## Fields
+Keep these controls, including ids and placeholders.
+- select
+- input[text] placeholder='Brief note for manager...'
+- input[email] placeholder='elena@company.com'
+- input[text] placeholder='Acme Technologies'
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `assets/hero_presenter.jpg`
+- `assets/index-J01woLxD.css`
+- `assets/index.src-7jxrh1HQ.js`
+- `assets/velora_mark-BCx2z2WM.svg`
+- `assets/velora_mark.svg`
+- `index.html`
+- `index.src.html`
+- `package-lock.json`
+- `package.json`
+- `postcss.config.js`
+- `preview.jpg`
+- `src/App.tsx`
+- `src/index.css`
+- `src/main.tsx`
+- `tailwind.config.js`
+- `tsconfig.json`
+- `tsconfig.node.json`
+- `vite.config.ts`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

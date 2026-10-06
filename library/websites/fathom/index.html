@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fathom — A calmer desk for the finance team</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font: "Urbanist", sans-serif;
+      --surface-void: #0b0d12;
+      --surface-electric: #1219f0;
+      --surface-mid: #5257f4;
+      --surface-lilac: #8a8ef7;
+      --surface-page: #e9eafe;
+      --surface-card: #ffffff;
+      --surface-well: #f0f0f1;
+      --surface-badge: #1a1c22;
+      --line-badge: #2a2d35;
+      --surface-inverse: #24262c;
+      --text-on-dark: #ffffff;
+      --text-muted: #c9ccd4;
+      --text-ink: #0b0d12;
+      --action-primary: #1a8cff;
+      --action-primary-hover: #47a3ff;
+      --line-rule: rgba(11, 13, 18, 0.16);
+      --chip: #e4e5e8;
+      --radius-cta: 6px;
+      --radius-card: 16px;
+      --radius-well: 12px;
+      --radius-pill: 999px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 200ms;
+      --shadow-card: 0 20px 50px rgba(18, 25, 240, 0.18), 0 2px 8px rgba(11, 13, 18, 0.06);
+      --shadow-glow: 0 8px 28px rgba(26, 140, 255, 0.45);
+      --text-display: clamp(2rem, 3.6vw, 3.5rem);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-weight: 400;
+      background: var(--surface-page);
+      color: var(--text-ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus { outline: none; }
+
+    :focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+
+    .nav :focus-visible,
+    .card :focus-visible,
+    .jobs :focus-visible,
+    .foot :focus-visible,
+    .btn-primary:focus-visible {
+      outline-color: var(--text-ink);
+    }
+
+    .send:focus-visible { outline-color: var(--action-primary); }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-on-dark);
+      min-height: 100vh;
+      background: linear-gradient(
+        to bottom,
+        #0b0d12 0%,
+        #0b0d12 30%,
+        #1219f0 48%,
+        #2a32f2 62%,
+        #6a72f6 80%,
+        #9aa2f8 100%
+      );
+    }
+
+    /* Inverted shoulders: quarter-circle fillets so the white tab meets the top edge. */
+    .nav {
+      position: relative;
+      width: min(900px, calc(100% - 96px));
+      height: 60px;
+      margin: 0 auto;
+      background: var(--surface-card);
+      border-radius: 0 0 22px 22px;
+      color: var(--text-ink);
+    }
+
+    .nav::before,
+    .nav::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 36px;
+      height: 36px;
+      pointer-events: none;
+    }
+
+    .nav::before {
+      left: -35px;
+      background: radial-gradient(circle at 0 100%, transparent 35px, #fff 36px);
+    }
+
+    .nav::after {
+      right: -35px;
+      background: radial-gradient(circle at 100% 100%, transparent 35px, #fff 36px);
+    }
+
+    .nav-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-areas: "left brand right";
+      align-items: center;
+      height: 60px;
+      padding: 0 28px;
+    }
+
+    .nav-panel { display: contents; }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-left { grid-area: left; }
+
+    .nav-right {
+      grid-area: right;
+      justify-content: flex-end;
+    }
+
+    .brand {
+      grid-area: brand;
+      justify-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-ink);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      min-height: 44px;
+    }
+
+    .mono { color: var(--surface-electric); display: block; }
+
+    .nav a {
+      color: var(--text-ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 44px;
+      transition: opacity var(--dur) var(--ease);
+    }
+
+    .nav a:hover { opacity: 0.65; }
+
+    .menu {
+      display: none;
+      border: 0;
+      background: var(--surface-inverse);
+      color: var(--text-on-dark);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-cta);
+      min-height: 44px;
+      padding: 0 14px;
+      cursor: pointer;
+    }
+
+    .stage {
+      width: min(760px, calc(100% - 32px));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 22px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      padding: 4px 10px 4px 4px;
+      background: var(--surface-badge);
+      border: 1px solid var(--line-badge);
+      border-radius: var(--radius-pill);
+      color: var(--text-on-dark);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .badge-in {
+      background: #000;
+      border-radius: var(--radius-pill);
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    h1 {
+      margin: 20px 0 0;
+      max-width: 16ch;
+      font-size: var(--text-display);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+    }
+
+    .sub {
+      margin: 14px 0 0;
+      max-width: 460px;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: var(--radius-cta);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+
+    .btn-primary {
+      background: var(--action-primary);
+      color: var(--text-ink);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--action-primary-hover);
+      box-shadow: 0 10px 32px rgba(26, 140, 255, 0.55);
+    }
+
+    .btn-sign {
+      background: var(--surface-inverse);
+      color: var(--text-on-dark);
+    }
+
+    .btn-sign:hover { background: #34373f; }
+
+    .card {
+      width: min(592px, 100%);
+      margin-top: 28px;
+      padding: 5px;
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      text-align: left;
+    }
+
+    .well {
+      min-height: 108px;
+      padding: 12px;
+      background: var(--surface-well);
+      border-radius: var(--radius-well);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 64px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      resize: none;
+      background: transparent;
+      color: var(--text-ink);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    textarea::placeholder { color: #5e626a; }
+
+    .reading:empty { margin: 0; }
+
+    .reading:not(:empty) {
+      margin: 0;
+      padding: 10px 12px;
+      background: var(--surface-card);
+      border-radius: 8px;
+      color: var(--text-ink);
+      font-size: 14px;
+      line-height: 1.45;
+      animation: rise var(--dur) var(--ease);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip {
+      border: 0;
+      background: var(--chip);
+      color: var(--text-ink);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      min-height: 36px;
+      padding: 0 10px;
+      cursor: pointer;
+      transition: background-color var(--dur) var(--ease);
+    }
+
+    .chip:hover { background: #d5d6da; }
+
+    .send {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-left: auto;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: var(--radius-pill);
+      background: var(--surface-inverse);
+      color: var(--text-on-dark);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color var(--dur) var(--ease);
+    }
+
+    .send:hover { background: #000; }
+
+    .pills {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: min(640px, 100%);
+      margin-top: 16px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.16);
+      color: var(--text-on-dark);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: background-color var(--dur) var(--ease);
+    }
+
+    .pill:hover { background: rgba(255, 255, 255, 0.18); }
+
+    .marks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 16px 36px;
+      width: min(1000px, calc(100% - 32px));
+      margin: auto 0 0;
+      padding: 36px 0 26px;
+      list-style: none;
+      color: #ffffff;
+    }
+
+    .marks li {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .jobs {
+      background: var(--surface-page);
+      padding: 72px 24px 32px;
+    }
+
+    .jobs-wrap { max-width: 880px; margin: 0 auto; }
+
+    .jobs h2 {
+      margin: 0;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .jobs-lead {
+      margin: 12px 0 0;
+      max-width: 42rem;
+      color: rgba(11, 13, 18, 0.72);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .ledger {
+      list-style: none;
+      margin: 28px 0 0;
+      padding: 0;
+      border-top: 1px solid var(--line-rule);
+    }
+
+    .job {
+      display: grid;
+      grid-template-columns: 4rem 14rem 1fr;
+      gap: 8px 24px;
+      align-items: baseline;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line-rule);
+    }
+
+    .idx {
+      font-size: 14px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--surface-electric);
+    }
+
+    .job h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .job p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+      color: rgba(11, 13, 18, 0.78);
+    }
+
+    .close {
+      background: var(--surface-void);
+      color: var(--text-on-dark);
+      text-align: center;
+      padding: 88px 20px;
+    }
+
+    .close h2 {
+      margin: 0;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .close p {
+      max-width: 420px;
+      margin: 12px auto 22px;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .foot {
+      background: var(--surface-page);
+      color: var(--text-ink);
+      padding: 28px 16px 36px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .foot p { margin: 0; }
+
+    .foot a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: opacity var(--dur) var(--ease);
+    }
+
+    .foot a:hover { opacity: 0.65; }
+
+    @media (max-width: 719px) {
+      .nav {
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+      }
+
+      .nav::before,
+      .nav::after { content: none; }
+
+      .nav-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        height: auto;
+        padding: 0 16px;
+      }
+
+      .brand { height: 60px; justify-self: auto; }
+
+      .menu { display: inline-flex; margin-left: auto; }
+
+      .nav-panel {
+        display: none;
+        flex-basis: 100%;
+        flex-direction: column;
+        padding-bottom: 10px;
+      }
+
+      .nav-panel.is-open { display: flex; }
+
+      .nav-left,
+      .nav-right {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+      }
+
+      .job {
+        grid-template-columns: auto 1fr;
+        column-gap: 12px;
+        row-gap: 6px;
+      }
+
+      .idx {
+        grid-row: 1 / span 2;
+        align-self: start;
+        padding-top: 3px;
+      }
+
+      .job h3,
+      .job p { grid-column: 2; }
+
+      .send { margin-left: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav" aria-label="Primary">
+      <div class="nav-inner">
+        <a class="brand" href="#desk">
+          <svg class="mono" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path fill="currentColor" d="M3 2h12.2v3H7v2.4h6.4V10.2H7V16H3V2z" />
+          </svg>
+          Fathom
+        </a>
+        <div class="nav-panel" id="nav-panel">
+          <div class="nav-left">
+            <a href="#jobs">Books
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M2.8 4.4 6 7.6l3.2-3.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a href="#week">Notes
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M2.8 4.4 6 7.6l3.2-3.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+          <div class="nav-right">
+            <a href="#desk">Desk</a>
+            <a href="#close">Pricing</a>
+          </div>
+        </div>
+        <button class="menu" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+      </div>
+    </nav>
+
+    <div class="stage">
+      <p class="badge">
+        <span class="badge-in">Introducing</span>
+        <span>Fathom 2</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M3.2 8.8 8.8 3.2M5 3.2h3.8V7" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </p>
+      <h1>A calmer desk<br />for the finance team</h1>
+      <p class="sub">Fathom reads the books you already keep and answers in the language of a careful analyst.</p>
+      <div class="actions">
+        <a class="btn btn-sign" href="mailto:desk@fathom.example">Sign in</a>
+        <a class="btn btn-primary" href="mailto:desk@fathom.example">Open the desk</a>
+      </div>
+
+      <div class="card" id="desk">
+        <div class="well">
+          <label class="sr" for="ask">Ask the desk</label>
+          <textarea id="ask" rows="2" placeholder="How are operating costs trending for the shop companies this quarter? Should the autumn forecast move?"></textarea>
+          <p class="reading" id="reading" aria-live="polite" aria-atomic="true"></p>
+          <div class="row">
+            <button class="chip" type="button" data-ask="Draft the week letter for the shop companies.">Draft the week</button>
+            <button class="chip" type="button" data-ask="Find the line that should move in the autumn forecast.">Find a line</button>
+            <button class="chip" type="button" data-ask="Search the shop books for operating costs this quarter.">Search the books</button>
+            <button class="send" id="send" type="button">
+              Send
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3.5 11.2 20.5 4.2 13.2 20.2 10.8 13.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" />
+                <path d="m10.8 13.2 9.7-9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pills">
+        <div class="pill-row">
+          <button class="pill" type="button" data-ask="How should we read the market against the shop books?">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2 11.5 6 7l3 2.5L14 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Read the market
+          </button>
+          <button class="pill" type="button" data-ask="Which shop books are out of step this week?">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3 6h8L9 4M13 10H5l2 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Sync the books
+          </button>
+        </div>
+        <div class="pill-row">
+          <button class="pill" type="button" data-ask="How does this autumn compare with the year before?">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3 13V6M8 13V3M13 13V8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            Compare the years
+          </button>
+          <button class="pill" type="button" data-ask="Write a rule for when one cost line moves the forecast.">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3 4h10M3 8h7M3 12h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            Write a rule
+          </button>
+          <button class="pill" type="button" data-ask="Where did spend move for the shop companies this quarter?">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2.5 8 7.5 3H13v5.5L8 14Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <circle cx="10.2" cy="5.6" r="0.8" fill="currentColor" />
+            </svg>
+            Look at spend
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ul class="marks" aria-label="Fictional houses">
+      <li>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M2 13V6h6v3h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Harbeck
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1.5 12.5h13M3 12.5a5 5 0 0 1 10 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Lowell
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M8 1.5 14 8 8 14.5 2 8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+        </svg>
+        Pindar
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1.5 10.5 8 4l6.5 6.5M4 10.5 8 6.5l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Brant
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M8 3v10M8 8C5 4.5 2 6 3.5 9.5M8 8c3-3.5 6-2 4.5 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Moth
+      </li>
+    </ul>
+  </header>
+
+  <main>
+    <section class="jobs" id="jobs" aria-labelledby="jobs-title">
+      <div class="jobs-wrap">
+        <h2 id="jobs-title">Three jobs on the desk</h2>
+        <p class="jobs-lead">Fathom keeps three jobs on the desk. It does not open a second set of books.</p>
+        <ol class="ledger">
+          <li class="job" id="week">
+            <span class="idx">01</span>
+            <h3>The week letter</h3>
+            <p>A Monday note that names what moved in the shop books and what can wait.</p>
+          </li>
+          <li class="job" id="forecast">
+            <span class="idx">02</span>
+            <h3>The forecast line</h3>
+            <p>One autumn line, held still until a single cost — flour or rent — is enough to move it.</p>
+          </li>
+          <li class="job" id="spend">
+            <span class="idx">03</span>
+            <h3>The spend question</h3>
+            <p>Where the money went, before anyone rewrites the whole book.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="close" id="close">
+      <h2>When the week needs a note.</h2>
+      <p>The books stay where they are.</p>
+      <a class="btn btn-primary" href="mailto:desk@fathom.example">Open the desk</a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Fathom · Sample template · <a href="mailto:desk@fathom.example">desk@fathom.example</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var menu = document.querySelector(".menu");
+      var panel = document.getElementById("nav-panel");
+      var ask = document.getElementById("ask");
+      var reading = document.getElementById("reading");
+      var answer = "Operating costs for the three shop books are up 4% on autumn, almost all flour and rent. The forecast can stay. Move the flour line, not the whole book.";
+
+      function write(prompt) {
+        if (prompt) ask.value = prompt;
+        reading.textContent = answer;
+      }
+
+      menu.addEventListener("click", function () {
+        var open = menu.getAttribute("aria-expanded") === "true";
+        menu.setAttribute("aria-expanded", open ? "false" : "true");
+        menu.textContent = open ? "Menu" : "Close";
+        panel.classList.toggle("is-open", !open);
+      });
+
+      document.querySelectorAll("[data-ask]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          write(btn.getAttribute("data-ask"));
+        });
+      });
+
+      document.getElementById("send").addEventListener("click", function () {
+        write("");
+      });
+
+      ask.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          write("");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

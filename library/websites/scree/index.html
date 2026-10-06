@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scree — Simple analytics for a shop that is growing</title>
+  <meta name="description" content="See who comes to the shop, where they come from, and what makes them buy, on one quiet board." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <style>
+    :root {
+      --font: "Geist", "Helvetica Neue", sans-serif;
+      --surface-page: #F1EFEA;
+      --text-primary: #111111;
+      --text-muted: #6F6C67;
+      --text-display-quiet: #BDBAB4;
+      --text-sub: #A8A59F;
+      --surface-board: #FFFFFF;
+      --surface-sidebar: linear-gradient(#9A9A97, #6F6F6C);
+      --action-primary: #111111;
+      --action-on-primary: #FFFFFF;
+      --border-hairline: #D9D5CC;
+      --chart-search: #C8C4BC;
+      --chart-window: #111111;
+      --chart-direct: #8A8780;
+      --on-sidebar: #FFFFFF;
+      --radius-board: 8px;
+      --radius-pill: 999px;
+      --radius-control: 6px;
+      --shadow-board: 0 28px 70px rgba(17, 17, 17, 0.14);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur: 280ms;
+      --header-h: 82px;
+      --section-y: 88px;
+      --wrap: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    img { max-width: 100%; }
+    ::selection { background: var(--text-primary); color: var(--surface-page); }
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 3px;
+    }
+    .vh {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .skip {
+      position: absolute;
+      left: 16px;
+      top: -48px;
+      z-index: 8;
+      background: var(--surface-board);
+      color: var(--text-primary);
+      padding: 8px 12px;
+      text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+
+    .wrap {
+      width: min(var(--wrap), calc(100% - 48px));
+      margin-inline: auto;
+    }
+    .section { padding-block: var(--section-y); }
+    h2 {
+      margin: 0 0 28px;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--surface-page);
+      min-height: 100svh;
+    }
+    .bar {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      height: var(--header-h);
+      padding-inline: 48px;
+    }
+    .word {
+      color: var(--text-primary);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.08em;
+      text-decoration: none;
+      text-transform: lowercase;
+    }
+    #site-nav { margin-left: auto; display: flex; align-items: center; }
+    .links {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .links a {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 160ms var(--ease);
+    }
+    .links a:hover { color: var(--text-primary); }
+    .tools { display: flex; align-items: center; gap: 18px; }
+    .lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 0 2px;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 160ms var(--ease);
+    }
+    .lang:hover { color: var(--text-primary); }
+    .lang-note {
+      position: absolute;
+      right: 48px;
+      top: calc(100% - 8px);
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .menu-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 4px 0 12px;
+      border: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      padding: 4px 14px 4px 4px;
+      border-radius: var(--radius-pill);
+      background: var(--action-primary);
+      color: var(--action-on-primary);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+    }
+    .pill:hover { opacity: 0.88; }
+    .pill:active { transform: translateY(1px); }
+    .well {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--action-on-primary);
+      color: var(--text-primary);
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 22px 24px 0;
+    }
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 72px;
+      font-weight: 600;
+      letter-spacing: -0.055em;
+      line-height: 1;
+    }
+    .hero h1 span { display: block; }
+    .quiet { color: var(--text-display-quiet); }
+    .ink { color: var(--text-primary); }
+    .lede {
+      max-width: 540px;
+      margin: 18px auto 0;
+      color: var(--text-sub);
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .stage {
+      position: relative;
+      z-index: 1;
+      width: min(780px, calc(100% - 96px));
+      margin: 36px auto 0;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      min-height: 640px;
+      overflow: hidden;
+      border-radius: var(--radius-board);
+      background: var(--surface-board);
+      box-shadow: var(--shadow-board);
+      animation: settle var(--dur) var(--ease) both;
+    }
+    @keyframes settle {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    .side {
+      background: var(--surface-sidebar);
+      color: var(--on-sidebar);
+      padding: 16px 12px 20px;
+    }
+    .brandline { display: flex; align-items: center; gap: 8px; }
+    .hmark {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--on-sidebar);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex: none;
+    }
+    .product-name, .shop-name { display: block; }
+    .product-name { font-size: 13px; font-weight: 600; line-height: 1.2; }
+    .shop-name { font-size: 11px; line-height: 1.3; opacity: 0.86; }
+    .search { display: block; margin-top: 14px; }
+    .search input {
+      width: 100%;
+      height: 28px;
+      border: 0;
+      border-radius: var(--radius-control);
+      background: rgba(255, 255, 255, 0.18);
+      color: var(--on-sidebar);
+      font: inherit;
+      font-size: 12px;
+      padding: 0 8px;
+    }
+    .search input::placeholder { color: rgba(255, 255, 255, 0.72); }
+    .menu, .menu ul { list-style: none; margin: 0; padding: 0; }
+    .menu { margin-top: 12px; display: flex; flex-direction: column; gap: 1px; }
+    .menu ul { padding-left: 10px; }
+    .menu button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--on-sidebar);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: left;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    .menu .sub { font-size: 11px; font-weight: 400; }
+    .menu button:hover { background: rgba(255, 255, 255, 0.1); }
+    .menu button[aria-current="true"] { background: rgba(255, 255, 255, 0.16); }
+    .badge {
+      margin-left: auto;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: var(--radius-pill);
+      background: var(--on-sidebar);
+      color: #6F6F6C;
+      font-size: 10px;
+      font-weight: 600;
+      display: inline-grid;
+      place-items: center;
+    }
+    .main { padding: 16px 18px 28px; }
+    .main-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+    }
+    .who { display: flex; align-items: center; gap: 8px; margin-right: auto; }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--border-hairline);
+      color: var(--text-primary);
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      flex: none;
+    }
+    .domain, .who-name { display: block; }
+    .domain { font-size: 11px; color: var(--text-muted); line-height: 1.2; }
+    .who-name { font-size: 13px; font-weight: 600; line-height: 1.25; }
+    .live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 10px 0 8px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-pill);
+      background: var(--surface-board);
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-primary);
+    }
+    .live[aria-pressed="false"] .dot {
+      background: transparent;
+      box-shadow: inset 0 0 0 1.5px var(--text-muted);
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-pill);
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    .chip.is-on { color: var(--text-primary); border-color: var(--text-primary); }
+    .showing { margin: 14px 0 0; font-size: 11px; color: var(--text-muted); }
+    .metric {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px 20px;
+      margin-top: 18px;
+    }
+    .num {
+      margin: 0;
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .cap { margin: 4px 0 0; font-size: 12px; color: var(--text-muted); }
+    .deltas { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+    .delta {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-pill);
+      color: var(--text-primary);
+      font-size: 12px;
+    }
+    .vs { margin: 6px 0 0; font-size: 12px; color: var(--text-muted); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      border-top: 1px solid var(--border-hairline);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .stats li {
+      padding: 10px 12px 10px 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .stats li + li { padding-left: 12px; border-left: 1px solid var(--border-hairline); }
+    .stats strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .chart-title { margin: 16px 0 8px; font-size: 12px; font-weight: 600; }
+    .barcode {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      height: 54px;
+    }
+    .zone { height: 100%; }
+    .zone-search {
+      flex: 46 1 0;
+      background: repeating-linear-gradient(to right, var(--chart-search) 0 1px, transparent 1px 4px);
+    }
+    .zone-window {
+      flex: 31 1 0;
+      background: repeating-linear-gradient(to right, var(--chart-window) 0 2px, transparent 2px 3px);
+    }
+    .zone-direct {
+      flex: 23 1 0;
+      background: repeating-linear-gradient(to right, var(--chart-direct) 0 1px, transparent 1px 4px);
+    }
+    .barcode-labels {
+      display: flex;
+      gap: 12px;
+      margin: 8px 0 0;
+    }
+    .barcode-labels p {
+      margin: 0;
+      flex: 46 1 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+    .barcode-labels p:nth-child(2) { flex: 31 1 0; }
+    .barcode-labels p:nth-child(3) { flex: 23 1 0; }
+    .barcode-labels span { display: block; }
+    .table-wrap { margin-top: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; color: var(--text-muted); }
+    th, td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-hairline);
+      text-align: right;
+      font-weight: 500;
+    }
+    thead th { font-size: 10px; letter-spacing: 0.03em; }
+    tbody th, th:first-child { text-align: left; color: var(--text-muted); }
+    td:last-child, thead th:last-child { color: var(--text-primary); font-weight: 600; }
+
+    .hero-fade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      height: 160px;
+      background: linear-gradient(to bottom, transparent, var(--surface-page));
+      pointer-events: none;
+    }
+    .rock {
+      position: absolute;
+      z-index: 3;
+      height: auto;
+      max-width: none;
+      pointer-events: none;
+      user-select: none;
+    }
+    .rock-left {
+      width: 46vw;
+      left: -10vw;
+      bottom: -14vh;
+    }
+    .rock-right {
+      width: 46vw;
+      right: -8vw;
+      bottom: -12vh;
+    }
+
+    .method ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--border-hairline);
+    }
+    .method li {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 16px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .numeral {
+      margin: 0;
+      padding-top: 6px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+    }
+    .method h3 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .method p { margin: 0; max-width: 40em; }
+
+    .offers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border-hairline);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .offers article { padding: 28px 24px 28px 0; }
+    .offers article + article {
+      border-left: 1px solid var(--border-hairline);
+      padding-left: 32px;
+    }
+    .offers h3 { margin: 0; font-size: 18px; font-weight: 600; }
+    .price {
+      margin: 10px 0;
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .price span {
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--text-muted);
+    }
+    .offers p { margin: 0; max-width: 28em; }
+    .pricing .pill { margin-top: 28px; }
+
+    .quote blockquote { margin: 0; max-width: 16em; }
+    .quote p {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+    .quote footer {
+      margin-top: 18px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-foot {
+      padding: 8px 0 40px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .foot-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .site-foot p { margin: 0; }
+    .site-foot a { color: var(--text-muted); text-decoration: none; }
+    .site-foot a:hover { color: var(--text-primary); }
+    .foot-nav { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+    .foot-nav a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 1100px) {
+      .hero { height: 1000px; min-height: 1000px; }
+      .rock-left {
+        width: 1127px;
+        left: -201px;
+        bottom: -360px;
+      }
+      .rock-right {
+        width: 688px;
+        right: -92px;
+        bottom: -755px;
+      }
+    }
+
+    @media (max-width: 1040px) {
+      .bar { height: 72px; padding-inline: 20px; }
+      .menu-btn { display: inline-flex; margin-left: auto; }
+      #site-nav {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 8px 20px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        background: var(--surface-page);
+        z-index: 6;
+      }
+      .bar.is-open #site-nav { display: flex; }
+      .links {
+        position: static;
+        transform: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+      .links a { min-height: 44px; display: inline-flex; align-items: center; }
+      .tools { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .lang-note { position: static; }
+      .hero { height: auto; min-height: 0; }
+      .hero h1 { font-size: clamp(40px, 11vw, 56px); }
+      .stage { width: min(780px, calc(100% - 40px)); }
+      .rock-left, .rock-right { width: 52vw; bottom: -10vh; }
+      .rock-left { left: -14vw; }
+      .rock-right { right: -12vw; }
+      .hero-fade { height: 88px; }
+    }
+
+    @media (max-width: 800px) {
+      .stage { overflow-x: auto; padding-bottom: 8px; }
+      .board { min-width: 640px; min-height: 0; }
+    }
+
+    @media (max-width: 700px) {
+      :root { --section-y: 56px; }
+      .wrap { width: min(var(--wrap), calc(100% - 40px)); }
+      .pill, .lang, .menu-btn, .live, .search input { min-height: 44px; }
+      .well { width: 32px; height: 32px; }
+      .pill { height: 44px; }
+      .offers { grid-template-columns: 1fr; }
+      .offers article + article {
+        border-left: 0;
+        border-top: 1px solid var(--border-hairline);
+        padding-left: 0;
+        padding-top: 28px;
+      }
+      .method li { grid-template-columns: 48px 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .side { display: none; }
+      .stage { overflow: visible; }
+      .board { min-width: 0; width: 100%; grid-template-columns: 1fr; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 440px; }
+      .rock-left, .rock-right { width: 58vw; bottom: -8vh; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="hero" id="top">
+    <div class="bar">
+      <a class="word" href="#top">scree</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" aria-label="Primary">
+        <div class="links">
+          <a href="#features">Features</a>
+          <a href="#method">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#customers">Customers</a>
+        </div>
+        <div class="tools">
+          <button class="lang" type="button" aria-pressed="false" aria-describedby="lang-note">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+              <path d="M2 8h12M8 1.8c1.8 1.8 2.7 3.8 2.7 6.2S9.8 12.4 8 14.2C6.2 12.4 5.3 10.4 5.3 8S6.2 3.6 8 1.8z" fill="none" stroke="currentColor" stroke-width="1.4"></path>
+            </svg>
+            English
+          </button>
+          <a class="pill" href="mailto:hello@scree.example">
+            <span class="well" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            Try it free
+          </a>
+        </div>
+      </nav>
+      <p id="lang-note" class="lang-note" hidden>This sample is in English.</p>
+    </div>
+
+    <div class="hero-copy">
+      <p class="eyebrow">Website analytics, made simple</p>
+      <h1>
+        <span class="quiet">Simple analytics</span>
+        <span class="ink">for a shop that is growing</span>
+      </h1>
+      <p class="lede">See who comes to the shop, where they come from, and what makes them buy, on one quiet board.</p>
+    </div>
+
+    <div class="stage" id="features">
+      <div class="board">
+        <aside class="side" aria-label="Hollis Bakehouse">
+          <div class="brandline">
+            <span class="hmark" aria-hidden="true">H</span>
+            <span>
+              <span class="product-name">Scree</span>
+              <span class="shop-name">Hollis Bakehouse</span>
+            </span>
+          </div>
+          <label class="search">
+            <span class="vh">Search the board</span>
+            <input type="search" placeholder="Search" autocomplete="off" />
+          </label>
+          <ul class="menu">
+            <li>
+              <button type="button" data-label="Overview" aria-current="true">Overview <span class="badge">2</span></button>
+            </li>
+            <li><button type="button" data-label="Visitors">Visitors</button></li>
+            <li><button type="button" data-label="Sales">Sales</button></li>
+            <li>
+              <button type="button" data-label="Goals">Goals</button>
+              <ul>
+                <li><button type="button" class="sub" data-label="This week">This week</button></li>
+                <li><button type="button" class="sub" data-label="This month">This month</button></li>
+                <li>
+                  <button type="button" class="sub" data-label="Campaigns">Campaigns</button>
+                  <ul>
+                    <li><button type="button" class="sub" data-label="Autumn loaf">Autumn loaf</button></li>
+                    <li><button type="button" class="sub" data-label="Letter">Letter</button></li>
+                    <li><button type="button" class="sub" data-label="Window card">Window card</button></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><button type="button" data-label="Reports">Reports</button></li>
+          </ul>
+        </aside>
+        <div class="main">
+          <div class="main-top">
+            <div class="who">
+              <span class="avatar" aria-hidden="true">HB</span>
+              <span>
+                <span class="domain">hollis.example</span>
+                <span class="who-name">Hollis Bakehouse</span>
+              </span>
+            </div>
+            <button class="live" type="button" aria-pressed="true">
+              <span class="dot" aria-hidden="true"></span>
+              Live
+            </button>
+            <div class="chips">
+              <span class="chip is-on">This month</span>
+              <span class="chip">28 Sep – 1 Oct</span>
+            </div>
+          </div>
+          <p class="showing">Showing <span id="view-name">Overview</span></p>
+          <div class="metric">
+            <div>
+              <p class="num">9,640</p>
+              <p class="cap">Visitors this month</p>
+            </div>
+            <div>
+              <p class="deltas">
+                <span class="delta">↗ 14%</span>
+                <span class="delta">+1,180 visitors</span>
+              </p>
+              <p class="vs">vs last month 8,460</p>
+            </div>
+          </div>
+          <ul class="stats">
+            <li><strong>$3,280</strong> Sales</li>
+            <li><strong>214</strong> Orders</li>
+            <li><strong>2.4%</strong> Visitors who buy</li>
+          </ul>
+          <p class="chart-title">Where your visitors come from</p>
+          <div class="barcode" role="img" aria-label="Where your visitors come from. Search 46 percent, Window 31 percent, Direct 23 percent.">
+            <span class="zone zone-search"></span>
+            <span class="zone zone-window"></span>
+            <span class="zone zone-direct"></span>
+          </div>
+          <div class="barcode-labels">
+            <p><span>Search</span><span>46%</span></p>
+            <p><span>Window</span><span>31%</span></p>
+            <p><span>Direct</span><span>23%</span></p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="vh">Four days at Hollis Bakehouse</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Day</th>
+                  <th scope="col">Mon 28 Sep</th>
+                  <th scope="col">Tue 29 Sep</th>
+                  <th scope="col">Wed 30 Sep</th>
+                  <th scope="col">Thu 1 Oct</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">New visitors</th>
+                  <td>286</td>
+                  <td>304</td>
+                  <td>318</td>
+                  <td>402</td>
+                </tr>
+                <tr>
+                  <th scope="row">Orders</th>
+                  <td>6</td>
+                  <td>8</td>
+                  <td>7</td>
+                  <td>16</td>
+                </tr>
+                <tr>
+                  <th scope="row">Sales</th>
+                  <td>$84</td>
+                  <td>$112</td>
+                  <td>$96</td>
+                  <td>$268</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-fade" aria-hidden="true"></div>
+    <img class="rock rock-left" src="assets/boulder-left.png" alt="" width="1248" height="702" aria-hidden="true" />
+    <img class="rock rock-right" src="assets/boulder-right.png" alt="" width="476" height="702" aria-hidden="true" />
+  </header>
+
+  <main id="main">
+    <section class="section method" id="method" aria-labelledby="method-title">
+      <div class="wrap">
+        <h2 id="method-title">How it works</h2>
+        <ol>
+          <li>
+            <p class="numeral">01</p>
+            <div>
+              <h3>Hear the visit</h3>
+              <p>The board names the morning. Search, the shop window, or someone who already knew the way.</p>
+            </div>
+          </li>
+          <li>
+            <p class="numeral">02</p>
+            <div>
+              <h3>Count the sale</h3>
+              <p>Orders sit beside the visitors who buy, so a rush is a number you can check before the oven cools.</p>
+            </div>
+          </li>
+          <li>
+            <p class="numeral">03</p>
+            <div>
+              <h3>Read the week</h3>
+              <p>Bakery adds a short letter of the week. Counter keeps the quiet month.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <h2 id="pricing-title">Pricing</h2>
+        <div class="offers">
+          <article>
+            <h3>Counter</h3>
+            <p class="price">$0</p>
+            <p>One shop. The visitor count, the orders, and the month.</p>
+          </article>
+          <article>
+            <h3>Bakery</h3>
+            <p class="price">$18<span>/mo</span></p>
+            <p>Goals, campaigns, and the week letter.</p>
+          </article>
+        </div>
+        <a class="pill" href="mailto:hello@scree.example">
+          <span class="well" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          Try it free
+        </a>
+      </div>
+    </section>
+
+    <section class="section quote" id="customers" aria-labelledby="quote-text">
+      <div class="wrap">
+        <h2 class="vh" id="customers-title">Customers</h2>
+        <blockquote>
+          <p id="quote-text">The Thursday loaf sells out. Scree shows the morning that causes it.</p>
+          <footer>Hollis Bakehouse</footer>
+        </blockquote>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap foot-row">
+      <p>Scree · Sample template · <a href="mailto:hello@scree.example">hello@scree.example</a></p>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="#features">Features</a>
+        <a href="#method">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#customers">Customers</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var bar = document.querySelector(".bar");
+      var menuBtn = document.querySelector(".menu-btn");
+      var nav = document.getElementById("site-nav");
+      function setMenu(open) {
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        menuBtn.textContent = open ? "Close" : "Menu";
+        bar.classList.toggle("is-open", open);
+      }
+      menuBtn.addEventListener("click", function () {
+        setMenu(menuBtn.getAttribute("aria-expanded") !== "true");
+      });
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () { setMenu(false); });
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") setMenu(false);
+      });
+
+      var lang = document.querySelector(".lang");
+      var note = document.getElementById("lang-note");
+      lang.addEventListener("click", function () {
+        var on = lang.getAttribute("aria-pressed") === "true";
+        lang.setAttribute("aria-pressed", on ? "false" : "true");
+        note.hidden = on;
+      });
+
+      document.querySelectorAll(".live").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var on = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      });
+
+      var viewName = document.getElementById("view-name");
+      document.querySelectorAll(".menu button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".menu button").forEach(function (other) {
+            other.removeAttribute("aria-current");
+          });
+          btn.setAttribute("aria-current", "true");
+          viewName.textContent = btn.getAttribute("data-label");
+        });
+      });
+
+      var search = document.querySelector(".search input");
+      var items = Array.prototype.slice.call(document.querySelectorAll(".menu li"));
+      search.addEventListener("input", function () {
+        var q = search.value.trim().toLowerCase();
+        items.forEach(function (li) {
+          var hit = Array.prototype.some.call(li.querySelectorAll("button"), function (btn) {
+            return (btn.getAttribute("data-label") || "").toLowerCase().indexOf(q) !== -1;
+          });
+          li.hidden = q.length > 0 && !hit;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

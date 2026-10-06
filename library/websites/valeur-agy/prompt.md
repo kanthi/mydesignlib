@@ -1,52 +1,70 @@
-# Prompt Specification — Valeur (`valeur-agy`)
+# Rebuild prompt — Valeur (`valeur-agy`)
 
-> Master prompt derived from Viktor Oddy's reference (`aurex-finance`), adapted for Valeur.
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
 
-```text
-Build a single full-screen hero section for a DeFi / private-banking landing page called VALEUR // ÍNDEX. Use React 18 + TypeScript + Vite + Tailwind CSS, with lucide-react for icons. The entire page is ONE component rendering ONE <section> that fills the viewport — no scrolling, no other sections.
+## Deliverable
+- Kind: website · Fintech
+- Folder: `library/websites/valeur-agy/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Keep the stack already in this folder (package.json, source, and built assets). Do not convert it to a different framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
 
-0. STACK & PROJECT SETUP
-- Vite + React 18 + TypeScript + Tailwind CSS 3
-- Icons: lucide-react (Wallet, Menu, X, Activity)
-- Fonts: Space Grotesk (Display Wordmark and H1) + Manrope (UI font)
-- Self-contained static build runnable directly from index.html
+## What it is
+Sovereign algorithmic DeFi & private asset banking platform. Features fixed-canvas bioluminescent deep-sea video backdrop, precision coordinate grid system with crosshair plus marks, central telemetry nodes with SVG elbow connectors, live vault APY ticker, and institutional allocation gateway.
 
-1. VISUAL IDENTITY & MATERIALITY
-- Dark aesthetic: base background #000 (pure black)
-- Fixed fullscreen background video of bioluminescent deep-sea organisms:
-  https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260813_115057_94c3699b-0fd1-4124-bcf3-3626bb8c1f77.mp4
-  Poster: ./assets/poster.jpg
-- Accent color: Ice Blue (#AFDDFF, hover #c8e8ff)
-- No dark overlay or gradient scrim over the video — text sits directly on it
+## Title
+VALEUR // ÍNDEX — Liquid Assets. Luminous Returns.
 
-2. GRID LINES & INTERSECTIONS
-- 4 vertical lines: 12.6%, 37.5%, 61.9%, 86.2%
-- 2 horizontal lines: 32.7%, 71.4%
-- 8 intersecting 10x10px plus marks centered on the crossings with -translate-x-1/2 -translate-y-1/2
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap`
 
-3. TOP NAVIGATION
-- Left: Wordmark "VALEUR // ÍNDEX" with rotating 45° diamond glyph
-- Center: "01. ECOSYSTEM", "02. LIQUIDITY_POOLS", "03. VALEUR_INDEX", "04. GOVERNANCE"
-- Right: Wallet icon + "0x71a4...f4e2" + "[ CONNECTED ]" + "PRIME_MEMBER" chip
-- Mobile: Hamburger toggle opening full-screen slide-down menu with staggered row reveals
+## Page outline
+Reading order. Text after the colon is exact copy.
+- section
+  - nav
+    - a: VALEUR → #top
+  - h1: Liquid Assets. Luminous Returns.
+  - p: Neural node processing real-time liquidity streams.
+  - p: Deep-learning engine synthesizing algorithmic yield vectors.
+  - p: Latency-free transmission across sovereign distributed ledgers.
+  - button: ✦ Explore Private Banking
+  - p: Valeur manages algorithmic yield indexing through decentralized vault routing, guaranteeing private-tier execution.
+  - h3: Valeur Private Yield Pool
+  - p: Allocate capital to automated multi-chain market maker index vaults with instant exit liquidity.
+  - form
+    - label: Connected Account
+    - label: Allocation Capital (USDC)
+    - button: Authorize Deposit Vector →
 
-4. MAIN HEADLINE
-- Positioned absolutely top-[140px] (sm: top-[160px], md: top-[178px]), left-5 (md: left-[35px])
-- Copy: "Liquid Assets. Luminous Returns."
+## Fields
+Keep these controls, including ids and placeholders.
+- input[number]
 
-5. CENTRAL NODES & ELBOW CONNECTOR LINES
-- 3 square nodes with 1px white/80 border at:
-  - top-[27%] left-[60%] (CORE_ENTITY)
-  - top-[58%] left-[32%] (LUMINOUS_INSIGHT)
-  - top-[63%] left-[50%] (CONNECTIVITY)
-- 3 corresponding text labels with title + description
-- 6 SVG connector lines with horizontal and diagonal elbow runs landing on the node corners
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `assets/index-rP_tlcPE.css`
+- `assets/index.src-C7NJSoeX.js`
+- `assets/poster.jpg`
+- `index.html`
+- `index.src.html`
+- `package-lock.json`
+- `package.json`
+- `postcss.config.js`
+- `preview.jpg`
+- `src/App.tsx`
+- `src/index.css`
+- `src/main.tsx`
+- `tailwind.config.js`
+- `tsconfig.json`
+- `tsconfig.node.json`
+- `vite.config.ts`
 
-6. BOTTOM ROW
-- Left: CTA Button in Ice Blue (#AFDDFF) with black star glyph and text "EXPLORE PRIVATE BANKING"
-- Right: Frosted telemetry card:
-  - Badge: "NOT A BANK — AN ECOSYSTEM" with green pulsing status dot
-  - Copy: "Valeur manages algorithmic yield indexing through decentralized vault routing, guaranteeing private-tier execution."
-  - Metrics: TVL $1.42B | APY 14.8% | LATENCY 4.2ms
-- Interactive deposit and allocation modal with tier verification
-```
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.

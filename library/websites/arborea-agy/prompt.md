@@ -1,47 +1,85 @@
-# Prompt Specification — Arborea (`arborea-agy`)
+# Rebuild prompt — Arborea (`arborea-agy`)
 
-> Master prompt derived from Viktor Oddy's reference (`junglemind`), adapted for Arborea.
+Build this template again so the finished page matches the shipped one. Use the copy, tokens, landmarks, and files below verbatim. Do not add sections, controls, brands, or sentences that are not listed. Do not drop a listed landmark or line of copy.
 
-```text
-Build a single, standalone, production-ready HTML file (all CSS in one <style> in <head>, all JS in one <script> before </body>). No frameworks, no build step, no external assets except the Google Font and the video URLs given below. Name it index.html.
+## Deliverable
+- Kind: website · SaaS
+- Folder: `library/websites/arborea-agy/`
+- Ship `index.html` plus every local file listed under Files, at the same relative paths.
+- Vanilla HTML, CSS, and small JS. No bundler and no new framework.
+- Relative paths only. The site is served from a subpath.
+- Head must include the exact `<title>`, the description meta when one is listed, both robots metas (`noindex, nofollow, noarchive, nosnippet, noimageindex` on `robots` and `googlebot`), and the gtag snippet for `G-Z97ZD3EVSF`.
+- Honor `prefers-reduced-motion` on anything that moves.
 
-It is ONE full-viewport hero section for an AI company called "Arborea". Match every value below exactly.
+## What it is
+Biomorphic AI cognitive reasoning engine. Features a sunlit glasshouse rainforest video background, frosted glass prompt console with simulated voice/attachment inputs, staged entrance choreography, and real-time reasoning telemetry.
 
-═══════════════════════════════════════
-1. DOCUMENT HEAD
-═══════════════════════════════════════
-- <html lang="en">, <meta charset="UTF-8">, <meta name="viewport" content="width=device-width, initial-scale=1">
-- <title>Arborea — The Thinking Engine Shaped For What Counts</title>
-- Google Font: Syne (weights 500, 600, 700, 800) + Plus Jakarta Sans (300, 400, 500, 600, 700)
-- html, body: height 100%, background #eaf0eb, color #111111, -webkit-font-smoothing: antialiased
+## Title
+Arborea — The Thinking Engine Shaped For What Counts
 
-═══════════════════════════════════════
-2. DESIGN TOKENS (:root)
-═══════════════════════════════════════
---ink: #111111
---muted: #4e5952
---card: rgba(255, 255, 255, 0.48)
---shell: 1120px
---ease: cubic-bezier(0.16, 1, 0.3, 1)
+## Fonts
+Load only these Google Fonts stylesheets:
+- `https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap`
 
-═══════════════════════════════════════
-3. BACKGROUND VIDEO — NO OVERLAY
-═══════════════════════════════════════
-Structure: <section class="hero"> > <div class="hero__bg"> > <video>
-Video element attributes: autoplay muted loop playsinline preload="auto"
-poster: ./assets/poster.jpg
-<source type="video/mp4">:
-https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260831_232706_43757be4-2250-4f09-8cd7-23aebbf147ad.mp4
+## Tokens
+Put this `:root` block in the page CSS and use the variables. Do not swap the palette or the typefaces.
 
-═══════════════════════════════════════
-4. HERO SHELL & NAVIGATION
-═══════════════════════════════════════
-- Nav: Brand (diamond glyph + Arborea), Links (API & Docs, Architecture, Benchmarks, Research), Button (Request Access), Mobile Hamburger Toggle
-- Center Stage:
-  - Badge: "Now Arborea 3.0 Cognitive Runtime is live"
-  - Headline: "The thinking engine shaped for what counts."
-  - Subcopy: "Arborea is an AI system that reasons through every problem carefully before answering. Plug into the API, launch in minutes, and ship reasoning you can really rely on."
-  - Frosted Glass Prompt Console: Textarea + Attachment icon + Voice mic icon + Send icon + Real-time simulated cognitive trace drawer
-- Full-screen mobile drawer with staggered entrance transitions
-- Staggered page-load entrance choreography (.rise with --i * 70ms)
+```css
+  :root {
+  --ink: #111111;
+  --muted: #4e5952;
+  --card: rgba(255, 255, 255, 0.46);
+  --shell: 1120px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  }
 ```
+
+## Page outline
+Reading order. Text after the colon is exact copy.
+- section .hero
+  - header .nav
+    - a: Arborea → #
+    - nav #site-menu .nav__nav “Main Navigation”
+      - ul .nav__links
+        - li: API & Docs
+        - li: Architecture
+        - li: Benchmarks
+        - li: Research
+      - a: Request Access → #request
+    - button: Request Access
+  - h1: The thinking engine shaped for what counts.
+  - p: Arborea is an AI system that reasons through every problem carefully before answering. Plug into the API, launch in minutes, and ship reasoning you can really rely on.
+  - form #reasoning-form .prompt.rise
+    - label: Ask Arborea
+- button: ✕
+- h3: Request Arborea 3.0 API Access
+- p: Deploy production-grade reasoning infrastructure with sub-12ms token latency and formal logic verification.
+- form #access-form
+  - label: Work Email
+  - label: Intended Application
+  - option: Autonomous Agent Tool Use
+  - option: High-Stakes Mathematical Synthesis
+  - option: Biotech & Life Science Deduction
+  - option: Enterprise Codebase Analysis
+  - button: Generate API Key →
+
+## Fields
+Keep these controls, including ids and placeholders.
+- textarea #prompt-input placeholder='How do rainforests preserve complex cognitive equilibrium?'
+- input[email] #access-email placeholder='engineer@company.com'
+- select #access-usecase
+
+## Files
+Keep every file below at the same relative path. Do not rename assets. Do not add stock images.
+- `DESIGN.md`
+- `assets/poster.jpg`
+- `index.html`
+- `preview.jpg`
+
+## Done when
+- The title, landmarks, and every quoted line match this prompt.
+- The same images appear in the same places.
+- No extra menu, section, price, or call to action has been invented.
+- Opening the page feels like the original template, not a restyle.
