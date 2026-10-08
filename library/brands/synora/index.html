@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synora — Brand Identity & Design System</title>
+  <meta name="description" content="Synora brand identity system: 4-fold convergence hashtag glyph, electric cobalt blue to obsidian palette, kinetic poster suite, browser interface, and transit touchpoints." />
+
+  <!-- Robots compliance -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Syne, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Brand Color System */
+      --c-cobalt-primary: #1958EC;
+      --c-cobalt-bright: #3D73FA;
+      --c-cobalt-deep: #0C38A3;
+      --c-cobalt-glow: rgba(25, 88, 236, 0.45);
+      --c-cobalt-subtle: rgba(25, 88, 236, 0.12);
+      --c-obsidian: #05060A;
+      --c-card-bg: #0B0E17;
+      --c-card-border: rgba(255, 255, 255, 0.08);
+      --c-card-border-hover: rgba(25, 88, 236, 0.5);
+      --c-white: #FFFFFF;
+      --c-text-muted: rgba(255, 255, 255, 0.65);
+      --c-text-faint: rgba(255, 255, 255, 0.38);
+
+      /* Typography */
+      --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Spacing & Geometry */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --shadow-ambient: 0 24px 64px -16px rgba(0, 0, 0, 0.8), 0 0 100px -20px rgba(25, 88, 236, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--c-obsidian);
+      color: var(--c-white);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      selection-background-color: var(--c-cobalt-primary);
+      selection-color: #ffffff;
+    }
+
+    ::selection {
+      background: var(--c-cobalt-primary);
+      color: #ffffff;
+    }
+
+    /* Ambient Background Glow */
+    .ambient-mesh {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 50% 10%, rgba(25, 88, 236, 0.18) 0%, transparent 60%),
+        radial-gradient(circle at 90% 70%, rgba(25, 88, 236, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 10% 85%, rgba(61, 115, 250, 0.06) 0%, transparent 50%);
+    }
+
+    /* Container */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 28px 120px;
+    }
+
+    /* Top Utility Bar */
+    .brand-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(11, 14, 23, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-full);
+      margin-bottom: 56px;
+    }
+
+    .brand-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--c-cobalt-bright);
+      background: rgba(25, 88, 236, 0.12);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(25, 88, 236, 0.25);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #3D73FA;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #3D73FA;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .topbar-meta {
+      font-size: 13px;
+      color: var(--c-text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .brand-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-white);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--c-card-border);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--c-cobalt-primary);
+      border-color: var(--c-cobalt-primary);
+      box-shadow: 0 4px 16px var(--c-cobalt-glow);
+    }
+
+    /* Section Headers */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--c-cobalt-bright);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .section-subheading {
+      color: var(--c-text-muted);
+      font-size: 16px;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    /* Hero Section */
+    .hero-stage {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    .hero-card-left {
+      background: linear-gradient(145deg, rgba(17, 22, 38, 0.8) 0%, rgba(9, 12, 20, 0.9) 100%);
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .hero-card-left::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(25, 88, 236, 0.22) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-lockup-wrap {
+      margin-bottom: 40px;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-tagline span {
+      color: var(--c-cobalt-bright);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--c-text-muted);
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 36px;
+      border-top: 1px solid var(--c-card-border);
+      margin-top: 40px;
+    }
+
+    .metric-val {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--c-white);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--c-text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .hero-card-right {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .mark-hero-display {
+      background: #090C15;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      min-height: 340px;
+      overflow: hidden;
+    }
+
+    .mark-hero-display::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(25, 88, 236, 0.4) 0%, transparent 70%);
+      filter: blur(24px);
+      z-index: 0;
+    }
+
+    .mark-hero-svg {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 12px 32px rgba(25, 88, 236, 0.4));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mark-hero-display:hover .mark-hero-svg {
+      transform: scale(1.06) rotate(6deg);
+    }
+
+    .mark-geometry-tag {
+      position: absolute;
+      bottom: 20px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-text-faint);
+      letter-spacing: 0.05em;
+      z-index: 1;
+    }
+
+    .palette-strip-card {
+      background: #090C15;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .swatches-hero {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .swatch-hero-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .swatch-box {
+      height: 56px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .swatch-code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-text-muted);
+    }
+
+    .swatch-role {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--c-text-faint);
+    }
+
+    /* Reference Touchpoint Posters Grid */
+    .posters-section {
+      margin-bottom: 80px;
+    }
+
+    .posters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .poster-card {
+      background: #07090F;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4 / 5.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px 32px;
+      position: relative;
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .poster-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--c-card-border-hover);
+      box-shadow: 0 24px 50px -12px rgba(25, 88, 236, 0.25);
+    }
+
+    /* Poster 1: Pill Badge Minimalist */
+    .poster-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(25, 88, 236, 0.15);
+      border: 1px solid rgba(25, 88, 236, 0.4);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      width: fit-content;
+      color: var(--c-white);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .poster-pill-badge svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .poster-title-large {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+    }
+
+    .poster-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .poster-footer-left {
+      font-size: 12px;
+      color: var(--c-text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .poster-card-1 {
+      background: radial-gradient(circle at 80% 20%, rgba(25, 88, 236, 0.25) 0%, #07090F 70%);
+    }
+
+    /* Poster 2: Blurred Silhouette Editorial */
+    .poster-card-2 {
+      background: #060810;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster-silhouette-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.35;
+      background: 
+        radial-gradient(ellipse at 50% 40%, rgba(25, 88, 236, 0.6) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(61, 115, 250, 0.4) 0%, transparent 50%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .poster-editorial-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--c-cobalt-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .poster-statement {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+
+    /* Poster 3: Matrix Card */
+    .poster-card-3 {
+      background: #080B14;
+      position: relative;
+    }
+
+    .poster-pattern-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: url('assets/synora-pattern.svg');
+      background-repeat: repeat;
+      background-size: 72px 72px;
+      pointer-events: none;
+    }
+
+    .poster-card-3 .poster-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Mockup Showcase: Browser & Billboard */
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    .mockup-browser-card {
+      background: #0B0E17;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .browser-header {
+      background: #07090F;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--c-card-border);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27C93F; }
+
+    .browser-url-bar {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-full);
+      padding: 4px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .browser-body {
+      padding: 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 20%, rgba(25, 88, 236, 0.15) 0%, transparent 70%);
+    }
+
+    .app-screen-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .app-nav-links {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--c-text-muted);
+    }
+
+    .app-screen-hero {
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--c-cobalt-bright);
+      background: rgba(25, 88, 236, 0.12);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 16px;
+    }
+
+    .app-hero-title {
+      font-family: var(--font-display);
+      font-size: 34px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .app-hero-sub {
+      font-size: 14px;
+      color: var(--c-text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .app-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c-cobalt-primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 20px var(--c-cobalt-glow);
+    }
+
+    /* Billboard Mockup Card */
+    .billboard-mockup-card {
+      background: #0B0E17;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .billboard-frame {
+      padding: 32px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #101524 0%, #060810 100%);
+      position: relative;
+    }
+
+    .billboard-inner {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 36px 28px;
+      box-shadow: inset 0 0 40px rgba(25, 88, 236, 0.2);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .billboard-headline {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #FFFFFF;
+    }
+
+    .billboard-meta-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 3-Step Logo Stress Test Suite */
+    .stress-test-section {
+      background: #0B0E17;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      margin-bottom: 80px;
+    }
+
+    .stress-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .stress-card {
+      background: #07090F;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stress-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--c-cobalt-bright);
+      margin-bottom: 6px;
+    }
+
+    .stress-card-desc {
+      font-size: 12px;
+      color: var(--c-text-muted);
+      margin-bottom: 20px;
+    }
+
+    .stress-stage {
+      flex: 1;
+      min-height: 140px;
+      background: #040508;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* Test 1: Scalability */
+    .scale-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scale-item span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-faint);
+    }
+
+    /* Test 2: Contrast invert */
+    .contrast-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      height: 100%;
+      min-height: 110px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .split-dark {
+      background: #05060A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .split-light {
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Test 3: Silhouette monochrome */
+    .mono-test {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Asset Download / Export Hub */
+    .export-section {
+      background: #0B0E17;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      margin-bottom: 60px;
+    }
+
+    .export-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .export-card {
+      background: #07090F;
+      border: 1px solid var(--c-card-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .export-card:hover {
+      border-color: var(--c-cobalt-primary);
+      transform: translateY(-2px);
+    }
+
+    .export-preview {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .export-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .export-type {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--c-text-faint);
+      margin-bottom: 16px;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-white);
+      background: rgba(25, 88, 236, 0.2);
+      border: 1px solid rgba(25, 88, 236, 0.4);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-download:hover {
+      background: var(--c-cobalt-primary);
+      box-shadow: 0 4px 12px var(--c-cobalt-glow);
+    }
+
+    /* Footer */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid var(--c-card-border);
+      color: var(--c-text-faint);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-stage, .mockups-grid { grid-template-columns: 1fr; }
+      .posters-grid, .stress-grid { grid-template-columns: 1fr; }
+      .export-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-mesh"></div>
+
+  <div class="container">
+    <!-- Top Utility Bar -->
+    <header class="brand-topbar">
+      <div class="brand-topbar-left">
+        <span class="brand-status-pill">
+          <span class="pulse-dot"></span>
+          Brand System v1.0
+        </span>
+        <span class="topbar-meta">Synora / Identity & System Tokens</span>
+      </div>
+      <div class="brand-actions">
+        <a href="#posters" class="btn-action">Brand Touchpoints</a>
+        <a href="#assets" class="btn-action">Vector Assets</a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-stage">
+      <div class="hero-card-left">
+        <div>
+          <div class="hero-lockup-wrap">
+            <img src="assets/synora-primary-lockup.svg" alt="Synora Lockup" style="height: 48px;" />
+          </div>
+          <h1 class="hero-tagline">
+            Intelligent automation, <span>crystallized.</span>
+          </h1>
+          <p class="hero-desc">
+            Synora is an enterprise workflow orchestration engine designed to turn multifaceted operational pipelines into streamlined, autonomous pathways. Built around precision geometry and calm cognitive clarity.
+          </p>
+        </div>
+
+        <div class="hero-metrics">
+          <div>
+            <div class="metric-val">#1958EC</div>
+            <div class="metric-label">Signal Cobalt</div>
+          </div>
+          <div>
+            <div class="metric-val">4-Fold</div>
+            <div class="metric-label">Convergence Mark</div>
+          </div>
+          <div>
+            <div class="metric-val">16px</div>
+            <div class="metric-label">Grid Modularity</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card-right">
+        <div class="mark-hero-display">
+          <img src="assets/synora-mark.svg" alt="Synora Glyph" class="mark-hero-svg" />
+          <div class="mark-geometry-tag">CONVERGENCE GLYPH // 4-POINTED INTERLOCK</div>
+        </div>
+
+        <div class="palette-strip-card">
+          <div class="section-title">Color System</div>
+          <div class="swatches-hero">
+            <div class="swatch-hero-item">
+              <div class="swatch-box" style="background: #1958EC;"></div>
+              <div class="swatch-code">#1958EC</div>
+              <div class="swatch-role">Cobalt Primary</div>
+            </div>
+            <div class="swatch-hero-item">
+              <div class="swatch-box" style="background: #3D73FA;"></div>
+              <div class="swatch-code">#3D73FA</div>
+              <div class="swatch-role">Cobalt Bright</div>
+            </div>
+            <div class="swatch-hero-item">
+              <div class="swatch-box" style="background: #0C38A3;"></div>
+              <div class="swatch-code">#0C38A3</div>
+              <div class="swatch-role">Deep Signal</div>
+            </div>
+            <div class="swatch-hero-item">
+              <div class="swatch-box" style="background: #05060A;"></div>
+              <div class="swatch-code">#05060A</div>
+              <div class="swatch-role">Obsidian Base</div>
+            </div>
+            <div class="swatch-hero-item">
+              <div class="swatch-box" style="background: #FFFFFF;"></div>
+              <div class="swatch-code">#FFFFFF</div>
+              <div class="swatch-role">Pure Light</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reference Touchpoint Posters Grid -->
+    <section class="posters-section" id="posters">
+      <div class="section-title">Editorial Suite</div>
+      <h2 class="section-heading">Multi-Format Visual Touchpoints</h2>
+      <p class="section-subheading">
+        Deriving from the core design reference: three modular vertical communication formats that balance high-density typography with luminous cobalt aura atmospheres.
+      </p>
+
+      <div class="posters-grid">
+        <!-- Poster 1: Pill Badge Card -->
+        <article class="poster-card poster-card-1">
+          <div>
+            <div class="poster-pill-badge">
+              <svg viewBox="0 0 100 100" fill="none"><path d="M38 12 L38 38 L12 38 L24 24 Z" fill="#3D73FA" /><path d="M62 12 L62 38 L88 38 L76 24 Z" fill="#3D73FA" /><path d="M88 62 L62 62 L62 88 L76 76 Z" fill="#3D73FA" /><path d="M12 62 L38 62 L38 88 L24 76 Z" fill="#3D73FA" /></svg>
+              <span>Autonomous Workflow</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="poster-title-large">
+              Precision orchestration for complex distributed networks.
+            </h3>
+          </div>
+
+          <div class="poster-footer">
+            <div class="poster-footer-left">
+              <div>SERIES 01 // ORCHESTRATION</div>
+              <div>SYNORA SPECIMEN POSTER</div>
+            </div>
+            <img src="assets/synora-favicon.svg" alt="Favicon" style="width: 24px; height: 24px;" />
+          </div>
+        </article>
+
+        <!-- Poster 2: Blurred Silhouette Poster -->
+        <article class="poster-card poster-card-2">
+          <div class="poster-silhouette-backdrop"></div>
+          
+          <div style="position: relative; z-index: 1;">
+            <div class="poster-editorial-tag">Core Value System</div>
+          </div>
+
+          <div class="poster-statement">
+            "Turn complex workflows into simpler, more intelligent ways to work."
+          </div>
+
+          <div class="poster-footer" style="position: relative; z-index: 1;">
+            <div class="poster-footer-left">
+              <div>SYNORA MANIFESTO</div>
+              <div>ISSUE NO. 04 — COBALT ED.</div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-cobalt-bright);">
+              usesynora.com
+            </div>
+          </div>
+        </article>
+
+        <!-- Poster 3: Pattern Matrix Card -->
+        <article class="poster-card poster-card-3">
+          <div class="poster-pattern-overlay"></div>
+          <div class="poster-content">
+            <div>
+              <div class="poster-editorial-tag">Intelligence Substrate</div>
+            </div>
+
+            <div>
+              <div style="width: 44px; height: 44px; margin-bottom: 20px;">
+                <img src="assets/synora-mark.svg" alt="Mark" style="width: 100%; height: 100%;" />
+              </div>
+              <h3 class="poster-title-large">
+                Intelligence that works quietly behind the work that matters.
+              </h3>
+            </div>
+
+            <div class="poster-footer">
+              <div class="poster-footer-left">
+                <div>PATTERN MATRIX ARCHITECTURE</div>
+                <div>SECURE ENGINE 2026</div>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">
+                [4-FOLD RADIAL]
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Mockups: Browser & Architectural Billboard -->
+    <section class="mockups-grid">
+      <!-- Browser App Mockup -->
+      <div class="mockup-browser-card">
+        <div class="browser-header">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url-bar">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            https://usesynora.com/platform
+          </div>
+        </div>
+        <div class="browser-body">
+          <div class="app-screen-nav">
+            <img src="assets/synora-primary-lockup.svg" alt="Synora Logo" style="height: 28px;" />
+            <div class="app-nav-links">
+              <span>Overview</span>
+              <span>Pipelines</span>
+              <span>Security</span>
+            </div>
+          </div>
+
+          <div class="app-screen-hero">
+            <div class="app-badge">✦ Synora Engine 3.2 Now Live</div>
+            <h3 class="app-hero-title">Automate your most intricate operational pipelines</h3>
+            <p class="app-hero-sub">Eliminate human latency across enterprise systems with self-healing, state-aware automation graphs.</p>
+            <div class="app-hero-cta">Start Integration →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billboard Architectural Lightbox -->
+      <div class="billboard-mockup-card">
+        <div class="billboard-frame">
+          <div class="billboard-inner">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-cobalt-bright); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
+                Urban Lightbox // Transit Placement
+              </div>
+              <div class="billboard-headline">
+                Make work feel lighter.
+              </div>
+            </div>
+
+            <div class="billboard-meta-strip">
+              <img src="assets/synora-primary-lockup.svg" alt="Synora Lockup" style="height: 32px;" />
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">
+                HIGHWAY 101 LIGHTBOX
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-Step Logo Stress Test Suite -->
+    <section class="stress-test-section">
+      <div class="section-title">Validation Suite</div>
+      <h2 class="section-heading">3-Step Logo Stress Test</h2>
+      <p class="section-subheading">
+        Every brand mark must satisfy rigorous functional criteria: extreme optical scaling down to 16px, dual-polarity contrast preservation, and single-channel monochrome legibility.
+      </p>
+
+      <div class="stress-grid">
+        <!-- Test 1: Scalability -->
+        <div class="stress-card">
+          <div class="stress-card-title">01. Optical Scalability</div>
+          <div class="stress-card-desc">Evaluates legibility at 16px, 32px, 64px, and 128px bounding boxes.</div>
+          <div class="stress-stage">
+            <div class="scale-row">
+              <div class="scale-item">
+                <img src="assets/synora-mark.svg" alt="16px" style="width: 16px; height: 16px;" />
+                <span>16px</span>
+              </div>
+              <div class="scale-item">
+                <img src="assets/synora-mark.svg" alt="24px" style="width: 24px; height: 24px;" />
+                <span>24px</span>
+              </div>
+              <div class="scale-item">
+                <img src="assets/synora-mark.svg" alt="40px" style="width: 40px; height: 40px;" />
+                <span>40px</span>
+              </div>
+              <div class="scale-item">
+                <img src="assets/synora-mark.svg" alt="64px" style="width: 64px; height: 64px;" />
+                <span>64px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test 2: Contrast Invert -->
+        <div class="stress-card">
+          <div class="stress-card-title">02. Polarity & Inversion</div>
+          <div class="stress-card-desc">Tests silhouette retention across 100% black vs 100% white substrate.</div>
+          <div class="stress-stage" style="padding: 0;">
+            <div class="contrast-split">
+              <div class="split-dark">
+                <img src="assets/synora-mark.svg" alt="Dark substrate" style="width: 40px; height: 40px;" />
+              </div>
+              <div class="split-light">
+                <svg viewBox="0 0 100 100" style="width: 40px; height: 40px;" fill="none">
+                  <path d="M38 12 L38 38 L12 38 L24 24 Z" fill="#05060A" />
+                  <path d="M62 12 L62 38 L88 38 L76 24 Z" fill="#05060A" />
+                  <path d="M88 62 L62 62 L62 88 L76 76 Z" fill="#05060A" />
+                  <path d="M12 62 L38 62 L38 88 L24 76 Z" fill="#05060A" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test 3: Monochrome Silhouette -->
+        <div class="stress-card">
+          <div class="stress-card-title">03. Monochrome Legibility</div>
+          <div class="stress-card-desc">Ensures mark communicates purely via silhouette without gradient reliance.</div>
+          <div class="stress-stage">
+            <div class="mono-test">
+              <svg viewBox="0 0 100 100" style="width: 48px; height: 48px;" fill="none">
+                <path d="M38 12 L38 38 L12 38 L24 24 Z" fill="#FFFFFF" />
+                <path d="M62 12 L62 38 L88 38 L76 24 Z" fill="#FFFFFF" />
+                <path d="M88 62 L62 62 L62 88 L76 76 Z" fill="#FFFFFF" />
+                <path d="M12 62 L38 62 L38 88 L24 76 Z" fill="#FFFFFF" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vector Export Hub -->
+    <section class="export-section" id="assets">
+      <div class="section-title">Asset Deliverables</div>
+      <h2 class="section-heading">Vector Asset Distribution</h2>
+      <p class="section-subheading">
+        High-fidelity vector deliverables formatted for digital interfaces, app icon bundles, and print lockups.
+      </p>
+
+      <div class="export-grid">
+        <div class="export-card">
+          <div class="export-preview">
+            <img src="assets/synora-mark.svg" alt="Mark" style="width: 48px; height: 48px;" />
+          </div>
+          <div class="export-name">Brand Mark Glyph</div>
+          <div class="export-type">SVG / Vector Emblem</div>
+          <a href="assets/synora-mark.svg" download class="btn-download">Download SVG</a>
+        </div>
+
+        <div class="export-card">
+          <div class="export-preview">
+            <img src="assets/synora-primary-lockup.svg" alt="Lockup" style="max-width: 140px;" />
+          </div>
+          <div class="export-name">Horizontal Lockup</div>
+          <div class="export-type">SVG / Primary Logo</div>
+          <a href="assets/synora-primary-lockup.svg" download class="btn-download">Download SVG</a>
+        </div>
+
+        <div class="export-card">
+          <div class="export-preview">
+            <img src="assets/synora-app-icon.svg" alt="App Icon" style="width: 52px; height: 52px;" />
+          </div>
+          <div class="export-name">iOS Squircle Icon</div>
+          <div class="export-type">SVG / App Bundle</div>
+          <a href="assets/synora-app-icon.svg" download class="btn-download">Download SVG</a>
+        </div>
+
+        <div class="export-card">
+          <div class="export-preview">
+            <img src="assets/synora-pattern.svg" alt="Pattern" style="width: 52px; height: 52px;" />
+          </div>
+          <div class="export-name">Matrix Pattern</div>
+          <div class="export-type">SVG / Texture Tile</div>
+          <a href="assets/synora-pattern.svg" download class="btn-download">Download SVG</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>Synora — Identity Guidelines & Design System</div>
+      <div>mydesignlib static brand specimen</div>
+    </footer>
+  </div>
+</body>
+</html>
