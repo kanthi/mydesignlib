@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reyla — Brand Guidelines & Identity System</title>
+  <meta name="description" content="Reyla brand identity system: modular stepped-tier geometric emblem, fiery vermilion to deep burgundy palette, 16-slide presentation deck architecture, and web standard design tokens." />
+
+  <!-- Robots compliance -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Brand Color System Tokens */
+      --c-burgundy-deep: #24070B;
+      --c-burgundy-surface: #300C11;
+      --c-burgundy-card: #3A1017;
+      --c-vermilion-fire: #E64415;
+      --c-vermilion-bright: #FA6B38;
+      --c-vermilion-glow: rgba(230, 68, 21, 0.45);
+      --c-sky-ice: #E8F0FE;
+      --c-sky-tint: #C7D8F8;
+      --c-white: #FFFFFF;
+      --c-neutral-canvas: #EDECE8;
+      --c-border: rgba(255, 255, 255, 0.12);
+      --c-border-subtle: rgba(255, 255, 255, 0.06);
+      --c-text-muted: rgba(255, 255, 255, 0.65);
+      --c-text-faint: rgba(255, 255, 255, 0.4);
+
+      /* Typography */
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Radii & Shadows */
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-slide: 8px;
+      --radius-full: 9999px;
+      --shadow-slide: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--c-burgundy-deep);
+      color: var(--c-white);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--c-vermilion-fire);
+      color: #FFFFFF;
+    }
+
+    /* Ambient Atmosphere */
+    .ambient-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(230, 68, 21, 0.18) 0%, transparent 55%),
+        radial-gradient(circle at 85% 60%, rgba(250, 107, 56, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(232, 240, 254, 0.08) 0%, transparent 60%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 24px 120px;
+    }
+
+    /* Top Utility Bar */
+    .brand-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(48, 12, 17, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-full);
+      margin-bottom: 48px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--c-vermilion-bright);
+      background: rgba(230, 68, 21, 0.15);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(230, 68, 21, 0.35);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--c-vermilion-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--c-vermilion-bright);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .topbar-meta {
+      font-size: 13px;
+      color: var(--c-text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-white);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--c-border);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-top:hover {
+      background: var(--c-vermilion-fire);
+      border-color: var(--c-vermilion-fire);
+      box-shadow: 0 4px 16px var(--c-vermilion-glow);
+    }
+
+    /* Section Intro */
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--c-vermilion-bright);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      color: var(--c-text-muted);
+      font-size: 16px;
+      max-width: 720px;
+      margin-bottom: 44px;
+    }
+
+    /* =========================================================
+       16-SLIDE PRESENTATION DECK GRID (4x4 MASONRY)
+       Directly replicating Ahmed reference studio presentation monitor
+       ========================================================= */
+    .deck-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .slide {
+      aspect-ratio: 16 / 10;
+      border-radius: var(--radius-slide);
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow-slide);
+      border: 1px solid var(--c-border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .slide:hover {
+      transform: translateY(-3px) scale(1.01);
+      border-color: rgba(230, 68, 21, 0.45);
+      z-index: 5;
+    }
+
+    /* SLIDE 01: HERO LAYER BY LAYER */
+    .s1-hero {
+      background: #FFFFFF;
+      color: #24070B;
+      position: relative;
+    }
+
+    .s1-gradient-stage {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 10% 50%, #E64415 0%, transparent 60%),
+        radial-gradient(circle at 80% 30%, #E8F0FE 0%, transparent 50%),
+        linear-gradient(90deg, #FFFFFF 0%, #FAF6F4 100%);
+      opacity: 0.85;
+    }
+
+    .s1-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .s1-h1 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* SLIDE 02: PRIMARY LOGO LOCKUP ON LIGHT */
+    .s2-logo-light {
+      background: #EDECE8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s2-lockup-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .s2-mark-svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .s2-wordmark {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: #24070B;
+    }
+
+    /* SLIDE 03: LOGO LOCKUP ON DEEP BURGUNDY */
+    .s3-logo-dark {
+      background: #24070B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s3-wordmark {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: #FFFFFF;
+    }
+
+    /* SLIDE 04: TRIPLE POSTER MARK BREAKDOWN */
+    .s4-posters {
+      background: #24070B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .s4-poster-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .s4-mini-poster {
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .s4-p1 { background: #FFFFFF; }
+    .s4-p2 { background: #350B10; border: 1px solid rgba(255,255,255,0.08); }
+    .s4-p3 { background: radial-gradient(circle at 10% 90%, #E64415 0%, #FFFFFF 85%); }
+
+    /* SLIDE 05: GRADIENT SCALE BAR */
+    .s5-scale-bar {
+      background: #24070B;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .s5-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .s5-gradient-strip {
+      flex: 1;
+      height: 20px;
+      background: linear-gradient(90deg, #E64415 0%, #FA6B38 50%, #E8F0FE 100%);
+      border-radius: 4px;
+    }
+
+    /* SLIDE 06: TRIPTYCH POSTER SUITE */
+    .s6-triptych {
+      background: #24070B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    /* SLIDE 07: LAYER BY LAYER CARD (DARK) */
+    .s7-card-dark {
+      background: linear-gradient(135deg, #E64415 0%, #300C11 60%, #1A0508 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* SLIDE 08: LAYER BY LAYER CARD (LIGHT) */
+    .s8-card-light {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F5EAE6 40%, #E64415 100%);
+      color: #24070B;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* SLIDE 09: BUILT TO STAND ABOVE (EDITORIAL HERO) */
+    .s9-built-above {
+      background: #EDECE8;
+      color: #24070B;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .s9-aura-flame {
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, #E64415 0%, #FA6B38 40%, transparent 70%);
+      filter: blur(28px);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .s9-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      max-width: 200px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .s9-tagline {
+      font-size: 10px;
+      color: #555;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* SLIDE 10: ATMOSPHERIC FULL-BLEED FLAME */
+    .s10-flame-bleed {
+      background: 
+        radial-gradient(circle at 10% 90%, #E64415 0%, #50131B 50%, #24070B 90%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* SLIDE 11: GEOMETRIC LAYER TILES */
+    .s11-layer-tiles {
+      background: #EDECE8;
+      color: #24070B;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stepped-boxes-graphic {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 140px;
+      height: 120px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .step-box-1 {
+      width: 50px;
+      height: 90px;
+      background: #E64415;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .step-box-2 {
+      width: 60px;
+      height: 60px;
+      background: #3A1017;
+      border-radius: 4px 4px 0 0;
+    }
+
+    /* SLIDE 12: BUILT BETTER STEP SPECIMEN */
+    .s12-built-better {
+      background: #C7D8F8;
+      color: #24070B;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* SLIDE 13: 3 VERTICAL POSTERS MATRIX */
+    .s13-poster-suite {
+      background: #24070B;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s13-suite-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .s13-p1 {
+      background: #EDECE8;
+      color: #24070B;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .s13-p2 {
+      background: #EDECE8;
+      color: #24070B;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s13-p3 {
+      background: linear-gradient(180deg, #E8F0FE 0%, #FA6B38 50%, #E64415 100%);
+      color: #FFFFFF;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* SLIDE 14: 100+ METRICS CASE STUDY */
+    .s14-metrics {
+      background: #EDECE8;
+      color: #24070B;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+    }
+
+    .s14-big-num {
+      font-family: var(--font-display);
+      font-size: 46px;
+      font-weight: 700;
+      color: #24070B;
+      letter-spacing: -0.04em;
+    }
+
+    .s14-service-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      color: #555;
+    }
+
+    /* SLIDE 15: BRAND CARD HORIZONTAL */
+    .s15-brand-card {
+      background: #EDECE8;
+      color: #24070B;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* SLIDE 16: STANDALONE EMBLEM ON FLAME */
+    .s16-mark-flame {
+      background: 
+        radial-gradient(circle at 10% 90%, #E64415 0%, #FA6B38 40%, #E8F0FE 95%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================================================
+       DESIGN TOKENS & VECTOR EXPORT HUB
+       ========================================================= */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .hub-card {
+      background: var(--c-burgundy-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 36px;
+    }
+
+    .palette-pillars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .palette-pillar {
+      background: var(--c-burgundy-card);
+      border: 1px solid var(--c-border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .swatch-box {
+      height: 48px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #FFFFFF;
+    }
+
+    .swatch-name {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--c-text-faint);
+    }
+
+    .export-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .btn-export {
+      background: var(--c-burgundy-card);
+      border: 1px solid var(--c-border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: #FFFFFF;
+      transition: all 0.2s ease;
+    }
+
+    .btn-export:hover {
+      border-color: var(--c-vermilion-fire);
+      background: rgba(230, 68, 21, 0.15);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid var(--c-border);
+      color: var(--c-text-faint);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1200px) {
+      .deck-grid { grid-template-columns: repeat(2, 1fr); }
+      .hub-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .deck-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <div class="container">
+    <!-- Top Utility Bar -->
+    <header class="brand-topbar">
+      <div class="topbar-left">
+        <span class="badge-pill">
+          <span class="pulse-dot"></span>
+          Brand System v1.0
+        </span>
+        <span class="topbar-meta">Reyla / Digital Architecture & Design System</span>
+      </div>
+      <div class="topbar-actions">
+        <a href="#deck" class="btn-top">16-Slide Deck</a>
+        <a href="#assets" class="btn-top">Vector Deliverables</a>
+      </div>
+    </header>
+
+    <!-- Intro -->
+    <section>
+      <div class="section-eyebrow">Design System & Brand Standards</div>
+      <h1 class="section-title">Reyla — Layer by Layer.</h1>
+      <p class="section-desc">
+        A 1-to-1 compositional reproduction of the modern studio delivery deck: 16 modular slide compositions showcasing the stepped-tier geometric emblem, fiery vermilion to deep burgundy palette, and web standards architecture.
+      </p>
+    </section>
+
+    <!-- 16-SLIDE PRESENTATION DECK (4x4 GRID) -->
+    <section class="deck-grid" id="deck">
+      <!-- SLIDE 01: HERO LAYER BY LAYER -->
+      <article class="slide s1-hero">
+        <div class="s1-gradient-stage"></div>
+        <div class="s1-content">
+          <span class="s1-h1">Layer</span>
+          <svg viewBox="0 0 102 106" style="width: 38px; height: 38px; color: #24070B;" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+            <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+            <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+          </svg>
+          <span class="s1-h1">by Layer</span>
+        </div>
+      </article>
+
+      <!-- SLIDE 02: PRIMARY LOGO LOCKUP ON LIGHT -->
+      <article class="slide s2-logo-light">
+        <div class="s2-lockup-group">
+          <svg class="s2-mark-svg" viewBox="0 0 102 106" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#E64415" />
+            <rect x="10" y="42" width="46" height="22" fill="#FA6B38" />
+            <rect x="66" y="66" width="26" height="26" fill="#24070B" />
+          </svg>
+          <span class="s2-wordmark">reyla</span>
+        </div>
+      </article>
+
+      <!-- SLIDE 03: LOGO LOCKUP ON BURGUNDY -->
+      <article class="slide s3-logo-dark">
+        <div class="s2-lockup-group">
+          <svg class="s2-mark-svg" viewBox="0 0 102 106" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#E64415" />
+            <rect x="10" y="42" width="46" height="22" fill="#FA6B38" />
+            <rect x="66" y="66" width="26" height="26" fill="#FFFFFF" />
+          </svg>
+          <span class="s3-wordmark">reyla</span>
+        </div>
+      </article>
+
+      <!-- SLIDE 04: TRIPLE POSTER MARK BREAKDOWN -->
+      <article class="slide s4-posters">
+        <div class="s4-poster-row">
+          <div class="s4-mini-poster s4-p1">
+            <svg viewBox="0 0 102 106" style="width: 28px; height: 28px; color: #24070B;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+              <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+              <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="s4-mini-poster s4-p2">
+            <svg viewBox="0 0 102 106" style="width: 28px; height: 28px;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#FA6B38" />
+              <rect x="10" y="42" width="46" height="22" fill="#E64415" />
+              <rect x="66" y="66" width="26" height="26" fill="#300C11" />
+            </svg>
+          </div>
+          <div class="s4-mini-poster s4-p3">
+            <svg viewBox="0 0 102 106" style="width: 28px; height: 28px;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#24070B" />
+              <rect x="10" y="42" width="46" height="22" fill="#E64415" />
+              <rect x="66" y="66" width="26" height="26" fill="#FA6B38" />
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <!-- SLIDE 05: GRADIENT SCALE BAR -->
+      <article class="slide s5-scale-bar">
+        <div class="s5-bar-container">
+          <div style="font-size: 11px; font-weight: 700; line-height: 1.1; color: #FFFFFF;">
+            Layer<br>by Layer
+          </div>
+          <div class="s5-gradient-strip"></div>
+          <svg viewBox="0 0 102 106" style="width: 20px; height: 20px; color: #FFFFFF;" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+            <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+            <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+          </svg>
+        </div>
+      </article>
+
+      <!-- SLIDE 06: TRIPTYCH POSTER SUITE -->
+      <article class="slide s6-triptych">
+        <div class="s4-poster-row">
+          <div class="s4-mini-poster" style="background: radial-gradient(circle at 10% 90%, #E64415 0%, #300C11 80%);">
+            <svg viewBox="0 0 102 106" style="width: 22px; height: 22px;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#FFFFFF" />
+              <rect x="10" y="42" width="46" height="22" fill="#FFFFFF" />
+              <rect x="66" y="66" width="26" height="26" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div class="s4-mini-poster" style="background: #EDECE8; color: #24070B; font-size: 8px; font-weight: 700; text-align: center;">
+            Layer by Layer —
+          </div>
+          <div class="s4-mini-poster" style="background: radial-gradient(circle at 90% 10%, #E8F0FE 0%, #E64415 80%);">
+            <span style="font-size: 12px; font-weight: 700; color: #FFFFFF;">reyla</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- SLIDE 07: LAYER BY LAYER CARD (DARK) -->
+      <article class="slide s7-card-dark">
+        <svg viewBox="0 0 102 106" style="width: 20px; height: 20px;" fill="none">
+          <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="#FFFFFF" />
+          <rect x="10" y="42" width="46" height="22" fill="#FFFFFF" />
+          <rect x="66" y="66" width="26" height="26" fill="#FFFFFF" />
+        </svg>
+        <div>
+          <h3 style="font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1.1; margin-bottom: 4px;">Layer<br>by Layer.</h3>
+          <p style="font-size: 9px; color: rgba(255, 255, 255, 0.7);">Building the next standard of the web.</p>
+        </div>
+      </article>
+
+      <!-- SLIDE 08: LAYER BY LAYER CARD (LIGHT) -->
+      <article class="slide s8-card-light">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 14px; font-weight: 700;">reyla</span>
+          <span style="font-size: 8px; color: #666;">Standards 2026</span>
+        </div>
+        <div>
+          <h3 style="font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1.1; margin-bottom: 4px;">Layer<br>by Layer.</h3>
+          <p style="font-size: 9px; color: #666;">Reyla exists to raise the standard of the web.</p>
+        </div>
+      </article>
+
+      <!-- SLIDE 09: BUILT TO STAND ABOVE (EDITORIAL HERO) -->
+      <article class="slide s9-built-above">
+        <div class="s9-aura-flame"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg viewBox="0 0 102 106" style="width: 16px; height: 16px; color: #24070B;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+              <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+              <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+            </svg>
+            <span style="font-weight: 700; font-size: 15px;">reyla</span>
+          </div>
+          <span class="s9-tagline">Reyla exists to raise the standard of the web.</span>
+        </div>
+
+        <div>
+          <h2 class="s9-title">Built to stand above.</h2>
+        </div>
+      </article>
+
+      <!-- SLIDE 10: ATMOSPHERIC FULL-BLEED FLAME -->
+      <article class="slide s10-flame-bleed">
+        <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700;">
+          Layer by Layer
+        </div>
+        <svg viewBox="0 0 102 106" style="width: 28px; height: 28px; color: #FFFFFF;" fill="none">
+          <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+          <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+          <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+        </svg>
+      </article>
+
+      <!-- SLIDE 11: GEOMETRIC LAYER TILES -->
+      <article class="slide s11-layer-tiles">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 14px;">reyla</span>
+          <span style="font-size: 8px; color: #666;">Reyla exists to raise the standard of the web.</span>
+        </div>
+
+        <div class="stepped-boxes-graphic">
+          <div class="step-box-1"></div>
+          <div class="step-box-2"></div>
+        </div>
+
+        <div>
+          <h3 style="font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.1;">Layer<br>by Layer.</h3>
+        </div>
+      </article>
+
+      <!-- SLIDE 12: BUILT BETTER STEP SPECIMEN -->
+      <article class="slide s12-built-better">
+        <div style="font-family: var(--font-display); font-size: 16px; font-weight: 700;">Built</div>
+        <svg viewBox="0 0 102 106" style="width: 30px; height: 30px; color: #24070B;" fill="none">
+          <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+          <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+          <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+        </svg>
+        <div style="font-family: var(--font-display); font-size: 16px; font-weight: 700;">Better.</div>
+      </article>
+
+      <!-- SLIDE 13: 3 VERTICAL POSTERS MATRIX -->
+      <article class="slide s13-poster-suite">
+        <div class="s13-suite-grid">
+          <div class="s13-p1">
+            <svg viewBox="0 0 102 106" style="width: 14px; height: 14px; color: #24070B;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+              <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+              <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+            </svg>
+            <div style="font-size: 6px; font-weight: 600; text-transform: uppercase;">Building the next standard</div>
+          </div>
+          <div class="s13-p2">
+            <svg viewBox="0 0 102 106" style="width: 32px; height: 32px; color: #24070B;" fill="none">
+              <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+              <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+              <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+            </svg>
+            <div style="font-size: 6px; margin-top: 6px; color: #666;">reyla.com</div>
+          </div>
+          <div class="s13-p3">
+            <span style="font-size: 14px; font-weight: 700;">reyla</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- SLIDE 14: 100+ METRICS CASE STUDY -->
+      <article class="slide s14-metrics">
+        <div>
+          <svg viewBox="0 0 102 106" style="width: 24px; height: 24px; color: #E64415; margin-bottom: 8px;" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+            <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+            <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+          </svg>
+          <div class="s14-big-num">100+</div>
+          <div style="font-size: 8px; color: #777;">Reyla exists to raise the standard of the web.</div>
+        </div>
+        <div class="s14-service-tags">
+          <span>Websites</span>
+          <span>Branding</span>
+          <span>Design</span>
+          <span>Motion</span>
+          <span>Illustration</span>
+          <span>Animation</span>
+          <span>Framer</span>
+          <span>Product</span>
+          <span>UI/UX</span>
+        </div>
+      </article>
+
+      <!-- SLIDE 15: BRAND CARD HORIZONTAL -->
+      <article class="slide s15-brand-card">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-family: var(--font-display); font-size: 16px; font-weight: 700;">Built to stand above</span>
+          <svg viewBox="0 0 102 106" style="width: 14px; height: 14px; color: #24070B;" fill="none">
+            <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+            <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+            <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+          </svg>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <span style="font-size: 11px; font-weight: 700;">reyla</span>
+          <div style="width: 80px; height: 3px; background: linear-gradient(90deg, #E64415, #FA6B38);"></div>
+        </div>
+      </article>
+
+      <!-- SLIDE 16: STANDALONE EMBLEM ON FLAME -->
+      <article class="slide s16-mark-flame">
+        <svg viewBox="0 0 102 106" style="width: 48px; height: 48px; color: #24070B;" fill="none">
+          <path d="M10 10 H92 V54 H66 V32 H10 Z" fill="currentColor" />
+          <rect x="10" y="42" width="46" height="22" fill="currentColor" />
+          <rect x="66" y="66" width="26" height="26" fill="currentColor" />
+        </svg>
+      </article>
+    </section>
+
+    <!-- DESIGN TOKENS & EXPORT HUB -->
+    <section class="hub-grid" id="assets">
+      <div class="hub-card">
+        <div class="section-eyebrow">Chromatic System</div>
+        <h2 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 8px;">Studio Color Palette</h2>
+        <p style="font-size: 13px; color: var(--c-text-muted);">
+          Vermilion flame accents grounded in deep mahogany burgundy and crisp frost white.
+        </p>
+        <div class="palette-pillars">
+          <div class="palette-pillar">
+            <div class="swatch-box" style="background: #24070B;"></div>
+            <div class="swatch-hex">#24070B</div>
+            <div class="swatch-name">Burgundy Deep</div>
+          </div>
+          <div class="palette-pillar">
+            <div class="swatch-box" style="background: #E64415;"></div>
+            <div class="swatch-hex">#E64415</div>
+            <div class="swatch-name">Vermilion Fire</div>
+          </div>
+          <div class="palette-pillar">
+            <div class="swatch-box" style="background: #FA6B38;"></div>
+            <div class="swatch-hex">#FA6B38</div>
+            <div class="swatch-name">Flame Bright</div>
+          </div>
+          <div class="palette-pillar">
+            <div class="swatch-box" style="background: #E8F0FE;"></div>
+            <div class="swatch-hex" style="color: #000;">#E8F0FE</div>
+            <div class="swatch-name">Ice Sky Tint</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hub-card">
+        <div class="section-eyebrow">Asset Deliverables</div>
+        <h2 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 8px;">Production Vector Files</h2>
+        <p style="font-size: 13px; color: var(--c-text-muted);">
+          Precision SVG deliverables formatted for design tokens, web navigation, and iOS icon bundles.
+        </p>
+        <div class="export-buttons">
+          <a href="assets/reyla-mark.svg" download class="btn-export">
+            <div>
+              <div style="font-weight: 600; font-size: 13px;">Stepped Mark</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">SVG / 3-Tier</div>
+            </div>
+            <span>↓</span>
+          </a>
+          <a href="assets/reyla-primary-lockup.svg" download class="btn-export">
+            <div>
+              <div style="font-weight: 600; font-size: 13px;">Horizontal Lockup</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">SVG / Wordmark</div>
+            </div>
+            <span>↓</span>
+          </a>
+          <a href="assets/reyla-app-icon.svg" download class="btn-export">
+            <div>
+              <div style="font-weight: 600; font-size: 13px;">iOS Squircle</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">SVG / App Icon</div>
+            </div>
+            <span>↓</span>
+          </a>
+          <a href="assets/reyla-pattern.svg" download class="btn-export">
+            <div>
+              <div style="font-weight: 600; font-size: 13px;">Modular Pattern</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--c-text-faint);">SVG / Tile</div>
+            </div>
+            <span>↓</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>Reyla — Brand Guidelines & Design System</div>
+      <div>mydesignlib static brand specimen</div>
+    </footer>
+  </div>
+</body>
+</html>
