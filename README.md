@@ -21,7 +21,7 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 │   ├── premium-site-method.md     # Premium polish method
 │   ├── ai-website-methods-corpus.md
 │   └── removed-ai-slop-templates.md  # culled items + why
-├── .grok/skills/                  # Agent skills (/ship-template, …)
+├── .grok/archive/skills/          # Archived agent skills (not loaded)
 ├── .github/workflows/pages.yml    # GitHub Pages deploy (Node 24)
 ├── robots.txt                     # Disallow all crawlers
 ├── index.html                     # Showcase (mydesignlib)
@@ -45,12 +45,8 @@ Each library folder is self-contained (`index.html` / assets + `preview.jpg` as 
 | Goal | Follow |
 |------|--------|
 | Hosting, Pages, no-crawl, Analytics, deploy smoke checks | **[docs/OPERATIONS.md](docs/OPERATIONS.md)** |
-| Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** + `/ship-template` |
-| Skills map + how files are named | **[docs/SKILLS.md](docs/SKILLS.md)** |
-| DESIGN.md for AI (mistakes + tips) | **[docs/method-design-md-for-ai.md](docs/method-design-md-for-ai.md)** + `/design-system-first` |
-| Premium / anti-AI-slop polish | `/premium-site` · `/anti-slop-frontend` · [docs/premium-site-method.md](docs/premium-site-method.md) |
-| Clean SaaS / whitespace / product-as-proof | `/clean-interface` |
-| Micro craft (feel / radii / hit areas) | `/interface-craft` |
+| Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** — match the reference |
+| Archived skills map | **[docs/SKILLS.md](docs/SKILLS.md)** — do not load |
 | X methods corpus | [docs/ai-website-methods-corpus.md](docs/ai-website-methods-corpus.md) |
 | Culled AI-slop templates (why they failed) | [docs/removed-ai-slop-templates.md](docs/removed-ai-slop-templates.md) |
 | Agent hard rules | **[AGENTS.md](AGENTS.md)** |
@@ -64,7 +60,7 @@ Names should reveal role without opening the file:
 | `docs/method-<topic>.md` | Reusable method / checklist |
 | `docs/SKILLS.md` | Skills index (not `skillme.md`) |
 | `docs/OPERATIONS.md` | Hosting / deploy ops |
-| `.grok/skills/<name>/SKILL.md` | Agent skill entry (Grok convention) |
+| `.grok/skills/<name>/SKILL.md` | Active agent skill (loaded). Design skills are archived under `.grok/archive/skills/` |
 | `…/references/method-<topic>.md` | Method notes inside a skill |
 | `…/references/src-<author>-<topic>.md` | Single-source distillation (new files) |
 | `library/.../DESIGN.md` | **That item’s** design system (not a method doc) |
@@ -76,7 +72,7 @@ Full table: **[docs/SKILLS.md](docs/SKILLS.md)**.
 **Full pipeline** (research → rebrand → assets → build → register → audit → verify):
 
 - Read **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)**
-- Agents: root **[AGENTS.md](AGENTS.md)** + skill **`.grok/skills/ship-template`** (`/ship-template`)
+- Agents: root **[AGENTS.md](AGENTS.md)**. Design skills are archived in **`.grok/archive/skills/`** and are not loaded.
 - Every page must include **noindex** + **GA** (`G-Z97ZD3EVSF`) — see OPERATIONS
 
 Minimal manual steps:

@@ -2,8 +2,8 @@
 
 **Filename scheme:** `method-<topic>.md` — human-readable build methods (see [SKILLS.md](./SKILLS.md)).
 
-**Agent skill:** [`/design-system-first`](../.grok/skills/design-system-first/SKILL.md)  
-**Full source notes:** [`.grok/skills/design-system-first/references/`](../.grok/skills/design-system-first/references/) (`method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md` · `method-design-md-best-practices.md`)
+**Agent skill (archived, do not load):** [`design-system-first`](../.grok/archive/skills/design-system-first/SKILL.md)  
+**Full source notes:** [`.grok/archive/skills/design-system-first/references/`](../.grok/archive/skills/design-system-first/references/) (`method-design-md-7-ai-mistakes.md` · `method-design-md-7-ai-tips.md` · `method-design-md-best-practices.md`)
 
 **Source articles:**  
 - Mistakes (captured 2026-08-08): https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd  
@@ -102,7 +102,7 @@ Alias marketing names (`paper` / `ink` / `accent`) only if usage rules are writt
 
 | Tool | Pattern |
 |------|---------|
-| Grok (this repo) | Read `library/.../DESIGN.md` before writing UI; `/design-system-first` first on cold starts |
+| Grok (this repo) | Skill archived. Match the reference. Do not load `design-system-first`. |
 | Claude Code | `@DESIGN.md` from project instructions; check `/context` |
 | Cursor | Project rules or explicit attach |
 

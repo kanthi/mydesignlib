@@ -1,7 +1,9 @@
 # Agent skills map
 
-Index of Grok skills and method docs for **mydesignlib**.  
-Slash: `/<skill-name>` · on disk: `.grok/skills/<skill-name>/SKILL.md`
+**Archived 2026-10-11.** These skills are not loaded. They live in `.grok/archive/skills/` so Grok will not discover them. Do not follow them when building templates. Match the reference. Restore a skill by moving its folder back to `.grok/skills/<name>/`.
+
+Index of the archived Grok skills and method docs for **mydesignlib**.  
+On disk: `.grok/archive/skills/<skill-name>/SKILL.md`
 
 **Not named `skillme.md`.** Prefer **`SKILLS.md`** (plural, clear) under `docs/` so humans find it next to other ops/method docs.
 
@@ -11,14 +13,14 @@ Slash: `/<skill-name>` · on disk: `.grok/skills/<skill-name>/SKILL.md`
 
 | Skill | Slash | When to use |
 |-------|-------|-------------|
-| [ship-template](../.grok/skills/ship-template/SKILL.md) | `/ship-template` | Design URL / reference → fictional rebrand → catalog item |
-| [design-system-first](../.grok/skills/design-system-first/SKILL.md) | `/design-system-first` | Tokens + DESIGN.md **before** HTML (plan gate + tips) |
-| [anti-slop-frontend](../.grok/skills/anti-slop-frontend/SKILL.md) | `/anti-slop-frontend` | Kill generic AI aesthetics / ban list / copy craft |
-| [premium-site](../.grok/skills/premium-site/SKILL.md) | `/premium-site` | Multi-pass “$10K” polish or cold premium build |
-| [interface-craft](../.grok/skills/interface-craft/SKILL.md) | `/interface-craft` | Micro feel audit after macro polish |
-| [clean-interface](../.grok/skills/clean-interface/SKILL.md) | `/clean-interface` | Calm SaaS / whitespace / product-as-proof |
+| [ship-template](../.grok/archive/skills/ship-template/SKILL.md) | `/ship-template` | Design URL / reference → fictional rebrand → catalog item |
+| [design-system-first](../.grok/archive/skills/design-system-first/SKILL.md) | `/design-system-first` | Tokens + DESIGN.md **before** HTML (plan gate + tips) |
+| [anti-slop-frontend](../.grok/archive/skills/anti-slop-frontend/SKILL.md) | `/anti-slop-frontend` | Kill generic AI aesthetics / ban list / copy craft |
+| [premium-site](../.grok/archive/skills/premium-site/SKILL.md) | `/premium-site` | Multi-pass “$10K” polish or cold premium build |
+| [interface-craft](../.grok/archive/skills/interface-craft/SKILL.md) | `/interface-craft` | Micro feel audit after macro polish |
+| [clean-interface](../.grok/archive/skills/clean-interface/SKILL.md) | `/clean-interface` | Calm SaaS / whitespace / product-as-proof |
 
-### Default route (do not stack every skill)
+### Former route (archived — do not run)
 
 ```
 design-system-first
@@ -66,12 +68,14 @@ Avoid vague names: `notes.md`, `skillme.md`, `misc.md`, `new.md`.
 
 ### Skill packages (Grok convention)
 
+Active skills are loaded only from `.grok/skills/<skill-name>/`. The six design skills are archived and are not in that folder.
+
 ```
-.grok/skills/<skill-name>/
-  SKILL.md                 # required entry — agent instructions + triggers
-  references/              # optional source distillations
-    method-<topic>.md      # method folded into this skill
-    src-<author>-<topic>.md  # single X/article distillation
+.grok/archive/skills/<skill-name>/   # current archive; not loaded
+  SKILL.md
+  references/
+    method-<topic>.md
+    src-<author>-<topic>.md
 ```
 
 | Prefix in `references/` | Meaning | Example |
@@ -108,4 +112,4 @@ See **[method-design-md-for-ai.md](./method-design-md-for-ai.md)**.
 Tips: exact scales · intent prose · token refs · states · concrete do/don’t · lint · version/diff  
 Best practices: tokens as decisions · value → intent → boundaries · components compose tokens (not idle-only)  
 
-Agent: `/design-system-first` · craft after polish: `/interface-craft`
+Those procedures are archived. Do not load them.

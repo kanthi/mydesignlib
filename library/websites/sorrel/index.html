@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Sorrel</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='7' width='15' height='15' rx='2.5' fill='%232A6355'/%3E%3Crect x='14' y='12' width='15' height='15' rx='2.5' fill='%23EC6555'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #c1ddd6;
+    --juniper: #2a6355;
+    --ink: #1b4338;
+    --deep: #14352c;
+    --sage: #7ea497;
+    --salmon: #ec6555;
+    --salmon-2: #d45344;
+    --litchi: #f6f0ea;
+    --paper: #f7f6f3;
+    --line: rgba(42, 99, 85, 0.16);
+    --sans: Outfit, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--salmon); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+
+  .wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .mark svg { display: block; }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: var(--mint);
+    background-image:
+      linear-gradient(rgba(42, 99, 85, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42, 99, 85, 0.09) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-attachment: fixed;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  header.is-stuck {
+    background: rgba(247, 246, 243, 0.94);
+    box-shadow: 0 1px 0 rgba(27, 67, 56, 0.08);
+    backdrop-filter: blur(12px);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 76px;
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+  nav { margin-left: auto; display: flex; align-items: center; gap: 26px; }
+  nav a { font-size: 15px; font-weight: 500; color: var(--ink); }
+  nav a:hover { color: var(--salmon-2); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--salmon);
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .btn:hover { background: var(--salmon-2); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid rgba(27, 67, 56, 0.28);
+  }
+  .btn.ghost:hover { background: rgba(255, 255, 255, 0.45); }
+  .nav-toggle {
+    display: none;
+    margin-left: auto;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: transparent;
+    padding: 10px;
+  }
+  .nav-toggle span {
+    display: block;
+    height: 1.5px;
+    background: var(--ink);
+    margin: 6px 0;
+  }
+
+  .hero {
+    background-color: var(--mint);
+    background-image:
+      linear-gradient(rgba(42, 99, 85, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42, 99, 85, 0.09) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-attachment: fixed;
+    padding: 8px 0 0;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: 36px;
+    align-items: center;
+    padding-bottom: 28px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(52px, 5.5vw, 78px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.94;
+    color: var(--ink);
+  }
+  .lede {
+    max-width: 420px;
+    margin: 22px 0 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #2d5c50;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+  .stage { position: relative; height: 430px; }
+  .win {
+    position: absolute;
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(20, 53, 44, 0.16);
+    overflow: hidden;
+  }
+  .codewin {
+    left: 0;
+    top: 8px;
+    width: 58%;
+    background: var(--deep);
+    color: #d5ebe4;
+    min-height: 340px;
+  }
+  .winbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .dots { display: flex; gap: 5px; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; display: block; background: #3e6b5e; }
+  .dots i:nth-child(1) { background: #ec6555; }
+  .fname { margin-left: 6px; font-family: var(--mono); font-size: 12px; color: #9ec4b8; }
+  .seg { margin-left: auto; display: flex; gap: 4px; }
+  .seg button {
+    border: 0;
+    background: transparent;
+    color: #9ec4b8;
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .seg button[aria-selected="true"] { background: rgba(255, 255, 255, 0.08); color: #fff; }
+  pre {
+    margin: 0;
+    padding: 16px 16px 22px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    white-space: pre;
+  }
+  .cm { color: #6f9a8c; }
+  .fn { color: #f3b2a8; }
+  .str { color: #f6f0ea; }
+  .num { color: #ec6555; }
+  .caret {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    background: var(--salmon);
+    transform: translateY(2px);
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .dash {
+    right: 0;
+    top: 78px;
+    width: 64%;
+    background: #fff;
+    color: var(--ink);
+  }
+  .dashtop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px 0;
+  }
+  .tabs { display: flex; gap: 4px; margin-left: 8px; }
+  .tabs button {
+    border: 0;
+    background: transparent;
+    color: #6d8f84;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+  .tabs button[aria-selected="true"] {
+    background: var(--litchi);
+    color: var(--ink);
+  }
+  .dashtop .btn { margin-left: auto; padding: 8px 10px; font-size: 11px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th, td { text-align: left; padding: 11px 14px; font-size: 13px; }
+  th {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6d8f84;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+  }
+  td { border-bottom: 1px solid rgba(42, 99, 85, 0.08); }
+  tr:last-child td { border-bottom: 0; }
+  .st {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .st i { width: 7px; height: 7px; border-radius: 50%; background: var(--juniper); display: block; }
+  .st.pending i { background: var(--salmon); }
+  .st.review i { background: #c4a574; }
+  .amt { font-variant-numeric: tabular-nums; }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 22px 0 32px;
+    border-top: 1px solid rgba(42, 99, 85, 0.12);
+  }
+  .quotes p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink); }
+  .quotes span { display: block; margin-top: 6px; color: #3e6b5e; font-size: 12px; }
+
+  .product { padding: 96px 0; background: #fff; }
+  .split { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center; }
+  .flow {
+    position: relative;
+    background-color: #d5ebe4;
+    background-image:
+      linear-gradient(rgba(42, 99, 85, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42, 99, 85, 0.12) 1px, transparent 1px);
+    background-size: 36px 36px;
+    border-radius: 18px;
+    min-height: 420px;
+    padding: 28px;
+  }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 22px 18px;
+    align-items: center;
+    justify-items: center;
+    min-height: 364px;
+    position: relative;
+    z-index: 1;
+  }
+  .node {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-width: 132px;
+    box-shadow: 0 8px 20px rgba(20, 53, 44, 0.06);
+  }
+  .node b { display: block; font-size: 13px; font-weight: 500; }
+  .node span { font-size: 12px; color: #5d7f74; font-variant-numeric: tabular-nums; }
+  .hub {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--salmon);
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .hub span {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--salmon);
+    box-shadow: 0 0 0 8px rgba(236, 101, 85, 0.16);
+  }
+  .wires {
+    position: absolute;
+    inset: 28px;
+    width: calc(100% - 56px);
+    height: calc(100% - 56px);
+    z-index: 0;
+  }
+  .kicker {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--salmon);
+    font-weight: 500;
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .copy { margin: 16px 0 0; max-width: 420px; color: #3d6156; }
+  .points { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 14px; }
+  .points li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; }
+  .points svg { flex: none; margin-top: 2px; }
+  .points + .btn { margin-top: 28px; }
+
+  .stories { display: grid; grid-template-columns: 1.05fr 0.95fr; min-height: 640px; }
+  .field {
+    background: url("assets/field.jpg") center/cover no-repeat;
+    display: grid;
+    place-items: center;
+    padding: 48px 32px;
+  }
+  .qcard {
+    background: var(--litchi);
+    color: var(--ink);
+    padding: 36px 32px 28px;
+    max-width: 440px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  }
+  .qcard .mq {
+    margin: 0;
+    font-size: clamp(26px, 2.4vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+  .qcard .mq::before { content: "“ "; color: var(--sage); }
+  .sub { margin: 14px 0 22px; color: #4d6d62; font-size: 15px; }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .who b { display: block; font-weight: 500; font-size: 14px; }
+  .who span { font-size: 12px; color: #5d7f74; }
+  .story-side {
+    background: #fff;
+    padding: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .story-side .mq {
+    margin: 0;
+    font-size: clamp(28px, 2.6vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+  }
+  .snippet {
+    margin-top: 28px;
+    background: var(--deep);
+    color: #d7eee6;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .snippet .winbar { border-color: rgba(255, 255, 255, 0.06); }
+  .snippet pre { font-size: 12px; }
+
+  .comp {
+    position: relative;
+    color: #fff;
+    background: #14352c url("assets/grass.jpg") center/cover no-repeat;
+    padding: 88px 0 96px;
+    overflow: hidden;
+  }
+  .comp::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(16, 40, 34, 0.45), rgba(16, 40, 34, 0.28) 40%, rgba(16, 40, 34, 0.5));
+  }
+  .comp .wrap { position: relative; z-index: 1; }
+  .chip {
+    display: inline-block;
+    background: var(--juniper);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .comp h2 { color: #fff; max-width: 640px; margin-top: 18px; font-size: clamp(42px, 5vw, 68px); }
+  .grid6 {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+  .tile {
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--ink);
+    min-height: 168px;
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.15s ease;
+  }
+  .tile:hover { background: #fff; }
+  .tile .n {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #7ea497;
+  }
+  .tile .ico {
+    width: 64px;
+    height: 64px;
+    margin: 12px auto 8px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgba(42, 99, 85, 0.08);
+    display: grid;
+    place-items: center;
+  }
+  .tile p { margin: auto 0 0; text-align: center; font-size: 14px; font-weight: 500; }
+
+  .specimen {
+    background: var(--mint);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 64px 48px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .spec-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .spec-title {
+    margin: 0;
+    font-size: clamp(64px, 7.4vw, 108px);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 0.84;
+  }
+  .spec-title em { font-style: normal; font-weight: 400; color: #8fb3a8; }
+  .notes { display: flex; gap: 48px; padding-top: 8px; }
+  .notes p {
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+  .notes .hot { color: var(--salmon); }
+  .canvas { position: relative; flex: 1; min-height: 460px; }
+  .vlabel {
+    position: absolute;
+    left: 0;
+    top: 46%;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 0.28em;
+    font-size: 11px;
+    font-weight: 500;
+    color: #5e8b7c;
+  }
+  .rule {
+    position: absolute;
+    top: 0;
+    bottom: 36px;
+    width: 1px;
+    background: rgba(42, 99, 85, 0.28);
+  }
+  .swatch { position: absolute; z-index: 2; }
+  .swatch .bar { height: 12px; margin-bottom: 10px; }
+  .swatch b, .swatch span { display: block; font-size: 11px; letter-spacing: 0.08em; font-weight: 500; }
+  .swatch b { letter-spacing: 0.12em; }
+  .swatch .meta { color: var(--salmon); margin-top: 2px; letter-spacing: 0.04em; text-transform: none; }
+  .s-tranq { left: 36%; top: 6%; width: 210px; }
+  .s-tranq .bar { background: #f7f4ef; height: 10px; }
+  .s-juniper { left: 12%; top: 36%; width: 230px; }
+  .s-juniper .bar { background: var(--juniper); }
+  .s-salmon { left: 2%; top: 64%; width: 180px; }
+  .s-salmon .bar { background: var(--salmon); }
+  .s-litchi { right: 8%; top: 18%; width: 150px; }
+  .s-litchi .bar { background: #f6f0ea; height: 10px; }
+  .aa {
+    position: absolute;
+    right: 1vw;
+    bottom: 0;
+    margin: 0;
+    font-size: clamp(200px, 27vw, 400px);
+    font-weight: 500;
+    letter-spacing: -0.07em;
+    line-height: 0.78;
+    color: var(--juniper);
+    z-index: 1;
+  }
+  .spec-foot {
+    position: relative;
+    z-index: 2;
+    background: var(--mint);
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 8% 8px 6%;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: #3e6b5e;
+  }
+
+  .close {
+    background: var(--deep);
+    color: #e7f3ee;
+    padding: 72px 0;
+  }
+  .close .wrap { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .close h2 { color: #fff; max-width: 640px; }
+  .close p { margin: 12px 0 0; color: #b7d4cb; }
+
+  footer {
+    background: var(--mint);
+    padding: 28px 0;
+  }
+  .foot {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 14px;
+  }
+  .foot a:hover { color: var(--salmon-2); }
+  .foot .grow { margin-left: auto; color: #3e6b5e; }
+
+  @media (max-width: 980px) {
+    .nav-toggle { display: block; }
+    nav {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 76px;
+      background: var(--litchi);
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 18px 24px 22px;
+      gap: 14px;
+      box-shadow: 0 16px 30px rgba(20, 53, 44, 0.08);
+    }
+    nav.open { display: flex; }
+    .hero-grid, .split, .stories, .close .wrap { grid-template-columns: 1fr; display: grid; }
+    .stage { height: auto; display: grid; gap: 16px; }
+    .codewin, .dash { position: relative; width: auto; top: auto; left: auto; right: auto; }
+    .quotes { grid-template-columns: 1fr; }
+    .story-side { padding: 40px 24px 56px; }
+    .grid6 { grid-template-columns: 1fr 1fr; }
+    .specimen { padding: 48px 20px 16px; min-height: 0; }
+    .notes { display: none; }
+    .canvas { min-height: 0; display: grid; gap: 22px; padding: 28px 0 0; }
+    .swatch, .aa, .vlabel { position: static; }
+    .aa { font-size: 42vw; bottom: auto; right: auto; }
+    .rule { display: none; }
+    .s-litchi, .s-tranq, .s-juniper, .s-salmon { width: auto; }
+    .foot { flex-wrap: wrap; }
+    .foot .grow { margin-left: 0; }
+    .wrap, .bar { width: min(1180px, calc(100% - 32px)); }
+  }
+  @media (max-width: 640px) {
+    h1 { font-size: 44px; }
+    .grid6 { grid-template-columns: 1fr; }
+    .close .wrap { align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .caret { animation: none; }
+    header, .btn, .tile { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="bar">
+    <a class="mark" href="#top" aria-label="Sorrel, home">
+      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="6" width="16" height="16" rx="2.5" fill="#2A6355"/>
+        <rect x="14" y="12" width="16" height="16" rx="2.5" fill="#EC6555"/>
+      </svg>
+      sorrel
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+    <nav id="menu">
+      <a href="#product">Product</a>
+      <a href="#stories">Stories</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#system">Type</a>
+      <a href="mailto:desk@sorrel.example">Get in touch</a>
+      <a class="btn" href="#start">Let’s build</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Build better<br>payment products</h1>
+        <p class="lede">Sorrel is the desk product teams use to move supplier money. Approvals, fees, and the bank rail stay on one screen.</p>
+        <div class="actions">
+          <a class="btn" href="#start">Let’s build</a>
+          <a class="btn ghost" href="#docs">See the docs</a>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="win codewin" id="docs">
+          <div class="winbar">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="fname">payouts.ts</span>
+            <div class="seg" role="tablist" aria-label="Sample">
+              <button type="button" role="tab" id="tab-req" aria-selected="true" aria-controls="pane-req">Request</button>
+              <button type="button" role="tab" id="tab-res" aria-selected="false" aria-controls="pane-res">Response</button>
+            </div>
+          </div>
+          <pre id="pane-req" role="tabpanel" aria-labelledby="tab-req"><span class="cm">// create a payout</span>
+<span class="fn">POST</span> /v1/payouts
+{
+  <span class="str">"supplier"</span>: <span class="str">"ash-rye"</span>,
+  <span class="str">"amount"</span>: <span class="num">11500</span>,
+  <span class="str">"currency"</span>: <span class="str">"GBP"</span>,
+  <span class="str">"rail"</span>: <span class="str">"fps"</span>
+}<span class="caret" aria-hidden="true"></span></pre>
+          <pre id="pane-res" role="tabpanel" aria-labelledby="tab-res" hidden>{
+  <span class="str">"id"</span>: <span class="str">"po_18k"</span>,
+  <span class="str">"status"</span>: <span class="str">"settled"</span>,
+  <span class="str">"fee"</span>: <span class="num">40</span>,
+  <span class="str">"settled_at"</span>: <span class="str">"09:41"</span>
+}</pre>
+        </div>
+        <div class="win dash" aria-label="Payout desk">
+          <div class="dashtop">
+            <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="6" width="16" height="16" rx="2.5" fill="#2A6355"/><rect x="14" y="12" width="16" height="16" rx="2.5" fill="#EC6555"/></svg>
+            <div class="tabs" role="tablist" aria-label="Desk">
+              <button type="button" role="tab" aria-selected="true" data-view="payments">Payments</button>
+              <button type="button" role="tab" aria-selected="false" data-view="payroll">Payroll</button>
+              <button type="button" role="tab" aria-selected="false" data-view="expenses">Expenses</button>
+            </div>
+            <a class="btn" href="#start">Let’s build</a>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Supplier</th><th>Amount</th><th>Status</th></tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="wrap quotes">
+      <p>“Batch payouts used to sit until Friday. They clear before lunch now.”<span>Mara Ellison · Northledger</span></p>
+      <p>“We dropped the extra login. The status line is enough.”<span>Tomas Reed · Ash &amp; Rye</span></p>
+      <p>“Fees show up next to the bill, not in a second report.”<span>Ivo March · Quill Press</span></p>
+    </div>
+  </section>
+
+  <section class="product" id="product">
+    <div class="wrap split">
+      <div class="flow">
+        <svg class="wires" viewBox="0 0 640 360" fill="none" aria-hidden="true">
+          <path d="M320 70 V160 M150 190 H270 M370 190 H490 M320 230 V300" stroke="#2A6355" stroke-opacity="0.35" stroke-dasharray="3 5" stroke-width="1.5"/>
+        </svg>
+        <div class="flow-grid">
+          <div></div>
+          <article class="node"><b>Invoice</b><span>£115.00 in</span></article>
+          <div></div>
+          <article class="node"><b>Approve</b><span>£120.00 held</span></article>
+          <div class="hub" title="Sorrel rail"><span></span></div>
+          <article class="node"><b>Paid</b><span>£90.00 out</span></article>
+          <div></div>
+          <article class="node"><b>Ledger</b><span>900 matched</span></article>
+          <div></div>
+        </div>
+      </div>
+      <div>
+        <p class="kicker">Bill payments</p>
+        <h2>Supplier money, without a second login.</h2>
+        <p class="copy">A bill arrives, someone approves it, and the rail pays it. The ledger line is written when the bank says settled.</p>
+        <ul class="points">
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="4" fill="none" stroke="#2A6355"/><path d="M6 11.5 9.2 15 16 7.5" fill="none" stroke="#EC6555" stroke-width="1.6"/></svg>
+            Instant payouts on the faster payment rail
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="4" fill="none" stroke="#2A6355"/><path d="M7 11h8M11 7v8" stroke="#EC6555" stroke-width="1.6"/></svg>
+            A payment link for the supplier, sent in seconds
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="4" fill="none" stroke="#2A6355"/><path d="M6 14.5 9.5 11l2.2 2.2L16 8" fill="none" stroke="#EC6555" stroke-width="1.6"/></svg>
+            The bookkeeping entry writes itself
+          </li>
+        </ul>
+        <a class="btn" href="#docs">Learn more</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stories" id="stories">
+    <div class="field">
+      <figure class="qcard">
+        <blockquote class="mq">Sorrel took the wait out of the last step our users actually feel.</blockquote>
+        <p class="sub">It just works, and people stay because the money has already moved.</p>
+        <figcaption class="who">
+          <img src="assets/mara.jpg" alt="Portrait of Mara Ellison">
+          <div><b>Mara Ellison</b><span>Finance lead, Northledger</span></div>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="story-side">
+      <blockquote class="mq">“Paying a supplier from the ledger is a click. The fee is on the same row.”</blockquote>
+      <p class="sub">A few steps, and the currency cost is visible before anyone confirms.</p>
+      <div class="who">
+        <img src="assets/tomas.jpg" alt="Portrait of Tomas Reed">
+        <div><b>Tomas Reed</b><span>Product, Ash &amp; Rye</span></div>
+      </div>
+      <div class="snippet">
+        <div class="winbar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="fname">response.json</span>
+        </div>
+        <pre>{
+  <span class="str">"supplier"</span>: <span class="str">"ash-rye"</span>,
+  <span class="str">"status"</span>: <span class="str">"settled"</span>,
+  <span class="str">"amount"</span>: <span class="num">11500</span>,
+  <span class="str">"currency"</span>: <span class="str">"GBP"</span>
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="comp" id="compliance">
+    <div class="wrap">
+      <span class="chip">Security</span>
+      <h2>Compliance &amp; data integrity</h2>
+      <div class="grid6">
+        <article class="tile">
+          <span class="n">01/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><circle cx="10" cy="20" r="3.2" fill="#EC6555"/><path d="M12 18.5 22 8" stroke="#2A6355" stroke-width="1.6"/><path d="M20 8h4v4" fill="none" stroke="#2A6355" stroke-width="1.6"/></svg>
+          </div>
+          <p>onboarding</p>
+        </article>
+        <article class="tile">
+          <span class="n">02/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="none" stroke="#2A6355" stroke-width="1.6"/><path d="M16 6v3M16 23v3M6 16h3M23 16h3M9 9l2 2M21 21l2 2M23 9l-2 2M11 21l-2 2" stroke="#EC6555" stroke-width="1.6"/></svg>
+          </div>
+          <p>custom build</p>
+        </article>
+        <article class="tile">
+          <span class="n">03/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="2" fill="none" stroke="#2A6355" stroke-width="1.6"/><path d="M12.5 16.2 15 19l5-6" fill="none" stroke="#EC6555" stroke-width="1.6"/></svg>
+          </div>
+          <p>licence check</p>
+        </article>
+        <article class="tile">
+          <span class="n">04/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="#2A6355" stroke-width="1.6"/><text x="16" y="19" text-anchor="middle" font-family="Outfit, sans-serif" font-size="8" fill="#EC6555">SLA</text></svg>
+          </div>
+          <p>SLA</p>
+        </article>
+        <article class="tile">
+          <span class="n">05/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><path d="M8 22h16" stroke="#2A6355" stroke-width="1.6"/><path d="M9 20 V14 M15 20 V10 M21 20 V12" stroke="#2A6355" stroke-width="1.6"/><path d="M20 9l4 3-4 1" fill="none" stroke="#EC6555" stroke-width="1.4"/></svg>
+          </div>
+          <p>enterprise</p>
+        </article>
+        <article class="tile">
+          <span class="n">06/</span>
+          <div class="ico" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32"><path d="M16 6 25 10 V16c0 5.2-3.6 8.4-9 10-5.4-1.6-9-4.8-9-10v-6l9-4z" fill="none" stroke="#2A6355" stroke-width="1.6"/><path d="M12.5 16.2 15 19l5-6" fill="none" stroke="#EC6555" stroke-width="1.6"/></svg>
+          </div>
+          <p>security</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="specimen" id="system" aria-label="Type and colour">
+    <div class="spec-top">
+      <h2 class="spec-title">Outfit <em>Medium</em><br><em>Regular</em></h2>
+      <div class="notes">
+        <p>Set in<br><span class="hot">Outfit</span><br>for the<br>Sorrel desk</p>
+        <p>Conceived as<br>a neo-grotesque with<br>a geometric skeleton</p>
+      </div>
+    </div>
+    <div class="canvas">
+      <div class="vlabel">Colours</div>
+      <i class="rule" style="left:22%"></i>
+      <i class="rule" style="left:42%"></i>
+      <i class="rule" style="left:62%"></i>
+      <i class="rule" style="left:80%"></i>
+      <div class="swatch s-tranq">
+        <div class="bar"></div>
+        <b>TRANQUILITY</b>
+        <span class="meta">#C1DDD6</span>
+        <span class="meta">RGB {193, 221, 214}</span>
+      </div>
+      <div class="swatch s-juniper">
+        <div class="bar"></div>
+        <b>JUNIPER GREEN</b>
+        <span class="meta">#2A6355</span>
+        <span class="meta">RGB {42, 99, 85}</span>
+      </div>
+      <div class="swatch s-salmon">
+        <div class="bar"></div>
+        <b>SALMON RED</b>
+        <span class="meta">#EC6555</span>
+        <span class="meta">RGB {236, 101, 85}</span>
+      </div>
+      <div class="swatch s-litchi">
+        <div class="bar"></div>
+        <b>LITCHI</b>
+        <span class="meta">#F6F0EA</span>
+        <span class="meta">RGB {246, 240, 234}</span>
+      </div>
+      <p class="aa" aria-hidden="true">Aa</p>
+    </div>
+    <div class="spec-foot"><span>1</span><span>0</span><span>TYPEFACES</span><span>1</span><span>0</span></div>
+  </section>
+
+  <section class="close" id="start">
+    <div class="wrap">
+      <div>
+        <h2>Bring the rail into the product.</h2>
+        <p>A working session with the Sorrel desk. Write to desk@sorrel.example.</p>
+      </div>
+      <a class="btn" href="mailto:desk@sorrel.example">Let’s build</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="mark" href="#top">
+      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="6" width="16" height="16" rx="2.5" fill="#2A6355"/><rect x="14" y="12" width="16" height="16" rx="2.5" fill="#EC6555"/></svg>
+      sorrel
+    </a>
+    <a href="#product">Product</a>
+    <a href="#stories">Stories</a>
+    <a href="#system">Type</a>
+    <span class="grow">London · desk@sorrel.example</span>
+  </div>
+</footer>
+
+<script>
+  const views = {
+    payments: [
+      ["Ash & Rye", "£115.00", "Settled", "settled"],
+      ["Northledger", "£240.00", "Pending", "pending"],
+      ["Quill Press", "£90.00", "Settled", "settled"],
+      ["Harborline", "£64.20", "Review", "review"]
+    ],
+    payroll: [
+      ["Studio floor", "£8,420.00", "Settled", "settled"],
+      ["Contractors", "£2,110.00", "Pending", "pending"],
+      ["Benefits", "£640.00", "Settled", "settled"]
+    ],
+    expenses: [
+      ["Rail card", "£18.40", "Settled", "settled"],
+      ["Field visit", "£76.00", "Review", "review"],
+      ["Software", "£49.00", "Settled", "settled"]
+    ]
+  };
+  const body = document.getElementById("rows");
+  function paint(name) {
+    body.replaceChildren();
+    views[name].forEach(function (row) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + row[0] + "</td><td class=\"amt\">" + row[1] + "</td><td><span class=\"st " + row[3] + "\"><i></i>" + row[2] + "</span></td>";
+      body.appendChild(tr);
+    });
+  }
+  paint("payments");
+  document.querySelectorAll(".tabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tabs button").forEach(function (b) {
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.setAttribute("aria-selected", "true");
+      paint(btn.dataset.view);
+    });
+  });
+  const req = document.getElementById("pane-req");
+  const res = document.getElementById("pane-res");
+  document.getElementById("tab-req").addEventListener("click", function () {
+    req.hidden = false; res.hidden = true;
+    this.setAttribute("aria-selected", "true");
+    document.getElementById("tab-res").setAttribute("aria-selected", "false");
+  });
+  document.getElementById("tab-res").addEventListener("click", function () {
+    res.hidden = false; req.hidden = true;
+    this.setAttribute("aria-selected", "true");
+    document.getElementById("tab-req").setAttribute("aria-selected", "false");
+  });
+  const header = document.querySelector("header");
+  const hero = document.querySelector(".hero");
+  const onScroll = function () {
+    header.classList.toggle("is-stuck", hero.getBoundingClientRect().bottom < 80);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("menu");
+  toggle.addEventListener("click", function () {
+    const open = menu.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  menu.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      menu.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>
+</body>
+</html>

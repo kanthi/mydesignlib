@@ -2,7 +2,7 @@
 
 Captured: **2026-08-05** · Extended: **2026-08-16**  
 Seed post: [@bateshkaaa — agencies vs Claude, constraint pipeline](https://x.com/bateshkaaa/status/2079218516150862086)  
-Repo skills: `premium-site` · `anti-slop-frontend` · `design-system-first` · `ship-template` · `interface-craft` · `clean-interface`
+Repo skills, archived 2026-10-11 under `.grok/archive/skills/` (do not load): `premium-site` · `anti-slop-frontend` · `design-system-first` · `ship-template` · `interface-craft` · `clean-interface`
 
 This file indexes **similar X posts** about designing/building websites with AI coding agents (Claude Code, Cursor, etc.) so methods can be reused without re-researching the feed.
 
@@ -88,7 +88,7 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **URL:** https://freedium-mirror.cfd/uxplanet.org/7-design-md-mistakes-that-make-ai-generated-ui-worse-9ec2dfcc44cd  
 - **Method:** DESIGN.md fails when it is a mood board, raw hex dump, foundations-only, missing responsive *behaviour*, silent on motion/icons/content, too long/contradictory, or **never loaded** into agent context. Fix with semantic tokens, component rules, layout logic by breakpoint, short rules (~200 lines), and explicit read/attach before UI work. Optional: `npx @google/design.md lint`.  
 - **Skill:** `design-system-first` (required sections + 7-mistake table)  
-- **Notes:** `docs/method-design-md-for-ai.md` · `.grok/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`
+- **Notes:** `docs/method-design-md-for-ai.md` · `.grok/archive/skills/design-system-first/references/method-design-md-7-ai-mistakes.md`
 
 ### 6c. UX Planet — 7 DESIGN.md tips (construction for consistency)
 
@@ -103,7 +103,7 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **Author:** Nick Babich (UX Planet, 17 Jun 2026) — third DESIGN.md piece after mistakes + tips  
 - **Method:** DESIGN.md tells the product’s visual story in three layers: (1) tokens are **role decisions** not swatch variables — audit unused/duplicate/misused; (2) each decision is raw value → intent → reasoning → **when/when-not**; (3) components **compose** those tokens and must specify default, hover, active, disabled, loading, focus — not idle-only. YAML = name + atomic tokens; Markdown = Brand & Style + token rules + components. Skip the article’s Inter + Deep Indigo demo.  
 - **Skill:** `design-system-first` (3 writing rules)  
-- **Notes:** `.grok/skills/design-system-first/references/method-design-md-best-practices.md` · `docs/method-design-md-for-ai.md`
+- **Notes:** `.grok/archive/skills/design-system-first/references/method-design-md-best-practices.md` · `docs/method-design-md-for-ai.md`
 
 ### 6d. Anthropic official frontend-design skill
 
@@ -118,7 +118,7 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **URL / repo:** https://github.com/jakubkrehel/make-interfaces-feel-better · discussed on X as UI craft / “feel better” skill  
 - **Method:** Concentric radii, optical alignment, hit areas, icon stroke, tabular-nums, motion restraint; quick/full review with severity tables.  
 - **Skill:** **`interface-craft`** (new)  
-- **Notes:** `.grok/skills/interface-craft/references/src-make-interfaces-feel-better.md`
+- **Notes:** `.grok/archive/skills/interface-craft/references/src-make-interfaces-feel-better.md`
 
 ### 6f. Elaya landing-page-design (strategy half)
 
@@ -138,7 +138,7 @@ This file indexes **similar X posts** about designing/building websites with AI 
 - **URL:** https://x.com/UXRishi/status/2087364187643420869  
 - **Method:** Paper field, quiet nav, centered thesis, dual CTA, soft ambient glow *behind* product only, floating benefit chips, monochrome trust logos. Structure only — rebrand fully.  
 - **Skill:** **`clean-interface`**  
-- **Notes:** `.grok/skills/clean-interface/references/src-uxrishi-clean-saas.md`. Former example ship Quietly was culled as AI-default clean SaaS — see `docs/removed-ai-slop-templates.md`.
+- **Notes:** `.grok/archive/skills/clean-interface/references/src-uxrishi-clean-saas.md`. Former example ship Quietly was culled as AI-default clean SaaS — see `docs/removed-ai-slop-templates.md`.
 
 ### 7. Sam AI — goal-first brief (10-minute website)
 
@@ -245,6 +245,6 @@ Test case: `atrium` → `atrium-v1` (2026-08-05).
 ## How to extend this corpus
 
 1. Find posts via semantic search: *premium landing Claude Code no AI slop*, *frontend-design skill*, *taste-first website*  
-2. `x_thread_fetch` the status ID; save under `.grok/skills/premium-site/references/`  
+2. `x_thread_fetch` the status ID; save under `.grok/archive/skills/premium-site/references/`  
 3. Map takeaways into an existing skill; only create a new skill if the method is a **distinct pipeline**  
 4. Add a row to Tier A/B above with URL + one-line method  

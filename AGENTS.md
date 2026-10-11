@@ -78,19 +78,11 @@ Use an existing category from `data/catalog.json` when possible:
 
 ## Full procedure
 
-When the user pastes a design URL or asks to ship a **website** template from a reference, follow the **ship-template** skill:
+When the user pastes a design URL or asks to ship a **website** template from a reference, match that reference. The local design skills are archived and must not be loaded.
 
-`.grok/skills/ship-template/SKILL.md`
+Archive: `.grok/archive/skills/` (`ship-template`, `design-system-first`, `anti-slop-frontend`, `clean-interface`, `premium-site`, `interface-craft`). Index: **`docs/SKILLS.md`**.
 
-Cold start / design system before HTML: **`/design-system-first`**.  
-DESIGN.md quality (mistakes + tips): **`docs/method-design-md-for-ai.md`**.  
-Kill AI-slop aesthetics: **`/anti-slop-frontend`**.  
-Clean SaaS / whitespace / product-as-proof: **`/clean-interface`**.  
-Macro polish: **`/premium-site`**. Micro feel after polish: **`/interface-craft`**.  
-Skills map + filename scheme: **`docs/SKILLS.md`**.  
-Methods corpus (X sources): **`docs/ai-website-methods-corpus.md`**.
-
-Default route: design-system-first → anti-slop → (clean-interface if soft SaaS) → ship/premium build → polish → interface-craft → audit.
+Build from the reference: fictional rebrand, original assets, complete page, then register, brand-audit, and HTTP-verify. Do not run the old skill route (DESIGN.md-first, anti-slop, clean-interface, premium polish, interface-craft) unless the user asks to restore a skill.
 
 Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.
 
@@ -99,6 +91,6 @@ Hosting / deploy / privacy / analytics changes: follow **`docs/OPERATIONS.md`**.
 - This is a **private-by-convention static design archive**, not a production application or public template marketplace. It remains publicly reachable by URL when Pages is enabled, so preserve robots/noindex controls and do not treat it as authenticated storage.
 - The root showcase (`index.html` + `css/styles.css` + `js/app.js`) loads `data/catalog.json`. That catalog is the source of truth for cards, filters, detail modals, related-item links, and responsive iframe previews.
 - Each item in `library/<type>/<id>/` is a self-contained deliverable. A new item needs a usable `index.html`, `preview.jpg`, original local assets, and a matching catalog record before it is complete.
-- The intended contribution loop is: understand the reference → fictional rebrand → define the item design system → make original assets and static implementation → register → privacy/GA and brand audit → Caddy HTTP verification. Use the full skills route above for reference-driven websites.
+- The intended contribution loop is: understand the reference → fictional rebrand → make original assets and static implementation → register → privacy/GA and brand audit → Caddy HTTP verification. Do not load archived skills from `.grok/archive/skills/`.
 - Keep root-site changes and item changes separate conceptually: a catalog/UI change affects the gallery; an item-folder change affects one deliverable. Use relative paths throughout because deployment is under `/mydesignlib/`.
 - Pages and its workflow are intentionally paused. Do not enable or push for a deployment unless the user explicitly asks to ship live and the re-enable sequence in `docs/OPERATIONS.md` has been followed.

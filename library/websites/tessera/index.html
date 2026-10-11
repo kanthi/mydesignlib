@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Tessera</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='14' height='14' fill='%23e7c44a'/%3E%3Crect x='16' y='0' width='16' height='14' fill='%23f4e7a2'/%3E%3Crect y='16' width='14' height='16' fill='%236a7a32'/%3E%3Crect x='16' y='16' width='16' height='16' fill='%23c47a22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --sans: Outfit, "Segoe UI", sans-serif; --ink: #1c1c1c; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: #fff; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  #px { height: 58vh; min-height: 320px; background: #f6efc2; }
+  #px canvas { width: 100%; height: 100%; display: block; }
+  .split { display: grid; grid-template-columns: 1.15fr 0.85fr; min-height: 42vh; }
+  .left, .right { padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; }
+  .right { border-left: 1px dashed #d9d9d9; }
+  h1 { margin: 0; font-weight: 500; letter-spacing: -0.03em; line-height: 0.95; font-size: clamp(40px, 4.6vw, 64px); color: #8d8d8d; }
+  h1 b { display: block; margin-top: 6px; color: #111; font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 1.05em; letter-spacing: 0.01em; }
+  .right p { margin: 0; max-width: 360px; font-size: 18px; line-height: 1.45; color: #3a3a3a; }
+  .pixel {
+    display: inline-block; margin-top: 22px; align-self: flex-start; border: 0; color: #fff; background: #111;
+    padding: 12px 16px; font-weight: 600;
+    clip-path: polygon(6px 0, calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px), 0 6px, 6px 6px);
+  }
+  .pixel:hover { background: #000; }
+  .logos { display: flex; gap: 22px; margin-top: 28px; flex-wrap: wrap; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #6b6b6b; font-weight: 600; }
+  .steps { background: #f6f5f2; padding: 56px 24px; }
+  .wrap { width: min(960px, 100%); margin: 0 auto; }
+  .steps h2 { margin: 0 0 18px; font-size: 32px; letter-spacing: -0.03em; font-weight: 500; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid article { background: #fff; border-radius: 14px; padding: 18px; }
+  .grid h3 { margin: 0 0 6px; font-size: 16px; }
+  .grid p { margin: 0; color: #555; }
+  .book { padding: 48px 24px 64px; }
+  form { display: grid; gap: 10px; max-width: 440px; }
+  input, textarea { width: 100%; border: 0; border-radius: 10px; padding: 12px 14px; background: #f3f2ef; }
+  textarea { min-height: 80px; resize: vertical; }
+  .sent { color: #666; }
+  footer { padding: 0 24px 28px; color: #777; display: flex; gap: 16px; }
+  footer .grow { margin-left: auto; }
+  section { scroll-margin-top: 16px; }
+  .subnav { display: flex; gap: 18px; flex-wrap: wrap; padding: 14px 40px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; font-size: 14px; font-weight: 600; }
+  .subnav a:hover { color: #000; }
+  .grid button.room { width: 100%; text-align: left; border: 0; background: #fff; border-radius: 14px; padding: 18px; }
+  .grid button.room b { display: block; margin-bottom: 6px; font-size: 16px; }
+  .grid button.room span { color: #555; font-weight: 400; }
+  .grid button.room.on { box-shadow: inset 0 0 0 2px #111; }
+  .detail { margin-top: 12px; background: #fff; border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: center; }
+  .swatch { height: 72px; border-radius: 8px; background: #f2c14e; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .tiles button { border: 0; min-height: 88px; border-radius: 4px; font-weight: 600; color: #1c1c1c; }
+  .job { font-size: 20px; margin: 16px 0 0; }
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .plan { background: #111; color: #fff; padding: 18px; display: flex; flex-direction: column; gap: 8px;
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 8px 8px); }
+  .plan strong { font-family: "Playfair Display", Georgia, serif; font-size: 36px; font-weight: 500; }
+  .plan ul { margin: 0 0 8px; padding-left: 18px; color: #e4e4e4; }
+  .plan .pixel { background: #fff; color: #111; }
+  .log { width: 100%; border-collapse: collapse; }
+  .log th, .log td { text-align: left; padding: 12px 8px; border-bottom: 1px dashed #d9d9d9; }
+  .log th { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #777; font-weight: 600; }
+  footer.full { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 16px; padding: 8px 24px 32px; }
+  footer.full a, footer.full span { display: block; margin-top: 6px; }
+  footer.full .grow { margin: 0; }
+  @media (max-width: 800px) {
+    #px { height: 42vh; }
+    .split, .grid, .detail, .tiles, .plans, footer.full { grid-template-columns: 1fr; }
+    .subnav { padding: 14px 20px; }
+    .right { border-left: 0; border-top: 1px dashed #d9d9d9; }
+    .left, .right { padding: 28px 20px; }
+    footer .grow { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div id="px" aria-hidden="true"><canvas></canvas></div>
+<section class="split">
+  <div class="left">
+    <h1>Every pixel has a<b>GREATER PURPOSE.</b></h1>
+  </div>
+  <div class="right">
+    <p>From scattered workflows to one connected platform that helps your business move faster.</p>
+    <a class="pixel" href="#book">Book a demo</a>
+    <div class="logos"><span>Veld</span><span>Nock</span><span>Marrow</span><span>Silt</span></div>
+  </div>
+</section>
+<nav class="subnav" aria-label="Page">
+  <a href="#steps">Rooms</a>
+  <a href="#floor">Floor</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#log">Log</a>
+  <a href="#book">Book</a>
+</nav>
+<section class="steps" id="steps">
+  <div class="wrap">
+    <h2>Three rooms, one floor.</h2>
+    <div class="grid" role="tablist" aria-label="Rooms">
+      <button class="room on" type="button" data-room="intake"><b>01 Intake</b><span>A named queue.</span></button>
+      <button class="room" type="button" data-room="work"><b>02 Work</b><span>File, note, and status.</span></button>
+      <button class="room" type="button" data-room="hand"><b>03 Hand-off</b><span>Context goes with it.</span></button>
+    </div>
+    <div class="detail">
+      <div class="swatch" id="swatch"></div>
+      <div>
+        <h3 id="room-title">Intake</h3>
+        <p id="room-copy">The request lands in one queue, with the name of the person who owns the answer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="steps" id="floor">
+  <div class="wrap">
+    <h2>Eight jobs, one floor.</h2>
+    <div class="tiles" id="tiles">
+      <button type="button" data-job="Quote" style="background:#f2c14e">Quote</button>
+      <button type="button" data-job="Brief" style="background:#e7c44a">Brief</button>
+      <button type="button" data-job="Draft" style="background:#c6d64a">Draft</button>
+      <button type="button" data-job="Review" style="background:#7d8c3a;color:#fff">Review</button>
+      <button type="button" data-job="Build" style="background:#5c6b22;color:#fff">Build</button>
+      <button type="button" data-job="Check" style="background:#c47a22;color:#fff">Check</button>
+      <button type="button" data-job="Send" style="background:#d4556a;color:#fff">Send</button>
+      <button type="button" data-job="Keep" style="background:#efe07a">Keep</button>
+    </div>
+    <p class="job" id="job">Quote waits in Intake until a name is on it.</p>
+  </div>
+</section>
+<section class="book" id="pricing">
+  <div class="wrap">
+    <h2 style="margin-top:0">Plans with a stepped edge.</h2>
+    <div class="plans">
+      <article class="plan"><h3>Bench</h3><strong>$0</strong><ul><li>One room</li><li>Eight jobs</li><li>The log</li></ul><a class="pixel" href="#book">Book a demo</a></article>
+      <article class="plan"><h3>Floor</h3><strong>$36</strong><ul><li>All three rooms</li><li>A named owner</li><li>The hand-off</li></ul><a class="pixel" href="#book">Book a demo</a></article>
+      <article class="plan"><h3>House</h3><strong>$96</strong><ul><li>Several floors</li><li>A keeper</li><li>Monday's row</li></ul><a class="pixel" href="#book">Book a demo</a></article>
+    </div>
+  </div>
+</section>
+<section class="steps" id="log">
+  <div class="wrap">
+    <h2>What left the floor.</h2>
+    <table class="log">
+      <thead><tr><th>Job</th><th>From</th><th>To</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>Harbor quote</td><td>Intake</td><td>Work</td><td>12 May</td></tr>
+        <tr><td>Wool page</td><td>Work</td><td>Check</td><td>02 Jun</td></tr>
+        <tr><td>Clinic hours</td><td>Check</td><td>Send</td><td>18 Jun</td></tr>
+        <tr><td>Lease note</td><td>Send</td><td>Keep</td><td>01 Jul</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="book" id="book">
+  <div class="wrap">
+    <h2 style="margin-top:0">Book a demo</h2>
+    <form id="brief">
+      <input name="name" required placeholder="Name" aria-label="Name">
+      <input name="email" type="email" required placeholder="Email" aria-label="Email">
+      <textarea name="note" required placeholder="The workflow that is scattered." aria-label="Note"></textarea>
+      <button class="pixel" type="submit">Book a demo</button>
+      <p class="sent" id="sent" hidden>Opening your mail app with the note to desk@tessera.example.</p>
+    </form>
+  </div>
+</section>
+<footer class="full">
+  <div>
+    <strong>Tessera</strong>
+    <span class="grow">desk@tessera.example</span>
+  </div>
+  <div>
+    <strong>Floor</strong>
+    <a href="#steps">Rooms</a>
+    <a href="#floor">Jobs</a>
+    <a href="#log">Log</a>
+  </div>
+  <div>
+    <strong>House</strong>
+    <a href="#pricing">Pricing</a>
+    <a href="#book">Book a demo</a>
+  </div>
+  <div>
+    <strong>Sample</strong>
+    <span>Fictional floor only.</span>
+  </div>
+</footer>
+<script>
+  const wrap = document.getElementById("px");
+  const canvas = wrap.querySelector("canvas");
+  const earth = ["#f2c14e","#e39b2b","#c47a22","#8a6424","#5c6b22","#3d4a1c","#6b4428","#d4556a","#c6d64a","#314018","#b8742c","#efe07a","#7d8c3a","#a33b32","#d7a017"];
+  function hash(x, y) {
+    let n = Math.imul(x, 374761393) + Math.imul(y, 668265263);
+    n = Math.imul(n ^ (n >>> 13), 1274126177);
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+  }
+  function draw() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    canvas.width = Math.max(1, Math.floor(w * dpr));
+    canvas.height = Math.max(1, Math.floor(h * dpr));
+    const ctx = canvas.getContext("2d");
+    const cell = Math.max(10, Math.round(16 * dpr));
+    const cols = Math.ceil(canvas.width / cell);
+    const rows = Math.ceil(canvas.height / cell);
+    ctx.fillStyle = "#f4e7a8";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < rows; y++) {
+      const hill = rows * (0.52 + 0.07 * Math.sin(y * 0 + 0) );
+      for (let x = 0; x < cols; x++) {
+        const base = 0.50 + 0.10 * Math.sin(x / 6.5) + 0.06 * Math.sin(x / 2.7 + 1.2) + 0.03 * Math.sin(x / 13);
+        const line = Math.floor(rows * base);
+        const n = hash(x, y);
+        let color;
+        if (y < line) {
+          const sky = y / rows;
+          const light = 238 - sky * 28 + (n > 0.86 ? 16 : 0);
+          color = "rgb(" + light + "," + (light - 4) + "," + (light - 36) + ")";
+          if (n > 0.93 && y < rows * 0.42) color = "#fffef6";
+        } else {
+          color = earth[Math.floor(hash(x, y + 3) * earth.length)];
+          if (y < line + 2 && n > 0.72) color = "#f6e27a";
+        }
+        ctx.fillStyle = color;
+        ctx.fillRect(x * cell, y * cell, cell - Math.max(1, dpr), cell - Math.max(1, dpr));
+      }
+    }
+  }
+  draw();
+  window.addEventListener("resize", draw);
+  const rooms = {
+    intake: ["#f2c14e", "Intake", "The request lands in one queue, with the name of the person who owns the answer."],
+    work: ["#6a7a32", "Work", "The file, the note, and the status stay on the same row."],
+    hand: ["#c47a22", "Hand-off", "When it leaves the floor, the next desk already has the context."]
+  };
+  const jobs = {
+    Quote: "Quote waits in Intake until a name is on it.",
+    Brief: "Brief sits with the person who asked for the work.",
+    Draft: "Draft stays on the Work row until the note is attached.",
+    Review: "Review is a second pair of eyes, still on the same floor.",
+    Build: "Build does not start while the brief is blank.",
+    Check: "Check compares the job with the sentence that opened it.",
+    Send: "Send moves the row to the next desk with the context attached.",
+    Keep: "Keep is the copy that stays after the hand-off."
+  };
+  document.querySelectorAll(".room").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".room").forEach(function (b) { b.classList.remove("on"); });
+      btn.classList.add("on");
+      const item = rooms[btn.getAttribute("data-room")];
+      document.getElementById("swatch").style.background = item[0];
+      document.getElementById("room-title").textContent = item[1];
+      document.getElementById("room-copy").textContent = item[2];
+    });
+  });
+  document.querySelectorAll("#tiles button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.getElementById("job").textContent = jobs[btn.getAttribute("data-job")];
+    });
+  });
+  document.getElementById("brief").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const body = "From: " + data.get("name") + " <" + data.get("email") + ">\n\n" + data.get("note");
+    document.getElementById("sent").hidden = false;
+    location.href = "mailto:desk@tessera.example?subject=" + encodeURIComponent("Tessera demo") + "&body=" + encodeURIComponent(body);
+  });
+</script>
+</body>
+</html>

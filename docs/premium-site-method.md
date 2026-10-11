@@ -3,7 +3,7 @@
 Primary source: [Romario (@bateshkaaa) — X post 2079218516150862086](https://x.com/bateshkaaa/status/2079218516150862086)  
 Captured for this repo: 2026-08-05  
 
-**Skills:** `.grok/skills/premium-site/` · `anti-slop-frontend/` · `design-system-first/` · `interface-craft/`  
+**Skills (archived, do not load):** `.grok/archive/skills/premium-site/` · `anti-slop-frontend/` · `design-system-first/` · `interface-craft/`  
 **Full X corpus:** [`docs/ai-website-methods-corpus.md`](./ai-website-methods-corpus.md)  
 Companion research: Anthropic [`frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design) (distilled in-repo), craft audit [`make-interfaces-feel-better`](https://github.com/jakubkrehel/make-interfaces-feel-better) → `/interface-craft`. Do not default to ui-ux-pro-max industry packs (template risk).
 
@@ -35,7 +35,7 @@ Original post (Claude Code):
    - A UI/UX ruleset (popular: `ui-ux-pro-max`)  
 3. Restart; confirm with `/skills`
 
-**In this repo (Grok Build):** use `.grok/skills/premium-site/` (this method) plus project rules in `AGENTS.md` and `ship-template`. Optionally mirror Anthropic frontend-design principles in the skill body.
+**In this repo (Grok Build):** this method is archived at `.grok/archive/skills/premium-site/`. Do not load it. Match the reference. Product rules stay in `AGENTS.md`.
 
 Skills are folders with `SKILL.md`. No API keys required for the skill files themselves.
 
@@ -109,7 +109,7 @@ Ship a **solid** site, not a perfect one. First version has rough edges (mobile,
 | Original advice | Here |
 |-----------------|------|
 | Astro + Tailwind + Cloudflare | Vanilla static folder; free libs only when needed (GSAP/Lenis/Three) |
-| Claude Code skills path | `.grok/skills/premium-site/` |
+| Claude Code skills path | `.grok/archive/skills/premium-site/` |
 | Brand-new client site | Fictional rebrand only (`AGENTS.md`); original assets |
 | One mega redesign | Prefer **versioned folders**: keep `library/websites/<id>/`, ship polish as `library/websites/<id>-v1/` (or `-v2`) so A/B comparison stays honest |
 | Ban list | Enforce in skill + build prompt; also ban real trademarks / scraped media |

@@ -8,16 +8,14 @@ For agents, the canonical procedures are:
 |------|------|
 | [`AGENTS.md`](../AGENTS.md) | Always-on project rules |
 | [`OPERATIONS.md`](OPERATIONS.md) | Hosting, Pages, privacy, GA, deploy |
-| [`SKILLS.md`](SKILLS.md) | Skills map + filename naming scheme |
-| [`method-design-md-for-ai.md`](method-design-md-for-ai.md) | Write DESIGN.md agents can execute |
-| [`.grok/skills/ship-template/SKILL.md`](../.grok/skills/ship-template/SKILL.md) | Step-by-step ship procedure (also `/ship-template`) |
-| [`.grok/skills/design-system-first/SKILL.md`](../.grok/skills/design-system-first/SKILL.md) | Tokens + DESIGN.md before HTML (`/design-system-first`) |
-| [`.grok/skills/interface-craft/SKILL.md`](../.grok/skills/interface-craft/SKILL.md) | Micro feel audit after polish (`/interface-craft`) |
+| [`SKILLS.md`](SKILLS.md) | Archived skills map |
+
+The design skills are archived under [`.grok/archive/skills/`](../.grok/archive/skills/). Do not load them. Match the reference, then register and verify.
 
 ## Quick start (human or agent)
 
 1. Drop a design reference (X URL, screenshot, case study).
-2. Run the **ship-template** flow (or ask Grok to implement it).
+2. Match the reference and build the page. The old skill route is archived.
 3. Preview via **Caddy** (already configured): `~/.config/mydesignlib-portal/serve.sh --url`.
 
 ## Pipeline (summary)
@@ -26,16 +24,13 @@ For agents, the canonical procedures are:
 Reference (X / video / site)
     → research + frames
     → fictional rebrand + free stack
-    → design-system-first (plan + DESIGN.md + tokens) when cold
-    → anti-slop check
-    → AI assets + HTML/CSS page
-    → premium-site polish (optional) → interface-craft (optional)
+    → original assets + HTML/CSS page that matches the reference
     → data/catalog.json (type: website)
     → brand audit + HTTP 200
     → done
 ```
 
-Cold start / weak UI: write an executable **DESIGN.md** first — see [method-design-md-for-ai.md](method-design-md-for-ai.md) (not adjectives alone).
+A per-item DESIGN.md is optional. The old requirement to write one before HTML is archived with the design skills.
 ### Hard rules
 
 1. **Fictional brands only** — no real logos, client identities, or original product names.

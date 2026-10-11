@@ -154,14 +154,14 @@ rg -L 'name="robots"' -g '*.html' library index.html || true
 
 | Step | Detail |
 |------|--------|
-| Skill | `.grok/skills/ship-template/SKILL.md` (`/ship-template`) |
+| Skill | Archived at `.grok/archive/skills/` — do not load. Match the reference. |
 | Human pipeline | `docs/TEMPLATE_WORKFLOW.md` |
 | Register | `data/catalog.json` (`type`: website \| brand \| logo \| system) |
 | Folder | `library/<type>/<id>/` with `index.html` + `preview.jpg` as needed |
 | Brand audit | No real brands, designer handles, marketplace URLs |
 | Local verify | **Caddy portal** (already running) — see § Local preview; do **not** start `python3 -m http.server` |
 
-Polish skills (when asked): `premium-site`, `anti-slop-frontend`, `design-system-first`, `interface-craft`.
+Design skills are archived. Do not load them unless a folder is moved back to `.grok/skills/`.
 
 ## Local preview (Caddy — preferred)
 
@@ -218,5 +218,5 @@ Catalog:  data/catalog.json
 Library:  library/websites|brands|logos|systems/<id>/
 Privacy:  robots.txt + noindex on every HTML page
 Analytics: G-Z97ZD3EVSF on every HTML page
-Ship:     /ship-template + AGENTS.md
+Ship:     match the reference + AGENTS.md (design skills archived)
 ```
