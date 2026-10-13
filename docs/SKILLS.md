@@ -1,13 +1,24 @@
 # Agent skills map
 
-**Archived 2026-10-11.** These skills are not loaded. They live in `.grok/archive/skills/` so Grok will not discover them. Do not follow them when building templates. Match the reference. Restore a skill by moving its folder back to `.grok/skills/<name>/`.
-
-Index of the archived Grok skills and method docs for **mydesignlib**.  
-On disk: `.grok/archive/skills/<skill-name>/SKILL.md`
+Index of Grok skills and method docs for **mydesignlib**.
 
 **Not named `skillme.md`.** Prefer **`SKILLS.md`** (plural, clear) under `docs/` so humans find it next to other ops/method docs.
 
 ---
+
+## Active
+
+| Skill | Slash | When to use |
+|-------|-------|-------------|
+| [template-from-ref](../.grok/skills/template-from-ref/SKILL.md) | `/template-from-ref`, `/tfr` | Any visual reference → Omnia-format study (hub, replica, guidelines, landing, social, merch, reveal) |
+
+Grok loads it from [`.grok/skills/template-from-ref/SKILL.md`](../.grok/skills/template-from-ref/SKILL.md), with `/tfr` in [`.grok/commands/tfr.md`](../.grok/commands/tfr.md). Antigravity loads [`.agents/skills/template-from-ref/SKILL.md`](../.agents/skills/template-from-ref/SKILL.md) and the `/tfr` alias at [`.agents/skills/tfr/SKILL.md`](../.agents/skills/tfr/SKILL.md). Always-on product rules stay in [`AGENTS.md`](../AGENTS.md). Hosting, privacy, and analytics stay in [`OPERATIONS.md`](./OPERATIONS.md).
+
+---
+
+## Archived (do not load)
+
+**Archived 2026-10-11.** These six skills live in `.grok/archive/skills/` so Grok will not discover them. They pull pages toward one shared aesthetic. Do not follow them when building templates. Restore one only when the user asks, by moving its folder back to `.grok/skills/<name>/`.
 
 ## Skills (agent procedures)
 
@@ -68,7 +79,7 @@ Avoid vague names: `notes.md`, `skillme.md`, `misc.md`, `new.md`.
 
 ### Skill packages (Grok convention)
 
-Active skills are loaded only from `.grok/skills/<skill-name>/`. The six design skills are archived and are not in that folder.
+Grok loads active skills from `.grok/skills/<skill-name>/`. Antigravity loads them from `.agents/skills/<skill-name>/`. Today that is `template-from-ref` (`/template-from-ref`, short alias `/tfr`). The six aesthetic skills stay archived and are not in those folders.
 
 ```
 .grok/archive/skills/<skill-name>/   # current archive; not loaded

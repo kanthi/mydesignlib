@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caucus — Logo reveal</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <script>
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("will-play");
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    html, body { height: 100%; background: #000; color: #fff; overflow: hidden; }
+    .stage {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(ellipse 58% 72% at 84% 18%, rgba(231, 230, 180, 0.45) 0%, transparent 56%),
+        radial-gradient(ellipse 70% 60% at 92% 84%, rgba(154, 58, 98, 0.55) 0%, transparent 52%),
+        linear-gradient(155deg, #1a0210 0%, #000 48%, #000 100%);
+    }
+    .lock {
+      display: flex;
+      align-items: center;
+      gap: 0.42em;
+      font-size: clamp(42px, 8vw, 96px);
+      color: #fff;
+    }
+    .bowls { position: relative; width: 1.15em; height: 1.15em; flex: none; }
+    .bowls svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    #word {
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    html.will-play:not(.go) .lock { visibility: hidden; }
+    .index {
+      position: fixed;
+      top: 16px;
+      left: 18px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    .ui { position: fixed; right: 18px; bottom: 16px; }
+    .ui button {
+      font: 600 13px/1 "Libre Franklin", "Avenir Next", sans-serif;
+      color: #fff;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    .ui button:hover { border-color: #fff; }
+    @media (prefers-reduced-motion: reduce) {
+      html.will-play .lock { visibility: visible; }
+    }
+  </style>
+</head>
+<body>
+  <a class="index" href="../index.html">CAUCUS</a>
+  <!-- SECTION: reveal -->
+  <div class="stage">
+    <div class="lock" id="lock" aria-label="Caucus">
+      <div class="bowls" aria-hidden="true">
+        <svg id="bowlL" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="M2 32a12 12 0 1 0 24 0a12 12 0 1 0 -24 0zM11 32a7 7 0 1 0 14 0a7 7 0 1 0 -14 0z"/></svg>
+        <svg id="bowlR" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="M38 32a12 12 0 1 0 24 0a12 12 0 1 0 -24 0zM39 32a7 7 0 1 0 14 0a7 7 0 1 0 -14 0z"/></svg>
+      </div>
+      <div id="word">CAUCUS</div>
+    </div>
+  </div>
+  <!-- /SECTION: reveal -->
+  <div class="ui"><button type="button" id="replay">Replay</button></div>
+  <script src="vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var replay = document.getElementById("replay");
+      function show() { document.documentElement.classList.add("go"); }
+      if (reduce || !window.gsap) {
+        show();
+        replay.hidden = true;
+        return;
+      }
+      var tl;
+      function play() {
+        if (tl) tl.kill();
+        gsap.set("#bowlL", { x: -88, scale: 0.45, opacity: 0, transformOrigin: "22% 50%" });
+        gsap.set("#bowlR", { x: 88, scale: 0.45, opacity: 0, transformOrigin: "78% 50%" });
+        gsap.set("#word", { opacity: 0, letterSpacing: "0.32em" });
+        show();
+        tl = gsap.timeline();
+        tl.to("#bowlL", { x: 0, scale: 1, opacity: 1, duration: 0.85, ease: "power3.out" })
+          .to("#bowlR", { x: 0, scale: 1, opacity: 1, duration: 0.85, ease: "power3.out" }, "<")
+          .to("#word", { opacity: 1, letterSpacing: "-0.03em", duration: 0.8, ease: "power2.out" }, "-=0.15");
+      }
+      replay.addEventListener("click", play);
+      play();
+    })();
+  </script>
+</body>
+</html>

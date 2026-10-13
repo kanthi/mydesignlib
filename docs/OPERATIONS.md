@@ -154,14 +154,14 @@ rg -L 'name="robots"' -g '*.html' library index.html || true
 
 | Step | Detail |
 |------|--------|
-| Skill | Archived at `.grok/archive/skills/` — do not load. Match the reference. |
+| Skill | Grok: [`.grok/skills/template-from-ref/SKILL.md`](../.grok/skills/template-from-ref/SKILL.md). Antigravity: [`.agents/skills/template-from-ref/SKILL.md`](../.agents/skills/template-from-ref/SKILL.md). The six aesthetic skills stay in `.grok/archive/skills/` — do not load those. |
 | Human pipeline | `docs/TEMPLATE_WORKFLOW.md` |
 | Register | `data/catalog.json` (`type`: website \| brand \| logo \| system) |
 | Folder | `library/<type>/<id>/` with `index.html` + `preview.jpg` as needed |
 | Brand audit | No real brands, designer handles, marketplace URLs |
 | Local verify | **Caddy portal** (already running) — see § Local preview; do **not** start `python3 -m http.server` |
 
-Design skills are archived. Do not load them unless a folder is moved back to `.grok/skills/`.
+The six aesthetic skills stay archived. The active reference procedure is `.grok/skills/template-from-ref/` on Grok and `.agents/skills/template-from-ref/` on Antigravity. Do not move an archived skill back unless the user asks.
 
 ## Local preview (Caddy — preferred)
 

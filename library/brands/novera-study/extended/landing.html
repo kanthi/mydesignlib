@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Novera</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.2 20.6 7.1v9.8L12 21.8 3.4 16.9V7.1Z' fill='none' stroke='%232B4776' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,460;8..60,520;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2b4776;
+    --ink-deep: #1e3558;
+    --sea: #2a4a73;
+    --paper: #f3e7d4;
+    --paper-2: #efe2cc;
+    --white: #fffcf8;
+    --muted: #667386;
+    --line: rgba(43, 71, 118, 0.18);
+    --serif: "Source Serif 4", "Iowan Old Style", Palatino, Georgia, serif;
+    --sans: Outfit, "Avenir Next", "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .tooth {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 28px;
+    color: var(--ink);
+  }
+  .bar.is-paper {
+    background: rgba(243, 231, 212, 0.92);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+  }
+  .brand svg { width: 22px; height: 22px; display: block; }
+  .links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    font-size: 15.5px;
+    font-weight: 500;
+  }
+  .links a { opacity: 0.92; }
+  .links a:hover { opacity: 1; }
+  .get {
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-size: 14.5px;
+    font-weight: 600;
+    box-shadow: 0 8px 22px rgba(40, 48, 40, 0.12);
+  }
+  .get:hover { transform: translateY(-1px); }
+  .menu {
+    display: none;
+    width: 42px; height: 42px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0 8px 22px rgba(40, 48, 40, 0.12);
+    padding: 0;
+  }
+  .menu span {
+    display: block;
+    width: 16px; height: 1.5px;
+    margin: 4px auto;
+    background: var(--ink);
+  }
+
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .plate {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    transform: scale(1.04);
+  }
+  .stage {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 108px 20px 12px;
+    gap: 22px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: #1c1c1c;
+    border-radius: 999px;
+    padding: 7px 12px 7px 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(40, 50, 60, 0.08);
+  }
+  .pill i {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #161616;
+    display: block;
+  }
+  .pill svg { width: 14px; height: 14px; opacity: 0.7; }
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 520;
+    font-optical-sizing: auto;
+    font-size: clamp(46px, 5.5vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .ask {
+    width: min(524px, calc(100% - 8px));
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 18px 44px rgba(28, 44, 68, 0.13);
+    padding: 22px 20px 14px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  .ask textarea {
+    width: 100%;
+    border: 0;
+    resize: none;
+    background: transparent;
+    padding: 0;
+    height: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #4d5968;
+    outline: none;
+  }
+  .ask textarea::placeholder { color: #8b939e; }
+  h1 .l1, h1 .l2 { display: block; }
+  .ask-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .chip {
+    border: 1px solid #d7dbe2;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #3c4654;
+  }
+  .send {
+    width: 36px; height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--sea);
+    color: white;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(28, 50, 80, 0.25);
+  }
+  .send svg { width: 16px; height: 16px; }
+  .send:hover { background: var(--ink-deep); }
+  .reply {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+    margin-top: -12px;
+  }
+  .reply.show { grid-template-rows: 1fr; margin-top: 0; }
+  .reply .inner { overflow: hidden; }
+  .reply p {
+    margin: 0 0 4px;
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--ink-deep);
+  }
+  .reply .heard {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .trial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: min(440px, calc(100% - 28px));
+    background: var(--sea);
+    color: white;
+    border-radius: 12px;
+    padding: 16px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    box-shadow: 0 12px 26px rgba(20, 40, 70, 0.28);
+  }
+  .trial:hover { background: var(--ink-deep); }
+
+  .logos {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    list-style: none;
+    margin: 0;
+    padding: 18px 36px 32px;
+    color: white;
+  }
+  .logos li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(10, 30, 50, 0.28);
+    white-space: nowrap;
+  }
+  .logos svg { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 1px rgba(10, 30, 50, 0.25)); }
+
+  .wrap {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+  .kicker {
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .read {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 72px;
+    padding: 112px 0 96px;
+  }
+  .read h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 520;
+    font-size: clamp(36px, 4vw, 58px);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+  .read .lede {
+    margin: 0 0 28px;
+    font-family: var(--serif);
+    font-size: 23px;
+    line-height: 1.35;
+    color: var(--ink-deep);
+  }
+  .fixes { list-style: none; margin: 0; padding: 0; }
+  .fixes li {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    font-size: 17px;
+  }
+  .fixes li:last-child { border-bottom: 1px solid var(--line); }
+  .fixes span {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--sea);
+  }
+
+  .vista {
+    position: relative;
+    height: min(78vh, 760px);
+    margin: 0;
+  }
+  .vista img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+  }
+  .vista figcaption {
+    position: absolute;
+    left: 28px;
+    bottom: 24px;
+    background: rgba(243, 231, 212, 0.92);
+    color: var(--ink);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    max-width: min(420px, calc(100% - 56px));
+  }
+  .vista figcaption b {
+    font-family: var(--serif);
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .week { padding: 108px 0 40px; }
+  .week h2 {
+    margin: 0 0 12px;
+    font-family: var(--serif);
+    font-weight: 520;
+    font-size: clamp(40px, 5vw, 68px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .week .intro {
+    max-width: 36ch;
+    margin: 0 0 36px;
+    font-size: 18px;
+    color: var(--ink-deep);
+  }
+  .days {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .days li {
+    padding: 22px 16px 8px 0;
+    border-right: 1px solid transparent;
+    min-height: 180px;
+  }
+  .days li + li { border-left: 1px solid var(--line); padding-left: 16px; }
+  .days em {
+    display: block;
+    font-style: normal;
+    font-family: var(--serif);
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .days strong { display: block; font-size: 16px; margin-bottom: 8px; }
+  .days p { margin: 0; font-size: 14px; line-height: 1.4; color: #3e516c; }
+
+  .rates { padding: 72px 0 40px; }
+  .rate {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 26px 28px;
+    border-top: 1px solid var(--line);
+  }
+  .rate:last-child { border-bottom: 1px solid var(--line); }
+  .rate b {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 520;
+    letter-spacing: -0.03em;
+  }
+  .rate small { color: #3e516c; font-size: 15px; }
+  .rate .sum {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 520;
+  }
+  .rate.main {
+    background: var(--sea);
+    color: #f6f1e8;
+    border: 0;
+    border-radius: 14px;
+    margin: 8px 0;
+  }
+  .rate.main small { color: rgba(246, 241, 232, 0.82); }
+  .rate.main + .rate { border-top: 0; }
+
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding: 96px 0;
+    align-items: start;
+  }
+  .about h2 {
+    margin: 0 0 16px;
+    font-family: var(--serif);
+    font-weight: 520;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  .about p { margin: 0 0 14px; font-size: 18px; max-width: 42ch; }
+  .print {
+    margin: 0;
+    background: #f7f1e6;
+    padding: 18px 18px 14px;
+    box-shadow: 0 18px 40px rgba(40, 50, 40, 0.08);
+  }
+  .print img { width: 100%; height: auto; }
+  .print figcaption {
+    padding-top: 10px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .journal { padding: 20px 0 100px; }
+  .journal h2 {
+    font-family: var(--serif);
+    font-weight: 520;
+    font-size: 42px;
+    margin: 0 0 8px;
+    letter-spacing: -0.03em;
+  }
+  .entry {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .entry:last-child { border-bottom: 1px solid var(--line); }
+  .entry time {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 8px;
+  }
+  .entry h3 {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-weight: 520;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+  }
+  .entry p { margin: 0; max-width: 58ch; color: #31445f; }
+
+  footer {
+    background: #1b334f;
+    color: #f3eadc;
+    padding: 48px 0 36px;
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: end;
+  }
+  footer .brand { color: #f3eadc; }
+  footer nav { display: flex; gap: 22px; font-size: 15px; }
+  footer p { margin: 22px 0 0; color: rgba(243, 234, 220, 0.72); font-size: 14px; }
+
+  @media (max-width: 980px) {
+    .links {
+      display: none;
+      position: absolute;
+      top: 68px;
+      left: 16px; right: 16px;
+      transform: none;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--paper);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(20, 30, 40, 0.12);
+    }
+    .links.open { display: flex; }
+    .menu { display: inline-block; }
+    .read, .about, .entry { grid-template-columns: 1fr; gap: 22px; }
+    .days { grid-template-columns: 1fr 1fr; }
+    .days li { min-height: 0; padding: 18px 12px; border-top: 1px solid var(--line); }
+    .days li + li { border-left: 0; }
+    .rate { grid-template-columns: 1fr auto; }
+    .rate small { grid-column: 1 / -1; }
+    .logos { flex-wrap: wrap; justify-content: center; row-gap: 12px; padding-inline: 16px; }
+    .logos li { font-size: 15px; }
+    .vista { height: 62vh; }
+  }
+  @media (max-width: 640px) {
+    .bar { padding: 14px 16px; }
+    h1 { font-size: 40px; }
+    h1 .l3 { display: block; }
+    .ask textarea { height: 2.8em; font-size: 15px; }
+    .days { grid-template-columns: 1fr; }
+    .rate b { font-size: 26px; }
+    .wrap { width: min(1120px, calc(100% - 32px)); }
+    .get { padding: 10px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .plate { transform: none; }
+    .reply { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="tooth" aria-hidden="true"></div>
+
+<header class="bar" id="bar">
+  <a class="brand" href="#top" aria-label="Novera, home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2 20.6 7.1v9.8L12 21.8 3.4 16.9V7.1Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+    Novera
+  </a>
+  <nav class="links" id="links">
+    <a href="#top">Home</a>
+    <a href="#page">Page</a>
+    <a href="#feature">Feature</a>
+    <a href="#about">About</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#blog">Blog</a>
+  </nav>
+  <a class="get" href="#pricing">Get started</a>
+  <button class="menu" id="menu" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<section class="hero" id="top">
+  <img class="plate" src="../replica/assets/coast.jpg" alt="">
+  <div class="stage">
+    <a class="pill" href="#about">
+      <i></i>
+      <span>Novera raises $20M to build the future of hiring</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </a>
+    <h1><span class="l1">Automate Smarter.</span><span class="l2">Grow Faster. <span class="l3">With AI.</span></span></h1>
+    <form class="ask" id="ask">
+      <textarea id="prompt" rows="1" autocomplete="off" placeholder="What’s the first thing I should fix on my site?"></textarea>
+      <div class="reply" id="reply"><div class="inner"></div></div>
+      <div class="ask-bar">
+        <span class="chip">Novera AI</span>
+        <button class="send" type="submit" aria-label="Send">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3.2 13.4 9.4 19.8 12 13.4 14.6 12 20.8 10.6 14.6 4.2 12 10.6 9.4Z"/></svg>
+        </button>
+      </div>
+    </form>
+    <a class="trial" href="#pricing">Start Your 7-Day Free Trial ($199)</a>
+  </div>
+  <ul class="logos" aria-label="Studios">
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h10L8 17h11" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      zantic
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5 12 5l8 2.5v9L12 19l-8-2.5v-9Z" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12 5v14" stroke="#fff" stroke-width="1.6"/></svg>
+      BookStore
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="8" cy="15" r="3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="16" cy="15" r="3" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+      Wager
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9 8.5v7c2.8 0 5-1.4 5-3.5S11.8 8.5 9 8.5Z" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+      Unicoin
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20 12 12 20.5 4 12Z" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+      Crona
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h10L8 17h11" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      zantic
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.2" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="14" y="4" width="6" height="6" rx="1.2" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="9" y="14" width="6" height="6" rx="1.2" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+      Orbit
+    </li>
+  </ul>
+</section>
+
+<main>
+  <section class="wrap read" id="page">
+    <div>
+      <p class="kicker">The first reply</p>
+      <h2>Say the work before you ask for the résumé.</h2>
+    </div>
+    <div>
+      <p class="lede">Novera reads the page a stranger actually sees. It names one fix, rewrites that screen, and leaves the rest of the site alone.</p>
+      <ul class="fixes">
+        <li><span>01</span> The role sits under the form.</li>
+        <li><span>02</span> The headline is about the company, not the job.</li>
+        <li><span>03</span> A week of help is priced where nobody looks.</li>
+        <li><span>04</span> Six links in the nav, and no next step.</li>
+      </ul>
+    </div>
+  </section>
+
+  <figure class="vista">
+    <img src="../replica/assets/villa.jpg" alt="An engraved villa and cypress on a cliff above the sea">
+    <figcaption><b>II</b> The house on the cliff. One page, after the rewrite.</figcaption>
+  </figure>
+
+  <section class="wrap week" id="feature">
+    <p class="kicker">Feature</p>
+    <h2>Seven days.</h2>
+    <p class="intro">Long enough to change one screen and see who stays. Not long enough to start a redesign.</p>
+    <ol class="days">
+      <li><em>01</em><strong>Read</strong><p>The live page, the form, and the sentence in the tab.</p></li>
+      <li><em>02</em><strong>Name</strong><p>One fix, in a line you could say out loud.</p></li>
+      <li><em>03</em><strong>Rewrite</strong><p>That screen only. The rest waits.</p></li>
+      <li><em>04</em><strong>Ship</strong><p>On the site, not in a deck.</p></li>
+      <li><em>05</em><strong>Watch</strong><p>Who finishes the page, and who leaves.</p></li>
+      <li><em>06</em><strong>Second</strong><p>The next fix, if the first one held.</p></li>
+      <li><em>07</em><strong>Keep</strong><p>Or don’t. The week is paid either way.</p></li>
+    </ol>
+  </section>
+
+  <section class="wrap rates" id="pricing">
+    <p class="kicker">Pricing</p>
+    <article class="rate main">
+      <b>Trial</b>
+      <small>Seven days. One hiring page rewritten. You keep the words if you stop.</small>
+      <span class="sum">$199</span>
+    </article>
+    <article class="rate">
+      <b>Desk</b>
+      <small>The same desk through the month. Weekday replies. One site.</small>
+      <span class="sum">$480</span>
+    </article>
+    <article class="rate">
+      <b>House</b>
+      <small>A season. Three pages. A reread on the first Monday of each month.</small>
+      <span class="sum">$1,280</span>
+    </article>
+  </section>
+
+  <section class="wrap about" id="about">
+    <div>
+      <p class="kicker">About</p>
+      <h2>A desk, not a platform.</h2>
+      <p>Novera raised $20M to build the future of hiring. For this desk, that means the page a person meets before they meet you.</p>
+      <p>A model does the reading. Someone here decides what ships. The coast is the room the work sits in: one page, one week, one sentence worth keeping.</p>
+    </div>
+    <figure class="print">
+      <img src="../replica/assets/sail.jpg" alt="An engraved sailboat on calm water">
+      <figcaption>Plate I — the bay</figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap journal" id="blog">
+    <p class="kicker">Blog</p>
+    <h2>From the desk</h2>
+    <article class="entry">
+      <time>Note 12</time>
+      <div>
+        <h3>The form that asked too soon</h3>
+        <p>A résumé field in the first screen is a door closed with the handle on the inside. Move the role up. Let the form wait until someone wants it.</p>
+      </div>
+    </article>
+    <article class="entry">
+      <time>Note 13</time>
+      <div>
+        <h3>What the round is for</h3>
+        <p>The money is for the reading, not for a larger nav. Hiring pages still greet people with a company history. That is the work.</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2 20.6 7.1v9.8L12 21.8 3.4 16.9V7.1Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        Novera
+      </a>
+      <nav>
+        <a href="#page">Page</a>
+        <a href="#feature">Feature</a>
+        <a href="#about">About</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#blog">Blog</a>
+      </nav>
+    </div>
+    <p>A sample of the desk. The trial on the first screen is $199 for seven days.</p>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById('bar');
+  const hero = document.getElementById('top');
+  const links = document.getElementById('links');
+  const menu = document.getElementById('menu');
+
+  function placeBar() {
+    bar.classList.toggle('is-paper', window.scrollY > hero.offsetHeight - 70);
+  }
+  placeBar();
+  window.addEventListener('scroll', placeBar, { passive: true });
+
+  menu.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    menu.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.addEventListener('click', (event) => {
+    if (event.target.closest('a')) {
+      links.classList.remove('open');
+      menu.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const replies = [
+    { test: /price|trial|\$|cost|pay/, text: 'Put the $199 week on the first screen, next to the role. A price people cannot find is a price they will not trust.' },
+    { test: /nav|menu|link/, text: 'Six names across the top and no next step. Keep the names. Make one of them the thing you want done today.' },
+    { test: /form|résumé|resume|apply|cv/, text: 'The form is asking before you have said what the work is. Move the role into the first screen. The résumé can wait.' },
+    { test: /hero|headline|title|copy/, text: 'The headline still introduces the company. The stranger came for the job. Lead with the work, in one sentence.' },
+    { test: /.*/, text: 'Your hiring page asks for a résumé before it says what the work is. Say the work first. The form can wait until they want it.' }
+  ];
+
+  const promptEl = document.getElementById('prompt');
+  promptEl.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      event.currentTarget.form.requestSubmit();
+    }
+  });
+
+  document.getElementById('ask').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = promptEl;
+    const heard = (input.value || input.placeholder).trim();
+    const hit = replies.find((item) => item.test.test(heard.toLowerCase()));
+    const box = document.querySelector('#reply .inner');
+    box.innerHTML = '<p class="heard"></p><p></p>';
+    box.querySelector('.heard').textContent = heard;
+    box.querySelector('p:last-child').textContent = hit.text;
+    document.getElementById('reply').classList.add('show');
+    input.value = '';
+  });
+</script>
+</body>
+</html>

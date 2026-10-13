@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="description" content="Beryl is a dark desk for a small coin book: prices, notes, and a week export." />
+  <title>Beryl — site replica</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+  <link rel="icon" href="assets/beryl-app-icon.svg" />
+  <style>
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url(fonts/plus-jakarta-sans-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url(fonts/geist-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+
+    :root {
+      --font: "Plus Jakarta Sans", "Avenir Next", sans-serif;
+      --surface-page: #070807;
+      --surface-card: #101410;
+      --surface-nav: rgba(12, 16, 12, 0.88);
+      --action-green: #2BD132;
+      --action-green-deep: #14941A;
+      --text-primary: #F4F6F4;
+      --text-muted: #9AA39A;
+      --ink: #071107;
+      --line: rgba(43, 209, 50, 0.35);
+      --wrap: min(1120px, calc(100% - 2rem));
+      --section-y: clamp(4.5rem, 8vw, 6.5rem);
+      --radius-card: 18px;
+      --radius-faq: 14px;
+      --dur: 200ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 1rem;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .edge {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 24% 72% at 0% 40%, rgba(43, 209, 50, 0.16), transparent 70%),
+        radial-gradient(ellipse 24% 72% at 100% 46%, rgba(43, 209, 50, 0.18), transparent 70%);
+    }
+    main, footer { position: relative; z-index: 1; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    button, a { font-family: inherit; }
+    :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    ::selection { background: var(--action-green); color: var(--ink); }
+    .study { position: sticky; top: 0; z-index: 30; padding: 8px 16px; font: 12px/1 "Geist Mono", monospace; background: #070807; }
+    .study a { color: #9AA39A; text-decoration: none; }
+    body.shot .study { display: none; }
+    .skip {
+      position: absolute; left: 12px; top: -48px; z-index: 40;
+      background: var(--action-green); color: var(--ink); padding: 10px 14px; border-radius: 8px;
+    }
+    .skip:focus { top: 12px; }
+    .nums { font-variant-numeric: tabular-nums; }
+    .wrap { width: var(--wrap); margin: 0 auto; }
+
+    .nav-wrap { position: sticky; top: 0; z-index: 20; padding: 16px 0 8px; }
+    .nav {
+      width: min(1080px, calc(100% - 1.5rem));
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 8px 8px 8px 18px;
+      background: var(--surface-nav);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      backdrop-filter: blur(14px);
+    }
+    .word {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; font-weight: 700; letter-spacing: -0.04em; font-size: 1.05rem;
+    }
+    .word i {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--action-green);
+      box-shadow: 0 0 10px var(--action-green);
+    }
+    .links { display: flex; align-items: center; gap: 4px; }
+    .links a {
+      text-decoration: none; font-size: 0.86rem; font-weight: 500; color: var(--text-muted);
+      padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center;
+    }
+    .links a:hover { color: var(--text-primary); }
+    .signup, .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px; border-radius: 999px;
+      text-decoration: none; font-weight: 600; font-size: 0.92rem; cursor: pointer;
+      border: 0;
+      transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .signup { background: #F4F6F4; color: #111; }
+    .signup:hover { background: #fff; }
+    .signup:active, .btn:active { transform: scale(0.98); }
+    .menu {
+      display: none; min-height: 44px; padding: 0 14px; border-radius: 999px;
+      background: transparent; color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,.2);
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.72rem;
+    }
+    .btn-green { background: var(--action-green); color: var(--ink); }
+    .btn-green:hover { background: var(--action-green-deep); color: var(--ink); }
+    .btn-ghost {
+      background: transparent; color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+    .btn-ghost:hover { border-color: #fff; }
+    .btn-quiet {
+      background: #2c332c; color: #e7eee7;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .btn-quiet:hover { background: #384038; }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 28px 1rem 0;
+      overflow: hidden;
+    }
+    .beams {
+      position: absolute; left: 18%; right: 18%; top: 0; height: 58%;
+      pointer-events: none;
+      background:
+        linear-gradient(112deg, transparent 46%, rgba(43,209,50,.28) 50%, transparent 54%),
+        linear-gradient(68deg, transparent 46%, rgba(43,209,50,.28) 50%, transparent 54%);
+      filter: blur(8px);
+      -webkit-mask-image: linear-gradient(#000 20%, transparent 92%);
+      mask-image: linear-gradient(#000 20%, transparent 92%);
+    }
+    .stars {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 22%, #fff, transparent),
+        radial-gradient(1.2px 1.2px at 22% 48%, #d8ffd8, transparent),
+        radial-gradient(1.4px 1.4px at 78% 16%, #fff, transparent),
+        radial-gradient(1px 1px at 88% 38%, #fff, transparent),
+        radial-gradient(1.3px 1.3px at 70% 44%, #fff, transparent),
+        radial-gradient(1.1px 1.1px at 30% 18%, #fff, transparent),
+        radial-gradient(1.2px 1.2px at 64% 28%, #e8ffe8, transparent);
+      opacity: .85;
+    }
+    .hero-copy { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--line); color: var(--action-green);
+      border-radius: 999px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600;
+      background: rgba(43,209,50,.08);
+    }
+    .badge b { font-weight: 700; }
+    h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(2.4rem, 5vw, 4.1rem);
+      font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+      text-wrap: balance;
+    }
+    .sub { color: var(--text-muted); max-width: 46ch; margin: 0 auto 22px; }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .orb {
+      position: relative; z-index: 1;
+      width: min(720px, 94vw);
+      height: 390px;
+      margin: 22px auto 0;
+      overflow: hidden;
+      -webkit-mask-image: radial-gradient(ellipse 72% 95% at 50% 78%, #000 52%, transparent 76%);
+      mask-image: radial-gradient(ellipse 72% 95% at 50% 78%, #000 52%, transparent 76%);
+    }
+    .orb img { width: 100%; height: auto; margin-top: -12px; }
+
+    .section { padding: var(--section-y) 0; }
+    .section h2 {
+      text-align: center;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      letter-spacing: -0.035em; line-height: 1.15;
+      margin-bottom: 28px; text-wrap: balance;
+    }
+    .bento { display: grid; gap: 14px; }
+    .insight-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 22px; align-items: center; }
+    .bento-bot { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      padding: 22px;
+    }
+    .card h3 { font-size: 1.35rem; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .card p { color: var(--text-muted); }
+    .checks {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px;
+      margin: 18px 0; padding: 0; list-style: none;
+    }
+    .checks li, .plan ul li {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-muted); font-size: 0.92rem;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--action-green); flex: 0 0 8px;
+      box-shadow: 0 0 8px rgba(43,209,50,.7);
+    }
+    .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .k { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .figure { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+    .delta { color: var(--action-green); font-weight: 600; font-size: 0.85rem; }
+    .chart { margin-top: 12px; height: 150px; }
+    .chart svg { width: 100%; height: 100%; }
+    .chat { display: flex; flex-direction: column; gap: 10px; min-height: 168px; margin-bottom: 16px; }
+    .composer {
+      margin-top: 4px; display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--line); border-radius: 999px; padding: 4px 4px 4px 12px;
+      color: var(--text-muted); font-size: 0.75rem;
+    }
+    .composer b {
+      background: var(--action-green); color: var(--ink); border-radius: 999px;
+      padding: 6px 10px; font-size: 0.7rem; font-weight: 700;
+    }
+    .bubble {
+      max-width: 80%; padding: 8px 12px; border-radius: 12px; font-size: 0.82rem; line-height: 1.4;
+    }
+    .from { display: flex; flex-direction: column; max-width: 78%; }
+    .from.me { align-self: flex-start; align-items: flex-start; }
+    .from.them { align-self: flex-end; align-items: flex-end; }
+    .bubble.me { background: rgba(43,209,50,.18); color: var(--text-primary); }
+    .bubble.them { background: #243028; color: #d7e0d7; }
+    .who { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .globe { height: 150px; display: grid; place-items: center; margin-bottom: 8px; }
+    .globe svg { width: 180px; height: 140px; }
+
+    .radar-wrap { position: relative; text-align: center; padding-top: 20px; }
+    .radar {
+      width: min(640px, 100%); height: 300px; margin: 0 auto;
+      position: relative; overflow: hidden;
+    }
+    .ring {
+      position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%);
+      border: 1px solid rgba(43,209,50,.28); border-radius: 50%;
+    }
+    .ring.r1 { width: 86px; height: 86px; }
+    .ring.r2 { width: 170px; height: 170px; }
+    .ring.r3 { width: 270px; height: 270px; }
+    .ring.r4 { width: 380px; height: 380px; }
+    .ring.r5 { width: 520px; height: 520px; opacity: .55; }
+    .horizon {
+      position: absolute; left: -8%; right: -8%; top: 62%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(43,209,50,.85), transparent);
+    }
+    .node {
+      position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%);
+      width: 54px; height: 54px; border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 24px rgba(43,209,50,.55);
+      border: 1px solid rgba(255,255,255,.45);
+    }
+    .node img { width: 100%; height: 100%; object-fit: cover; }
+    .pill-mini {
+      display: inline-flex; margin-top: -8px;
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 4px 10px; font-size: 0.72rem; color: var(--action-green); background: #0c120c;
+    }
+    .research h2 { margin-top: 18px; }
+    .lead { text-align: center; color: var(--text-muted); max-width: 52ch; margin: -12px auto 28px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 760px; margin: 0 auto; text-align: center; }
+    .split h3 { font-size: 1rem; margin: 8px 0; }
+    .split p { color: var(--text-muted); font-size: 0.92rem; }
+    .ico { width: 28px; height: 28px; margin: 0 auto; color: var(--action-green); }
+
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: stretch; }
+    .plan { display: flex; flex-direction: column; gap: 12px; }
+    .plan h3 { font-size: 1.15rem; }
+    .price { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.03em; }
+    .price span { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+    .plan ul { list-style: none; margin: 0; padding: 8px 0 12px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid rgba(255,255,255,.08); }
+    .plan .btn { margin-top: auto; width: 100%; }
+    .plan.pro {
+      border-color: var(--action-green);
+      background: linear-gradient(180deg, rgba(43,209,50,.18), #101410 42%);
+      box-shadow: 0 0 40px rgba(43,209,50,.18);
+    }
+
+    .faq { display: flex; flex-direction: column; gap: 10px; max-width: 760px; margin: 0 auto; }
+    .faq-item {
+      border: 1px solid var(--line); border-radius: var(--radius-faq);
+      background: #0c110c; overflow: hidden;
+    }
+    .faq-item button {
+      width: 100%; min-height: 56px; display: flex; align-items: center; gap: 12px;
+      background: transparent; color: var(--text-primary); border: 0; cursor: pointer;
+      text-align: left; padding: 8px 16px; font-size: 0.98rem; font-weight: 500;
+    }
+    .num {
+      width: 32px; height: 28px; display: grid; place-items: center;
+      border: 1px solid var(--line); border-radius: 8px;
+      color: var(--action-green); font-size: 0.75rem; font-weight: 700;
+    }
+    .mark { margin-left: auto; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .faq-item .answer { display: none; padding: 0 16px 16px 60px; color: var(--text-muted); }
+    .faq-item.open .answer { display: block; }
+
+    .foot-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 32px 28px 18px;
+      background:
+        radial-gradient(ellipse 80% 80% at 50% 120%, rgba(43,209,50,.2), transparent 50%),
+        var(--surface-card);
+      box-shadow: 0 0 48px rgba(43,209,50,.12);
+    }
+    .foot-grid { display: grid; grid-template-columns: 1.3fr repeat(4, 1fr); gap: 18px; }
+    .foot-grid h3 { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .foot-grid a { display: block; color: var(--text-muted); text-decoration: none; padding: 4px 0; font-size: 0.9rem; }
+    .foot-grid a.word {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0; color: var(--text-primary); font-size: 1.05rem; font-weight: 700;
+    }
+    .foot-grid a:hover { color: var(--text-primary); }
+    .blurb { color: var(--text-muted); font-size: 0.9rem; max-width: 32ch; margin-top: 10px; }
+    .socials { display: flex; justify-content: center; gap: 18px; margin-top: 22px; padding-top: 12px; }
+    .socials a {
+      width: 44px; height: 44px; display: grid; place-items: center; color: var(--text-muted);
+    }
+    .socials a:hover { color: var(--text-primary); }
+    .sample { text-align: center; color: var(--text-muted); font-size: 0.78rem; margin-top: 14px; }
+
+    dialog {
+      border: 1px solid var(--line); border-radius: 18px; background: #101410; color: var(--text-primary);
+      padding: 22px; max-width: min(440px, calc(100% - 2rem));
+    }
+    dialog::backdrop { background: rgba(0,0,0,.62); }
+    dialog h2 { font-size: 1.35rem; margin-bottom: 8px; }
+    dialog p { color: var(--text-muted); margin-bottom: 16px; }
+    dialog .row { display: flex; justify-content: flex-end; gap: 8px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .orb img { animation: float 7s ease-in-out infinite; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    @media (max-width: 1023px) {
+      .insight-grid, .plans, .foot-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .plans, .split, .insight-grid, .bento-bot, .foot-grid { grid-template-columns: 1fr; }
+      .orb { height: 280px; }
+    }
+    @media (max-width: 760px) {
+      .menu { display: inline-flex; align-items: center; }
+      .links {
+        display: none; position: absolute; top: calc(100% + 8px); left: 12px; right: 12px;
+        flex-direction: column; align-items: stretch;
+        background: #101410; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 8px;
+      }
+      .links.is-open { display: flex; }
+      .nav-wrap { position: relative; }
+      .nav { position: relative; }
+    }
+  </style>
+</head>
+<body>
+  <p class="study"><a href="../index.html">← Beryl study</a></p>
+  <div class="edge" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav-wrap">
+    <div class="nav">
+      <a class="word" href="#top"><i aria-hidden="true"></i> Beryl</a>
+      <nav class="links" id="nav" aria-label="Primary">
+        <a href="#top">Home</a>
+        <a href="#market">Market</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#support">Support</a>
+      </nav>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+        <a class="signup" href="mailto:hello@beryl.example?subject=Sign%20up">Sign up free</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="beams" aria-hidden="true"></div>
+      <div class="stars" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="badge"><b>First week</b> · 2% back on the desk</p>
+        <h1 id="hero-title">Hold the book<br>with a clearer desk</h1>
+        <p class="sub">Prices, notes, and transfers on one dark board. The week is written down before the market moves on.</p>
+        <div class="hero-actions">
+          <a class="btn btn-green" href="mailto:hello@beryl.example?subject=Get%20started">Get started</a>
+          <button class="btn btn-ghost" type="button" id="watch">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor"/><path d="M6.5 5.2v5.6L11 8Z" fill="currentColor"/></svg>
+            Watch the desk
+          </button>
+        </div>
+      </div>
+      <div class="orb">
+        <img src="assets/orb.jpg" alt="A green glass sphere, the Beryl mark." />
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="feat-title">
+      <div class="wrap">
+        <h2 id="feat-title">A clearer board for<br>the coins you keep</h2>
+        <div class="bento">
+          <article class="card" id="market">
+            <div class="insight-grid">
+              <div>
+                <h3>Live market notes</h3>
+                <p>The book updates while the room is open. Prices, a short note, and the move since yesterday.</p>
+                <ul class="checks">
+                  <li><i class="dot" aria-hidden="true"></i> Tracking</li>
+                  <li><i class="dot" aria-hidden="true"></i> Market notes</li>
+                  <li><i class="dot" aria-hidden="true"></i> Research line</li>
+                  <li><i class="dot" aria-hidden="true"></i> Export</li>
+                </ul>
+                <a class="btn btn-green" href="mailto:hello@beryl.example?subject=Get%20started">Get started</a>
+              </div>
+              <div>
+                <p class="k">Book</p>
+                <p class="figure nums">48.2K <span class="delta">+6.4%</span></p>
+                <div class="chart" aria-hidden="true">
+                  <svg viewBox="0 0 320 150" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#2BD132" stop-opacity="0.45"/>
+                        <stop offset="1" stop-color="#2BD132" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <g stroke="rgba(255,255,255,.08)" stroke-width="1">
+                      <line x1="0" y1="36" x2="320" y2="36"/>
+                      <line x1="0" y1="78" x2="320" y2="78"/>
+                      <line x1="0" y1="118" x2="320" y2="118"/>
+                    </g>
+                    <path d="M8 108 L40 70 L80 36 L120 88 L160 64 L200 96 L240 58 L280 84 L310 72 L310 150 L8 150 Z" fill="url(#area)"/>
+                    <path d="M8 108 L40 70 L80 36 L120 88 L160 64 L200 96 L240 58 L280 84 L310 72" fill="none" stroke="#2BD132" stroke-width="2.2"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+          <div class="bento-bot">
+            <article class="card">
+              <div class="chat" aria-hidden="true">
+                <div class="from me">
+                  <div class="bubble me">The Thursday note is on the desk.</div>
+                  <div class="who">Nell</div>
+                </div>
+                <div class="from them">
+                  <div class="bubble them">Move the one line. Leave the rest.</div>
+                  <div class="who">Ivo</div>
+                </div>
+                <div class="composer"><span>A short note</span><b>Send</b></div>
+              </div>
+              <h3>Quiet and private</h3>
+              <p>Keys stay on the desk. A transfer leaves only when you send it.</p>
+            </article>
+            <article class="card">
+              <div class="globe" aria-hidden="true">
+                <svg viewBox="0 0 180 140">
+                  <g fill="none" stroke="#2BD132" stroke-width="1.2">
+                    <circle cx="90" cy="70" r="46"/>
+                    <ellipse cx="90" cy="70" rx="46" ry="16"/>
+                    <ellipse cx="90" cy="70" rx="18" ry="46"/>
+                    <ellipse cx="90" cy="70" rx="46" ry="28" transform="rotate(-32 90 70)"/>
+                    <ellipse cx="90" cy="70" rx="52" ry="18" transform="rotate(18 90 70)" opacity="0.55"/>
+                  </g>
+                </svg>
+              </div>
+              <h3>Export and a small API</h3>
+              <p>The week letter leaves as a file. The same numbers are there for a script.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section research" aria-labelledby="research-title">
+      <div class="wrap radar-wrap">
+        <div class="radar" aria-hidden="true">
+          <i class="ring r5"></i><i class="ring r4"></i><i class="ring r3"></i><i class="ring r2"></i><i class="ring r1"></i>
+          <i class="horizon"></i>
+          <div class="node"><img src="assets/orb.jpg" alt="" /></div>
+        </div>
+        <p class="pill-mini">Notes and reading</p>
+        <h2 id="research-title">Research on one page</h2>
+        <p class="lead">Papers, desk notes, and the price line, gathered before the close.</p>
+        <div class="split">
+          <article>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.6"/></svg>
+            <h3>Read anywhere</h3>
+            <p>The same note on a phone or a large screen. It stays in step.</p>
+          </article>
+          <article>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+            <h3>Held, then sent</h3>
+            <p>The export waits until you ask. The API uses the same book.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing" aria-labelledby="price-title">
+      <div class="wrap">
+        <h2 id="price-title">Pricing</h2>
+        <div class="plans">
+          <article class="card plan">
+            <h3>Desk</h3>
+            <p class="price nums">$29<span>/mo</span></p>
+            <ul>
+              <li><i class="dot" aria-hidden="true"></i> Live prices</li>
+              <li><i class="dot" aria-hidden="true"></i> Two alerts</li>
+              <li><i class="dot" aria-hidden="true"></i> Week letter</li>
+              <li><i class="dot" aria-hidden="true"></i> One export</li>
+            </ul>
+            <a class="btn btn-quiet" href="mailto:hello@beryl.example?subject=Desk%20plan">Get started</a>
+          </article>
+          <article class="card plan pro">
+            <h3>Pro</h3>
+            <p class="price nums">$79<span>/mo</span></p>
+            <ul>
+              <li><i class="dot" aria-hidden="true"></i> Live prices</li>
+              <li><i class="dot" aria-hidden="true"></i> Alerts</li>
+              <li><i class="dot" aria-hidden="true"></i> Week letter</li>
+              <li><i class="dot" aria-hidden="true"></i> Desk export</li>
+              <li><i class="dot" aria-hidden="true"></i> API</li>
+              <li><i class="dot" aria-hidden="true"></i> Two seats</li>
+            </ul>
+            <a class="btn btn-green" href="mailto:hello@beryl.example?subject=Pro%20plan">Get started</a>
+          </article>
+          <article class="card plan">
+            <h3>Room</h3>
+            <p class="price nums">$149<span>/mo</span></p>
+            <ul>
+              <li><i class="dot" aria-hidden="true"></i> Everything in Pro</li>
+              <li><i class="dot" aria-hidden="true"></i> Five seats</li>
+              <li><i class="dot" aria-hidden="true"></i> Priority note</li>
+              <li><i class="dot" aria-hidden="true"></i> Custom export</li>
+            </ul>
+            <a class="btn btn-quiet" href="mailto:hello@beryl.example?subject=Room%20plan">Get started</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="support" aria-labelledby="faq-title">
+      <div class="wrap">
+        <h2 id="faq-title">Frequently asked questions<br>(FAQ)</h2>
+        <div class="faq">
+          <article class="faq-item open">
+            <button type="button" aria-expanded="true">
+              <span class="num">01</span> What does Beryl watch?
+              <span class="mark" aria-hidden="true">−</span>
+            </button>
+            <p class="answer">The coins on your book, the move since yesterday, and the note you write before the close.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">
+              <span class="num">02</span> How do I open a desk?
+              <span class="mark" aria-hidden="true">+</span>
+            </button>
+            <p class="answer">Write to hello@beryl.example. The note opens in your mail. Nothing is stored on this page.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">
+              <span class="num">03</span> Are transfers private?
+              <span class="mark" aria-hidden="true">+</span>
+            </button>
+            <p class="answer">A transfer leaves the desk only when you send it. The week letter is a file, not a broadcast.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">
+              <span class="num">04</span> Can the desk pay me?
+              <span class="mark" aria-hidden="true">+</span>
+            </button>
+            <p class="answer">No. Beryl counts and writes. It does not move money and it does not promise a return.</p>
+          </article>
+          <article class="faq-item">
+            <button type="button" aria-expanded="false">
+              <span class="num">05</span> Where does the export go?
+              <span class="mark" aria-hidden="true">+</span>
+            </button>
+            <p class="answer">To the address you name in the mail, as a file. The API on Pro reads the same book.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="foot-card">
+        <div class="foot-grid">
+          <div>
+            <a class="word" href="#top"><i aria-hidden="true"></i> Beryl</a>
+            <p class="blurb">A dark desk for a small coin book. Prices, a note, and the week in one file.</p>
+            <p class="blurb">Write when the book should open. The note stays in your mail.</p>
+          </div>
+          <div>
+            <h3>Product</h3>
+            <a href="#features">Features</a>
+            <a href="#market">Market</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#support">Questions</a>
+          </div>
+          <div>
+            <h3>Company</h3>
+            <a href="mailto:hello@beryl.example">About</a>
+            <a href="mailto:hello@beryl.example?subject=Note">Notes</a>
+            <a href="mailto:hello@beryl.example?subject=Desk">Careers</a>
+          </div>
+          <div>
+            <h3>Resources</h3>
+            <a href="#features">Examples</a>
+            <a href="#support">Guides</a>
+            <a href="#pricing">Plans</a>
+          </div>
+          <div>
+            <h3>Legal</h3>
+            <a href="#support">Privacy</a>
+            <a href="#support">Terms</a>
+            <a href="#support">Security</a>
+          </div>
+        </div>
+        <div class="socials">
+          <a href="#top" aria-label="Sample mark">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+          <a href="#top" aria-label="Sample camera">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="4" width="12" height="9" rx="2" fill="none" stroke="currentColor"/><circle cx="8" cy="8.5" r="2" fill="none" stroke="currentColor"/></svg>
+          </a>
+          <a href="#top" aria-label="Sample play">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="2" fill="none" stroke="currentColor"/><path d="M7 6.2v3.6L10.2 8Z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+      <p class="sample">Sample template · <a href="mailto:hello@beryl.example">hello@beryl.example</a></p>
+    </div>
+  </footer>
+
+  <dialog id="note" aria-labelledby="note-title">
+    <h2 id="note-title">The desk in a minute</h2>
+    <p>Beryl opens on the book, writes the move since yesterday, and keeps the export until you ask. This page does not play a film.</p>
+    <div class="row">
+      <button class="btn btn-green" type="button" id="close-note">Close</button>
+    </div>
+  </dialog>
+
+  <script src="board.js"></script>
+</body>
+</html>

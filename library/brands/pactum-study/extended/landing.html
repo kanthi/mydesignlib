@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../replica/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pactum — Close more clients with AI proposals</title>
+
+  <!-- Required Noindex & Analytics -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-border: #e2e8f0;
+      --surface-border-subtle: #eaecf0;
+      
+      --ink-900: #0f172a;
+      --ink-700: #334155;
+      --ink-500: #64748b;
+      --ink-400: #94a3b8;
+      --ink-300: #cbd5e1;
+
+      --blue-600: #2563eb;
+      --blue-700: #1d4ed8;
+      --blue-800: #1e40af;
+      --blue-50: #eff6ff;
+      --blue-100: #dbeafe;
+
+      --emerald-600: #10b981;
+      --emerald-50: #ecfdf5;
+      --amber-600: #f59e0b;
+      --amber-50: #fffbeb;
+      --rose-600: #f43f5e;
+      --rose-50: #fff1f2;
+      --sky-600: #0284c7;
+      --sky-50: #f0f9ff;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+      --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-float: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(226, 232, 240, 0.8);
+      --shadow-btn: 0 4px 14px rgba(37, 99, 235, 0.3);
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--ink-700);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Subtle grid backdrop pattern matching Figma artboard */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2400px;
+      background-image: 
+        radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.04) 1px, transparent 0);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s ease;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Pill Badges */
+    .pill-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--blue-100);
+      margin-bottom: 16px;
+    }
+
+    .pill-kicker .dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--blue-600);
+      border-radius: 50%;
+    }
+
+    /* Header Nav */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ink-900);
+      letter-spacing: -0.03em;
+    }
+
+    .brand-icon-box {
+      width: 32px;
+      height: 32px;
+      background: var(--blue-600);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-500);
+    }
+
+    .nav-link:hover {
+      color: var(--ink-900);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-ghost {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-700);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-subtle);
+      color: var(--ink-900);
+    }
+
+    .btn-primary {
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--blue-600);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-btn);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-700);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-secondary {
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--surface);
+      color: var(--ink-700);
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--surface-border);
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-subtle);
+      border-color: var(--ink-300);
+      color: var(--ink-900);
+    }
+
+    /* Mobile Hamburger */
+    .mobile-menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-700);
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      padding: 64px 0 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.18fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 540px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.12;
+      color: var(--ink-900);
+      letter-spacing: -0.035em;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink-500);
+      margin-bottom: 32px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .hero-proof {
+      border-top: 1px solid var(--surface-border);
+      padding-top: 32px;
+    }
+
+    .hero-proof-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-400);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .hero-proof-title strong {
+      font-size: 18px;
+      color: var(--ink-900);
+      font-weight: 800;
+    }
+
+    .proof-logos-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .proof-logo-box {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      transition: all 0.2s ease;
+    }
+
+    .proof-logo-box:hover {
+      border-color: var(--blue-600);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .proof-logo-box svg {
+      max-height: 22px;
+      width: auto;
+      max-width: 100%;
+      fill: var(--ink-500);
+      opacity: 0.85;
+      transition: fill 0.2s ease, opacity 0.2s ease;
+    }
+
+    .proof-logo-box:hover svg {
+      fill: var(--ink-900);
+      opacity: 1;
+    }
+
+    /* HERO DASHBOARD INTERACTIVE PREVIEW */
+    .hero-dashboard-wrap {
+      position: relative;
+    }
+
+    .hero-dashboard-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--surface-border);
+      box-shadow: var(--shadow-float);
+      overflow: hidden;
+      display: flex;
+      min-height: 520px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+
+    .hero-dashboard-card:hover {
+      box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.15), 0 0 1px 1px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Dashboard Sidebar */
+    .dash-sidebar {
+      width: 200px;
+      background: #fafbfe;
+      border-right: 1px solid var(--surface-border);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .dash-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink-900);
+      margin-bottom: 20px;
+      padding-left: 6px;
+    }
+
+    .dash-search {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .dash-search input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px 6px 28px;
+      font-size: 11px;
+      font-family: inherit;
+      color: var(--ink-700);
+      outline: none;
+    }
+
+    .dash-search input:focus {
+      border-color: var(--blue-600);
+    }
+
+    .dash-search svg {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 13px;
+      height: 13px;
+      color: var(--ink-400);
+    }
+
+    .dash-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 16px;
+    }
+
+    .dash-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-500);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .dash-nav-item:hover {
+      background: var(--surface-subtle);
+      color: var(--ink-900);
+    }
+
+    .dash-nav-item.active {
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-weight: 600;
+    }
+
+    .dash-nav-item svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .dash-pro-upgrade {
+      margin-top: auto;
+      background: #ffffff;
+      border: 1px solid var(--blue-100);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.05);
+    }
+
+    .dash-pro-upgrade .title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .dash-pro-upgrade .desc {
+      font-size: 10px;
+      color: var(--ink-500);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .dash-progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--surface-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .dash-progress-fill {
+      width: 80%;
+      height: 100%;
+      background: var(--blue-600);
+      border-radius: 999px;
+    }
+
+    .dash-pro-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+    }
+
+    .dash-pro-actions .dismiss {
+      color: var(--ink-400);
+      cursor: pointer;
+    }
+
+    .dash-pro-actions .upgrade {
+      color: var(--blue-600);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dash-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--surface-border);
+    }
+
+    .dash-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .dash-profile-info {
+      overflow: hidden;
+      line-height: 1.2;
+    }
+
+    .dash-profile-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-900);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .dash-profile-email {
+      font-size: 9px;
+      color: var(--ink-400);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* Dashboard Main Stage */
+    .dash-main {
+      flex: 1;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .dash-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dash-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-900);
+    }
+
+    .dash-header-sub {
+      font-size: 12px;
+      color: var(--ink-400);
+    }
+
+    /* 3 Top Stat Cards */
+    .dash-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .dash-stat-card {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .dash-stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-500);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .dash-stat-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+      border: 1px solid #bbf7d0;
+    }
+
+    .dash-stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ink-900);
+      letter-spacing: -0.02em;
+    }
+
+    /* Chart & Conversion Ring Row */
+    .dash-analytics-row {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 12px;
+    }
+
+    .dash-panel {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .dash-panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dash-chart-legend {
+      display: flex;
+      gap: 8px;
+      font-size: 9px;
+      color: var(--ink-400);
+    }
+
+    .dash-chart-legend span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .dash-chart-legend span::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+    }
+
+    .dash-chart-legend .leg-blue::before { background: var(--blue-600); }
+    .dash-chart-legend .leg-light::before { background: #93c5fd; }
+    .dash-chart-legend .leg-fade::before { background: #cbd5e1; }
+
+    /* Pure CSS / SVG Bar Chart */
+    .bar-chart-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 90px;
+      padding-top: 10px;
+      border-bottom: 1px dashed var(--surface-border);
+      gap: 6px;
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .bar-stacks {
+      width: 100%;
+      max-width: 18px;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 2px;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .bar-stacks:hover {
+      transform: scaleY(1.05);
+    }
+
+    .bar-seg {
+      width: 100%;
+      border-radius: 2px;
+    }
+
+    .bar-label {
+      font-size: 8px;
+      color: var(--ink-400);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Donut Ring */
+    .donut-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      position: relative;
+    }
+
+    .donut-svg {
+      width: 80px;
+      height: 80px;
+      transform: rotate(-90deg);
+    }
+
+    .donut-bg {
+      fill: none;
+      stroke: #e2e8f0;
+      stroke-width: 8;
+    }
+
+    .donut-progress {
+      fill: none;
+      stroke: var(--blue-600);
+      stroke-width: 8;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 110; /* 50% */
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .donut-center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink-900);
+    }
+
+    /* Proposals Table */
+    .dash-table-wrap {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: left;
+    }
+
+    .dash-table th {
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ink-400);
+      border-bottom: 1px solid var(--surface-border);
+      background: #f8fafc;
+    }
+
+    .dash-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      vertical-align: middle;
+    }
+
+    .dash-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dash-table tr:hover td {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .table-prop-title {
+      font-weight: 600;
+      color: var(--ink-900);
+      line-height: 1.2;
+    }
+
+    .table-prop-sub {
+      font-size: 9px;
+      color: var(--ink-400);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .status-badge.sent { background: var(--sky-50); color: var(--sky-600); border: 1px solid #bae6fd; }
+    .status-badge.draft { background: var(--surface-subtle); color: var(--ink-500); border: 1px solid var(--surface-border); }
+    .status-badge.approved { background: var(--emerald-50); color: var(--emerald-600); border: 1px solid #a7f3d0; }
+    .status-badge.rejected { background: var(--rose-50); color: var(--rose-600); border: 1px solid #fecdd3; }
+
+    .client-cell {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .client-mini-avatar {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 8px;
+      font-weight: 700;
+      color: #fff;
+      display: grid;
+      place-items: center;
+    }
+
+    /* SECTION 2: HOW IT WORKS */
+    .section-spacing {
+      padding: 96px 0;
+      position: relative;
+    }
+
+    .section-header-center {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 56px;
+    }
+
+    .section-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ink-900);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--ink-500);
+      line-height: 1.6;
+    }
+
+    .bento-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-card:hover {
+      border-color: var(--blue-600);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-float);
+    }
+
+    .bento-visual-area {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      margin-bottom: 24px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .bento-card-desc {
+      font-size: 14px;
+      color: var(--ink-500);
+      line-height: 1.6;
+    }
+
+    /* Bento 1: Add Project Info Visual */
+    .step-inputs-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .step-input-row {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-icon-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .step-input-text {
+      line-height: 1.2;
+    }
+
+    .step-input-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-900);
+    }
+
+    .step-input-placeholder {
+      font-size: 9px;
+      color: var(--ink-400);
+    }
+
+    .step-connector-line {
+      width: 2px;
+      height: 14px;
+      background: repeating-linear-gradient(to bottom, #2563eb, #2563eb 2px, transparent 2px, transparent 4px);
+      margin: -4px auto -4px 28px;
+      z-index: 1;
+    }
+
+    /* Bento 2: AI Prompt Simulator Visual */
+    .prompt-box-mock {
+      background: #ffffff;
+      border: 1px solid var(--blue-100);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.06);
+      margin-bottom: 12px;
+    }
+
+    .prompt-box-header {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 6px;
+    }
+
+    .prompt-box-input {
+      font-size: 11px;
+      color: var(--ink-500);
+      line-height: 1.4;
+      margin-bottom: 12px;
+      min-height: 40px;
+    }
+
+    .prompt-box-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--surface-subtle);
+      padding-top: 8px;
+    }
+
+    .prompt-control-pill {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ink-500);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-create-prompt {
+      background: var(--blue-600);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 4px;
+    }
+
+    .prompt-tags-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .prompt-tag {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--ink-500);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .prompt-tag:hover, .prompt-tag.active {
+      background: var(--blue-50);
+      border-color: var(--blue-600);
+      color: var(--blue-600);
+    }
+
+    /* Bento 3: Orbiting Constellation Hub Visual */
+    .constellation-wrapper {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border: 1px dashed rgba(37, 99, 235, 0.25);
+      border-radius: 50%;
+    }
+
+    .hub-center {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--blue-600);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+      z-index: 2;
+    }
+
+    .orbit-node {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      box-shadow: var(--shadow-card);
+      display: grid;
+      place-items: center;
+      color: var(--blue-600);
+      z-index: 3;
+      transition: transform 0.2s ease;
+    }
+
+    .orbit-node:hover {
+      transform: scale(1.15);
+      border-color: var(--blue-600);
+    }
+
+    .node-1 { top: 12px; left: 30px; }
+    .node-2 { top: 18px; right: 28px; }
+    .node-3 { bottom: 20px; left: 45px; }
+    .node-4 { bottom: 18px; right: 40px; }
+
+    /* SECTION 3: FEATURES (AUTOMATION) */
+    .features-section {
+      background: #ffffff;
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--blue-600);
+      background: #ffffff;
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      border: 1px solid var(--blue-100);
+    }
+
+    .feature-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--ink-500);
+      line-height: 1.6;
+    }
+
+    /* SECTION 4: INTEGRATIONS */
+    .integrations-section {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .integrations-arc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 48px auto 0;
+    }
+
+    .integration-pill-box {
+      width: 68px;
+      height: 68px;
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .integration-pill-box:hover {
+      transform: translateY(-6px) scale(1.05);
+      border-color: var(--blue-600);
+      box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.15);
+    }
+
+    .integration-pill-box svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* SECTION 5: PRICING */
+    .pricing-section {
+      padding: 96px 0;
+      background: #fafbfe;
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .pricing-toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .pricing-toggle-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-500);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+    }
+
+    .pricing-toggle-btn.active {
+      background: var(--blue-600);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+
+    .save-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .pricing-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-float);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--blue-600);
+      box-shadow: 0 12px 32px -4px rgba(37, 99, 235, 0.15);
+      position: relative;
+    }
+
+    .pricing-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 6px;
+    }
+
+    .pricing-subtitle {
+      font-size: 13px;
+      color: var(--ink-400);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .pricing-rate-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-currency {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ink-900);
+    }
+
+    .pricing-amount {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--ink-900);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .pricing-period {
+      font-size: 13px;
+      color: var(--ink-400);
+    }
+
+    .pricing-action-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      cursor: pointer;
+    }
+
+    .pricing-action-btn.btn-light {
+      background: var(--surface-subtle);
+      color: var(--ink-900);
+      border: 1px solid var(--surface-border);
+    }
+
+    .pricing-action-btn.btn-light:hover {
+      background: #e2e8f0;
+    }
+
+    .pricing-action-btn.btn-solid-blue {
+      background: var(--blue-600);
+      color: #ffffff;
+      box-shadow: var(--shadow-btn);
+    }
+
+    .pricing-action-btn.btn-solid-blue:hover {
+      background: var(--blue-700);
+    }
+
+    .pricing-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    .pricing-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--ink-700);
+    }
+
+    .feature-check-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .pricing-card.featured .feature-check-icon {
+      background: var(--blue-600);
+      color: #ffffff;
+    }
+
+    /* SECTION 6: FAQ ACCORDION */
+    .faq-section {
+      padding: 96px 0;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+    }
+
+    .faq-title-col {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .accordion-item {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .accordion-item:hover {
+      border-color: var(--ink-300);
+    }
+
+    .accordion-item.open {
+      border-color: var(--blue-600);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.06);
+    }
+
+    .accordion-header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-900);
+      user-select: none;
+    }
+
+    .accordion-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--ink-400);
+      transition: transform 0.3s ease, color 0.2s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(180deg);
+      color: var(--blue-600);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      padding: 0 24px;
+    }
+
+    .accordion-item.open .accordion-content {
+      max-height: 200px;
+      padding: 0 24px 20px 24px;
+    }
+
+    .accordion-content p {
+      font-size: 14px;
+      color: var(--ink-500);
+      line-height: 1.6;
+    }
+
+    /* SECTION 7: BOTTOM CTA BANNER */
+    .cta-banner-section {
+      padding: 40px 0 100px;
+    }
+
+    .cta-banner-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+      border-radius: var(--radius-xl);
+      padding: 72px 48px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -10px rgba(30, 58, 138, 0.3);
+    }
+
+    .cta-banner-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .cta-banner-title {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .cta-banner-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 32px;
+    }
+
+    .btn-banner-trial {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-banner-trial:hover {
+      background: #000000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid var(--surface-border);
+      padding: 80px 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-watermark {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 180px;
+      font-weight: 900;
+      color: rgba(15, 23, 42, 0.025);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 64px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-brand-col {
+      padding-right: 24px;
+    }
+
+    .footer-brand-desc {
+      font-size: 13px;
+      color: var(--ink-500);
+      line-height: 1.6;
+      margin: 16px 0 24px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
+      display: grid;
+      place-items: center;
+      color: var(--ink-500);
+      transition: all 0.2s ease;
+    }
+
+    .social-btn:hover {
+      border-color: var(--blue-600);
+      color: var(--blue-600);
+      transform: translateY(-2px);
+    }
+
+    .footer-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-900);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav-link {
+      font-size: 13px;
+      color: var(--ink-500);
+    }
+
+    .footer-nav-link:hover {
+      color: var(--blue-600);
+    }
+
+    .footer-bottom-row {
+      border-top: 1px solid var(--surface-border);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--ink-400);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast-msg {
+      background: var(--ink-900);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+
+    .toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* RESPONSIVE BREAKPOINTS */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .bento-grid-3, .features-grid, .pricing-grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .faq-title-col {
+        position: static;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .proof-logos-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .header-actions {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .hero-title {
+        font-size: 38px;
+      }
+      .hero-dashboard-card {
+        flex-direction: column;
+      }
+      .dash-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .dash-stats-row {
+        grid-template-columns: 1fr;
+      }
+      .dash-analytics-row {
+        grid-template-columns: 1fr;
+      }
+      .proof-logos-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#hero" class="brand-logo">
+          <div class="brand-icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <span>Pactum</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#how-it-works" class="nav-link">How it works</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#integrations" class="nav-link">Integrations</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+
+        <div class="header-actions">
+          <button class="btn-ghost" onclick="triggerToast('Redirecting to Sign In...')">Sign in</button>
+          <button class="btn-primary" onclick="triggerToast('Starting 14-day free trial...')">Sign up</button>
+        </div>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Toggle Navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Left Hero Copy -->
+        <div class="hero-content">
+          <h1 class="hero-title">Close more clients with AI proposals</h1>
+          <p class="hero-subtitle">Built for agencies and freelancers to create branded, high-converting proposals in seconds.</p>
+          
+          <div class="hero-cta-group">
+            <button class="btn-primary" onclick="triggerToast('Generating your customized proposal...')">
+              Start free trial
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+            <button class="btn-secondary" onclick="viewSampleProposal()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              See live proposal
+            </button>
+          </div>
+
+          <!-- Social Proof Grid -->
+          <div class="hero-proof">
+            <div class="hero-proof-title">
+              <strong>2,000</strong> TRUSTED BY LEADING AGENCIES WORLDWIDE
+            </div>
+            <div class="proof-logos-grid">
+              <!-- Prismic -->
+              <div class="proof-logo-box" title="Prismic">
+                <svg viewBox="0 0 100 24">
+                  <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm-1 12H9v-2h2v2zm0-4H9V8h2v4z"/>
+                  <text x="24" y="16" font-size="12" font-weight="700" font-family="inherit">prismic</text>
+                </svg>
+              </div>
+              <!-- mParticle -->
+              <div class="proof-logo-box" title="mParticle">
+                <svg viewBox="0 0 110 24">
+                  <circle cx="8" cy="12" r="4"/>
+                  <circle cx="18" cy="8" r="3"/>
+                  <circle cx="18" cy="16" r="3"/>
+                  <text x="28" y="16" font-size="12" font-weight="700" font-family="inherit">mparticle</text>
+                </svg>
+              </div>
+              <!-- Amwell -->
+              <div class="proof-logo-box" title="Amwell">
+                <svg viewBox="0 0 100 24">
+                  <path d="M8 6h4v12H8z M14 10h4v8h-4z"/>
+                  <text x="26" y="16" font-size="12" font-weight="700" font-family="inherit">amwell</text>
+                </svg>
+              </div>
+              <!-- Clear -->
+              <div class="proof-logo-box" title="CLEAR">
+                <svg viewBox="0 0 90 24">
+                  <circle cx="10" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <text x="24" y="16" font-size="12" font-weight="800" font-family="inherit">CLEAR</text>
+                </svg>
+              </div>
+              <!-- VMware -->
+              <div class="proof-logo-box" title="VMware">
+                <svg viewBox="0 0 100 24">
+                  <path d="M4 8l4 8 4-8 4 8 4-8"/>
+                  <text x="26" y="16" font-size="11" font-weight="700" font-family="inherit">vmware</text>
+                </svg>
+              </div>
+              <!-- Strapi -->
+              <div class="proof-logo-box" title="Strapi">
+                <svg viewBox="0 0 90 24">
+                  <path d="M4 14l6-6 6 6-6 6z"/>
+                  <text x="22" y="16" font-size="12" font-weight="700" font-family="inherit">strapi</text>
+                </svg>
+              </div>
+              <!-- PureScript -->
+              <div class="proof-logo-box" title="PureScript">
+                <svg viewBox="0 0 110 24">
+                  <polygon points="6,6 14,12 6,18"/>
+                  <text x="20" y="16" font-size="11" font-weight="700" font-family="inherit">PureScript</text>
+                </svg>
+              </div>
+              <!-- Scribd -->
+              <div class="proof-logo-box" title="Scribd">
+                <svg viewBox="0 0 90 24">
+                  <circle cx="8" cy="12" r="5"/>
+                  <text x="20" y="16" font-size="12" font-weight="700" font-family="inherit">SCRIBD</text>
+                </svg>
+              </div>
+              <!-- UserVoice -->
+              <div class="proof-logo-box" title="UserVoice">
+                <svg viewBox="0 0 110 24">
+                  <path d="M6 8a4 4 0 0 1 8 0v4a4 4 0 0 1-8 0z"/>
+                  <text x="22" y="16" font-size="11" font-weight="700" font-family="inherit">UserVoice</text>
+                </svg>
+              </div>
+              <!-- Dropbox -->
+              <div class="proof-logo-box" title="Dropbox">
+                <svg viewBox="0 0 100 24">
+                  <path d="M6 7l4 3-4 3 4 3-4 3 6-4 4 3-4-3 6 4-4-3 4-3-4-3 4-3-6 4-4-3z"/>
+                  <text x="24" y="16" font-size="12" font-weight="700" font-family="inherit">Dropbox</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Dashboard UI Mockup -->
+        <div class="hero-dashboard-wrap">
+          <div class="hero-dashboard-card" id="dashApp">
+            <!-- Sidebar -->
+            <div class="dash-sidebar">
+              <div class="dash-brand">
+                <div class="brand-icon-box" style="width: 22px; height: 22px; border-radius: 5px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  </svg>
+                </div>
+                <span>Pactum</span>
+              </div>
+
+              <div class="dash-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Search..." aria-label="Search dashboard" />
+              </div>
+
+              <ul class="dash-nav-list">
+                <li class="dash-nav-item active">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                  Home
+                </li>
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  Proposals
+                </li>
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+                  Templates
+                </li>
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                  Reporting
+                </li>
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                  Client
+                </li>
+              </ul>
+
+              <ul class="dash-nav-list" style="margin-top: 6px;">
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                  Settings
+                </li>
+                <li class="dash-nav-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                  Support
+                </li>
+              </ul>
+
+              <!-- Upgrade Widget -->
+              <div class="dash-pro-upgrade">
+                <div class="title">
+                  <span>100 Proposals</span>
+                  <span style="color: var(--blue-600);">80%</span>
+                </div>
+                <div class="desc">You're at 80% of your proposal allowance.</div>
+                <div class="dash-progress-track">
+                  <div class="dash-progress-fill"></div>
+                </div>
+                <div class="dash-pro-actions">
+                  <span class="dismiss" onclick="triggerToast('Dismissed')">Dismiss</span>
+                  <span class="upgrade" onclick="triggerToast('Opening Pro Plan...')">Upgrade plan</span>
+                </div>
+              </div>
+
+              <!-- Profile -->
+              <div class="dash-profile">
+                <div class="dash-avatar">OR</div>
+                <div class="dash-profile-info">
+                  <div class="dash-profile-name">Olivia Rhye</div>
+                  <div class="dash-profile-email">olivia@pactum.example</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Panel -->
+            <div class="dash-main">
+              <div class="dash-header-row">
+                <div>
+                  <h3 class="dash-header-title">Overview</h3>
+                  <div class="dash-header-sub">Welcome back, Olivia!</div>
+                </div>
+                <button class="btn-primary" style="font-size: 11px; padding: 6px 14px;" onclick="triggerToast('Proposal draft initiated')">
+                  + New Proposal
+                </button>
+              </div>
+
+              <!-- Top KPI Stats -->
+              <div class="dash-stats-row">
+                <div class="dash-stat-card">
+                  <div class="dash-stat-label">
+                    <span>Total Proposal</span>
+                    <span class="dash-stat-badge">+12%</span>
+                  </div>
+                  <div class="dash-stat-val">2,420</div>
+                </div>
+                <div class="dash-stat-card">
+                  <div class="dash-stat-label">
+                    <span>Sent</span>
+                    <span class="dash-stat-badge">+8%</span>
+                  </div>
+                  <div class="dash-stat-val">1,210</div>
+                </div>
+                <div class="dash-stat-card">
+                  <div class="dash-stat-label">
+                    <span>Accepted</span>
+                    <span class="dash-stat-badge">+15%</span>
+                  </div>
+                  <div class="dash-stat-val">316</div>
+                </div>
+              </div>
+
+              <!-- Bar Chart & Conversion Ring -->
+              <div class="dash-analytics-row">
+                <!-- Bar Chart -->
+                <div class="dash-panel">
+                  <div class="dash-panel-title">
+                    <span>Summary</span>
+                    <div class="dash-chart-legend">
+                      <span class="leg-blue">Accept</span>
+                      <span class="leg-light">Declined</span>
+                      <span class="leg-fade">Sent</span>
+                    </div>
+                  </div>
+                  <div class="bar-chart-container">
+                    <div class="bar-group" title="Jan: 24 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 18px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 12px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 20px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Jan</span>
+                    </div>
+                    <div class="bar-group" title="Mar: 38 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 28px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 14px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 18px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Mar</span>
+                    </div>
+                    <div class="bar-group" title="May: 45 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 34px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 10px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 22px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">May</span>
+                    </div>
+                    <div class="bar-group" title="Jul: 52 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 42px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 8px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 16px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Jul</span>
+                    </div>
+                    <div class="bar-group" title="Sep: 36 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 26px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 12px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 20px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Sep</span>
+                    </div>
+                    <div class="bar-group" title="Nov: 60 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 48px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 10px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 14px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Nov</span>
+                    </div>
+                    <div class="bar-group" title="Dec: 55 Proposals">
+                      <div class="bar-stacks">
+                        <div class="bar-seg" style="height: 44px; background: var(--blue-600);"></div>
+                        <div class="bar-seg" style="height: 12px; background: #93c5fd;"></div>
+                        <div class="bar-seg" style="height: 18px; background: #cbd5e1;"></div>
+                      </div>
+                      <span class="bar-label">Dec</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Donut Conversion -->
+                <div class="dash-panel">
+                  <div class="dash-panel-title">Conversion Rate</div>
+                  <div class="donut-wrapper">
+                    <svg class="donut-svg" viewBox="0 0 80 80">
+                      <circle class="donut-bg" cx="40" cy="40" r="32"></circle>
+                      <circle class="donut-progress" cx="40" cy="40" r="32"></circle>
+                    </svg>
+                    <div class="donut-center-text">50%</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Proposal Table -->
+              <div class="dash-table-wrap">
+                <table class="dash-table">
+                  <thead>
+                    <tr>
+                      <th>Proposal</th>
+                      <th>Status</th>
+                      <th>Clients</th>
+                      <th>Last Update</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="table-prop-title">Content curating app</div>
+                        <div class="table-prop-sub">Brings all your news into one place</div>
+                      </td>
+                      <td><span class="status-badge sent">+ Sent</span></td>
+                      <td>
+                        <div class="client-cell">
+                          <div class="client-mini-avatar" style="background: #2563eb;">OR</div>
+                          <span>Olivia Rhye</span>
+                        </div>
+                      </td>
+                      <td style="color: var(--ink-400);">Jan 6, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="table-prop-title">Design software</div>
+                        <div class="table-prop-sub">Super lightweight design app</div>
+                      </td>
+                      <td><span class="status-badge draft">+ Draft</span></td>
+                      <td>
+                        <div class="client-cell">
+                          <div class="client-mini-avatar" style="background: #7c3aed;">PB</div>
+                          <span>Phoenix Baker</span>
+                        </div>
+                      </td>
+                      <td style="color: var(--ink-400);">Jan 6, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="table-prop-title">Data prediction</div>
+                        <div class="table-prop-sub">AI and machine learning data</div>
+                      </td>
+                      <td><span class="status-badge approved">+ Approved</span></td>
+                      <td>
+                        <div class="client-cell">
+                          <div class="client-mini-avatar" style="background: #059669;">LS</div>
+                          <span>Lana Steiner</span>
+                        </div>
+                      </td>
+                      <td style="color: var(--ink-400);">Jan 6, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="table-prop-title">Productivity app</div>
+                        <div class="table-prop-sub">Time management and productivity</div>
+                      </td>
+                      <td><span class="status-badge rejected">+ Rejected</span></td>
+                      <td>
+                        <div class="client-cell">
+                          <div class="client-mini-avatar" style="background: #dc2626;">DW</div>
+                          <span>Demi Wilkinson</span>
+                        </div>
+                      </td>
+                      <td style="color: var(--ink-400);">Jan 5, 2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (3-CARD BENTO) -->
+  <section class="section-spacing" id="how-it-works">
+    <div class="container">
+      <div class="section-header-center">
+        <div class="pill-kicker">
+          <span class="dot"></span>
+          HOW IT WORKS
+        </div>
+        <h2 class="section-title">From brief to proposal simplified</h2>
+        <p class="section-desc">Turn raw client inquiries into winning client proposals with our structured three-stage engine.</p>
+      </div>
+
+      <div class="bento-grid-3">
+        <!-- Bento Card 1 -->
+        <div class="bento-card">
+          <div class="bento-visual-area">
+            <div class="step-inputs-stack">
+              <div class="step-input-row">
+                <div class="step-icon-badge" style="background: var(--blue-600);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="step-input-text">
+                  <div class="step-input-label">Client name</div>
+                  <div class="step-input-placeholder">Enter your client's name to personalise</div>
+                </div>
+              </div>
+              <div class="step-connector-line"></div>
+              <div class="step-input-row">
+                <div class="step-icon-badge" style="background: var(--blue-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </div>
+                <div class="step-input-text">
+                  <div class="step-input-label">Service name</div>
+                  <div class="step-input-placeholder">Type your service name to proceed</div>
+                </div>
+              </div>
+              <div class="step-connector-line"></div>
+              <div class="step-input-row">
+                <div class="step-icon-badge" style="background: var(--amber-600);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <div class="step-input-text">
+                  <div class="step-input-label">Client budget</div>
+                  <div class="step-input-placeholder">Enter your client's budget for project</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="bento-card-title">Add project information</h3>
+          <p class="bento-card-desc">Enter the client's name, business type, required services, budget, & timeline. Our smart system uses this data to understand project scope instantly.</p>
+        </div>
+
+        <!-- Bento Card 2: Interactive Prompt Builder -->
+        <div class="bento-card">
+          <div class="bento-visual-area">
+            <div class="prompt-box-mock">
+              <div class="prompt-box-header">What proposal do you want to create?</div>
+              <div class="prompt-box-input" id="interactivePromptPreview">
+                Type project details or paste a client brief...
+              </div>
+              <div class="prompt-box-footer">
+                <div class="prompt-control-pill">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg>
+                  Control
+                </div>
+                <button class="btn-create-prompt" onclick="runProposalSimulation()">Create proposal</button>
+              </div>
+            </div>
+            <div class="prompt-tags-cloud">
+              <span class="prompt-tag active" onclick="selectPromptTag(this, 'Website design proposal: Full redesign with responsive layout, custom CMS, and high-converting checkout.')">Website design proposal</span>
+              <span class="prompt-tag" onclick="selectPromptTag(this, 'Brand identity proposal: Full logo suite, typography system, brand guideline book, and digital assets.')">Brand identity proposal</span>
+              <span class="prompt-tag" onclick="selectPromptTag(this, 'SEO & content marketing: 6-month growth retainer with keyword strategy, backlinks, and audits.')">SEO & content</span>
+              <span class="prompt-tag" onclick="selectPromptTag(this, 'Mobile app development: Native iOS and Android application with Figma handover and backend API.')">Mobile app development</span>
+              <span class="prompt-tag" onclick="selectPromptTag(this, 'SaaS UI/UX design: Design system, user research, wireframes, prototypes, and developer specs.')">SaaS UI/UX design</span>
+            </div>
+          </div>
+          <h3 class="bento-card-title">AI builds your proposal</h3>
+          <p class="bento-card-desc">Our AI instantly creates a structured, persuasive, and professionally formatted proposal precisely tailored to your service and niche business goals.</p>
+        </div>
+
+        <!-- Bento Card 3: Orbiting Nodes -->
+        <div class="bento-card">
+          <div class="bento-visual-area">
+            <div class="constellation-wrapper">
+              <div class="orbit-ring"></div>
+              <div class="hub-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              </div>
+              <div class="orbit-node node-1" title="Client tracking">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </div>
+              <div class="orbit-node node-2" title="Real-time sharing">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+              </div>
+              <div class="orbit-node node-3" title="Brand presets">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              </div>
+              <div class="orbit-node node-4" title="PDF export">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </div>
+            </div>
+          </div>
+          <h3 class="bento-card-title">Brand, export, track & share</h3>
+          <p class="bento-card-desc">Edit the content, apply your logo and brand colours, export as PDF, or send via shareable link. Track when clients open and review your proposal in real time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES (AUTOMATION) -->
+  <section class="section-spacing features-section" id="features">
+    <div class="container">
+      <div class="section-header-center">
+        <div class="pill-kicker">
+          <span class="dot"></span>
+          FEATURES
+        </div>
+        <h2 class="section-title">Close deals faster with smart automation</h2>
+        <p class="section-desc">Everything you need to create, price, present, and close high-converting proposals without manual effort.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <h3 class="feature-title">Generate proposals in seconds</h3>
+          <p class="feature-desc">Turn client details into a fully structured, persuasive proposal instantly no blank pages, no tedious formatting, and zero writer's block.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Price smarter & maximise profit</h3>
+          <p class="feature-desc">Automatically optimise pricing to fit client budget and maximise your margins stop guessing your rates with smart industry benchmarks.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3 class="feature-title">Close instantly automate workflow</h3>
+          <p class="feature-desc">Remove friction from approvals and follow-ups sign, track, and automate everything from one place so deals never stall.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS SECTION -->
+  <section class="integrations-section" id="integrations">
+    <div class="container">
+      <div class="section-header-center">
+        <h2 class="section-title">Connect your proposal workflow</h2>
+        <p class="section-desc">Connect Pactum AI with the tools you use from CRM to payments and streamline your proposal process.</p>
+      </div>
+
+      <!-- App Integration Floating Arc -->
+      <div class="integrations-arc">
+        <!-- Zapier -->
+        <div class="integration-pill-box" title="Zapier">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#FF4F00"/>
+            <path d="M16 8v16M8 16h16M10 10l12 12M10 22L22 10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <!-- Stripe -->
+        <div class="integration-pill-box" title="Stripe">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#635BFF"/>
+            <path d="M18.8 13.5c0-.9-.8-1.4-2.1-1.4-1.9 0-4.3.7-6.2 1.8v-4.1c2.1-.9 4.3-1.3 6.4-1.3 5 0 8.3 2.5 8.3 6.9 0 6.7-9.3 5.6-9.3 8.5 0 1.1 1 1.6 2.4 1.6 2.3 0 5-1 7.1-2.2v4.2c-2.3 1-4.7 1.5-7.1 1.5-5.2 0-8.8-2.6-8.8-7 0-7.3 9.3-5.9 9.3-8.5z" fill="#fff"/>
+          </svg>
+        </div>
+        <!-- Slack -->
+        <div class="integration-pill-box" title="Slack">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#4A154B"/>
+            <path d="M13 8a2 2 0 1 0-2 2h2V8zm0 3a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5a2 2 0 0 0 2 2 2 2 0 0 0 2-2v-5zm8 2a2 2 0 1 0-2-2v2h2zm-3 0a2 2 0 0 0 2-2 2 2 0 0 0-2-2h-5a2 2 0 0 0-2 2 2 2 0 0 0 2 2h5zm-2 8a2 2 0 1 0 2-2h-2v2zm0-3a2 2 0 0 0 2 2 2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5zm-8-2a2 2 0 1 0 2 2v-2H8zm3 0a2 2 0 0 0-2 2 2 2 0 0 0 2 2h5a2 2 0 0 0 2-2 2 2 0 0 0-2-2h-5z" fill="#E01E5A"/>
+          </svg>
+        </div>
+        <!-- Notion -->
+        <div class="integration-pill-box" title="Notion">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#000000"/>
+            <path d="M9 7l11 1.4-1.2 16.6-11-1.3z" fill="#fff"/>
+            <path d="M12 11h2v8h-2z M16 11h2v8h-2z" fill="#000"/>
+          </svg>
+        </div>
+        <!-- Dropbox -->
+        <div class="integration-pill-box" title="Dropbox">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#0061FF"/>
+            <path d="M10 9l6 4-6 4 6 4-6 4 6-4 6 4-6-4 6-4-6-4 6-4-6 4z" fill="#fff"/>
+          </svg>
+        </div>
+        <!-- ClickUp -->
+        <div class="integration-pill-box" title="ClickUp">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#7B68EE"/>
+            <path d="M9 19c2-2 4-3 7-3s5 1 7 3" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M11 12l5-5 5 5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <!-- HubSpot -->
+        <div class="integration-pill-box" title="HubSpot">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#FF7A59"/>
+            <circle cx="16" cy="16" r="4" fill="#fff"/>
+            <circle cx="23" cy="11" r="2.5" fill="#fff"/>
+            <line x1="16" y1="16" x2="23" y2="11" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+        <!-- Webflow -->
+        <div class="integration-pill-box" title="Webflow">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#146EF5"/>
+            <path d="M22 10c-3 0-5 2-6 5-1-3-3-5-6-5v12h4v-7c1-2 2-3 3-3s2 1 3 3v7h4V10z" fill="#fff"/>
+          </svg>
+        </div>
+        <!-- Linear -->
+        <div class="integration-pill-box" title="Linear">
+          <svg viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="8" fill="#5E6AD2"/>
+            <circle cx="16" cy="16" r="7" stroke="#fff" stroke-width="2.5" fill="none"/>
+            <line x1="11" y1="16" x2="21" y2="16" stroke="#fff" stroke-width="2.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-header-center">
+        <div class="pill-kicker">
+          <span class="dot"></span>
+          PRICING
+        </div>
+        <h2 class="section-title">Choose the plan that scales with you</h2>
+        <p class="section-desc">Transparent agency tiers designed to turn raw leads into signed revenue.</p>
+      </div>
+
+      <div class="pricing-toggle-wrap">
+        <button class="pricing-toggle-btn active" id="btnMonthly" onclick="setBilling('monthly')">Monthly billing</button>
+        <button class="pricing-toggle-btn" id="btnAnnual" onclick="setBilling('annual')">Annual billing</button>
+        <span class="save-badge">Save 20%</span>
+      </div>
+
+      <div class="pricing-grid-3">
+        <!-- Basic Plan -->
+        <div class="pricing-card">
+          <h3 class="pricing-title">Basic Plan</h3>
+          <p class="pricing-subtitle">Perfect for small teams starting AI outreach.</p>
+          <div class="pricing-rate-row">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-amount" id="priceBasic">2,499</span>
+            <span class="pricing-period" id="periodBasic">/ year</span>
+          </div>
+          <button class="pricing-action-btn btn-light" onclick="triggerToast('Selected Basic Plan')">Get started</button>
+          <ul class="pricing-features-list">
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>3 proposals per month</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Basic proposal templates</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>AI proposal generation</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Standard formatting</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Basic customisation</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Export as PDF</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Email support</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Secure data storage</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Premium Plan (Featured) -->
+        <div class="pricing-card featured">
+          <h3 class="pricing-title">Premium Plan</h3>
+          <p class="pricing-subtitle">Perfect for growing agencies closing weekly deals.</p>
+          <div class="pricing-rate-row">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-amount" id="pricePremium" style="color: var(--blue-600);">4,499</span>
+            <span class="pricing-period" id="periodPremium">/ year</span>
+          </div>
+          <button class="pricing-action-btn btn-solid-blue" onclick="triggerToast('Selected Premium Plan')">Get started</button>
+          <ul class="pricing-features-list">
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span><strong>Unlimited proposals</strong></span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Advanced AI generation</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Smart pricing suggestions</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Custom branding & white-label</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Premium template library</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>High-res PDF export & links</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Proposal analytics & views</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Priority email & chat support</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+          <h3 class="pricing-title">Enterprise Plan</h3>
+          <p class="pricing-subtitle">Full scale sales operations for high-ticket teams.</p>
+          <div class="pricing-rate-row">
+            <span class="pricing-currency">$</span>
+            <span class="pricing-amount" id="priceEnterprise">6,499</span>
+            <span class="pricing-period" id="periodEnterprise">/ year</span>
+          </div>
+          <button class="pricing-action-btn btn-light" onclick="triggerToast('Selected Enterprise Plan')">Get started</button>
+          <ul class="pricing-features-list">
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Everything in Pro</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>E-signature support</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Team collaboration seats</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Client activity tracking</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Advanced proposal analytics</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Custom proposal sections</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Shared team workspace</span>
+            </li>
+            <li class="pricing-feature-item">
+              <span class="feature-check-icon">✓</span>
+              <span>Dedicated account manager</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="faq-grid">
+        <div class="faq-title-col">
+          <div class="pill-kicker">
+            <span class="dot"></span>
+            FAQ
+          </div>
+          <h2 class="section-title">Everything you need to know</h2>
+          <p class="section-desc">Have questions? We're here to help you accelerate your client acquisition pipeline.</p>
+        </div>
+
+        <div class="accordion-list">
+          <!-- Item 1 (Open by default) -->
+          <div class="accordion-item open">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Is this better than writing proposals manually for clients?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>Yes. Manual proposals take hours and often lack structure. Pactum AI generates professionally structured, persuasive proposals in seconds helping you save time and increase your close rate.</p>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Does it work for different industries and business types?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>Absolutely. Whether you provide software engineering, design, marketing retainers, architectural consulting, or sales advisory, our AI adapts to your niche deliverables and industry benchmarks.</p>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Will AI make my proposals sound generic or impersonal?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>No. Pactum incorporates your custom agency tone of voice, past client case studies, and exact project parameters so every proposal reads like a bespoke strategy deck.</p>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Can I use my own pricing structure and packages?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>Yes. You can configure fixed milestones, recurring retainers, tiered pricing models (Good/Better/Best), and hourly caps directly within your proposal builder.</p>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Can I track when clients open and view my proposal?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>Yes. You receive instant notifications when clients view your link, how much time they spend on each section, and when they forward it internally to decision-makers.</p>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleFaq(this)">
+              <span>Is my client data safe, fully secure, confidential, and well-protected?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <p>Yes. All client data and briefs are encrypted in transit and at rest with SOC-2 compliant infrastructure. Your proprietary project data is never used to train public foundation models.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA BANNER -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <div class="cta-banner-card">
+        <div class="cta-banner-content">
+          <h2 class="cta-banner-title">Turn briefs into signed deals today</h2>
+          <p class="cta-banner-desc">Stop wasting hours writing proposals. Start sending professional, branded, and highly effective winning proposals today.</p>
+          <button class="btn-banner-trial" onclick="triggerToast('Starting your free trial...')">
+            Start free trial
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-watermark">Pactum</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <div class="brand-logo">
+            <div class="brand-icon-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              </svg>
+            </div>
+            <span>Pactum</span>
+          </div>
+          <p class="footer-brand-desc">AI-powered proposal automation for agencies & freelancers to create & close high-converting proposals fast.</p>
+          <div class="footer-socials">
+            <a href="#hero" class="social-btn" title="LinkedIn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+            <a href="#hero" class="social-btn" title="X (Twitter)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+            </a>
+            <a href="#hero" class="social-btn" title="WhatsApp">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            </a>
+            <a href="#hero" class="social-btn" title="Instagram">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="#hero" class="social-btn" title="YouTube">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">PRODUCT</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#how-it-works" class="footer-nav-link">How it works</a></li>
+            <li><a href="#features" class="footer-nav-link">Features</a></li>
+            <li><a href="#integrations" class="footer-nav-link">Integrations</a></li>
+            <li><a href="#pricing" class="footer-nav-link">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">SOLUTIONS</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#hero" class="footer-nav-link">For freelancers</a></li>
+            <li><a href="#hero" class="footer-nav-link">For agencies</a></li>
+            <li><a href="#hero" class="footer-nav-link">For marketing teams</a></li>
+            <li><a href="#hero" class="footer-nav-link">For consultants</a></li>
+            <li><a href="#hero" class="footer-nav-link">High-ticket services</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">RESOURCES</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#faq" class="footer-nav-link">FAQ</a></li>
+            <li><a href="#hero" class="footer-nav-link">Help centre</a></li>
+            <li><a href="#hero" class="footer-nav-link">Proposal tips</a></li>
+            <li><a href="#hero" class="footer-nav-link">API docs</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">LEGAL & TRUST</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#hero" class="footer-nav-link">Privacy policy</a></li>
+            <li><a href="#hero" class="footer-nav-link">Terms of service</a></li>
+            <li><a href="#hero" class="footer-nav-link">Refund policy</a></li>
+            <li><a href="#hero" class="footer-nav-link">Cookie policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <span>© 2026. All rights reserved Pactum AI</span>
+        <span>Crafted for high-conversion sales teams</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer">
+    <div class="toast-msg" id="toastMsg">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: #60a5fa;">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span id="toastText">Action completed</span>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Toast helper
+    let toastTimeout;
+    function triggerToast(text) {
+      const toast = document.getElementById('toastMsg');
+      const label = document.getElementById('toastText');
+      label.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Live proposal modal preview
+    function viewSampleProposal() {
+      triggerToast('Loading live interactive proposal preview...');
+      setTimeout(() => {
+        const el = document.getElementById('dashApp');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.transform = 'scale(1.02)';
+          setTimeout(() => el.style.transform = 'none', 600);
+        }
+      }, 300);
+    }
+
+    // Interactive Prompt Tag Selector
+    function selectPromptTag(btn, text) {
+      document.querySelectorAll('.prompt-tag').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const box = document.getElementById('interactivePromptPreview');
+      box.textContent = text;
+      box.style.color = 'var(--ink-900)';
+    }
+
+    function runProposalSimulation() {
+      const box = document.getElementById('interactivePromptPreview');
+      const original = box.textContent;
+      box.innerHTML = '<em>⚡ AI Generating proposal outline... (Structure, Pricing, Deliverables)</em>';
+      box.style.color = 'var(--blue-600)';
+      triggerToast('AI generating proposal outline in real time...');
+      setTimeout(() => {
+        box.innerHTML = '<strong>✓ Ready:</strong> 12-page bespoke deck with dynamic fee calculator & timeline.';
+        box.style.color = 'var(--emerald-600)';
+      }, 1200);
+    }
+
+    // Pricing Billing Period Toggle
+    function setBilling(mode) {
+      const btnM = document.getElementById('btnMonthly');
+      const btnA = document.getElementById('btnAnnual');
+      const pB = document.getElementById('priceBasic');
+      const pP = document.getElementById('pricePremium');
+      const pE = document.getElementById('priceEnterprise');
+      const perB = document.getElementById('periodBasic');
+      const perP = document.getElementById('periodPremium');
+      const perE = document.getElementById('periodEnterprise');
+
+      if (mode === 'monthly') {
+        btnM.classList.add('active');
+        btnA.classList.remove('active');
+        pB.textContent = '249';
+        pP.textContent = '449';
+        pE.textContent = '649';
+        perB.textContent = '/ month';
+        perP.textContent = '/ month';
+        perE.textContent = '/ month';
+      } else {
+        btnA.classList.add('active');
+        btnM.classList.remove('active');
+        pB.textContent = '2,499';
+        pP.textContent = '4,499';
+        pE.textContent = '6,499';
+        perB.textContent = '/ year';
+        perP.textContent = '/ year';
+        perE.textContent = '/ year';
+      }
+    }
+
+    // Accordion Toggle
+    function toggleFaq(header) {
+      const item = header.parentElement;
+      const isOpen = item.classList.contains('open');
+      
+      // Close other accordion items
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+
+      if (!isOpen) {
+        item.classList.add('open');
+      }
+    }
+
+    // Mobile nav toggle
+    function toggleMobileNav() {
+      triggerToast('Mobile menu expanded');
+    }
+  </script>
+</body>
+</html>

@@ -8,34 +8,36 @@ For agents, the canonical procedures are:
 |------|------|
 | [`AGENTS.md`](../AGENTS.md) | Always-on project rules |
 | [`OPERATIONS.md`](OPERATIONS.md) | Hosting, Pages, privacy, GA, deploy |
-| [`SKILLS.md`](SKILLS.md) | Archived skills map |
+| [`.grok/skills/template-from-ref/SKILL.md`](../.grok/skills/template-from-ref/SKILL.md) | Grok: reference → one library item |
+| [`.agents/skills/template-from-ref/SKILL.md`](../.agents/skills/template-from-ref/SKILL.md) | Antigravity: same package (`/tfr` alias beside it) |
+| [`SKILLS.md`](SKILLS.md) | Active skill + archived skills map |
 
-The design skills are archived under [`.grok/archive/skills/`](../.grok/archive/skills/). Do not load them. Match the reference, then register and verify.
+The six aesthetic skills stay archived under [`.grok/archive/skills/`](../.grok/archive/skills/). Do not load them. Match the reference with `template-from-ref`, then register and verify.
 
 ## Quick start (human or agent)
 
-1. Drop a design reference (X URL, screenshot, case study).
-2. Match the reference and build the page. The old skill route is archived.
+1. Drop a design reference (X URL, screenshot, scroll video, fragment, or brand board).
+2. Follow [template-from-ref](../.grok/skills/template-from-ref/SKILL.md). The old aesthetic-skill route stays archived.
 3. Preview via **Caddy** (already configured): `~/.config/mydesignlib-portal/serve.sh --url`.
 
 ## Pipeline (summary)
 
 ```
-Reference (X / video / site)
-    → research + frames
-    → fictional rebrand + free stack
-    → original assets + HTML/CSS page that matches the reference
-    → data/catalog.json (type: website)
-    → brand audit + HTTP 200
+Reference (X / video / screenshot / fragment / brand board)
+    → research + frames in /tmp/xmedia/<slug>/
+    → library/brands/<id>/ in the Omnia shape
+         hub + replica + guidelines + landing + social + merch + reveal
+    → data/catalog.json (type: brand) + data/files.json
+    → audit + HTTP 200 on Caddy
     → done
 ```
 
-A per-item DESIGN.md is optional. The old requirement to write one before HTML is archived with the design skills.
+The format specimen is [`library/brands/omnia/`](../library/brands/omnia/). The procedure is [template-from-ref](../.grok/skills/template-from-ref/SKILL.md). A per-item DESIGN.md is optional.
 ### Hard rules
 
-1. **Fictional brands only** — no real logos, client identities, or original product names.
-2. **Original assets** — AI-generated or code-built UI; no scrapes of client work.
-3. **Vanilla static** — `library/websites/<id>/` self-contained; GitHub Pages friendly.
+1. **Same package every time** — hub, replica, guidelines, landing, social kit, merch, reveal. Keep the reference name, redraw the mark, credit the author. Do not copy reference pixels into the folder.
+2. **Original assets** — SVG/CSS, AI-generated, or code-built UI. No scraped client shots.
+3. **Vanilla static** — `library/brands/<id>/` self-contained; GitHub Pages friendly.
 4. **Noindex + GA** — every HTML page: robots noindex meta + gtag `G-Z97ZD3EVSF` (see OPERATIONS).
 5. **Register** — every item in `data/catalog.json` with a `type`.
 6. **Audit + verify** before calling a deliverable finished.
@@ -43,33 +45,20 @@ A per-item DESIGN.md is optional. The old requirement to write one before HTML i
 
 ## Folder contract
 
-```
-library/websites/<id>/
-  index.html      # required
-  preview.jpg     # required (catalog thumbnail)
-  *.jpg|*.svg…    # optional section assets
-```
-
-Other types (same idea):
-
-```
-library/brands/<id>/
-library/logos/<id>/
-library/systems/<id>/
-```
+A new reference lives at `library/brands/<id>/` and matches [`library/brands/omnia/`](../library/brands/omnia/): `index.html` hub, `preview.jpg`, `replica/`, `extended/` (guidelines, landing, social, merch, reveal). Older items under `library/websites/<id>/` stay one-page folders.
 
 ## Catalog entry shape
 
 ```json
 {
   "id": "example",
-  "type": "website",
+  "type": "brand",
   "name": "Example",
-  "description": "One-line visual summary.",
-  "tags": ["saas", "minimal"],
-  "category": "SaaS",
-  "thumbnail": "library/websites/example/preview.jpg",
-  "path": "library/websites/example/",
+  "description": "One-line visual summary of the study package.",
+  "tags": ["branding", "identity"],
+  "category": "Studio",
+  "thumbnail": "library/brands/example/preview.jpg",
+  "path": "library/brands/example/",
   "projectId": "example",
   "related": [],
   "featured": true,

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tansy — Reveal</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { min-height: 100vh; display: grid; place-items: center; background: var(--field); color: var(--cream); }
+  .stage { text-align: center; padding: 32px 16px 48px; }
+  .mark { width: min(220px, 46vw); height: auto; display: block; margin: 0 auto 8px; }
+  .word { margin: 0; font-weight: 800; letter-spacing: -0.045em; font-size: clamp(52px, 10vw, 104px); line-height: 0.9; }
+  .letter { display: inline-block; }
+  .replay {
+    margin-top: 28px;
+    border: 1px solid rgba(254, 243, 187, 0.55);
+    background: transparent;
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 10px 18px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<!-- SECTION: reveal -->
+<div class="stage">
+  <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+    <g transform="translate(32 33)">
+      <g class="draw" fill="none" stroke="#FEF3BB" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+        <path class="petal" d="M0.00 -6.00C 8.20 -9.20 13.20 -18.40 5.80 -26.20C 2.60 -29.60 -2.60 -29.60 -5.80 -26.20C -13.20 -18.40 -8.20 -9.20 0.00 -6.00Z"/>
+        <path class="petal" d="M5.71 -1.85C 11.28 4.96 21.58 6.87 26.71 -2.58C 28.95 -6.67 27.35 -11.62 23.13 -13.61C 13.42 -18.24 6.22 -10.64 5.71 -1.85Z"/>
+        <path class="petal" d="M3.53 4.85C -1.23 12.26 0.14 22.64 10.71 24.61C 15.29 25.48 19.50 22.42 20.09 17.79C 21.49 7.13 12.04 2.62 3.53 4.85Z"/>
+        <path class="petal" d="M-3.53 4.85C -12.04 2.62 -21.49 7.13 -20.09 17.79C -19.50 22.42 -15.29 25.48 -10.71 24.61C -0.14 22.64 1.23 12.26 -3.53 4.85Z"/>
+        <path class="petal" d="M-5.71 -1.85C -6.22 -10.64 -13.42 -18.24 -23.13 -13.61C -27.35 -11.62 -28.95 -6.67 -26.71 -2.58C -21.58 6.87 -11.28 4.96 -5.71 -1.85Z"/>
+        <path class="petal disc" d="M-6.60 0.00A6.60 6.60 0 1 0 6.60 0.00A6.60 6.60 0 1 0 -6.60 0.00Z"/>
+      </g>
+      <g class="fill" fill="#FEF3BB">
+        <path d="M0-6C8.2-9.2 13.2-18.4 5.8-26.2C2.6-29.6-2.6-29.6-5.8-26.2C-13.2-18.4-8.2-9.2 0-6Z"/>
+        <path d="M0-6C8.2-9.2 13.2-18.4 5.8-26.2C2.6-29.6-2.6-29.6-5.8-26.2C-13.2-18.4-8.2-9.2 0-6Z" transform="rotate(72)"/>
+        <path d="M0-6C8.2-9.2 13.2-18.4 5.8-26.2C2.6-29.6-2.6-29.6-5.8-26.2C-13.2-18.4-8.2-9.2 0-6Z" transform="rotate(144)"/>
+        <path d="M0-6C8.2-9.2 13.2-18.4 5.8-26.2C2.6-29.6-2.6-29.6-5.8-26.2C-13.2-18.4-8.2-9.2 0-6Z" transform="rotate(216)"/>
+        <path d="M0-6C8.2-9.2 13.2-18.4 5.8-26.2C2.6-29.6-2.6-29.6-5.8-26.2C-13.2-18.4-8.2-9.2 0-6Z" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="6.6"/>
+      </g>
+    </g>
+  </svg>
+  <p class="word" aria-label="Tansy"><span class="letter">T</span><span class="letter">A</span><span class="letter">N</span><span class="letter">S</span><span class="letter">Y</span></p>
+  <button type="button" class="replay" id="replay">Replay</button>
+</div>
+<!-- /SECTION: reveal -->
+<script src="vendor/gsap.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var petals = document.querySelectorAll(".petal");
+  var fill = document.querySelector(".fill");
+  var draw = document.querySelector(".draw");
+  var letters = document.querySelectorAll(".letter");
+  function ready() {
+    petals.forEach(function (el) {
+      var len = 80;
+      try { len = el.getTotalLength() || 80; } catch (e) { len = 80; }
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+    });
+  }
+  if (reduce || !window.gsap) {
+    if (window.gsap) {
+      gsap.set(fill, { opacity: 1 });
+      gsap.set(letters, { opacity: 1, y: 0 });
+    }
+    draw.style.display = "none";
+    return;
+  }
+  ready();
+  gsap.set(fill, { opacity: 0 });
+  gsap.set(letters, { opacity: 0, y: 16 });
+  var tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  tl.to(petals, { strokeDashoffset: 0, duration: 0.7, stagger: 0.08 })
+    .to(fill, { opacity: 1, duration: 0.35 }, "-=0.15")
+    .to(draw, { opacity: 0, duration: 0.2 }, "-=0.05")
+    .to(letters, { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: "power2.out" });
+  document.getElementById("replay").addEventListener("click", function () {
+    ready();
+    gsap.set(draw, { opacity: 1 });
+    tl.restart();
+  });
+})();
+</script>
+</body>
+</html>

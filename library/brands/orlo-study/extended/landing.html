@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Orlo</title>
+  <meta name="description" content="Meet Orlo, an applied AI studio that helps teams choose, build, and operate useful model-powered workflows." />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff3b30'/%3E%3Cpath d='M9 8h8.2L13 16h7.2L12.2 24H9.4L14 16H9z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --ink: #17191e;
+    --muted: #6d7380;
+    --coral: #ff3b30;
+    --line: #e6e8ee;
+    --card: #fff;
+    --sans: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #e8eaee;
+    line-height: 1.5;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .sheet {
+    width: min(1180px, calc(100% - 28px));
+    margin: 18px auto 28px;
+    background: var(--bg);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(20, 24, 32, 0.12);
+  }
+  .wrap { width: min(1080px, calc(100% - 48px)); margin: 0 auto; }
+  .hot { color: var(--coral); }
+  .stroke {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #1c1f26;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    font-size: 22px;
+  }
+  .mark svg { display: block; }
+
+  .ticker {
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: #f7f8fa;
+    color: #8b909a;
+    font-size: 12px;
+  }
+  .track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    padding: 8px 0;
+    animation: slide 32s linear infinite;
+  }
+  .track span { white-space: nowrap; }
+  .track b { color: var(--coral); font-weight: 600; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(244, 245, 247, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+  }
+  header.is-stuck { border-bottom-color: var(--line); }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    height: 72px;
+  }
+  nav { display: flex; align-items: center; gap: 22px; margin-left: 28px; }
+  nav a { font-size: 14px; font-weight: 600; color: #2a2e36; }
+  nav a:hover { color: var(--coral); }
+  .search {
+    margin-left: auto;
+    position: relative;
+  }
+  .search input {
+    width: 168px;
+    border: 0;
+    background: #fff;
+    border-radius: 999px;
+    padding: 9px 14px 9px 34px;
+    font-size: 13px;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .search svg {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+  }
+  .hits {
+    position: absolute;
+    right: 0;
+    top: 42px;
+    width: 220px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(20, 24, 32, 0.12);
+    padding: 6px;
+    z-index: 5;
+  }
+  .hits a { display: block; padding: 8px 10px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+  .hits a:hover { background: #f6f7f9; }
+  .nav-toggle {
+    display: none;
+    margin-left: auto;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: #fff;
+    border-radius: 12px;
+  }
+  .nav-toggle span { display: block; height: 1.5px; background: var(--ink); margin: 6px 10px; }
+
+  .hero { padding: 42px 0 10px; }
+  .hero-copy {
+    display: grid;
+    grid-template-columns: 1.35fr 0.75fr;
+    gap: 28px;
+    align-items: end;
+  }
+  h1, h2 { margin: 0; letter-spacing: -0.045em; line-height: 1.02; font-weight: 800; }
+  h1 { font-size: clamp(42px, 4.7vw, 64px); }
+  .lede { margin: 0 0 18px; color: var(--muted); font-size: 14.5px; max-width: 320px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #14161a;
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .btn .chev { color: var(--coral); }
+  .btn:hover { background: #000; }
+  .btn.light { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+  .btn.light:hover { background: #fafafa; }
+  .shot {
+    position: relative;
+    margin-top: 28px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #111;
+  }
+  .shot img { width: 100%; height: 340px; object-fit: cover; }
+  .pixels {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: min(300px, 38%);
+    transform: translate(-50%, -52%);
+    filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.45));
+  }
+  .chip {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .logos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 28px 0 8px;
+    color: #9aa0aa;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .logos span { font-size: 18px; opacity: 0.85; }
+  .logos .a { font-weight: 500; letter-spacing: 0.12em; font-size: 13px; text-transform: uppercase; }
+  .logos .b { font-family: var(--sans); font-weight: 800; }
+  .logos .c { letter-spacing: 0.28em; font-weight: 600; font-size: 13px; }
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #9aa0aa;
+    font-size: 12px;
+    margin: 18px 0 8px;
+  }
+  .rule i { flex: 1; height: 1px; background: var(--line); display: block; }
+
+  .about { position: relative; padding: 54px 0 20px; overflow: hidden; }
+  .giant {
+    position: absolute;
+    left: -2%;
+    top: 10px;
+    margin: 0;
+    font-size: 340px;
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(23, 25, 30, 0.14);
+    pointer-events: none;
+    user-select: none;
+  }
+  .about-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 180px 1fr 300px;
+    gap: 28px;
+    align-items: center;
+  }
+  .seal { width: 132px; height: 132px; }
+  h2 { font-size: clamp(32px, 3.4vw, 46px); }
+  .tabs { display: flex; gap: 18px; margin: 18px 0 10px; }
+  .tabs button {
+    border: 0;
+    background: transparent;
+    padding: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #9aa0aa;
+    border-bottom: 2px solid transparent;
+  }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .about p { margin: 0; color: var(--muted); max-width: 420px; font-size: 14.5px; }
+  .about .btn { margin-top: 18px; }
+  .cube { position: relative; }
+  .cube img { width: 100%; height: 230px; object-fit: cover; border-radius: 16px; }
+  .spark {
+    position: absolute;
+    left: -14px;
+    bottom: -16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 18px rgba(20, 24, 32, 0.08);
+  }
+
+  .services { padding: 64px 0 20px; text-align: center; }
+  .kicker { color: var(--coral); font-size: 12px; font-weight: 600; margin: 0 0 10px; }
+  .cards {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
+    text-align: center;
+  }
+  .card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px 22px 22px;
+    box-shadow: 0 10px 30px rgba(20, 24, 32, 0.04);
+    border: 1px solid #eef0f4;
+  }
+  .card h3 { margin: 0; font-size: 22px; letter-spacing: -0.03em; line-height: 1.15; }
+  .card h3 span { color: var(--coral); }
+  .ico { height: 84px; display: grid; place-items: center; }
+  .card p { color: var(--muted); font-size: 14px; min-height: 66px; }
+  .more {
+    border: 0;
+    background: transparent;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .card.raise {
+    position: relative;
+    transform: translateY(-12px);
+    box-shadow: 8px 14px 0 #14161a;
+  }
+  .card .extra { color: var(--ink); min-height: 0; margin-top: 8px; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    padding: 36px 0 10px;
+  }
+  .stat {
+    position: relative;
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px 16px 14px;
+    overflow: hidden;
+    border: 1px solid #eef0f4;
+    min-height: 108px;
+  }
+  .stat small { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+  .stat b {
+    display: block;
+    margin-top: 12px;
+    font-size: 34px;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1.25px #2a2e36;
+  }
+  .stat em {
+    position: absolute;
+    right: 8px;
+    bottom: -18px;
+    font-style: normal;
+    font-size: 72px;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(23, 25, 30, 0.08);
+  }
+
+  .work {
+    margin: 28px 18px;
+    border-radius: 28px;
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 680px);
+    column-gap: 20px;
+    background:
+      radial-gradient(circle at 16% 46%, rgba(255,255,255,0.06), transparent 24%),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      #121417;
+    background-size: auto, 28px 28px, 28px 28px, auto;
+    color: #fff;
+    padding: 56px 48px 36px 28px;
+  }
+  .work > * { grid-column: 2; }
+  .work h2 { font-size: clamp(32px, 3.6vw, 48px); }
+  .work .kicker { text-align: left; }
+  .rows { margin-top: 18px; }
+  .row {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 0;
+  }
+  .row:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .rowhead {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    padding: 0;
+  }
+  .rowhead strong { font-size: 16px; }
+  .rowhead strong span { color: #9aa0aa; font-weight: 500; }
+  .rowhead[aria-expanded="true"] strong { color: #fff; }
+  .rowhead[aria-expanded="true"] strong span { color: #d7d9de; }
+  .year {
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8ccd4;
+    background: #2a2e36;
+    border-radius: 999px;
+    padding: 4px 8px;
+  }
+  .rowhead[aria-expanded="true"] .year { background: var(--coral); color: #fff; }
+  .panel { padding: 8px 0 12px; }
+  .panel img { width: 100%; height: 280px; object-fit: cover; border-radius: 16px; }
+  .panel p { color: #b7bcc6; font-size: 14px; }
+  .panel .btn { background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+
+  .notes { padding: 64px 0 40px; }
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .globe-wrap { position: relative; min-height: 280px; }
+  .globe {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background-image: radial-gradient(#c5c8d0 1.15px, transparent 1.3px);
+    background-size: 11px 11px;
+    -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 72%);
+    mask-image: radial-gradient(circle, #000 58%, transparent 72%);
+  }
+  .faces {
+    position: absolute;
+    left: 36px;
+    bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .faces img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+  }
+  .faces img + img { margin-left: -18px; }
+  .faces b { display: block; font-size: 18px; }
+  .faces span { font-size: 12px; color: var(--muted); }
+  .stack { display: grid; gap: 12px; }
+  .quote {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 18px 14px;
+    border: 1px solid #eef0f4;
+    box-shadow: 0 10px 24px rgba(20, 24, 32, 0.04);
+  }
+  .quote p { margin: 0 0 14px; font-size: 14.5px; }
+  .who { display: flex; align-items: center; gap: 10px; }
+  .who img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .who b { display: block; font-size: 13px; }
+  .who span { font-size: 12px; color: var(--coral); }
+  .stars { margin-left: auto; letter-spacing: 2px; color: #1c1f26; font-size: 12px; }
+
+  .talkband { padding: 10px 0 36px; }
+  .talkbox {
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    border: 1px solid #eef0f4;
+  }
+  .talkbox h2 { font-size: 36px; }
+  form { display: grid; gap: 10px; }
+  input, textarea {
+    width: 100%;
+    border: 0;
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  .sent { margin: 0; color: var(--muted); font-size: 13px; }
+
+  .billboard {
+    margin: 0;
+    padding: 10px 0 0;
+    font-size: clamp(42px, 7vw, 92px);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(23, 25, 30, 0.16);
+    overflow: hidden;
+  }
+  footer { padding: 18px 0 28px; }
+  .foot {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3c414b;
+  }
+  .foot .grow { margin-left: auto; color: var(--muted); font-weight: 500; }
+  .float {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: #14161a;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.15;
+    z-index: 40;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+  .float:hover { background: #000; }
+
+  @media (max-width: 980px) {
+    .nav-toggle { display: block; }
+    nav {
+      display: none;
+      position: absolute;
+      left: 0; right: 0; top: 72px;
+      background: #fff;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px 22px 20px;
+      gap: 12px;
+      box-shadow: 0 16px 30px rgba(20, 24, 32, 0.08);
+    }
+    nav.open { display: flex; }
+    .search { display: none; }
+    .hero-copy, .about-grid, .notes-grid, .talkbox, .cards, .stats { grid-template-columns: 1fr; }
+    .card.raise { transform: none; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .giant { font-size: 200px; }
+    .shot img, .panel img { height: 220px; }
+    .work { margin: 18px 10px; padding: 32px 16px; grid-template-columns: 1fr; }
+    .work > * { grid-column: 1; }
+    .logos { flex-wrap: wrap; justify-content: center; }
+    .wrap { width: min(1080px, calc(100% - 32px)); }
+    .foot { flex-wrap: wrap; }
+    .foot .grow { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .track { animation: none; }
+  }
+</style>
+  <link rel="stylesheet" href="../replica/pages.css">
+</head>
+<body>
+<div class="sheet">
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span>Orlo puts a model inside the job a team already does. <b>Strategy, language, and a desk that stays on.</b></span>
+      <span>Orlo puts a model inside the job a team already does. <b>Strategy, language, and a desk that stays on.</b></span>
+      <span>Orlo puts a model inside the job a team already does. <b>Strategy, language, and a desk that stays on.</b></span>
+      <span>Orlo puts a model inside the job a team already does. <b>Strategy, language, and a desk that stays on.</b></span>
+    </div>
+  </div>
+  <header id="top">
+    <div class="wrap bar">
+      <a class="mark" href="#top" aria-label="Orlo, home">
+        <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#ff3b30"/><path d="M9 8h8.2L13 16h7.2L12.2 24H9.4L14 16H9z" fill="#fff"/></svg>
+        Orlo
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+      <nav id="menu">
+        <a href="#top">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#talk">Contact</a>
+      </nav>
+      <form class="search" role="search">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.2" fill="none" stroke="#9aa0aa" stroke-width="1.4"/><path d="M9.2 9.2 12 12" stroke="#9aa0aa" stroke-width="1.4"/></svg>
+        <input id="q" type="search" placeholder="Keyword here..." aria-label="Search the page" autocomplete="off">
+        <div class="hits" id="hits" hidden></div>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-copy">
+          <h1>Unlock the <span class="hot">limitless</span><br>potential of Applied<br><span class="stroke">Intelligence</span></h1>
+          <div>
+            <p class="lede">A studio for models that live in the product. We place them where the work already happens, then stay to watch the first month.</p>
+            <a class="btn" href="#talk"><span class="chev" aria-hidden="true">›</span> Get started now</a>
+          </div>
+        </div>
+        <div class="shot">
+          <img src="../replica/assets/board.jpg" alt="A bare processor on a dark circuit board">
+          <svg class="pixels" viewBox="0 0 150 78" aria-hidden="true">
+            <defs>
+              <linearGradient id="pix" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#6ef3ff"/>
+                <stop offset="0.48" stop-color="#ff4ec8"/>
+                <stop offset="1" stop-color="#ffe56a"/>
+              </linearGradient>
+            </defs>
+            <g fill="url(#pix)">
+              <rect x="12" y="4" width="8" height="8" rx="1"/><rect x="22" y="4" width="8" height="8" rx="1"/><rect x="32" y="4" width="8" height="8" rx="1"/>
+              <rect x="2" y="14" width="8" height="8" rx="1"/><rect x="42" y="14" width="8" height="8" rx="1"/>
+              <rect x="2" y="24" width="8" height="8" rx="1"/><rect x="42" y="24" width="8" height="8" rx="1"/>
+              <rect x="2" y="34" width="8" height="8" rx="1"/><rect x="12" y="34" width="8" height="8" rx="1"/><rect x="22" y="34" width="8" height="8" rx="1"/><rect x="32" y="34" width="8" height="8" rx="1"/><rect x="42" y="34" width="8" height="8" rx="1"/>
+              <rect x="2" y="44" width="8" height="8" rx="1"/><rect x="42" y="44" width="8" height="8" rx="1"/>
+              <rect x="2" y="54" width="8" height="8" rx="1"/><rect x="42" y="54" width="8" height="8" rx="1"/>
+              <rect x="2" y="64" width="8" height="8" rx="1"/><rect x="42" y="64" width="8" height="8" rx="1"/>
+              <rect x="78" y="4" width="8" height="8" rx="1"/><rect x="88" y="4" width="8" height="8" rx="1"/><rect x="98" y="4" width="8" height="8" rx="1"/>
+              <rect x="88" y="14" width="8" height="8" rx="1"/>
+              <rect x="88" y="24" width="8" height="8" rx="1"/>
+              <rect x="88" y="34" width="8" height="8" rx="1"/>
+              <rect x="88" y="44" width="8" height="8" rx="1"/>
+              <rect x="88" y="54" width="8" height="8" rx="1"/>
+              <rect x="78" y="64" width="8" height="8" rx="1"/><rect x="88" y="64" width="8" height="8" rx="1"/><rect x="98" y="64" width="8" height="8" rx="1"/>
+            </g>
+          </svg>
+          <span class="chip">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="#17191e" stroke-width="1.4"/><path d="M8 4.5v4l2.4 1.4" fill="none" stroke="#ff3b30" stroke-width="1.4"/></svg>
+            Core model
+          </span>
+        </div>
+        <div class="logos" aria-label="Studios we sit with">
+          <span class="a">Northledger</span>
+          <span class="b">Quill Press</span>
+          <span class="c">HARBORLINE</span>
+          <span>Fieldroom</span>
+          <span class="a">Ash &amp; Rye</span>
+        </div>
+        <div class="rule"><i></i>120 desks on the floor with us<i></i></div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <p class="giant" aria-hidden="true">O</p>
+      <div class="wrap about-grid">
+        <svg class="seal" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#1c1f26" stroke-width="1"/>
+          <circle cx="60" cy="60" r="28" fill="none" stroke="#1c1f26" stroke-width="1"/>
+          <path d="M52 48h10l-6 12h8L54 78h-3l6-12H50z" fill="#17191e"/>
+          <defs>
+            <path id="ring" d="M60,60 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"/>
+          </defs>
+          <text fill="#1c1f26" font-family="Plus Jakarta Sans, sans-serif" font-size="8" letter-spacing="2.4">
+            <textPath href="#ring">ORLO STUDIO · EST 2019 · APPLIED MODELS · </textPath>
+          </text>
+        </svg>
+        <div>
+          <p class="kicker">› About us</p>
+          <h2>Harnessing the <span class="hot">power</span><br>of applied models<br>for smart <span class="stroke">desks</span>.</h2>
+          <div class="tabs" role="tablist" aria-label="About">
+            <button type="button" role="tab" id="tab-m" aria-selected="true" aria-controls="pane-m">Our mission</button>
+            <button type="button" role="tab" id="tab-v" aria-selected="false" aria-controls="pane-v">Our vision</button>
+            <button type="button" role="tab" id="tab-e" aria-selected="false" aria-controls="pane-e">Expertise</button>
+          </div>
+          <p id="pane-m" role="tabpanel">We build the piece a product team keeps postponing. A model for the queue, the form, or the photo on the line, wired to the tools already open.</p>
+          <p id="pane-v" role="tabpanel" hidden>A desk where the model is ordinary. People still decide. The machine does the sorting, the draft, and the overnight pass.</p>
+          <p id="pane-e" role="tabpanel" hidden>Strategy for where a model belongs, language for the words you already use, and a watch on the first month of live traffic.</p>
+          <a class="btn light" href="#talk"><span class="chev">›</span> Get in touch</a>
+        </div>
+        <div class="cube">
+          <img src="../replica/assets/cube.jpg" alt="Dark cubes edged in blue light">
+          <span class="spark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="3" fill="none" stroke="#ff3b30" stroke-width="1.4"/><ellipse cx="11" cy="11" rx="8" ry="3.2" fill="none" stroke="#ff3b30" stroke-width="1.2" transform="rotate(20 11 11)"/><ellipse cx="11" cy="11" rx="8" ry="3.2" fill="none" stroke="#ff3b30" stroke-width="1.2" transform="rotate(-50 11 11)"/></svg>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="wrap">
+        <p class="kicker">› Our expertise</p>
+        <h2>Special neural features<br>for <span class="stroke">your services</span><span class="hot">.</span></h2>
+        <div class="cards">
+          <article class="card">
+            <h3>AI strategy and<br><span>consulting</span></h3>
+            <div class="ico" aria-hidden="true">
+              <svg width="54" height="54" viewBox="0 0 54 54"><path d="M27 8 44 18v16L27 44 10 34V18z" fill="none" stroke="#17191e" stroke-width="1.6"/><path d="M27 18 36 23v10L27 38 18 33V23z" fill="none" stroke="#17191e" stroke-width="1.6"/></svg>
+            </div>
+            <p>A map of where a model belongs, and where a person should stay in the loop.</p>
+            <p class="extra" hidden>We write the first month as a checklist your operators can refuse.</p>
+            <button class="more" type="button">Read more</button>
+          </article>
+          <article class="card raise">
+            <h3>Machine learning<br><span>solutions</span></h3>
+            <div class="ico" aria-hidden="true">
+              <svg width="54" height="54" viewBox="0 0 54 54"><rect x="14" y="14" width="26" height="26" rx="4" fill="none" stroke="#17191e" stroke-width="1.6"/><rect x="22" y="22" width="10" height="10" fill="none" stroke="#17191e" stroke-width="1.6"/><path d="M27 8v6M27 40v6M8 27h6M40 27h6" stroke="#17191e" stroke-width="1.6"/></svg>
+            </div>
+            <p>Models trained on the work you already record, then watched while they run.</p>
+            <p class="extra" hidden>The set, the holdout, and the person who can turn it off live in one folder.</p>
+            <button class="more" type="button" style="color:#ff3b30">Read more</button>
+          </article>
+          <article class="card">
+            <h3>Natural language<br><span>processing</span></h3>
+            <div class="ico" aria-hidden="true">
+              <svg width="54" height="54" viewBox="0 0 54 54"><path d="M18 20a9 9 0 0 1 18 0v4a9 9 0 0 1-8 8.9V38" fill="none" stroke="#17191e" stroke-width="1.6"/><path d="M22 38h10" stroke="#17191e" stroke-width="1.6"/><circle cx="36" cy="18" r="3" fill="none" stroke="#17191e" stroke-width="1.6"/></svg>
+            </div>
+            <p>Reading, sorting, and drafting in the words your desk already uses.</p>
+            <p class="extra" hidden>We keep a list of phrases the model is not allowed to invent.</p>
+            <button class="more" type="button">Read more</button>
+          </article>
+        </div>
+        <div class="stats">
+          <article class="stat"><small><span class="chev hot">›</span> Calls a second</small><b>3800+</b><em>O</em></article>
+          <article class="stat"><small><span class="chev hot">›</span> Jobs a day</small><b>64000</b><em>O</em></article>
+          <article class="stat"><small><span class="chev hot">›</span> Hours returned</small><b>240m+</b><em>O</em></article>
+          <article class="stat"><small><span class="chev hot">›</span> Desk cover</small><b>24/7</b><em>O</em></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <p class="kicker">› Case study</p>
+      <h2>Transformative projects<br>powered by <span class="hot">Neural Networks</span></h2>
+      <div class="rows">
+        <article class="row">
+          <button class="rowhead" type="button" aria-expanded="false" aria-controls="case-1">
+            <strong>Kilnline: <span>glaze-fault recognition on a firing line</span></strong>
+            <span class="year">2024</span>
+          </button>
+          <div class="panel" id="case-1" hidden>
+            <img src="../replica/assets/hands.jpg" alt="A hand and a robot hand around a small glowing sphere">
+            <p>Cameras on the kiln mouth flag a fault before the rack moves on. A person still pulls the piece.</p>
+            <a class="btn" href="#talk"><span class="chev">›</span> Case details</a>
+          </div>
+        </article>
+        <article class="row">
+          <button class="rowhead" type="button" aria-expanded="true" aria-controls="case-2">
+            <strong>Paperwharf: <span>a language desk for shipping notes</span></strong>
+            <span class="year">2022</span>
+          </button>
+          <div class="panel" id="case-2">
+            <img src="../replica/assets/hands.jpg" alt="A hand and a robot hand around a small glowing sphere">
+            <p>Notes from the yard become a clean bill line. The clerk edits the line. The model does not send it.</p>
+            <a class="btn" href="#talk"><span class="chev">›</span> Case details</a>
+          </div>
+        </article>
+        <article class="row">
+          <button class="rowhead" type="button" aria-expanded="false" aria-controls="case-3">
+            <strong>Harborline: <span>supply forecasts for a clinic group</span></strong>
+            <span class="year">2020</span>
+          </button>
+          <div class="panel" id="case-3" hidden>
+            <img src="../replica/assets/cube.jpg" alt="Dark cubes edged in blue light">
+            <p>Monday’s list names the items that will run short. The buyer still places the order.</p>
+            <a class="btn" href="#talk"><span class="chev">›</span> Case details</a>
+          </div>
+        </article>
+        <article class="row">
+          <button class="rowhead" type="button" aria-expanded="false" aria-controls="case-4">
+            <strong>Fieldroom: <span>yard routes for a freight coop</span></strong>
+            <span class="year">2019</span>
+          </button>
+          <div class="panel" id="case-4" hidden>
+            <img src="../replica/assets/board.jpg" alt="A bare processor on a dark circuit board">
+            <p>Drivers get a shorter loop. The radio is for exceptions, not for the ordinary round.</p>
+            <a class="btn" href="#talk"><span class="chev">›</span> Case details</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="notes" id="notes">
+      <div class="wrap notes-grid">
+        <div>
+          <p class="kicker">› Testimonials</p>
+          <h2>Everything <span class="hot">you need</span><br>to know about our<br>happy <span class="stroke">feedback</span></h2>
+          <div class="globe-wrap">
+            <div class="globe" aria-hidden="true"></div>
+            <div class="faces">
+              <img src="../replica/assets/lena.jpg" alt="">
+              <img src="../replica/assets/jonah.jpg" alt="">
+              <div><b>5k+</b><span>Happy customers</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <article class="quote">
+            <p>“The model sits in the job our clerks already do. We stopped pasting notes between tools.”</p>
+            <div class="who">
+              <img src="../replica/assets/lena.jpg" alt="Portrait of Lena Voss">
+              <div><b>Lena Voss</b><span>Desk lead, Quill Press</span></div>
+              <span class="stars" aria-label="5 stars">★★★★★</span>
+            </div>
+          </article>
+          <article class="quote">
+            <p>“Forecasts land on Monday with the names attached. The week starts quieter.”</p>
+            <div class="who">
+              <img src="../replica/assets/jonah.jpg" alt="Portrait of Jonah Pell">
+              <div><b>Jonah Pell</b><span>Partner, Harborline</span></div>
+              <span class="stars" aria-label="5 stars">★★★★★</span>
+            </div>
+          </article>
+          <article class="quote">
+            <p>“They drew the yard as a map the drivers trust. The first week the radio went quiet.”</p>
+            <div class="who">
+              <img src="../replica/assets/ade.jpg" alt="Portrait of Ade Moss">
+              <div><b>Ade Moss</b><span>Design, Fieldroom</span></div>
+              <span class="stars" aria-label="5 stars">★★★★★</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="talkband" id="talk">
+      <div class="wrap talkbox">
+        <div>
+          <p class="kicker">› Contact</p>
+          <h2>Tell us the job the model should take.</h2>
+          <p class="lede" style="margin-top:12px">A note to desk@orlo.example. Your mail app opens with the brief. We do not store it here.</p>
+        </div>
+        <form id="brief">
+          <input name="name" required placeholder="Name" aria-label="Name">
+          <input name="email" type="email" required placeholder="Email" aria-label="Email">
+          <textarea name="note" required placeholder="The job, the tool it sits in, the person who can turn it off." aria-label="Note"></textarea>
+          <button class="btn" type="submit"><span class="chev">›</span> Send the brief</button>
+          <p class="sent" id="sent" hidden>Opening your mail app with the brief.</p>
+        </form>
+      </div>
+    </section>
+
+    <p class="billboard">Models for the work that used to wait.</p>
+    <footer>
+      <div class="wrap foot">
+        <a class="mark" href="#top">
+          <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#ff3b30"/><path d="M9 8h8.2L13 16h7.2L12.2 24H9.4L14 16H9z" fill="#fff"/></svg>
+          Orlo
+        </a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <span class="grow">London · desk@orlo.example</span>
+      </div>
+    </footer>
+  </div>
+</div>
+<a class="float" href="#talk">Let’s<br>talk now</a>
+<script>
+  const index = [
+    ["Home", "#top"],
+    ["About", "#about"],
+    ["Services", "#services"],
+    ["Work", "#work"],
+    ["Contact", "#talk"],
+    ["Strategy", "#services"],
+    ["Language", "#services"],
+    ["Models", "#about"]
+  ];
+  const q = document.getElementById("q");
+  const hits = document.getElementById("hits");
+  q.addEventListener("input", function () {
+    const term = q.value.trim().toLowerCase();
+    hits.replaceChildren();
+    if (!term) { hits.hidden = true; return; }
+    const found = index.filter(function (item) { return item[0].toLowerCase().includes(term); });
+    if (!found.length) { hits.hidden = true; return; }
+    found.forEach(function (item) {
+      const a = document.createElement("a");
+      a.href = item[1];
+      a.textContent = item[0];
+      a.addEventListener("click", function () { hits.hidden = true; q.value = ""; });
+      hits.appendChild(a);
+    });
+    hits.hidden = false;
+  });
+  document.querySelectorAll(".tabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tabs button").forEach(function (b) { b.setAttribute("aria-selected", "false"); });
+      btn.setAttribute("aria-selected", "true");
+      ["pane-m", "pane-v", "pane-e"].forEach(function (id) {
+        document.getElementById(id).hidden = true;
+      });
+      document.getElementById(btn.getAttribute("aria-controls")).hidden = false;
+    });
+  });
+  document.querySelectorAll(".more").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const extra = btn.parentElement.querySelector(".extra");
+      extra.hidden = !extra.hidden;
+      btn.textContent = extra.hidden ? "Read more" : "Show less";
+    });
+  });
+  document.querySelectorAll(".rowhead").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      document.querySelectorAll(".rowhead").forEach(function (b) {
+        b.setAttribute("aria-expanded", "false");
+        document.getElementById(b.getAttribute("aria-controls")).hidden = true;
+      });
+      if (!open) {
+        btn.setAttribute("aria-expanded", "true");
+        document.getElementById(btn.getAttribute("aria-controls")).hidden = false;
+      }
+    });
+  });
+  document.getElementById("brief").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const body = "From: " + data.get("name") + " <" + data.get("email") + ">\n\n" + data.get("note");
+    document.getElementById("sent").hidden = false;
+    window.location.href = "mailto:desk@orlo.example?subject=" + encodeURIComponent("Orlo brief") + "&body=" + encodeURIComponent(body);
+  });
+  const header = document.querySelector("header");
+  const onScroll = function () { header.classList.toggle("is-stuck", window.scrollY > 8); };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("menu");
+  toggle.addEventListener("click", function () {
+    const open = menu.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  menu.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      menu.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>
+  <script src="../replica/pages.js"></script>
+</body>
+</html>

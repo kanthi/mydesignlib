@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orchestrix — Your whole stack, running on autopilot.</title>
+  <meta name="description" content="Orchestrix connects your data, models and tools into self-running AI workflows. Build once, deploy anywhere, and see every run as it happens." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* -------------------------------------------------------------
+       CSS TOKENS & RESET
+       ------------------------------------------------------------- */
+    :root {
+      --bg: #f5f7fa;
+      --bg-alt: #ffffff;
+      --bg-subtle: #f8fafc;
+      --surface: #ffffff;
+      --surface-border: #e2e8f0;
+      --surface-border-subtle: #edf2f7;
+      --surface-glass: rgba(255, 255, 255, 0.88);
+      --ink-950: #0d1120;
+      --ink-900: #111827;
+      --ink-800: #1e293b;
+      --ink-700: #334155;
+      --ink-600: #475569;
+      --ink-400: #94a3b8;
+      --ink-300: #cbd5e1;
+      --blue-600: #2b41f7;
+      --blue-700: #1d33d8;
+      --blue-500: #3b82f6;
+      --blue-400: #60a5fa;
+      --blue-200: #bfdbfe;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --emerald-500: #10b981;
+      --emerald-50: #ecfdf5;
+      --amber-500: #f59e0b;
+      --amber-50: #fffbeb;
+      --purple-500: #8b5cf6;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --shadow-nav: 0 12px 36px -8px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      --shadow-btn: 0 12px 28px -4px rgba(43, 65, 247, 0.42);
+      --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-float: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: #f7f8fa;
+      color: var(--ink-800);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR (FLOATING PILL SPEC)
+       ------------------------------------------------------------- */
+    .nav-wrapper {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .nav-pill {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 1180px;
+      height: 64px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-nav);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px 8px 24px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--blue-600);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(43, 65, 247, 0.35);
+      flex-shrink: 0;
+    }
+
+    .nav-logo-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .nav-brand-text {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink-950);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-600);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s ease;
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav-link:hover {
+      color: var(--ink-950);
+    }
+
+    .nav-link svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item-dropdown:hover .nav-link svg {
+      transform: rotate(180deg);
+    }
+
+    /* Mega menu dropdown preview */
+    .nav-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      width: 440px;
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-float);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .nav-item-dropdown:hover .nav-dropdown {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(4px);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background: var(--blue-50);
+    }
+
+    .dropdown-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dropdown-item:hover .dropdown-icon {
+      background: var(--blue-600);
+      color: #ffffff;
+    }
+
+    .dropdown-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink-950);
+    }
+
+    .dropdown-desc {
+      font-size: 12px;
+      color: var(--ink-600);
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-signin {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-700);
+      transition: color 0.2s ease;
+    }
+
+    .nav-signin:hover {
+      color: var(--ink-950);
+    }
+
+    .btn-primary-pill {
+      background: var(--blue-600);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 24px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 6px 18px rgba(43, 65, 247, 0.36);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-pill:hover {
+      background: var(--blue-700);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(43, 65, 247, 0.45);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-800);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION (THE SIGNATURE REFERENCE)
+       ------------------------------------------------------------- */
+    .hero-section {
+      padding-top: 150px;
+      padding-bottom: 90px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(540px, 1.15fr) 1.25fr;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .hero-content {
+      max-width: 600px;
+      z-index: 2;
+    }
+
+    /* Badge */
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      padding: 5px 16px 5px 6px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      margin-bottom: 28px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ink-800);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .hero-badge-pill:hover {
+      border-color: var(--blue-200);
+      box-shadow: 0 4px 14px rgba(43, 65, 247, 0.1);
+    }
+
+    .hero-badge-tag {
+      background: var(--blue-600);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+
+    /* Headline */
+    .hero-title {
+      font-size: clamp(38px, 4.4vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--ink-950);
+      margin-bottom: 24px;
+    }
+
+    .hero-title-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .hero-title .text-blue {
+      color: var(--blue-600);
+      position: relative;
+      display: inline;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      line-height: 1.62;
+      color: var(--ink-600);
+      margin-bottom: 36px;
+      max-width: 520px;
+      font-weight: 450;
+    }
+
+    /* CTA buttons */
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      background: var(--blue-600);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 650;
+      padding: 16px 32px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-btn);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-hero-primary:hover {
+      background: var(--blue-700);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px -4px rgba(43, 65, 247, 0.52);
+    }
+
+    .btn-hero-secondary {
+      background: #ffffff;
+      color: var(--ink-950);
+      font-size: 16px;
+      font-weight: 650;
+      padding: 16px 28px;
+      border: 1px solid var(--surface-border);
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-hero-secondary:hover {
+      background: var(--surface-subtle);
+      border-color: var(--ink-300);
+      transform: translateY(-1px);
+    }
+
+    /* Trust signals */
+    .hero-trust-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      font-weight: 550;
+      color: var(--ink-600);
+    }
+
+    .trust-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--blue-600);
+      flex-shrink: 0;
+    }
+
+    /* -------------------------------------------------------------
+       HERO VISUAL: THE 3D ISOMETRIC ARCHITECTURAL STACK
+       ------------------------------------------------------------- */
+    .hero-visual-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 600px;
+      perspective: 1400px;
+    }
+
+    .isometric-stage {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-isometric-img {
+      width: 100%;
+      height: auto;
+      max-width: 680px;
+      display: block;
+      filter: drop-shadow(0 24px 48px rgba(43, 65, 247, 0.12));
+      pointer-events: none;
+      user-select: none;
+      animation: levitateIsometric 5s ease-in-out infinite;
+    }
+
+    @keyframes levitateIsometric {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Interactive layer HUD overlay */
+    .stack-hud {
+      display: none;
+    }
+
+    .telemetry-floating-card {
+      display: none;
+    }
+
+    @keyframes floatTelemetry {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .telemetry-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-400);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .telemetry-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-500);
+      box-shadow: 0 0 6px var(--emerald-500);
+    }
+
+    .telemetry-val {
+      font-size: 15px;
+      font-weight: 750;
+      color: var(--ink-950);
+      font-family: var(--font-mono);
+    }
+
+    .telemetry-sub {
+      font-size: 11px;
+      color: var(--ink-600);
+      margin-top: 4px;
+    }
+
+    /* SVG Isometric Stack Styles */
+    .iso-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* Levitating Slabs */
+    .iso-slab-agents {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s;
+      cursor: pointer;
+      animation: levitateAgents 4.5s ease-in-out infinite;
+    }
+
+    .iso-slab-models {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s;
+      cursor: pointer;
+      animation: levitateModels 4.5s ease-in-out infinite 0.7s;
+    }
+
+    .iso-slab-data {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s;
+      cursor: pointer;
+    }
+
+    @keyframes levitateAgents {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes levitateModels {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Pulse bus light streaks */
+    .pulse-bus-bead {
+      animation: movePulseBead 3.2s linear infinite;
+    }
+
+    @keyframes movePulseBead {
+      0% { offset-distance: 0%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { offset-distance: 100%; opacity: 0; }
+    }
+
+    /* Satellites orbiting */
+    .orbit-satellite-1 {
+      animation: orbitMotion1 12s linear infinite;
+    }
+
+    .orbit-satellite-2 {
+      animation: orbitMotion2 15s linear infinite reverse;
+    }
+
+    /* Node pulse */
+    .pulse-node {
+      animation: nodeGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes nodeGlow {
+      0% { r: 5px; opacity: 0.8; }
+      100% { r: 7.5px; opacity: 1; filter: drop-shadow(0 0 8px #3b82f6); }
+    }
+
+    /* -------------------------------------------------------------
+       SECTION COMMON STYLES
+       ------------------------------------------------------------- */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-kicker {
+      font-size: 12.5px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue-600);
+      margin-bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-kicker-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue-600);
+    }
+
+    .section-heading {
+      font-size: clamp(30px, 3.8vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: var(--ink-950);
+      margin-bottom: 18px;
+    }
+
+    .section-subheading {
+      font-size: 17.5px;
+      line-height: 1.6;
+      color: var(--ink-600);
+      max-width: 620px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .center-sub {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* -------------------------------------------------------------
+       LIVE PIPELINE SIMULATOR ("SEE EVERY RUN AS IT HAPPENS")
+       ------------------------------------------------------------- */
+    .pipeline-section {
+      background: #ffffff;
+      border-top: 1px solid var(--surface-border-subtle);
+      border-bottom: 1px solid var(--surface-border-subtle);
+    }
+
+    .simulator-card {
+      margin-top: 56px;
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .simulator-topbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--surface-border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .simulator-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sim-tab-btn {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 650;
+      border-radius: var(--radius-full);
+      background: var(--surface-subtle);
+      color: var(--ink-700);
+      border: 1px solid var(--surface-border);
+      transition: all 0.2s ease;
+    }
+
+    .sim-tab-btn.active {
+      background: var(--blue-600);
+      color: #ffffff;
+      border-color: var(--blue-600);
+      box-shadow: 0 4px 12px rgba(43, 65, 247, 0.3);
+    }
+
+    .simulator-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: var(--emerald-50);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      font-size: 12.5px;
+      font-weight: 650;
+      color: #065f46;
+      font-family: var(--font-mono);
+    }
+
+    .sim-body {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      min-height: 480px;
+    }
+
+    .sim-visual-flow {
+      padding: 36px 32px;
+      border-right: 1px solid var(--surface-border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      background: #ffffff;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 38px;
+      left: 18px;
+      bottom: 0px;
+      width: 2px;
+      background: var(--blue-100);
+    }
+
+    .flow-step.active:not(:last-child)::after {
+      background: linear-gradient(to bottom, var(--blue-600), var(--blue-100));
+    }
+
+    .flow-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-600);
+      flex-shrink: 0;
+      z-index: 1;
+      transition: all 0.25s ease;
+    }
+
+    .flow-step.active .flow-icon {
+      background: var(--blue-600);
+      color: #ffffff;
+      border-color: var(--blue-600);
+      box-shadow: 0 4px 14px rgba(43, 65, 247, 0.4);
+    }
+
+    .flow-details {
+      flex: 1;
+    }
+
+    .flow-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .flow-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink-950);
+    }
+
+    .flow-badge {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: var(--surface-subtle);
+      color: var(--ink-600);
+      border: 1px solid var(--surface-border);
+    }
+
+    .flow-step.active .flow-badge {
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border-color: var(--blue-200);
+    }
+
+    .flow-desc {
+      font-size: 13px;
+      color: var(--ink-600);
+      line-height: 1.45;
+    }
+
+    .sim-terminal {
+      background: #0d1120;
+      color: #f8fafc;
+      padding: 28px 24px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .t-red { background: #ef4444; }
+    .t-yellow { background: #eab308; }
+    .t-green { background: #22c55e; }
+
+    .terminal-logs {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .log-time {
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .log-tag {
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    .tag-blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .tag-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .tag-purple { background: rgba(139, 92, 246, 0.2); color: #c084fc; }
+
+    .log-msg {
+      color: #cbd5e1;
+    }
+
+    .sim-actions {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 16px;
+    }
+
+    .btn-rerun {
+      background: var(--blue-600);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-rerun:hover {
+      background: var(--blue-700);
+    }
+
+    /* -------------------------------------------------------------
+       BENTO GRID: 4-PILLAR AUTONOMOUS ARCHITECTURE
+       ------------------------------------------------------------- */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .bento-card {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-float);
+      border-color: var(--blue-200);
+    }
+
+    .col-7 { grid-column: span 7; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+
+    .bento-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--blue-600);
+      margin-bottom: 14px;
+    }
+
+    .bento-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--ink-950);
+      margin-bottom: 12px;
+    }
+
+    .bento-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-600);
+      margin-bottom: 28px;
+    }
+
+    .bento-visual-swarm {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .swarm-node-card {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+
+    .swarm-node-card:hover {
+      border-color: var(--blue-500);
+      transform: translateY(-2px);
+    }
+
+    .swarm-node-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .swarm-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-family: var(--font-mono);
+    }
+
+    .swarm-status {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald-500);
+    }
+
+    .swarm-role {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-950);
+    }
+
+    .swarm-stat {
+      font-size: 11px;
+      color: var(--ink-400);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .bento-visual-router {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .router-model-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .model-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-950);
+    }
+
+    .model-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .model-metrics {
+      display: flex;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-600);
+    }
+
+    .bento-visual-fabric {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+    }
+
+    .fabric-stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-700);
+    }
+
+    .fabric-progress-bar {
+      height: 8px;
+      background: var(--surface-border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .fabric-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue-600), var(--blue-400));
+      border-radius: var(--radius-full);
+      width: 78%;
+    }
+
+    /* -------------------------------------------------------------
+       METRICS & TELEMETRY PROOF BAR
+       ------------------------------------------------------------- */
+    .metrics-section {
+      background: #ffffff;
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 70px 0;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .metric-card {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .metric-number {
+      font-size: clamp(36px, 4vw, 54px);
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      color: var(--ink-950);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .metric-number .accent {
+      color: var(--blue-600);
+    }
+
+    .metric-label {
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--ink-800);
+      margin-bottom: 4px;
+    }
+
+    .metric-detail {
+      font-size: 12.5px;
+      color: var(--ink-400);
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVE PRICING CALCULATOR & TIERS
+       ------------------------------------------------------------- */
+    .pricing-section {
+      background: var(--bg);
+    }
+
+    .pricing-toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 36px;
+      margin-bottom: 56px;
+    }
+
+    .pricing-toggle-btn {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-full);
+      padding: 5px;
+      display: flex;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .p-toggle-option {
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--ink-600);
+      transition: all 0.2s ease;
+    }
+
+    .p-toggle-option.active {
+      background: var(--blue-600);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(43, 65, 247, 0.3);
+    }
+
+    .save-badge {
+      background: var(--emerald-50);
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      background: #ffffff;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-xl);
+      padding: 40px 32px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-float);
+    }
+
+    .price-card.featured {
+      border: 2px solid var(--blue-600);
+      box-shadow: 0 16px 40px -8px rgba(43, 65, 247, 0.16);
+    }
+
+    .featured-pill {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--blue-600);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 12px rgba(43, 65, 247, 0.4);
+    }
+
+    .tier-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ink-950);
+      margin-bottom: 6px;
+    }
+
+    .tier-desc {
+      font-size: 13.5px;
+      color: var(--ink-600);
+      min-height: 42px;
+    }
+
+    .tier-price-row {
+      margin: 28px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .tier-amount {
+      font-size: 44px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      color: var(--ink-950);
+    }
+
+    .tier-period {
+      font-size: 14px;
+      color: var(--ink-400);
+      font-weight: 550;
+    }
+
+    .tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .tier-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink-700);
+    }
+
+    .tier-feature-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--blue-600);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .btn-tier-cta {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.2s ease;
+      border: 1px solid var(--surface-border);
+      background: var(--surface-subtle);
+      color: var(--ink-950);
+    }
+
+    .btn-tier-cta:hover {
+      background: var(--ink-950);
+      color: #ffffff;
+    }
+
+    .price-card.featured .btn-tier-cta {
+      background: var(--blue-600);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 8px 20px rgba(43, 65, 247, 0.35);
+    }
+
+    .price-card.featured .btn-tier-cta:hover {
+      background: var(--blue-700);
+      box-shadow: 0 12px 28px rgba(43, 65, 247, 0.45);
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVE FAQ ACCORDION
+       ------------------------------------------------------------- */
+    .faq-section {
+      background: #ffffff;
+    }
+
+    .faq-container {
+      max-width: 820px;
+      margin: 56px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .faq-item.open {
+      border-color: var(--blue-200);
+      background: #ffffff;
+      box-shadow: 0 6px 20px -4px rgba(43, 65, 247, 0.08);
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink-950);
+      background: none;
+    }
+
+    .faq-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-600);
+      transition: transform 0.25s ease, background 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--blue-600);
+      color: #ffffff;
+      border-color: var(--blue-600);
+    }
+
+    .faq-content {
+      padding: 0 26px 24px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-600);
+      display: none;
+    }
+
+    .faq-item.open .faq-content {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* -------------------------------------------------------------
+       FINAL CLOSING CTA
+       ------------------------------------------------------------- */
+    .cta-banner-section {
+      padding: 80px 0 120px;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, #0d1120 0%, #1e293b 60%, #1e3a8a 100%);
+      border-radius: var(--radius-xl);
+      padding: 80px 48px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(13, 17, 32, 0.4);
+    }
+
+    .cta-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(43, 65, 247, 0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-size: clamp(34px, 4.4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-subtitle {
+      font-size: 18px;
+      color: #cbd5e1;
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .cta-input {
+      flex: 1;
+      min-width: 240px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .cta-input:focus {
+      border-color: var(--blue-400);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .cta-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .btn-cta-submit {
+      background: var(--blue-600);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 16px 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(43, 65, 247, 0.5);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-cta-submit:hover {
+      background: var(--blue-500);
+      transform: translateY(-2px);
+    }
+
+    .cta-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 13px;
+      color: #94a3b8;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+       ------------------------------------------------------------- */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--surface-border);
+      padding: 80px 0 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col-brand p {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--ink-600);
+      max-width: 280px;
+      line-height: 1.6;
+    }
+
+    .footer-status-tag {
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #047857;
+      background: var(--emerald-50);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+    }
+
+    .footer-col-title {
+      font-size: 14px;
+      font-weight: 750;
+      color: var(--ink-950);
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-link {
+      font-size: 13.5px;
+      color: var(--ink-600);
+      transition: color 0.15s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--blue-600);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--surface-border-subtle);
+      padding-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--ink-400);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* -------------------------------------------------------------
+       DEMO MODAL
+       ------------------------------------------------------------- */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 17, 32, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      max-width: 800px;
+      width: 100%;
+      border: 1px solid var(--surface-border);
+      box-shadow: var(--shadow-float);
+      overflow: hidden;
+      transform: scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open .modal-dialog {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink-950);
+    }
+
+    .modal-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-600);
+    }
+
+    .modal-body {
+      padding: 32px 28px;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+      .hero-content {
+        max-width: 100%;
+        text-align: center;
+      }
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-cta-row {
+        justify-content: center;
+      }
+      .hero-trust-row {
+        justify-content: center;
+      }
+      .sim-body {
+        grid-template-columns: 1fr;
+      }
+      .sim-visual-flow {
+        border-right: none;
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .col-7, .col-5, .col-6 {
+        grid-column: span 12;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .hero-section {
+        padding-top: 120px;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<style>body.study-shot .study{display:none !important}</style>
+<div class="study" style="position:sticky;top:0;z-index:2000;background:#2B41F7;color:#FFFFFF;font:12px/1.4 system-ui,sans-serif;padding:8px 16px;display:flex;justify-content:space-between;gap:12px">
+<a href="../index.html" style="color:inherit;text-decoration:none">Study</a><span>Orchestrix replica · practice</span>
+</div>
+<script>if(new URLSearchParams(location.search).has("shot"))document.body.classList.add("study-shot")</script>
+
+
+  <!-- FLOATING PILL NAVBAR -->
+  <header class="nav-wrapper">
+    <nav class="nav-pill">
+      <a href="#" class="nav-brand" aria-label="Orchestrix Home">
+        <div class="nav-logo-mark">
+          <!-- Stacked layered rhombuses mark -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ffffff" />
+            <path d="M2 12L12 17L22 12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 17L12 22L22 17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <span class="nav-brand-text">Orchestrix</span>
+      </a>
+
+      <ul class="nav-links">
+        <li class="nav-item-dropdown">
+          <a href="#architecture" class="nav-link">
+            Product
+            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" /></svg>
+          </a>
+          <div class="nav-dropdown">
+            <a href="#architecture" class="dropdown-item">
+              <div class="dropdown-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-title">Agents Engine 2.0</div>
+                <div class="dropdown-desc">Autonomous multi-agent swarms with deterministic consensus handoffs.</div>
+              </div>
+            </a>
+            <a href="#pipeline" class="dropdown-item">
+              <div class="dropdown-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-title">Model Router & Fallback</div>
+                <div class="dropdown-desc">Dynamic latency and cost optimizer across 15+ frontier models.</div>
+              </div>
+            </a>
+            <a href="#pipeline" class="dropdown-item">
+              <div class="dropdown-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-title">Vector & Graph Fabric</div>
+                <div class="dropdown-desc">Sub-4ms hybrid semantic vector retrieval and temporal memory graph.</div>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="nav-item-dropdown">
+          <a href="#pipeline" class="nav-link">
+            Solutions
+            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" /></svg>
+          </a>
+          <div class="nav-dropdown">
+            <a href="#pipeline" class="dropdown-item">
+              <div class="dropdown-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-title">Autonomous DevOps</div>
+                <div class="dropdown-desc">Self-healing pipelines, test generation, and pull request audits.</div>
+              </div>
+            </a>
+            <a href="#pipeline" class="dropdown-item">
+              <div class="dropdown-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div>
+                <div class="dropdown-title">Financial Reasoning & Audit</div>
+                <div class="dropdown-desc">Deterministic accounting anomaly reconciliation with eBPF proofs.</div>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#faq" class="nav-link">Docs</a></li>
+        <li><a href="#pipeline" class="nav-link">Changelog</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#pricing" class="nav-signin">Sign in</a>
+        <a href="#cta" class="btn-primary-pill">Get started</a>
+      </div>
+
+      <button class="mobile-menu-btn" aria-label="Toggle menu" onclick="toggleMobileNav()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <!-- HERO LEFT -->
+      <div class="hero-content">
+        <a href="#architecture" class="hero-badge-pill">
+          <span class="hero-badge-tag">NEW</span>
+          <span>Orchestrix Agents 2.0 is live &rarr;</span>
+        </a>
+
+        <h1 class="hero-title">
+          <span class="hero-title-line">Your whole stack,</span>
+          <span class="hero-title-line">running on <span class="text-blue">autopilot.</span></span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Orchestrix connects your data, models and tools into self-running AI workflows.
+          Build once, deploy anywhere, and see every run as it happens.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="#cta" class="btn-hero-primary">
+            Start building free &rarr;
+          </a>
+          <button class="btn-hero-secondary" onclick="openDemoModal()">
+            Watch 2 min demo
+          </button>
+        </div>
+
+        <div class="hero-trust-row">
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>No credit card</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>SOC 2 Type II</span>
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Live in 5 minutes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO RIGHT: 3D ISOMETRIC ARCHITECTURAL STACK -->
+      <div class="hero-visual-container" id="heroVisualArea">
+        <div class="isometric-stage" id="isoStage">
+          <!-- Live Telemetry Inspector Card -->
+          <div class="telemetry-floating-card" id="telemetryCard">
+            <div class="telemetry-title">
+              <span id="telemetryLayerName">AGENTS TIER</span>
+              <span class="telemetry-status-dot"></span>
+            </div>
+            <div class="telemetry-val" id="telemetryMetric">64 Workers Active</div>
+            <div class="telemetry-sub" id="telemetryDetail">Handoff latency: 14.2ms • Consensus: 100%</div>
+          </div>
+
+          <!-- 3D ISOMETRIC ARCHITECTURAL RENDER -->
+          <img 
+            class="hero-isometric-img" 
+            id="isometricImg" 
+            src="isometric-stack.png" 
+            alt="Orchestrix Autonomous 3-Tier Multi-Agent Architectural Stack" 
+            width="950" 
+            height="770" 
+          />
+
+          <!-- Interactive Stack Inspector HUD Buttons -->
+          <div class="stack-hud">
+            <button class="hud-btn active" onclick="selectLayer('all', event)">All Stack</button>
+            <button class="hud-btn" onclick="selectLayer('agents', event)">01. Agents</button>
+            <button class="hud-btn" onclick="selectLayer('models', event)">02. Models</button>
+            <button class="hud-btn" onclick="selectLayer('data', event)">03. Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE PIPELINE SIMULATOR ("SEE EVERY RUN AS IT HAPPENS") -->
+  <section class="pipeline-section" id="pipeline">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-kicker">
+          <span class="section-kicker-dot"></span>
+          REAL-TIME EXECUTION ENGINE
+        </div>
+        <h2 class="section-heading">See every run as it happens.</h2>
+        <p class="section-subheading center-sub">
+          Orchestrix dispatches complex user instructions across hierarchical agents, dynamically choosing the fastest and cheapest models with continuous deterministic validation.
+        </p>
+      </div>
+
+      <div class="simulator-card">
+        <div class="simulator-topbar">
+          <div class="simulator-tabs">
+            <button class="sim-tab-btn active" onclick="switchPipeline('devops', this)">Autonomous CI & Patching</button>
+            <button class="sim-tab-btn" onclick="switchPipeline('financial', this)">Real-Time Anomaly Audit</button>
+            <button class="sim-tab-btn" onclick="switchPipeline('support', this)">High-Volume Agent Handoff</button>
+          </div>
+          <div class="simulator-status-badge">
+            <span class="telemetry-status-dot"></span>
+            LIVE EXECUTION • 0 ERRORS
+          </div>
+        </div>
+
+        <div class="sim-body">
+          <!-- Flow steps on left -->
+          <div class="sim-visual-flow" id="simFlowContainer">
+            <div class="flow-step active" id="step1">
+              <div class="flow-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="flow-details">
+                <div class="flow-title-row">
+                  <div class="flow-title">1. Data Ingestion & Semantic Retrieval</div>
+                  <span class="flow-badge">3.2ms</span>
+                </div>
+                <div class="flow-desc">Hybrid vector-graph recall fetches 18 relevant source snippets and test assertions from enterprise vector fabric.</div>
+              </div>
+            </div>
+
+            <div class="flow-step active" id="step2">
+              <div class="flow-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <div class="flow-details">
+                <div class="flow-title-row">
+                  <div class="flow-title">2. Model Routing & Ensembling</div>
+                  <span class="flow-badge">18ms</span>
+                </div>
+                <div class="flow-desc">Router selects Claude 3.5 Sonnet for code logic, falls back to GPT-4o for diff verification with 64% token discount.</div>
+              </div>
+            </div>
+
+            <div class="flow-step active" id="step3">
+              <div class="flow-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="flow-details">
+                <div class="flow-title-row">
+                  <div class="flow-title">3. Multi-Agent Swarm Synthesis</div>
+                  <span class="flow-badge">42ms</span>
+                </div>
+                <div class="flow-desc">Planner agent breaks task into sub-tasks; Worker agent generates code; Critic agent runs sandboxed unit tests.</div>
+              </div>
+            </div>
+
+            <div class="flow-step active" id="step4">
+              <div class="flow-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flow-details">
+                <div class="flow-title-row">
+                  <div class="flow-title">4. Verification & Sandboxed Rollback</div>
+                  <span class="flow-badge">PASS</span>
+                </div>
+                <div class="flow-desc">Zero-hallucination verification matrix passed 48/48 edge-cases. Atomic state commit triggered.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terminal on right -->
+          <div class="sim-terminal">
+            <div>
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <span class="t-dot t-red"></span>
+                  <span class="t-dot t-yellow"></span>
+                  <span class="t-dot t-green"></span>
+                </div>
+                <div style="font-size: 11px; color: #94a3b8;">orchestrix-autopilot-v2.4.log</div>
+              </div>
+
+              <div class="terminal-logs" id="terminalLogs">
+                <div class="log-line">
+                  <span class="log-time">19:32:01.104</span>
+                  <span class="log-tag tag-blue">[INGEST]</span>
+                  <span class="log-msg">Resolved 18 context embeddings in 3.2ms (cosine sim > 0.88)</span>
+                </div>
+                <div class="log-line">
+                  <span class="log-time">19:32:01.122</span>
+                  <span class="log-tag tag-purple">[ROUTER]</span>
+                  <span class="log-msg">Selected model: Claude 3.5 Sonnet (Route: Code-Synthesis-Optimized)</span>
+                </div>
+                <div class="log-line">
+                  <span class="log-time">19:32:01.164</span>
+                  <span class="log-tag tag-blue">[SWARM]</span>
+                  <span class="log-msg">Spawned 3 sub-agents: Planner (ID: #401), Synthesizer (#402), Auditor (#403)</span>
+                </div>
+                <div class="log-line">
+                  <span class="log-time">19:32:01.210</span>
+                  <span class="log-tag tag-green">[VERIFY]</span>
+                  <span class="log-msg">Sandbox test runner completed: 48 tests passed (0 flakes, 0 regressions)</span>
+                </div>
+                <div class="log-line">
+                  <span class="log-time">19:32:01.248</span>
+                  <span class="log-tag tag-green">[COMMIT]</span>
+                  <span class="log-msg">Atomic transaction committed. Latency total: 84.6ms</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sim-actions">
+              <span style="font-size: 11px; color: #64748b;">Execution runtime: AWS us-east-1 Enclave</span>
+              <button class="btn-rerun" onclick="rerunSimulation()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Re-run Pipeline
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO GRID: 4-PILLAR AUTONOMOUS ARCHITECTURE -->
+  <section id="architecture">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-kicker">
+          <span class="section-kicker-dot"></span>
+          AUTONOMOUS PILLARS
+        </div>
+        <h2 class="section-heading">Built from the ground up for agentic execution.</h2>
+        <p class="section-subheading center-sub">
+          Conventional LLM wrappers break under load. Orchestrix combines formal state machines with elastic model routing and unified memory.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento 1: Agent Swarms (Wide) -->
+        <div class="bento-card col-7">
+          <div>
+            <div class="bento-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              01. HIERARCHICAL AGENT SWARMS
+            </div>
+            <h3 class="bento-title">Autonomous planner-worker consensus with 18ms handoffs.</h3>
+            <p class="bento-desc">
+              Coordinate dozens of specialized agents without deadlock. Orchestrix guarantees deterministic state synchronization, distributed lock management, and automated dead-letter retries.
+            </p>
+          </div>
+
+          <div class="bento-visual-swarm">
+            <div class="swarm-node-card">
+              <div class="swarm-node-head">
+                <span class="swarm-tag">PLANNER</span>
+                <span class="swarm-status"></span>
+              </div>
+              <div class="swarm-role">Task Architect</div>
+              <div class="swarm-stat">Queue: 0 • P99: 12ms</div>
+            </div>
+            <div class="swarm-node-card">
+              <div class="swarm-node-head">
+                <span class="swarm-tag">WORKER</span>
+                <span class="swarm-status"></span>
+              </div>
+              <div class="swarm-role">Code Synthesizer</div>
+              <div class="swarm-stat">3,240 tok/sec</div>
+            </div>
+            <div class="swarm-node-card">
+              <div class="swarm-node-head">
+                <span class="swarm-tag">CRITIC</span>
+                <span class="swarm-status"></span>
+              </div>
+              <div class="swarm-role">Formal Auditor</div>
+              <div class="swarm-stat">Zero hallucinations</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 2: Model Router (5-col) -->
+        <div class="bento-card col-5">
+          <div>
+            <div class="bento-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              02. MULTI-MODEL ROUTER
+            </div>
+            <h3 class="bento-title">Automatic cost & latency optimization across 15+ models.</h3>
+            <p class="bento-desc">
+              Never get locked into a single provider. Our adaptive router sends queries to the model that offers the best speed-to-cost ratio for each prompt complexity.
+            </p>
+          </div>
+
+          <div class="bento-visual-router">
+            <div class="router-model-row">
+              <span class="model-name"><span class="model-dot" style="background:#2563eb;"></span>Claude 3.5 Sonnet</span>
+              <span class="model-metrics"><span>18ms TTFT</span> <span style="color:#059669;">-48% Cost</span></span>
+            </div>
+            <div class="router-model-row">
+              <span class="model-name"><span class="model-dot" style="background:#10b981;"></span>OpenAI GPT-4o</span>
+              <span class="model-metrics"><span>22ms TTFT</span> <span style="color:#059669;">Failover Active</span></span>
+            </div>
+            <div class="router-model-row">
+              <span class="model-name"><span class="model-dot" style="background:#8b5cf6;"></span>Llama 3.3 70B (VPC)</span>
+              <span class="model-metrics"><span>9ms TTFT</span> <span style="color:#059669;">-82% Cost</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: Data Fabric (6-col) -->
+        <div class="bento-card col-6">
+          <div>
+            <div class="bento-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              03. VECTOR & MEMORY FABRIC
+            </div>
+            <h3 class="bento-title">Sub-4ms hybrid semantic recall with temporal graph state.</h3>
+            <p class="bento-desc">
+              Equip your agents with lifelong conversational memory and high-throughput vector indexation that syncs with Postgres, Snowflake, and BigQuery without manual ETL.
+            </p>
+          </div>
+
+          <div class="bento-visual-fabric">
+            <div class="fabric-stat-row">
+              <span>HNSW Vector Index Throughput</span>
+              <span style="font-family:var(--font-mono); color:var(--blue-600);">48,200 QPS</span>
+            </div>
+            <div class="fabric-progress-bar">
+              <div class="fabric-progress-fill" style="width: 86%;"></div>
+            </div>
+            <div class="fabric-stat-row">
+              <span>Median P99 Query Latency</span>
+              <span style="font-family:var(--font-mono); color:#059669;">3.8ms</span>
+            </div>
+            <div class="fabric-progress-bar">
+              <div class="fabric-progress-fill" style="width: 95%; background:#10b981;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 4: SOC 2 Sandboxing (6-col) -->
+        <div class="bento-card col-6">
+          <div>
+            <div class="bento-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              04. SOC 2 TYPE II SECURITY
+            </div>
+            <h3 class="bento-title">eBPF micro-VM sandbox isolation with zero data retention.</h3>
+            <p class="bento-desc">
+              Every workflow step executes in an ephemeral, memory-isolated micro-VM. Zero user prompts or enterprise documents are stored or utilized to train third-party foundation models.
+            </p>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px; align-items:center;">
+            <div style="width:48px; height:48px; border-radius:12px; background:var(--emerald-50); border:1px solid rgba(16,185,129,0.3); display:flex; align-items:center; justify-content:center; color:#059669; flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink-950);">Zero-Retention Enclave Protocol</div>
+              <div style="font-size:12px; color:var(--ink-600); margin-top:2px;">Audited by Schellman • HIPAA, ISO 27001, and SOC 2 Type II compliant.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELEMETRY & PROOF METRICS BAR -->
+  <section class="metrics-section">
+    <div class="container metrics-grid">
+      <div class="metric-card">
+        <div class="metric-number">99.98<span class="accent">%</span></div>
+        <div class="metric-label">Execution Reliability</div>
+        <div class="metric-detail">Deterministic verification SLA</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">18.4<span class="accent">M+</span></div>
+        <div class="metric-label">Daily Workflow Runs</div>
+        <div class="metric-detail">Processed across 42 global regions</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">12<span class="accent">ms</span></div>
+        <div class="metric-label">Median Latency P99</div>
+        <div class="metric-detail">Sub-second swarm consensus</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">4.4<span class="accent">x</span></div>
+        <div class="metric-label">Cost Reduction</div>
+        <div class="metric-detail">Vs raw un-routed LLM API bills</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING MATRIX -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-kicker">
+          <span class="section-kicker-dot"></span>
+          TRANSPARENT PLANS
+        </div>
+        <h2 class="section-heading">Predictable pricing for autonomous scale.</h2>
+        <p class="section-subheading center-sub">
+          Start for free on our developer tier. Upgrade when your swarms enter production.
+        </p>
+      </div>
+
+      <!-- Billing Toggle -->
+      <div class="pricing-toggle-wrap">
+        <div class="pricing-toggle-btn">
+          <button class="p-toggle-option active" id="btnMonthly" onclick="setBilling('monthly')">Monthly Billing</button>
+          <button class="p-toggle-option" id="btnAnnual" onclick="setBilling('annual')">Annual Billing</button>
+        </div>
+        <span class="save-badge">Save 20% on Annual</span>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div class="pricing-grid">
+        <!-- Tier 1: Developer -->
+        <div class="price-card">
+          <div>
+            <h3 class="tier-name">Developer</h3>
+            <p class="tier-desc">Free forever for personal agents, prototypes, and local exploration.</p>
+            <div class="tier-price-row">
+              <span class="tier-amount">$0</span>
+              <span class="tier-period">/ month</span>
+            </div>
+            <ul class="tier-features">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>50,000 monthly workflow steps</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Up to 5 autonomous agent swarms</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Standard model routing (Claude & GPT-4o)</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Community Discord & documentation</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#cta" class="btn-tier-cta">Get Started Free</a>
+        </div>
+
+        <!-- Tier 2: Growth (Featured) -->
+        <div class="price-card featured">
+          <div class="featured-pill">MOST POPULAR</div>
+          <div>
+            <h3 class="tier-name">Growth</h3>
+            <p class="tier-desc">For fast-moving AI startups and engineering teams deploying to users.</p>
+            <div class="tier-price-row">
+              <span class="tier-amount" id="growthPrice">$79</span>
+              <span class="tier-period" id="growthPeriod">/ month</span>
+            </div>
+            <ul class="tier-features">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>2,500,000 monthly workflow steps</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Unlimited autonomous agent swarms</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Dynamic multi-model router & instant fallback</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Dedicated vector & graph memory fabric</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>SOC 2 Type II audit logs & exports</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#cta" class="btn-tier-cta">Start 14-Day Free Trial</a>
+        </div>
+
+        <!-- Tier 3: Enterprise -->
+        <div class="price-card">
+          <div>
+            <h3 class="tier-name">Enterprise</h3>
+            <p class="tier-desc">For high-throughput systems, custom fine-tunes, and isolated VPCs.</p>
+            <div class="tier-price-row">
+              <span class="tier-amount" id="entPrice">$499</span>
+              <span class="tier-period" id="entPeriod">/ month</span>
+            </div>
+            <ul class="tier-features">
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Unlimited workflow steps & agents</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Private single-tenant VPC / On-prem enclave</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Zero-data retention guarantee & HIPAA BAA</span>
+              </li>
+              <li class="tier-feature-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>99.99% uptime SLA & dedicated architect</span>
+              </li>
+            </ul>
+          </div>
+          <a href="#cta" class="btn-tier-cta">Talk to Solutions Architect</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE FAQ ACCORDION -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-kicker">
+          <span class="section-kicker-dot"></span>
+          FREQUENTLY ASKED QUESTIONS
+        </div>
+        <h2 class="section-heading">Everything you need to know.</h2>
+        <p class="section-subheading center-sub">
+          Have questions about security, model compatibility, or VPC deployment? We've got answers.
+        </p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item open">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>How does Orchestrix differ from raw LangChain or AutoGen?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Traditional libraries are client-side code packages that lack distributed state management, dead-letter recovery, and low-latency model routing. Orchestrix is a cloud-native orchestration plane with deterministic consensus handoffs, sub-second vector recall, and enterprise-grade sandboxed security.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>How does the dynamic model router decide which model to call?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Our router performs micro-benchmarking on query semantics: simple syntax formatting or classification is automatically routed to low-cost models (like Llama 3.3 or GPT-4o-mini), while deep code refactoring or multi-step logic triggers frontier reasoning models (like Claude 3.5 Sonnet or o1), saving teams an average of 64% on token bills.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Can Orchestrix be deployed within our private AWS, GCP, or Azure VPC?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Yes. Enterprise customers can deploy the complete Orchestrix orchestration engine inside their existing VPC using our managed Terraform modules or Kubernetes Helm charts. No data ever leaves your security perimeter.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Is user data or code ever used to train AI foundation models?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Never. Orchestrix operates under strict zero-data retention agreements with all model providers. Prompts, memory vectors, and execution logs are encrypted at rest with customer-managed keys (CMK) and deleted per your retention policy.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>What happens if an upstream model provider experiences an outage?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Our multi-model failover engine detects API degradation within 250 milliseconds. In-flight agent steps are instantly re-routed to pre-configured fallback models with automated schema translation, ensuring zero downtime for your end users.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" onclick="toggleFaq(this)">
+            <span>How difficult is it to migrate existing AI workflows to Orchestrix?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Most teams migrate in under an hour. Orchestrix provides an OpenAI-compatible SDK drop-in replacement as well as Python and TypeScript clients that import existing tool definitions and prompt schemas natively.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CLOSING CTA BANNER -->
+  <section class="cta-banner-section" id="cta">
+    <div class="container">
+      <div class="cta-card">
+        <h2 class="cta-title">Put your entire AI stack on autopilot today.</h2>
+        <p class="cta-subtitle">
+          Join 4,000+ engineering teams running production multi-agent workflows with zero downtime and deterministic verification.
+        </p>
+        <form class="cta-form" onsubmit="handleCtaSubmit(event)">
+          <input type="email" class="cta-input" placeholder="Enter your work email..." required />
+          <button type="submit" class="btn-cta-submit">Start Building Free &rarr;</button>
+        </form>
+        <div class="cta-badges">
+          <span>✓ Instant setup</span>
+          <span>✓ No credit card required</span>
+          <span>✓ 14-day full Pro trial</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col-brand">
+          <a href="#" class="nav-brand">
+            <div class="nav-logo-mark">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ffffff" />
+                <path d="M2 12L12 17L22 12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M2 17L12 22L22 17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span class="nav-brand-text">Orchestrix</span>
+          </a>
+          <p>
+            Autonomous AI stack orchestration platform connecting enterprise data fabrics, foundation models, and multi-agent swarms into deterministic workflows.
+          </p>
+          <div class="footer-status-tag">
+            <span class="telemetry-status-dot"></span>
+            All Systems Operational • 99.99% Uptime
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Product</div>
+          <ul class="footer-links">
+            <li><a href="#architecture" class="footer-link">Agents Engine 2.0</a></li>
+            <li><a href="#pipeline" class="footer-link">Model Router & Fallback</a></li>
+            <li><a href="#architecture" class="footer-link">Vector & Graph Fabric</a></li>
+            <li><a href="#architecture" class="footer-link">eBPF Sandbox Runtime</a></li>
+            <li><a href="#pricing" class="footer-link">Pricing Plans</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Solutions</div>
+          <ul class="footer-links">
+            <li><a href="#pipeline" class="footer-link">Autonomous DevOps</a></li>
+            <li><a href="#pipeline" class="footer-link">Financial Reasoning</a></li>
+            <li><a href="#pipeline" class="footer-link">Customer Intelligence</a></li>
+            <li><a href="#pipeline" class="footer-link">Enterprise RAG</a></li>
+            <li><a href="#architecture" class="footer-link">VPC Private Cloud</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Resources</div>
+          <ul class="footer-links">
+            <li><a href="#faq" class="footer-link">Documentation</a></li>
+            <li><a href="#pipeline" class="footer-link">Interactive Simulator</a></li>
+            <li><a href="#faq" class="footer-link">Security & SOC 2</a></li>
+            <li><a href="#faq" class="footer-link">Architecture Whitepaper</a></li>
+            <li><a href="#pipeline" class="footer-link">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">About Us</a></li>
+            <li><a href="#" class="footer-link">Careers (We're Hiring!)</a></li>
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="mailto:support@orchestrix.example" class="footer-link">Contact Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Orchestrix Inc. All rights reserved. Sample template.</div>
+        <div style="display:flex; gap:20px;">
+          <a href="#" class="footer-link">System Status</a>
+          <a href="#" class="footer-link">Security Portal</a>
+          <a href="#" class="footer-link">Telemetry Matrix</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INTERACTIVE DEMO MODAL -->
+  <div class="modal-backdrop" id="demoModal" onclick="closeDemoModal(event)">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">Orchestrix Autopilot Walkthrough</div>
+        <button class="modal-close-btn" onclick="closeDemoModal(event, true)">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#0d1120; border-radius:14px; padding:24px; color:#ffffff; font-family:var(--font-mono); font-size:13px; line-height:1.7;">
+          <div style="color:#60a5fa; margin-bottom:12px; font-weight:700;">// Autonomous Agent Orchestration Pipeline Initialization</div>
+          <div>> Initializing Orchestrix Cluster: 12 nodes in us-east-1...</div>
+          <div>> Connecting Data Fabric: PostgreSQL + Pinecone (Sync time: 2.1ms)</div>
+          <div>> Routing Model: Dynamic Ensembling (Claude 3.5 Sonnet + Llama 3.3 70B)</div>
+          <div style="color:#34d399; margin-top:8px;">✓ All systems armed. Swarm ready to execute instructions on autopilot.</div>
+        </div>
+        <div style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px;">
+          <button class="btn-primary-pill" onclick="closeDemoModal(event, true)">Got it, start building</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC & INTERACTIONS -->
+  <script>
+    // 1. Interactive Layer Inspector HUD
+    const telemetryData = {
+      all: {
+        name: "FULL STACK OVERVIEW",
+        metric: "All Tiers Harmonized",
+        detail: "Continuous autonomous loop • 0 human intervention"
+      },
+      agents: {
+        name: "AGENTS TIER",
+        metric: "64 Workers Active",
+        detail: "Handoff latency: 14.2ms • Consensus: 100%"
+      },
+      models: {
+        name: "MODELS TIER",
+        metric: "15+ Models Routed",
+        detail: "Dynamic fallback active • Average TTFT: 18ms"
+      },
+      data: {
+        name: "DATA TIER",
+        metric: "Sub-4ms Graph Recall",
+        detail: "Dual-rail memory bus • 48k QPS throughput"
+      }
+    };
+
+    function selectLayer(layer, ev) {
+      if (ev) {
+        document.querySelectorAll('.hud-btn').forEach(b => b.classList.remove('active'));
+        ev.target.classList.add('active');
+      }
+
+      const card = document.getElementById('telemetryCard');
+      const nameEl = document.getElementById('telemetryLayerName');
+      const metricEl = document.getElementById('telemetryMetric');
+      const detailEl = document.getElementById('telemetryDetail');
+
+      const data = telemetryData[layer] || telemetryData.all;
+      nameEl.textContent = data.name;
+      metricEl.textContent = data.metric;
+      detailEl.textContent = data.detail;
+
+      // Highlight corresponding SVG slab
+      const slabs = {
+        agents: document.getElementById('layerAgents'),
+        models: document.getElementById('layerModels'),
+        data: document.getElementById('layerData')
+      };
+
+      Object.values(slabs).forEach(s => {
+        if (s) s.style.filter = "none";
+      });
+
+      if (slabs[layer]) {
+        slabs[layer].style.filter = "drop-shadow(0 0 24px rgba(43, 65, 247, 0.45))";
+      }
+    }
+
+    // 2. 3D Mouse Parallax on Hero Visual
+    const heroVisualArea = document.getElementById('heroVisualArea');
+    const isoStage = document.getElementById('isoStage');
+
+    if (heroVisualArea && isoStage) {
+      heroVisualArea.addEventListener('mousemove', (e) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const rect = heroVisualArea.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        const rotX = (y / rect.height) * -12;
+        const rotY = (x / rect.width) * 14;
+
+        isoStage.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+
+      heroVisualArea.addEventListener('mouseleave', () => {
+        isoStage.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
+
+    // 3. Pipeline Simulator Switching & Re-run
+    const pipelines = {
+      devops: [
+        { time: "19:32:01.104", tag: "tag-blue", tagName: "[INGEST]", msg: "Resolved 18 context embeddings in 3.2ms (cosine sim > 0.88)" },
+        { time: "19:32:01.122", tag: "tag-purple", tagName: "[ROUTER]", msg: "Selected model: Claude 3.5 Sonnet (Route: Code-Synthesis-Optimized)" },
+        { time: "19:32:01.164", tag: "tag-blue", tagName: "[SWARM]", msg: "Spawned 3 sub-agents: Planner (ID: #401), Synthesizer (#402), Auditor (#403)" },
+        { time: "19:32:01.210", tag: "tag-green", tagName: "[VERIFY]", msg: "Sandbox test runner completed: 48 tests passed (0 flakes, 0 regressions)" },
+        { time: "19:32:01.248", tag: "tag-green", tagName: "[COMMIT]", msg: "Atomic transaction committed. Latency total: 84.6ms" }
+      ],
+      financial: [
+        { time: "19:35:10.040", tag: "tag-blue", tagName: "[INGEST]", msg: "Retrieved 1,420 transactional ledger records from Snowflake in 4.1ms" },
+        { time: "19:35:10.075", tag: "tag-purple", tagName: "[ROUTER]", msg: "Ensemble active: GPT-4o + DeepSeek V3 cross-validation" },
+        { time: "19:35:10.120", tag: "tag-blue", tagName: "[SWARM]", msg: "Auditor agent flagged 2 outlier micro-transactions for forensic review" },
+        { time: "19:35:10.165", tag: "tag-green", tagName: "[VERIFY]", msg: "Mathematical proof validated against double-entry constraints" },
+        { time: "19:35:10.198", tag: "tag-green", tagName: "[RESOLVE]", msg: "Reconciliation report auto-published to compliance ledger in 68ms" }
+      ],
+      support: [
+        { time: "19:40:02.012", tag: "tag-blue", tagName: "[INGEST]", msg: "Incoming ticket: 'API 429 rate limit spike on production gateway'" },
+        { time: "19:40:02.030", tag: "tag-purple", tagName: "[ROUTER]", msg: "Routed to Llama 3.3 70B (Fast triage, 12ms TTFT)" },
+        { time: "19:40:02.070", tag: "tag-blue", tagName: "[SWARM]", msg: "Diagnostics agent correlated Redis key eviction logs in us-west-2" },
+        { time: "19:40:02.110", tag: "tag-green", tagName: "[PATCH]", msg: "Applied dynamic token bucket quota auto-scale hotfix" },
+        { time: "19:40:02.140", tag: "tag-green", tagName: "[CLOSED]", msg: "Ticket closed with zero human escalation needed in 128ms" }
+      ]
+    };
+
+    let currentPipelineKey = 'devops';
+
+    function switchPipeline(key, btn) {
+      currentPipelineKey = key;
+      document.querySelectorAll('.sim-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderLogs(pipelines[key]);
+    }
+
+    function renderLogs(logs) {
+      const container = document.getElementById('terminalLogs');
+      container.innerHTML = '';
+      logs.forEach((item, index) => {
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.style.opacity = '0';
+        line.style.transform = 'translateY(4px)';
+        line.innerHTML = `
+          <span class="log-time">${item.time}</span>
+          <span class="log-tag ${item.tag}">${item.tagName}</span>
+          <span class="log-msg">${item.msg}</span>
+        `;
+        container.appendChild(line);
+
+        setTimeout(() => {
+          line.style.transition = 'all 0.25s ease';
+          line.style.opacity = '1';
+          line.style.transform = 'translateY(0)';
+        }, index * 80);
+      });
+    }
+
+    function rerunSimulation() {
+      renderLogs(pipelines[currentPipelineKey]);
+    }
+
+    // 4. Pricing Billing Toggle
+    let isAnnual = false;
+    function setBilling(mode) {
+      const btnMonthly = document.getElementById('btnMonthly');
+      const btnAnnual = document.getElementById('btnAnnual');
+      const growthPrice = document.getElementById('growthPrice');
+      const entPrice = document.getElementById('entPrice');
+
+      if (mode === 'annual') {
+        isAnnual = true;
+        btnAnnual.classList.add('active');
+        btnMonthly.classList.remove('active');
+        growthPrice.textContent = '$63';
+        entPrice.textContent = '$399';
+      } else {
+        isAnnual = false;
+        btnMonthly.classList.add('active');
+        btnAnnual.classList.remove('active');
+        growthPrice.textContent = '$79';
+        entPrice.textContent = '$499';
+      }
+    }
+
+    // 5. FAQ Accordion
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+      if (!isOpen) {
+        item.classList.add('open');
+      }
+    }
+
+    // 6. Demo Modal
+    function openDemoModal() {
+      document.getElementById('demoModal').classList.add('open');
+    }
+
+    function closeDemoModal(e, force = false) {
+      if (force || e.target.id === 'demoModal') {
+        document.getElementById('demoModal').classList.remove('open');
+      }
+    }
+
+    // 7. CTA Form Handler
+    function handleCtaSubmit(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const btn = e.target.querySelector('button');
+      btn.textContent = "Setting up account...";
+      setTimeout(() => {
+        btn.textContent = "Access Granted! Welcome to Orchestrix ✓";
+        btn.style.background = "#10b981";
+        input.value = "";
+      }, 700);
+    }
+
+    // 8. Mobile Navigation Drawer Toggle
+    function toggleMobileNav() {
+      const links = document.querySelector('.nav-links');
+      const actions = document.querySelector('.nav-actions');
+      if (links.style.display === 'flex') {
+        links.style.display = 'none';
+        actions.style.display = 'none';
+      } else {
+        links.style.display = 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '72px';
+        links.style.left = '20px';
+        links.style.right = '20px';
+        links.style.background = '#ffffff';
+        links.style.padding = '20px';
+        links.style.borderRadius = '16px';
+        links.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
+        actions.style.display = 'flex';
+      }
+    }
+  </script>
+</body>
+</html>

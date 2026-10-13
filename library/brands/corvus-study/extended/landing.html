@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../replica/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Corvus — Loud where it counts. Autonomous Cloud Threat Sentinel.</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts: Playfair Display, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* -------------------------------------------------------------
+       1. DESIGN SYSTEM VARIABLES & THEME TOKENS
+       ------------------------------------------------------------- */
+    :root {
+      --bg-canopy: #141b13;
+      --bg-canopy-dark: #0d120c;
+      --bg-surface-elevated: #1a2218;
+      --bg-surface-card: #202b1e;
+      --bg-glass: rgba(20, 27, 19, 0.75);
+
+      /* Signature Kraft / Warm Sand Cards */
+      --bg-sand: #d5c4a1;
+      --bg-sand-dark: #c4b08b;
+      --bg-sand-light: #dfd1b3;
+      --text-on-sand: #182016;
+      --text-on-sand-muted: #5e6b5a;
+
+      /* Accents */
+      --accent-amber: #e2b35b;
+      --accent-amber-bright: #f5c66e;
+      --accent-amber-glow: rgba(226, 179, 91, 0.28);
+      --accent-orange: #ea580c;
+      --accent-sage: #a7b39e;
+
+      /* Text Colors */
+      --text-primary: #f6f8f4;
+      --text-secondary: #b5c3b1;
+      --text-muted: #798775;
+
+      /* Borders */
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-glass: rgba(255, 255, 255, 0.14);
+      --border-amber: rgba(226, 179, 91, 0.35);
+
+      /* Typography */
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+
+      --container-max: 1280px;
+      --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* -------------------------------------------------------------
+       2. RESET & BASE STYLES
+       ------------------------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      background-color: var(--bg-canopy);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-canopy);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      outline: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(1.25rem, 3.5vw, 2.5rem);
+      padding-right: clamp(1.25rem, 3.5vw, 2.5rem);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* -------------------------------------------------------------
+       3. GLOBAL HEADER
+       ------------------------------------------------------------- */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 900;
+      padding: 1.15rem 0;
+      background: rgba(15, 21, 14, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .site-nav.scrolled {
+      padding: 0.9rem 0;
+      background: rgba(13, 18, 12, 0.95);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Brand Lockup */
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .sentinel-arc-mark {
+      width: 26px;
+      height: 26px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sentinel-arc-mark svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--text-primary);
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Center Navigation Links */
+    .nav-links-center {
+      display: none;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .nav-links-center {
+        display: flex;
+      }
+    }
+
+    .nav-link-item {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .nav-link-item:hover {
+      color: #ffffff;
+    }
+
+    /* Right Action Group */
+    .nav-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .nav-signin-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .nav-signin-link {
+        display: block;
+      }
+    }
+
+    .nav-signin-link:hover {
+      color: #ffffff;
+    }
+
+    .btn-get-access {
+      background: #0d120c;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.45rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .btn-get-access:hover {
+      background: #182216;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       4. HERO SECTION (CINEMATIC AVIAN SENTINEL)
+       ------------------------------------------------------------- */
+    .hero-canopy-section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: clamp(6.5rem, 12vw, 8.5rem);
+      padding-bottom: clamp(3.5rem, 6vw, 5rem);
+      background-color: var(--bg-canopy);
+      overflow: hidden;
+    }
+
+    /* Full-bleed background video container */
+    .hero-video-bg-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-sentinel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+      filter: contrast(1.02) saturate(1.04);
+    }
+
+    /* Atmospheric Sunbeams & Shadow Vignettes to seamlessly fuse video with layout */
+    .hero-top-vignette {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 140px;
+      background: linear-gradient(to bottom, #0f150e 0%, #0f150e 85px, rgba(15, 21, 14, 0.65) 110px, transparent 140px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-bottom-vignette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: clamp(120px, 18vw, 220px);
+      background: linear-gradient(to top, var(--bg-canopy) 0%, rgba(20, 27, 19, 0.8) 55%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Giant Layered Watermark Wordmark */
+    .hero-watermark-wordmark {
+      position: absolute;
+      top: 32%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-serif);
+      font-size: clamp(7rem, 20vw, 21rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.12);
+      user-select: none;
+      pointer-events: none;
+      z-index: 2;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Floating Replay & Sentinel Telemetry Bar */
+    .hero-flight-controls {
+      position: absolute;
+      bottom: 1.5rem;
+      right: clamp(1.25rem, 3.5vw, 2.5rem);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-replay-flight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(18, 25, 17, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 0.5rem 1.05rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .btn-replay-flight:hover {
+      background: rgba(26, 36, 24, 0.95);
+      color: #ffffff;
+      border-color: var(--accent-amber);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(226, 179, 91, 0.25);
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(18, 25, 17, 0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-full);
+      padding: 0.5rem 0.95rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-sage);
+    }
+
+    .live-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-live 2s infinite;
+    }
+
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Hero Two-Column Grid */
+    .hero-content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: flex-end;
+      min-height: 70vh;
+      position: relative;
+      z-index: 4;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-content-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 2rem;
+      }
+    }
+
+    /* Left Editorial Column */
+    .hero-editorial-left {
+      max-width: 520px;
+    }
+
+    .hero-signal-kicker {
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-sage);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .kicker-dash {
+      width: 22px;
+      height: 1.5px;
+      background: var(--accent-sage);
+    }
+
+    .hero-title-serif {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 6.2vw, 4.8rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 1.65rem;
+    }
+
+    .hero-title-serif i {
+      font-style: italic;
+      font-weight: 400;
+      color: #fafcf8;
+    }
+
+    .hero-subtitle-p {
+      font-size: clamp(1rem, 1.6vw, 1.125rem);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 2.25rem;
+      max-width: 440px;
+    }
+
+    .hero-cta-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-amber-pill {
+      background: var(--accent-amber);
+      color: #161f14;
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 0.85rem 1.85rem;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 20px rgba(226, 179, 91, 0.35);
+      transition: all 0.25s var(--ease-fluid);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-amber-pill:hover {
+      background: var(--accent-amber-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(226, 179, 91, 0.5);
+    }
+
+    .link-watch-system {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .link-watch-system:hover {
+      color: var(--accent-amber);
+      transform: translateX(2px);
+    }
+
+    /* Right Kraft Chamfered Cards Column */
+    .hero-cards-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-cards-right {
+        align-items: flex-end;
+      }
+    }
+
+    /* Trust Proof Pill */
+    .hero-trust-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .trust-avatars-cluster {
+      display: flex;
+      align-items: center;
+    }
+
+    .trust-avatar-item {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--bg-canopy);
+      margin-left: -7px;
+      background: #2b3828;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+    }
+
+    .trust-avatar-item:first-child {
+      margin-left: 0;
+    }
+
+    .trust-text-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #e5ede3;
+    }
+
+    /* Cards Stack */
+    .kraft-cards-group {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* Distinctive Chamfered Folder-Tab Kraft Card */
+    .kraft-card {
+      flex: 1;
+      background: var(--bg-sand);
+      color: var(--text-on-sand);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.15rem 1rem 1.15rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+      transition: transform 0.3s var(--ease-fluid), box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .kraft-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    .kraft-tab-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 0.65rem;
+    }
+
+    .kraft-tab-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-on-sand-muted);
+    }
+
+    /* Embedded Card Macro Photography */
+    .kraft-macro-thumb {
+      width: 100%;
+      height: 96px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 0.85rem;
+      position: relative;
+    }
+
+    .kraft-macro-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .kraft-card:hover .kraft-macro-thumb img {
+      transform: scale(1.05);
+    }
+
+    .kraft-caption-overlay {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.3;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .kraft-stat-display {
+      font-family: var(--font-sans);
+      font-size: 2.35rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-on-sand);
+      line-height: 1;
+      margin-top: auto;
+      margin-bottom: 0.35rem;
+    }
+
+    .kraft-footer-dots {
+      font-size: 0.85rem;
+      color: var(--text-on-sand-muted);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    /* -------------------------------------------------------------
+       5. INTERACTIVE NOISE SUPPRESSION SIMULATOR
+       ------------------------------------------------------------- */
+    .simulator-section {
+      padding: clamp(5rem, 9vw, 7.5rem) 0;
+      background: var(--bg-canopy-dark);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .section-headline-center {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .section-kicker {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-amber);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .section-display-h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-lead-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Simulator Panel */
+    .sim-card-panel {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      max-width: 960px;
+      margin: 0 auto;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .sim-slider-row {
+      margin-bottom: 2.5rem;
+    }
+
+    .sim-slider-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .sim-noise-range {
+      width: 100%;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: #253323;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    .sim-noise-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      background: var(--accent-amber);
+      border: 3px solid #141b13;
+      box-shadow: 0 0 16px var(--accent-amber);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .sim-noise-range::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    /* Visual Grid of Alerts */
+    .sim-stream-container {
+      background: #0d120c;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sim-metrics-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .sim-alert-chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .alert-chip {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .alert-chip.noise {
+      background: rgba(255, 255, 255, 0.04);
+      color: #6d7b69;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .alert-chip.critical {
+      background: rgba(226, 179, 91, 0.18);
+      color: var(--accent-amber);
+      border: 1px solid var(--accent-amber);
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(226, 179, 91, 0.3);
+      animation: pulse-beacon 1.5s infinite;
+    }
+
+    @keyframes pulse-beacon {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* -------------------------------------------------------------
+       6. 12-MILLISECOND INCIDENT TIMELINE
+       ------------------------------------------------------------- */
+    .timeline-section {
+      padding: clamp(5rem, 9vw, 8rem) 0;
+    }
+
+    .timeline-cards-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .timeline-cards-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .timeline-step-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.75rem 1.4rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-step-card:hover {
+      border-color: var(--border-amber);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .step-time-badge {
+      font-family: var(--font-mono);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step-phase-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-sage);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .step-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: #ffffff;
+      margin-bottom: 0.65rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* -------------------------------------------------------------
+       7. ARCHITECTURE BENTO GRID
+       ------------------------------------------------------------- */
+    .architecture-section {
+      padding: clamp(5rem, 9vw, 8rem) 0;
+      background: rgba(14, 20, 13, 0.6);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .arch-bento-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    @media (min-width: 860px) {
+      .arch-bento-grid {
+        grid-template-columns: repeat(12, 1fr);
+      }
+    }
+
+    .arch-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.75rem, 3.5vw, 2.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .arch-card:hover {
+      border-color: rgba(226, 179, 91, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .arch-col-7 { grid-column: span 12; }
+    .arch-col-5 { grid-column: span 12; }
+    .arch-col-6 { grid-column: span 12; }
+
+    @media (min-width: 860px) {
+      .arch-col-7 { grid-column: span 7; }
+      .arch-col-5 { grid-column: span 5; }
+      .arch-col-6 { grid-column: span 6; }
+    }
+
+    .arch-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+      font-weight: 500;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .arch-desc {
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Terminal Window inside Bento */
+    .terminal-box {
+      background: #090d09;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .terminal-top-bar {
+      background: #111710;
+      padding: 0.55rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .term-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: #354232;
+    }
+
+    .term-body {
+      padding: 1rem;
+      color: #d1ded0;
+      line-height: 1.6;
+    }
+
+    .term-highlight {
+      color: var(--accent-amber);
+    }
+
+    /* -------------------------------------------------------------
+       8. TRANSPARENT PRICING & SCALE
+       ------------------------------------------------------------- */
+    .pricing-section {
+      padding: clamp(5rem, 9vw, 8rem) 0;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      max-width: 1140px;
+      margin: 3.5rem auto 0 auto;
+    }
+
+    @media (min-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .price-plan-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .price-plan-card.featured {
+      background: linear-gradient(165deg, #202b1d 0%, #151c13 100%);
+      border-color: var(--accent-amber);
+      box-shadow: 0 16px 50px rgba(226, 179, 91, 0.15);
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 899px) {
+      .price-plan-card.featured {
+        transform: none;
+      }
+    }
+
+    .plan-badge-top {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-amber);
+      color: #161f14;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.95rem;
+      border-radius: var(--radius-full);
+    }
+
+    .plan-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .plan-sub {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.75rem;
+      min-height: 40px;
+    }
+
+    .plan-price-block {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .plan-price-num {
+      font-family: var(--font-sans);
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .plan-price-cadence {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .plan-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .plan-bullet-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .bullet-check {
+      color: var(--accent-amber);
+      font-weight: 700;
+    }
+
+    .btn-plan-cta {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .btn-plan-cta.primary {
+      background: var(--accent-amber);
+      color: #141b13;
+    }
+
+    .btn-plan-cta.primary:hover {
+      background: var(--accent-amber-bright);
+      box-shadow: 0 4px 18px rgba(226, 179, 91, 0.4);
+    }
+
+    .btn-plan-cta.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+    }
+
+    .btn-plan-cta.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* -------------------------------------------------------------
+       9. CLI ONE-LINER QUICKSTART
+       ------------------------------------------------------------- */
+    .cli-banner-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+    }
+
+    .cli-card-banner {
+      background: linear-gradient(135deg, #172115 0%, #1c2719 100%);
+      border: 1px solid var(--border-amber);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .cli-terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #0a0f0a;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-full);
+      padding: 0.65rem 0.75rem 0.65rem 1.5rem;
+      max-width: 600px;
+      margin: 2rem auto 0 auto;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+    }
+
+    .cli-code-text {
+      color: #e5ede3;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
+    .btn-copy-cli {
+      background: var(--accent-amber);
+      color: #141b13;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.15rem;
+      border-radius: var(--radius-full);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-copy-cli:hover {
+      background: var(--accent-amber-bright);
+    }
+
+    /* -------------------------------------------------------------
+       10. FAQ ACCORDION
+       ------------------------------------------------------------- */
+    .faq-section {
+      padding: clamp(4.5rem, 8vw, 7rem) 0;
+      background: var(--bg-canopy-dark);
+    }
+
+    .faq-accordion-list {
+      max-width: 820px;
+      margin: 3rem auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-item-card.active {
+      border-color: var(--border-amber);
+    }
+
+    .faq-btn-trigger {
+      width: 100%;
+      padding: 1.35rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: #ffffff;
+    }
+
+    .faq-cross-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-amber);
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item-card.active .faq-cross-icon {
+      transform: rotate(45deg);
+      background: var(--accent-amber);
+      color: #141b13;
+    }
+
+    .faq-answer-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s var(--ease-fluid), padding 0.35s ease;
+      padding: 0 1.5rem;
+    }
+
+    .faq-item-card.active .faq-answer-content {
+      max-height: 240px;
+      padding-bottom: 1.35rem;
+    }
+
+    .faq-answer-content p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       11. GLOBAL FOOTER
+       ------------------------------------------------------------- */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: #090e09;
+      padding: clamp(4.5rem, 8vw, 6rem) 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid-layout {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      }
+    }
+
+    .footer-brand-p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-header-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-sage);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-nav-list a {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav-list a:hover {
+      color: var(--accent-amber);
+    }
+
+    .footer-bottom-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 2rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 640px) {
+      .footer-bottom-line {
+        flex-direction: row;
+      }
+    }
+
+    .footer-watermark-huge {
+      font-family: var(--font-serif);
+      font-size: clamp(4rem, 13vw, 10rem);
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.025);
+      text-align: center;
+      line-height: 1;
+      margin-top: 2rem;
+      letter-spacing: 0.15em;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Toast Notification */
+    .toast-pill-alert {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-amber);
+      color: #141b13;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.75rem 1.45rem;
+      border-radius: var(--radius-full);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      z-index: 2500;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast-pill-alert.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Modal & Drawer Component Styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 15, 10, 0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #141d13;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 540px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(226, 179, 91, 0.15);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.25s var(--ease-fluid);
+      position: relative;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .modal-close-btn {
+      font-size: 1.75rem;
+      line-height: 1;
+      color: var(--text-secondary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: #ffffff;
+    }
+
+    .modal-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-code-box {
+      background: #090d09;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-amber);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-copy-code {
+      background: rgba(226, 179, 91, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(226, 179, 91, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy-code:hover {
+      background: var(--accent-amber);
+      color: #141d13;
+    }
+
+    .modal-spec-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .spec-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.85rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+
+    .spec-pill strong {
+      color: #ffffff;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost-modal {
+      background: none;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      border-radius: var(--radius-full);
+      padding: 0.85rem 1.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ghost-modal:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+    }
+
+    /* Telemetry Side Drawer */
+    .drawer-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 540px;
+      background: #141d13;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 2.5rem 2rem;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open .drawer-panel {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================================
+       1. GLOBAL HEADER
+       ============================================================= -->
+  <header class="site-nav" id="siteNav">
+    <div class="container nav-inner">
+      <a href="#hero" class="brand-logo" aria-label="Corvus Home">
+        <!-- Sentinel Arc Logo -->
+        <div class="sentinel-arc-mark">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 18C4 11 9 6 16 6" />
+            <path d="M8 18C8 13.5 11.5 10 16 10" />
+            <circle cx="17.5" cy="8" r="1.5" fill="var(--accent-amber)" stroke="none" />
+          </svg>
+        </div>
+        <span>Corvus</span>
+      </a>
+
+      <!-- Center Nav Links -->
+      <nav class="nav-links-center" aria-label="Platform Links">
+        <a href="#platform" class="nav-link-item">Platform</a>
+        <a href="#coverage" class="nav-link-item">Coverage</a>
+        <a href="#simulator" class="nav-link-item">Research</a>
+        <a href="#pricing" class="nav-link-item">Company</a>
+      </nav>
+
+      <!-- Right Action Group -->
+      <div class="nav-actions-right">
+        <a href="javascript:void(0)" onclick="triggerAction('Sign In')" class="nav-signin-link">Sign In</a>
+        <button class="btn-get-access" onclick="triggerAction('Get Access')">Get Access</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =============================================================
+         2. HERO SECTION
+         ============================================================= -->
+    <section class="hero-canopy-section" id="hero">
+      <!-- Full-bleed background video container with sun-shafted flight -->
+      <div class="hero-video-bg-container">
+        <video
+          id="heroSentinelVideo"
+          class="hero-sentinel-video"
+          autoplay
+          muted
+          playsinline
+          preload="auto"
+          poster="assets/canopy-bg.jpg"
+        >
+          <source src="assets/hero-sentinel.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-top-vignette"></div>
+        <div class="hero-bottom-vignette"></div>
+      </div>
+
+      <!-- Monumental Watermark Wordmark Behind Sentinel -->
+      <div class="hero-watermark-wordmark" id="heroWatermark" aria-hidden="true">CORVUS</div>
+
+      <!-- Floating Flight Controls & Live Status Tag -->
+      <div class="hero-flight-controls">
+        <div class="live-status-pill">
+          <span class="live-dot-pulse"></span>
+          <span>Sentinel Active &middot; 12ms Response</span>
+        </div>
+        <button class="btn-replay-flight" id="btnReplayFlight" onclick="replaySentinelFlight()" title="Watch sentinel flight entrance again">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>Replay Flight</span>
+        </button>
+      </div>
+
+      <div class="container hero-content-grid" id="heroContentGrid">
+        <!-- Left Editorial Column -->
+        <div class="hero-editorial-left">
+          <div class="hero-signal-kicker">
+            <span class="kicker-dash"></span>
+            <span>Signal you cannot miss</span>
+          </div>
+
+          <h1 class="hero-title-serif">
+            Loud where<br />
+            <i>it counts</i>
+          </h1>
+
+          <p class="hero-subtitle-p">
+            One unmistakable signal at the moment it matters, and silence for the rest of the day.
+          </p>
+
+          <div class="hero-cta-bar">
+            <button class="btn-amber-pill" onclick="openInstallModal()">Start free</button>
+            <a href="#simulator" class="link-watch-system">
+              <span>Watch the system</span>
+              <span style="font-size: 1.1rem;">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Chamfered Kraft Cards Column -->
+        <div class="hero-cards-right">
+          <!-- Social Proof -->
+          <div class="hero-trust-row">
+            <div class="trust-avatars-cluster">
+              <div class="trust-avatar-item">JD</div>
+              <div class="trust-avatar-item">SK</div>
+              <div class="trust-avatar-item">AL</div>
+              <div class="trust-avatar-item">MR</div>
+            </div>
+            <span class="trust-text-label">Trusted by 320+ security teams</span>
+          </div>
+
+          <!-- Dual Chamfered Kraft Cards -->
+          <div class="kraft-cards-group">
+            <!-- Card 1: Detection -->
+            <div class="kraft-card" onclick="openTelemetryDrawer('detection')">
+              <div class="kraft-tab-header">
+                <span class="kraft-tab-badge">Detection</span>
+              </div>
+              <div class="kraft-macro-thumb">
+                <img src="assets/detection-beak.jpg" alt="Macro sensory radar detail" width="500" height="350" />
+                <div class="kraft-caption-overlay">Every signal read, the moment it lands</div>
+              </div>
+              <div class="kraft-stat-display">12ms</div>
+              <div class="kraft-footer-dots">...</div>
+            </div>
+
+            <!-- Card 2: Coverage -->
+            <div class="kraft-card" onclick="openTelemetryDrawer('coverage')">
+              <div class="kraft-tab-header">
+                <span class="kraft-tab-badge">Coverage</span>
+              </div>
+              <div class="kraft-macro-thumb">
+                <img src="assets/coverage-plumage.jpg" alt="Macro plumage protection detail" width="400" height="300" />
+                <div class="kraft-caption-overlay">Contained before a human is paged</div>
+              </div>
+              <div class="kraft-stat-display">99.98%</div>
+              <div class="kraft-footer-dots">...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         3. INTERACTIVE NOISE SUPPRESSION SIMULATOR
+         ============================================================= -->
+    <section class="simulator-section" id="simulator">
+      <div class="container">
+        <div class="section-headline-center">
+          <span class="section-kicker">Interactive Architecture Demo</span>
+          <h2 class="section-display-h2">The Autonomous Noise Floor</h2>
+          <p class="section-lead-desc">
+            Most SOC teams suffer from 14,000+ daily alert sirens. Slide the suppression slider below to see how Corvus filters telemetry down to 1 undeniable threat beacon.
+          </p>
+        </div>
+
+        <div class="sim-card-panel">
+          <div class="sim-slider-row">
+            <div class="sim-slider-labels">
+              <span>Raw Unfiltered SIEM Stream</span>
+              <span id="sliderValueLabel" style="color: var(--accent-amber);">Corvus Autonomous Sentinel: Active (99.99% Filtered)</span>
+            </div>
+            <input type="range" min="0" max="100" value="95" class="sim-noise-range" id="noiseSlider" oninput="updateNoiseSim(this.value)" />
+          </div>
+
+          <div class="sim-stream-container">
+            <div class="sim-metrics-bar">
+              <div>INGRESS: <span id="metricIngress" style="color: #fff;">14,820 events/sec</span></div>
+              <div>PAGED INCIDENTS: <span id="metricPaged" style="color: var(--accent-amber); font-weight: 700;">1 CRITICAL SIGNAL</span></div>
+              <div>CONTAINMENT TIME: <span style="color: #8bf1aa;">11.8ms</span></div>
+            </div>
+
+            <div class="sim-alert-chips-grid" id="chipsContainer">
+              <!-- Dynamically rendered alert chips -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         4. 12-MILLISECOND INCIDENT TIMELINE
+         ============================================================= -->
+    <section class="timeline-section" id="coverage">
+      <div class="container">
+        <div class="section-headline-center">
+          <span class="section-kicker">Sub-Second Incident Resolution</span>
+          <h2 class="section-display-h2">Contained Before a Human Is Paged</h2>
+          <p class="section-lead-desc">
+            A step-by-step breakdown of how Corvus neutralizes a zero-day memory exploit inside Kubernetes clusters within 12 milliseconds.
+          </p>
+        </div>
+
+        <div class="timeline-cards-row">
+          <!-- Step 1 -->
+          <div class="timeline-step-card">
+            <div class="step-time-badge">0.0ms</div>
+            <span class="step-phase-tag">Kernel Ingress</span>
+            <h3 class="step-title">eBPF Telemetry Hook</h3>
+            <p class="step-desc">An unauthorized memory modification in libc is intercepted at the kernel level without performance overhead.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="timeline-step-card">
+            <div class="step-time-badge">3.8ms</div>
+            <span class="step-phase-tag">Anomaly Vector</span>
+            <h3 class="step-title">Behavioral Synthesis</h3>
+            <p class="step-desc">Corvus neural classifier compares the instruction sequence against 12M global canary signatures in sub-4ms.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="timeline-step-card">
+            <div class="step-time-badge">8.2ms</div>
+            <span class="step-phase-tag">Isolation</span>
+            <h3 class="step-title">Blast-Radius Quarantine</h3>
+            <p class="step-desc">Pod network ingress is silently rerouted to an ephemeral sandbox. Outbound data egress is cut instantly.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="timeline-step-card">
+            <div class="step-time-badge">12.0ms</div>
+            <span class="step-phase-tag">Resolution</span>
+            <h3 class="step-title">Autonomous Eviction</h3>
+            <p class="step-desc">Container is killed, immutable forensics snapshot dumped to S3, and a zero-noise telemetry log stored. No engineer awakened.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         5. ARCHITECTURE BENTO GRID
+         ============================================================= -->
+    <section class="architecture-section" id="platform">
+      <div class="container">
+        <div class="section-headline-center">
+          <span class="section-kicker">Sentinel Architecture</span>
+          <h2 class="section-display-h2">Engineered for Sovereign Infrastructure</h2>
+          <p class="section-lead-desc">
+            Designed for bare-metal Kubernetes, AWS EKS, GCP GKE, and air-gapped sovereign cloud regions.
+          </p>
+        </div>
+
+        <div class="arch-bento-grid">
+          <!-- Bento 1: eBPF Deep Kernel Tap (Span 7) -->
+          <div class="arch-card arch-col-7">
+            <div>
+              <span class="step-phase-tag">Core Engine</span>
+              <h3 class="arch-title">eBPF Deep Kernel Observation</h3>
+              <p class="arch-desc">
+                Operates entirely in kernel-space with 0.1% CPU overhead. Monitors socket connections, syscall arguments, and executable loads before user-space awareness.
+              </p>
+            </div>
+
+            <!-- Terminal Mockup -->
+            <div class="terminal-box">
+              <div class="terminal-top-bar">
+                <div class="term-dot"></div>
+                <div class="term-dot"></div>
+                <div class="term-dot"></div>
+                <span style="font-size: 0.72rem; color: #82927f; margin-left: 0.5rem;">corvus-kernel-daemon.log</span>
+              </div>
+              <div class="term-body">
+                <div>[0ms] <span class="term-highlight">KERNEL_SYSCALL_HOOK</span> sys_execve target="/bin/sh" uid=1000</div>
+                <div>[2ms] <span class="term-highlight">CORVUS_SANDBOX</span> anomaly_score=0.998 blast_radius=CONTAINER_04</div>
+                <div>[8ms] <span style="color: #76e09a;">ISOLATION_APPLIED</span> network_tap=MUTED memory_dump=OK</div>
+                <div>[12ms] <span style="color: var(--accent-amber);">CONTAINMENT_SUCCESS</span> incident_id=cv-89102-x</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento 2: Autonomous Canary Network (Span 5) -->
+          <div class="arch-card arch-col-5">
+            <div>
+              <span class="step-phase-tag">Global Mesh</span>
+              <h3 class="arch-title">Silent Global Canary Network</h3>
+              <p class="arch-desc">
+                Thousands of honeypot traps distributed across 42 cloud regions map active botnet campaigns before they touch your enterprise fleet.
+              </p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.8rem;">
+              <div style="color: var(--accent-amber); margin-bottom: 0.4rem;">● 42 Regions Connected</div>
+              <div style="color: var(--text-secondary);">320,000 Nodes Monitored</div>
+              <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Zero cloud credentials required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         6. FLEET PRICING
+         ============================================================= -->
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-headline-center">
+          <span class="section-kicker">Predictable Licensing</span>
+          <h2 class="section-display-h2">Transparent Fleet Scaling</h2>
+          <p class="section-lead-desc">
+            No bill shock. No volume telemetry ingestion penalties. Simple per-node pricing with unlimited signal ingestion.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Tier 1 -->
+          <div class="price-plan-card">
+            <div>
+              <h3 class="plan-title">Developer Fleet</h3>
+              <p class="plan-sub">For high-growth startups securing staging and core production clusters.</p>
+              <div class="plan-price-block">
+                <span class="plan-price-num">$19</span>
+                <span class="plan-price-cadence">/ node / mo</span>
+              </div>
+              <ul class="plan-bullets">
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Up to 50 Kubernetes nodes</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> 12ms autonomous containment</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> eBPF kernel security agent</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Slack & PagerDuty webhook sync</li>
+              </ul>
+            </div>
+            <button class="btn-plan-cta secondary" onclick="triggerAction('Developer Fleet')">Deploy Free Trial</button>
+          </div>
+
+          <!-- Tier 2: Featured -->
+          <div class="price-plan-card featured">
+            <span class="plan-badge-top">Enterprise Sentinel</span>
+            <div>
+              <h3 class="plan-title">Fleet Defense</h3>
+              <p class="plan-sub">For cloud-native enterprises requiring automated SOC suppression and compliance.</p>
+              <div class="plan-price-block">
+                <span class="plan-price-num">$39</span>
+                <span class="plan-price-cadence">/ node / mo</span>
+              </div>
+              <ul class="plan-bullets">
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Unlimited node scaling</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Sub-10ms containment SLA</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Multi-cloud AWS/GCP/Azure federation</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> SOC2 & ISO27001 automated proof</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Dedicated security engineer support</li>
+              </ul>
+            </div>
+            <button class="btn-plan-cta primary" onclick="triggerAction('Fleet Defense')">Start 30-Day Fleet Trial</button>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="price-plan-card">
+            <div>
+              <h3 class="plan-title">Sovereign Cloud</h3>
+              <p class="plan-sub">For defense, financial institutions, and completely air-gapped workloads.</p>
+              <div class="plan-price-block">
+                <span class="plan-price-num">Custom</span>
+                <span class="plan-price-cadence">/ annual contract</span>
+              </div>
+              <ul class="plan-bullets">
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> 100% On-premise air-gapped install</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Custom eBPF filter rule compiler</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> 24/7 Red-Team response war room</li>
+                <li class="plan-bullet-item"><span class="bullet-check">✓</span> Source-code escrow & security audit</li>
+              </ul>
+            </div>
+            <button class="btn-plan-cta secondary" onclick="triggerAction('Sovereign Cloud')">Contact Defense Desk</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         7. CLI ONE-LINER BANNER
+         ============================================================= -->
+    <section class="cli-banner-section">
+      <div class="container">
+        <div class="cli-card-banner">
+          <span class="section-kicker">Zero-Downtime Daemonset</span>
+          <h2 class="section-display-h2" style="font-size: clamp(2rem, 3.8vw, 2.8rem);">Install Across Your Cluster in 60 Seconds</h2>
+          <p class="section-lead-desc" style="max-width: 540px; margin: 0 auto;">
+            Deploy Corvus as a non-privileged eBPF daemonset. No kernel recompilation or sidecars required.
+          </p>
+
+          <div class="cli-terminal-bar">
+            <span class="cli-code-text" id="cliCommand">curl -sSL https://get.corvus.security | sh</span>
+            <button class="btn-copy-cli" onclick="copyCli()">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         8. FAQ ACCORDION
+         ============================================================= -->
+    <section class="faq-section">
+      <div class="container">
+        <div class="section-headline-center">
+          <span class="section-kicker">Technical Clarifications</span>
+          <h2 class="section-display-h2">Frequently Answered Questions</h2>
+        </div>
+
+        <div class="faq-accordion-list">
+          <div class="faq-item-card active">
+            <button class="faq-btn-trigger" onclick="toggleFaq(this)">
+              <span>How does Corvus achieve 12ms autonomous containment without false positives?</span>
+              <span class="faq-cross-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Unlike traditional heuristics that parse high-level syslog lines, Corvus attaches directly to Linux kernel tracepoints using extended BPF. We observe the execution flow before memory writes complete, verifying syscall behavior against an immutable cryptographic model of your binary.</p>
+            </div>
+          </div>
+
+          <div class="faq-item-card">
+            <button class="faq-btn-trigger" onclick="toggleFaq(this)">
+              <span>Does Corvus require sending raw telemetry to an external SaaS?</span>
+              <span class="faq-cross-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Never. Corvus evaluates all eBPF telemetry locally on each host node. Only aggregated cryptographic incident proofs (a few kilobytes) leave your virtual private cloud, guaranteeing compliance with HIPAA, GDPR, and FedRAMP.</p>
+            </div>
+          </div>
+
+          <div class="faq-item-card">
+            <button class="faq-btn-trigger" onclick="toggleFaq(this)">
+              <span>What is the CPU and memory impact of the Corvus daemonset?</span>
+              <span class="faq-cross-icon">+</span>
+            </button>
+            <div class="faq-answer-content">
+              <p>Because the agent leverages in-kernel JIT compiled eBPF bytecode without user-space context switching, typical overhead is less than 0.2% CPU and under 40MB RAM per host node under high production load.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =============================================================
+       9. GLOBAL FOOTER
+       ============================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid-layout">
+        <div>
+          <a href="#hero" class="brand-logo">
+            <div class="sentinel-arc-mark">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 18C4 11 9 6 16 6" />
+                <path d="M8 18C8 13.5 11.5 10 16 10" />
+                <circle cx="17.5" cy="8" r="1.5" fill="var(--accent-amber)" stroke="none" />
+              </svg>
+            </div>
+            <span>Corvus</span>
+          </a>
+          <p class="footer-brand-p">
+            Autonomous cloud threat intelligence and incident suppression sentinel. Loud where it counts, and silence for the rest of the day.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-header-tag">Platform</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#platform">eBPF Telemetry</a></li>
+            <li><a href="#coverage">12ms Containment</a></li>
+            <li><a href="#simulator">Noise Suppression</a></li>
+            <li><a href="#platform">Canary Mesh</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-header-tag">Coverage</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#pricing">Kubernetes Fleets</a></li>
+            <li><a href="#pricing">AWS EKS & GCP GKE</a></li>
+            <li><a href="#pricing">Bare-Metal BareOS</a></li>
+            <li><a href="#pricing">Sovereign Air-Gap</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-header-tag">Company</h4>
+          <ul class="footer-nav-list">
+            <li><a href="javascript:void(0)" onclick="triggerAction('Research Whitepapers')">Research Papers</a></li>
+            <li><a href="javascript:void(0)" onclick="triggerAction('Security Portal')">SOC2 Portal</a></li>
+            <li><a href="javascript:void(0)">Incident Advisory</a></li>
+            <li><a href="javascript:void(0)">Careers (Hiring)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-line">
+        <div>© 2026 Corvus Security Inc. All rights reserved. Personal static design library archive.</div>
+        <div>Engineered with pure vanilla static HTML & CSS · Verified 200 OK</div>
+      </div>
+
+      <div class="footer-watermark-huge">CORVUS</div>
+    </div>
+  </footer>
+
+  <!-- =============================================================
+       MODAL: QUICKSTART INSTALL
+       ============================================================= -->
+  <div class="modal-backdrop" id="modalInstall" onclick="if(event.target===this)closeInstallModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <div class="sentinel-arc-mark" style="width:22px;height:22px;">
+            <svg viewBox="0 0 24 24"><path d="M4 18C4 11 9 6 16 6"/><path d="M8 18C8 13.5 11.5 10 16 10"/><circle cx="17.5" cy="8" r="1.5" fill="var(--accent-amber)" stroke="none"/></svg>
+          </div>
+          <h3 class="modal-title">Deploy Corvus Sentinel</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeInstallModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Single-command eBPF agent initialization. Instant node discovery and autonomous anomaly containment in &lt;12ms with zero human intervention.
+        </p>
+        <div class="modal-code-box">
+          <code>curl -sSL https://get.corvus.security | sh</code>
+          <button class="btn-copy-code" onclick="copyInstallCmd()">Copy</button>
+        </div>
+        <div class="modal-spec-grid">
+          <div class="spec-pill"><span>Kernel Engine:</span> <strong>Linux 5.8+ (eBPF bytecode)</strong></div>
+          <div class="spec-pill"><span>Overhead:</span> <strong>&lt;0.2% CPU / 18MB RAM</strong></div>
+          <div class="spec-pill"><span>Response Latency:</span> <strong>12ms Process Isolation</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-amber-pill" onclick="triggerAction('Download Air-Gap Package')">Download Air-Gap Tarball</button>
+        <button class="btn-ghost-modal" onclick="closeInstallModal()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       DRAWER: TELEMETRY INSPECTION
+       ============================================================= -->
+  <div class="modal-backdrop" id="drawerTelemetry" onclick="if(event.target===this)closeTelemetryDrawer()">
+    <div class="drawer-panel">
+      <div class="modal-header">
+        <div>
+          <span class="section-kicker" id="drawerKicker" style="font-size:0.75rem; color:var(--accent-amber);">TELEMETRY DEEP DIVE</span>
+          <h3 class="modal-title" id="drawerTitle">12ms Autonomous Detection</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeTelemetryDrawer()">&times;</button>
+      </div>
+      <div class="modal-body" id="drawerBody">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill-alert" id="toastAlert">Copied to clipboard.</div>
+
+  <!-- =============================================================
+       10. CLIENT INTERACTION SCRIPT
+       ============================================================= -->
+  <script>
+    // 1. Sticky Navigation Scroll Effect
+    const siteNav = document.getElementById('siteNav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        siteNav.classList.add('scrolled');
+      } else {
+        siteNav.classList.remove('scrolled');
+      }
+    });
+
+    // 2. Sentinel Flight Video Freeze & Replay Control
+    const heroVideo = document.getElementById('heroSentinelVideo');
+    if (heroVideo) {
+      // Plays once and freezes into its own final frame (~7.35s) so the join never shows
+      heroVideo.addEventListener('timeupdate', () => {
+        if (heroVideo.currentTime >= 7.35) {
+          heroVideo.pause();
+        }
+      });
+      heroVideo.addEventListener('ended', () => {
+        heroVideo.pause();
+      });
+      // Handle prefers-reduced-motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        heroVideo.currentTime = 7.35;
+        heroVideo.pause();
+      }
+    }
+
+    function replaySentinelFlight() {
+      if (heroVideo) {
+        heroVideo.currentTime = 0;
+        heroVideo.play();
+        showToast('Replaying Sentinel Flight Entrance...');
+      }
+    }
+
+    // 3. Telemetry Drawer & Install Modal Logic
+    const modalInstall = document.getElementById('modalInstall');
+    const drawerTelemetry = document.getElementById('drawerTelemetry');
+    const drawerTitle = document.getElementById('drawerTitle');
+    const drawerKicker = document.getElementById('drawerKicker');
+    const drawerBody = document.getElementById('drawerBody');
+
+    function openInstallModal() {
+      if (modalInstall) modalInstall.classList.add('open');
+    }
+
+    function closeInstallModal() {
+      if (modalInstall) modalInstall.classList.remove('open');
+    }
+
+    function copyInstallCmd() {
+      navigator.clipboard.writeText('curl -sSL https://get.corvus.security | sh').then(() => {
+        showToast('Command copied: curl -sSL https://get.corvus.security | sh');
+      }).catch(() => {
+        showToast('Command copied to clipboard.');
+      });
+    }
+
+    const telemetrySpecs = {
+      detection: {
+        kicker: 'KERNEL TELEMETRY PIPELINE',
+        title: '12ms Autonomous Detection Trace',
+        html: `
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; background: #0a0f0a; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem; line-height: 1.7;">
+            <div style="color: #6ee7b7; margin-bottom: 0.5rem;">[T+0.0ms] PACKET_INGRESS: Raw socket buffer evaluated</div>
+            <div style="color: #93c5fd; margin-bottom: 0.5rem;">[T+2.4ms] EBPF_VERIFIER: 4,000 heuristic bytecode signatures</div>
+            <div style="color: #fde047; margin-bottom: 0.5rem;">[T+6.1ms] MEMORY_GUARD: Anonymous mmap anomaly flagged</div>
+            <div style="color: #f87171; margin-bottom: 0.5rem;">[T+11.8ms] CONTAINMENT: Process PID isolated via seccomp</div>
+            <div style="color: var(--accent-amber); font-weight: 700;">[T+12.0ms] SENTINEL_SEALED: Cryptographic audit generated</div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
+            Corvus deploys directly into the Linux ring-0 kernel through sandboxed eBPF bytecode. Unlike user-space daemons that suffer from context-switching delays, Corvus identifies and suppresses memory-injection exploits before syscall return.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn-amber-pill" onclick="openInstallModal()" style="font-size: 0.8rem; padding: 0.65rem 1.25rem;">Deploy on Cluster</button>
+            <button class="btn-ghost-modal" onclick="closeTelemetryDrawer()">Close Trace</button>
+          </div>
+        `
+      },
+      coverage: {
+        kicker: 'CONTAINMENT SLA & PROOF',
+        title: '99.98% Autonomous Suppression',
+        html: `
+          <div style="background: #0a0f0a; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">ACTIVE NODES</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: #fff;">142,800+</div>
+              </div>
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">FALSE-PAGING SLA</div>
+                <div style="font-size: 1.6rem; font-weight: 700; color: var(--accent-amber);">0.02%</div>
+              </div>
+            </div>
+            <div style="font-size: 0.82rem; color: #a7b39e; line-height: 1.5;">
+              Over 320 global security teams run Corvus in live sovereign production without human pager alerts.
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
+            Every anomalous container, sidecar injection, and privilege escalation is quarantined inside isolated cgroups. The remaining cluster workload proceeds with zero interruption.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn-amber-pill" onclick="openInstallModal()" style="font-size: 0.8rem; padding: 0.65rem 1.25rem;">Get Access</button>
+            <button class="btn-ghost-modal" onclick="closeTelemetryDrawer()">Close</button>
+          </div>
+        `
+      }
+    };
+
+    function openTelemetryDrawer(type) {
+      const data = telemetrySpecs[type] || telemetrySpecs.detection;
+      drawerKicker.textContent = data.kicker;
+      drawerTitle.textContent = data.title;
+      drawerBody.innerHTML = data.html;
+      drawerTelemetry.classList.add('open');
+    }
+
+    function closeTelemetryDrawer() {
+      if (drawerTelemetry) drawerTelemetry.classList.remove('open');
+    }
+
+    // 4. Interactive Alert Noise Simulator
+    const chipsContainer = document.getElementById('chipsContainer');
+    const metricIngress = document.getElementById('metricIngress');
+    const metricPaged = document.getElementById('metricPaged');
+    const sliderValueLabel = document.getElementById('sliderValueLabel');
+
+    const sampleNoises = [
+      'dns_query_flood_404', 'ssh_scan_attempt_22', 'tls_handshake_timeout',
+      'cert_renewal_warning', 'nginx_502_bad_gateway', 'k8s_liveness_probe_miss',
+      'cpu_spike_node_12', 'disk_usage_82_percent', 'arp_broadcast_spam',
+      'ephemeral_port_recycle', 'iptables_drop_syn', 'cronjob_timeout_retry',
+      'container_oom_test', 'bgp_route_flap', 's3_access_denied_probe'
+    ];
+
+    function updateNoiseSim(sliderVal) {
+      chipsContainer.innerHTML = '';
+      const filterEfficiency = sliderVal / 100;
+      
+      // Calculate noise alerts to show
+      const noiseCount = Math.round(15 * (1 - filterEfficiency));
+      const ingressTotal = Math.round(14820 - (sliderVal * 50));
+      metricIngress.textContent = `${ingressTotal.toLocaleString()} events/sec`;
+
+      if (filterEfficiency > 0.8) {
+        sliderValueLabel.textContent = `Corvus Autonomous Sentinel: Active (${Math.round(filterEfficiency * 100)}% Filtered)`;
+        sliderValueLabel.style.color = 'var(--accent-amber)';
+        metricPaged.textContent = '1 CRITICAL SIGNAL';
+        metricPaged.style.color = 'var(--accent-amber)';
+      } else {
+        sliderValueLabel.textContent = `Raw Alert Flood: ${Math.round((1 - filterEfficiency) * 14000)} false alerts leaking!`;
+        sliderValueLabel.style.color = '#f87171';
+        metricPaged.textContent = `${Math.round((1 - filterEfficiency) * 850)} PAGED ALERTS`;
+        metricPaged.style.color = '#f87171';
+      }
+
+      // Add noise chips
+      for (let i = 0; i < noiseCount; i++) {
+        const chip = document.createElement('div');
+        chip.className = 'alert-chip noise';
+        chip.textContent = sampleNoises[i % sampleNoises.length];
+        chipsContainer.appendChild(chip);
+      }
+
+      // Always show the 1 True Critical Signal
+      const critChip = document.createElement('div');
+      critChip.className = 'alert-chip critical';
+      critChip.innerHTML = '<span>⚡ ZERO_DAY_EXPLOIT_ISOLATED</span> <span>[12ms]</span>';
+      chipsContainer.appendChild(critChip);
+    }
+
+    // Initialize Simulator at 95%
+    updateNoiseSim(95);
+
+    // 5. FAQ Accordion Interaction
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item-card').forEach(el => el.classList.remove('active'));
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // 6. CLI Copy Action
+    function copyCli() {
+      const text = document.getElementById('cliCommand').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Command copied: curl -sSL https://get.corvus.security | sh');
+      }).catch(() => {
+        showToast('Command copied to clipboard.');
+      });
+    }
+
+    // 7. Toast Feedback
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toastAlert');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function triggerAction(actionName) {
+      showToast(`${actionName}: Session scheduled.`);
+    }
+  </script>
+</body>
+</html>

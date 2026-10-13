@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Halyard</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23111'/%3E%3Cpath d='M11 10.5 19 16 11 21.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #121212;
+    --muted: #8a8a8a;
+    --soft: #5c5c5c;
+    --dot: #d7d7d7;
+    --hot: #161616;
+    --pill: #f2f2f2;
+    --line: #ececec;
+    --card: #ffffff;
+    --blue: #2d62ff;
+    --blue-2: #1d4ed8;
+    --shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    --sans: Geist, "Inter Tight", "Segoe UI", sans-serif;
+  }
+  html[data-theme="dark"] {
+    --bg: #0c0c0c;
+    --ink: #f3f3f3;
+    --muted: #8d8d8d;
+    --soft: #c8c8c8;
+    --dot: #3a3a3a;
+    --hot: #f4f4f4;
+    --pill: #1a1a1a;
+    --line: #242424;
+    --card: #161616;
+    --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #0e0e0e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 36px;
+    padding: 8px 16px;
+  }
+  .badge {
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 68px;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-size: 15px;
+    margin-right: 18px;
+  }
+  .brand svg { width: 22px; height: 22px; display: block; }
+  .links { display: flex; align-items: center; gap: 4px; }
+  .links > a, .drop > button, .ghost {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .links > a:hover, .drop > button:hover, .ghost:hover { background: var(--pill); }
+  .links > a.on { background: var(--pill); }
+  .newdot {
+    display: inline-block;
+    margin-left: 6px;
+    background: var(--blue);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 4px;
+    padding: 2px 4px;
+    vertical-align: 1px;
+  }
+  .drop { position: relative; }
+  .panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 210px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 8px;
+    display: none;
+  }
+  .drop.open .panel { display: grid; }
+  .panel a { padding: 8px 10px; border-radius: 8px; font-size: 14px; }
+  .panel a:hover { background: var(--pill); }
+  .panel small { display: block; color: var(--muted); font-size: 12px; }
+  .spacer { flex: 1; }
+  .iconbtn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+  }
+  .iconbtn:hover, .iconbtn[aria-pressed="true"] { background: var(--pill); }
+  .iconbtn svg { width: 18px; height: 18px; }
+  .book {
+    background: var(--blue);
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 6px;
+    white-space: nowrap;
+    flex: none;
+  }
+  .book:hover { background: var(--blue-2); }
+  .menu {
+    display: none;
+    width: 40px; height: 40px;
+    border-radius: 8px;
+  }
+  .menu span { display: block; width: 16px; height: 1.5px; margin: 4px auto; background: var(--ink); }
+
+  .hero {
+    min-height: calc(100svh - 104px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 28px 0 64px;
+  }
+  .maps {
+    width: min(980px, calc(100% - 64px));
+    margin: 0 auto 8px;
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 6vw;
+    align-items: center;
+  }
+  .map { margin: 0; position: relative; }
+  .map svg { display: block; overflow: visible; }
+  #uk svg { height: 290px; width: auto; }
+  #pl svg { height: 210px; width: auto; margin-left: auto; }
+  .map text {
+    fill: var(--ink);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+  .copy {
+    width: min(1080px, calc(100% - 72px));
+    margin: 8px auto 0;
+  }
+  .strip {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s ease;
+  }
+  .hero:has(.inline:hover) .strip,
+  .hero:has(.strip:hover) .strip,
+  .strip.is-open { grid-template-rows: 1fr; }
+  .strip-clip { overflow: hidden; }
+  .strip-row { display: flex; gap: 12px; padding: 4px 0 18px; }
+  .shot {
+    padding: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 156px;
+    flex: none;
+  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; }
+  .shot.w { width: 230px; }
+  .shot.m { width: 168px; }
+  .shot.t { width: 112px; }
+  .shot.on { outline: 2px solid var(--ink); outline-offset: 2px; }
+  h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(44px, 5.5vw, 76px);
+    letter-spacing: -0.048em;
+    line-height: 0.98;
+  }
+  .inline {
+    display: inline-block;
+    width: 1.22em;
+    height: 0.74em;
+    padding: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    vertical-align: middle;
+    margin: 0 0.08em 0.08em;
+    transform: translateY(-0.04em);
+  }
+  .inline img { width: 100%; height: 100%; object-fit: cover; }
+  .lede {
+    margin: 22px 0 0;
+    max-width: 68ch;
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  .credit {
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .block {
+    width: min(1080px, calc(100% - 72px));
+    margin: 0 auto;
+    padding: 72px 0;
+    border-top: 1px solid var(--line);
+  }
+  .eyebrow {
+    margin: 0 0 18px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .lines { list-style: none; margin: 0; padding: 0; }
+  .lines li {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    font-size: 17px;
+  }
+  .lines li:last-child { border-bottom: 1px solid var(--line); }
+  .lines strong { font-weight: 650; letter-spacing: -0.03em; }
+  .lines span { color: var(--soft); }
+  .jobs { display: grid; }
+  .job {
+    display: grid;
+    grid-template-columns: 92px 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .job:last-child { border-bottom: 1px solid var(--line); }
+  .job img { width: 92px; height: 64px; object-fit: cover; border-radius: 6px; }
+  .job strong { display: block; letter-spacing: -0.03em; }
+  .job span { color: var(--soft); font-size: 14px; }
+  .job em { font-style: normal; color: var(--muted); font-size: 13px; }
+  .invite { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+  .invite h2 {
+    margin: 0 0 8px;
+    font-size: clamp(40px, 5vw, 64px);
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+  }
+  .invite p { margin: 0; color: var(--soft); max-width: 36ch; }
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 36px;
+  }
+  .foot {
+    width: min(1080px, calc(100% - 72px));
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    color: var(--soft);
+    font-size: 14px;
+  }
+  footer nav { display: flex; gap: 18px; }
+
+  @media (max-width: 980px) {
+    .links { display: none; }
+    .nav.open .links {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: absolute;
+      top: 100%;
+      left: 12px;
+      right: 12px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
+    .panel { position: static; box-shadow: none; border: 0; padding: 0 0 0 8px; }
+    .menu { display: inline-block; }
+    .book { padding: 8px 10px; font-size: 13px; }
+    .iconbtn { width: 32px; height: 32px; }
+    .maps { grid-template-columns: 1fr; width: min(520px, calc(100% - 32px)); }
+    #pl svg { margin-left: 0; }
+    .copy, .block, .foot { width: min(1080px, calc(100% - 32px)); }
+    .lines li, .invite, .job { grid-template-columns: 1fr; }
+    .job { grid-template-columns: 92px 1fr; }
+    .job em { display: none; }
+    .strip-row { overflow-x: auto; }
+    h1 { font-size: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .strip { transition: none; }
+  }
+  html[data-quiet="true"] .strip { transition: none; }
+</style>
+<style>
+.study{position:sticky;top:0;z-index:80;padding:8px 16px;font:12px/1.4 Geist,sans-serif;background:#121212;color:#D7D7D7}
+.study a{color:#FFFFFF}
+body:not(.study-shot) header.nav{top:33px}
+body.study-shot .study{display:none !important}
+</style>
+</head>
+<body>
+<div class="study">Practice study · <a href="../index.html">Halyard study</a> · <a href="../../websites/halyard/">library site</a></div>
+<script>if(new URLSearchParams(location.search).has('shot'))document.body.classList.add('study-shot');</script>
+<a class="banner" href="#book">
+  <span class="badge">NEW</span>
+  <span>Spring retainers are open</span>
+  <span aria-hidden="true">→</span>
+</a>
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Halyard, home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><path d="M11 10.5 19 16 11 21.5" fill="none" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    HALYARD
+  </a>
+  <nav class="links" id="links">
+    <div class="drop">
+      <button type="button" aria-expanded="false">Services +</button>
+      <div class="panel">
+        <a href="#services">Product sites<small>The first screen</small></a>
+        <a href="#services">Brand systems<small>Wordmark and rules</small></a>
+        <a href="#services">Retainers<small>The desk that stays</small></a>
+      </div>
+    </div>
+    <div class="drop">
+      <button type="button" aria-expanded="false">Our work +</button>
+      <div class="panel">
+        <a href="#work">Selected<small>Three recent rooms</small></a>
+        <a href="#work">Archive<small>The same list, older</small></a>
+      </div>
+    </div>
+    <a class="on" href="#top">Company +</a>
+    <a href="#services">Free tools <span class="newdot">NEW</span></a>
+    <a href="#book">Contact</a>
+    <a href="#work">Insights</a>
+  </nav>
+  <span class="spacer"></span>
+  <button class="iconbtn" id="quiet" type="button" aria-pressed="false" aria-label="Quiet">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h3l4-3v10l-4-3H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M16 9.5a4 4 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <button class="iconbtn" id="theme" type="button" aria-label="Switch theme">
+    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 13.2A6 6 0 0 1 10.8 8 6 6 0 1 0 16 13.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  </button>
+  <a class="book" href="#book">Book a call</a>
+  <button class="menu" id="menu" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="maps">
+      <figure class="map" id="uk"><svg></svg></figure>
+      <figure class="map" id="pl"><svg></svg></figure>
+    </div>
+    <div class="copy">
+      <div class="strip" id="strip">
+        <div class="strip-clip">
+          <div class="strip-row">
+            <button class="shot w on" type="button" data-src="assets/crane.jpg" data-alt="A brick harbor crane beside a river">
+              <img src="assets/crane.jpg" alt="">
+            </button>
+            <button class="shot m" type="button" data-src="assets/houses.jpg" data-alt="Painted gabled houses along a canal">
+              <img src="assets/houses.jpg" alt="">
+            </button>
+            <button class="shot t" type="button" data-src="assets/tower.jpg" data-alt="A glass tower seen from the street">
+              <img src="assets/tower.jpg" alt="">
+            </button>
+            <button class="shot w" type="button" data-src="assets/roofs.jpg" data-alt="Brick towers and red roofs at dusk">
+              <img src="assets/roofs.jpg" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+      <h1>Based in <button class="inline" id="inline" type="button" aria-expanded="false" aria-controls="strip"><img id="inline-img" src="assets/crane.jpg" alt="A brick harbor crane beside a river"></button> Gdańsk,<br>working with brands worldwide.</h1>
+      <p class="lede">Halyard’s team works from a sea-view office in Gdańsk, on the Baltic coast, with partners in London and clients across the US, UK, and Europe.</p>
+      <p class="credit">Photographs · studio archive</p>
+    </div>
+  </section>
+
+  <section class="block" id="services">
+    <p class="eyebrow">Services</p>
+    <ul class="lines">
+      <li><strong>Product sites</strong><span>One screen that says what the company is, before the rest of the site exists.</span></li>
+      <li><strong>Brand systems</strong><span>A wordmark, a type, and the few rules that keep the next page honest.</span></li>
+      <li><strong>Retainers</strong><span>The same desk, after launch. Spring places are open.</span></li>
+    </ul>
+  </section>
+
+  <section class="block" id="work">
+    <p class="eyebrow">Selected work</p>
+    <div class="jobs">
+      <a class="job" href="#book"><img src="assets/crane.jpg" alt=""><div><strong>Paperwharf</strong><span>A harbor company, reduced to one page.</span></div><em>2026</em></a>
+      <a class="job" href="#book"><img src="assets/houses.jpg" alt=""><div><strong>Linden</strong><span>A house brand along the canal.</span></div><em>2026</em></a>
+      <a class="job" href="#book"><img src="assets/tower.jpg" alt=""><div><strong>Northglass</strong><span>A tower, explained from the pavement.</span></div><em>2025</em></a>
+    </div>
+  </section>
+
+  <section class="block" id="book">
+    <div class="invite">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2>Book a call.</h2>
+        <p>Thirty minutes on the first screen, and whether this desk should make it.</p>
+      </div>
+      <a class="book" href="mailto:desk@halyard.example">Book a call</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><path d="M11 10.5 19 16 11 21.5" fill="none" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      HALYARD
+    </a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#book">Contact</a>
+    </nav>
+    <span>Gdańsk · London</span>
+  </div>
+</footer>
+
+<script>
+  const ns = "http://www.w3.org/2000/svg";
+
+  function jitter(x, y) {
+    const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+    return n - Math.floor(n) - 0.5;
+  }
+
+  function project(lon, lat, box, w, h) {
+    const [lon0, lon1, lat0, lat1] = box;
+    return [
+      ((lon - lon0) / (lon1 - lon0)) * w,
+      ((lat1 - lat) / (lat1 - lat0)) * h,
+    ];
+  }
+
+  function drawMap(id, ring, box, size, step, city, label) {
+    const svg = document.querySelector("#" + id + " svg");
+    const [w, h] = size;
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    const pts = ring.map(([lon, lat]) => project(lon, lat, box, w, h));
+    const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ") + " Z";
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    const path = new Path2D(d);
+    const hot = project(city[0], city[1], box, w, h);
+    for (let y = 1; y < h; y += step) {
+      for (let x = 1; x < w; x += step) {
+        const px = x + jitter(x, y) * 1.3;
+        const py = y + jitter(y, x) * 1.3;
+        if (!ctx.isPointInPath(path, px, py)) continue;
+        const dx = px - hot[0];
+        const dy = py - hot[1];
+        const near = dx * dx + dy * dy < city[2] * city[2];
+        const dot = document.createElementNS(ns, "circle");
+        dot.setAttribute("cx", px.toFixed(2));
+        dot.setAttribute("cy", py.toFixed(2));
+        dot.setAttribute("r", near ? 1.7 : 0.95);
+        dot.setAttribute("fill", near ? "var(--hot)" : "var(--dot)");
+        svg.appendChild(dot);
+      }
+    }
+    for (let i = 0; i < 5; i++) {
+      const dot = document.createElementNS(ns, "circle");
+      dot.setAttribute("cx", hot[0] + 10 + i * 4.4);
+      dot.setAttribute("cy", hot[1]);
+      dot.setAttribute("r", 1.2);
+      dot.setAttribute("fill", "var(--hot)");
+      svg.appendChild(dot);
+    }
+    const text = document.createElementNS(ns, "text");
+    text.setAttribute("x", hot[0] + 34);
+    text.setAttribute("y", hot[1] + 3.5);
+    text.textContent = label;
+    svg.appendChild(text);
+  }
+
+  drawMap(
+    "uk",
+    [[-5.0,58.6],[-3.0,58.6],[-1.7,57.7],[-2.1,56.8],[-1.5,55.7],[-0.6,54.7],[0.1,53.7],[0.4,52.9],[1.6,52.5],[1.4,51.4],[0.8,50.9],[-1.6,50.6],[-4.6,50.2],[-5.6,50.1],[-5.1,50.8],[-4.2,51.5],[-5.2,51.8],[-4.5,52.5],[-4.4,53.3],[-3.1,53.4],[-3.1,54.4],[-4.6,55.0],[-5.6,56.0],[-6.2,57.2],[-5.2,58.2],[-5.0,58.6]],
+    [-7.0, 2.2, 49.7, 59.2],
+    [168, 280],
+    5.1,
+    [-0.12, 51.5, 13],
+    "LONDON · PARTNERS"
+  );
+  drawMap(
+    "pl",
+    [[14.2,53.9],[15.2,54.4],[17.2,54.6],[18.8,54.5],[20.4,54.5],[22.4,54.3],[23.5,53.6],[23.8,52.2],[23.2,50.6],[22.0,49.4],[18.8,49.2],[16.0,50.2],[14.6,51.1],[14.1,52.4],[14.2,53.9]],
+    [13.4, 24.6, 48.8, 55.2],
+    [250, 176],
+    5.2,
+    [18.65, 54.35, 7],
+    "GDAŃSK · HQ"
+  );
+
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("theme");
+  const themeIcon = document.getElementById("theme-icon");
+  const moon = '<path d="M16 13.2A6 6 0 0 1 10.8 8 6 6 0 1 0 16 13.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>';
+  const sun = '<circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M18 6l-1.6 1.6M7.6 16.4 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>';
+  function paintTheme() {
+    const dark = root.dataset.theme === "dark";
+    themeIcon.innerHTML = dark ? sun : moon;
+    themeBtn.setAttribute("aria-label", dark ? "Switch to light" : "Switch to dark");
+  }
+  const saved = localStorage.getItem("halyard-theme");
+  if (saved === "dark" || saved === "light") root.dataset.theme = saved;
+  paintTheme();
+  themeBtn.addEventListener("click", () => {
+    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem("halyard-theme", root.dataset.theme);
+    paintTheme();
+  });
+
+  const quietBtn = document.getElementById("quiet");
+  quietBtn.addEventListener("click", () => {
+    const on = root.dataset.quiet === "true";
+    root.dataset.quiet = on ? "false" : "true";
+    quietBtn.setAttribute("aria-pressed", on ? "false" : "true");
+  });
+
+  document.querySelectorAll(".drop > button").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const drop = btn.parentElement;
+      const open = drop.classList.contains("open");
+      document.querySelectorAll(".drop").forEach((item) => {
+        item.classList.remove("open");
+        item.querySelector("button").setAttribute("aria-expanded", "false");
+      });
+      if (!open) {
+        drop.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".drop").forEach((item) => {
+      item.classList.remove("open");
+      item.querySelector("button").setAttribute("aria-expanded", "false");
+    });
+  });
+
+  const menu = document.getElementById("menu");
+  const nav = document.getElementById("nav");
+  menu.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    menu.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.getElementById("links").addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      nav.classList.remove("open");
+      menu.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  const strip = document.getElementById("strip");
+  const inline = document.getElementById("inline");
+  const inlineImg = document.getElementById("inline-img");
+  inline.addEventListener("click", () => {
+    const open = strip.classList.toggle("is-open");
+    inline.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  strip.querySelectorAll(".shot").forEach((shot) => {
+    shot.addEventListener("click", () => {
+      inlineImg.src = shot.dataset.src;
+      inlineImg.alt = shot.dataset.alt;
+      strip.querySelectorAll(".shot").forEach((item) => item.classList.remove("on"));
+      shot.classList.add("on");
+    });
+  });
+</script>
+</body>
+</html>

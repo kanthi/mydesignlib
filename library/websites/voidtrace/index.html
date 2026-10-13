@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voidtrace — Security Software That Erases Your Digital Footprint</title>
+  <meta name="description" content="Autonomous zero-footprint security software. Kernel-level memory vaporization, RAM-only route switching, and forensic residue purging." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg-ground: #E2E8DE;
+      --bg-surface: #EDF3EB;
+      --bg-surface-elevated: #F8FAF7;
+      --bg-card: #FFFFFF;
+
+      --ink-900: #101413;
+      --ink-800: #1B221F;
+      --ink-700: #2C3632;
+      --ink-600: #4B5752;
+      --ink-500: #687771;
+      --ink-400: #8E9E98;
+      --ink-200: #CBD5CD;
+      --ink-100: #E4ECE2;
+
+      --accent-amber: #D96A25;
+      --accent-cyan: #265C4B;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+
+      --border-light: rgba(16, 20, 19, 0.12);
+      --border-dark: #101413;
+
+      --font-display: "Anton", "Barlow Condensed", -apple-system, sans-serif;
+      --font-condensed: "Barlow Condensed", sans-serif;
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-ground);
+      color: var(--ink-900);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-ground);
+      color: var(--ink-900);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 180ms ease;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    section[id] {
+      scroll-margin-top: 80px;
+    }
+
+    /* Top Ticker Bar */
+    .top-ticker {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      padding: 8px 24px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      letter-spacing: 0.04em;
+    }
+
+    .ticker-pulse {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-green);
+    }
+
+    .ticker-pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse-ring 2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* Navigation Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(226, 232, 222, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--border-dark);
+      height: 72px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.02em;
+      color: var(--ink-900);
+      text-transform: uppercase;
+    }
+
+    .brand-mark svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--ink-900);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-condensed);
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-700);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--ink-900);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+    }
+
+    .btn-brutal-dark {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      font-family: var(--font-condensed);
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 10px 24px;
+      border: 2px solid var(--ink-900);
+      transition: all 180ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-brutal-dark:hover {
+      background: transparent;
+      color: var(--ink-900);
+    }
+
+    /* =========================================================
+       HERO SECTION
+       ========================================================= */
+    .hero-section {
+      padding: 80px 0 100px;
+      position: relative;
+    }
+
+    .hero-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6.2rem);
+      line-height: 0.96;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--ink-900);
+      margin-bottom: 24px;
+      max-width: 1100px;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+      color: var(--ink-600);
+      max-width: 760px;
+      line-height: 1.5;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+
+    .btn-brutal-amber {
+      background: var(--accent-amber);
+      color: #FFFFFF;
+      font-family: var(--font-condensed);
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 12px 28px;
+      border: 2px solid var(--ink-900);
+      box-shadow: 4px 4px 0 var(--ink-900);
+      transition: all 160ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-brutal-amber:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink-900);
+    }
+
+    .btn-brutal-outline {
+      background: transparent;
+      color: var(--ink-900);
+      font-family: var(--font-condensed);
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 12px 28px;
+      border: 2px solid var(--ink-900);
+      transition: all 160ms ease;
+    }
+
+    .btn-brutal-outline:hover {
+      background: var(--ink-900);
+      color: #FFFFFF;
+    }
+
+    /* Terminal HUD Interactive Container */
+    .terminal-container {
+      background: var(--ink-900);
+      color: #E2EAE5;
+      border: 2px solid var(--ink-900);
+      box-shadow: 8px 8px 0 rgba(16, 20, 19, 0.35);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+      max-width: 980px;
+    }
+
+    .terminal-topbar {
+      background: #1B221F;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.78rem;
+    }
+
+    .terminal-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .terminal-body {
+      padding: 24px;
+      min-height: 220px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .terminal-output-line {
+      margin-bottom: 6px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .terminal-prompt {
+      color: var(--accent-green);
+    }
+
+    .terminal-highlight {
+      color: #FBBF24;
+    }
+
+    .terminal-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    }
+
+    .terminal-cmd-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      padding: 6px 14px;
+      border-radius: 2px;
+      transition: all 160ms ease;
+    }
+
+    .terminal-cmd-btn:hover {
+      background: var(--accent-green);
+      color: var(--ink-900);
+      border-color: var(--accent-green);
+    }
+
+    /* =========================================================
+       METRICS BAR
+       ========================================================= */
+    .metrics-section {
+      border-top: 2px solid var(--border-dark);
+      border-bottom: 2px solid var(--border-dark);
+      background: var(--bg-surface);
+      padding: 40px 0;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-num {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      line-height: 0.95;
+      color: var(--ink-900);
+      margin-bottom: 6px;
+    }
+
+    .metric-caption {
+      font-family: var(--font-condensed);
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ink-600);
+      letter-spacing: 0.03em;
+    }
+
+    /* =========================================================
+       THE 4 ERASURE VECTORS (Bento Layout)
+       ========================================================= */
+    .vectors-section {
+      padding: 100px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      line-height: 1.0;
+      text-transform: uppercase;
+      color: var(--ink-900);
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      font-size: 1.15rem;
+      color: var(--ink-600);
+      max-width: 680px;
+      margin-bottom: 56px;
+    }
+
+    .vectors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .vector-card {
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--border-dark);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .vector-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0 var(--border-dark);
+    }
+
+    .vector-id {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 24px;
+    }
+
+    .vector-title {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      text-transform: uppercase;
+      line-height: 1.05;
+      color: var(--ink-900);
+      margin-bottom: 12px;
+    }
+
+    .vector-body {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--ink-600);
+      margin-bottom: 24px;
+    }
+
+    .vector-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .vector-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      background: var(--bg-ground);
+      border: 1px solid var(--border-dark);
+      padding: 3px 8px;
+      font-weight: 600;
+      color: var(--ink-800);
+    }
+
+    /* =========================================================
+       THREAT MATRIX COMPARISON
+       ========================================================= */
+    .matrix-section {
+      padding: 90px 0;
+      background: var(--bg-surface);
+      border-top: 2px solid var(--border-dark);
+      border-bottom: 2px solid var(--border-dark);
+    }
+
+    .matrix-table-wrap {
+      overflow-x: auto;
+      margin-top: 40px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+      text-align: left;
+    }
+
+    .matrix-table th {
+      font-family: var(--font-condensed);
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 16px 20px;
+      border-bottom: 2px solid var(--border-dark);
+      background: var(--bg-ground);
+    }
+
+    .matrix-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--ink-700);
+    }
+
+    .matrix-check {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    .matrix-cross {
+      color: var(--accent-red);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       FOOTER ARCHITECTURE SWITCHER TOOLBAR
+       ========================================================= */
+    .footer-switcher-strip {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-top: 2px solid var(--border-dark);
+    }
+
+    .switcher-label {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-400);
+      text-transform: uppercase;
+    }
+
+    .switcher-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .switcher-btn {
+      font-family: var(--font-condensed);
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 6px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      transition: all 160ms ease;
+    }
+
+    .switcher-btn:hover {
+      border-color: #FFFFFF;
+    }
+
+    .switcher-btn.active {
+      background: #FFFFFF;
+      color: var(--ink-900);
+      border-color: #FFFFFF;
+    }
+
+    /* =========================================================
+       THE MONUMENTAL SIGNATURE FOOTER (Reference Match)
+       ========================================================= */
+    .monument-footer {
+      background: #DEE6DC;
+      color: var(--ink-900);
+      position: relative;
+      overflow: hidden;
+      transition: background 250ms ease;
+    }
+
+    .footer-top-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding: 80px 40px 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-kicker-copy {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--ink-900);
+      margin-bottom: 32px;
+      max-width: 440px;
+    }
+
+    .footer-contact-block {
+      margin-top: 24px;
+    }
+
+    .contact-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-500);
+      margin-bottom: 8px;
+    }
+
+    .contact-email {
+      font-family: var(--font-sans);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink-900);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .contact-coords {
+      font-size: 0.92rem;
+      color: var(--ink-600);
+      line-height: 1.5;
+    }
+
+    .footer-col-head {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-500);
+      margin-bottom: 24px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-heavy-link {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      color: var(--ink-900);
+      text-decoration: underline;
+      text-underline-offset: 6px;
+      text-decoration-thickness: 3px;
+      transition: color 160ms ease;
+    }
+
+    .footer-heavy-link:hover {
+      color: var(--accent-amber);
+    }
+
+    /* Lower Graphic Canvas with Colossal Wordmark */
+    .footer-canvas-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      background-size: cover;
+      background-position: center bottom;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 40px;
+      overflow: hidden;
+    }
+
+    .wordmark-badge-row {
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 12px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .year-badge {
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px solid #FFFFFF;
+      padding: 6px 18px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-900);
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .colossal-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 16.5vw, 15.5rem);
+      line-height: 0.82;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      text-align: center;
+      width: 100%;
+      user-select: none;
+      position: relative;
+      z-index: 5;
+      text-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .footer-top-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .vectors-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 20px;
+      }
+      .footer-top-grid {
+        grid-template-columns: 1fr;
+        padding: 40px 20px;
+      }
+      .footer-canvas-wrap {
+        padding: 0 16px;
+        min-height: 320px;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Realtime Ticker -->
+  <aside class="top-ticker" aria-label="System status">
+    <div class="ticker-pulse">
+      <span class="ticker-pulse-dot"></span>
+      <span>EPHEMERAL RAM ENCLAVE: ACTIVE · 0 RETENTION BYTES</span>
+    </div>
+    <div>NODE 04 · SWISS DEFENSE CLOUD · AES-256-GCM</div>
+  </aside>
+
+  <!-- Navigation Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="#hero" class="brand-mark" aria-label="Voidtrace Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+        <span>Voidtrace</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link">Terminal</a></li>
+          <li><a href="#vectors" class="nav-link">Vectors</a></li>
+          <li><a href="#matrix" class="nav-link">Threat Matrix</a></li>
+          <li><a href="#footer" class="nav-link">Footers</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <a href="#terminal" class="btn-brutal-dark">
+          <span>Launch CLI</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         HERO SECTION
+         ========================================================= -->
+    <section class="hero-section" id="hero" aria-label="Overview">
+      <div class="container">
+        <div class="hero-kicker">
+          <span>[SYSTEM ATTESTATION · RING-0 INTERCEPTOR]</span>
+        </div>
+
+        <h1 class="hero-title">
+          Security Software That Erases Your Digital Footprint.
+        </h1>
+
+        <p class="hero-subhead">
+          Kernel-level memory vaporization, volatile RAM-only circuit routing, and automated forensic residue purging for mission-critical operations.
+        </p>
+
+        <div class="hero-actions">
+          <button type="button" class="btn-brutal-amber" onclick="executePurge()">
+            <span>Execute Purge</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </button>
+          <a href="#footer" class="btn-brutal-outline">Explore Footers ↓</a>
+        </div>
+
+        <!-- Interactive Footprint Wiper CLI Terminal -->
+        <div class="terminal-container" id="terminal">
+          <div class="terminal-topbar">
+            <div class="terminal-controls">
+              <span class="terminal-dot" style="background: #EF4444;"></span>
+              <span class="terminal-dot" style="background: #F59E0B;"></span>
+              <span class="terminal-dot" style="background: #10B981;"></span>
+            </div>
+            <span>voidtrace-cli v4.2.0 · ephemeral-tty0</span>
+            <span>RAM-FS [ENC-ZERO]</span>
+          </div>
+
+          <div class="terminal-body" id="termOutput">
+            <div class="terminal-output-line">
+              <span class="terminal-prompt">&gt;</span>
+              <span>voidtrace init --enclave=swiss-04 --shred-memory</span>
+            </div>
+            <div class="terminal-output-line">
+              <span>[OK]</span>
+              <span>Kernel hook established: Ring-0 telemetry filters active.</span>
+            </div>
+            <div class="terminal-output-line">
+              <span>[OK]</span>
+              <span>MAC identity randomized. Multi-hop wire routing armed.</span>
+            </div>
+            <div class="terminal-output-line">
+              <span class="terminal-highlight">[STATUS]</span>
+              <span id="residualCounter">Residual Disk Footprint: 0.00 Bytes · 100% Volatile</span>
+            </div>
+          </div>
+
+          <div class="terminal-action-row" style="padding: 14px 24px;">
+            <button type="button" class="terminal-cmd-btn" onclick="runCommand('purge-ram')">Purge Volatile RAM</button>
+            <button type="button" class="terminal-cmd-btn" onclick="runCommand('rotate-ip')">Rotate Ephemeral Circuit</button>
+            <button type="button" class="terminal-cmd-btn" onclick="runCommand('scrub-dns')">Scrub DNS Ring Cache</button>
+            <button type="button" class="terminal-cmd-btn" onclick="runCommand('status')">Inspect Audit Scorecard</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
+         METRICS STRIP
+         ========================================================= -->
+    <section class="metrics-section">
+      <div class="container">
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-num">0.00B</div>
+            <div class="metric-caption">Persistent Telemetry Retained</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">180s</div>
+            <div class="metric-caption">Ephemeral Hop Re-Keying</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">64</div>
+            <div class="metric-caption">Sovereign Hardware Enclaves</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">100%</div>
+            <div class="metric-caption">Volatile Memory Sanitization</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         THE 4 ERASURE VECTORS
+         ========================================================= -->
+    <section class="vectors-section" id="vectors">
+      <div class="container">
+        <h2 class="section-title">The Four Erasure Vectors</h2>
+        <p class="section-desc">
+          How Voidtrace ensures that once an operation concludes, no forensic artifact remains on physical memory, disk, or intermediate network hops.
+        </p>
+
+        <div class="vectors-grid">
+          
+          <div class="vector-card">
+            <div>
+              <span class="vector-id">[VECTOR 01 // VOLATILE PERSISTENCE]</span>
+              <h3 class="vector-title">RAM-Only Execution Enclaves</h3>
+              <p class="vector-body">
+                Voidtrace runs strictly in unswappable volatile memory. All temporary sockets, certificates, and DNS requests reside in RAM-FS and are overwritten with CSPRNG entropy upon termination.
+              </p>
+            </div>
+            <div class="vector-tags">
+              <span class="vector-tag">tmpfs-zero</span>
+              <span class="vector-tag">no-swap</span>
+              <span class="vector-tag">secure-erase</span>
+            </div>
+          </div>
+
+          <div class="vector-card">
+            <div>
+              <span class="vector-id">[VECTOR 02 // NETWORK OBSCURATION]</span>
+              <h3 class="vector-title">Multi-Hop Ephemeral Mesh</h3>
+              <p class="vector-body">
+                Outbound packets pass through three independent physical enclaves in neutral jurisdictions. Tunnel keys are regenerated every 180 seconds to thwart long-term statistical correlation.
+              </p>
+            </div>
+            <div class="vector-tags">
+              <span class="vector-tag">wireguard-zero</span>
+              <span class="vector-tag">timing-decorrelation</span>
+              <span class="vector-tag">swiss-enclave</span>
+            </div>
+          </div>
+
+          <div class="vector-card">
+            <div>
+              <span class="vector-id">[VECTOR 03 // FORENSIC COUNTERMEASURES]</span>
+              <h3 class="vector-title">Kernel Residue Neutralizer</h3>
+              <p class="vector-body">
+                Ring-0 eBPF probes actively intercept and nullify operating system diagnostics, advertising beacons, hardware UUID querying, and commercial telemetry trackers before they reach system logs.
+              </p>
+            </div>
+            <div class="vector-tags">
+              <span class="vector-tag">ring-0-ebpf</span>
+              <span class="vector-tag">uuid-spoof</span>
+              <span class="vector-tag">beacon-drop</span>
+            </div>
+          </div>
+
+          <div class="vector-card">
+            <div>
+              <span class="vector-id">[VECTOR 04 // HARDWARE INTEGRITY]</span>
+              <h3 class="vector-title">TPM 2.0 Cryptographic Attestation</h3>
+              <p class="vector-body">
+                Before session initialization, the client validates hardware registers against a tamper-evident enclave signature. Any firmware modification triggers an immediate killswitch.
+              </p>
+            </div>
+            <div class="vector-tags">
+              <span class="vector-tag">tpm-2.0</span>
+              <span class="vector-tag">apple-secure-enclave</span>
+              <span class="vector-tag">killswitch</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         THREAT MATRIX
+         ========================================================= -->
+    <section class="matrix-section" id="matrix">
+      <div class="container">
+        <h2 class="section-title">Forensic Threat Matrix</h2>
+        <p class="section-desc">
+          Compare traditional commercial privacy tools against the Voidtrace zero-footprint architecture.
+        </p>
+
+        <div class="matrix-table-wrap">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Capability / Attack Vector</th>
+                <th>Commercial VPNs</th>
+                <th>Tor Browser</th>
+                <th>Voidtrace OS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Memory Forensics Immunity</strong></td>
+                <td><span class="matrix-cross">✕ Disk Swapped</span></td>
+                <td><span class="matrix-cross">✕ Partial RAM</span></td>
+                <td><span class="matrix-check">✓ 100% Volatile CSPRNG Wipe</span></td>
+              </tr>
+              <tr>
+                <td><strong>Hardware UUID / MAC Spoofing</strong></td>
+                <td><span class="matrix-cross">✕ None</span></td>
+                <td><span class="matrix-cross">✕ OS Exposed</span></td>
+                <td><span class="matrix-check">✓ Ring-0 Synthetic Spoof</span></td>
+              </tr>
+              <tr>
+                <td><strong>Traffic Correlation Resistance</strong></td>
+                <td><span class="matrix-cross">✕ Static IP Server</span></td>
+                <td><span class="matrix-check">✓ Multi-Hop</span></td>
+                <td><span class="matrix-check">✓ 180s Rolling Mesh Circuit</span></td>
+              </tr>
+              <tr>
+                <td><strong>Crash Residue & Core Dumps</strong></td>
+                <td><span class="matrix-cross">✕ Written to Disk</span></td>
+                <td><span class="matrix-cross">✕ Logged by OS</span></td>
+                <td><span class="matrix-check">✓ Vaporized via Enclave Hook</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FOOTER ARCHITECTURE SWITCHER
+         ========================================================= -->
+    <div class="footer-switcher-strip">
+      <span class="switcher-label">Footer Architecture Styles (Figma Collection):</span>
+      <div class="switcher-buttons">
+        <button type="button" class="switcher-btn active" onclick="switchFooterTheme('chromatic')">01 Chromatic Grain</button>
+        <button type="button" class="switcher-btn" onclick="switchFooterTheme('cosmic')">02 Cosmic Monolith</button>
+        <button type="button" class="switcher-btn" onclick="switchFooterTheme('halftone')">03 Halftone Topo</button>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         MONUMENTAL SIGNATURE FOOTER (Reference Match)
+         ========================================================= -->
+    <footer class="monument-footer" id="footer" role="contentinfo">
+      
+      <!-- Top Grid: Copy, Contact, Columns -->
+      <div class="footer-top-grid">
+        
+        <div>
+          <h2 class="footer-kicker-copy">
+            VOIDTRACE: SECURITY SOFTWARE THAT ERASES YOUR DIGITAL FOOTPRINT, LEAVING ZERO TRACE.
+          </h2>
+
+          <div class="footer-contact-block">
+            <span class="contact-kicker">CONTACT</span>
+            <a href="mailto:recon@voidtrace.example" class="contact-email">recon@voidtrace.example</a>
+            <div class="contact-coords">
+              Node 04, Cyber Mesh Enclave<br />
+              Gotthard Massif, Switzerland / Tokyo
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-head">PRODUCT</div>
+          <ul class="footer-links-list">
+            <li><a href="#vectors" class="footer-heavy-link">Features</a></li>
+            <li><a href="#matrix" class="footer-heavy-link">Pricing</a></li>
+            <li><a href="#vectors" class="footer-heavy-link">Security</a></li>
+            <li><a href="#terminal" class="footer-heavy-link">Download</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-head">COMPANY</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero" class="footer-heavy-link">About Us</a></li>
+            <li><a href="#hero" class="footer-heavy-link">Newsroom</a></li>
+            <li><a href="#matrix" class="footer-heavy-link">Careers</a></li>
+            <li><a href="#hero" class="footer-heavy-link">Blog</a></li>
+            <li><a href="mailto:recon@voidtrace.example" class="footer-heavy-link">Help Center</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-head">CONNECT</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero" class="footer-heavy-link">Twitter/X</a></li>
+            <li><a href="#hero" class="footer-heavy-link">LinkedIn</a></li>
+            <li><a href="#hero" class="footer-heavy-link">Github</a></li>
+            <li><a href="#hero" class="footer-heavy-link">Tor Onion</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Lower Canvas: Granular Textured Landscape & Massive Wordmark -->
+      <div class="footer-canvas-wrap" id="footerCanvas" style="background-image: url('assets/landscape.jpg');">
+        
+        <div class="wordmark-badge-row">
+          <span class="year-badge">© 2026</span>
+        </div>
+
+        <div class="colossal-wordmark">
+          Voidtrace
+        </div>
+
+      </div>
+
+    </footer>
+  </main>
+
+  <script>
+    // Terminal CLI Simulator
+    function printTermLine(text, tag = "[OK]") {
+      const output = document.getElementById("termOutput");
+      const div = document.createElement("div");
+      div.className = "terminal-output-line";
+      div.innerHTML = `<span style="color: ${tag === '[ALERT]' ? '#EF4444' : '#10B981'}; font-weight: 700;">${tag}</span> <span>${text}</span>`;
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function runCommand(cmd) {
+      if (cmd === 'purge-ram') {
+        printTermLine("Overwriting active RAM pages with CSPRNG entropy...", "[PURGE]");
+        setTimeout(() => printTermLine("0 residual bytes in volatile cache. Memory sanitized.", "[SUCCESS]"), 400);
+      } else if (cmd === 'rotate-ip') {
+        printTermLine("Switching circuit to Zurich-Enclave-09 · New ephemeral pubkey established.", "[CIRCUIT]");
+      } else if (cmd === 'scrub-dns') {
+        printTermLine("Flushing resolver cache · Zero PTR queries retained.", "[DNS-ZERO]");
+      } else if (cmd === 'status') {
+        printTermLine("Audit Scorecard: 100/100 · Zero persistent traces detected.", "[AUDIT]");
+      }
+    }
+
+    function executePurge() {
+      const counter = document.getElementById("residualCounter");
+      counter.textContent = "Purging memory...";
+      counter.style.color = "#EF4444";
+
+      setTimeout(() => {
+        counter.textContent = "Residual Disk Footprint: 0.00 Bytes · 100% Volatile Purged";
+        counter.style.color = "#10B981";
+        printTermLine("GLOBAL PURGE EXECUTED: All volatile enclaves zeroed.", "[PURGE-ALL]");
+      }, 600);
+    }
+
+    // Footer Switcher Logic
+    const footerThemes = {
+      chromatic: {
+        bg: "#DEE6DC",
+        img: "assets/landscape.jpg",
+        textColor: "#101413"
+      },
+      cosmic: {
+        bg: "#0A0B0E",
+        img: "assets/cosmic.jpg",
+        textColor: "#FFFFFF"
+      },
+      halftone: {
+        bg: "#D7E2D4",
+        img: "assets/halftone.jpg",
+        textColor: "#101413"
+      }
+    };
+
+    function switchFooterTheme(themeKey) {
+      document.querySelectorAll(".switcher-btn").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+
+      const theme = footerThemes[themeKey];
+      const footer = document.getElementById("footer");
+      const canvas = document.getElementById("footerCanvas");
+
+      footer.style.backgroundColor = theme.bg;
+      canvas.style.backgroundImage = `url('${theme.img}')`;
+
+      if (themeKey === 'cosmic') {
+        footer.style.color = "#FFFFFF";
+        document.querySelectorAll(".footer-kicker-copy, .footer-heavy-link, .contact-email").forEach(el => {
+          el.style.color = "#FFFFFF";
+        });
+      } else {
+        footer.style.color = "#101413";
+        document.querySelectorAll(".footer-kicker-copy, .footer-heavy-link, .contact-email").forEach(el => {
+          el.style.color = "#101413";
+        });
+      }
+
+      gsap.fromTo(canvas, { opacity: 0.7 }, { opacity: 1, duration: 0.3 });
+    }
+  </script>
+</body>
+</html>

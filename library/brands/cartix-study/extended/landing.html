@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../replica/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Cartix — The Complete Ecommerce Engine</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --f-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --c-bg: #FFFFFF;
+      --c-bg-subtle: #F9FAFB;
+      --c-bg-card: #F8FAFC;
+      --c-border: #E5E7EB;
+      --c-border-subtle: #F1F5F9;
+      --c-text: #0F172A;
+      --c-text-muted: #64748B;
+      --c-text-subtle: #94A3B8;
+      
+      --c-blue-primary: #3B82F6;
+      --c-blue-dark: #2563EB;
+      --c-indigo: #4F46E5;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+      --shadow-float: 0 20px 40px -10px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--c-bg);
+      color: var(--c-text);
+      font-family: var(--f-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header Nav */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-border-subtle);
+      transition: all 0.2s ease;
+    }
+
+    .nav-inner {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+      color: var(--c-text);
+    }
+
+    .logo-infinity {
+      width: 24px;
+      height: 24px;
+      stroke: var(--c-blue-primary);
+      stroke-width: 2.8;
+      fill: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      transition: color 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .nav-link:hover {
+      color: var(--c-text);
+    }
+
+    .btn-signup {
+      background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+      color: #FFFFFF;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.4rem;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-signup:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+    }
+
+    /* Pill Badges */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.9rem;
+      background: var(--c-bg-subtle);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--c-text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 5rem 1.5rem 3rem;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      max-width: 820px;
+      margin: 0 auto 1.25rem;
+      color: #0F172A;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--c-text-muted);
+      max-width: 620px;
+      margin: 0 auto 2.2rem;
+      font-weight: 500;
+    }
+
+    .btn-primary-gradient {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--radius-full);
+      box-shadow: 0 8px 24px -4px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -4px rgba(59, 130, 246, 0.5);
+    }
+
+    .hero-visual-stage {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      position: relative;
+    }
+
+    .hero-visual-stage img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.04));
+    }
+
+    /* Alternating Feature Modules */
+    .module-section {
+      padding: 5rem 0;
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      margin-bottom: 2.8rem;
+    }
+
+    .module-left {
+      flex: 1.2;
+    }
+
+    .module-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.18;
+      color: #0F172A;
+    }
+
+    .module-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+
+    .module-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--c-text-muted);
+    }
+
+    .btn-dark-pill {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.65rem 1.4rem;
+      border-radius: var(--radius-full);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-dark-pill:hover {
+      background: #1E293B;
+      transform: translateY(-1px);
+    }
+
+    .module-grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    /* 2x2 Metric Cards Grid */
+    .metrics-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .metric-card {
+      background: #F8FAFC;
+      border: 1px solid #F1F5F9;
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      min-height: 160px;
+    }
+
+    .metric-icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .icon-cyan { background: #E0F2FE; color: #0284C7; }
+    .icon-blue { background: #DBEAFE; color: #2563EB; }
+    .icon-green { background: #DCFCE7; color: #16A34A; }
+    .icon-orange { background: #FFEDD5; color: #EA580C; }
+    .icon-purple { background: #F3E8FF; color: #9333EA; }
+    .icon-gold { background: #FEF3C7; color: #D97706; }
+
+    .watermark-icon {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      opacity: 0.15;
+      width: 28px;
+      height: 28px;
+    }
+
+    .metric-value-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0F172A;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    /* Showcase Visual Box */
+    .module-visual-box {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--c-bg-subtle);
+      border: 1px solid var(--c-border-subtle);
+      box-shadow: var(--shadow-card);
+    }
+
+    .module-visual-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Interactive Theme Comparison Slider */
+    .slider-box {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      user-select: none;
+      height: 100%;
+      min-height: 380px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--c-border-subtle);
+      background: #FFFFFF;
+    }
+
+    .slider-pane {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .slider-before {
+      left: 0;
+      background: #0B0E14;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .slider-after {
+      right: 0;
+      background: #F8FAFC;
+      color: #0F172A;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .slider-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #3B82F6;
+      cursor: ew-resize;
+      z-index: 10;
+    }
+
+    .slider-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #3B82F6;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+      font-size: 1.1rem;
+    }
+
+    /* Mid Page Launch CTA Banner */
+    .banner-cta-section {
+      text-align: center;
+      padding: 7rem 1.5rem 5rem;
+    }
+
+    .banner-cta-tag {
+      font-size: 0.88rem;
+      color: var(--c-text-muted);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .banner-cta-title {
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      max-width: 800px;
+      margin: 0 auto 2.2rem;
+      color: #0F172A;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #0284C7 0%, #3B82F6 40%, #EC4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 3 Benefit Cards Section (Why Choose Cartix) */
+    .why-section {
+      padding: 3rem 0 6rem;
+      text-align: center;
+    }
+
+    .why-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+      text-align: left;
+    }
+
+    .why-card {
+      background: #FFFFFF;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-xl);
+      padding: 2.4rem 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .why-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .why-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.02em;
+    }
+
+    .why-card-desc {
+      font-size: 0.92rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Logo Integration Grid */
+    .integration-section {
+      padding: 3rem 0 5rem;
+      text-align: center;
+    }
+
+    .integration-header-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px dashed #CBD5E1;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .integration-item {
+      padding: 2.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #CBD5E1;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #334155;
+      background: #FFFFFF;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 5rem 0;
+    }
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+    }
+
+    .faq-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--c-border);
+      padding-bottom: 1.2rem;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      text-align: left;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0F172A;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      font-family: inherit;
+    }
+
+    .faq-answer {
+      font-size: 0.92rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+      margin-top: 0.6rem;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .faq-icon {
+      font-size: 1.2rem;
+      color: #64748B;
+      font-weight: 400;
+    }
+
+    /* Bottom Constellation CTA Section */
+    .bottom-cta-section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .bottom-cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .bottom-cta-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+
+    .bottom-cta-desc {
+      font-size: 1rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Footer */
+    .footer {
+      position: relative;
+      padding: 5rem 0 3rem;
+      border-top: 1px solid var(--c-border-subtle);
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+
+    .footer-watermark {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: #F1F5F9;
+      pointer-events: none;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-nav-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .telegram-card {
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      border-radius: var(--radius-md);
+      padding: 0.8rem 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: #0369A1;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .footer-col-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-links-list a {
+      font-size: 0.88rem;
+      color: var(--c-text-muted);
+      transition: color 0.15s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--c-text);
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--c-text-subtle);
+      border-top: 1px solid var(--c-border-subtle);
+      padding-top: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-title { font-size: 2.6rem; }
+      .module-header { flex-direction: column; gap: 1.5rem; }
+      .module-grid-row { grid-template-columns: 1fr; }
+      .why-cards-grid { grid-template-columns: 1fr; }
+      .integration-grid { grid-template-columns: 1fr 1fr; }
+      .faq-layout { grid-template-columns: 1fr; }
+      .bottom-cta-grid { grid-template-columns: 1fr; }
+      .footer-nav-grid { grid-template-columns: 1fr 1fr; }
+      .nav-menu { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo">
+        <svg class="logo-infinity" viewBox="0 0 44 24">
+          <path d="M 12 18 C 6 18 2 14 2 8 C 2 3 6 0 12 0 C 18 0 22 6 25 9 C 28 12 32 18 38 18 C 44 18 48 14 48 8 C 48 3 44 0 38 0 C 32 0 28 6 25 9 C 22 12 18 18 12 18 Z" />
+        </svg>
+        <span>cartix</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#services" class="nav-link">Services ⌵</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#benefits" class="nav-link">Benefits</a>
+        <a href="#integrations" class="nav-link">Integrations</a>
+        <a href="#faqs" class="nav-link">FAQs</a>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="../../index.html" style="font-size: 0.85rem; font-weight: 600; color: #64748B;">← Library</a>
+        <a href="#services" class="btn-signup">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="pill-badge">Built For Shopify</div>
+      <h1 class="hero-title">The Complete<br>Ecommerce Engine</h1>
+      <p class="hero-subtitle">Everything you need to scale from subscriptions to fulfillment, all under one roof</p>
+      
+      <a href="#services" class="btn-primary-gradient">Explore Our Services →</a>
+
+      <!-- 3D Isometric Engine Visual -->
+      <div class="hero-visual-stage">
+        <img src="assets/hero_cube.svg" alt="Cartix 3D Isometric Glass Cube Engine">
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Cartix CRM -->
+  <section id="services" class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix CRM</div>
+          <h2 class="module-title">Transform One-Time Buyers Into Monthly Recurring Revenue</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Most ecom stores lose 92% of customers after one purchase. Cartix CRM turns your Shopify store into a subscription powerhouse with custom checkouts, automated billing</p>
+          <a href="#calculator" class="btn-dark-pill">Calculate Your MRR Potential</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <!-- 2x2 Metric Cards -->
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-cyan">$</div>
+            <svg class="watermark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            <div class="metric-value-text">+426% Average<br>Revenue Increase</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">💰</div>
+            <svg class="watermark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            <div class="metric-value-text">$1.3M+ MRR Generated<br>for Clients</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-cyan">⚡</div>
+            <svg class="watermark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            <div class="metric-value-text">14-Day<br>Launch Timeline</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">🛡</div>
+            <svg class="watermark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            <div class="metric-value-text">95%+ Payment<br>Approval Rates</div>
+          </div>
+        </div>
+
+        <!-- CRM Live Dashboard Visual -->
+        <div class="module-visual-box">
+          <img src="assets/crm_card.svg" alt="Cartix CRM Dashboard">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Cartix Payment -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Payment</div>
+          <h2 class="module-title">Payment Processing Built for High-Risk Ecommerce</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Stripe banned you. PayPal shut you down. Traditional processors don't understand your business. We do. Get approved for high-risk payment processing with 95%+ approval rates and industry expertise that keeps you running</p>
+          <a href="#services" class="btn-dark-pill">Get Approved Now</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <!-- Visual on Left -->
+        <div class="module-visual-box">
+          <img src="assets/card_visual.svg" alt="Cartix High-Risk Payment Visual">
+        </div>
+
+        <!-- 2x2 Metric Cards on Right -->
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-green">✓</div>
+            <div class="metric-value-text">95%+<br>Approval Rates</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-green">🛡</div>
+            <div class="metric-value-text">High-Risk Industry<br>Specialists</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-green">⏻</div>
+            <div class="metric-value-text">No Sudden<br>Shutdowns</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-green">⚙</div>
+            <div class="metric-value-text">Multiple Processor<br>Network</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Cartix Max -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Max</div>
+          <h2 class="module-title">Premium Creatives That Scale Your Brand</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Stop losing to bad creatives. We deliver 50 premium static ads monthly with 3 copy variations, complete market research, and strategic angles that convert. Plus free media buying included. Average clients go from 1.5x to 3x+ ROAS.</p>
+          <a href="#services" class="btn-dark-pill">Calculate Your MRR Potential</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">✨</div>
+            <div class="metric-value-text">150 Premium<br>Creatives Monthly</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">📊</div>
+            <div class="metric-value-text">1.5x → 3x+ ROAS<br>Average</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">💰</div>
+            <div class="metric-value-text">$7M+ Generated for<br>Clients</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">🎯</div>
+            <div class="metric-value-text">Free Media Buying<br>Included</div>
+          </div>
+        </div>
+
+        <div class="module-visual-box">
+          <img src="assets/creative_card.svg" alt="Cartix Max Creatives Showcase">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Cartix Shield -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Shield</div>
+          <h2 class="module-title">Stop Chargebacks Before They Cost You Thousands</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Chargebacks cost sales, fees, and risk. Cartix Shield alerts you to disputes early, allowing direct resolution with customers. Protect approval rates and revenue with affordable alerts.</p>
+          <a href="#services" class="btn-dark-pill">Protect Your Revenue</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="module-visual-box">
+          <img src="assets/shield_visual.svg" alt="Cartix Shield Holographic Protection">
+        </div>
+
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-orange">⏱</div>
+            <div class="metric-value-text">40% Dispute<br>Resolution Rate</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-orange">🔔</div>
+            <div class="metric-value-text">Real-Time<br>Chargeback Alerts</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-orange">💬</div>
+            <div class="metric-value-text">Cheapest Alerts<br>on Market</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-orange">📉</div>
+            <div class="metric-value-text">35% Reduced<br>Involuntary Churn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Cartix Theme -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Theme</div>
+          <h2 class="module-title">High-Converting Websites That Outperform Generic Themes</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Your Shopify theme is leaving money on the table. Cartix Theme combines luxury design with conversion-optimized performance. Built to beat generic themes and premium competitors like Shrine with better load times, mobile experience, and checkout flows that convert.</p>
+          <a href="#services" class="btn-dark-pill">Preview Theme Demo</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">💎</div>
+            <div class="metric-value-text">Conversion-<br>Optimized Design</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">⚡</div>
+            <div class="metric-value-text">Lightning-Fast<br>Load Times</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">📱</div>
+            <div class="metric-value-text">Mobile-First<br>Architecture</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-blue">🚀</div>
+            <div class="metric-value-text">2.3x Better Than<br>Generic Themes</div>
+          </div>
+        </div>
+
+        <!-- Interactive Split Comparison Slider -->
+        <div class="slider-box" id="themeSlider">
+          <div class="slider-pane slider-before">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #94A3B8; text-transform: uppercase;">Standard Theme</span>
+            <h3 style="font-size: 1.8rem; font-weight: 800; margin: 0.5rem 0;">4.8s Page Load</h3>
+            <p style="font-size: 0.9rem; color: #94A3B8;">Bloated scripts, clunky mobile checkout, 1.4% conversion rate.</p>
+          </div>
+          <div class="slider-pane slider-after" id="sliderAfter">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #3B82F6; text-transform: uppercase;">Cartix Engine</span>
+            <h3 style="font-size: 1.8rem; font-weight: 800; margin: 0.5rem 0;">0.8s Instant Load</h3>
+            <p style="font-size: 0.9rem; color: #64748B;">Headless speed, 1-click Apple Pay checkout, 3.8% conversion rate.</p>
+          </div>
+          <div class="slider-handle" id="sliderHandle" style="left: 50%;">
+            <div class="slider-knob">⇄</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Cartix Ship -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Ship</div>
+          <h2 class="module-title">Seamless Global Fulfillment From China</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Stop dealing with unreliable suppliers and delayed shipments. Cartix Ship provides premium China fulfillment with better sourcing, faster shipping, and payment terms that actually work for DTC brands. All the benefits of Zendrop without the headaches.</p>
+          <a href="#services" class="btn-dark-pill">Start Fulfilling</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="module-visual-box">
+          <img src="assets/shipping_card.svg" alt="Cartix Ship Route Visual">
+        </div>
+
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">🌐</div>
+            <div class="metric-value-text">Global Fulfillment<br>Network</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">⚡</div>
+            <div class="metric-value-text">Faster Shipping<br>Times (4-7 Days)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">💳</div>
+            <div class="metric-value-text">Better Payment<br>Terms</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">🤝</div>
+            <div class="metric-value-text">Premium Sourcing<br>Partners</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Cartix Stealth -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Stealth</div>
+          <h2 class="module-title">Advertise Without Limits, Bans, or Spending Caps</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Your ad account gets banned. Spending limits hinder scaling. We offer true whitelisted agency accounts for Meta, TikTok, and Google. Enjoy unlimited spend, better CPAs, priority support, and freedom from account issues.</p>
+          <a href="#services" class="btn-dark-pill">Get Agency Access</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-gold">🔄</div>
+            <div class="metric-value-text">Unlimited Ad Spend<br>Capacity</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-gold">⚙</div>
+            <div class="metric-value-text">Better CPAs &amp;<br>Performance</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-gold">🔑</div>
+            <div class="metric-value-text">True Agency<br>Accounts</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-gold">📋</div>
+            <div class="metric-value-text">No More Bans<br>or Limits</div>
+          </div>
+        </div>
+
+        <div class="module-visual-box">
+          <img src="assets/stealth_card.svg" alt="Cartix Stealth Agency Accounts">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: Cartix Learn -->
+  <section class="module-section">
+    <div class="container">
+      <div class="module-header">
+        <div class="module-left">
+          <div class="pill-badge">Cartix Learn</div>
+          <h2 class="module-title">Master Ecommerce From Experts Doing 7-8 Figures</h2>
+        </div>
+        <div class="module-right">
+          <p class="module-desc">Most courses teach outdated tactics from fake gurus. Cartix Learn gives you real strategies from operators running successful 7-8 figure brands. Learn to build, scale, and optimize your store, then seamlessly implement with Cartix tools built for execution.</p>
+          <a href="#services" class="btn-dark-pill">Start Learning</a>
+        </div>
+      </div>
+
+      <div class="module-grid-row">
+        <div class="module-visual-box">
+          <img src="assets/learn_card.svg" alt="Cartix Learn 3D Stepped Pillars">
+        </div>
+
+        <div class="metrics-2x2">
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">📚</div>
+            <div class="metric-value-text">Real Strategies,<br>Not Theory</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">👑</div>
+            <div class="metric-value-text">Taught by 7-8 Figure<br>Operators</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">🔗</div>
+            <div class="metric-value-text">Direct Tool<br>Integration</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap icon-purple">🎯</div>
+            <div class="metric-value-text">Beginner to<br>Advanced Paths</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mid Page Launch CTA Banner -->
+  <section class="banner-cta-section">
+    <div class="container">
+      <span class="banner-cta-tag">The tools and support you simply can't find anywhere else</span>
+      <h2 class="banner-cta-title">Launch, scale, and manage<br>your <span class="gradient-text">ecom business.</span></h2>
+      <a href="#services" class="btn-primary-gradient">Try Cartix Today →</a>
+    </div>
+  </section>
+
+  <!-- Why Choose Cartix / 3 Cards Section -->
+  <section id="benefits" class="why-section">
+    <div class="container">
+      <div class="pill-badge">Why Choose Cartix?</div>
+      <h2 style="font-size: 2.6rem; font-weight: 800; letter-spacing: -0.04em;">All-in-one ecommerce<br>engine built for growth</h2>
+
+      <div class="why-cards-grid">
+        <div class="why-card">
+          <h3 class="why-card-title">Predictable Revenue Growth</h3>
+          <p class="why-card-desc">Transform one-time buyers into loyal subscribers with automated subscriptions and real-time analytics.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="why-card-title">Seamless Scaling &amp; Automation</h3>
+          <p class="why-card-desc">Manage payments, prevent chargebacks, and optimize every checkout with tools designed to eliminate busywork.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="why-card-title">Premium Creative &amp; Support</h3>
+          <p class="why-card-desc">Access high-converting ads, 24/7 expert help, and end-to-end creative support—so you stay ahead of competitors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations Section -->
+  <section id="integrations" class="integration-section">
+    <div class="container">
+      <div class="integration-header-text">Works Seamlessly With The Tools You Already Use</div>
+      <div class="integration-grid">
+        <div class="integration-item"><span style="color: #95BF47;">🛒 shopify</span></div>
+        <div class="integration-item"><span style="color: #7F54B3;">woo</span></div>
+        <div class="integration-item"><span style="color: #21759B;">WordPress.com</span></div>
+        <div class="integration-item">BIGCOMMERCE</div>
+        <div class="integration-item"><span style="color: #0668E1;">∞ Meta</span></div>
+        <div class="integration-item"><span style="color: #4285F4;">▲ Google Ads</span></div>
+        <div class="integration-item"><span style="color: #10B981;">▶ nmi</span></div>
+        <div class="integration-item"><span style="color: #6366F1;">stripe</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faqs" class="faq-section">
+    <div class="container faq-layout">
+      <div>
+        <div class="pill-badge">FAQ's</div>
+        <h2 class="faq-title">Frequently<br>Asked<br>Questions</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>What is Cartix?</span>
+            <span class="faq-icon">✕</span>
+          </button>
+          <div class="faq-answer">
+            Whether you're launching your first product or scaling to eight figures, Cartix gives you every tool to own your ecommerce stack—from CRM to creatives, payments to fulfillment.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does Cartix differ from tools like Shopify or Stripe?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Shopify handles store hosting, but leaves payment risk, chargebacks, China fulfillment, and recurring subscription checkouts fragmented. Cartix unifies these into one automated high-risk engine.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I use just one Cartix service?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Yes. You can start with Cartix Payment, Cartix CRM, or Cartix Shield standalone, and activate additional modules as your merchant volume expands.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How much does Cartix cost?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Cartix scales with your monthly volume. Basic plans start with zero upfront onboarding fees, with volume-tiered transaction margins and transparent monthly subscriptions.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How fast can I get started?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Our onboarding team can have your high-risk payment gateway approved and your custom subscription checkout live within 14 business days.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Hero CTA Section (Constellation) -->
+  <section class="bottom-cta-section">
+    <div class="container bottom-cta-grid">
+      <div>
+        <div class="pill-badge">Build for shopify</div>
+        <h2 class="bottom-cta-title">Build. Sell.<br>Scale. Repeat.</h2>
+        <p class="bottom-cta-desc">Whether you're launching your first product or scaling to eight figures, Cartix gives you every tool to own your ecommerce stack—from CRM to creatives, payments to fulfillment.</p>
+        <a href="#services" class="btn-primary-gradient">Explore Our Services →</a>
+      </div>
+
+      <div>
+        <img src="assets/constellation.svg" alt="Cartix App Constellation" style="width: 100%; height: auto;">
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-watermark">cartix</div>
+    <div class="container footer-content">
+      <div class="footer-top-row">
+        <a href="index.html" class="brand-logo">
+          <svg class="logo-infinity" viewBox="0 0 44 24">
+            <path d="M 12 18 C 6 18 2 14 2 8 C 2 3 6 0 12 0 C 18 0 22 6 25 9 C 28 12 32 18 38 18 C 44 18 48 14 48 8 C 48 3 44 0 38 0 C 32 0 28 6 25 9 C 22 12 18 18 12 18 Z" />
+          </svg>
+          <span>cartix</span>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 1.5rem; font-size: 0.85rem; font-weight: 600; color: #475569;">
+          <span>Social Media</span>
+          <a href="#" style="color: #0F172A;">𝕏</a>
+          <a href="#" style="color: #0F172A;"></a>
+          <a href="#" style="color: #0F172A;">in</a>
+        </div>
+      </div>
+
+      <div class="footer-nav-grid">
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 700; margin-bottom: 0.8rem;">Reach out to us</div>
+          <a href="#" class="telegram-card">
+            <span>✈</span>
+            <div>
+              <div style="font-weight: 700;">Contact us on telegram</div>
+              <div style="font-size: 0.75rem; font-weight: 500; opacity: 0.8;">Our associate will reply within 24h</div>
+            </div>
+          </a>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Features</div>
+          <ul class="footer-links-list">
+            <li><a href="#">Subscription Management</a></li>
+            <li><a href="#">Custom checkout</a></li>
+            <li><a href="#">Campaign strategy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Explore</div>
+          <ul class="footer-links-list">
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Calculator</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Help</div>
+          <ul class="footer-links-list">
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Email</a></li>
+            <li><a href="#">Help centre</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>© 2026 Cartix. All rights reserved.</div>
+        <div style="display: flex; gap: 2rem;">
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // FAQ Accordion Interactivity
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('active');
+          const icon = i.querySelector('.faq-icon');
+          if (icon) icon.textContent = '+';
+        });
+
+        if (!isActive) {
+          item.classList.add('active');
+          const icon = button.querySelector('.faq-icon');
+          if (icon) icon.textContent = '✕';
+        }
+      });
+    });
+
+    // Theme Comparison Drag Slider
+    const sliderBox = document.getElementById('themeSlider');
+    const sliderAfter = document.getElementById('sliderAfter');
+    const sliderHandle = document.getElementById('sliderHandle');
+    let isDragging = false;
+
+    function updateSlider(x) {
+      const rect = sliderBox.getBoundingClientRect();
+      let pos = (x - rect.left) / rect.width;
+      if (pos < 0.05) pos = 0.05;
+      if (pos > 0.95) pos = 0.95;
+      
+      const pct = pos * 100;
+      sliderHandle.style.left = `${pct}%`;
+      sliderAfter.style.clipPath = `polygon(${pct}% 0, 100% 0, 100% 100%, ${pct}% 100%)`;
+    }
+
+    if (sliderBox && sliderHandle) {
+      sliderHandle.addEventListener('mousedown', () => isDragging = true);
+      window.addEventListener('mouseup', () => isDragging = false);
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        updateSlider(e.clientX);
+      });
+
+      // Touch support
+      sliderHandle.addEventListener('touchstart', () => isDragging = true);
+      window.addEventListener('touchend', () => isDragging = false);
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        updateSlider(e.touches[0].clientX);
+      });
+
+      // Initialize clip path
+      sliderAfter.style.clipPath = `polygon(50% 0, 100% 0, 100% 100%, 50% 100%)`;
+    }
+  </script>
+</body>
+</html>

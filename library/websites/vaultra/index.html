@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaultra — Modern Financial Infrastructure · Slash Friction, Boost Capital</title>
+  <meta name="description" content="Eliminate payment waste in real time — freeing up working capital you can immediately reinvest into growth, not defense." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg-page: #FFFFFF;
+      --bg-subtle: #F8F9FE;
+      --bg-card: #FFFFFF;
+      --bg-card-tint: #F3F4FE;
+      
+      --primary: #523EFF;
+      --primary-hover: #3E29EB;
+      --primary-light: #7565FF;
+      --primary-soft: #978BFF;
+      --primary-pale: #BAB2FF;
+      --primary-tint: #EEECFF;
+      --primary-glow: rgba(82, 62, 255, 0.18);
+
+      --ink-900: #0E121E;
+      --ink-800: #1B2130;
+      --ink-700: #30394D;
+      --ink-600: #4A5568;
+      --ink-500: #64748B;
+      --ink-400: #94A3B8;
+      --ink-200: #E2E8F0;
+      --ink-100: #F1F5F9;
+
+      --accent-red: #EF4444;
+      --accent-red-bg: #FEF2F2;
+      --accent-green: #10B981;
+      --accent-green-bg: #ECFDF5;
+      --accent-cyan: #06B6D4;
+      --accent-cyan-bg: #ECFEFF;
+
+      --border-light: rgba(14, 18, 30, 0.08);
+      --border-focus: rgba(82, 62, 255, 0.35);
+
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+      --shadow-sm: 0 2px 8px rgba(14, 18, 30, 0.04);
+      --shadow-md: 0 10px 30px rgba(14, 18, 30, 0.07);
+      --shadow-lg: 0 20px 50px rgba(82, 62, 255, 0.12);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-page);
+      color: var(--ink-900);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--ink-900);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 180ms ease;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    section[id] {
+      scroll-margin-top: 90px;
+    }
+
+    /* =========================================================
+       TOP ANNOUNCEMENT RIBBON
+       ========================================================= */
+    .top-banner {
+      background: linear-gradient(90deg, #3B4BF9 0%, #523EFF 50%, #7565FF 100%);
+      color: #FFFFFF;
+      padding: 10px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .top-banner a {
+      color: #FFFFFF;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 600;
+    }
+
+    .top-banner a:hover {
+      opacity: 0.9;
+    }
+
+    /* =========================================================
+       HEADER NAVIGATION
+       ========================================================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-light);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      transition: all 200ms ease;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: var(--ink-900);
+    }
+
+    /* 7-Element Geometric Logo Mark from Branding Reference */
+    .brand-logo-svg {
+      width: 32px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink-600);
+      transition: color 180ms ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .btn-pill-dark {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 180ms var(--ease-spring);
+      box-shadow: 0 4px 14px rgba(14, 18, 30, 0.12);
+    }
+
+    .btn-pill-dark:hover {
+      background: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    /* =========================================================
+       HERO SECTION (Luminous Sky Backdrop + Central Console)
+       ========================================================= */
+    .hero-section {
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, #E8EDFF 0%, #F5F7FF 50%, #FFFFFF 100%);
+      padding: 72px 0 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(82, 62, 255, 0.14) 0%, rgba(117, 101, 255, 0.06) 50%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid rgba(82, 62, 255, 0.22);
+      border-radius: 9999px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+      box-shadow: 0 2px 10px rgba(82, 62, 255, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge .tag-pill {
+      background: var(--primary-tint);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-title {
+      font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--ink-900);
+      max-width: 860px;
+      margin: 0 auto 20px;
+    }
+
+    .hero-title .title-accent {
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+      line-height: 1.6;
+      color: var(--ink-600);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+
+    .hero-cta-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn-pill-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      padding: 12px 28px;
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 180ms var(--ease-spring);
+      box-shadow: 0 8px 24px var(--primary-glow);
+    }
+
+    .btn-pill-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(82, 62, 255, 0.3);
+    }
+
+    .btn-pill-secondary {
+      background: #FFFFFF;
+      color: var(--ink-800);
+      border: 1px solid var(--border-light);
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 180ms ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-pill-secondary:hover {
+      border-color: var(--ink-400);
+      background: var(--bg-subtle);
+    }
+
+    /* Central Interactive Connected Rails Console */
+    .hero-console-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(82, 62, 255, 0.16);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(82, 62, 255, 0.14), 0 4px 16px rgba(14, 18, 30, 0.05);
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px;
+      text-align: left;
+      position: relative;
+    }
+
+    .console-header-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border-radius: 9999px;
+      padding: 5px;
+      margin-bottom: 20px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .console-tab {
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-500);
+      transition: all 160ms ease;
+    }
+
+    .console-tab.active {
+      background: #FFFFFF;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(82, 62, 255, 0.1);
+    }
+
+    .console-status-banner {
+      background: var(--bg-subtle);
+      border: 1px solid var(--ink-200);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--ink-600);
+      margin-bottom: 16px;
+    }
+
+    .status-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse-ring 2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .console-integration-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .integration-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: var(--bg-subtle);
+      border: 1px solid rgba(14, 18, 30, 0.05);
+      border-radius: 12px;
+      transition: all 180ms ease;
+    }
+
+    .integration-row:hover {
+      background: #FFFFFF;
+      border-color: rgba(82, 62, 255, 0.2);
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(82, 62, 255, 0.06);
+    }
+
+    .int-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-800);
+    }
+
+    .int-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .int-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      background: var(--accent-green-bg);
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    /* =========================================================
+       SOCIAL PROOF LOGO BAR & METRIC CARD
+       ========================================================= */
+    .proof-section {
+      padding: 48px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      background: #FFFFFF;
+    }
+
+    .proof-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .proof-logos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .client-logo-item {
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-400);
+      text-align: center;
+      text-transform: uppercase;
+      font-family: var(--font-sans);
+      transition: color 180ms ease;
+    }
+
+    .client-logo-item:hover {
+      color: var(--ink-800);
+    }
+
+    /* High impact 3D blue stat card from reference */
+    .stat-callout-card {
+      background: linear-gradient(135deg, #09132E 0%, #152A68 50%, #203E94 100%);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(9, 19, 46, 0.2);
+    }
+
+    .stat-callout-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255, 255, 255, 0.05) 15px, rgba(255, 255, 255, 0.05) 30px);
+      pointer-events: none;
+    }
+
+    .stat-number-big {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .stat-caption {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #BAC7EB;
+    }
+
+    /* =========================================================
+       CORE VALUE MANIFESTO (With Inline Colorful Strikethroughs)
+       ========================================================= */
+    .manifesto-section {
+      padding: 96px 0;
+      text-align: center;
+      background: #FFFFFF;
+    }
+
+    .manifesto-content {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .manifesto-lead {
+      font-size: clamp(1.75rem, 3.2vw, 2.65rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -0.03em;
+      color: var(--ink-900);
+      margin-bottom: 24px;
+    }
+
+    /* Highlight tags matching reference */
+    .tag-strike {
+      color: var(--accent-red);
+      text-decoration: line-through;
+      text-decoration-thickness: 3px;
+      text-decoration-color: var(--accent-red);
+    }
+
+    .tag-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary);
+    }
+
+    .manifesto-sub {
+      font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+      font-weight: 600;
+      color: var(--ink-700);
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       REAL RESULTS BENTO GRID (6-Card Alternating Layout)
+       ========================================================= */
+    .results-section {
+      padding: 80px 0 100px;
+      background: var(--bg-subtle);
+    }
+
+    .section-kicker {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .kicker-title {
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink-900);
+      margin-bottom: 8px;
+    }
+
+    .kicker-sub {
+      font-size: 1.1rem;
+      color: var(--ink-500);
+    }
+
+    .results-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      border-radius: 18px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 220ms var(--ease-spring), box-shadow 220ms ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .bento-quote-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+    }
+
+    .bento-quote-text {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--ink-700);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .bento-quote-client {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--ink-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tinted Metric Blocks */
+    .card-metric-cyan {
+      background: #EAF4FF;
+      border: 1px solid #D5E7FC;
+    }
+
+    .card-metric-blue {
+      background: #EDEEFF;
+      border: 1px solid #D8DAFF;
+    }
+
+    .card-metric-lavender {
+      background: #F4ECFF;
+      border: 1px solid #E6D8FF;
+    }
+
+    .card-metric-pink {
+      background: #FFEBF2;
+      border: 1px solid #FCD4E4;
+    }
+
+    .card-metric-sage {
+      background: #EAF9F1;
+      border: 1px solid #D2F2E0;
+    }
+
+    .card-metric-mint {
+      background: #E8FBF7;
+      border: 1px solid #D1F6ED;
+    }
+
+    .bento-metric-val {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--ink-900);
+      margin-bottom: 8px;
+    }
+
+    .bento-metric-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-600);
+    }
+
+    /* =========================================================
+       PRODUCT SUITE: STACKED CONSOLE & REALTIME ALERTS
+       ========================================================= */
+    .suite-section {
+      padding: 100px 0;
+      background: #FFFFFF;
+    }
+
+    .suite-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px;
+    }
+
+    .suite-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .suite-card-preview {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .alert-card-popup {
+      background: #FFFFFF;
+      border: 1px solid rgba(82, 62, 255, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(82, 62, 255, 0.12);
+    }
+
+    .alert-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.82rem;
+      color: var(--ink-500);
+    }
+
+    .alert-badge-red {
+      background: var(--accent-red-bg);
+      color: var(--accent-red);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .alert-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 6px;
+    }
+
+    .alert-metric-stat {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--ink-900);
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    .alert-team-notif {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--ink-600);
+    }
+
+    .team-avatar-stack {
+      display: flex;
+      margin-left: -4px;
+    }
+
+    .avatar-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      margin-left: -6px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       ATMOSPHERIC CLOUD INTELLIGENCE BANNER
+       ========================================================= */
+    .cloud-banner-section {
+      padding: 60px 0;
+      background: #FFFFFF;
+    }
+
+    .cloud-banner-card {
+      background: linear-gradient(180deg, #E8F3FF 0%, #D8ECFF 60%, #C2E2FF 100%);
+      border-radius: 28px;
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(6, 182, 212, 0.1);
+    }
+
+    .cloud-banner-card::before {
+      content: "";
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cloud-banner-title {
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      color: var(--ink-900);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cloud-banner-sub {
+      font-size: 1.15rem;
+      color: var(--ink-600);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =========================================================
+       INTEGRATIONS DOCK
+       ========================================================= */
+    .integrations-section {
+      padding: 80px 0 100px;
+      text-align: center;
+      background: #FFFFFF;
+    }
+
+    .integrations-dock {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border-light);
+      border-radius: 24px;
+      padding: 20px 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(14, 18, 30, 0.08);
+      margin: 40px auto 32px;
+    }
+
+    .dock-app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary);
+      transition: all 180ms var(--ease-spring);
+    }
+
+    .dock-app-icon:hover {
+      transform: translateY(-8px) scale(1.1);
+      box-shadow: 0 12px 24px rgba(82, 62, 255, 0.2);
+      border-color: var(--primary);
+    }
+
+    /* =========================================================
+       FAQ & CONTACT SPLIT SECTION
+       ========================================================= */
+    .faq-section {
+      padding: 100px 0;
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .faq-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+    }
+
+    .contact-card-sidebar {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      margin-top: 32px;
+    }
+
+    .contact-avatar-row {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    .contact-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      margin-right: -8px;
+      background: var(--primary);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .contact-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink-900);
+      margin-bottom: 8px;
+    }
+
+    .contact-card-text {
+      font-size: 0.9rem;
+      color: var(--ink-600);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .faq-category-pills {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .faq-cat-pill {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .faq-cat-pill.inactive {
+      background: #FFFFFF;
+      color: var(--ink-600);
+      border: 1px solid var(--border-light);
+    }
+
+    .faq-accordion-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 180ms ease;
+    }
+
+    .faq-btn-trigger {
+      width: 100%;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--ink-900);
+      text-align: left;
+    }
+
+    .faq-icon-cross {
+      width: 18px;
+      height: 18px;
+      stroke: var(--ink-400);
+      transition: transform 200ms ease;
+      flex-shrink: 0;
+    }
+
+    .faq-accordion-item.open .faq-icon-cross {
+      transform: rotate(45deg);
+      stroke: var(--primary);
+    }
+
+    .faq-drawer-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 260ms var(--ease-spring), padding 180ms ease;
+      font-size: 0.92rem;
+      color: var(--ink-600);
+      line-height: 1.6;
+      padding: 0 24px;
+    }
+
+    .faq-accordion-item.open .faq-drawer-body {
+      max-height: 200px;
+      padding-bottom: 20px;
+    }
+
+    /* =========================================================
+       SITE FOOTER
+       ========================================================= */
+    .site-footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-light);
+      padding: 80px 0 40px;
+    }
+
+    .footer-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 40px;
+    }
+
+    .footer-columns-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-400);
+      margin-bottom: 18px;
+    }
+
+    .footer-link-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--ink-600);
+    }
+
+    .footer-link-list a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom-bar {
+      border-top: 1px solid var(--border-light);
+      padding-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--ink-400);
+    }
+
+    .footer-watermark {
+      font-size: clamp(4rem, 11vw, 9rem);
+      font-weight: 900;
+      text-align: center;
+      color: rgba(14, 18, 30, 0.03);
+      user-select: none;
+      pointer-events: none;
+      line-height: 0.8;
+      letter-spacing: -0.04em;
+      margin-top: 40px;
+    }
+
+    /* =========================================================
+       MODAL DIALOG
+       ========================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(14, 18, 30, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      max-width: 540px;
+      width: 100%;
+      padding: 36px;
+      position: relative;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 220ms var(--ease-spring);
+      box-shadow: 0 24px 60px rgba(14, 18, 30, 0.2);
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close-icon {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-600);
+      cursor: pointer;
+    }
+
+    .form-field {
+      margin-bottom: 18px;
+    }
+
+    .form-field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-700);
+      margin-bottom: 6px;
+    }
+
+    .form-field input, .form-field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 180ms ease;
+    }
+
+    .form-field input:focus, .form-field textarea:focus {
+      border-color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .proof-layout {
+        grid-template-columns: 1fr;
+      }
+      .results-bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .suite-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .faq-split-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-columns-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Ribbon -->
+  <aside class="top-banner" role="complementary" aria-label="Announcement">
+    <span>On-Demand Webinar: The Hidden Cost of Cross-Border Payment Drag</span>
+    <span>—</span>
+    <a href="#console" onclick="openLeadModal('Watch Webinar On-Demand')">Watch now →</a>
+  </aside>
+
+  <!-- Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="#hero" class="brand-mark" aria-label="Vaultra Homepage">
+        <!-- 7-Element Geometric Circuit / Vault Mark from Branding Reference -->
+        <svg class="brand-logo-svg" viewBox="0 0 96 72" fill="none">
+          <!-- 3 Center Rounded Capsules -->
+          <rect x="26" y="10" width="44" height="14" rx="7" fill="#523EFF" />
+          <rect x="26" y="29" width="44" height="14" rx="7" fill="#523EFF" />
+          <rect x="26" y="48" width="44" height="14" rx="7" fill="#523EFF" />
+          <!-- 4 Flanking Circular Circuit Nodes -->
+          <circle cx="12" cy="24" r="7" fill="#523EFF" />
+          <circle cx="12" cy="48" r="7" fill="#523EFF" />
+          <circle cx="84" cy="24" r="7" fill="#523EFF" />
+          <circle cx="84" cy="48" r="7" fill="#523EFF" />
+        </svg>
+        <span>Vaultra</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#manifesto" class="nav-link">Solutions</a></li>
+          <li><a href="#results" class="nav-link">Results</a></li>
+          <li><a href="#suite" class="nav-link">Platform</a></li>
+          <li><a href="#integrations" class="nav-link">Integrations</a></li>
+          <li><a href="#faq" class="nav-link">FAQs</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <button type="button" class="btn-pill-dark" onclick="openLeadModal('Get Started with Vaultra')">
+          <span>Get Started</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         HERO SECTION
+         ========================================================= -->
+    <section class="hero-section" id="hero" aria-label="Platform Hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="tag-pill">New</span>
+          <span>Stop Paying the Liquidity Drag</span>
+        </div>
+
+        <h1 class="hero-title">
+          Slash Settlement Friction<br />
+          <span class="title-accent">Boost Your Capital</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Eliminate payment waste in real time — freeing up working capital you can immediately reinvest into growth, not defense.
+        </p>
+
+        <div class="hero-cta-wrap">
+          <button type="button" class="btn-pill-primary" onclick="openLeadModal('Claim Free Assessment')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <span>Get Started</span>
+          </button>
+          <a href="#suite" class="btn-pill-secondary">
+            <span>Explore Platform</span>
+          </a>
+        </div>
+
+        <!-- Central Interactive Console Card -->
+        <div class="hero-console-card" id="console">
+          <div class="console-header-tabs" role="tablist">
+            <button class="console-tab active" type="button" id="tabConnect" onclick="switchConsoleTab('connect')">Connect</button>
+            <button class="console-tab" type="button" id="tabDetect" onclick="switchConsoleTab('detect')">Detect</button>
+            <button class="console-tab" type="button" id="tabRecover" onclick="switchConsoleTab('recover')">Recover</button>
+          </div>
+
+          <div class="console-status-banner">
+            <span class="status-pulse-dot"></span>
+            <span id="consoleStatusText">Linking Core Banking, Card Rails, ERP & Swift GPI</span>
+          </div>
+
+          <div class="console-integration-list" id="consoleList">
+            <div class="integration-row">
+              <div class="int-left">
+                <div class="int-icon" style="background: #3B82F6;">G</div>
+                <div>
+                  <div>Global ACH & FedNow</div>
+                  <div style="font-size: 0.75rem; color: var(--ink-400); font-weight: 400;">Multi-bank clearing gateway</div>
+                </div>
+              </div>
+              <div class="int-status-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Connected</span>
+              </div>
+            </div>
+
+            <div class="integration-row">
+              <div class="int-left">
+                <div class="int-icon" style="background: #6366F1;">V</div>
+                <div>
+                  <div>Card Rails & Interchange Shield</div>
+                  <div style="font-size: 0.75rem; color: var(--ink-400); font-weight: 400;">Level 2/3 automated processing</div>
+                </div>
+              </div>
+              <div class="int-status-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Connected</span>
+              </div>
+            </div>
+
+            <div class="integration-row">
+              <div class="int-left">
+                <div class="int-icon" style="background: #10B981;">E</div>
+                <div>
+                  <div>ERP & Swift GPI Treasury Mesh</div>
+                  <div style="font-size: 0.75rem; color: var(--ink-400); font-weight: 400;">Realtime ledger reconciliation</div>
+                </div>
+              </div>
+              <div class="int-status-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Connected</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SOCIAL PROOF LOGO MARQUEE & KEY STAT CALLOUT
+         ========================================================= -->
+    <section class="proof-section">
+      <div class="container proof-layout">
+        <div class="proof-logos-grid">
+          <div class="client-logo-item">FARFETCH</div>
+          <div class="client-logo-item">MODA OPERANDI</div>
+          <div class="client-logo-item">JEWLR</div>
+          <div class="client-logo-item">AXONIFY</div>
+          <div class="client-logo-item">COGECO</div>
+          <div class="client-logo-item">URBAN BARN</div>
+          <div class="client-logo-item">KLARNA</div>
+          <div class="client-logo-item">REVOLUT</div>
+        </div>
+
+        <div class="stat-callout-card">
+          <div class="stat-number-big">63%</div>
+          <div class="stat-caption">Decrease in Branded Interchange Drag</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CORE MANIFESTO (With Highlight Strikethroughs)
+         ========================================================= -->
+    <section class="manifesto-section" id="manifesto">
+      <div class="container manifesto-content">
+        <p class="manifesto-lead">
+          Vaultra detects <span class="tag-strike">interchange waste</span>, verifies 
+          <span class="tag-highlight">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            routing authenticity
+          </span> 
+          and optimizes 
+          <span class="tag-highlight" style="color: var(--accent-cyan);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            treasury flows
+          </span> 
+          for global enterprises.
+        </p>
+
+        <p class="manifesto-sub">
+          Helping you cut <span class="tag-strike">wasted spend</span>, boost margin velocity, and <span style="color: var(--accent-green);">scale ↗</span> with zero liquidity drag.
+        </p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         REAL RESULTS BENTO GRID
+         ========================================================= -->
+    <section class="results-section" id="results">
+      <div class="container">
+        <div class="section-kicker">
+          <h2 class="kicker-title">Real results from real partners</h2>
+          <p class="kicker-sub">Audited performance metrics across $14B+ in annual transaction volume.</p>
+        </div>
+
+        <div class="results-bento-grid">
+          
+          <!-- Row 1 -->
+          <div class="bento-card bento-quote-card">
+            <p class="bento-quote-text">
+              "An online food delivery leader uses Vaultra to capture $6.4M+ from contested interchange fees and optimize instant settlement."
+            </p>
+            <div class="bento-quote-client">
+              <span>● Global Delivery Tier 1</span>
+            </div>
+          </div>
+
+          <div class="bento-card card-metric-cyan">
+            <div class="bento-metric-val">76%</div>
+            <div class="bento-metric-label">Reduction in Processing Drag</div>
+          </div>
+
+          <div class="bento-card card-metric-blue">
+            <div class="bento-metric-val">$6.4M+</div>
+            <div class="bento-metric-label">Reclaimed Annual Treasury Spend</div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="bento-card card-metric-lavender">
+            <div class="bento-metric-val">63%</div>
+            <div class="bento-metric-label">Decrease in Cross-Border Spread</div>
+          </div>
+
+          <div class="bento-card card-metric-pink">
+            <div class="bento-metric-val">$53K</div>
+            <div class="bento-metric-label">Monthly Net Savings</div>
+          </div>
+
+          <div class="bento-card bento-quote-card">
+            <p class="bento-quote-text">
+              "A major international airline uses Vaultra Virtual Clearing to unlock $53K in monthly savings, powering their corporate rewards expansion."
+            </p>
+            <div class="bento-quote-client">
+              <span>● Flag Carrier Airlines</span>
+            </div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="bento-card bento-quote-card">
+            <p class="bento-quote-text">
+              "A leading social-commerce marketplace uses Vaultra to reclaim $25K monthly in payment authorization recovery and reduce chargeback churn."
+            </p>
+            <div class="bento-quote-client">
+              <span>● Social Commerce Platform</span>
+            </div>
+          </div>
+
+          <div class="bento-card card-metric-sage">
+            <div class="bento-metric-val">67%</div>
+            <div class="bento-metric-label">Reduction in Failed Authorizations</div>
+          </div>
+
+          <div class="bento-card card-metric-mint">
+            <div class="bento-metric-val">$25K</div>
+            <div class="bento-metric-label">Monthly Cash Flow Reclaimed</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PRODUCT SUITE & REALTIME ALERTS
+         ========================================================= -->
+    <section class="suite-section" id="suite">
+      <div class="container">
+        <div class="suite-header">
+          <h2 class="kicker-title">A purpose-built suite for treasury leaders</h2>
+          <p class="kicker-sub">Automate multi-rail routing, eradicate hidden basis points, and monitor settlements in real time.</p>
+        </div>
+
+        <div class="suite-layout-grid">
+          <!-- Left: Realtime Alert Feature -->
+          <div>
+            <h3 style="font-size: 2.2rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 16px;">
+              Real-time alerts the moment leakage appears
+            </h3>
+            <p style="font-size: 1.05rem; color: var(--ink-600); line-height: 1.6; margin-bottom: 28px;">
+              The moment VaultRadar flags an anomalous basis point hike, an invalid-traffic card probe, or a sub-optimal settlement tier — you and your treasury team get notified before value burns.
+            </p>
+            <button type="button" class="btn-pill-dark" onclick="openLeadModal('Explore VaultRadar Alerts')">
+              <span>Get Started</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </button>
+          </div>
+
+          <!-- Right: Floating Alert Notification Card -->
+          <div class="suite-card-preview">
+            <div class="alert-card-popup">
+              <div class="alert-header">
+                <span style="font-family: var(--font-mono); font-weight: 600;">VaultHQ · VQ-8532</span>
+                <span class="alert-badge-red">● High Priority</span>
+              </div>
+              <div class="alert-title">Sub-Optimal Clearing Tier Detected</div>
+              <div style="font-size: 0.85rem; color: var(--ink-500); margin-bottom: 12px;">Domestic Debit · Level 3 Fallback</div>
+              
+              <div class="alert-metric-stat">#7 <span style="font-size: 1rem; color: var(--accent-red); font-weight: 600;">↓ Diverted to FedNow instant</span></div>
+
+              <div class="alert-team-notif">
+                <div class="team-avatar-stack">
+                  <div class="avatar-circle">AK</div>
+                  <div class="avatar-circle">MR</div>
+                  <div class="avatar-circle">SL</div>
+                </div>
+                <span>Sent to Growth & Finance Team · Re-routed in 140ms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CLOUD INTELLIGENCE BANNER
+         ========================================================= -->
+    <section class="cloud-banner-section">
+      <div class="container">
+        <div class="cloud-banner-card">
+          <h2 class="cloud-banner-title">
+            The intelligence layer between<br />
+            your revenue and the bots draining it
+          </h2>
+          <p class="cloud-banner-sub">
+            Join the treasury and finance leaders already reclaiming margins and scaling capital velocity.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PLATFORM INTEGRATIONS DOCK
+         ========================================================= -->
+    <section class="integrations-section" id="integrations">
+      <div class="container">
+        <h2 class="kicker-title">Plugs into the platforms you already use</h2>
+        <p class="kicker-sub" style="max-width: 600px; margin: 0 auto;">
+          Vaultra connects securely to your payment gateways, ERP ledgers, and bank accounts. Zero rip-and-replace required.
+        </p>
+
+        <div class="integrations-dock">
+          <div class="dock-app-icon" title="Stripe" style="color: #6366F1;">St</div>
+          <div class="dock-app-icon" title="Adyen" style="color: #10B981;">Ad</div>
+          <div class="dock-app-icon" title="Plaid" style="color: #0E121E;">Pl</div>
+          <div class="dock-app-icon" title="SAP" style="color: #0284C7;">SA</div>
+          <div class="dock-app-icon" title="NetSuite" style="color: #F59E0B;">NS</div>
+          <div class="dock-app-icon" title="Swift GPI" style="color: #2563EB;">Sw</div>
+          <div class="dock-app-icon" title="Shopify Plus" style="color: #059669;">Sh</div>
+          <div class="dock-app-icon" title="Salesforce Financial" style="color: #38BDF8;">Sf</div>
+        </div>
+
+        <div>
+          <button type="button" class="btn-pill-dark" onclick="openLeadModal('View All 40+ Integrations')">
+            <span>See all 40+ integrations</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FAQ & DIRECT CONTACT SPLIT SECTION
+         ========================================================= -->
+    <section class="faq-section" id="faq">
+      <div class="container faq-split-grid">
+        
+        <!-- Left: Query Info & Specialist Card -->
+        <div>
+          <h2 style="font-size: 2.4rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color: var(--ink-900);">
+            Have a query?<br />Feel free to contact us
+          </h2>
+
+          <div class="contact-card-sidebar">
+            <div class="contact-avatar-row">
+              <div class="contact-avatar">EM</div>
+              <div class="contact-avatar">JD</div>
+              <div class="contact-avatar">TK</div>
+            </div>
+            <h4 class="contact-card-title">Still have questions?</h4>
+            <p class="contact-card-text">
+              Our team of capital efficiency specialists will get back to you within one business day.
+            </p>
+            <button type="button" class="btn-pill-dark" style="width: 100%; justify-content: center;" onclick="openLeadModal('Contact Treasury Specialist')">
+              <span>Email Us</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Category Tabs & Accordions -->
+        <div>
+          <div class="faq-category-pills">
+            <button class="faq-cat-pill" type="button">Overview</button>
+            <button class="faq-cat-pill inactive" type="button" onclick="alert('Viewing Product specifics')">Product</button>
+          </div>
+
+          <div class="faq-accordion-item open">
+            <button class="faq-btn-trigger" type="button">
+              <span>Who uses Vaultra?</span>
+              <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-drawer-body">
+              Over 250+ fast-growing enterprises, marketplaces, and Fortune 500 corporations leverage Vaultra technology. Our partners process high transaction frequencies where tenths of a basis point compound into millions in annual liquidity.
+            </div>
+          </div>
+
+          <div class="faq-accordion-item">
+            <button class="faq-btn-trigger" type="button">
+              <span>Does Vaultra work with existing merchant acquirers or through direct APIs?</span>
+              <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-drawer-body">
+              Both. You can connect Vaultra as a non-invasive routing layer on top of Stripe, Adyen, and Braintree, or connect directly via our high-throughput REST and gRPC gateways to sponsor banks and clearing houses.
+            </div>
+          </div>
+
+          <div class="faq-accordion-item">
+            <button class="faq-btn-trigger" type="button">
+              <span>Security & Data Privacy: How is financial telemetry protected?</span>
+              <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-drawer-body">
+              Vaultra maintains Level 1 PCI-DSS certification and SOC 2 Type II compliance. All cardholder metadata is tokenized in transit and at rest using AES-256 with hardware security module (HSM) key isolation.
+            </div>
+          </div>
+
+          <div class="faq-accordion-item">
+            <button class="faq-btn-trigger" type="button">
+              <span>What if our routing infrastructure is already multi-homed?</span>
+              <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-drawer-body">
+              Vaultra acts as the overarching intelligence plane across all your gateways, continually auditing interchange tier mismatches, optimizing routing rules in real time, and reconciling settlements end-to-end.
+            </div>
+          </div>
+
+          <div class="faq-accordion-item">
+            <button class="faq-btn-trigger" type="button">
+              <span>What does Vaultra cost?</span>
+              <svg class="faq-icon-cross" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-drawer-body">
+              We operate on a pure performance alignment model: a transparent fraction of the confirmed interchange fees and settlement waste we reclaim, with zero upfront integration costs.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-top-row">
+        <a href="#hero" class="brand-mark">
+          <svg class="brand-logo-svg" viewBox="0 0 96 72" fill="none">
+            <rect x="26" y="10" width="44" height="14" rx="7" fill="#523EFF" />
+            <rect x="26" y="29" width="44" height="14" rx="7" fill="#523EFF" />
+            <rect x="26" y="48" width="44" height="14" rx="7" fill="#523EFF" />
+            <circle cx="12" cy="24" r="7" fill="#523EFF" />
+            <circle cx="12" cy="48" r="7" fill="#523EFF" />
+            <circle cx="84" cy="24" r="7" fill="#523EFF" />
+            <circle cx="84" cy="48" r="7" fill="#523EFF" />
+          </svg>
+          <span>Vaultra</span>
+        </a>
+
+        <div style="display: flex; gap: 16px; font-size: 1.2rem; color: var(--ink-500);">
+          <a href="#hero" aria-label="X Profile">𝕏</a>
+          <a href="#hero" aria-label="LinkedIn">in</a>
+          <a href="#hero" aria-label="GitHub">gh</a>
+        </div>
+      </div>
+
+      <div class="footer-columns-grid">
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--ink-400); text-transform: uppercase; margin-bottom: 12px;">Accredited Member</div>
+          <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+            <div style="background: var(--ink-900); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">PCI-DSS L1</div>
+            <div style="background: var(--primary); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">SOC 2 Type II</div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--ink-500); line-height: 1.5;">
+            Vaultra Financial Technologies Inc. Realtime multi-rail routing, clearing, and automated settlement infrastructure.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Resources</h4>
+          <ul class="footer-link-list">
+            <li><a href="#hero">Savings Calculator</a></li>
+            <li><a href="#hero">Interchange Benchmark</a></li>
+            <li><a href="#hero">Swift GPI Guide</a></li>
+            <li><a href="#hero">API Documentation</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-link-list">
+            <li><a href="#hero">About Vaultra</a></li>
+            <li><a href="#hero">Investor Relations</a></li>
+            <li><a href="#hero">Careers (Hiring)</a></li>
+            <li><a href="#hero">Press Kit</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Trust & Legal</h4>
+          <ul class="footer-link-list">
+            <li><a href="#hero">Trust Center</a></li>
+            <li><a href="#hero">Privacy Notice</a></li>
+            <li><a href="#hero">Security Terms</a></li>
+            <li><a href="#hero">DPA & GDPR</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Connect</h4>
+          <ul class="footer-link-list">
+            <li><a href="#hero">LinkedIn</a></li>
+            <li><a href="#hero">Trustpilot (4.9/5)</a></li>
+            <li><a href="#hero">Status Page</a></li>
+            <li><a href="mailto:support@vaultra.example">Email Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 Vaultra Financial Technologies Inc. All rights reserved.</div>
+        <div>Modern Financial Infrastructure · Verified Settlement Acceleration</div>
+      </div>
+
+      <div class="footer-watermark">
+        Vaultra
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Modal Dialog -->
+  <div class="modal-backdrop" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+    <div class="modal-card">
+      <button type="button" class="modal-close-icon" onclick="closeLeadModal()" aria-label="Close dialog">✕</button>
+      <h3 id="modalHeading" style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px;">
+        Get Started with Vaultra
+      </h3>
+      <p style="font-size: 0.92rem; color: var(--ink-600); margin-bottom: 24px;">
+        Connect with an enterprise solutions architect and calculate your immediate basis point recovery.
+      </p>
+
+      <form onsubmit="handleLeadSubmit(event)">
+        <div class="form-field">
+          <label for="leadName">Your Name</label>
+          <input type="text" id="leadName" placeholder="Alex Morgan" required />
+        </div>
+
+        <div class="form-field">
+          <label for="leadEmail">Work Email</label>
+          <input type="email" id="leadEmail" placeholder="alex@company.com" required />
+        </div>
+
+        <div class="form-field">
+          <label for="leadVolume">Monthly Processing Volume</label>
+          <input type="text" id="leadVolume" placeholder="$5M – $50M / month" />
+        </div>
+
+        <button type="submit" class="btn-pill-primary" style="width: 100%; justify-content: center; padding: 14px;">
+          <span>Submit Request →</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Console Tabs Logic
+    const consoleTabs = {
+      connect: {
+        text: "Linking Core Banking, Card Rails, ERP & Swift GPI",
+        items: [
+          { name: "Global ACH & FedNow", sub: "Multi-bank clearing gateway", tag: "Connected", bg: "#3B82F6", letter: "G" },
+          { name: "Card Rails & Interchange Shield", sub: "Level 2/3 automated processing", tag: "Connected", bg: "#6366F1", letter: "V" },
+          { name: "ERP & Swift GPI Treasury Mesh", sub: "Realtime ledger reconciliation", tag: "Connected", bg: "#10B981", letter: "E" }
+        ]
+      },
+      detect: {
+        text: "Scanning 1,420 transaction streams for basis-point leakage",
+        items: [
+          { name: "Cross-Border FX Markup", sub: "Flagged 42bps above mid-market", tag: "Detected", bg: "#EF4444", letter: "FX" },
+          { name: "Commercial Card Interchange", sub: "Missing Level 3 line items", tag: "Detected", bg: "#F59E0B", letter: "L3" },
+          { name: "Idle Nightly Escrow Balances", sub: "$1.8M yielding 0.00% overnight", tag: "Detected", bg: "#6366F1", letter: "IB" }
+        ]
+      },
+      recover: {
+        text: "Automated routing active: Reclaiming $4,280 daily",
+        items: [
+          { name: "FedNow Instant Clearing", sub: "Diverted from wire fees", tag: "Recovered", bg: "#10B981", letter: "FN" },
+          { name: "Level 3 Data Enrichment", sub: "Restored interchange floor", tag: "Recovered", bg: "#10B981", letter: "L3" },
+          { name: "Automated Overnight Repo", sub: "Yield active at 5.25%", tag: "Recovered", bg: "#10B981", letter: "RP" }
+        ]
+      }
+    };
+
+    function switchConsoleTab(tabKey) {
+      document.querySelectorAll(".console-tab").forEach(tab => tab.classList.remove("active"));
+      const activeBtn = document.getElementById("tab" + tabKey.charAt(0).toUpperCase() + tabKey.slice(1));
+      if (activeBtn) activeBtn.classList.add("active");
+
+      const data = consoleTabs[tabKey];
+      document.getElementById("consoleStatusText").textContent = data.text;
+
+      const list = document.getElementById("consoleList");
+      list.innerHTML = data.items.map(item => `
+        <div class="integration-row">
+          <div class="int-left">
+            <div class="int-icon" style="background: ${item.bg};">${item.letter}</div>
+            <div>
+              <div>${item.name}</div>
+              <div style="font-size: 0.75rem; color: var(--ink-400); font-weight: 400;">${item.sub}</div>
+            </div>
+          </div>
+          <div class="int-status-badge" style="${item.tag === 'Detected' ? 'color: var(--accent-red); background: var(--accent-red-bg);' : ''}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>${item.tag}</span>
+          </div>
+        </div>
+      `).join("");
+
+      gsap.from(".integration-row", { y: 6, opacity: 0, stagger: 0.08, duration: 0.25 });
+    }
+
+    // FAQ Accordion
+    document.querySelectorAll(".faq-btn-trigger").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-accordion-item").forEach(other => other.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      });
+    });
+
+    // Modal Dialog
+    const modal = document.getElementById("leadModal");
+    const modalHeading = document.getElementById("modalHeading");
+
+    function openLeadModal(heading) {
+      modalHeading.textContent = heading;
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("leadName").focus();
+    }
+
+    function closeLeadModal() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeLeadModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeLeadModal();
+    });
+
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector("button[type='submit']");
+      btn.innerHTML = "<span>Request Received ✓</span>";
+      btn.style.background = "#10B981";
+
+      setTimeout(() => {
+        closeLeadModal();
+        alert("Thank you. A Vaultra enterprise solutions architect has received your details.");
+        e.target.reset();
+        btn.innerHTML = "<span>Submit Request →</span>";
+        btn.style.background = "";
+      }, 900);
+    }
+  </script>
+</body>
+</html>

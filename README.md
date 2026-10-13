@@ -21,7 +21,8 @@ All brands and copy are **fictional sample names** for portfolio use. Designs ar
 │   ├── premium-site-method.md     # Premium polish method
 │   ├── ai-website-methods-corpus.md
 │   └── removed-ai-slop-templates.md  # culled items + why
-├── .grok/archive/skills/          # Archived agent skills (not loaded)
+├── .grok/skills/template-from-ref/  # Active reference → template skill
+├── .grok/archive/skills/          # Archived aesthetic skills (not loaded)
 ├── .github/workflows/pages.yml    # GitHub Pages deploy (Node 24)
 ├── robots.txt                     # Disallow all crawlers
 ├── index.html                     # Showcase (mydesignlib)
@@ -45,8 +46,8 @@ Each library folder is self-contained (`index.html` / assets + `preview.jpg` as 
 | Goal | Follow |
 |------|--------|
 | Hosting, Pages, no-crawl, Analytics, deploy smoke checks | **[docs/OPERATIONS.md](docs/OPERATIONS.md)** |
-| Ship a new website template from a design reference | **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)** — match the reference |
-| Archived skills map | **[docs/SKILLS.md](docs/SKILLS.md)** — do not load |
+| Ship a template from a visual reference | **[.grok/skills/template-from-ref/SKILL.md](.grok/skills/template-from-ref/SKILL.md)** — human summary in [docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md) |
+| Skills map | **[docs/SKILLS.md](docs/SKILLS.md)** — active skill, plus six archived aesthetic skills |
 | X methods corpus | [docs/ai-website-methods-corpus.md](docs/ai-website-methods-corpus.md) |
 | Culled AI-slop templates (why they failed) | [docs/removed-ai-slop-templates.md](docs/removed-ai-slop-templates.md) |
 | Agent hard rules | **[AGENTS.md](AGENTS.md)** |
@@ -60,26 +61,20 @@ Names should reveal role without opening the file:
 | `docs/method-<topic>.md` | Reusable method / checklist |
 | `docs/SKILLS.md` | Skills index (not `skillme.md`) |
 | `docs/OPERATIONS.md` | Hosting / deploy ops |
-| `.grok/skills/<name>/SKILL.md` | Active agent skill (loaded). Design skills are archived under `.grok/archive/skills/` |
+| `.grok/skills/<name>/SKILL.md` | Active agent skill (loaded). Aesthetic skills stay under `.grok/archive/skills/` |
 | `…/references/method-<topic>.md` | Method notes inside a skill |
 | `…/references/src-<author>-<topic>.md` | Single-source distillation (new files) |
 | `library/.../DESIGN.md` | **That item’s** design system (not a method doc) |
 
 Full table: **[docs/SKILLS.md](docs/SKILLS.md)**.
 
-## Adding a website template
+## Adding a reference
 
-**Full pipeline** (research → rebrand → assets → build → register → audit → verify):
+A new reference becomes one Omnia-format study at `library/brands/<id>/`: hub, replica, guidelines, landing, social kit, merch, and logo reveal. The specimen is `library/brands/omnia/`.
 
-- Read **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)**
-- Agents: root **[AGENTS.md](AGENTS.md)**. Design skills are archived in **`.grok/archive/skills/`** and are not loaded.
-- Every page must include **noindex** + **GA** (`G-Z97ZD3EVSF`) — see OPERATIONS
-
-Minimal manual steps:
-
-1. Create `library/websites/<id>/` with `index.html` and `preview.jpg`.
-2. Register it in `data/catalog.json` with `"type": "website"`.
-3. Brand-audit (no real brand names) and open via local server.
+- Agents: **[`.grok/skills/template-from-ref/SKILL.md`](.grok/skills/template-from-ref/SKILL.md)** and root **[AGENTS.md](AGENTS.md)**. Human summary: **[docs/TEMPLATE_WORKFLOW.md](docs/TEMPLATE_WORKFLOW.md)**. The six aesthetic skills in **`.grok/archive/skills/`** stay unloaded.
+- Every HTML page must include **noindex** + **GA** (`G-Z97ZD3EVSF`) — see OPERATIONS
+- Register it in `data/catalog.json` with `"type": "brand"`, plus `data/files.json`, and open it through the Caddy portal.
 
 ## Catalog item shape
 

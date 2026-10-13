@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Veltis — Logo reveal</title>
+<link rel="icon" href="assets/veltis-app-icon.svg"><link rel="stylesheet" href="shared.css">
+<style>
+html,body{height:100%;background:#0D121F;color:#FFFFFF;overflow:hidden}
+.stage{position:fixed;inset:0;display:grid;place-items:center}
+.glow{position:absolute;inset:0;background:radial-gradient(60vmax 50vmax at 50% 80%,rgba(79,70,229,.45),transparent 70%)}
+.lock{position:relative;display:flex;align-items:center;gap:18px;z-index:1}
+#gem{width:min(18vw,140px)}
+#gem img{width:100%;height:auto}
+#flash{position:absolute;left:50%;top:50%;width:280px;height:280px;margin:-140px 0 0 -140px;border-radius:50%;background:radial-gradient(circle,#fff,transparent 70%);opacity:0;pointer-events:none}
+#word{font-family:var(--display);font-weight:800;letter-spacing:-.04em;text-transform:none;font-size:clamp(48px,8vw,96px);line-height:1;color:#FFFFFF}
+.tag{position:absolute;bottom:10vh;left:0;right:0;text-align:center;font-family:var(--sans);font-weight:600;font-size:22px;color:#C7D2FE}
+.ui{position:fixed;right:18px;bottom:16px;z-index:3}
+.ui button,.ui a{font:12px var(--sans);background:rgba(255,255,255,.14);color:#FFFFFF;border:1px solid rgba(255,255,255,.3);padding:8px 14px;text-decoration:none;border-radius:999px}
+body.rec .ui{display:none}
+@media (prefers-reduced-motion: reduce){#flash{display:none}.ui{display:none}}
+</style></head><body>
+<div class="stage">
+  <div class="glow" id="glow"></div>
+  <div class="lock"><div id="flash"></div><div id="gem"><img src="assets/veltis-symbol.svg" alt=""></div><div id="word">veltis</div></div>
+  <p class="tag" id="tag">The complete engine.</p>
+</div>
+<div class="ui"><a href="../index.html">Study</a> <button type="button" id="replay">Replay</button></div>
+<script src="vendor/gsap.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var q = new URLSearchParams(location.search);
+  if (q.has("rec")) document.body.classList.add("rec");
+  var replay = document.getElementById("replay");
+  if (reduce || !window.gsap) { replay.hidden = true; return; }
+  var tl;
+  function build() {
+    if (tl) tl.kill();
+    gsap.set("#glow", { opacity: 0 });
+    gsap.set("#gem", { scale: 0.15, opacity: 0 });
+    gsap.set("#flash", { opacity: 0, scale: 0.4 });
+    gsap.set("#word", { clipPath: "inset(0 100% 0 0)", y: 16, opacity: 1 });
+    gsap.set("#tag", { opacity: 0, y: 10 });
+    tl = gsap.timeline({ paused: true });
+    tl.to("#glow", { opacity: 1, duration: 1.1, ease: "power2.out" }, 0)
+      .to("#gem", { scale: 1, opacity: 1, duration: 0.9, ease: "back.out(1.7)" }, 0.25)
+      .to("#flash", { opacity: 0.85, scale: 1.5, duration: 0.22 }, 0.9)
+      .to("#flash", { opacity: 0, duration: 0.45 }, 1.15)
+      .to("#word", { clipPath: "inset(0 0% 0 0)", y: 0, duration: 0.85, ease: "expo.out" }, 1.15)
+      .to("#tag", { opacity: 1, y: 0, duration: 0.6 }, 1.9);
+  }
+  replay.addEventListener("click", function () { build(); tl.play(0); });
+  var t = q.get("t");
+  build();
+  if (t !== null) tl.pause(parseFloat(t));
+  else tl.play(0);
+})();
+</script>
+</body></html>

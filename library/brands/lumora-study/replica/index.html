@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumora AI — Ignite Your Ideas with Agentic Intelligence</title>
+  <meta name="description" content="From concept to execution, your AI agent generates content, suggestions, and solutions instantly. Built for modern creators, marketers, and product teams." />
+
+  <!-- Privacy & Robot Directives -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN TOKENS & RESET
+       ------------------------------------------------------------- */
+    :root {
+      --bg-ambient: radial-gradient(circle at 50% 25%, #766edb 0%, #4b44a8 45%, #2a2468 85%, #18143d 100%);
+      --bg-dark-card: #0c0b24;
+      --bg-dark-surface: #141336;
+      --bg-dark-card-inner: rgba(22, 21, 52, 0.7);
+
+      --bg-white-card: #ffffff;
+      --bg-light-surface: #f8f9fe;
+      --bg-light-card-inner: #f1f3f9;
+
+      --text-dark: #0f172a;
+      --text-dark-muted: #64748b;
+      --text-dark-dim: #94a3b8;
+
+      --text-light: #ffffff;
+      --text-light-muted: #cbd5e1;
+      --text-light-dim: #818cf8;
+
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+      --accent-cyan: #38bdf8;
+      --accent-violet: #8b5cf6;
+
+      --border-glass: rgba(255, 255, 255, 0.14);
+      --border-glass-subtle: rgba(255, 255, 255, 0.07);
+      --border-light: rgba(15, 23, 42, 0.08);
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: #2a2468;
+      background-image: var(--bg-ambient);
+      background-attachment: fixed;
+      color: var(--text-light);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    ::selection {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    /* -------------------------------------------------------------
+       LAYOUT WRAPPER & CONTAINER PADDING
+       ------------------------------------------------------------- */
+    .page-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 32px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* -------------------------------------------------------------
+       SITE HEADER / NAVBAR (INSIDE HERO CONTAINER)
+       ------------------------------------------------------------- */
+    .hero-card {
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-glass-subtle);
+      border-radius: 32px;
+      padding: 36px 48px 72px;
+      position: relative;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    /* Architectural Chamfered Circuit Lines */
+    .conduit-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+    }
+
+    .conduit-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 72px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon-orb {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    .brand-icon-orb svg {
+      width: 18px;
+      height: 18px;
+      fill: #0c0b24;
+    }
+
+    .brand-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .nav-link {
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-link:hover {
+      color: #ffffff;
+    }
+    .chevron-down {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .nav-cta-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .nav-cta-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       HERO CENTERPIECE
+       ------------------------------------------------------------- */
+    .hero-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 64px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e0e7ff;
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+    .pill-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .hero-heading {
+      font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      max-width: 900px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .hero-app-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      position: relative;
+      vertical-align: middle;
+    }
+    .hero-app-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #ffffff;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: #a5b4fc;
+      max-width: 640px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary-spark {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 13px 28px;
+      border-radius: 9999px;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+      transition: all 0.25s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-spark:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.6);
+      background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    }
+
+    .btn-secondary-glass {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 9999px;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary-glass:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* -------------------------------------------------------------
+       FROSTED GLASS PROMPT WINDOW (MACOS CHROME)
+       ------------------------------------------------------------- */
+    .prompt-window-container {
+      position: relative;
+      z-index: 10;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .prompt-glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+    }
+
+    .window-header-bar {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .window-controls-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .traffic-lights {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .dot.red { background: #ef4444; }
+    .dot.yellow { background: #eab308; }
+    .dot.green { background: #22c55e; }
+
+    .window-tab-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 18px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #cbd5e1;
+    }
+
+    .window-timestamp {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .prompt-body {
+      padding: 24px 28px 20px;
+      background: #ffffff;
+      border-radius: 0 0 19px 19px;
+    }
+
+    .prompt-text-area {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #1e293b;
+      margin-bottom: 24px;
+      outline: none;
+      min-height: 80px;
+    }
+
+    .var-tag {
+      background: #e0e7ff;
+      border: 1px solid #c7d2fe;
+      color: #4338ca;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .prompt-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+    }
+
+    .model-selector {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #334155;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .model-selector:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-generate {
+      background: #0f172a;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-generate:hover {
+      background: #334155;
+      transform: translateY(-1px);
+    }
+    .btn-generate.generating {
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    /* Generated Output Drawer */
+    .generation-output-drawer {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .generation-output-drawer.open {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* -------------------------------------------------------------
+       PERSPECTIVE SWITCHER BAR (DESKTOP VS 3-PHONE SHOWCASE)
+       ------------------------------------------------------------- */
+    .view-switcher-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0 10px;
+    }
+
+    .switcher-pill-container {
+      display: flex;
+      background: rgba(12, 11, 36, 0.7);
+      border: 1px solid var(--border-glass);
+      padding: 4px;
+      border-radius: 9999px;
+      backdrop-filter: blur(12px);
+    }
+
+    .switch-tab {
+      padding: 8px 24px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      transition: all 0.2s ease;
+    }
+    .switch-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       3-PHONE MOBILE SHOWCASE (FRAME 03)
+       ------------------------------------------------------------- */
+    .phone-showcase-container {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .phone-showcase-container.active {
+      display: grid;
+    }
+
+    .phone-mockup {
+      background: #000000;
+      border: 8px solid #2d2b42;
+      border-radius: 46px;
+      box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.7), inset 0 0 0 2px rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      aspect-ratio: 9 / 19.5;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .phone-notch {
+      width: 110px;
+      height: 24px;
+      background: #000000;
+      border-radius: 0 0 16px 16px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+
+    .phone-screen {
+      flex: 1;
+      padding: 38px 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      background: #0c0b24;
+      color: #ffffff;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION: FEATURES MODULE (WHITE CARD)
+       ------------------------------------------------------------- */
+    .features-card {
+      background: var(--bg-white-card);
+      color: var(--text-dark);
+      border-radius: 32px;
+      padding: 72px 56px;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.35);
+    }
+
+    .features-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 64px;
+    }
+
+    .features-pill {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+
+    .features-title {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+
+    .features-desc {
+      font-size: 1.1rem;
+      color: var(--text-dark-muted);
+      line-height: 1.6;
+    }
+
+    .features-dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .feature-pod {
+      border-radius: 24px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 480px;
+    }
+
+    /* Pod 1: Idea Generator (Dark Blue) */
+    .pod-idea {
+      background: linear-gradient(145deg, #102048 0%, #0d1633 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 40px -10px rgba(16, 32, 72, 0.4);
+    }
+
+    .idea-console {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 18px;
+      backdrop-filter: blur(12px);
+      margin-bottom: 32px;
+    }
+
+    .idea-search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+
+    .idea-send-btn {
+      width: 28px;
+      height: 28px;
+      background: #4f46e5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .idea-send-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: #ffffff;
+    }
+
+    .idea-generating-label {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: #93c5fd;
+      margin-bottom: 12px;
+    }
+
+    .idea-chips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .idea-chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .idea-chip:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .chip-use-btn {
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Pod 2: Voice to Text (White) */
+    .pod-voice {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .voice-console {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+      margin-bottom: 32px;
+    }
+
+    .voice-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .voice-orb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .voice-orb svg {
+      width: 18px;
+      height: 18px;
+      fill: #ffffff;
+    }
+
+    .voice-status {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    .waveform-visualizer {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 36px;
+      margin-bottom: 16px;
+    }
+    .wave-bar {
+      flex: 1;
+      background: #c7d2fe;
+      border-radius: 2px;
+      height: 6px;
+      animation: soundWave 1.2s infinite ease-in-out alternate;
+    }
+    .wave-bar:nth-child(2n) { animation-delay: 0.2s; height: 18px; background: #818cf8; }
+    .wave-bar:nth-child(3n) { animation-delay: 0.4s; height: 28px; background: #6366f1; }
+    .wave-bar:nth-child(4n) { animation-delay: 0.6s; height: 12px; }
+
+    @keyframes soundWave {
+      0% { height: 4px; }
+      100% { height: 32px; }
+    }
+
+    .transcription-feed {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .transcription-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: #4f46e5;
+      vertical-align: text-bottom;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .pod-label-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .pod-label-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .pod-idea .pod-label-desc { color: #94a3b8; }
+    .pod-voice .pod-label-desc { color: #64748b; }
+
+    /* -------------------------------------------------------------
+       SECTION: WHY LUMORA (DARK VALUE PILLARS)
+       ------------------------------------------------------------- */
+    .why-card {
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-glass-subtle);
+      border-radius: 32px;
+      padding: 72px 56px;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .why-header {
+      margin-bottom: 56px;
+    }
+
+    .why-title {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .why-subhead {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      max-width: 640px;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .pillar-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 36px 32px;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s var(--ease);
+    }
+    .pillar-box:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .pillar-icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .pillar-icon-circle svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent-cyan);
+    }
+
+    .pillar-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .pillar-detail {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       SITE FOOTER
+       ------------------------------------------------------------- */
+    .site-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 20px 0;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a:hover { color: #ffffff; }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ------------------------------------------------------------- */
+    @media (max-width: 900px) {
+      .hero-card, .features-card, .why-card { padding: 40px 24px; }
+      .nav-links { display: none; }
+      .features-dual-grid, .pillars-grid, .phone-showcase-container { grid-template-columns: 1fr; }
+      .prompt-bottom-bar { flex-direction: column; gap: 14px; align-items: stretch; }
+      .site-footer { flex-direction: column; gap: 20px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<style>body.study-shot .study{display:none !important}</style>
+<div class="study" style="position:sticky;top:0;z-index:2000;background:#6366F1;color:#FFFFFF;font:12px/1.4 system-ui,sans-serif;padding:8px 16px;display:flex;justify-content:space-between;gap:12px">
+<a href="../index.html" style="color:inherit;text-decoration:none">Study</a><span>Lumora replica · practice</span>
+</div>
+<script>if(new URLSearchParams(location.search).has("shot"))document.body.classList.add("study-shot")</script>
+
+
+  <div class="page-wrapper">
+
+    <!-- HERO CONTAINER (Midnight Indigo Card) -->
+    <section class="hero-card">
+      <div class="conduit-overlay"></div>
+
+      <!-- Conduit Corner Lines SVG -->
+      <svg class="conduit-svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
+        <path d="M 40,0 L 40,80 L 120,160 L 120,400" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" fill="none" />
+        <path d="M 1160,0 L 1160,80 L 1080,160 L 1080,400" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" fill="none" />
+        <path d="M 280,0 L 320,40 L 880,40 L 920,0" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none" />
+      </svg>
+
+      <!-- Navigation Bar -->
+      <nav class="site-nav">
+        <div class="brand-lockup">
+          <div class="brand-icon-orb">
+            <!-- Spark / Lightning SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <span class="brand-text">Lumora AI</span>
+        </div>
+
+        <div class="nav-links">
+          <a href="#about" class="nav-link">About</a>
+          <a href="#features" class="nav-link">
+            Products 
+            <svg class="chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+          <a href="#how" class="nav-link">How It Works</a>
+          <a href="#pricing" class="nav-link">Pricing</a>
+          <a href="#resources" class="nav-link">
+            Resources
+            <svg class="chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </a>
+        </div>
+
+        <button class="nav-cta-btn" onclick="triggerTrial()">Start Free Trial</button>
+      </nav>
+
+      <!-- Hero Centerpiece -->
+      <div class="hero-center">
+        <div class="pill-badge">
+          <span class="pill-badge-dot"></span>
+          AI-POWERED CREATIVITY
+        </div>
+
+        <h1 class="hero-heading">
+          Ignite Your Ideas with
+          <span class="hero-app-icon" aria-label="Lumora App Icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </span>
+          Lumora
+        </h1>
+
+        <p class="hero-subhead">
+          From concept to execution, your AI agent generates content, suggestions, and solutions instantly.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn-primary-spark" onclick="triggerTrial()">
+            Try Lumora Free
+          </button>
+          <button class="btn-secondary-glass" onclick="playDemoVideo()">
+            ▶ Watch Demo
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Frosted Glass Prompt Window -->
+      <div class="prompt-window-container">
+        <div class="prompt-glass-card">
+          
+          <div class="window-header-bar">
+            <div class="window-controls-cluster">
+              <div class="traffic-lights">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+            </div>
+
+            <div class="window-tab-pill">lumora.ai</div>
+            <div class="window-timestamp" id="windowClock">Tue 16 Jun, 01:26</div>
+          </div>
+
+          <div class="prompt-body">
+            <div class="prompt-text-area" contenteditable="true" id="promptInput">
+              Generate a full marketing copy for a limited-edition coffee blend: Instagram caption, ad copy, and a short product description highlighting its <span class="var-tag">unique flavors</span> and sustainability.
+            </div>
+
+            <div class="prompt-bottom-bar">
+              <div class="model-selector" id="modelPicker" onclick="cycleModel()">
+                <span id="currentModel">Lumora 3.5 Core</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+
+              <button class="btn-generate" id="btnGen" onclick="simulateGeneration()">
+                <span>✦ Generate</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Output Preview Drawer -->
+            <div class="generation-output-drawer" id="outputDrawer">
+              <div style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">✨ Lumora Generated Deliverable:</div>
+              <p style="margin-bottom: 8px;"><strong>Instagram Hook:</strong> "Meet Edition 01: Grown above the cloud line, roasted for the obsessed. Notes of elderflower, wild berry, and caramelized cacao."</p>
+              <p><strong>Ad Copy:</strong> "Zero compromises. 100% fair-harvested micro-lot beans roasted with surgical thermal precision. Reserve your first batch today."</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PERSPECTIVE VIEW SWITCHER -->
+    <div class="view-switcher-bar">
+      <div class="switcher-pill-container">
+        <button class="switch-tab active" id="tabDesktop" onclick="switchView('desktop')">Desktop View</button>
+        <button class="switch-tab" id="tabMobile" onclick="switchView('mobile')">3-Phone Mobile Showcase</button>
+      </div>
+    </div>
+
+    <!-- 3-PHONE MOBILE SHOWCASE (Hidden by default, toggled via switcher) -->
+    <section class="phone-showcase-container" id="phoneShowcase">
+      
+      <!-- Phone 1: Features -->
+      <div class="phone-mockup">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="font-size: 0.68rem; color: #818cf8; font-weight: 700; margin-bottom: 6px;">• FEATURES</div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 8px;">Powerful Features to Boost Creativity</h3>
+          <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 16px;">From idea generation to polished copy, Lumora provides seamless tools.</p>
+          
+          <div style="background: rgba(255,255,255,0.06); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 0.72rem; color: #93c5fd; margin-bottom: 8px;">✦ Idea Generator</div>
+            <div style="font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px; margin-bottom: 6px;">1. Engaging social poll</div>
+            <div style="font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px;">2. Launch announcement</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 2: Hero -->
+      <div class="phone-mockup">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="justify-content: center; text-align: center;">
+          <div style="font-size: 0.68rem; color: #818cf8; font-weight: 700; margin-bottom: 8px;">• AI-POWERED CREATIVITY</div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px;">Ignite Your Ideas with Lumora</h3>
+          <p style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 20px;">Your autonomous agent generates solutions instantly.</p>
+          <button style="background: #4f46e5; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 10px; border-radius: 20px; width: 100%;">Try Lumora</button>
+        </div>
+      </div>
+
+      <!-- Phone 3: About / Chat -->
+      <div class="phone-mockup">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="font-size: 0.68rem; color: #818cf8; font-weight: 700; margin-bottom: 6px;">• ABOUT LUMORA</div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 12px;">AI That Turns Ideas Into Reality</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.75rem;">
+            <div style="background: #4f46e5; padding: 8px 12px; border-radius: 12px 12px 2px 12px; align-self: flex-end; max-width: 85%;">
+              Help me craft a campaign for remote teams
+            </div>
+            <div style="background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 12px 12px 12px 2px; align-self: flex-start; max-width: 85%; color: #cbd5e1;">
+              Got it! Focusing on deep work, flexibility, and async velocity.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- FEATURES MODULE (White Card) -->
+    <section class="features-card" id="features">
+      
+      <div class="features-header">
+        <div class="pill-badge features-pill">
+          <span class="pill-badge-dot" style="background: #4f46e5;"></span>
+          FEATURES
+        </div>
+
+        <h2 class="features-title">
+          Powerful Features to Boost Your Creativity
+        </h2>
+
+        <p class="features-desc">
+          From idea generation to polished content, Lumora provides the tools you need to create, optimize, and publish effortlessly.
+        </p>
+      </div>
+
+      <div class="features-dual-grid">
+        
+        <!-- Pod 1: Idea Generator -->
+        <div class="feature-pod pod-idea">
+          <div class="idea-console">
+            
+            <div class="idea-search-bar">
+              <span id="ideaInputText">Suggest me an idea for marketing</span>
+              <div class="idea-send-btn">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </div>
+            </div>
+
+            <div class="idea-generating-label">✦ Generating ideas...</div>
+
+            <div class="idea-chips-list">
+              <div class="idea-chip" onclick="injectPromptIdea('Engaging social media poll & community Q&A')">
+                <span>1. Engaging social media poll & Q&A</span>
+                <span class="chip-use-btn">Use</span>
+              </div>
+              <div class="idea-chip" onclick="injectPromptIdea('Limited-edition product launch teaser sequence')">
+                <span>2. Product launch announcement</span>
+                <span class="chip-use-btn">Use</span>
+              </div>
+              <div class="idea-chip" onclick="injectPromptIdea('Customer case study interview transformation')">
+                <span>3. Customer testimonial narrative</span>
+                <span class="chip-use-btn">Use</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div>
+            <div class="pod-label-title">Idea Generator</div>
+            <p class="pod-label-desc">
+              Instantly spark fresh, creative, and relevant content ideas tailored to your brand, goals, and audience.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pod 2: Voice to Text -->
+        <div class="feature-pod pod-voice">
+          <div class="voice-console">
+            
+            <div class="voice-top">
+              <div class="voice-orb">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+              </div>
+              <div class="voice-status">01:52 · Live Transcribing</div>
+            </div>
+
+            <div class="waveform-visualizer">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+
+            <div class="transcription-feed">
+              "Create a marketing campaign for a new eco-friendly sneaker that highlights <span style="background: #e0e7ff; padding: 2px 6px; border-radius: 4px; color: #4338ca;">circular materials</span> and zero-carbon craft"<span class="transcription-cursor"></span>
+            </div>
+
+          </div>
+
+          <div>
+            <div class="pod-label-title">Voice to Text</div>
+            <p class="pod-label-desc">
+              Instantly convert spoken thoughts into structured, editable copy ready for team review, formatting, or publishing.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- WHY LUMORA (Dark Midnight Card) -->
+    <section class="why-card" id="about">
+      <div class="why-header">
+        <div class="pill-badge">
+          <span class="pill-badge-dot"></span>
+          WHY LUMORA
+        </div>
+
+        <h2 class="why-title">Why Teams Choose Lumora</h2>
+        <p class="why-subhead">
+          Lumora is combining speed, intelligence, and adaptability into one seamless AI experience.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        
+        <div class="pillar-box">
+          <div class="pillar-icon-circle">
+            <!-- Brain / Intellect SVG -->
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          </div>
+          <div class="pillar-name">Understands Your Intent</div>
+          <p class="pillar-detail">
+            Delivers deeply contextual outputs based on your audience, tone, and brand persona without generic templates.
+          </p>
+        </div>
+
+        <div class="pillar-box">
+          <div class="pillar-icon-circle">
+            <!-- Lightning / Speed SVG -->
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="pillar-name">Instantaneous Results</div>
+          <p class="pillar-detail">
+            Generates publication-ready marketing copy, design briefs, and strategy drafts in sub-second response times.
+          </p>
+        </div>
+
+        <div class="pillar-box">
+          <div class="pillar-icon-circle">
+            <!-- Adaptive / Flow SVG -->
+            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          </div>
+          <div class="pillar-name">Adaptive Workflows</div>
+          <p class="pillar-detail">
+            Integrates directly into your content calendar, design tools, and CMS with one-click export pipelines.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div>© 2026 LUMORA AI TECHNOLOGIES. ALL RIGHTS RESERVED.</div>
+      <div class="footer-links">
+        <a href="#about">Privacy Policy</a>
+        <a href="#about">Terms of Service</a>
+        <a href="#about">Security</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Interactive Scripts -->
+  <script>
+    // Live Clock in Prompt Chrome
+    function updateClock() {
+      const now = new Date();
+      const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+      document.getElementById('windowClock').textContent = now.toLocaleDateString('en-US', options);
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+
+    // Model Selector Cycling
+    const models = ["Lumora 3.5 Core", "Ronald 2.8 Ultra", "Claude 3.7 Sonnet"];
+    let currentModelIdx = 0;
+    function cycleModel() {
+      currentModelIdx = (currentModelIdx + 1) % models.length;
+      document.getElementById('currentModel').textContent = models[currentModelIdx];
+    }
+
+    // Interactive Generation Simulation
+    const btnGen = document.getElementById('btnGen');
+    const outputDrawer = document.getElementById('outputDrawer');
+    function simulateGeneration() {
+      btnGen.classList.add('generating');
+      btnGen.innerHTML = `<span>⏳ Synthesizing...</span>`;
+      setTimeout(() => {
+        btnGen.classList.remove('generating');
+        btnGen.innerHTML = `<span>✦ Generate</span>`;
+        outputDrawer.classList.toggle('open');
+      }, 700);
+    }
+
+    // Inject Idea from Pod 1 to Top Prompt
+    function injectPromptIdea(ideaText) {
+      const promptInput = document.getElementById('promptInput');
+      promptInput.innerHTML = `Draft a compelling marketing angle for: <span class="var-tag">${ideaText}</span> highlighting its key customer outcomes and unique competitive edge.`;
+      window.scrollTo({ top: promptInput.getBoundingClientRect().top + window.scrollY - 180, behavior: 'smooth' });
+    }
+
+    // Switch between Desktop and 3-Phone Showcase
+    function switchView(view) {
+      const tabDesktop = document.getElementById('tabDesktop');
+      const tabMobile = document.getElementById('tabMobile');
+      const phoneShowcase = document.getElementById('phoneShowcase');
+
+      if (view === 'mobile') {
+        tabDesktop.classList.remove('active');
+        tabMobile.classList.add('active');
+        phoneShowcase.classList.add('active');
+        phoneShowcase.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        tabMobile.classList.remove('active');
+        tabDesktop.classList.add('active');
+        phoneShowcase.classList.remove('active');
+      }
+    }
+
+    function triggerTrial() {
+      alert("Lumora AI Free Trial: Instant workspace provisioned. Welcome aboard!");
+    }
+
+    function playDemoVideo() {
+      alert("Launching Lumora Interactive Product Tour...");
+    }
+  </script>
+</body>
+</html>

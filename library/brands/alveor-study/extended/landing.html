@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../replica/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Alveor — Second Brain for Everything You Think, Build and Decide</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN SYSTEM TOKENS — Alveor Clean SaaS Language
+    ------------------------------------------------------------- */
+    :root {
+      /* Colors */
+      --color-canvas: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-border-subtle: #F3F4F6;
+      --color-dot: #D1D5DB;
+
+      /* Typography */
+      --color-text-primary: #111827;
+      --color-text-secondary: #4B5563;
+      --color-text-muted: #94A3B8;
+
+      /* Brand Accents */
+      --color-coral: #F9AE84;
+      --color-coral-deep: #EE7A47;
+      --color-coral-gradient: linear-gradient(135deg, #FBAF85 0%, #F59768 50%, #ED7C4A 100%);
+      --color-badge-popular: #E0F2FE;
+      --color-badge-popular-text: #0284C7;
+
+      /* Buttons */
+      --color-btn-dark: #1E2024;
+      --color-btn-dark-hover: #0F1114;
+
+      /* Typography Font Family */
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+      /* Radii */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+
+      /* Elevation */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+      --shadow-card-hover: 0 16px 36px -6px rgba(0, 0, 0, 0.09);
+    }
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--color-canvas);
+      color: var(--color-text-primary);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      background-color: var(--color-canvas);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Dotted Grid Separator Band */
+    .dotted-separator {
+      height: 64px;
+      width: 100%;
+      background-image: radial-gradient(var(--color-dot) 1px, transparent 1px);
+      background-size: 20px 20px;
+      background-position: center;
+      opacity: 0.6;
+    }
+
+    /* Section Pill Tag */
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pill-tag-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--color-coral-deep);
+      box-shadow: 0 0 0 3px rgba(238, 122, 71, 0.2);
+    }
+
+    /* Muted Two-Tone Headline */
+    .text-muted {
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    /* -------------------------------------------------------------
+       GLOBAL HEADER
+    ------------------------------------------------------------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-symbol {
+      width: 26px;
+      height: 26px;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-item a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-item a:hover {
+      color: var(--color-text-primary);
+    }
+
+    .nav-chevron {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-contact {
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      border-radius: var(--radius-pill);
+      transition: color 0.2s ease;
+    }
+
+    .btn-contact:hover {
+      color: var(--color-text-primary);
+    }
+
+    .btn-demo {
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+      background-color: var(--color-btn-dark);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-demo:hover {
+      background-color: var(--color-btn-dark-hover);
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION
+    ------------------------------------------------------------- */
+    .hero-section {
+      padding-top: 54px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .hero-badge-wrap {
+      margin-bottom: 24px;
+    }
+
+    .hero-headline {
+      font-size: clamp(38px, 5.2vw, 64px);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--color-text-primary);
+      max-width: 860px;
+      margin: 0 auto 20px auto;
+    }
+
+    .hero-subhead {
+      font-size: clamp(16px, 1.6vw, 18px);
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+
+    .btn-primary-dark {
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #FFFFFF;
+      background-color: var(--color-btn-dark);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-primary-dark:hover {
+      background-color: var(--color-btn-dark-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary-light {
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .btn-secondary-light:hover {
+      border-color: #CBD5E1;
+      background-color: #F8FAFC;
+    }
+
+    /* Hero Coral Container & App Mockup */
+    .hero-mockup-outer {
+      background: var(--color-coral-gradient);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 48px 48px 0 48px;
+      position: relative;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+    }
+
+    /* Subtle grain texture overlay */
+    .hero-mockup-outer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+    }
+
+    .app-window {
+      background-color: #FFFFFF;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-bottom: none;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08), 0 20px 50px rgba(0, 0, 0, 0.12);
+      display: grid;
+      grid-template-columns: 240px 1fr 280px;
+      min-height: 560px;
+      text-align: left;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* App Sidebar */
+    .app-sidebar {
+      background-color: #FAFBFD;
+      border-right: 1px solid var(--color-border-subtle);
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      font-size: 13px;
+    }
+
+    .app-brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+    }
+
+    .app-wordmark {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-collapse-btn {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .sidebar-new-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .sidebar-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+      padding: 0 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .sidebar-nav-item:hover {
+      background-color: #F1F5F9;
+      color: var(--color-text-primary);
+    }
+
+    .sidebar-nav-item.active {
+      background-color: #E2E8F0;
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .nav-label-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-count-badge {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    /* App Main Document Area */
+    .app-main-pane {
+      background-color: #FFFFFF;
+      padding: 20px 32px 32px 32px;
+      overflow-y: auto;
+    }
+
+    .app-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .app-search-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #F8FAFC;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      width: 320px;
+      color: var(--color-text-muted);
+      font-size: 13px;
+    }
+
+    .shortcut-kbd {
+      margin-left: auto;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 10px;
+      color: var(--color-text-secondary);
+    }
+
+    .app-topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-add-member {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+    }
+
+    .doc-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .doc-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .doc-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .doc-status-pills {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border);
+      background-color: #F8FAFC;
+      color: var(--color-text-secondary);
+    }
+
+    .status-tag.ai-tag {
+      background-color: #FFF7ED;
+      border-color: #FFEDD5;
+      color: #EA580C;
+    }
+
+    /* Floating Rich Text Toolbar */
+    .editor-toolbar {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 6px 14px;
+      background-color: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .editor-toolbar span {
+      cursor: pointer;
+    }
+
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 20px 0 10px 0;
+    }
+
+    .doc-bullet-list {
+      list-style: disc;
+      padding-left: 24px;
+      font-size: 13.5px;
+      color: var(--color-text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* App Comments Drawer */
+    .app-comments-pane {
+      background-color: #FAFBFD;
+      border-left: 1px solid var(--color-border-subtle);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .comments-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .comments-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 280px;
+      color: var(--color-text-muted);
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    /* -------------------------------------------------------------
+       SOCIAL PROOF / LOGO CLOUD
+    ------------------------------------------------------------- */
+    .social-proof-section {
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 36px 0;
+      text-align: center;
+    }
+
+    .social-proof-kicker {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      margin-bottom: 28px;
+    }
+
+    .logo-cloud-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-left: 1px solid var(--color-border);
+    }
+
+    .logo-cloud-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #94A3B8;
+      border-right: 1px solid var(--color-border);
+      letter-spacing: -0.02em;
+    }
+
+    /* -------------------------------------------------------------
+       FRICTIONS SECTION
+    ------------------------------------------------------------- */
+    .frictions-section {
+      padding: 80px 0;
+    }
+
+    .frictions-header-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .frictions-title {
+      font-size: clamp(32px, 3.8vw, 48px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-top: 16px;
+    }
+
+    .frictions-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      max-width: 480px;
+      padding-bottom: 6px;
+    }
+
+    .frictions-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .friction-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .friction-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .friction-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background-color: #F8FAFC;
+      border: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-primary);
+    }
+
+    .friction-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .friction-card-desc {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-text-secondary);
+    }
+
+    /* -------------------------------------------------------------
+       BENTO FEATURES SECTION
+    ------------------------------------------------------------- */
+    .features-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .features-header {
+      max-width: 680px;
+      margin: 0 auto 56px auto;
+    }
+
+    .features-title {
+      font-size: clamp(34px, 4vw, 48px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin: 16px 0 14px 0;
+    }
+
+    .features-sub {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+    }
+
+    .bento-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      text-align: left;
+    }
+
+    .bento-row-top {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bento-row-bottom {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .bento-preview-stage {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 24px;
+      border-radius: var(--radius-md);
+      background: radial-gradient(#F1F5F9 1px, transparent 1px);
+      background-size: 14px 14px;
+    }
+
+    .bento-card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .bento-card-desc {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-text-secondary);
+    }
+
+    /* Bento Mockup Artifacts */
+    .mini-mockup-doc {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      width: 220px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .mini-mockup-note-float {
+      position: absolute;
+      top: 30px;
+      right: -20px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--color-coral);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      width: 170px;
+      box-shadow: var(--shadow-xl);
+      font-size: 11px;
+    }
+
+    .tree-node-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Integration Hub Preview */
+    .hub-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      font-weight: 700;
+    }
+
+    /* -------------------------------------------------------------
+       PRICING SECTION
+    ------------------------------------------------------------- */
+    .pricing-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .pricing-header {
+      max-width: 600px;
+      margin: 0 auto 56px auto;
+    }
+
+    .pricing-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: left;
+    }
+
+    .pricing-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 520px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .pricing-card-popular {
+      border: 1.5px solid var(--color-text-primary);
+    }
+
+    .popular-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-badge-popular-text);
+      background-color: var(--color-badge-popular);
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+    }
+
+    .plan-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .plan-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .plan-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--color-text-secondary);
+      margin-bottom: 24px;
+      min-height: 42px;
+    }
+
+    .plan-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .plan-price-val {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .plan-price-period {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    .billing-toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+    }
+
+    .switch-track {
+      width: 32px;
+      height: 18px;
+      background-color: #E2E8F0;
+      border-radius: 10px;
+      position: relative;
+      transition: background-color 0.2s ease;
+    }
+
+    .switch-track.active {
+      background-color: var(--color-coral-deep);
+    }
+
+    .switch-knob {
+      width: 14px;
+      height: 14px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s ease;
+    }
+
+    .switch-track.active .switch-knob {
+      transform: translateX(14px);
+    }
+
+    .plan-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .plan-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--color-text-primary);
+    }
+
+    .check-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background-color: var(--color-text-primary);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .btn-plan-action {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-plan-dark {
+      background-color: var(--color-btn-dark);
+      color: #FFFFFF;
+    }
+
+    .btn-plan-dark:hover {
+      background-color: var(--color-btn-dark-hover);
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       FAQS SECTION
+    ------------------------------------------------------------- */
+    .faqs-section {
+      padding: 80px 0;
+    }
+
+    .faqs-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 60px;
+      align-items: flex-start;
+    }
+
+    .faqs-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faqs-title {
+      font-size: clamp(34px, 4vw, 48px);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .faqs-desc {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .btn-have-questions {
+      align-self: flex-start;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+      background-color: var(--color-btn-dark);
+      border-radius: var(--radius-sm);
+    }
+
+    .faqs-accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-accordion-item {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .faq-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      background-color: var(--color-btn-dark);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-content {
+      padding: 0 24px 22px 24px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      display: none;
+    }
+
+    .faq-accordion-item.open .faq-content {
+      display: block;
+    }
+
+    /* -------------------------------------------------------------
+       WARM CORAL CTA BANNER
+    ------------------------------------------------------------- */
+    .cta-banner-section {
+      padding: 60px 0 40px 0;
+    }
+
+    .cta-banner-card {
+      background: var(--color-coral-gradient);
+      border-radius: var(--radius-xl);
+      padding: 72px 48px;
+      text-align: center;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .cta-banner-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .cta-banner-headline {
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .cta-banner-sub {
+      font-size: 17px;
+      line-height: 1.6;
+      max-width: 580px;
+      margin: 0 auto 36px auto;
+      opacity: 0.92;
+    }
+
+    .btn-cta-white {
+      display: inline-block;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background-color: var(--color-btn-dark);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-cta-white:hover {
+      background-color: #000000;
+      transform: translateY(-2px);
+    }
+
+    /* -------------------------------------------------------------
+       GLOBAL FOOTER & WATERMARK WORDMARK
+    ------------------------------------------------------------- */
+    .site-footer {
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 70px 0 40px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      max-width: 320px;
+      margin-top: 16px;
+    }
+
+    .footer-col-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 18px;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+
+    .footer-links-list a:hover {
+      color: var(--color-text-primary);
+    }
+
+    .social-pills-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .social-pill:hover {
+      border-color: var(--color-text-primary);
+      color: var(--color-text-primary);
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border-subtle);
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 40px;
+    }
+
+    .footer-legal-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* Giant Watermark Wordmark */
+    .footer-watermark-wrap {
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+      overflow: hidden;
+      margin-bottom: -50px;
+    }
+
+    .giant-watermark-text {
+      font-size: clamp(80px, 18vw, 240px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #F8B391;
+      opacity: 0.45;
+      line-height: 0.8;
+      text-shadow: 0 4px 20px rgba(248, 179, 145, 0.3);
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE ADAPTATIONS
+    ------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .app-window {
+        grid-template-columns: 1fr;
+      }
+      .app-sidebar, .app-comments-pane {
+        display: none;
+      }
+      .logo-cloud-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .frictions-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .bento-row-top, .bento-row-bottom {
+        grid-template-columns: 1fr;
+      }
+      .pricing-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .faqs-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+      .frictions-header-row {
+        grid-template-columns: 1fr;
+      }
+      .frictions-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-mockup-outer {
+        padding: 24px 16px 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================================
+       GLOBAL HEADER
+  ============================================================== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="#hero" class="brand-logo" aria-label="Alveor Home">
+        <svg class="logo-symbol" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4L28 26H20L16 18L12 26H4L16 4Z" fill="url(#coralGradLogo)" />
+          <path d="M12 22H20L16 14L12 22Z" fill="#FFFFFF" opacity="0.9" />
+          <defs>
+            <linearGradient id="coralGradLogo" x1="4" y1="4" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FBAF85" />
+              <stop offset="1" stop-color="#EE7A47" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-title">Alveor</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="#features">
+              <span>Product</span>
+              <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+          </li>
+          <li class="nav-item"><a href="#features">Features</a></li>
+          <li class="nav-item"><a href="#frictions">Enterprise</a></li>
+          <li class="nav-item"><a href="#pricing">Pricing</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="btn-contact" onclick="alert('Sales team: sales@alveor.ai');">Contact sales</button>
+        <button type="button" class="btn-demo" onclick="alert('Opening Alveor interactive interactive session...');">Book demo</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =============================================================
+       HERO SECTION
+  ============================================================== -->
+  <section id="hero" class="hero-section">
+    <div class="container">
+      
+      <!-- Pill Badge -->
+      <div class="hero-badge-wrap">
+        <span class="pill-tag">
+          <span class="pill-tag-pulse"></span>
+          <span>AI powered organizational memory system</span>
+        </span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="hero-headline">
+        Second Brain <span class="text-muted">for Everything</span><br />
+        <strong>You</strong> Think, Build and Decide
+      </h1>
+
+      <!-- Subhead -->
+      <p class="hero-subhead">
+        From personal to organizational, Alveor keeps your information so ideas are always searchable, organized and easy to turn into action.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero-ctas">
+        <button type="button" class="btn-primary-dark" onclick="alert('Welcome to Alveor. Initializing workspace...');">Get started</button>
+        <a href="#features" class="btn-secondary-light">Learn more</a>
+      </div>
+
+      <!-- Warm Coral Textured Container & SaaS Workspace Mockup -->
+      <div class="hero-mockup-outer">
+        <div class="app-window">
+          
+          <!-- App Sidebar -->
+          <aside class="app-sidebar">
+            <div class="app-brand-row">
+              <span class="app-wordmark">ALVEOR</span>
+              <span class="sidebar-collapse-btn">«</span>
+            </div>
+
+            <div>
+              <div class="sidebar-new-btn">+</div>
+            </div>
+
+            <div>
+              <div class="sidebar-group-title">Main Menu</div>
+              <ul class="sidebar-nav-list">
+                <li class="sidebar-nav-item">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                  </span>
+                </li>
+                <li class="sidebar-nav-item">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    <span>Tasks ▾</span>
+                  </span>
+                  <span class="nav-count-badge">46</span>
+                </li>
+                <li class="sidebar-nav-item">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>Projects ▾</span>
+                  </span>
+                  <span class="nav-count-badge">14</span>
+                </li>
+                <li class="sidebar-nav-item">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    <span>Clients</span>
+                  </span>
+                </li>
+                <li class="sidebar-nav-item active">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>Notes</span>
+                  </span>
+                </li>
+                <li class="sidebar-nav-item">
+                  <span class="nav-label-group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    <span>Reports ▾</span>
+                  </span>
+                  <span class="nav-count-badge">3</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="sidebar-group-title">
+                <span>Resources</span>
+                <span style="cursor: pointer;">+</span>
+              </div>
+              <ul class="sidebar-nav-list">
+                <li class="sidebar-nav-item"><span>📁 Templates</span></li>
+                <li class="sidebar-nav-item"><span>📁 Design Systems</span></li>
+                <li class="sidebar-nav-item"><span>📁 Brand Kits</span></li>
+                <li class="sidebar-nav-item"><span>📁 Guides</span></li>
+                <li class="sidebar-nav-item"><span>📁 Playbook</span></li>
+              </ul>
+            </div>
+          </aside>
+
+          <!-- App Main Pane -->
+          <main class="app-main-pane">
+            <div class="app-topbar">
+              <div class="app-search-input-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span>Search anything...</span>
+                <span class="shortcut-kbd">⌘ K</span>
+              </div>
+              <div class="app-topbar-actions">
+                <button type="button" class="btn-add-member" style="padding: 7px 10px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+                </button>
+                <button type="button" class="btn-add-member">+ Add Member</button>
+              </div>
+            </div>
+
+            <div class="doc-breadcrumbs">
+              <span>← Notes</span>
+              <span>/</span>
+              <span style="color: var(--color-text-primary); font-weight: 500;">Product Launch Plan</span>
+            </div>
+
+            <div class="doc-title-row">
+              <h2 class="doc-title">Product Launch Plan</h2>
+              <div style="display: flex; gap: 10px; color: var(--color-text-muted);">
+                <span>🔗</span>
+                <span>⤢</span>
+              </div>
+            </div>
+
+            <div style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 12px;">
+              🔄 Last sync: Just now
+            </div>
+
+            <div class="doc-status-pills">
+              <span class="status-tag ai-tag">✦ AI Enhanced</span>
+              <span class="status-tag">📁 Planning</span>
+              <span class="status-tag">📎 1 attachment</span>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="editor-toolbar">
+              <span>💬</span>
+              <span>▢</span>
+              <span style="font-weight: 600;">Aa ▾</span>
+              <span style="font-weight: 800;">B</span>
+              <span style="font-style: italic;">I</span>
+              <span style="text-decoration: underline;">U</span>
+              <span>•≡</span>
+              <span>≡</span>
+            </div>
+
+            <!-- Objectives Section -->
+            <div class="doc-section-header">
+              <span>🎯</span>
+              <span>Objectives</span>
+            </div>
+            <ul class="doc-bullet-list">
+              <li>Successfully launch the new product to the market.</li>
+              <li>Drive user adoption and awareness in the first 30 days.</li>
+              <li>Achieve 10,000 sign-ups within the first month.</li>
+              <li>Gather early feedback to iterate and improve.</li>
+            </ul>
+
+            <!-- Key Tasks Section -->
+            <div class="doc-section-header" style="margin-top: 24px;">
+              <span>⚠</span>
+              <span>Key Tasks</span>
+            </div>
+            <ul class="doc-bullet-list">
+              <li>Finalize product messaging and positioning.</li>
+              <li>Prepare marketing assets and landing page.</li>
+              <li>Set up analytics and tracking for key metrics.</li>
+              <li>Plan launch campaign across email, social, and ads.</li>
+            </ul>
+          </main>
+
+          <!-- Comments Drawer -->
+          <aside class="app-comments-pane">
+            <div class="comments-header">
+              <span style="display: flex; align-items: center; gap: 8px;">
+                <span>💬</span>
+                <span>Comments</span>
+              </span>
+              <span style="color: var(--color-text-muted); cursor: pointer;">✕</span>
+            </div>
+
+            <div class="app-search-input-wrap" style="width: 100%;">
+              <span>Search comments</span>
+              <span class="shortcut-kbd">/</span>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: var(--color-text-secondary);">
+              All comments ▾
+            </div>
+
+            <div class="comments-empty-state">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: #F1F5F9; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                💬
+              </div>
+              <div style="font-weight: 600; color: var(--color-text-primary);">No comments yet</div>
+              <p style="font-size: 12px; max-width: 180px;">Start the conversation by leaving a comment.</p>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SOCIAL PROOF / LOGO CLOUD
+  ============================================================== -->
+  <section class="social-proof-section">
+    <div class="container">
+      <div class="social-proof-kicker">Trusted by leading teams worldwide</div>
+      <div class="logo-cloud-grid">
+        <div class="logo-cloud-item">OrbitHQ</div>
+        <div class="logo-cloud-item">novatech</div>
+        <div class="logo-cloud-item">CORE|DATA</div>
+        <div class="logo-cloud-item">ramp ⤤</div>
+        <div class="logo-cloud-item">Metricly</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dotted-separator"></div>
+
+  <!-- =============================================================
+       FRICTIONS SECTION
+  ============================================================== -->
+  <section id="frictions" class="frictions-section">
+    <div class="container">
+      
+      <span class="pill-tag">Frictions</span>
+
+      <div class="frictions-header-row">
+        <h2 class="frictions-title">
+          Why most ideas<br />
+          <span class="text-muted">never become reality</span>
+        </h2>
+        <p class="frictions-desc">
+          Most ideas don't fail because they're bad; they're forgotten, lose context, or get stuck in overly complex workflows.
+        </p>
+      </div>
+
+      <div class="frictions-cards-grid">
+        
+        <div class="friction-card">
+          <div class="friction-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <h3 class="friction-card-title">Notes lose context</h3>
+          <p class="friction-card-desc">Saved ideas quickly lose their meaning, details, connection over time.</p>
+        </div>
+
+        <div class="friction-card">
+          <div class="friction-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+          </div>
+          <h3 class="friction-card-title">Ideas aren't connected</h3>
+          <p class="friction-card-desc">Knowledge loses its value when ideas stay isolated instead of connected.</p>
+        </div>
+
+        <div class="friction-card">
+          <div class="friction-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 21 12 17 5 21 12 2Z"/></svg>
+          </div>
+          <h3 class="friction-card-title">Information is scattered</h3>
+          <p class="friction-card-desc">Your data is spread across apps, documents, and chats, making it difficult to find.</p>
+        </div>
+
+        <div class="friction-card">
+          <div class="friction-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="friction-card-title">Search Takes Too Long</h3>
+          <p class="friction-card-desc">Teams waste hours searching across documents, chats, and emails.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="dotted-separator"></div>
+
+  <!-- =============================================================
+       BENTO FEATURES SECTION
+  ============================================================== -->
+  <section id="features" class="features-section">
+    <div class="container">
+      
+      <div class="features-header">
+        <span class="pill-tag">Features</span>
+        <h2 class="features-title">
+          Everything you need to<br />
+          <span class="text-muted">transform ideas into reality</span>
+        </h2>
+        <p class="features-sub">Alveor provides the foundation to transform ideas into reality.</p>
+      </div>
+
+      <div class="bento-grid">
+        
+        <!-- Top Row (3 Bento Cells) -->
+        <div class="bento-row-top">
+          
+          <!-- Card 1 -->
+          <div class="bento-card">
+            <div class="bento-preview-stage">
+              <div class="mini-mockup-doc">
+                <div style="display: flex; gap: 4px; margin-bottom: 8px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #EF4444;"></span>
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #F59E0B;"></span>
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981;"></span>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; margin-bottom: 6px;">Launch onboarding checklist</div>
+                <div style="font-size: 9px; line-height: 1.4; color: #64748B;">During this week's Product Sync, the team reviewed onboarding performance...</div>
+              </div>
+              <div class="mini-mockup-note-float">
+                <div style="color: var(--color-coral-deep); font-weight: 700; margin-bottom: 4px;">Context Insight</div>
+                <div>14 customers reported confusion during setup; assigned to sprint.</div>
+              </div>
+            </div>
+            <div>
+              <h3 class="bento-card-title">Context aware records</h3>
+              <p class="bento-card-desc">Capture the context behind every idea to uncover deeper insights.</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bento-card">
+            <div class="bento-preview-stage" style="flex-direction: column; gap: 16px;">
+              <div class="tree-node-card" style="border-color: var(--color-coral); background: #FFF7ED; color: var(--color-coral-deep);">
+                🎯 Product Launch Strategy
+              </div>
+              <div style="width: 2px; height: 20px; background: var(--color-coral);"></div>
+              <div style="display: flex; gap: 12px;">
+                <div class="tree-node-card">📁 Import Content</div>
+                <div class="tree-node-card">⚡ Build Connections</div>
+              </div>
+            </div>
+            <div>
+              <h3 class="bento-card-title">Connect ideas &amp; information</h3>
+              <p class="bento-card-desc">Automatically connect related ideas and information, so nothing is ever lost.</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bento-card">
+            <div class="bento-preview-stage">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <div style="display: flex; gap: 24px;">
+                  <div class="hub-circle" style="color: #000;">N</div>
+                  <div class="hub-circle" style="color: #4A154B;">#</div>
+                  <div class="hub-circle" style="color: #2563EB;">≡</div>
+                </div>
+                <div style="width: 2px; height: 24px; background: var(--color-coral);"></div>
+                <div class="hub-circle" style="background: var(--color-coral-gradient); color: #fff;">A</div>
+              </div>
+            </div>
+            <div>
+              <h3 class="bento-card-title">One connected workspace</h3>
+              <p class="bento-card-desc">Bring information from all your tools and platforms into one connected workspace.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Row (2 Bento Cells) -->
+        <div class="bento-row-bottom">
+          
+          <!-- Card 4 -->
+          <div class="bento-card">
+            <div class="bento-preview-stage" style="flex-direction: column; gap: 14px;">
+              <div style="display: flex; gap: 10px; opacity: 0.5; font-size: 11px;">
+                <span class="status-tag">Pricing Strategy</span>
+                <span class="status-tag">Brand Refresh</span>
+                <span class="status-tag">Launch Q3</span>
+              </div>
+              <div style="background: #FFFFFF; border: 1.5px solid var(--color-coral); border-radius: var(--radius-pill); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; width: 85%; box-shadow: var(--shadow-md);">
+                <span style="font-size: 13px; font-weight: 500; color: var(--color-text-primary);">Ask Alveor...</span>
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-coral-deep); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">Q</span>
+              </div>
+            </div>
+            <div>
+              <h3 class="bento-card-title">Conversational search</h3>
+              <p class="bento-card-desc">Ask questions naturally and instantly find the right information with the context behind every answer.</p>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="bento-card">
+            <div class="bento-preview-stage">
+              <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px 20px; width: 85%; box-shadow: var(--shadow-md);">
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 10px;">
+                  <span style="font-weight: 700; color: var(--color-coral-deep);">✦ Focus on What Matters Most</span>
+                  <span style="font-size: 10px; color: var(--color-text-muted);">Alveor AI</span>
+                </div>
+                <div style="font-size: 11px; line-height: 1.5; color: var(--color-text-secondary);">
+                  A focused roadmap helps transform scattered ideas into a clear execution path. Prioritize items that unblock client revenue first.
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 class="bento-card-title">AI-powered direction</h3>
+              <p class="bento-card-desc">Get intelligent suggestions on what to do next, based on your decisions, discussions, and connected knowledge.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="dotted-separator"></div>
+
+  <!-- =============================================================
+       PRICING SECTION
+  ============================================================== -->
+  <section id="pricing" class="pricing-section">
+    <div class="container">
+      
+      <div class="pricing-header">
+        <span class="pill-tag">Pricing</span>
+        <h2 class="features-title">
+          Simple pricing, <span class="text-muted">no surprises</span>
+        </h2>
+        <p class="features-sub">Capture, organize, and connect your ideas for free. Upgrade when you're ready to unlock all features.</p>
+      </div>
+
+      <div class="pricing-cards-grid">
+        
+        <!-- Tier 1: Free -->
+        <div class="pricing-card">
+          <div>
+            <div class="plan-title-row">
+              <h3 class="plan-title">Free</h3>
+            </div>
+            <p class="plan-desc">A simple way to collect, organize, and manage your ideas.</p>
+            <div class="plan-price-row">
+              <div>
+                <span class="plan-price-val">$0</span>
+                <span class="plan-price-period">/monthly</span>
+              </div>
+            </div>
+            <ul class="plan-features-list">
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Limited AI-powered searches</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Create and organize notes</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Basic knowledge connections</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Cross-device access</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Personal knowledge library</span></li>
+            </ul>
+          </div>
+          <button type="button" class="btn-plan-action btn-plan-dark" onclick="alert('Account created! Welcome to Alveor Free.');">Start for free</button>
+        </div>
+
+        <!-- Tier 2: Pro (Popular) -->
+        <div class="pricing-card pricing-card-popular">
+          <div>
+            <div class="plan-title-row">
+              <h3 class="plan-title">Pro</h3>
+              <span class="popular-pill">Popular</span>
+            </div>
+            <p class="plan-desc">Advanced tools to transform scattered information into insights.</p>
+            <div class="plan-price-row">
+              <div>
+                <span id="pricePro" class="plan-price-val">$42</span>
+                <span class="plan-price-period">/monthly</span>
+              </div>
+              <div class="billing-toggle-pill" onclick="toggleBilling()">
+                <div id="switchPro" class="switch-track">
+                  <div class="switch-knob"></div>
+                </div>
+                <span>Yearly</span>
+              </div>
+            </div>
+            <ul class="plan-features-list">
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Unlimited AI-powered searches</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Context aware AI assistant</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Advanced knowledge connections</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Cross-platform integrations</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>AI summaries &amp; insights</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Priority support</span></li>
+            </ul>
+          </div>
+          <button type="button" class="btn-plan-action btn-plan-dark" onclick="alert('Proceeding to Alveor Pro checkout...');">Upgrade to pro</button>
+        </div>
+
+        <!-- Tier 3: Enterprise -->
+        <div class="pricing-card">
+          <div>
+            <div class="plan-title-row">
+              <h3 class="plan-title">Enterprise</h3>
+            </div>
+            <p class="plan-desc">Build a shared intelligence system for your team.</p>
+            <div class="plan-price-row">
+              <div>
+                <span id="priceEnt" class="plan-price-val">$120</span>
+                <span class="plan-price-period">/monthly</span>
+              </div>
+              <div class="billing-toggle-pill" onclick="toggleBilling()">
+                <div id="switchEnt" class="switch-track">
+                  <div class="switch-knob"></div>
+                </div>
+                <span>Yearly</span>
+              </div>
+            </div>
+            <ul class="plan-features-list">
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Everything in Pro</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Team knowledge workspace</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Advanced AI workflows</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Custom integrations &amp; API access</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Admin controls &amp; permissions</span></li>
+              <li class="plan-feature-item"><span class="check-icon">✓</span><span>Dedicated support</span></li>
+            </ul>
+          </div>
+          <button type="button" class="btn-plan-action btn-plan-dark" onclick="alert('Enterprise representative will contact you within 1 hour.');">Get in touch</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="dotted-separator"></div>
+
+  <!-- =============================================================
+       FAQS SECTION
+  ============================================================== -->
+  <section class="faqs-section">
+    <div class="container faqs-layout-grid">
+      
+      <div class="faqs-left-col">
+        <span class="pill-tag">FAQs</span>
+        <h2 class="faqs-title">Your Questions<br /><span class="text-muted">Answered</span></h2>
+        <p class="faqs-desc">A few answers to help you get the most out of Alveor.</p>
+        <button type="button" class="btn-have-questions" onclick="alert('Help center: support@alveor.ai');">Still have questions?</button>
+      </div>
+
+      <div class="faqs-accordion-list">
+        
+        <div class="faq-accordion-item open">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>What is Alveor and how does it work?</span>
+            <span class="faq-icon">−</span>
+          </button>
+          <div class="faq-content">
+            Alveor brings your ideas, information, and context together, helping you find what matters and turn knowledge into action through an active second-brain neural index.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>What can I use Alveor for?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Use Alveor for technical product roadmaps, meeting intelligence, decision logging, research synthesis, customer feedback consolidation, and cross-team knowledge sharing.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>How does Alveor organize and connect my information?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Our background semantic graph models the entities, decisions, and action items in your workspace. When you write or query, related notes and decisions surface automatically.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Can I connect the tools and apps I already use?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Yes! Alveor provides 1-click bi-directional sync with Notion, Slack, Google Docs, GitHub, Linear, and Figma.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Is my data private and secure?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            All data is encrypted in transit with TLS 1.3 and at rest with AES-256. Your workspace contents are never used to train public foundation models.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-trigger" onclick="toggleFaq(this)">
+            <span>Can I try Alveor before subscribing?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            Yes, our Free plan is available indefinitely with core features, and Pro includes a 14-day zero-risk trial.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       WARM CORAL CTA BANNER
+  ============================================================== -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <div class="cta-banner-card">
+        <div class="cta-banner-icon">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L28 26H20L16 18L12 26H4L16 4Z" fill="url(#ctaIconGrad)" />
+            <path d="M12 22H20L16 14L12 22Z" fill="#FFFFFF" opacity="0.9" />
+            <defs>
+              <linearGradient id="ctaIconGrad" x1="4" y1="4" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FBAF85" />
+                <stop offset="1" stop-color="#EE7A47" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <h2 class="cta-banner-headline">Turn your ideas into action</h2>
+        <p class="cta-banner-sub">
+          Bring all your ideas, information, and context together in one place, so you can make sense of it all and turn it into action.
+        </p>
+
+        <button type="button" class="btn-cta-white" onclick="alert('Creating your Alveor workspace now...');">Get started for free</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="dotted-separator"></div>
+
+  <!-- =============================================================
+       GLOBAL FOOTER & GIANT WATERMARK WORDMARK
+  ============================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      
+      <div class="footer-grid">
+        
+        <div>
+          <a href="#hero" class="brand-logo" aria-label="Alveor Home">
+            <svg class="logo-symbol" viewBox="0 0 32 32" fill="none">
+              <path d="M16 4L28 26H20L16 18L12 26H4L16 4Z" fill="url(#footerLogoGrad)" />
+              <path d="M12 22H20L16 14L12 22Z" fill="#FFFFFF" opacity="0.9" />
+              <defs>
+                <linearGradient id="footerLogoGrad" x1="4" y1="4" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FBAF85" />
+                  <stop offset="1" stop-color="#EE7A47" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="brand-title">Alveor</span>
+          </a>
+          <p class="footer-desc">
+            Capture ideas, connect information, and turn scattered knowledge into action with Alveor.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Product</div>
+          <ul class="footer-links-list">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#features">How it works</a></li>
+            <li><a href="#features">Integrations</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Resources</div>
+          <ul class="footer-links-list">
+            <li><a href="#hero">Documentation</a></li>
+            <li><a href="#hero">Changelog</a></li>
+            <li><a href="#hero">Blog</a></li>
+            <li><a href="#hero">Help Center</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Social</div>
+          <div class="social-pills-row">
+            <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-pill" aria-label="LinkedIn">in</a>
+            <a href="https://x.com" target="_blank" rel="noopener" class="social-pill" aria-label="X">𝕏</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram">IG</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>&copy; 2026 Alveor. All rights reserved.</div>
+        <div class="footer-legal-links">
+          <a href="#">Term of service</a>
+          <a href="#">Privacy policy</a>
+          <a href="#">Cookie policy</a>
+        </div>
+      </div>
+
+      <!-- Giant Translucent Watermark Wordmark -->
+      <div class="footer-watermark-wrap" aria-hidden="true">
+        <span class="giant-watermark-text">Alveor</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts for Interactive Pricing & FAQs -->
+  <script>
+    let isYearly = false;
+    function toggleBilling() {
+      isYearly = !isYearly;
+      const switchPro = document.getElementById('switchPro');
+      const switchEnt = document.getElementById('switchEnt');
+      const pricePro = document.getElementById('pricePro');
+      const priceEnt = document.getElementById('priceEnt');
+
+      if (isYearly) {
+        switchPro.classList.add('active');
+        switchEnt.classList.add('active');
+        pricePro.textContent = '$34';
+        priceEnt.textContent = '$96';
+      } else {
+        switchPro.classList.remove('active');
+        switchEnt.classList.remove('active');
+        pricePro.textContent = '$42';
+        priceEnt.textContent = '$120';
+      }
+    }
+
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-accordion-item');
+      const icon = item.querySelector('.faq-icon');
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-accordion-item').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-icon').textContent = '+';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        icon.textContent = '−';
+      }
+    }
+  </script>
+
+</body>
+</html>

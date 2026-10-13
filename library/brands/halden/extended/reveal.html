@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halden — Reveal</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { min-height: 100vh; display: grid; place-items: center; }
+  .stage { text-align: center; padding: 32px 16px 48px; }
+  .mark { width: min(280px, 70vw); height: auto; display: block; margin: 0 auto 18px; }
+  .word { font-family: var(--display); font-weight: 700; letter-spacing: -0.045em; font-size: clamp(52px, 10vw, 104px); line-height: 0.9; margin: 0; }
+  .letter { display: inline-block; }
+  .replay {
+    margin-top: 28px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    border-radius: 999px;
+    padding: 10px 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .draw { display: none; }
+  }
+</style>
+</head>
+<body>
+<!-- SECTION: reveal -->
+<div class="stage">
+  <svg class="mark" viewBox="0 0 80 48" aria-hidden="true">
+    <g class="draw" fill="none" stroke="#111" stroke-width="2.2">
+      <rect class="stroke" x="8" y="18" width="64" height="22" rx="7"/>
+      <rect class="stroke" x="10" y="10" width="14" height="16" rx="4"/>
+      <rect class="stroke" x="56" y="10" width="14" height="16" rx="4"/>
+    </g>
+    <g class="fill" fill="#111">
+      <rect x="8" y="18" width="64" height="22" rx="7"/>
+      <rect x="10" y="10" width="14" height="16" rx="4"/>
+      <rect x="56" y="10" width="14" height="16" rx="4"/>
+    </g>
+  </svg>
+  <p class="word" aria-label="Halden"><span class="letter">H</span><span class="letter">A</span><span class="letter">L</span><span class="letter">D</span><span class="letter">E</span><span class="letter">N</span></p>
+  <button type="button" class="replay" id="replay">Replay</button>
+</div>
+<!-- /SECTION: reveal -->
+<script src="vendor/gsap.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var strokes = document.querySelectorAll(".stroke");
+  var fill = document.querySelector(".fill");
+  var letters = document.querySelectorAll(".letter");
+  function ready() {
+    strokes.forEach(function (el) {
+      var len = 0;
+      try { len = el.getTotalLength(); } catch (e) { len = 240; }
+      if (!len) len = 240;
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+    });
+  }
+  if (reduce || !window.gsap) {
+    gsap && gsap.set(fill, { opacity: 1 });
+    gsap && gsap.set(letters, { opacity: 1, y: 0 });
+    document.querySelector(".draw").style.display = "none";
+    return;
+  }
+  ready();
+  gsap.set(fill, { opacity: 0 });
+  gsap.set(letters, { opacity: 0, y: 18 });
+  var tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  tl.to(strokes, { strokeDashoffset: 0, duration: 0.9, stagger: 0.12 })
+    .to(fill, { opacity: 1, duration: 0.35 }, "-=0.2")
+    .to(".draw", { opacity: 0, duration: 0.2 }, "-=0.05")
+    .to(letters, { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: "power2.out" });
+  document.getElementById("replay").addEventListener("click", function () {
+    ready();
+    tl.restart();
+  });
+})();
+</script>
+</body>
+</html>

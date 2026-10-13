@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../replica/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxion — A Living Interface in Continuous Motion</title>
+  <meta name="description" content="A motion studio architecture built around one idea: motion instead of chrome. 85,000 live GPU particles morphing continuously across presence and scroll." />
+
+  <!-- Privacy & Robot Directives -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z97ZD3EVSF');
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN TOKENS & RESET
+       ------------------------------------------------------------- */
+    :root {
+      --bg: #000000;
+      --bg-surface: #07080b;
+      --bg-panel: rgba(12, 14, 20, 0.7);
+      
+      --text: #ffffff;
+      --text-muted: #8b8f9e;
+      --text-dim: #444754;
+
+      --teal: #00f5d4;
+      --cyan: #00bbf9;
+      --blue: #4361ee;
+      --violet: #7209b7;
+      --pink: #f72585;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 245, 212, 0.25);
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    ::selection {
+      background: var(--teal);
+      color: #000000;
+    }
+
+    /* -------------------------------------------------------------
+       CUSTOM POINTER & HUD GLOW
+       ------------------------------------------------------------- */
+    .pointer-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 16px var(--teal);
+      transition: transform 0.1s ease;
+    }
+
+    .pointer-aura {
+      position: fixed;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(0, 245, 212, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s var(--ease), height 0.2s var(--ease), border-color 0.2s;
+    }
+
+    /* -------------------------------------------------------------
+       NAVIGATION BAR
+       ------------------------------------------------------------- */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-mark-orb {
+      width: 14px;
+      height: 14px;
+      background: var(--teal);
+      border-radius: 50%;
+      box-shadow: 0 0 16px var(--teal);
+      animation: breathe 3s infinite ease-in-out;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.3); opacity: 0.5; }
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .telemetry-strip {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .metric-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .metric-val {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .metric-val.teal { color: var(--teal); }
+    .metric-val.cyan { color: var(--cyan); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-connect {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      padding: 9px 20px;
+      border-radius: 20px;
+      transition: all 0.3s var(--ease);
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .btn-connect:hover {
+      background: var(--teal);
+      color: #000;
+      border-color: var(--teal);
+      box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       SCROLLYTELLING VIEWPORT PIN
+       ------------------------------------------------------------- */
+    .scrolly-wrapper {
+      position: relative;
+      width: 100%;
+      height: 520vh; /* 5 smooth morph transitions */
+    }
+
+    .sticky-viewport {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: all;
+    }
+
+    /* Radial dark depth vignette */
+    .depth-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 25%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.98) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Section Stage Overlays */
+    .stage-overlays {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .stage-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+      pointer-events: none;
+    }
+
+    .stage-card.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .stage-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stage-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--teal);
+    }
+
+    .stage-title {
+      font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      max-width: 950px;
+      margin-bottom: 24px;
+    }
+
+    .stage-title em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--cyan);
+      letter-spacing: 0;
+    }
+
+    .stage-lede {
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    /* Specialized Card Layouts */
+    .card-bottom-left {
+      align-items: flex-start;
+      text-align: left;
+      justify-content: flex-end;
+      padding: 60px 80px;
+    }
+
+    .card-bottom-right {
+      align-items: flex-end;
+      text-align: right;
+      justify-content: flex-end;
+      padding: 60px 80px;
+    }
+
+    /* Stage IV: Singularity Telemetry Bar */
+    .singularity-stats-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 36px;
+      background: rgba(12, 14, 20, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 30px;
+      padding: 14px 32px;
+      backdrop-filter: blur(12px);
+      margin-top: 24px;
+      box-shadow: 0 20px 50px rgba(0, 245, 212, 0.1);
+    }
+
+    .stat-node {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-family: var(--font-mono);
+      text-align: left;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .stat-number {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .stat-number.teal { color: var(--teal); }
+
+    /* Vertical Navigation Track */
+    .timeline-scrubber {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 25;
+    }
+
+    .scrub-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      justify-content: flex-end;
+    }
+    .scrub-item.active {
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .scrub-bar {
+      width: 14px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+    .scrub-item.active .scrub-bar {
+      width: 32px;
+      background: var(--teal);
+      box-shadow: 0 0 10px var(--teal);
+    }
+
+    /* -------------------------------------------------------------
+       CONTENT SECTIONS BELOW CANVAS
+       ------------------------------------------------------------- */
+    .section-manifesto {
+      position: relative;
+      background: var(--bg);
+      border-top: 1px solid var(--border-subtle);
+      padding: 140px 60px;
+      z-index: 20;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .manifesto-heading {
+      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .manifesto-heading em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--cyan);
+      font-weight: 400;
+    }
+
+    .manifesto-body {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .manifesto-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Capabilities Grid */
+    .grid-capabilities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 100px;
+    }
+
+    .cap-card {
+      background: rgba(14, 16, 22, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 36px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .cap-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-3px);
+    }
+
+    .cap-index {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+
+    .cap-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .cap-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Interactive Particle Sandbox Controller */
+    .sandbox-panel {
+      margin-top: 100px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .sandbox-info h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sandbox-info p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .sandbox-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-morph {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-morph:hover, .btn-morph.active {
+      background: var(--teal);
+      color: #000;
+      border-color: var(--teal);
+      font-weight: 600;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 100px 60px 140px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .faq-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .faq-item {
+      background: rgba(14, 16, 22, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: rgba(255, 255, 255, 0.16); }
+
+    .faq-question {
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .faq-plus {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      color: var(--teal);
+      transition: transform 0.3s;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 28px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      transition: max-height 0.3s var(--ease), padding 0.3s var(--ease);
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding-bottom: 24px;
+    }
+    .faq-item.open .faq-plus {
+      transform: rotate(45deg);
+    }
+
+    /* Site Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav-bar { padding: 0 20px; }
+      .telemetry-strip { display: none; }
+      .timeline-scrubber { display: none; }
+      .manifesto-grid { grid-template-columns: 1fr; gap: 40px; }
+      .grid-capabilities { grid-template-columns: 1fr; }
+      .sandbox-panel { flex-direction: column; align-items: flex-start; }
+      .card-bottom-left, .card-bottom-right { padding: 40px 20px; text-align: center; align-items: center; }
+      .singularity-stats-bar { flex-direction: column; gap: 16px; border-radius: 12px; }
+      .site-footer { flex-direction: column; gap: 20px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pointer Elements -->
+  <div class="pointer-dot" id="pointerDot"></div>
+  <div class="pointer-aura" id="pointerAura"></div>
+
+  <!-- Navigation -->
+  <header class="nav-bar">
+    <div class="brand-cluster">
+      <div class="brand-mark-orb"></div>
+      <div class="brand-title">FLUXION</div>
+    </div>
+
+    <div class="telemetry-strip">
+      <div class="metric-chip">
+        <span>PARTICLES:</span>
+        <span class="metric-val teal" id="particleCountLabel">85,000</span>
+      </div>
+      <div class="metric-chip">
+        <span>FRAME BUDGET:</span>
+        <span class="metric-val">8.3ms</span>
+      </div>
+      <div class="metric-chip">
+        <span>FPS:</span>
+        <span class="metric-val cyan" id="fpsCounter">60</span>
+      </div>
+      <div class="metric-chip">
+        <span>PRESENCE:</span>
+        <span class="metric-val" id="presenceTime">00:00</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn-connect" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">GET IN TOUCH</button>
+    </div>
+  </header>
+
+  <!-- Scrollytelling Pinned Stage -->
+  <div class="scrolly-wrapper" id="scrollyWrapper">
+    <div class="sticky-viewport" id="stickyViewport">
+      
+      <!-- Fullscreen WebGL Canvas -->
+      <canvas id="webgl-canvas"></canvas>
+
+      <!-- Vignette -->
+      <div class="depth-vignette"></div>
+
+      <!-- Scrubber Track -->
+      <div class="timeline-scrubber">
+        <div class="scrub-item active" data-step="0">
+          <span>01. TORUS</span>
+          <div class="scrub-bar"></div>
+        </div>
+        <div class="scrub-item" data-step="1">
+          <span>02. STARFIELD</span>
+          <div class="scrub-bar"></div>
+        </div>
+        <div class="scrub-item" data-step="2">
+          <span>03. GALAXY</span>
+          <div class="scrub-bar"></div>
+        </div>
+        <div class="scrub-item" data-step="3">
+          <span>04. SINGULARITY</span>
+          <div class="scrub-bar"></div>
+        </div>
+        <div class="scrub-item" data-step="4">
+          <span>05. SYNAPSE</span>
+          <div class="scrub-bar"></div>
+        </div>
+      </div>
+
+      <!-- Stage Overlays -->
+      <div class="stage-overlays">
+        
+        <!-- Beat 1: Torus Ring -->
+        <div class="stage-card active" id="stage0">
+          <div class="stage-tag">TOPOLOGICAL STATE // 01</div>
+          <h1 class="stage-title">Motion instead of <em>chrome.</em></h1>
+          <p class="stage-lede">
+            Traditional interfaces trap information in rectangular boxes. Fluxion breathes in 85,000 living GPU particles, reacting organically to your touch, scroll, and presence.
+          </p>
+        </div>
+
+        <!-- Beat 2: Starfield -->
+        <div class="stage-card card-bottom-left" id="stage1">
+          <div class="stage-tag">TOPOLOGICAL STATE // 02</div>
+          <h2 class="stage-title">Reads presence, <em>in motion.</em></h2>
+          <p class="stage-lede">
+            As you scroll, the gravitational boundary collapses. The ring dissolves into an infinite cosmic starfield, tracking pointer velocity in three-dimensional space.
+          </p>
+        </div>
+
+        <!-- Beat 3: Spiral Galaxy -->
+        <div class="stage-card card-bottom-right" id="stage2">
+          <div class="stage-tag">TOPOLOGICAL STATE // 03</div>
+          <h2 class="stage-title">The logarithmic <em>spiral.</em></h2>
+          <p class="stage-lede">
+            Centripetal vectors draw the stars into an evolving galactic nucleus. No cuts, no slides, no video buffering—just continuous, mathematically pure topology.
+          </p>
+        </div>
+
+        <!-- Beat 4: Singularity Line -->
+        <div class="stage-card" id="stage3">
+          <div class="stage-tag">TOPOLOGICAL STATE // 04</div>
+          <h2 class="stage-title">Zero chrome, <em>pure velocity.</em></h2>
+          
+          <div class="singularity-stats-bar">
+            <div class="stat-node">
+              <span class="stat-label">Live Particles</span>
+              <span class="stat-number teal">85,000</span>
+            </div>
+            <div class="stat-node">
+              <span class="stat-label">Frame Budget</span>
+              <span class="stat-number">8.3 ms</span>
+            </div>
+            <div class="stat-node">
+              <span class="stat-label">Render Engine</span>
+              <span class="stat-number">Three.js / GLSL</span>
+            </div>
+            <div class="stat-node">
+              <span class="stat-label">Memory Overhead</span>
+              <span class="stat-number teal">14.2 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beat 5: 3D Neural Brain -->
+        <div class="stage-card" id="stage4">
+          <div class="stage-tag">TOPOLOGICAL STATE // 05</div>
+          <h2 class="stage-title">Synaptic <em>architecture.</em></h2>
+          <p class="stage-lede">
+            Particles reassemble into dual cerebral hemispheres with simulated neurotransmitter pulses firing across axonal pathways as you engage the page.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Studio Manifesto & Living Interface Section -->
+  <section class="section-manifesto">
+    <div class="manifesto-grid">
+      <h2 class="manifesto-heading">
+        Why build static rectangles when the GPU can <em>breathe?</em>
+      </h2>
+      <div class="manifesto-body">
+        <p>
+          For fifteen years, web design has been imprisoned by the same formula: a hero banner, three cards, and a footer. We accepted this because 3D meant heavy load times and sluggish mobile performance.
+        </p>
+        <p>
+          <strong>That compromise is over.</strong> By synthesizing custom GLSL vertex shaders with GPU point buffers, Fluxion delivers cinematic spatial experiences running at 60–120 FPS that weigh less than a single high-resolution image asset.
+        </p>
+      </div>
+    </div>
+
+    <!-- Capabilities Grid -->
+    <div class="grid-capabilities">
+      <div class="cap-card">
+        <div class="cap-index">// 01 · VOLUMETRIC</div>
+        <h3 class="cap-title">Spatial Choreography</h3>
+        <p class="cap-desc">Continuous multi-target morphing without layout shift, video artifacts, or geometry popping across viewports.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-index">// 02 · KINETIC</div>
+        <h3 class="cap-title">Presence-Reactive</h3>
+        <p class="cap-desc">Real-time force fields that turn cursor and scroll momentum into hydrodynamic fluid turbulence.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-index">// 03 · LIGHTWEIGHT</div>
+        <h3 class="cap-title">Zero Video Overhead</h3>
+        <p class="cap-desc">Pure mathematical code. Sub-second initial load with zero video buffer stalls or frame jitter.</p>
+      </div>
+    </div>
+
+    <!-- Interactive Sandbox Panel -->
+    <div class="sandbox-panel">
+      <div class="sandbox-info">
+        <h3>Topological Sandbox</h3>
+        <p>Override the scroll engine to command the 85,000 particle cloud directly:</p>
+      </div>
+      <div class="sandbox-controls">
+        <button class="btn-morph active" onclick="forceMorph(0)">01 TORUS</button>
+        <button class="btn-morph" onclick="forceMorph(1)">02 STARFIELD</button>
+        <button class="btn-morph" onclick="forceMorph(2)">03 GALAXY</button>
+        <button class="btn-morph" onclick="forceMorph(3)">04 SINGULARITY</button>
+        <button class="btn-morph" onclick="forceMorph(4)">05 SYNAPSE</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>How does this differ from video-frame scrolling?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-answer">
+          Video-frame scrolling scrubs pre-rendered image sequences, which consume dozens of megabytes, cannot react to the mouse cursor in real-time, and suffer from temporal compression artifacts. Fluxion is 100% real-time mathematical WebGL: lightweight, resolution-independent, and fully interactive.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Does it run smoothly on mobile devices?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-answer">
+          Yes. The simulation utilizes GPU point buffer instancing and dynamically scales the pixel ratio and particle attenuation based on the client hardware, maintaining 60 FPS on modern iOS and Android devices.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Can custom 3D geometries and logos be imported?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-answer">
+          Absolutely. Any 3D model (.obj / .gltf) or vector SVG path can be parsed into an array of vertex coordinates, allowing the particle cloud to morph cleanly into custom client logos and product silhouettes.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div>FLUXION MOTION STUDIO // TOKYO · ZÜRICH · SAN FRANCISCO</div>
+    <div>© 2026 FLUXION. ALL LIVING INTERFACES RESERVED.</div>
+  </footer>
+
+  <!-- Three.js Real-time Particle Engine Script -->
+  <script>
+    /* =============================================================
+       1. WEBGL ENGINE INITIALIZATION
+       ============================================================= */
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.035);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 11);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: false, // point antialiasing handled in shader
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    /* =============================================================
+       2. TOPOLOGICAL GEOMETRY GENERATOR (85,000 PARTICLES)
+       ============================================================= */
+    const PARTICLE_COUNT = 85000;
+    const geometry = new THREE.BufferGeometry();
+
+    const posTorus = new Float32Array(PARTICLE_COUNT * 3);
+    const posStar = new Float32Array(PARTICLE_COUNT * 3);
+    const posGalaxy = new Float32Array(PARTICLE_COUNT * 3);
+    const posLine = new Float32Array(PARTICLE_COUNT * 3);
+    const posBrain = new Float32Array(PARTICLE_COUNT * 3);
+    const phases = new Float32Array(PARTICLE_COUNT);
+    const scales = new Float32Array(PARTICLE_COUNT);
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const i3 = i * 3;
+      phases[i] = Math.random();
+      scales[i] = Math.random() * 0.7 + 0.5;
+
+      // 1. Torus Ring
+      const R = 3.8;
+      const r = 1.1 + (Math.random() - 0.5) * 0.35;
+      const uT = Math.random() * Math.PI * 2;
+      const vT = Math.random() * Math.PI * 2;
+      posTorus[i3] = (R + r * Math.cos(vT)) * Math.cos(uT);
+      posTorus[i3 + 1] = (R + r * Math.cos(vT)) * Math.sin(uT);
+      posTorus[i3 + 2] = r * Math.sin(vT);
+
+      // 2. Starfield (Spherical Volume)
+      const rStar = Math.cbrt(Math.random()) * 18.0;
+      const thetaS = Math.random() * Math.PI * 2;
+      const phiS = Math.acos(2 * Math.random() - 1);
+      posStar[i3] = rStar * Math.sin(phiS) * Math.cos(thetaS);
+      posStar[i3 + 1] = rStar * Math.sin(phiS) * Math.sin(thetaS);
+      posStar[i3 + 2] = rStar * Math.cos(phiS);
+
+      // 3. Spiral Galaxy (Logarithmic 3-arm spiral)
+      const arms = 3;
+      const arm = i % arms;
+      const distG = Math.pow(Math.random(), 0.6) * 9.5;
+      const angleG = distG * 0.95 + (arm * (Math.PI * 2 / arms)) + (Math.random() - 0.5) * 0.35;
+      posGalaxy[i3] = distG * Math.cos(angleG);
+      posGalaxy[i3 + 1] = (Math.random() - 0.5) * Math.exp(-distG / 3.5) * 1.8;
+      posGalaxy[i3 + 2] = distG * Math.sin(angleG);
+
+      // 4. Singularity Telemetry Line
+      const spreadX = (Math.random() - 0.5) * 24.0;
+      const coreFade = Math.exp(-Math.abs(spreadX) / 6.0);
+      posLine[i3] = spreadX;
+      posLine[i3 + 1] = (Math.random() - 0.5) * (0.05 + coreFade * 0.28);
+      posLine[i3 + 2] = (Math.random() - 0.5) * (0.05 + coreFade * 0.28);
+
+      // 5. 3D Neural Brain (Dual Hemispheres)
+      const side = Math.random() > 0.5 ? 1 : -1;
+      const uB = Math.random() * Math.PI;
+      const vB = Math.random() * Math.PI;
+      const fold = Math.sin(uB * 6.0) * Math.cos(vB * 8.0) * 0.38 + Math.sin(uB * 14.0) * 0.12;
+      const aB = 2.6, bB = 2.1, cB = 3.2;
+      const rx = Math.abs(aB * Math.sin(uB) * Math.cos(vB) * (1 + fold));
+      posBrain[i3] = side * (0.35 + rx);
+      posBrain[i3 + 1] = bB * Math.sin(uB) * Math.sin(vB) * (1 + fold) - 0.2;
+      posBrain[i3 + 2] = cB * Math.cos(uB) * (1 + fold);
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(posTorus, 3));
+    geometry.setAttribute('aPosTorus', new THREE.BufferAttribute(posTorus, 3));
+    geometry.setAttribute('aPosStar', new THREE.BufferAttribute(posStar, 3));
+    geometry.setAttribute('aPosGalaxy', new THREE.BufferAttribute(posGalaxy, 3));
+    geometry.setAttribute('aPosLine', new THREE.BufferAttribute(posLine, 3));
+    geometry.setAttribute('aPosBrain', new THREE.BufferAttribute(posBrain, 3));
+    geometry.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+    geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+
+    /* =============================================================
+       3. CUSTOM GLSL SHADER MATERIAL
+       ============================================================= */
+    const vertexShader = `
+      attribute vec3 aPosTorus;
+      attribute vec3 aPosStar;
+      attribute vec3 aPosGalaxy;
+      attribute vec3 aPosLine;
+      attribute vec3 aPosBrain;
+      attribute float aPhase;
+      attribute float aScale;
+
+      uniform float uTime;
+      uniform float uProgress;
+      uniform vec3 uMouse;
+      uniform float uPixelRatio;
+
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      vec3 getMorph(float p) {
+        if (p <= 1.0) {
+          float t = smoothstep(0.0, 1.0, p);
+          return mix(aPosTorus, aPosStar, t);
+        } else if (p <= 2.0) {
+          float t = smoothstep(0.0, 1.0, p - 1.0);
+          return mix(aPosStar, aPosGalaxy, t);
+        } else if (p <= 3.0) {
+          float t = smoothstep(0.0, 1.0, p - 2.0);
+          return mix(aPosGalaxy, aPosLine, t);
+        } else {
+          float t = smoothstep(0.0, 1.0, p - 3.0);
+          return mix(aPosLine, aPosBrain, t);
+        }
+      }
+
+      void main() {
+        vec3 p = getMorph(uProgress);
+
+        // Breathing harmonic oscillation
+        float breath = sin(uTime * 1.4 + aPhase * 6.28) * 0.07;
+        p += normalize(p + 0.001) * breath;
+
+        // Pointer proximity interaction
+        float d = length(p.xy - uMouse.xy);
+        float mouseActive = step(0.001, length(uMouse.xy));
+        float influence = smoothstep(3.2, 0.0, d) * mouseActive;
+        vec2 dir = normalize(p.xy - uMouse.xy + 0.0001);
+        vec2 swirl = vec2(-dir.y, dir.x);
+        p.xy += (dir * 1.1 + swirl * 0.9) * influence;
+        p.z += sin(d * 4.0 - uTime * 2.0) * influence * 0.8;
+
+        vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+
+        // Size attenuation
+        float pSize = aScale * (18.0 * uPixelRatio / -mvPosition.z);
+        gl_PointSize = clamp(pSize, 1.0, 56.0);
+
+        // Dynamic spectral color grading
+        vec3 cTeal = vec3(0.0, 0.96, 0.83);    // #00f5d4
+        vec3 cCyan = vec3(0.0, 0.73, 0.98);    // #00bbf9
+        vec3 cBlue = vec3(0.26, 0.38, 0.93);   // #4361ee
+        vec3 cViolet = vec3(0.45, 0.04, 0.72); // #7209b7
+        vec3 cPink = vec3(0.97, 0.15, 0.52);   // #f72585
+        vec3 cAmber = vec3(1.0, 0.85, 0.5);
+
+        vec3 col = cTeal;
+        if (uProgress < 1.0) {
+          float t = fract(aPhase + uTime * 0.04);
+          col = mix(mix(cTeal, cCyan, smoothstep(0.0, 0.5, t)), cViolet, smoothstep(0.5, 1.0, t));
+        } else if (uProgress < 2.0) {
+          float t = smoothstep(0.0, 1.0, fract(aPhase * 2.0));
+          col = mix(cBlue, vec3(0.9, 0.95, 1.0), t * 0.7);
+        } else if (uProgress < 3.0) {
+          float rad = length(p.xz) / 8.0;
+          col = mix(cAmber, mix(cTeal, cBlue, smoothstep(0.2, 0.8, rad)), smoothstep(0.0, 0.35, rad));
+        } else if (uProgress < 3.5) {
+          col = mix(cCyan, cViolet, abs(p.x) / 10.0);
+        } else {
+          float pulse = sin(uTime * 4.0 + p.y * 3.0 + aPhase * 8.0);
+          col = mix(cViolet, cPink, smoothstep(0.1, 0.8, pulse));
+          if (pulse > 0.85) col = mix(col, vec3(1.0), 0.7);
+        }
+
+        vColor = col;
+        vAlpha = 0.7 + 0.3 * sin(uTime * 2.0 + aPhase * 6.28);
+      }
+    `;
+
+    const fragmentShader = `
+      precision highp float;
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      void main() {
+        vec2 coord = gl_PointCoord - vec2(0.5);
+        float dist = length(coord);
+        if (dist > 0.5) discard;
+
+        float intensity = exp(-dist * dist * 12.0);
+        float rim = smoothstep(0.5, 0.2, dist);
+        float alpha = intensity * rim * vAlpha;
+
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      uniforms: {
+        uTime: { value: 0 },
+        uProgress: { value: 0 },
+        uMouse: { value: new THREE.Vector3(0, 0, 0) },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 2) }
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    /* =============================================================
+       4. INTERACTION, POINTER & PRESENCE METRICS
+       ============================================================= */
+    const pointerDot = document.getElementById('pointerDot');
+    const pointerAura = document.getElementById('pointerAura');
+    const mouse3D = new THREE.Vector3(0, 0, 0);
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let auraX = mouseX;
+    let auraY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // Project mouse into 3D world space coordinates
+      const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
+      const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
+      mouse3D.x = ndcX * 6.5;
+      mouse3D.y = ndcY * 4.2;
+    });
+
+    // Presence timer (calculates minutes & seconds user is on page)
+    const presenceEl = document.getElementById('presenceTime');
+    const startTime = Date.now();
+    setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+      const s = String(elapsed % 60).padStart(2, '0');
+      presenceEl.textContent = `${m}:${s}`;
+    }, 1000);
+
+    // Live FPS meter
+    const fpsEl = document.getElementById('fpsCounter');
+    let frameCount = 0;
+    let lastFpsTime = performance.now();
+
+    /* =============================================================
+       5. SCROLL DRIVER & TIMELINE DISPATCHER
+       ============================================================= */
+    const scrollyWrapper = document.getElementById('scrollyWrapper');
+    const stageCards = [
+      document.getElementById('stage0'),
+      document.getElementById('stage1'),
+      document.getElementById('stage2'),
+      document.getElementById('stage3'),
+      document.getElementById('stage4')
+    ];
+    const scrubItems = document.querySelectorAll('.scrub-item');
+
+    let currentStep = 0;
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let manualOverride = false;
+
+    function onScroll() {
+      if (manualOverride) return;
+      const rect = scrollyWrapper.getBoundingClientRect();
+      const totalScrollable = scrollyWrapper.offsetHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      const progress01 = Math.max(0, Math.min(1, scrolled / totalScrollable));
+
+      targetProgress = progress01 * 4.0; // 0.0 to 4.0 across 5 shapes
+
+      const step = Math.min(4, Math.floor(progress01 * 5));
+      if (step !== currentStep) {
+        currentStep = step;
+        updateStageUI(currentStep);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    function updateStageUI(idx) {
+      stageCards.forEach((c, i) => c.classList.toggle('active', i === idx));
+      scrubItems.forEach((s, i) => s.classList.toggle('active', i === idx));
+      document.querySelectorAll('.btn-morph').forEach((b, i) => b.classList.toggle('active', i === idx));
+    }
+
+    // Scrubber click navigation
+    scrubItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const step = parseInt(item.dataset.step, 10);
+        const totalScrollable = scrollyWrapper.offsetHeight - window.innerHeight;
+        const targetScroll = scrollyWrapper.offsetTop + (step / 4.2) * totalScrollable;
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      });
+    });
+
+    // Sandbox morph buttons
+    function forceMorph(step) {
+      manualOverride = true;
+      targetProgress = step;
+      updateStageUI(step);
+      setTimeout(() => { manualOverride = false; }, 1200);
+    }
+
+    // FAQ Toggle
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('open');
+    }
+
+    /* =============================================================
+       6. RESIZE & MAIN RENDER LOOP
+       ============================================================= */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio || 1, 2);
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+      const time = clock.getElapsedTime();
+
+      // FPS Calculation
+      frameCount++;
+      const now = performance.now();
+      if (now - lastFpsTime >= 1000) {
+        fpsEl.textContent = Math.round((frameCount * 1000) / (now - lastFpsTime));
+        frameCount = 0;
+        lastFpsTime = now;
+      }
+
+      // Smooth progress interpolation
+      currentProgress += (targetProgress - currentProgress) * 0.08;
+      material.uniforms.uProgress.value = currentProgress;
+      material.uniforms.uTime.value = time;
+      material.uniforms.uMouse.value.lerp(mouse3D, 0.1);
+
+      // Camera / particle continuous slow orbit
+      particles.rotation.y = time * 0.06;
+      particles.rotation.x = Math.sin(time * 0.04) * 0.12;
+
+      // Pointer render
+      pointerDot.style.left = `${mouseX}px`;
+      pointerDot.style.top = `${mouseY}px`;
+      auraX += (mouseX - auraX) * 0.18;
+      auraY += (mouseY - auraY) * 0.18;
+      pointerAura.style.left = `${auraX}px`;
+      pointerAura.style.top = `${auraY}px`;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

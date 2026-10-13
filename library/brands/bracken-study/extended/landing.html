@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<title>Bracken</title>
+  <meta name="description" content="Learn how Bracken helps content teams plan, publish, and grow search traffic with a repeatable system." />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z97ZD3EVSF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z97ZD3EVSF');
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 30 16 16 30 2 16z' fill='%2316a34a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --sans: Outfit, "Segoe UI", sans-serif; --serif: "Instrument Serif", Georgia, serif; --ink: #1b2140; --green: #16a34a; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: #eef6ea; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .stage {
+    min-height: 100vh;
+    background: #8ec8f5 url("../replica/assets/meadow.jpg") center bottom / cover no-repeat;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 0;
+  }
+  .dots {
+    position: absolute; inset: 0 0 34%; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,.75) 1.15px, transparent 1.3px);
+    background-size: 18px 18px;
+  }
+  .nav {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; gap: 18px;
+    background: #fff; border-radius: 999px; padding: 8px 18px 8px 10px;
+    box-shadow: 0 10px 30px rgba(20, 40, 20, .12);
+  }
+  .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+  .nav a { font-size: 14px; font-weight: 500; color: #2c3348; }
+  .nav a:hover { color: var(--green); }
+  .nav-toggle { display: none; border: 0; background: transparent; width: 36px; height: 36px; }
+  .nav-toggle span { display: block; height: 1.5px; background: var(--ink); margin: 5px 6px; }
+  .hero { position: relative; z-index: 1; text-align: center; padding: 54px 12px 18px; max-width: 860px; }
+  h1 { margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 64px); letter-spacing: -0.04em; line-height: 1.12; color: #1a2144; }
+  .serif { font-family: var(--serif); font-style: italic; font-weight: 400; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; border-radius: 16px; padding: 2px 14px 6px; vertical-align: middle; margin: 0 4px; }
+  .lav { background: #e6defe; color: #6d4ad4; }
+  .peach { background: #ffe4c8; color: #e36a1e; }
+  .pill em { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 0.95em; }
+  .lede { margin: 16px auto 0; max-width: 460px; color: #2d3b46; font-size: 16px; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; background: #1faa55; color: #fff; border-radius: 999px; padding: 12px 18px; font-weight: 600; box-shadow: 0 8px 18px rgba(16, 120, 50, .25); }
+  .cta:hover { background: #178a45; }
+  .app {
+    position: relative; z-index: 1;
+    width: min(1040px, 100%);
+    margin-top: 36px;
+    background: #f4f6f3;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 30px 60px rgba(20, 40, 20, .18);
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    min-height: 520px;
+    text-align: left;
+    overflow: hidden;
+  }
+  aside { padding: 16px 12px; background: #f7f8f6; border-right: 1px solid #e6e8e4; }
+  aside .brand { padding: 6px 8px 14px; }
+  aside button {
+    width: 100%; text-align: left; border: 0; background: transparent;
+    border-radius: 10px; padding: 9px 10px; font-weight: 500; color: #3c4654; display: flex; gap: 8px; align-items: center;
+  }
+  aside button.on { background: #d9f5df; color: #147a38; }
+  .main { padding: 14px 16px 28px; }
+  .appbar { display: flex; align-items: center; gap: 10px; color: #7b8478; font-size: 13px; }
+  .appbar .sp { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .search { border: 0; background: #fff; border-radius: 999px; padding: 7px 12px; width: 120px; box-shadow: inset 0 0 0 1px #e4e6e1; }
+  .gen { background: #1c2430; color: #fff; border: 0; border-radius: 8px; padding: 8px 10px; font-size: 13px; font-weight: 600; }
+  h2 { margin: 16px 0 0; font-family: var(--serif); font-weight: 400; font-size: 32px; }
+  .sub { margin: 4px 0 14px; color: #6d776e; font-size: 14px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .stat { background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+  .stat small { color: #7a847c; font-size: 12px; }
+  .stat b { display: block; margin-top: 8px; font-size: 22px; letter-spacing: -0.03em; }
+  .stat i { font-style: normal; font-size: 12px; font-weight: 600; }
+  .up { color: #16a34a; }
+  .down { color: #e11d48; }
+  .split { display: grid; grid-template-columns: 1.2fr .8fr; gap: 10px; margin-top: 10px; }
+  .panel { background: #fff; border-radius: 12px; padding: 14px; min-height: 180px; }
+  .panel h3 { margin: 0; font-size: 14px; color: #667; font-weight: 500; }
+  .panel strong { display: block; margin: 8px 0; font-family: var(--serif); font-size: 26px; font-weight: 400; }
+  .panel svg { width: 100%; height: 70px; }
+  .cal { margin-top: 12px; border-radius: 8px; background: #f6f7f5; padding: 10px 12px; color: #667; font-size: 13px; }
+  .more { background: #fff; padding: 56px 20px; }
+  .wrap { width: min(960px, 100%); margin: 0 auto; }
+  .more h2 { font-family: var(--sans); font-weight: 600; font-size: 32px; letter-spacing: -0.03em; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .cards article { background: #f4f7f2; border-radius: 16px; padding: 18px; }
+  .cards h3 { margin: 0 0 6px; }
+  .cards p { margin: 0; color: #4d5a50; }
+  footer { padding: 18px 20px 28px; display: flex; gap: 16px; color: #5c675f; background: #fff; }
+  footer .grow { margin-left: auto; }
+  section { scroll-margin-top: 18px; }
+  .band { background: #fff; padding: 28px 20px 64px; }
+  .band h2 { font-family: var(--sans); font-weight: 600; font-size: 32px; letter-spacing: -0.03em; margin-top: 0; }
+  .kicker { margin: 0 0 8px; color: var(--green); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; font-size: 12px; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tabs button, .filters button { border: 0; background: #f4f7f2; border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  .tabs button.on, .filters button.on { background: #d9f5df; color: #147a38; }
+  .case { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px; background: #f4f7f2; border-radius: 18px; padding: 18px; }
+  .case strong { display: block; font-family: var(--serif); font-size: 32px; font-weight: 400; margin: 8px 0; }
+  .case ul { margin: 0; padding-left: 18px; color: #3c4654; }
+  .slider { display: flex; align-items: center; gap: 12px; margin: 8px 0 16px; }
+  .slider input { width: min(320px, 100%); accent-color: var(--green); }
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .plan { background: #f4f7f2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .plan.pick { box-shadow: inset 0 0 0 2px var(--green); background: #fff; }
+  .plan b { font-size: 32px; letter-spacing: -0.03em; }
+  .plan ul { margin: 8px 0 14px; padding-left: 18px; color: #4d5a50; }
+  .plan .cta { margin-top: auto; justify-content: center; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  form.brief { display: grid; gap: 10px; max-width: 480px; }
+  form.brief input, form.brief textarea { width: 100%; border: 0; border-radius: 10px; padding: 12px 14px; background: #f4f7f2; }
+  form.brief textarea { min-height: 90px; resize: vertical; }
+  .tools button { text-align: left; border: 0; background: #f4f7f2; border-radius: 14px; padding: 14px; }
+  .tools small { display: block; color: #6d776e; margin-top: 4px; }
+  footer.full { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 18px; }
+  footer.full a, footer.full span { display: block; margin-top: 6px; }
+  footer.full .grow { margin: 0; }
+  @media (max-width: 900px) {
+    .nav a { display: none; }
+    .nav a.brand { display: inline-flex; }
+    .nav.open a { display: block; }
+    .nav.open { flex-direction: column; align-items: flex-start; border-radius: 18px; padding: 12px; }
+    .nav-toggle { display: block; }
+    .app, .stats, .split, .cards, .case, .plans, .tools, footer.full { grid-template-columns: 1fr; }
+    aside { display: flex; gap: 6px; overflow: auto; border-right: 0; border-bottom: 1px solid #e6e8e4; }
+    aside button { width: auto; white-space: nowrap; }
+    footer .grow { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+  <link rel="stylesheet" href="../replica/pages.css">
+</head>
+<body>
+<section class="stage">
+  <div class="dots" aria-hidden="true"></div>
+  <nav class="nav" id="menu">
+    <a class="brand" href="#top">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8z" fill="#16a34a"/></svg>
+      Bracken
+    </a>
+    <a href="#product">Features</a>
+    <a href="#usecases">Use cases</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#integrations">Integrations</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+  </nav>
+  <div class="hero" id="top">
+    <h1>Turn <span class="pill lav"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="2" width="12" height="14" rx="2" fill="none" stroke="#6d4ad4"/><path d="M6 6h6M6 9h6M6 12h4" stroke="#6d4ad4"/></svg> <em>Content</em></span> into<br><span class="serif">endless</span> <span class="pill peach"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 13V8M7 13V5M11 13V7M15 13V3" stroke="#e36a1e" stroke-width="1.6"/></svg> <em>Organic traffic</em></span></h1>
+    <p class="lede">Generate, publish, and scale high-ranking pages without writing or managing a content team.</p>
+    <a class="cta" href="#app">Start scaling traffic <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="app" id="app">
+    <aside>
+      <div class="brand"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8z" fill="#16a34a"/></svg> Bracken</div>
+      <button type="button" class="on" data-view="dash">Dashboard</button>
+      <button type="button" data-view="pages">Pages</button>
+      <button type="button" data-view="keys">Keywords</button>
+      <button type="button" data-view="ana">Analytics</button>
+      <button type="button" data-view="auto">Automations</button>
+    </aside>
+    <div class="main">
+      <div class="appbar">
+        <span>Dashboards / Default</span>
+        <div class="sp">
+          <input class="search" id="q" type="search" placeholder="Search" aria-label="Search views">
+          <button class="gen" type="button" id="gen">Generate pages</button>
+        </div>
+      </div>
+      <h2 id="title">Dashboard</h2>
+      <p class="sub" id="sub">Welcome. Track pages, rankings, and organic growth in one place.</p>
+      <div class="stats" id="stats"></div>
+      <div class="split">
+        <div class="panel">
+          <h3>Organic growth</h3>
+          <strong id="big">184,220 monthly visits</strong>
+          <svg id="chart" viewBox="0 0 320 70" fill="none" aria-hidden="true">
+            <path d="M0 58 C40 54 60 40 100 42 C140 44 160 20 200 24 C240 28 270 12 320 8" stroke="#9aa396" stroke-width="2"/>
+            <path d="M0 58 C40 54 60 40 100 42 C140 44 160 20 200 24 C240 28 270 12 320 8 V70 H0 Z" fill="#eef2ea"/>
+          </svg>
+        </div>
+        <div class="panel">
+          <h3>Content planner</h3>
+          <strong id="plan">3 pages scheduled</strong>
+          <div class="cal">May 2026</div>
+          <p class="sub" id="note" hidden>Queued three drafts for the week of 18 May.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="more" id="product">
+  <div class="wrap">
+    <h2>Pages that keep their place.</h2>
+    <div class="cards">
+      <article><h3>Draft</h3><p>A page starts from the query you already rank near, not from a blank doc.</p></article>
+      <article><h3>Publish</h3><p>The draft goes live on the same desk that tracks the ranking.</p></article>
+      <article><h3>Watch</h3><p>If a page slips, it returns to the planner with the query attached.</p></article>
+    </div>
+  </div>
+</section>
+<section class="band" id="usecases">
+  <div class="wrap">
+    <p class="kicker">Use cases</p>
+    <h2>The same desk, three floors.</h2>
+    <div class="tabs" role="tablist" aria-label="Use cases">
+      <button type="button" class="on" role="tab" aria-selected="true" data-case="field">Field notes</button>
+      <button type="button" role="tab" aria-selected="false" data-case="shop">Shop catalog</button>
+      <button type="button" role="tab" aria-selected="false" data-case="clinic">Clinic hours</button>
+    </div>
+    <div class="case">
+      <div>
+        <h3 id="case-title">Field notes</h3>
+        <strong id="case-metric">86 pages from trail questions</strong>
+        <p id="case-copy">Guides for the walks people already search, written from the queries sitting just outside the first page.</p>
+      </div>
+      <ul id="case-list">
+        <li>Ridge weather in May</li>
+        <li>Where the path splits</li>
+        <li>A night above the tree line</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="band" id="pricing">
+  <div class="wrap">
+    <p class="kicker">Pricing</p>
+    <h2>Price follows the pages you publish.</h2>
+    <label class="slider">Pages a month <strong id="volume">1,000</strong>
+      <input id="pages" type="range" min="0" max="2" step="1" value="1" aria-valuemin="0" aria-valuemax="2" aria-valuenow="1" aria-label="Pages a month">
+    </label>
+    <div class="plans">
+      <article class="plan"><h3>Seed</h3><b data-price="0">$0</b><ul><li id="seed-pages">200 pages included</li><li>One site</li><li>The planner</li></ul><a class="cta" href="#app">Start scaling traffic</a></article>
+      <article class="plan pick"><h3>Grove</h3><b id="grove">$90</b><ul><li>The volume on the slider</li><li>Keywords in range</li><li>A Monday queue</li></ul><a class="cta" href="#book">Talk to the desk</a></article>
+      <article class="plan"><h3>Canopy</h3><b id="canopy">$240</b><ul><li>Several sites</li><li>Automations</li><li>A named editor</li></ul><a class="cta" href="#book">Talk to the desk</a></article>
+    </div>
+  </div>
+</section>
+<section class="band" id="integrations">
+  <div class="wrap">
+    <p class="kicker">Integrations</p>
+    <h2>Publish where the page already lives.</h2>
+    <div class="filters" role="group" aria-label="Integration kind">
+      <button type="button" class="on" data-kind="all">All</button>
+      <button type="button" data-kind="publish">Publish</button>
+      <button type="button" data-kind="measure">Measure</button>
+      <button type="button" data-kind="store">Store</button>
+    </div>
+    <div class="tools" id="tools">
+      <button type="button" data-kind="publish">Quill<small>Publish</small></button>
+      <button type="button" data-kind="publish">Veld Forms<small>Publish</small></button>
+      <button type="button" data-kind="measure">Silt Stats<small>Measure</small></button>
+      <button type="button" data-kind="measure">Northledger<small>Measure</small></button>
+      <button type="button" data-kind="store">Marrow Shop<small>Store</small></button>
+      <button type="button" data-kind="store">Pell Catalog<small>Store</small></button>
+      <button type="button" data-kind="publish">Linden Mail<small>Publish</small></button>
+      <button type="button" data-kind="measure">Harborline<small>Measure</small></button>
+    </div>
+  </div>
+</section>
+<section class="band" id="book">
+  <div class="wrap">
+    <p class="kicker">Desk</p>
+    <h2>Tell us the query you almost own.</h2>
+    <form id="brief" class="brief">
+      <input name="name" required placeholder="Name" aria-label="Name">
+      <input name="email" type="email" required placeholder="Email" aria-label="Email">
+      <textarea name="note" required placeholder="The page that should exist." aria-label="Note"></textarea>
+      <button class="cta" type="submit">Send the note</button>
+      <p id="sent" hidden>Opening your mail app with the note to desk@bracken.example.</p>
+    </form>
+  </div>
+</section>
+<footer class="full">
+  <div>
+    <strong>Bracken</strong>
+    <span class="grow">desk@bracken.example</span>
+  </div>
+  <div>
+    <strong>Product</strong>
+    <a href="#product">Features</a>
+    <a href="#app">Dashboard</a>
+    <a href="#usecases">Use cases</a>
+  </div>
+  <div>
+    <strong>House</strong>
+    <a href="#pricing">Pricing</a>
+    <a href="#integrations">Integrations</a>
+    <a href="#book">Desk</a>
+  </div>
+  <div>
+    <strong>Sample</strong>
+    <span>Fictional tools only.</span>
+  </div>
+</footer>
+<script>
+  const views = {
+    dash: {
+      title: "Dashboard",
+      sub: "Welcome. Track pages, rankings, and organic growth in one place.",
+      big: "184,220 monthly visits",
+      plan: "3 pages scheduled",
+      stats: [["Pages published","18,420","+11.0%","up"],["Pages indexed","9,140","-0.4%","down"],["Organic visits","412,880","+9.2%","up"],["Ranking keywords","540","+4.1%","up"]]
+    },
+    pages: {
+      title: "Pages",
+      sub: "Drafts waiting on a query, and pages already live.",
+      big: "640 drafts this month",
+      plan: "12 ready to publish",
+      stats: [["Live","6,210","+2.1%","up"],["Drafts","640","+8.0%","up"],["Needs edit","88","-1.2%","down"],["Archived","140","0.0%","up"]]
+    },
+    keys: {
+      title: "Keywords",
+      sub: "Queries the desk is close to owning.",
+      big: "540 keywords in range",
+      plan: "9 queries this week",
+      stats: [["Top 3","72","+3","up"],["Top 10","210","+11","up"],["Striking distance","180","-4","down"],["New","78","+9","up"]]
+    },
+    ana: {
+      title: "Analytics",
+      sub: "Visits that landed on a page Bracken published.",
+      big: "412,880 organic visits",
+      plan: "May is ahead of April",
+      stats: [["Visits","412,880","+9.2%","up"],["Signups","1,240","+6.0%","up"],["Bounce","41%","-1.1%","up"],["Time","2m 10s","+4s","up"]]
+    },
+    auto: {
+      title: "Automations",
+      sub: "Jobs that publish, refresh, and retire pages.",
+      big: "14 jobs on a schedule",
+      plan: "Next run Monday",
+      stats: [["Running","6","on","up"],["Paused","2","hold","down"],["Failed","0","clear","up"],["Queued","6","next","up"]]
+    }
+  };
+  const stats = document.getElementById("stats");
+  function paint(name) {
+    const view = views[name];
+    document.getElementById("title").textContent = view.title;
+    document.getElementById("sub").textContent = view.sub;
+    document.getElementById("big").textContent = view.big;
+    document.getElementById("plan").textContent = view.plan;
+    stats.replaceChildren();
+    view.stats.forEach(function (row) {
+      const el = document.createElement("article");
+      el.className = "stat";
+      el.innerHTML = "<small>" + row[0] + "</small><b>" + row[1] + "</b><i class=\"" + row[3] + "\">" + row[2] + "</i>";
+      stats.appendChild(el);
+    });
+  }
+  paint("dash");
+  document.querySelectorAll("aside button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll("aside button").forEach(function (b) { b.classList.remove("on"); });
+      btn.classList.add("on");
+      paint(btn.dataset.view);
+    });
+  });
+  document.getElementById("q").addEventListener("input", function () {
+    const term = this.value.trim().toLowerCase();
+    document.querySelectorAll("aside button").forEach(function (btn) {
+      btn.hidden = term && !btn.textContent.toLowerCase().includes(term);
+    });
+  });
+  document.getElementById("gen").addEventListener("click", function () {
+    document.getElementById("note").hidden = false;
+    document.getElementById("plan").textContent = "6 pages scheduled";
+  });
+  const cases = {
+    field: { title: "Field notes", metric: "86 pages from trail questions", copy: "Guides for the walks people already search, written from the queries sitting just outside the first page.", list: ["Ridge weather in May", "Where the path splits", "A night above the tree line"] },
+    shop: { title: "Shop catalog", metric: "1,240 pages from product questions", copy: "A page for the comparison shoppers type, tied to the item that can actually ship.", list: ["Wool against rain", "A last that runs narrow", "Repair instead of replace"] },
+    clinic: { title: "Clinic hours", metric: "64 pages from visit questions", copy: "Hours, preparation, and the question people ask the night before they come in.", list: ["What to bring", "A visit after work", "Who reads the result"] }
+  };
+  document.querySelectorAll(".tabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tabs button").forEach(function (b) {
+        b.classList.remove("on");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("on");
+      btn.setAttribute("aria-selected", "true");
+      const item = cases[btn.getAttribute("data-case")];
+      document.getElementById("case-title").textContent = item.title;
+      document.getElementById("case-metric").textContent = item.metric;
+      document.getElementById("case-copy").textContent = item.copy;
+      const list = document.getElementById("case-list");
+      list.replaceChildren();
+      item.list.forEach(function (line) {
+        const li = document.createElement("li");
+        li.textContent = line;
+        list.appendChild(li);
+      });
+    });
+  });
+  const volumes = [200, 1000, 5000];
+  const grove = ["$40", "$90", "$220"];
+  const canopy = ["$120", "$240", "$480"];
+  document.getElementById("pages").addEventListener("input", function () {
+    const i = Number(this.value);
+    this.setAttribute("aria-valuenow", String(i));
+    document.getElementById("volume").textContent = volumes[i].toLocaleString("en-US");
+    document.getElementById("grove").textContent = grove[i];
+    document.getElementById("canopy").textContent = canopy[i];
+  });
+  document.querySelectorAll(".filters button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".filters button").forEach(function (b) { b.classList.remove("on"); });
+      btn.classList.add("on");
+      const kind = btn.getAttribute("data-kind");
+      document.querySelectorAll("#tools button").forEach(function (tool) {
+        tool.hidden = kind !== "all" && tool.getAttribute("data-kind") !== kind;
+      });
+    });
+  });
+  document.getElementById("brief").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const body = "From: " + data.get("name") + " <" + data.get("email") + ">\n\n" + data.get("note");
+    document.getElementById("sent").hidden = false;
+    location.href = "mailto:desk@bracken.example?subject=" + encodeURIComponent("Bracken") + "&body=" + encodeURIComponent(body);
+  });
+  const toggle = document.querySelector(".nav-toggle");
+  const menu = document.getElementById("menu");
+  toggle.addEventListener("click", function () {
+    const open = menu.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      menu.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>
+  <script src="../replica/pages.js"></script>
+</body>
+</html>
